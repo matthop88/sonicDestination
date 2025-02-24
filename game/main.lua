@@ -44,16 +44,18 @@ end
 
 function drawWorkspace()
     drawDarkGreenBackground()
-    -- 2. Draw thick horizontal white line spanning from left side of screen to right,
-    --    positioned 3/4 of the way down the screen.
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(3)
-    love.graphics.line(0, 576, 1024, 576)
+    drawThickHorizontalWhiteLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
 end
 
 function drawDarkGreenBackground()
     love.graphics.setColor(0, 0.45, 0)
     love.graphics.rectangle("fill", 0, 0, 1024, 768)
+end
+
+function drawThickHorizontalWhiteLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(3)
+    love.graphics.line(0, 576, 1024, 576)
 end
 
 function drawSonic()
