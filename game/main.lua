@@ -3,6 +3,8 @@
 Goals:
 ------
 1. Create Game Window
+   a. Window Title:      Sonic Destination
+   b. Window Dimensions: 1024 x 768
 2. Draw Sonic the Hedgehog sprite on Game Window
 
 --]]
