@@ -8,7 +8,7 @@
        a. Window Title:      Sonic Destination
        b. Window Dimensions: 1024 x 768
        c. Window is displayed on 2nd monitor (TEMPORARY)
-[ ] 2. Draw Workspace in Game Window
+[X] 2. Draw Workspace in Game Window
        a. Background colored dark green
        b. Thick white horizontal line across entire screen,
           positioned 3/4 of way down the screen
