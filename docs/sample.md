@@ -1,3 +1,3 @@
-# Documentation
+# Sample Documentation
 
 Documentation goes here!
