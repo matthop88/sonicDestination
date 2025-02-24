@@ -1,7 +1,9 @@
 --[[
 
-Goals:
-------
+--------------------------------------------------------------
+--                  Functional Specifications               --
+--------------------------------------------------------------
+
 1. Create Game Window
    a. Window Title:      Sonic Destination
    b. Window Dimensions: 1024 x 768
