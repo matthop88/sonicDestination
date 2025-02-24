@@ -7,6 +7,7 @@
 1. Create Game Window
    a. Window Title:      Sonic Destination
    b. Window Dimensions: 1024 x 768
+   c. Window is displayed on 2nd monitor (TEMPORARY)
 2. Draw Sonic the Hedgehog sprite on Game Window
 
 --]]
