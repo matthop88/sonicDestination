@@ -78,6 +78,8 @@ end
 
 function drawSonic()
 	-- Code to draw Sonic goes here
+	-- image from https://www.deviantart.com/worldofcaitlyn/art/STH-Sonic-Stick-Figure
+	----------------------------------------------------------------------------------
 	if showImage then
         	love.graphics.draw(IMAGE, 350, 133, 0, 0.5, 0.5)
     	end
@@ -134,5 +136,27 @@ function drawSonic()
                               .1.         J 
                                  ?1.     .'         
                                      7<..%
+    
+	
+
+										
+
+
+
+
+
+
+
+
+					Sonic ASCII art credits
+					-----------------------
+	"ASCII Art of Sonic"
+	posted by put-mutt on
+	https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
+	---------------------------------------------------------------------------------------
+	
     --]]
 end
+
+
+
