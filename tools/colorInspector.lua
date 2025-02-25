@@ -32,6 +32,9 @@ IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
 x = -300
 y = 0
 
+-- To Scroll Left:  Increase X
+-- To Scroll Right: Decrease X
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
