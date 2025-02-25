@@ -97,19 +97,19 @@ end
 --------------------------------------------------------------
 function love.keyreleased(key)
      if key == "left" then
-          if xSpeed < 0 then
-               xSpeed = 0
-          end
-     elseif key == "right" then
           if xSpeed > 0 then
                xSpeed = 0
           end
+     elseif key == "right" then
+          if xSpeed < 0 then
+               xSpeed = 0
+          end
      elseif key == "up" then
-          if ySpeed < 0 then
+          if ySpeed > 0 then
                ySpeed = 0
           end
      elseif key == "down" then
-          if ySpeed > 0 then
+          if ySpeed < 0 then
                ySpeed = 0
           end
      end
@@ -311,4 +311,3 @@ if showMessage then
           end
      end 
 end
-
