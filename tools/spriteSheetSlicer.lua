@@ -35,7 +35,8 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
--- ...
+MARGIN_BACKGROUND_COLOR = { }
+SPRITE_BACKGROUND_COLOR = { }
 -- ...
 -- ...
 
