@@ -168,61 +168,126 @@ end
 
 
 
-showMessage = false
+showMessage = true
 
 if showMessage then
      oldKeypressed = love.keypressed
+     oldKeyreleased = love.keyreleased
      oldDraw = love.draw
      oldUpdate = love.update
 
-     alpha = 0
+     keypressed  = nil
+     keyreleased = nil
 
-     alphaDelta = -1
+     keypressedTime = 0
+     keyreleasedTime = 0
+
+     keypressedAlpha  = 0
+     keyreleasedAlpha = 0
+
+     keypressedAlphaDelta  = -1
+     keyreleasedAlphaDelta = -1
      
-     msg  = ""
+     keypressedMsg  = ""
+     keyreleasedMsg = ""
+
      font = love.graphics.newFont(80)
 
      function love.keypressed(key)
           oldKeypressed(key)
-          createMessageFromKey(key)
-          if msg ~= "" then 
-               alphaDelta = 1
+          createMessageFromKeyPressed(key)
+          if keypressedMsg ~= "" then 
+               keypressedAlphaDelta = 1
+               keyreleasedAlpha = 1.2
+               keyreleasedAlphaDelta = -1
+               keypressed = key
+               keypressedTime = love.timer.getTime()
+          end
+     end
+
+     function love.keyreleased(key)
+          oldKeyreleased(key)
+          createMessageFromKeyReleased(key)
+          if keyreleasedMsg ~= "" then 
+               if keypressed == key then
+                    keypressedAlpha = 1.2
+                    keypressedAlphaDelta = -1
+               end
+               keyreleasedAlphaDelta = 1
+               keyreleased = key
+               keyreleasedTime = love.timer.getTime()
           end
      end
 
      function love.draw()
           oldDraw()
 
+          local keypressedY  = 500 - math.min(100, keyreleasedAlpha * 300)
+          local keyreleasedY = 600 - math.min(100, keyreleasedAlpha * 300)
+
+          if keyreleasedTime < keypressedTime then
+               keypressedY  = 600 - math.min(100, keypressedAlpha * 300)
+               keyreleasedY = 500 - math.min(100, keypressedAlpha * 300)
+          end
+
           love.graphics.setFont(font)
-          love.graphics.setColor(1, 1, 1, math.min(1, alpha))
-          love.graphics.printf(msg, 0, 500, 800, "center")
+          love.graphics.setColor(1, 1, 1, math.min(1, keypressedAlpha))
+          love.graphics.printf(keypressedMsg,  0, keypressedY,  800, "center")
+          love.graphics.setColor(1, 1, 1, math.min(1, keyreleasedAlpha))
+          love.graphics.printf(keyreleasedMsg, 0, keyreleasedY, 800, "center")
           love.graphics.setColor(1, 1, 1)
      end
 
      function love.update(dt)
           if oldUpdate then oldUpdate(dt) end
 
-          alpha = alpha + (alphaDelta * dt)
+          keypressedAlpha = keypressedAlpha + (keypressedAlphaDelta * dt)
 
-          if alpha > 1.5 then 
-               alpha = 1.5
-               alphaDelta = -1
-          elseif alpha < 0 then 
-               alpha = 0
+          if keypressedAlpha > 1.2 then 
+               keypressedAlpha = 1.2
+          elseif keypressedAlpha < 0 then 
+               keypressedAlpha = 0
+               keypressedMsg = ""
+          end
+
+          keyreleasedAlpha = keyreleasedAlpha + (keyreleasedAlphaDelta * dt)
+
+          if keyreleasedAlpha > 1.5 then 
+               keyreleasedAlpha = 1.5
+               if keypressedAlpha <= 0 then
+                    keyreleasedAlphaDelta = -1
+               end
+          elseif keyreleasedAlpha < 0 then 
+               keyreleasedAlpha = 0
+               keyreleasedMsg = ""
           end
 
      end
 
-     function createMessageFromKey(key)
-          if     key == "left"  then msg = "Left Key Pressed"
-          elseif key == "right" then msg = "Right Key Pressed"
-          elseif key == "up"    then msg = "Up Key Pressed"
-          elseif key == "down"  then msg = "Down Key Pressed"
+     function createMessageFromKeyPressed(key)
+          if     key == "left"  then keypressedMsg = "Left Key Pressed"
+          elseif key == "right" then keypressedMsg = "Right Key Pressed"
+          elseif key == "up"    then keypressedMsg = "Up Key Pressed"
+          elseif key == "down"  then keypressedMsg = "Down Key Pressed"
           else
                if key == "lgui" or key == "rgui" or love.keyboard.isDown("lgui", "rgui") then
-                    msg = ""
+                    keypressedMsg = ""
                else
-                    msg = "Key Pressed: " .. key
+                    keypressedMsg = "Key Pressed: " .. key
+               end
+          end
+     end 
+
+     function createMessageFromKeyReleased(key)
+          if     key == "left"  then keyreleasedMsg = "Left Key Released"
+          elseif key == "right" then keyreleasedMsg = "Right Key Released"
+          elseif key == "up"    then keyreleasedMsg = "Up Key Released"
+          elseif key == "down"  then keyreleasedMsg = "Down Key Released"
+          else
+               if key == "lgui" or key == "rgui" or love.keyboard.isDown("lgui", "rgui") then
+                    keyreleasedMsg = ""
+               else
+                    keyreleasedMsg = "Key Released: " .. key
                end
           end
      end 
