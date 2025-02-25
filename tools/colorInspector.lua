@@ -60,6 +60,13 @@ function love.draw()
      love.graphics.draw(IMAGE, x, y)
 end
 
+-- Function Name: love.update()
+-- Called By:     LOVE2D application, every single frame
+--------------------------------------------------------------
+function love.update()
+     -- Code to execute "AUTOMAGICALLY" goes here
+end
+
 -- Function Name: love.keypressed()
 -- Called By:     LOVE2D application, when any key is pressed
 -- Parameters:    key - text value of key pressed by the user
