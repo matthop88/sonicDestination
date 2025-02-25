@@ -54,9 +54,14 @@ function love.draw()
      love.graphics.draw(IMAGE, x, y)
 end
 
--- ...
--- ...
+-- Function Name: love.keypressed()
+-- Called By:     LOVE2D application, when any key is pressed
+--------------------------------------------------------------
+function love.keypressed()
+     -- Code to handle key press event goes here
+end
 
+-- ...
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
