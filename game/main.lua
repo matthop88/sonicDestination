@@ -27,6 +27,10 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 WINDOW_WIDTH     = 1024
 WINDOW_HEIGHT    =  768
 
+IMAGE      = love.graphics.newImage("game/sonicStickFigure.png")
+
+showImage  = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -44,6 +48,12 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 function love.draw()
 	drawWorkspace()
 	drawSonic()
+end
+
+function love.keypressed(key)
+    	if key == "space" then
+        	showImage = not showImage
+    	end
 end
 
 --------------------------------------------------------------
@@ -68,6 +78,9 @@ end
 
 function drawSonic()
 	-- Code to draw Sonic goes here
+	if showImage then
+        	love.graphics.draw(IMAGE, 350, 133, 0, 0.5, 0.5)
+    	end
 	--[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
