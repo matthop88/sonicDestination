@@ -36,9 +36,9 @@ love.window.setMode(800, 600, { display = 2 })
 
 -- Function Name: love.draw()
 -- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
+--------------------------------------------------------------	
 function love.draw()
-     -- All drawing code goes here
+	love.graphics.draw(IMAGE, 0, 0)
 end
 
 -- ...
