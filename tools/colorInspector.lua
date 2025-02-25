@@ -48,7 +48,7 @@ love.window.setMode(800, 600, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-	love.graphics.draw(IMAGE, x, y)
+     love.graphics.draw(IMAGE, x, y)
 end
 
 -- Function Name: love.keypressed()
@@ -56,19 +56,21 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-	-- Code to handle key press event goes here
-	print(key)
+     -- Code to handle key press event goes here
+     print(key)
 
-	-- To Scroll Left:  Increase X
-	-- To Scroll Right: Decrease X
+     -- To Scroll Left:  Increase X
+     -- To Scroll Right: Decrease X
+     -- To Scroll Up:    Increase Y
+     -- To Scroll Down:  Decrease Y
 
-	if key == "left" then
-		x = x + 100
-	end
+     if key == "left" then
+          x = x + 100
+     end
 
-	if key == "right" then
-    	x = x - 100
-	end
+     if key == "right" then
+          x = x - 100
+     end
 end
 
 -- ...
@@ -81,3 +83,97 @@ end
 -- ...
 -- ...
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+showMessage = false
+
+if showMessage then
+     oldKeypressed = love.keypressed
+     oldDraw = love.draw
+     oldUpdate = love.update
+
+     alpha = 0
+
+     alphaDelta = -1
+     
+     msg  = ""
+     font = love.graphics.newFont(80)
+
+     function love.keypressed(key)
+          oldKeypressed(key)
+          createMessageFromKey(key)
+          if msg ~= "" then 
+               alphaDelta = 1
+          end
+     end
+
+     function love.draw()
+          oldDraw()
+
+          love.graphics.setFont(font)
+          love.graphics.setColor(1, 1, 1, math.min(1, alpha))
+          love.graphics.printf(msg, 0, 500, 800, "center")
+          love.graphics.setColor(1, 1, 1)
+     end
+
+     function love.update(dt)
+          if oldUpdate then oldUpdate(dt) end
+
+          alpha = alpha + (alphaDelta * dt)
+
+          if alpha > 1.5 then 
+               alpha = 1.5
+               alphaDelta = -1
+          elseif alpha < 0 then 
+               alpha = 0
+          end
+
+     end
+
+     function createMessageFromKey(key)
+          if     key == "left"  then msg = "Left Key Pressed"
+          elseif key == "right" then msg = "Right Key Pressed"
+          elseif key == "up"    then msg = "Up Key Pressed"
+          elseif key == "down"  then msg = "Down Key Pressed"
+          else
+               if key == "lgui" or key == "rgui" or love.keyboard.isDown("lgui", "rgui") then
+                    msg = ""
+               else
+                    msg = "Key Pressed: " .. key
+               end
+          end
+     end 
+end
