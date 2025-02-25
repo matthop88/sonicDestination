@@ -69,6 +69,7 @@ function love.update(dt)
      -- If scrolling has begun, continue scrolling in proper direction
      -- at a constant rate.
      x = x + (SCROLL_SPEED * dt)
+     y = y + (SCROLL_SPEED * dt)
 end
 
 -- Function Name: love.keypressed()
@@ -102,11 +103,11 @@ function scrollRight()
 end
 
 function scrollUp()
-     y = y + SCROLL_SPEED
+     SCROLL_SPEED =  100
 end
 
 function scrollDown()
-     y = y - SCROLL_SPEED
+     SCROLL_SPEED = -100
 end
 
 
