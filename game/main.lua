@@ -20,9 +20,10 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-COLOR_GREEN = { 0, 0.45, 0 }
-              -- https://htmlcolorcodes.com/colors/shades-of-green/
--- ...
+COLOR_GREEN      = { 0, 0.45, 0 }
+                   -- https://htmlcolorcodes.com/colors/shades-of-green/
+
+COLOR_PURE_WHITE = { 1, 1,    1 }
 -- ...
 -- ...
 
@@ -63,7 +64,7 @@ function drawBackground()
 end
 
 function drawThickHorizontalWhiteLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(COLOR_PURE_WHITE)
     love.graphics.setLineWidth(3)
     love.graphics.line(0, 576, 1024, 576)
 end
