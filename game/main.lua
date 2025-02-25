@@ -22,10 +22,10 @@
 
 COLOR_GREEN      = { 0, 0.45, 0 }
                    -- https://htmlcolorcodes.com/colors/shades-of-green/
-
 COLOR_PURE_WHITE = { 1, 1,    1 }
--- ...
--- ...
+
+WINDOW_WIDTH     = 1024
+WINDOW_HEIGHT    =  768
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -35,7 +35,7 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 love.window.setTitle("Sonic Destination")
 
 -- Set Window Dimensions: 1024 x 768
-love.window.setMode(1024, 768, { display = 2 })
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
