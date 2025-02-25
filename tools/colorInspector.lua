@@ -115,19 +115,6 @@ function love.keyreleased(key)
      end
 end
 
---[[
-     Problem of key overlap (assuming SCROLL_SPEED = 200):
-
-     Right key down: xSpeed =  200
-     Left  key down: xSpeed = -200
-     Right key   up: xSpeed =    0
-
-     Here, we are holding the left key down,
-     but our xSpeed is 0.
-
-     Left  key   up: xSpeed =    0
---]]
-
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
@@ -187,7 +174,7 @@ end
 
 
 
-showMessage = true
+showMessage = false
 
 if showMessage then
      oldKeypressed = love.keypressed
