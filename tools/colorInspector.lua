@@ -97,21 +97,13 @@ end
 --------------------------------------------------------------
 function love.keyreleased(key)
      if key == "left" then
-          if xSpeed > 0 then
-               xSpeed = 0
-          end
+          stopScrollingLeft()
      elseif key == "right" then
-          if xSpeed < 0 then
-               xSpeed = 0
-          end
+          stopScrollingRight()
      elseif key == "up" then
-          if ySpeed > 0 then
-               ySpeed = 0
-          end
+          stopScrollingUp()
      elseif key == "down" then
-          if ySpeed < 0 then
-               ySpeed = 0
-          end
+          stopScrollingDown()
      end
 end
 
@@ -137,6 +129,30 @@ end
 function scrollDown()
      ySpeed = -SCROLL_SPEED
      xSpeed =  0
+end
+
+function stopScrollingLeft()
+     if xSpeed > 0 then
+          xSpeed = 0
+     end
+end
+
+function stopScrollingRight()
+     if xSpeed < 0 then
+          xSpeed = 0
+     end
+end
+
+function stopScrollingUp()
+     if ySpeed > 0 then
+          ySpeed = 0
+     end
+end
+
+function stopScrollingDown()
+     if ySpeed < 0 then
+          ySpeed = 0
+     end
 end
 
 
