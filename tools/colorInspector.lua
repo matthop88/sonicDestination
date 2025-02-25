@@ -12,13 +12,13 @@
 
                            Features
                            --------
-        * Image can be scrolled using the up, down,
-          left and right arrow keys.
-        * Image can be zoomed in using the 'z' key
-          and zoomed out using the 'a' key
-        * Clicking on any pixel of the image prints
-          an RGB description of the color both to
-          the screen and to the text console.
+       [.] Image can be scrolled using the up, down,
+           left and right arrow keys.
+       [ ] Image can be zoomed in using the 'z' key
+           and zoomed out using the 'a' key
+       [ ] Clicking on any pixel of the image prints
+           an RGB description of the color both to
+           the screen and to the text console.
 
 --]]
 
