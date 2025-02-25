@@ -56,9 +56,11 @@ end
 
 -- Function Name: love.keypressed()
 -- Called By:     LOVE2D application, when any key is pressed
+-- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
-function love.keypressed()
+function love.keypressed(key)
      -- Code to handle key press event goes here
+     print(key)
 end
 
 -- ...
