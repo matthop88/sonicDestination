@@ -48,7 +48,7 @@ love.window.setMode(800, 600, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-     love.graphics.draw(IMAGE, x, y)
+	love.graphics.draw(IMAGE, x, y)
 end
 
 -- Function Name: love.keypressed()
@@ -56,11 +56,19 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-     -- Code to handle key press event goes here
-     print(key)
+	-- Code to handle key press event goes here
+	print(key)
 
-     -- To Scroll Left:  Increase X
-     -- To Scroll Right: Decrease X
+	-- To Scroll Left:  Increase X
+	-- To Scroll Right: Decrease X
+
+	if key == "left" then
+		x = x + 100
+	end
+
+	if key == "right" then
+    	x = x - 100
+	end
 end
 
 -- ...
