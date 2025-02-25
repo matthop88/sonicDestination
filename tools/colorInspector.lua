@@ -36,12 +36,13 @@
 IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
         -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 
+SCROLL_SPEED = 200
+
 x = 0
 y = 0
 
-SCROLL_SPEED = 200
-X_SPEED = 0
-Y_SPEED = 0
+xSpeed = 0
+ySpeed = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -70,8 +71,8 @@ end
 function love.update(dt)
      -- If scrolling has begun, continue scrolling in proper direction
      -- at a constant rate.
-     x = x + (X_SPEED * dt)
-     y = y + (Y_SPEED * dt)
+     x = x + (xSpeed * dt)
+     y = y + (ySpeed * dt)
 end
 
 -- Function Name: love.keypressed()
@@ -96,13 +97,13 @@ end
 --------------------------------------------------------------
 function love.keyreleased(key)
      if key == "left" then
-          X_SPEED = 0
+          xSpeed = 0
      elseif key == "right" then
-          X_SPEED = 0
+          xSpeed = 0
      elseif key == "up" then
-          Y_SPEED = 0
+          ySpeed = 0
      elseif key == "down" then
-          Y_SPEED = 0
+          ySpeed = 0
      end
 end
 
@@ -113,23 +114,23 @@ end
 --------------------------------------------------------------
 
 function scrollLeft()
-     X_SPEED =  SCROLL_SPEED
-     Y_SPEED =  0
+     xSpeed =  SCROLL_SPEED
+     ySpeed =  0
 end
 
 function scrollRight()
-     X_SPEED = -SCROLL_SPEED
-     Y_SPEED =  0
+     xSpeed = -SCROLL_SPEED
+     ySpeed =  0
 end
 
 function scrollUp()
-     Y_SPEED =  SCROLL_SPEED
-     X_SPEED =  0
+     ySpeed =  SCROLL_SPEED
+     xSpeed =  0
 end
 
 function scrollDown()
-     Y_SPEED = -SCROLL_SPEED
-     X_SPEED =  0
+     ySpeed = -SCROLL_SPEED
+     xSpeed =  0
 end
 
 
