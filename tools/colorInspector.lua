@@ -3,10 +3,12 @@
 --------------------------------------------------------------
 
 --[[
-
-     ...
-     ...
-     ...
+                       Short Description
+                       -----------------
+          An image of choice is drawn to the screen.
+          Clicking on any pixel of the image prints
+          an RGB description of the color both to
+          the screen and to the text console.
 
 --]]
 
