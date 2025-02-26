@@ -33,8 +33,7 @@ SCROLL_SPEED = 200
 
 x, y = 0, 0
 
-xSpeed = 0
-ySpeed = 0
+xSpeed, ySpeed = 0, 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
