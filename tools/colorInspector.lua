@@ -95,8 +95,8 @@ function handleKeypressed(key)
      dashing = isDoubleTap(key)
      if     key == "left"   then scrollLeft()
      elseif key == "right"  then scrollRight()
-     elseif key == "up"     then handleUpKeypressed()
-     elseif key == "down"   then handleDownKeypressed()
+     elseif key == "up"     then scrollUp()
+     elseif key == "down"   then scrollDown()
      else                        dashing = false
      end
      lastKeypressed     = key 
