@@ -60,8 +60,6 @@ end
 function love.update(dt)
      x = x + (xSpeed * dt)
      y = y + (ySpeed * dt)
-
-     keepInBounds()
 end
 
 -- Function Name: love.keypressed()
@@ -88,6 +86,7 @@ function love.keyreleased(key)
      elseif key == "up"    then stopScrollingUp()
      elseif key == "down"  then stopScrollingDown()
      end
+     keepImageInBounds()
 end
 
 --------------------------------------------------------------
@@ -274,6 +273,3 @@ if showMessage then
           end
      end 
 end
-
-
-
