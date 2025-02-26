@@ -70,13 +70,7 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-     if     key == "left"   then handleLeftKeypressed()
-     elseif key == "right"  then handleRightKeypressed()
-     elseif key == "up"     then handleUpKeypressed()
-     elseif key == "down"   then handleDownKeypressed()
-     end
-     lastKeypressed     = key 
-     lastKeypressedTime = love.timer.getTime()
+     handleKeypressed(key)
 end
 
 -- Function Name: love.keyreleased()
@@ -95,6 +89,16 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function handleKeypressed(key)
+     if     key == "left"   then handleLeftKeypressed()
+     elseif key == "right"  then handleRightKeypressed()
+     elseif key == "up"     then handleUpKeypressed()
+     elseif key == "down"   then handleDownKeypressed()
+     end
+     lastKeypressed     = key 
+     lastKeypressedTime = love.timer.getTime()
+end
 
 function isDoubleTap(key)
      keypressedTime     = love.timer.getTime()
