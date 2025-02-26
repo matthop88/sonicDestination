@@ -93,13 +93,17 @@ end
 
 function handleKeypressed(key)
      dashing = isDoubleTap(key)
+     handleDirectionalKeyPressed(key)
+     lastKeypressed     = key 
+     lastKeypressedTime = love.timer.getTime()
+end
+
+function handleDirectionalKeyPressed(key)
      if     key == "left"   then scrollLeft()
      elseif key == "right"  then scrollRight()
      elseif key == "up"     then scrollUp()
      elseif key == "down"   then scrollDown()
      end
-     lastKeypressed     = key 
-     lastKeypressedTime = love.timer.getTime()
 end
 
 function isDoubleTap(key)
