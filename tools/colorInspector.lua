@@ -35,6 +35,7 @@ x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
 
 lastKeypressed              = nil
+lastKeypressedTime          = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -94,11 +95,17 @@ end
 --------------------------------------------------------------
 
 function handleLeftKeypressed() 
+     keypressedTime     = love.timer.getTime()
+     timeBetweenPresses = keypressedTime - lastKeypressedTime
+
      if lastKeypressed == "left" then
-          print("DOUBLE-TAPPING: " .. lastKeypressed)
+          if timeBetweenPresses < 60 then
+               print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
+          end
      end 
      scrollLeft()  
-     lastKeypressed = "left"               
+     lastKeypressed = "left" 
+     lastKeypressedTime = keypressedTime              
 end
   
 function handleRightKeypressed() scrollRight()                end
