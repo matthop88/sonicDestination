@@ -84,7 +84,9 @@ function love.keyreleased(key)
      elseif key == "up"    then stopScrollingUp()
      elseif key == "down"  then stopScrollingDown()
      end
-     keepImageInBounds()
+     if getTimeElapsedSinceLastKeypress() >= 0.3 then
+          keepImageInBounds()
+     end
 end
 
 --------------------------------------------------------------
