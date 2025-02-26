@@ -98,6 +98,13 @@ function handleKeypressed(key)
      lastKeypressedTime = love.timer.getTime()
 end
 
+function isDoubleTap(key)
+     keypressedTime     = love.timer.getTime()
+     timeBetweenPresses = keypressedTime - lastKeypressedTime
+
+     return lastKeypressed == key and timeBetweenPresses < 0.3
+end
+
 function handleDirectionalKeyPressed(key)
      if     key == "left"   then scrollLeft()
      elseif key == "right"  then scrollRight()
@@ -106,28 +113,21 @@ function handleDirectionalKeyPressed(key)
      end
 end
 
-function isDoubleTap(key)
-     keypressedTime     = love.timer.getTime()
-     timeBetweenPresses = keypressedTime - lastKeypressedTime
-
-     return lastKeypressed == key and timeBetweenPresses < 0.3
-end
-
 function calculateScrollSpeed()
      if dashing then return SCROLL_SPEED * 2
      else            return SCROLL_SPEED
      end
 end
 
-function scrollLeft()  xSpeed =    calculateScrollSpeed()  end
-function scrollRight() xSpeed = - (calculateScrollSpeed()) end          
-function scrollUp()    ySpeed =    calculateScrollSpeed()  end
-function scrollDown()  ySpeed = - (calculateScrollSpeed()) end
+function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
+function scrollRight()        xSpeed = - (calculateScrollSpeed()) end          
+function scrollUp()           ySpeed =    calculateScrollSpeed()  end
+function scrollDown()         ySpeed = - (calculateScrollSpeed()) end
 
-function stopScrollingLeft()     xSpeed = math.min(0, xSpeed) end
-function stopScrollingRight()    xSpeed = math.max(0, xSpeed) end
-function stopScrollingUp()       ySpeed = math.min(0, ySpeed) end
-function stopScrollingDown()     ySpeed = math.max(0, ySpeed) end
+function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)        end
+function stopScrollingRight() xSpeed = math.max(0, xSpeed)        end
+function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
+function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
 
 function keepImageInBounds()
      keepImage_X_InBounds()
