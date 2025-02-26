@@ -71,8 +71,6 @@ function love.keypressed(key)
      elseif key == "right"  then scrollRight()
      elseif key == "up"     then scrollUp()
      elseif key == "down"   then scrollDown()
-     elseif key == "return" then x = 0
-     elseif key == "space"  then x = WINDOW_WIDTH - IMAGE:getWidth()
      end
 end
 
