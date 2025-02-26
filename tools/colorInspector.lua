@@ -92,14 +92,10 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-     if key == "left" then
-          stopScrollingLeft()
-     elseif key == "right" then
-          stopScrollingRight()
-     elseif key == "up" then
-          stopScrollingUp()
-     elseif key == "down" then
-          stopScrollingDown()
+     if key == "left" then stopScrollingLeft()
+     elseif key == "right" then stopScrollingRight()
+     elseif key == "up" then stopScrollingUp()
+     elseif key == "down" then stopScrollingDown()
      end
 end
 
@@ -310,3 +306,4 @@ if showMessage then
           end
      end 
 end
+
