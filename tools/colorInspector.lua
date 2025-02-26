@@ -103,11 +103,10 @@ function handleKeypressed(key)
      lastKeypressedTime = love.timer.getTime()
 end
 
-function isDoubleTap(key)
-     keypressedTime     = love.timer.getTime()
-     timeBetweenPresses = keypressedTime - lastKeypressedTime
-
-     return lastKeypressed == key and timeBetweenPresses < 0.3
+function calculateScrollSpeed()
+     if dashing then return SCROLL_SPEED * 2
+     else            return SCROLL_SPEED
+     end
 end
 
 function handleUpKeypressed()    
@@ -122,17 +121,8 @@ function handleDownKeypressed()
      end 
 end
 
-function scrollLeft()            
-     if dashing then xSpeed =  SCROLL_SPEED * 2
-     else            xSpeed =  SCROLL_SPEED       
-     end
-end
-
-function scrollRight()           
-     if dashing then xSpeed = -SCROLL_SPEED * 2
-     else            xSpeed = -SCROLL_SPEED       
-     end
-end
+function scrollLeft()  xSpeed =    calculateScrollSpeed()  end
+function scrollRight() xSpeed = - (calculateScrollSpeed()) end  
 
 function scrollUp()              ySpeed =  SCROLL_SPEED       end
 function scrollDown()            ySpeed = -SCROLL_SPEED       end
