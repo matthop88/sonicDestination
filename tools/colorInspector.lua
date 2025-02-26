@@ -115,6 +115,16 @@ function keepInBounds()
           x = 0
      end
 
+     --[[
+          Scrolling too far to right?
+          Rightmost pixel of image should be flush with right of screen
+     
+          if x + IMAGE:getWidth() < WINDOW_WIDTH then
+               x = 0
+          end
+
+     --]]
+
      -- Don't scroll too far up
      if y > 0 then
           y = 0
