@@ -105,16 +105,8 @@ function stopScrollingUp()    ySpeed = math.min(0, ySpeed) end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed) end
 
 function keepInBounds()
-     --[[
-          If we have scrolled too far to the left
-                           or too far to the right
-                           or too far up
-                           or too far down
-          then correct
-     --]]
-
      -- Don't scroll too far to right or too far to left
-     x = math.min(0, math.max(x, WINDOW_WIDTH - IMAGE:getWidth()))
+     x = math.min(0, math.max(x, WINDOW_WIDTH  - IMAGE:getWidth()))
      
      -- Don't scroll too far up or too far down
      y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
