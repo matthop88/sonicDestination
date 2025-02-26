@@ -117,15 +117,11 @@ function stopScrollingRight()
 end
 
 function stopScrollingUp()
-     if ySpeed > 0 then
-          ySpeed = 0
-     end
+     ySpeed = math.min(0, ySpeed)
 end
 
 function stopScrollingDown()
-     if ySpeed < 0 then
-          ySpeed = 0
-     end
+     ySpeed = math.max(0, ySpeed)
 end
 
 
