@@ -120,9 +120,6 @@ function scrollRight() xSpeed = - (calculateScrollSpeed()) end
 function scrollUp()    ySpeed =    calculateScrollSpeed()  end
 function scrollDown()  ySpeed = - (calculateScrollSpeed()) end
 
-function burstScrollUp()         ySpeed =  SCROLL_SPEED * 2   end
-function burstScrollDown()       ySpeed = -SCROLL_SPEED * 2   end
-
 function stopScrollingLeft()     xSpeed = math.min(0, xSpeed) end
 function stopScrollingRight()    xSpeed = math.max(0, xSpeed) end
 function stopScrollingUp()       ySpeed = math.min(0, ySpeed) end
