@@ -31,8 +31,7 @@ IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
 
 SCROLL_SPEED = 200
 
-x = 0
-y = 0
+x, y = 0, 0
 
 xSpeed = 0
 ySpeed = 0
