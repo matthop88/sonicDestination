@@ -109,23 +109,10 @@ function calculateScrollSpeed()
      end
 end
 
-function handleUpKeypressed()    
-     if isDoubleTap("up")    then burstScrollUp()
-     else                         scrollUp() 
-     end 
-end
-
-function handleDownKeypressed() 
-     if isDoubleTap("down")  then burstScrollDown()
-     else                         scrollDown() 
-     end 
-end
-
 function scrollLeft()  xSpeed =    calculateScrollSpeed()  end
-function scrollRight() xSpeed = - (calculateScrollSpeed()) end  
-
-function scrollUp()              ySpeed =  SCROLL_SPEED       end
-function scrollDown()            ySpeed = -SCROLL_SPEED       end
+function scrollRight() xSpeed = - (calculateScrollSpeed()) end          
+function scrollUp()    ySpeed =    calculateScrollSpeed()  end
+function scrollDown()  ySpeed = - (calculateScrollSpeed()) end
 
 function burstScrollUp()         ySpeed =  SCROLL_SPEED * 2   end
 function burstScrollDown()       ySpeed = -SCROLL_SPEED * 2   end
