@@ -34,6 +34,8 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
 
+lastKeypressed              = nil
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -91,7 +93,14 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function handleLeftKeypressed()  scrollLeft()                 end
+function handleLeftKeypressed() 
+     if lastKeypressed == "left" then
+          print("DOUBLE-TAPPING: " .. lastKeypressed)
+     end 
+     scrollLeft()  
+     lastKeypressed = "left"               
+end
+  
 function handleRightKeypressed() scrollRight()                end
 function handleUpKeypressed()    scrollUp()                   end
 function handleDownKeypressed()  scrollDown()                 end
