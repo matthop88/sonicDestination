@@ -99,10 +99,11 @@ function handleKeypressed(key)
 end
 
 function isDoubleTap(key)
-     keypressedTime     = love.timer.getTime()
-     timeBetweenPresses = keypressedTime - lastKeypressedTime
+     return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < 0.3
+end
 
-     return lastKeypressed == key and timeBetweenPresses < 0.3
+function getTimeElapsedSinceLastKeypress()
+     return love.timer.getTime() - lastKeypressedTime
 end
 
 function handleDirectionalKeyPressed(key)
@@ -141,7 +142,6 @@ end
 function keepImage_Y_InBounds()
      y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
 end
-
 
 
 
