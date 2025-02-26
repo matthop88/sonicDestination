@@ -29,7 +29,7 @@
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 SCROLL_SPEED                = 200
-WINDOW_WIDTH, WINDOW_HEIGHT = 400, 600
+WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
@@ -113,22 +113,24 @@ function keepInBounds()
           then correct
      --]]
 
-     -- Don't scroll too far to left
-     if x > 0 then
-          x = 0
-     end
-
      -- Don't scroll too far to right;
      -- Rightmost pixel of image should be flush with right of screen
      if x + IMAGE:getWidth() < WINDOW_WIDTH then
           x = WINDOW_WIDTH - IMAGE:getWidth()
      end
 
+     -- Don't scroll too far to left
+     if x > 0 then
+          x = 0
+     end
+
+     
      -- Don't scroll too far up
      if y > 0 then
           y = 0
      end
 end
+
 
 
 
@@ -286,4 +288,6 @@ if showMessage then
           end
      end 
 end
+
+
 
