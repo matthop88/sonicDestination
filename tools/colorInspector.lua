@@ -36,6 +36,7 @@ xSpeed, ySpeed              = 0, 0
 
 lastKeypressed              = nil
 lastKeypressedTime          = 0
+dashing                     = false
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -91,10 +92,12 @@ end
 --------------------------------------------------------------
 
 function handleKeypressed(key)
+     dashing = isDoubleTap(key)
      if     key == "left"   then handleLeftKeypressed()
      elseif key == "right"  then handleRightKeypressed()
      elseif key == "up"     then handleUpKeypressed()
      elseif key == "down"   then handleDownKeypressed()
+     else                        dashing = false
      end
      lastKeypressed     = key 
      lastKeypressedTime = love.timer.getTime()
