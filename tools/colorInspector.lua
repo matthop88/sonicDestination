@@ -110,12 +110,6 @@ function isDoubleTap(key)
      return lastKeypressed == key and timeBetweenPresses < 0.3
 end
 
-function handleLeftKeypressed() 
-     if isDoubleTap("left")  then burstScrollLeft()
-     else                         scrollLeft()  
-     end         
-end
-
 function handleRightKeypressed() 
      if isDoubleTap("right") then burstScrollRight()
      else                         scrollRight() 
@@ -144,7 +138,6 @@ function scrollRight()           xSpeed = -SCROLL_SPEED       end
 function scrollUp()              ySpeed =  SCROLL_SPEED       end
 function scrollDown()            ySpeed = -SCROLL_SPEED       end
 
-function burstScrollLeft()       xSpeed =  SCROLL_SPEED * 2   end
 function burstScrollRight()      xSpeed = -SCROLL_SPEED * 2   end
 function burstScrollUp()         ySpeed =  SCROLL_SPEED * 2   end
 function burstScrollDown()       ySpeed = -SCROLL_SPEED * 2   end
@@ -166,7 +159,6 @@ end
 function keepImage_Y_InBounds()
      y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
 end
-
 
 
 
