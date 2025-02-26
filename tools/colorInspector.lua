@@ -29,7 +29,7 @@
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 SCROLL_SPEED                = 200
-WINDOW_WIDTH, WINDOW_HEIGHT = 400, 600
+WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
@@ -291,5 +291,6 @@ if showMessage then
           end
      end 
 end
+
 
 
