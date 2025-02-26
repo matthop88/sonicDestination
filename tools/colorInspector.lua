@@ -46,6 +46,12 @@ dashing                     = false
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+if __INSPECTOR_FILE ~= nil then
+     IMAGE = love.graphics.newImage("game/resources/images/" .. __INSPECTOR_FILE)
+else
+     IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
+end
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
