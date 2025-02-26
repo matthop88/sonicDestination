@@ -113,9 +113,7 @@ function stopScrollingLeft()
 end
 
 function stopScrollingRight()
-     if xSpeed < 0 then
-          xSpeed = 0
-     end
+     xSpeed = math.max(0, xSpeed)
 end
 
 function stopScrollingUp()
