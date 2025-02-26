@@ -20,13 +20,6 @@
            an RGB description of the color both to
            the screen and to the text console.
 
-                         Design Details
-                         --------------
-     Smooth Scrolling:
-          Pressing an arrow key begins scrolling in the proper direction.
-          Scrolling continues at a constant rate once it has begun.
-          Releasing an arrow key stops scrolling in that direction.
-
 --]]
 
 --------------------------------------------------------------
@@ -50,7 +43,6 @@ ySpeed = 0
 
 love.window.setTitle("Color Inspector")
 love.window.setMode(800, 600, { display = 2 })
--- ...
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -110,7 +102,6 @@ function stopScrollingLeft()  xSpeed = math.min(0, xSpeed) end
 function stopScrollingRight() xSpeed = math.max(0, xSpeed) end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed) end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed) end
-
 
 
 
@@ -271,6 +262,4 @@ if showMessage then
           end
      end 
 end
-
-
 
