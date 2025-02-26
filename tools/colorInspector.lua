@@ -104,18 +104,14 @@ function isDoubleTap(key)
 end
 
 function handleLeftKeypressed() 
-     if isDoubleTap("left") then
-          burstScrollLeft()
-     else 
-          scrollLeft()  
+     if isDoubleTap("left")  then burstScrollLeft()
+     else                         scrollLeft()  
      end         
 end
 
 function handleRightKeypressed() 
-     if isDoubleTap("right") then
-          burstScrollRight()
-     else
-          scrollRight() 
+     if isDoubleTap("right") then burstScrollRight()
+     else                         scrollRight() 
      end                
 end
 
