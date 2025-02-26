@@ -26,8 +26,7 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-IMAGE          = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
-                 -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
+IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
 SCROLL_SPEED                = 200
 WINDOW_WIDTH, WINDOW_HEIGHT = 400, 600
 
@@ -122,7 +121,7 @@ function keepInBounds()
           Rightmost pixel of image should be flush with right of screen
      
           if x + IMAGE:getWidth() < WINDOW_WIDTH then
-               x = 0
+               x + IMAGE:getWidth() = WINDOW_WIDTH
           end
 
      --]]
