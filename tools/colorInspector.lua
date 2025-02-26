@@ -97,7 +97,6 @@ function handleKeypressed(key)
      elseif key == "right"  then scrollRight()
      elseif key == "up"     then scrollUp()
      elseif key == "down"   then scrollDown()
-     else                        dashing = false
      end
      lastKeypressed     = key 
      lastKeypressedTime = love.timer.getTime()
