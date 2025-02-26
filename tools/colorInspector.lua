@@ -67,10 +67,10 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-     if     key == "left"   then scrollLeft()
-     elseif key == "right"  then scrollRight()
-     elseif key == "up"     then scrollUp()
-     elseif key == "down"   then scrollDown()
+     if     key == "left"   then handleLeftKeypressed()
+     elseif key == "right"  then handleRightKeypressed()
+     elseif key == "up"     then handleUpKeypressed()
+     elseif key == "down"   then handleDownKeypressed()
      end
 end
 
@@ -91,15 +91,20 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function scrollLeft()         xSpeed =  SCROLL_SPEED       end
-function scrollRight()        xSpeed = -SCROLL_SPEED       end
-function scrollUp()           ySpeed =  SCROLL_SPEED       end
-function scrollDown()         ySpeed = -SCROLL_SPEED       end
+function handleLeftKeypressed()  scrollLeft()                 end
+function handleRightKeypressed() scrollRight()                end
+function handleUpKeypressed()    scrollUp()                   end
+function handleDownKeypressed()  scrollDown()                 end
 
-function stopScrollingLeft()  xSpeed = math.min(0, xSpeed) end
-function stopScrollingRight() xSpeed = math.max(0, xSpeed) end
-function stopScrollingUp()    ySpeed = math.min(0, ySpeed) end
-function stopScrollingDown()  ySpeed = math.max(0, ySpeed) end
+function scrollLeft()            xSpeed =  SCROLL_SPEED       end
+function scrollRight()           xSpeed = -SCROLL_SPEED       end
+function scrollUp()              ySpeed =  SCROLL_SPEED       end
+function scrollDown()            ySpeed = -SCROLL_SPEED       end
+
+function stopScrollingLeft()     xSpeed = math.min(0, xSpeed) end
+function stopScrollingRight()    xSpeed = math.max(0, xSpeed) end
+function stopScrollingUp()       ySpeed = math.min(0, ySpeed) end
+function stopScrollingDown()     ySpeed = math.max(0, ySpeed) end
 
 function keepImageInBounds()
      keepImage_X_InBounds()
