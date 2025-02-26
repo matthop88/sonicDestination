@@ -28,17 +28,18 @@
 
 IMAGE          = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                  -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
-SCROLL_SPEED   = 200
+SCROLL_SPEED                = 200
+WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
-x,      y      = 0, 0
-xSpeed, ySpeed = 0, 0
+x,      y                   = 0, 0
+xSpeed, ySpeed              = 0, 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
 love.window.setTitle("Color Inspector")
-love.window.setMode(800, 600, { display = 2 })
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -289,4 +290,3 @@ if showMessage then
           end
      end 
 end
-
