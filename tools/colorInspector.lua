@@ -105,7 +105,6 @@ end
 
 function handleLeftKeypressed() 
      if isDoubleTap("left") then
-          print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
           burstScrollLeft()
      else 
           scrollLeft()  
@@ -114,7 +113,6 @@ end
 
 function handleRightKeypressed() 
      if isDoubleTap("right") then
-          print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
           burstScrollRight()
      else
           scrollRight() 
