@@ -109,9 +109,7 @@ function scrollUp()    ySpeed =  SCROLL_SPEED end
 function scrollDown()  ySpeed = -SCROLL_SPEED end
 
 function stopScrollingLeft()
-     if xSpeed > 0 then
-          xSpeed = 0
-     end
+     xSpeed = math.min(0, xSpeed)
 end
 
 function stopScrollingRight()
