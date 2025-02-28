@@ -112,13 +112,13 @@ function updateScrolling(dt)
 end
 
 function updateZooming(dt)
-    scale = scale + scaleDelta * dt * scale
-
     if scaleDelta ~= 0 then
         --[[
             Adjust x and y of image so that we are zooming in at point
             the mouse is at
         --]]
+        
+        scale = scale + scaleDelta * dt * scale
 
         keepImageInBounds()
     end
