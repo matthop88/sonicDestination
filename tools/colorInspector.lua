@@ -123,6 +123,12 @@ function stopScrollingRight() xSpeed = math.max(0, xSpeed)        end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
 
+function calculateScrollSpeed()
+    if dashing then return SCROLL_SPEED * 2
+    else            return SCROLL_SPEED
+    end
+end
+
 -------------------------- ZOOMING ---------------------------
 
 function updateZooming(dt)
@@ -168,12 +174,6 @@ function zoomOut()            scaleDelta = -ZOOM_SPEED            end
 
 function stopZoomingIn()      scaleDelta =  0                     end
 function stopZoomingOut()     scaleDelta =  0                     end
-
-function calculateScrollSpeed()
-    if dashing then return SCROLL_SPEED * 2
-    else            return SCROLL_SPEED
-    end
-end
 
 function keepImageInBounds()
     keepImage_X_InBounds()
