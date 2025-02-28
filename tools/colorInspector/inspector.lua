@@ -95,8 +95,6 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
------------------------- MISCELLANEOUS -------------------------
-
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     
