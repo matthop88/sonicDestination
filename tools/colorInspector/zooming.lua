@@ -9,7 +9,7 @@ function updateZooming(dt)
         --]]
             
         -- Given: mx, my => mouse position
-        -- ...
+        local mx, my = love.mouse.getPosition()
         
         -- 1. Translate x, y so that point at (mx, my) is at upper left corner of screen
         -- ...
