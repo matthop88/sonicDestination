@@ -40,7 +40,7 @@ lastKeypressedTime          = 0
 dashing                     = false
 
 scale                       = 1
-scaleDelta                  = 1
+scaleDelta                  = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -50,9 +50,9 @@ love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 if __INSPECTOR_FILE ~= nil then
-     IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+    IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
-     IMAGE = love.graphics.newImage("tools/resources/images/sadNoFileImage.png")
+    IMAGE = love.graphics.newImage("tools/resources/images/sadNoFileImage.png")
 end
 
 --------------------------------------------------------------
@@ -63,7 +63,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-     love.graphics.draw(IMAGE, x, y, 0, scale, scale)
+    love.graphics.draw(IMAGE, x, y, 0, scale, scale)
 end
 
 -- Function Name: love.update()
@@ -82,7 +82,7 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-     handleKeypressed(key)
+    handleKeypressed(key)
 end
 
 -- Function Name: love.keyreleased()
@@ -90,14 +90,14 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-     if     key == "left"  then stopScrollingLeft()
-     elseif key == "right" then stopScrollingRight()
-     elseif key == "up"    then stopScrollingUp()
-     elseif key == "down"  then stopScrollingDown()
-     end
-     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
-          keepImageInBounds()
-     end
+    if     key == "left"  then stopScrollingLeft()
+    elseif key == "right" then stopScrollingRight()
+    elseif key == "up"    then stopScrollingUp()
+    elseif key == "down"  then stopScrollingDown()
+    end
+    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
+    	keepImageInBounds()
+    end
 end
 
 --------------------------------------------------------------
@@ -105,26 +105,28 @@ end
 --------------------------------------------------------------
 
 function handleKeypressed(key)
-     dashing = isDoubleTap(key)
-     handleDirectionalKeyPressed(key)
-     lastKeypressed     = key 
-     lastKeypressedTime = love.timer.getTime()
+    dashing = isDoubleTap(key)
+    handleDirectionalKeyPressed(key)
+	lastKeypressed     = key 
+    lastKeypressedTime = love.timer.getTime()
 end
 
 function isDoubleTap(key)
-     return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
+	return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
 end
 
 function getTimeElapsedSinceLastKeypress()
-     return love.timer.getTime() - lastKeypressedTime
+	return love.timer.getTime() - lastKeypressedTime
 end
 
 function handleDirectionalKeyPressed(key)
-     if     key == "left"   then scrollLeft()
-     elseif key == "right"  then scrollRight()
-     elseif key == "up"     then scrollUp()
-     elseif key == "down"   then scrollDown()
-     end
+    if     key == "left"   then scrollLeft()
+    elseif key == "right"  then scrollRight()
+    elseif key == "up"     then scrollUp()
+	elseif key == "down"   then scrollDown()
+	elseif key == "z"      then scaleDelta =  1
+    elseif key == "a"      then scaleDelta = -1
+    end
 end
 
 function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
@@ -138,21 +140,21 @@ function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
 
 function calculateScrollSpeed()
-     if dashing then return SCROLL_SPEED * 2
-     else            return SCROLL_SPEED
-     end
+    if dashing then return SCROLL_SPEED * 2
+    else            return SCROLL_SPEED
+    end
 end
 
 function keepImageInBounds()
-     keepImage_X_InBounds()
-     keepImage_Y_InBounds()
+    keepImage_X_InBounds()
+    keepImage_Y_InBounds()
 end
 
 function keepImage_X_InBounds()
-     x = math.min(0, math.max(x, WINDOW_WIDTH  - IMAGE:getWidth()))
+    x = math.min(0, math.max(x, WINDOW_WIDTH  - IMAGE:getWidth()))
 end
 
 function keepImage_Y_InBounds()
-     y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
+    y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
 end
 
