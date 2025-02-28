@@ -76,6 +76,10 @@ function love.update(dt)
 	x     = x     + xSpeed     * dt * scale
 	y     = y     + ySpeed     * dt * scale
 	scale = scale + scaleDelta * dt * scale
+
+	if scaleDelta ~= 0 then
+		keepImageInBounds()
+	end
 end
 
 -- Function Name: love.keypressed()
