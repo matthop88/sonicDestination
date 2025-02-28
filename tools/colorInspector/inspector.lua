@@ -28,7 +28,6 @@
 
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
-ZOOM_SPEED                  = 2
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
@@ -142,6 +141,8 @@ end
 require "tools/colorInspector/scrolling"
 
 -------------------------- ZOOMING ---------------------------
+
+ZOOM_SPEED = 2
 
 function updateZooming(dt)
     if scaleDelta ~= 0 then
