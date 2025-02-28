@@ -93,14 +93,6 @@ end
 --------------------------------------------------------------
 
 function keepImageInBounds()
-    keepImage_X_InBounds()
-    keepImage_Y_InBounds()
-end
-
-function keepImage_X_InBounds()
     x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth() * scale)))
-end
-
-function keepImage_Y_InBounds()
     y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
 end
