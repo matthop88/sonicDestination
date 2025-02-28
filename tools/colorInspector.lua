@@ -73,8 +73,8 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-	x     = x     + xSpeed     * dt
-	y     = y     + ySpeed     * dt
+	x     = x     + xSpeed     * dt * scale
+	y     = y     + ySpeed     * dt * scale
 	scale = scale + scaleDelta * dt
 end
 
