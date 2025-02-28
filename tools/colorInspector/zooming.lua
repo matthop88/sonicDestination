@@ -24,6 +24,10 @@ function updateZooming(dt)
     end
 end
 
+function love.mousepressed(mx, my)
+    print("Mouse Pressed at " .. mx .. ", " .. my)
+end
+
 function handleZoomKeypressed(key)
     if     key == "z" then zoomIn()
     elseif key == "a" then zoomOut()
