@@ -8,16 +8,11 @@ function updateZooming(dt)
             the mouse is at
         --]]
             
-        -- Given: mx, my => mouse position
         local mx, my   = love.mouse.getPosition()
         local oldScale = scale
         
-        -- 1. Translate x, y so that point at (mx, my) is at upper left corner of screen
-        
-        -- 2. Scale in same manner as before
         scale = oldScale + scaleDelta * dt * oldScale
             
-        -- 3. Translate x, y back so that point at upper left corner of screen becomes (mx, my)
         x = x - (mx / oldScale) + (mx / scale)
         y = y - (my / oldScale) + (my / scale)
         
