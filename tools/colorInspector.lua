@@ -40,6 +40,7 @@ lastKeypressedTime          = 0
 dashing                     = false
 
 scale                       = 1
+scaleDelta                  = 1
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -71,9 +72,9 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-	x     = x     + (xSpeed * dt)
-	y     = y     + (ySpeed * dt)
-	scale = scale + (     1 * dt)
+	x     = x     + xSpeed     * dt
+	y     = y     + ySpeed     * dt
+	scale = scale + scaleDelta * dt
 end
 
 -- Function Name: love.keypressed()
