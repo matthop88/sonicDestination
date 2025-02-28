@@ -151,6 +151,12 @@ function updateZooming(dt)
     end
 end
 
+function handleZoomKeypressed(key)
+    if     key == "z" then zoomIn()
+    elseif key == "a" then zoomOut()
+    end
+end
+
 function zoomIn()         scaleDelta =  ZOOM_SPEED end
 function zoomOut()        scaleDelta = -ZOOM_SPEED end
 
@@ -175,12 +181,6 @@ end
 
 function getTimeElapsedSinceLastKeypress()
     return love.timer.getTime() - lastKeypressedTime
-end
-
-function handleZoomKeypressed(key)
-    if     key == "z"     then zoomIn()
-    elseif key == "a"     then zoomOut()
-    end
 end
 
 function handleKeyreleased(key)
