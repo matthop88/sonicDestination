@@ -97,6 +97,48 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+------------------------ MISCELLANEOUS -------------------------
+
+function handleKeypressed(key)
+    dashing = isDoubleTap(key)
+    
+    handleScrollKeypressed(key)
+    handleZoomKeypressed(key)
+    
+    lastKeypressed     = key 
+    lastKeypressedTime = love.timer.getTime()
+end
+
+function isDoubleTap(key)
+    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
+end
+
+function getTimeElapsedSinceLastKeypress()
+    return love.timer.getTime() - lastKeypressedTime
+end
+
+function handleKeyreleased(key)
+    handleScrollKeyreleased(key)
+    handleZoomKeyreleased(key)
+    
+    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
+        keepImageInBounds()
+    end
+end
+
+function keepImageInBounds()
+    keepImage_X_InBounds()
+    keepImage_Y_InBounds()
+end
+
+function keepImage_X_InBounds()
+    x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth() * scale)))
+end
+
+function keepImage_Y_InBounds()
+    y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
+end
+
 ------------------------- SCROLLING --------------------------
 
 function updateScrolling(dt)
@@ -168,46 +210,3 @@ function zoomOut()        scaleDelta = -ZOOM_SPEED end
 
 function stopZoomingIn()  scaleDelta =  0          end
 function stopZoomingOut() scaleDelta =  0          end
-
------------------------- MISCELLANEOUS -------------------------
-
-function handleKeypressed(key)
-    dashing = isDoubleTap(key)
-    
-    handleScrollKeypressed(key)
-    handleZoomKeypressed(key)
-    
-    lastKeypressed     = key 
-    lastKeypressedTime = love.timer.getTime()
-end
-
-function isDoubleTap(key)
-    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
-end
-
-function getTimeElapsedSinceLastKeypress()
-    return love.timer.getTime() - lastKeypressedTime
-end
-
-function handleKeyreleased(key)
-    handleScrollKeyreleased(key)
-    handleZoomKeyreleased(key)
-    
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
-        keepImageInBounds()
-    end
-end
-
-function keepImageInBounds()
-    keepImage_X_InBounds()
-    keepImage_Y_InBounds()
-end
-
-function keepImage_X_InBounds()
-    x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth() * scale)))
-end
-
-function keepImage_Y_InBounds()
-    y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
-end
-
