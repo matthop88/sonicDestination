@@ -22,6 +22,9 @@
 
 --]]
 
+require "tools/colorInspector/scrolling"
+require "tools/colorInspector/zooming"
+
 --------------------------------------------------------------
 --                      Global Variables                    --
 --------------------------------------------------------------
@@ -133,11 +136,3 @@ end
 function keepImage_Y_InBounds()
     y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
 end
-
-------------------------- SCROLLING --------------------------
-
-require "tools/colorInspector/scrolling"
-
--------------------------- ZOOMING ---------------------------
-
-require "tools/colorInspector/zooming"
