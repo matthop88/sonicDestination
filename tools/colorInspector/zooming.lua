@@ -6,13 +6,19 @@ function updateZooming(dt)
         --[[
             Adjust x and y of image so that we are zooming in at point
             the mouse is at
-
-            Given: mx, my => mouse position
-
-            1. Translate x, y so that point at (mx, my) is at upper left corner of screen
-            2. Scale in same manner as before
-            3. Translate x, y back so that point at upper left corner of screen becomes (mx, my)
         --]]
+            
+        -- Given: mx, my => mouse position
+        -- ...
+        
+        -- 1. Translate x, y so that point at (mx, my) is at upper left corner of screen
+        -- ...
+        
+        -- 2. Scale in same manner as before
+        -- ...
+            
+        -- 3. Translate x, y back so that point at upper left corner of screen becomes (mx, my)
+        -- ...
         
         scale = scale + scaleDelta * dt * scale
 
