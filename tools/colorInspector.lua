@@ -78,6 +78,11 @@ function love.update(dt)
 	scale = scale + scaleDelta * dt * scale
 
 	if scaleDelta ~= 0 then
+		--[[
+        	Adjust x and y of image so that we are zooming in at point
+            the mouse is at
+		--]]
+		
 		keepImageInBounds()
 	end
 end
