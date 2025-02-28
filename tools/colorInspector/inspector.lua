@@ -33,7 +33,6 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
 x,      y                   = 0, 0
-xSpeed, ySpeed              = 0, 0
 
 lastKeypressed              = nil
 lastKeypressedTime          = 0
@@ -140,7 +139,8 @@ end
 
 ------------------------- SCROLLING --------------------------
 
-SCROLL_SPEED = 400
+SCROLL_SPEED   = 400
+xSpeed, ySpeed = 0, 0
 
 function updateScrolling(dt)
     x = x + xSpeed * dt * scale
