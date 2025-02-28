@@ -95,6 +95,18 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+--------------------- DOUBLE-TAP -------------------
+
+function isDoubleTap(key)
+    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
+end
+
+function getTimeElapsedSinceLastKeypress()
+    return love.timer.getTime() - lastKeypressedTime
+end
+
+----------------------------------------------------
+
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     
@@ -103,14 +115,6 @@ function handleKeypressed(key)
     
     lastKeypressed     = key 
     lastKeypressedTime = love.timer.getTime()
-end
-
-function isDoubleTap(key)
-    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
-end
-
-function getTimeElapsedSinceLastKeypress()
-    return love.timer.getTime() - lastKeypressedTime
 end
 
 function handleKeyreleased(key)
