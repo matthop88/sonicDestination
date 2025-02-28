@@ -74,8 +74,7 @@ end
 --------------------------------------------------------------
 function love.update(dt)
     -- Update Scrolling
-    x     = x     + xSpeed     * dt * scale
-    y     = y     + ySpeed     * dt * scale
+    updateScrolling(dt)
 
     -- Update Zooming
     scale = scale + scaleDelta * dt * scale
@@ -118,6 +117,11 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function updateScrolling(dt)
+    x = x + xSpeed * dt * scale
+    y = y + ySpeed * dt * scale
+end
 
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
