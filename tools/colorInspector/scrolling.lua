@@ -6,8 +6,8 @@ local xSpeed, ySpeed = 0, 0
 local dashing        = false
 
 function updateScrolling(dt)
-    x = x + xSpeed * dt * scale
-    y = y + ySpeed * dt * scale
+    x = x + xSpeed * dt
+    y = y + ySpeed * dt
 end
 
 function handleScrollKeypressed(key)
