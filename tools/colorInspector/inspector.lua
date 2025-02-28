@@ -111,6 +111,11 @@ function isWithinDoubleTapThreshold()
     return getTimeElapsedSinceLastKeypress() <= DOUBLE_TAP_THRESHOLD
 end
 
+function setLastKeypressed(key)
+    lastKeypressed     = key 
+    lastKeypressedTime = love.timer.getTime()
+end
+
 ----------------------------------------------------
 
 function handleKeypressed(key)
@@ -118,9 +123,8 @@ function handleKeypressed(key)
     
     handleScrollKeypressed(key)
     handleZoomKeypressed(key)
-    
-    lastKeypressed     = key 
-    lastKeypressedTime = love.timer.getTime()
+
+    setLastKeypressed(key)
 end
 
 function handleKeyreleased(key)
