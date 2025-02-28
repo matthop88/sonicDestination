@@ -1,5 +1,5 @@
-SCROLL_SPEED   = 400
-xSpeed, ySpeed = 0, 0
+local SCROLL_SPEED   = 400
+local xSpeed, ySpeed = 0, 0
 
 function updateScrolling(dt)
     x = x + xSpeed * dt * scale
