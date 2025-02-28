@@ -106,10 +106,14 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+------------------------- SCROLLING --------------------------
+
 function updateScrolling(dt)
     x = x + xSpeed * dt * scale
     y = y + ySpeed * dt * scale
 end
+
+-------------------------- ZOOMING ---------------------------
 
 function updateZooming(dt)
     if scaleDelta ~= 0 then
