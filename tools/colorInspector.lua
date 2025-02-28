@@ -112,6 +112,14 @@ function handleScrollKeypressed(key)
     end
 end
 
+function handleScrollKeyreleased(key)
+    if     key == "left"  then stopScrollingLeft()
+    elseif key == "right" then stopScrollingRight()
+    elseif key == "up"    then stopScrollingUp()
+    elseif key == "down"  then stopScrollingDown()
+    end
+end
+
 function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
 function scrollRight()        xSpeed = - (calculateScrollSpeed()) end          
 function scrollUp()           ySpeed =    calculateScrollSpeed()  end
@@ -181,14 +189,6 @@ function handleKeyreleased(key)
     
     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
         keepImageInBounds()
-    end
-end
-
-function handleScrollKeyreleased(key)
-    if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
     end
 end
 
