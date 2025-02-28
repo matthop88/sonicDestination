@@ -32,10 +32,7 @@ require "tools/colorInspector/zooming"
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
-DOUBLE_TAP_THRESHOLD        = 0.2
 
-lastKeypressed              = nil
-lastKeypressedTime          = 0
 dashing                     = false
 
 x,      y                   = 0, 0
@@ -96,6 +93,11 @@ end
 --------------------------------------------------------------
 
 --------------------- DOUBLE-TAP -------------------
+
+DOUBLE_TAP_THRESHOLD = 0.2
+
+lastKeypressed       = nil
+lastKeypressedTime   = 0
 
 function isDoubleTap(key)
     return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
