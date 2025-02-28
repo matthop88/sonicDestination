@@ -31,12 +31,11 @@ IMAGE                       = love.graphics.newImage("game/resources/images/spri
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
-x,      y                   = 0, 0
-
 lastKeypressed              = nil
 lastKeypressedTime          = 0
 dashing                     = false
 
+x,      y                   = 0, 0
 scale                       = 1
 
 --------------------------------------------------------------
