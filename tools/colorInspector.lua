@@ -104,6 +104,14 @@ function updateScrolling(dt)
     y = y + ySpeed * dt * scale
 end
 
+function handleScrollKeypressed(key)
+    if     key == "left"  then scrollLeft()
+    elseif key == "right" then scrollRight()
+    elseif key == "up"    then scrollUp()
+    elseif key == "down"  then scrollDown()
+    end
+end
+
 function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
 function scrollRight()        xSpeed = - (calculateScrollSpeed()) end          
 function scrollUp()           ySpeed =    calculateScrollSpeed()  end
@@ -159,14 +167,6 @@ end
 
 function getTimeElapsedSinceLastKeypress()
     return love.timer.getTime() - lastKeypressedTime
-end
-
-function handleScrollKeypressed(key)
-    if     key == "left"  then scrollLeft()
-    elseif key == "right" then scrollRight()
-    elseif key == "up"    then scrollUp()
-    elseif key == "down"  then scrollDown()
-    end
 end
 
 function handleZoomKeypressed(key)
