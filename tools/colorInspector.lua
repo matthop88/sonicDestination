@@ -29,6 +29,7 @@
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 SCROLL_SPEED                = 400
+ZOOM_SPEED                  =   1
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
@@ -141,8 +142,8 @@ function stopScrollingRight() xSpeed = math.max(0, xSpeed)        end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
 
-function zoomIn()             scaleDelta =  1                     end
-function zoomOut()            scaleDelta = -1                     end
+function zoomIn()             scaleDelta =  ZOOM_SPEED            end
+function zoomOut()            scaleDelta = -ZOOM_SPEED            end
 
 function stopZoomingIn()      scaleDelta =  0                     end
 function stopZoomingOut()     scaleDelta =  0                     end
