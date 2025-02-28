@@ -107,6 +107,10 @@ function getTimeElapsedSinceLastKeypress()
     return love.timer.getTime() - lastKeypressedTime
 end
 
+function isWithinDoubleTapThreshold()
+    return getTimeElapsedSinceLastKeypress() <= DOUBLE_TAP_THRESHOLD
+end
+
 ----------------------------------------------------
 
 function handleKeypressed(key)
@@ -123,7 +127,7 @@ function handleKeyreleased(key)
     handleScrollKeyreleased(key)
     handleZoomKeyreleased(key)
     
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
+    if not isWithinDoubleTapThreshold() then
         keepImageInBounds()
     end
 end
