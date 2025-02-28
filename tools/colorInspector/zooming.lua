@@ -3,22 +3,20 @@ local scaleDelta = 0
 
 function updateZooming(dt)
     if scaleDelta ~= 0 then
-        --[[
-            Adjust x and y of image so that we are zooming in at point
-            the mouse is at
-        --]]
-            
-        local mx, my   = love.mouse.getPosition()
-        local oldScale = scale
-        
-        scale = oldScale + scaleDelta * dt * oldScale
-            
-        x = x - (mx / oldScale) + (mx / scale)
-        y = y - (my / oldScale) + (my / scale)
-        
+        zoomFromMouseCoordinates(dt)
         keepImageInBounds()
     end
 end
+
+function zoomFromMouseCoordinates(dt)
+    local mx, my   = love.mouse.getPosition()
+    local oldScale = scale
+        
+    scale = oldScale + scaleDelta * dt * oldScale
+            
+    x = x - (mx / oldScale) + (mx / scale)
+    y = y - (my / oldScale) + (my / scale)
+end   
 
 function love.mousepressed(mx, my)
     -- Translate x, y so that point at (mx, my) is at upper left corner of screen
