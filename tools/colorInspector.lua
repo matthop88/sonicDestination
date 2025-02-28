@@ -113,6 +113,16 @@ function updateScrolling(dt)
     y = y + ySpeed * dt * scale
 end
 
+function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
+function scrollRight()        xSpeed = - (calculateScrollSpeed()) end          
+function scrollUp()           ySpeed =    calculateScrollSpeed()  end
+function scrollDown()         ySpeed = - (calculateScrollSpeed()) end
+
+function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)        end
+function stopScrollingRight() xSpeed = math.max(0, xSpeed)        end
+function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
+function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
+
 -------------------------- ZOOMING ---------------------------
 
 function updateZooming(dt)
@@ -152,16 +162,6 @@ function handleDirectionalKeyPressed(key)
     elseif key == "a"      then zoomOut()
     end
 end
-
-function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
-function scrollRight()        xSpeed = - (calculateScrollSpeed()) end          
-function scrollUp()           ySpeed =    calculateScrollSpeed()  end
-function scrollDown()         ySpeed = - (calculateScrollSpeed()) end
-
-function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)        end
-function stopScrollingRight() xSpeed = math.max(0, xSpeed)        end
-function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
-function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
 
 function zoomIn()             scaleDelta =  ZOOM_SPEED            end
 function zoomOut()            scaleDelta = -ZOOM_SPEED            end
