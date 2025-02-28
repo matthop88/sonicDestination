@@ -157,6 +157,12 @@ function handleZoomKeypressed(key)
     end
 end
 
+function handleZoomKeyreleased(key)
+    if     key == "z" then stopZoomingIn()
+    elseif key == "a" then stopZoomingOut()
+    end
+end
+
 function zoomIn()         scaleDelta =  ZOOM_SPEED end
 function zoomOut()        scaleDelta = -ZOOM_SPEED end
 
@@ -189,12 +195,6 @@ function handleKeyreleased(key)
     
     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
         keepImageInBounds()
-    end
-end
-
-function handleZoomKeyreleased(key)
-    if     key == "z"     then stopZoomingIn()
-    elseif key == "a"     then stopZoomingOut()
     end
 end
 
