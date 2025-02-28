@@ -144,6 +144,12 @@ function updateZooming(dt)
     end
 end
 
+function zoomIn()         scaleDelta =  ZOOM_SPEED end
+function zoomOut()        scaleDelta = -ZOOM_SPEED end
+
+function stopZoomingIn()  scaleDelta =  0          end
+function stopZoomingOut() scaleDelta =  0          end
+
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     handleDirectionalKeyPressed(key)
@@ -168,12 +174,6 @@ function handleDirectionalKeyPressed(key)
     elseif key == "a"      then zoomOut()
     end
 end
-
-function zoomIn()             scaleDelta =  ZOOM_SPEED            end
-function zoomOut()            scaleDelta = -ZOOM_SPEED            end
-
-function stopZoomingIn()      scaleDelta =  0                     end
-function stopZoomingOut()     scaleDelta =  0                     end
 
 function keepImageInBounds()
     keepImage_X_InBounds()
