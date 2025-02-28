@@ -1,7 +1,7 @@
-DOUBLE_TAP_THRESHOLD = 0.2
+local DOUBLE_TAP_THRESHOLD = 0.2
 
-lastKeypressed       = nil
-lastKeypressedTime   = 0
+local lastKeypressed       = nil
+local lastKeypressedTime   = 0
 
 function isDoubleTap(key)
     return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
