@@ -1,3 +1,5 @@
+require "tools/colorInspector/doubleTap"
+
 local SCROLL_SPEED   = 400
 local xSpeed, ySpeed = 0, 0
 
