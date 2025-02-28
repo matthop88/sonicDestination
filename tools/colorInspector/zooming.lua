@@ -3,13 +3,12 @@ local scaleDelta = 0
 
 function updateZooming(dt)
     if scaleDelta ~= 0 then
-        zoomFromMouseCoordinates(dt)
+        zoomFromCoordinates(dt, love.mouse.getPosition())
         keepImageInBounds()
     end
 end
 
-function zoomFromMouseCoordinates(dt)
-    local mx, my   = love.mouse.getPosition()
+function zoomFromCoordinates(dt, x, y)
     local oldScale = scale
         
     scale = oldScale + scaleDelta * dt * oldScale
