@@ -159,12 +159,18 @@ function getTimeElapsedSinceLastKeypress()
 end
 
 function handleDirectionalKeyPressed(key)
+    handleScrollKeypressed(key)
+    
+    if     key == "z" then zoomIn()
+    elseif key == "a" then zoomOut()
+    end
+end
+
+function handleScrollKeypressed(key)
     if     key == "left"   then scrollLeft()
     elseif key == "right"  then scrollRight()
     elseif key == "up"     then scrollUp()
     elseif key == "down"   then scrollDown()
-    elseif key == "z"      then zoomIn()
-    elseif key == "a"      then zoomOut()
     end
 end
 
