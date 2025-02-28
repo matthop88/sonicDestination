@@ -1,5 +1,5 @@
-ZOOM_SPEED = 2
-scaleDelta = 0
+local ZOOM_SPEED = 2
+local scaleDelta = 0
 
 function updateZooming(dt)
     if scaleDelta ~= 0 then
