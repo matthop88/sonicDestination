@@ -28,7 +28,6 @@
 
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
-SCROLL_SPEED                = 400
 ZOOM_SPEED                  = 2
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
@@ -140,6 +139,8 @@ function keepImage_Y_InBounds()
 end
 
 ------------------------- SCROLLING --------------------------
+
+SCROLL_SPEED = 400
 
 function updateScrolling(dt)
     x = x + xSpeed * dt * scale
