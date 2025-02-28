@@ -24,6 +24,10 @@ function handleScrollKeyreleased(key)
     elseif key == "up"    then stopScrollingUp()
     elseif key == "down"  then stopScrollingDown()
     end
+
+    if not isWithinDoubleTapThreshold() then
+        keepImageInBounds()
+    end
 end
 
 function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
