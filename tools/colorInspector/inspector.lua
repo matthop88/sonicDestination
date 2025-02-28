@@ -33,8 +33,6 @@ IMAGE                       = love.graphics.newImage("game/resources/images/spri
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
-dashing                     = false
-
 x,      y                   = 0, 0
 scale                       = 1
 
