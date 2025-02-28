@@ -24,7 +24,6 @@
 
 require "tools/colorInspector/scrolling"
 require "tools/colorInspector/zooming"
-require "tools/colorInspector/doubleTap"
 
 --------------------------------------------------------------
 --                      Global Variables                    --
