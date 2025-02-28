@@ -73,8 +73,11 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
+    -- Update Scrolling
     x     = x     + xSpeed     * dt * scale
     y     = y     + ySpeed     * dt * scale
+
+    -- Update Zooming
     scale = scale + scaleDelta * dt * scale
 
     if scaleDelta ~= 0 then
