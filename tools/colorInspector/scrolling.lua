@@ -3,6 +3,8 @@ require "tools/colorInspector/doubleTap"
 local SCROLL_SPEED   = 400
 local xSpeed, ySpeed = 0, 0
 
+local dashing        = false
+
 function updateScrolling(dt)
     x = x + xSpeed * dt * scale
     y = y + ySpeed * dt * scale
