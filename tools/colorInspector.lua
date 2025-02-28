@@ -177,10 +177,7 @@ end
 
 function handleKeyreleased(key)
     handleScrollKeyreleased(key)
-
-    if     key == "z" then stopZoomingIn()
-    elseif key == "a" then stopZoomingOut()
-    end
+    handleZoomKeyreleased(key)
     
     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
         keepImageInBounds()
@@ -192,6 +189,12 @@ function handleScrollKeyreleased(key)
     elseif key == "right" then stopScrollingRight()
     elseif key == "up"    then stopScrollingUp()
     elseif key == "down"  then stopScrollingDown()
+    end
+end
+
+function handleZoomKeyreleased(key)
+    if     key == "z"     then stopZoomingIn()
+    elseif key == "a"     then stopZoomingOut()
     end
 end
 
