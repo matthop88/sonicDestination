@@ -90,16 +90,7 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-    if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
-    elseif key == "z"     then stopZoomingIn()
-    elseif key == "a"     then stopZoomingOut()
-    end
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
-        keepImageInBounds()
-    end
+    handleKeyreleased(key)
 end
 
 --------------------------------------------------------------
@@ -174,6 +165,19 @@ function handleDirectionalKeyPressed(key)
     elseif key == "down"   then scrollDown()
     elseif key == "z"      then zoomIn()
     elseif key == "a"      then zoomOut()
+    end
+end
+
+function handleKeyreleased(key)
+    if     key == "left"  then stopScrollingLeft()
+    elseif key == "right" then stopScrollingRight()
+    elseif key == "up"    then stopScrollingUp()
+    elseif key == "down"  then stopScrollingDown()
+    elseif key == "z"     then stopZoomingIn()
+    elseif key == "a"     then stopZoomingOut()
+    end
+    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
+        keepImageInBounds()
     end
 end
 
