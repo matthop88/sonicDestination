@@ -43,8 +43,6 @@ dashing                     = false
 scale                       = 1
 scaleDelta                  = 0
 
-scaleOutFrom   = { x = 0, y = 0 }
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -53,40 +51,9 @@ love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 if __INSPECTOR_FILE ~= nil then
-	IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+    IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
     IMAGE = love.graphics.newImage("tools/resources/images/sadNoFileImage.png")
-end
-
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    love.graphics.draw(IMAGE, 
-		((x - scaleOutFrom.x) * scale) + scaleOutFrom.x, 
-    	((y - scaleOutFrom.y) * scale) + scaleOutFrom.y, 
-     	0, scale, scale)
-end
-
--- Function Name: love.update()
--- Called By:     LOVE2D application, every single frame
--- Parameters:    dt - time lapsed between update calls
---                     (in fractions of a second)
---------------------------------------------------------------
-function love.update(dt)
-    x = x + (xSpeed * dt)
-    y = y + (ySpeed * dt)
-     
-    if scaleDelta ~= 0 then 
-    	scale = scale + (scaleDelta * scale * dt)
-        local oldScaleOutFromX, oldScaleOutFromY = scaleOutFrom.x, scaleOutFrom.y
-        local viewX = ((x - oldScaleOutFromX) * scale) + oldScaleOutFromX
-        local viewY = ((y - oldScaleOutFromY) * scale) + oldScaleOutFromY
-        	scaleOutFrom.x, scaleOutFrom.y = love.mouse:getPosition()
-          	scaleOutFrom.x = scaleOutFrom.x - viewX
-          	scaleOutFrom.y = scaleOutFrom.y - viewY
-          	keepInBounds() 
-	end
 end
 
 --------------------------------------------------------------
@@ -97,10 +64,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, 
-    	((x - scaleOutFrom.x) * scale) + scaleOutFrom.x, 
-    	((y - scaleOutFrom.y) * scale) + scaleOutFrom.y, 
-     	0, scale, scale)
+    love.graphics.draw(IMAGE, x, y, 0, scale, scale)
 end
 
 -- Function Name: love.update()
@@ -109,25 +73,18 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    x = x + (xSpeed * dt)
-    y = y + (ySpeed * dt)
-     
-    if scaleDelta ~= 0 then 
+    x     = x     + xSpeed     * dt * scale
+    y     = y     + ySpeed     * dt * scale
+    scale = scale + scaleDelta * dt * scale
+
+    if scaleDelta ~= 0 then
     	--[[
-        	Adjust x and y of image so that we are zooming in at point
+            Adjust x and y of image so that we are zooming in at point
             the mouse is at
         --]]
 
-        scale = scale + (scaleDelta * scale * dt)
-        local oldScaleOutFromX, oldScaleOutFromY = scaleOutFrom.x, scaleOutFrom.y
-        local viewX = ((x - oldScaleOutFromX) * scale) + oldScaleOutFromX
-        local viewY = ((y - oldScaleOutFromY) * scale) + oldScaleOutFromY
-        scaleOutFrom.x, scaleOutFrom.y = love.mouse:getPosition()
-        scaleOutFrom.x = scaleOutFrom.x - viewX
-        scaleOutFrom.y = scaleOutFrom.y - viewY
-          
         keepImageInBounds()
-	end
+    end
 end
 
 -- Function Name: love.keypressed()
@@ -151,7 +108,7 @@ function love.keyreleased(key)
     elseif key == "a"     then stopZoomingOut()
     end
     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
-    	keepImageInBounds()
+        keepImageInBounds()
     end
 end
 
