@@ -101,10 +101,6 @@ end
 function handleKeyreleased(key)
     handleScrollKeyreleased(key)
     handleZoomKeyreleased(key)
-    
-    if not isWithinDoubleTapThreshold() then
-        keepImageInBounds()
-    end
 end
 
 function keepImageInBounds()
