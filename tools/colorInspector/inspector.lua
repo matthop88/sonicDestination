@@ -75,7 +75,8 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-    handleKeypressed(key)
+    handleScrollKeypressed(key)
+    handleZoomKeypressed(key)
 end
 
 -- Function Name: love.keyreleased()
@@ -83,22 +84,13 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-    handleKeyreleased(key)
+    handleScrollKeyreleased(key)
+    handleZoomKeyreleased(key)
 end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
-
-function handleKeypressed(key)
-    handleScrollKeypressed(key)
-    handleZoomKeypressed(key)
-end
-
-function handleKeyreleased(key)
-    handleScrollKeyreleased(key)
-    handleZoomKeyreleased(key)
-end
 
 function keepImageInBounds()
     keepImage_X_InBounds()
