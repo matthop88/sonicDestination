@@ -94,6 +94,8 @@ function love.keyreleased(key)
     elseif key == "right" then stopScrollingRight()
     elseif key == "up"    then stopScrollingUp()
     elseif key == "down"  then stopScrollingDown()
+	elseif key == "z" 	  then scaleDelta = 0
+	elseif key == "a"     then scaleDelta = 0
     end
     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
     	keepImageInBounds()
