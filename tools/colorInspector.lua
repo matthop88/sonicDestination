@@ -73,10 +73,7 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    -- Update Scrolling
     updateScrolling(dt)
-
-    -- Update Zooming
     updateZooming(dt)
 end
 
