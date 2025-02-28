@@ -7,11 +7,15 @@ function updateScrolling(dt)
 end
 
 function handleScrollKeypressed(key)
+    dashing = isDoubleTap(key)
+    
     if     key == "left"  then scrollLeft()
     elseif key == "right" then scrollRight()
     elseif key == "up"    then scrollUp()
     elseif key == "down"  then scrollDown()
     end
+
+    setLastKeypressed(key)
 end
 
 function handleScrollKeyreleased(key)
