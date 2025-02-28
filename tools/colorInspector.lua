@@ -94,8 +94,8 @@ function love.keyreleased(key)
     elseif key == "right" then stopScrollingRight()
     elseif key == "up"    then stopScrollingUp()
     elseif key == "down"  then stopScrollingDown()
-	elseif key == "z" 	  then scaleDelta = 0
-	elseif key == "a"     then scaleDelta = 0
+	elseif key == "z" 	  then stopZoomingIn()
+	elseif key == "a"     then stopZoomingOut()
     end
     if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
     	keepImageInBounds()
@@ -143,6 +143,9 @@ function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
 
 function zoomIn()             scaleDelta =  1                     end
 function zoomOut()            scaleDelta = -1                     end
+
+function stopZoomingIn()      scaleDelta =  0                     end
+function stopZoomingOut()     scaleDelta =  0                     end
 
 function calculateScrollSpeed()
     if dashing then return SCROLL_SPEED * 2
