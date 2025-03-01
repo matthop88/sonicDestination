@@ -8,7 +8,7 @@ function updateZooming(dt)
     end
 end
 
-function zoomFromCoordinates(dt, x, y)
+function zoomFromCoordinates(dt, mx, my)
     local oldScale = scale
         
     scale = oldScale + scaleDelta * dt * oldScale
