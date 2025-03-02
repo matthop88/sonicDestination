@@ -11,6 +11,8 @@ function love.load(args)
 	if args[1] == "inspector" then
 		__INSPECTOR_FILE = args[2]
 		require "tools/colorInspector/inspector"
+	elseif args[1] == "presentation" then
+		require "game/presentation"
 	else
 		require "game/main"
 	end
