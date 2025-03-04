@@ -126,14 +126,17 @@ function printToReadout(msg)
 end
 
 function drawReadout()
-     -- Draw message on screen
-     love.graphics.setColor(0, 0, 0)
+    -- Draw message on screen
+    love.graphics.setColor(0, 0, 0)
      
-     local rMsg    = "HEY THERE!"
-     local rX      = 100
-     local rY      = 200
-     local rWidth  = 500
-     local rAlign  = "center"
+    local rMsg    = "HEY THERE!"
+    local rX      = 100
+    local rY      = 200
+    local rWidth  = 500
+    local rAlign  = "center"
 
-     love.graphics.printf(rMsg, rX, rY, rWidth, rAlign)
+    love.graphics.printf(rMsg, rX, rY, rWidth, rAlign)
+
+    love.graphics.setColor(1, 1, 1)
+    -- XXX: This assumes that original color was white
 end
