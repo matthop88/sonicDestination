@@ -63,6 +63,7 @@ end
 --------------------------------------------------------------
 function love.draw()
     love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
+    drawReadout()
 end
 
 -- Function Name: love.update()
