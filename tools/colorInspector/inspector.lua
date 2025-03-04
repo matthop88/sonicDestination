@@ -16,7 +16,7 @@
            left and right arrow keys.
        [X] Image can be zoomed in using the 'z' key
            and zoomed out using the 'a' key
-       [ ] Readout implemented - a translucent panel with
+       [.] Readout implemented - a translucent panel with
            centered text written in it "pops up" on screen
            from below, remains for 3-5 seconds and then
            recedes in same manner. Does not recede if content
