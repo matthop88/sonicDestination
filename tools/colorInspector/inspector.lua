@@ -62,7 +62,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
+    drawImage()
     drawReadout()
 end
 
@@ -106,6 +106,10 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function drawImage()
+    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
+end
 
 function keepImageInBounds()
     x = math.min(0, math.max(x, (WINDOW_WIDTH  / scale) - IMAGE:getWidth()))
