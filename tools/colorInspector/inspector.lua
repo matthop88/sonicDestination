@@ -110,6 +110,7 @@ end
 ---------------------------- IMAGE -------------------------------
 
 function drawImage()
+    love.graphics.setColor(1, 1, 1)
     love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
 end
 
