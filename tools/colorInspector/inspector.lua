@@ -42,6 +42,7 @@ FONT_SIZE                   = 40
 READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 READOUT_TRANSITION_TICKS    = 10
 READOUT_DURATION            = 120
+READOUT_HEIGHT              = 70
 MAX_TIMER_VALUE             = READOUT_DURATION + (READOUT_TRANSITION_TICKS * 2)
 
 x,      y                   = 0, 0
@@ -165,9 +166,9 @@ function calculateYOffset()
     --]]
 
     if readoutTimer >= MAX_TIMER_VALUE - READOUT_TRANSITION_TICKS then
-        yOffset = 70 - (70 / READOUT_TRANSITION_TICKS * (MAX_TIMER_VALUE - readoutTimer))
+        yOffset = READOUT_HEIGHT - (READOUT_HEIGHT / READOUT_TRANSITION_TICKS * (MAX_TIMER_VALUE - readoutTimer))
     elseif readoutTimer <= READOUT_TRANSITION_TICKS then
-        yOffset = 70 - (70 / READOUT_TRANSITION_TICKS * readoutTimer)
+        yOffset = READOUT_HEIGHT - (READOUT_HEIGHT / READOUT_TRANSITION_TICKS * readoutTimer)
     end
 
     return yOffset
