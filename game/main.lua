@@ -20,7 +20,7 @@
 love.window.setTitle("Sonic Destination")
 
 -- Set Window Dimensions: 1024 x 768
-love.window.setMode(1024, 768)
+love.window.setMode(1024, 768, { display = 2 })
 
 --[[
                              ...,?77??!~~~~!???77?<~.... 
