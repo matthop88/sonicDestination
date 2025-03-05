@@ -38,7 +38,7 @@ function love.draw()
     -- All drawing code goes in here
     -- Draw Workspace
     -- 1. Draw dark green background (a filled rectangle the size of the window)
-    love.graphics.setColor(0, 1, 0)
+    love.graphics.setColor(0, 0.45, 0)
     love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
