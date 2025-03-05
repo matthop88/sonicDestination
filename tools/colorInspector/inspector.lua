@@ -143,7 +143,7 @@ function printToReadout(msg)
 end
 
 function drawReadout()
-    if readoutMsg ~= nil then
+    if readoutMsg ~= nil and readoutTimer > 0 then
         drawReadoutBox()
         drawReadoutMessage()
     end
