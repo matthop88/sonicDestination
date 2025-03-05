@@ -54,7 +54,9 @@ function drawWorkspace()
     love.graphics.line(0, 576, 1024, 576)
 end
 
---[[
+function drawSonic()
+    -- Code to draw Sonic goes here
+    --[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
                     .,=`          ..~7^`   I                  ?1. 
@@ -107,4 +109,5 @@ end
                               .1.         J 
                                  ?1.     .'         
                                      7<..%
---]]
+    --]]
+end
