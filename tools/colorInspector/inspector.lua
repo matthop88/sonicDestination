@@ -162,3 +162,7 @@ function drawReadoutMessage()
     love.graphics.setFont(READOUT_FONT)
     love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60, WINDOW_WIDTH, "center")
 end
+
+function updateReadout(dt)
+    readoutTimer = math.max(0, readoutTimer - (60 * dt))
+end
