@@ -45,6 +45,15 @@ x,      y                   = 0, 0
 scale                       = 1
 
 readoutMsg                  = nil
+readoutTimer                = 0
+
+--[[
+          Aspects of Timer:
+
+          printToReadout() sets timer to max value
+          drawReadout()    draws readout if timer is > 0
+          updateReadout()  decreases timer (minimum value is 0)
+--]]
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
