@@ -129,7 +129,7 @@ end
 
 function drawReadout()
     -- Draw message on screen
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
   
     local rMsg    = "HEY THERE!"
