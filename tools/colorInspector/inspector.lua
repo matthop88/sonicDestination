@@ -162,7 +162,7 @@ function calculateYOffset()
     
     if readoutIsEntering() then
         yOffset = READOUT_HEIGHT - (READOUT_HEIGHT / READOUT_TRANSITION_TICKS * (MAX_TIMER_VALUE - readoutTimer))
-    elseif readoutTimer <= READOUT_TRANSITION_TICKS then
+    elseif readoutIsExiting() then
         yOffset = READOUT_HEIGHT - (READOUT_HEIGHT / READOUT_TRANSITION_TICKS * readoutTimer)
     end
 
@@ -171,6 +171,10 @@ end
 
 function readoutIsEntering()
     return readoutTimer >= MAX_TIMER_VALUE - READOUT_TRANSITION_TICKS
+end
+
+function readoutIsExiting()
+    return readoutTimer <= READOUT_TRANSITION_TICKS
 end
 
 function drawReadoutBox(yOffset)
