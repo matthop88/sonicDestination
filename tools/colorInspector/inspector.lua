@@ -40,6 +40,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 FONT_SIZE                   = 40
 READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
+READOUT_TRANSITION_TICKS    = 30
 MAX_TIMER_VALUE             = 300
 
 x,      y                   = 0, 0
@@ -47,7 +48,6 @@ scale                       = 1
 
 readoutMsg                  = nil
 readoutTimer                = 0
-readoutYOffset              = 70
 
 --[[
           Aspects of Timer:
@@ -146,37 +146,44 @@ end
 
 function drawReadout()
     if readoutMsg ~= nil and readoutTimer > 0 then
-        --[[
-            Value of readoutYOffset over time:
-            At MAX_TIMER_VALUE      : 70
-            At MAX_TIMER_VALUE - 30 :  0
-            At 30                   :  0
-            At 0                    : 70
-        --]]
+        local yOffset = calculateYOffset()
 
-        if readoutTimer >= MAX_TIMER_VALUE - 30 then
-            readoutYOffset = 70 - (70 / 30 * (MAX_TIMER_VALUE - readoutTimer))
-        elseif readoutTimer <= 30 then
-            readoutYOffset = 70 - (70 / 30 * readoutTimer)
-        end
-
-        drawReadoutBox()
-        drawReadoutMessage()
+        drawReadoutBox(yOffset)
+        drawReadoutMessage(yOffset)
     end
 end
 
-function drawReadoutBox()
-    love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70 + readoutYOffset, WINDOW_WIDTH, 70)
-              
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70 + readoutYOffset, WINDOW_WIDTH, 70)
+function calculateYOffset()
+    local yOffset = 0
+    --[[
+        Value of yOffset over time:
+        At MAX_TIMER_VALUE      : 70
+        At MAX_TIMER_VALUE - 30 :  0
+        At 30                   :  0
+        At 0                    : 70
+    --]]
+
+    if readoutTimer >= MAX_TIMER_VALUE - READOUT_TRANSITION_TICKS then
+        yOffset = 70 - (70 / READOUT_TRANSITION_TICKS * (MAX_TIMER_VALUE - readoutTimer))
+    elseif readoutTimer <= READOUT_TRANSITION_TICKS then
+        yOffset = 70 - (70 / READOUT_TRANSITION_TICKS * readoutTimer)
+    end
+
+    return yOffset
 end
 
-function drawReadoutMessage()
+function drawReadoutBox(yOffset)
+    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70 + yOffset, WINDOW_WIDTH, 70)
+              
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70 + yOffset, WINDOW_WIDTH, 70)
+end
+
+function drawReadoutMessage(yOffset)
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60 + readoutYOffset, WINDOW_WIDTH, "center")
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60 + yOffset, WINDOW_WIDTH, "center")
 end
 
 function updateReadout(dt)
