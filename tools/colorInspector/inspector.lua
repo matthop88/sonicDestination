@@ -40,6 +40,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 FONT_SIZE                   = 40
 READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
+MAX_TIMER_VALUE             = 300
 
 x,      y                   = 0, 0
 scale                       = 1
@@ -138,6 +139,7 @@ end
 function printToReadout(msg)
     print("Printing to readout: ", msg)
     readoutMsg = msg
+    readoutTimer = MAX_TIMER_VALUE
 end
 
 function drawReadout()
