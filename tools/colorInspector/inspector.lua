@@ -44,7 +44,7 @@ READOUT_TRANSITION_TICKS    = 10
 READOUT_DURATION            = 120
 READOUT_HEIGHT              = 140
 MAX_TIMER_VALUE             = READOUT_DURATION + (READOUT_TRANSITION_TICKS * 2)
-HORIZ_MARGINS               = 0
+HORIZ_MARGINS               = 60
 
 x,      y                   = 0, 0
 scale                       = 1
