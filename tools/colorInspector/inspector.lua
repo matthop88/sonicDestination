@@ -45,6 +45,7 @@ READOUT_DURATION            = 120
 READOUT_HEIGHT              = 140
 MAX_TIMER_VALUE             = READOUT_DURATION + (READOUT_TRANSITION_TICKS * 2)
 HORIZ_MARGINS               = 60
+BORDER_THICKNESS            = 3
 
 x,      y                   = 0, 0
 scale                       = 1
@@ -180,6 +181,7 @@ function drawReadoutBox(yOffset)
     love.graphics.rectangle("fill", HORIZ_MARGINS, WINDOW_HEIGHT - READOUT_HEIGHT + yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), 70)
               
     love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(BORDER_THICKNESS)
     love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - READOUT_HEIGHT + yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), 70)
 end
 
