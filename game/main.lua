@@ -27,6 +27,11 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 WINDOW_WIDTH     = 1024
 WINDOW_HEIGHT    =  768
 
+IMAGE            = love.graphics.newImage("game/sonicStickFigure.png")
+		   -- https://www.deviantart.com/worldofcaitlyn/art/STH-Sonic-Stick-Figure
+
+showImage        = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -46,6 +51,12 @@ function love.draw()
 	drawSonic()
 end
 
+function love.keypressed(key)
+    if key == "space" then
+        showImage = not showImage
+    end
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
@@ -57,7 +68,7 @@ end
 
 function drawBackground()
 	love.graphics.setColor(COLOR_GREEN)
-	love.graphics.rectangle("fill", 0, 0, 1024, 768)
+	love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 end
 
 function drawHorizontalLine()
@@ -68,6 +79,9 @@ end
 
 function drawSonic()
 	-- Code to draw Sonic goes here
+	if showImage then
+        love.graphics.draw(IMAGE, 350, 133, 0, 0.5, 0.5)
+    end
 	--[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
@@ -121,5 +135,27 @@ function drawSonic()
                               .1.         J 
                                  ?1.     .'         
                                      7<..%
+    
+	
+
+										
+
+
+
+
+
+
+
+
+					Sonic ASCII art credits
+					-----------------------
+	"ASCII Art of Sonic"
+	posted by put-mutt on
+	https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
+	---------------------------------------------------------------------------------------
+	
     --]]
 end
+
+
+
