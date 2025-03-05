@@ -1,5 +1,5 @@
 # sonicDestination
-The coolest game in the whole entire world, bar none
+### The coolest game in the whole entire world, bar none
 
 There are currently no interactive features in this program.
 
