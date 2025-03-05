@@ -20,7 +20,8 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
--- ...
+COLOR_GREEN = { 0, 0.45, 0 }
+              -- https://htmlcolorcodes.com/colors/shades-of-green/
 -- ...
 -- ...
 -- ...
@@ -57,7 +58,7 @@ function drawWorkspace()
 end
 
 function drawDarkGreenBackground()
-    love.graphics.setColor(0, 0.45, 0)
+    love.graphics.setColor(COLOR_GREEN)
     love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
