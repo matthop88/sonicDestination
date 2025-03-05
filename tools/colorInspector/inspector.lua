@@ -41,7 +41,8 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 FONT_SIZE                   = 40
 READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 READOUT_TRANSITION_TICKS    = 10
-MAX_TIMER_VALUE             = 300
+READOUT_DURATION            = 120
+MAX_TIMER_VALUE             = READOUT_DURATION + (READOUT_TRANSITION_TICKS * 2)
 
 x,      y                   = 0, 0
 scale                       = 1
