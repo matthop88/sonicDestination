@@ -31,10 +31,7 @@ WINDOW_HEIGHT    =  768
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
--- Set Window Title:     "Sonic Destination"
 love.window.setTitle("Sonic Destination")
-
--- Set Window Dimensions: 1024 x 768
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 --------------------------------------------------------------
@@ -45,8 +42,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    drawWorkspace()
-    drawSonic()
+	drawWorkspace()
+	drawSonic()
 end
 
 --------------------------------------------------------------
@@ -54,24 +51,24 @@ end
 --------------------------------------------------------------
 
 function drawWorkspace()
-    drawBackground()
-    drawHorizontalLine()
+	drawBackground()
+	drawHorizontalLine()
 end
 
 function drawBackground()
-    love.graphics.setColor(COLOR_GREEN)
-    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+	love.graphics.setColor(COLOR_GREEN)
+	love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
 function drawHorizontalLine()
-    love.graphics.setColor(COLOR_PURE_WHITE)
-    love.graphics.setLineWidth(3)
-    love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
+	love.graphics.setColor(COLOR_PURE_WHITE)
+	love.graphics.setLineWidth(3)
+	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
 end
 
 function drawSonic()
-    -- Code to draw Sonic goes here
-    --[[
+	-- Code to draw Sonic goes here
+	--[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
                     .,=`          ..~7^`   I                  ?1. 
