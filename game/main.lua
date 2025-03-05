@@ -55,7 +55,7 @@ end
 
 function drawWorkspace()
     drawBackground()
-    drawThickHorizontalWhiteLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
+    drawHorizontalLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
 end
 
 function drawBackground()
@@ -63,7 +63,7 @@ function drawBackground()
     love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
-function drawThickHorizontalWhiteLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
+function drawHorizontalLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
     love.graphics.setColor(COLOR_PURE_WHITE)
     love.graphics.setLineWidth(3)
     love.graphics.line(0, 576, 1024, 576)
