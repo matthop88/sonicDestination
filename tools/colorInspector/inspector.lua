@@ -136,9 +136,9 @@ function drawReadout()
     love.graphics.setFont(READOUT_FONT)
   
     local rMsg    = "HEY THERE!"
-    local rX      = 100
+    local rX      = 0
     local rY      = 200
-    local rWidth  = 500
+    local rWidth  = WINDOW_WIDTH
     local rAlign  = "center"
 
     love.graphics.printf(rMsg, rX, rY, rWidth, rAlign)
