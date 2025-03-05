@@ -135,13 +135,12 @@ function drawReadout()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
   
-    local rMsg    = "HEY THERE!"
     local rX      = 0
     local rY      = 200
     local rWidth  = WINDOW_WIDTH
     local rAlign  = "center"
 
-    love.graphics.printf(rMsg, rX, rY, rWidth, rAlign)
+    love.graphics.printf(readoutMsg, rX, rY, rWidth, rAlign)
 
     love.graphics.setColor(1, 1, 1)
     -- XXX: This assumes that original color was white
