@@ -47,7 +47,7 @@ scale                       = 1
 
 readoutMsg                  = nil
 readoutTimer                = 0
-readoutYOffset              = 30
+readoutYOffset              = 70
 
 --[[
           Aspects of Timer:
@@ -153,6 +153,10 @@ function drawReadout()
             At 30                   :  0
             At 0                    : 70
         --]]
+
+        if readoutTimer >= MAX_TIMER_VALUE - 30 then
+            readoutYOffset = MAX_TIMER_VALUE - readoutTimer
+        end
 
         drawReadoutBox()
         drawReadoutMessage()
