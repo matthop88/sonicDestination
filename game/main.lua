@@ -60,13 +60,13 @@ end
 
 function drawBackground()
     love.graphics.setColor(COLOR_GREEN)
-    love.graphics.rectangle("fill", 0, 0, 1024, 768)
+    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, 768)
 end
 
 function drawHorizontalLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
     love.graphics.setColor(COLOR_PURE_WHITE)
     love.graphics.setLineWidth(3)
-    love.graphics.line(0, 576, 1024, 576)
+    love.graphics.line(0, 576, WINDOW_WIDTH, 576)
 end
 
 function drawSonic()
