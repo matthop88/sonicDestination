@@ -37,6 +37,7 @@ require "tools/colorInspector/zooming"
 IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+
 FONT_SIZE                   = 40
 READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 
@@ -132,14 +133,21 @@ end
 
 function drawReadout()
     if readoutMsg ~= nil then
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
-    
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
-        
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setFont(READOUT_FONT)
-        love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60, WINDOW_WIDTH, "center")
+        drawReadoutBox()
+        drawReadoutMessage()
     end
+end
+
+function drawReadoutBox()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
+              
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
+end
+
+function drawReadoutMessage()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(READOUT_FONT)
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60, WINDOW_WIDTH, "center")
 end
