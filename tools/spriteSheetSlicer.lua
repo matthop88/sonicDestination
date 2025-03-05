@@ -9,6 +9,21 @@
 [ ] 3. When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
+					Border Finding Algorithm
+					------------------------
+	   Scan each line of image.
+	   Look for edges of borders.
+
+	   Left edge:  Transition from Margin Background color
+								to Sprite Background color.
+
+	   Right edge: Transition from Sprite Background color
+								to Margin Background color.
+
+	   Same transition applies to top and bottom edges.
+
+	   Border information is captured in a data structure.
+
 --]]
 
 --------------------------------------------------------------
