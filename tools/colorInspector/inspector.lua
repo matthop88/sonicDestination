@@ -42,7 +42,7 @@ FONT_SIZE                   = 40
 READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 READOUT_TRANSITION_TICKS    = 10
 READOUT_DURATION            = 120
-READOUT_HEIGHT              = 70
+READOUT_HEIGHT              = 140
 MAX_TIMER_VALUE             = READOUT_DURATION + (READOUT_TRANSITION_TICKS * 2)
 
 x,      y                   = 0, 0
@@ -176,16 +176,16 @@ end
 
 function drawReadoutBox(yOffset)
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70 + yOffset, WINDOW_WIDTH, 70)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_HEIGHT + yOffset, WINDOW_WIDTH, 70)
               
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70 + yOffset, WINDOW_WIDTH, 70)
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_HEIGHT + yOffset, WINDOW_WIDTH, 70)
 end
 
 function drawReadoutMessage(yOffset)
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60 + yOffset, WINDOW_WIDTH, "center")
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - READOUT_HEIGHT + 10 + yOffset, WINDOW_WIDTH, "center")
 end
 
 function updateReadout(dt)
