@@ -36,7 +36,6 @@ love.window.setMode(1024, 768, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     -- All drawing code goes in here
-    -- Draw Workspace
     drawWorkspace()
 end
 
