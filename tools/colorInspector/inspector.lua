@@ -156,6 +156,8 @@ function drawReadout()
 
         if readoutTimer >= MAX_TIMER_VALUE - 30 then
             readoutYOffset = 70 - (70 / 30 * (MAX_TIMER_VALUE - readoutTimer))
+        elseif readoutTimer <= 30 then
+            readoutYOffset = 70 - (70 / 30 * readoutTimer)
         end
 
         drawReadoutBox()
