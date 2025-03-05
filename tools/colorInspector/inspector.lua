@@ -89,6 +89,7 @@ end
 function love.update(dt)
     updateScrolling(dt)
     updateZooming(dt)
+    updateReadout(dt)
 end
 
 -- Function Name: love.keypressed()
