@@ -53,11 +53,11 @@ end
 --------------------------------------------------------------
 
 function drawWorkspace()
-    drawDarkGreenBackground()
+    drawBackground()
     drawThickHorizontalWhiteLineSpanningWidthOfScreenPositionedThreeQuartersOfTheWayDown()
 end
 
-function drawDarkGreenBackground()
+function drawBackground()
     love.graphics.setColor(COLOR_GREEN)
     love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
