@@ -37,6 +37,10 @@ love.window.setMode(1024, 768, { display = 2 })
 function love.draw()
     -- All drawing code goes in here
     -- Draw Workspace
+    drawWorkspace()
+end
+
+function drawWorkspace()
     -- 1. Draw dark green background (a filled rectangle the size of the window)
     love.graphics.setColor(0, 0.45, 0)
     love.graphics.rectangle("fill", 0, 0, 1024, 768)
