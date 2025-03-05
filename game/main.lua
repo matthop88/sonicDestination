@@ -39,6 +39,10 @@ function love.draw()
     drawWorkspace()
 end
 
+--------------------------------------------------------------
+--                  Specialized Functions                   --
+--------------------------------------------------------------
+
 function drawWorkspace()
     -- 1. Draw dark green background (a filled rectangle the size of the window)
     love.graphics.setColor(0, 0.45, 0)
