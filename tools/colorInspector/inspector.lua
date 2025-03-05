@@ -131,7 +131,6 @@ function printToReadout(msg)
 end
 
 function drawReadout()
-    -- Draw message on screen
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
   
