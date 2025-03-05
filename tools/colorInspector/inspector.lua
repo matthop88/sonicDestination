@@ -43,6 +43,8 @@ READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 x,      y                   = 0, 0
 scale                       = 1
 
+readoutMsg                  = "NO MESSAGE YET"
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -125,6 +127,7 @@ end
 
 function printToReadout(msg)
     print("Printing to readout: ", msg)
+    readoutMsg = msg
 end
 
 function drawReadout()
