@@ -159,14 +159,7 @@ end
 
 function calculateYOffset()
     local yOffset = 0
-    --[[
-        Value of yOffset over time:
-        At MAX_TIMER_VALUE      : 70
-        At MAX_TIMER_VALUE - 30 :  0
-        At 30                   :  0
-        At 0                    : 70
-    --]]
-
+    
     if readoutTimer >= MAX_TIMER_VALUE - READOUT_TRANSITION_TICKS then
         yOffset = READOUT_HEIGHT - (READOUT_HEIGHT / READOUT_TRANSITION_TICKS * (MAX_TIMER_VALUE - readoutTimer))
     elseif readoutTimer <= READOUT_TRANSITION_TICKS then
