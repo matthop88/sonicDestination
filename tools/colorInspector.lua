@@ -20,6 +20,13 @@
            an RGB description of the color both to
            the screen and to the text console.
 
+                         Design Details
+                         --------------
+    Smooth Scrolling:
+        Pressing an arrow key begins scrolling in the proper direction.
+        Scrolling continues at a constant rate once it has begun.
+        Releasing an arrow key stops scrolling in that direction.
+
 --]]
 
 --------------------------------------------------------------
@@ -185,3 +192,4 @@ if showMessage then
           end
      end 
 end
+
