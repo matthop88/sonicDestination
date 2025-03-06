@@ -26,7 +26,7 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-IMAGE                       = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
+IMAGE                       = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
                               -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 SCROLL_SPEED                = 400
 ZOOM_SPEED                  = 2
