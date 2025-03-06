@@ -129,6 +129,12 @@ end
 
 -------------------------- ZOOMING ---------------------------
 
+function handleZoomKeypressed(key)
+    if     key == "z" then zoomIn()
+    elseif key == "a" then zoomOut()
+    end
+end
+    
 function updateZooming(dt)
 	  if scaleDelta ~= 0 then
         --[[
@@ -177,10 +183,7 @@ end
 
 function handleDirectionalKeypressed(key)
     handleScrollKeypressed(key)
-    
-    if key == "z"      then zoomIn()
-    elseif key == "a"      then zoomOut()
-    end
+    handleZoomKeypressed(key)
 end
 
 function updateImage()
