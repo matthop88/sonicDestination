@@ -59,13 +59,13 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     if key == "left" then
-        x = x + SCROLL_SPEED
+        scrollLeft()
     elseif key == "right" then
-        x = x - SCROLL_SPEED
+        scrollRight()
     elseif key == "up" then
-        y = y + SCROLL_SPEED
+        scrollUp()
     elseif key == "down" then
-        y = y - SCROLL_SPEED
+        scrollDown()
     end
 end
 
@@ -76,19 +76,19 @@ end
 --------------------------------------------------------------
 
 function scrollLeft()
-     -- Scrolling Left code goes here
+    x = x + SCROLL_SPEED
 end
 
 function scrollRight()
-     -- Scrolling Right code goes here
+    x = x - SCROLL_SPEED
 end
 
 function scrollUp()
-     -- Scrolling Up code goes here
+    y = y + SCROLL_SPEED
 end
 
 function scrollDown()
-     -- Scrolling Down code goes here
+    y = y - SCROLL_SPEED
 end
 
 
@@ -185,6 +185,3 @@ if showMessage then
           end
      end 
 end
-
-
-
