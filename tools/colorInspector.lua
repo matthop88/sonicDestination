@@ -65,9 +65,8 @@ end
 function love.update(dt)
     x = x + (xSpeed * dt)
     y = y + (ySpeed * dt)
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0 then
-        keepImageInBounds()
-    end
+
+    normalizeImage()
 end
 
 -- Function Name: love.keypressed()
@@ -89,9 +88,7 @@ function love.keyreleased(key)
     elseif key == "down"  then stopScrollingDown()
     end
   
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
-        keepImageInBounds()
-    end
+    normalizeImage()
 end
 
 --------------------------------------------------------------
@@ -136,6 +133,12 @@ function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)       end
 function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
+
+function normalizeImage()
+    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0 then
+        keepImageInBounds()
+    end
+end
 
 function keepImageInBounds()
     x = math.min(0, math.max(x, WINDOW_WIDTH  - IMAGE:getWidth()))
