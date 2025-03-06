@@ -146,6 +146,8 @@ function zoomOut()            scaleDelta = -ZOOM_SPEED           end
 function stopZoomingIn()      scaleDelta =  0                    end
 function stopZoomingOut()     scaleDelta =  0                    end
 
+------------------------ MISCELLANEOUS -------------------------
+
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     handleDirectionalKeypressed(key)
