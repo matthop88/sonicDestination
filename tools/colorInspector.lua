@@ -30,6 +30,7 @@ IMAGE          = love.graphics.newImage("resources/images/spriteSheets/sonic1.pn
                  -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 SCROLL_SPEED                = 400
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+DOUBLE_TAP_THRESHOLD        = 0.3
 
 x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
@@ -64,7 +65,7 @@ end
 function love.update(dt)
     x = x + (xSpeed * dt)
     y = y + (ySpeed * dt)
-    if getTimeElapsedSinceLastKeypress() >= 0.3 and xSpeed == 0 and ySpeed == 0 then
+    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0 then
         keepImageInBounds()
     end
 end
@@ -88,7 +89,7 @@ function love.keyreleased(key)
     elseif key == "down"  then stopScrollingDown()
     end
   
-    if getTimeElapsedSinceLastKeypress() >= 0.3 then
+    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
         keepImageInBounds()
     end
 end
@@ -105,7 +106,7 @@ function handleKeypressed(key)
 end
 
 function isDoubleTap(key)
-    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < 0.3
+    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
 end
 
 function getTimeElapsedSinceLastKeypress()
