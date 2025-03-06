@@ -78,7 +78,7 @@ function love.update(dt)
     updateZooming(dt)
 
 	-- Update Image
-    normalizeImage()
+    updateImage()
 end
 
 -- Function Name: love.keypressed()
@@ -102,7 +102,7 @@ function love.keyreleased(key)
 	elseif key == "a"     then stopZoomingOut()
     end
   
-    normalizeImage()
+    updateImage()
 end
 
 --------------------------------------------------------------
@@ -172,7 +172,7 @@ function calculateScrollSpeed()
     end
 end
 
-function normalizeImage()
+function updateImage()
     if scaleDelta ~= 0 or isMotionless() then
         keepImageInBounds()
     end
