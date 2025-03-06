@@ -98,6 +98,14 @@ end
 
 ------------------------- SCROLLING --------------------------
 
+function handleScrollKeypressed(key)
+    if     key == "left"  then stopScrollingLeft()
+    elseif key == "right" then stopScrollingRight()
+    elseif key == "up"    then stopScrollingUp()
+    elseif key == "down"  then stopScrollingDown()
+    end
+end
+    
 function updateScrolling(dt)
 	  x = x + xSpeed * dt * scale
 	  y = y + ySpeed * dt * scale
@@ -168,11 +176,9 @@ function getTimeElapsedSinceLastKeypress()
 end
 
 function handleDirectionalKeypressed(key)
-    if     key == "left"   then scrollLeft()
-    elseif key == "right"  then scrollRight()
-    elseif key == "up"     then scrollUp()
-    elseif key == "down"   then scrollDown()
-    elseif key == "z"      then zoomIn()
+    handleScrollKeypressed(key)
+    
+    if key == "z"      then zoomIn()
     elseif key == "a"      then zoomOut()
     end
 end
