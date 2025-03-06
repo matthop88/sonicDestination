@@ -69,9 +69,10 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    x = x + (xSpeed * dt)
-    y = y + (ySpeed * dt)
-
+    x     = x     + (xSpeed * dt)
+    y     = y     + (ySpeed * dt)
+    scale = scale + (     1 * dt)
+  
     normalizeImage()
 end
 
