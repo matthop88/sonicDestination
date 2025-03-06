@@ -32,6 +32,8 @@ IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
 x = 0
 y = 0
 
+SCROLL_SPEED = 100
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -57,13 +59,13 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     if key == "left" then
-        x = x + 100
+        x = x + SCROLL_SPEED
     elseif key == "right" then
-        x = x - 100
+        x = x - SCROLL_SPEED
     elseif key == "up" then
-        y = y + 100
+        y = y + SCROLL_SPEED
     elseif key == "down" then
-        y = y - 100
+        y = y - SCROLL_SPEED
     end
 end
 
@@ -171,3 +173,6 @@ if showMessage then
           end
      end 
 end
+
+
+
