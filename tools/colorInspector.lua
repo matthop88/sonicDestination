@@ -71,14 +71,9 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    -- Update Scrolling
 	updateScrolling(dt)
-
-	-- Update Zooming
-    updateZooming(dt)
-
-	-- Update Image
-    updateImage()
+	updateZooming(dt)
+	updateImage()
 end
 
 -- Function Name: love.keypressed()
