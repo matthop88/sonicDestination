@@ -156,7 +156,10 @@ function stopZoomingOut()     scaleDelta =  0                    end
 
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
-    handleDirectionalKeypressed(key)
+    
+	  handleScrollKeypressed(key)
+    handleZoomKeypressed(key)
+   
     lastKeypressed     = key 
     lastKeypressedTime = love.timer.getTime()
 end
@@ -179,11 +182,6 @@ end
 
 function getTimeElapsedSinceLastKeypress()
     return love.timer.getTime() - lastKeypressedTime
-end
-
-function handleDirectionalKeypressed(key)
-    handleScrollKeypressed(key)
-    handleZoomKeypressed(key)
 end
 
 function updateImage()
