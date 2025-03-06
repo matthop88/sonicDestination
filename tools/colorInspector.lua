@@ -29,8 +29,8 @@
 IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
         -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 
--- ...
--- ...
+x = 0
+y = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -46,9 +46,9 @@ love.window.setMode(800, 600, { display = 2 })
 
 -- Function Name: love.draw()
 -- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------	
+--------------------------------------------------------------
 function love.draw()
-	love.graphics.draw(IMAGE, 0, 0)
+     love.graphics.draw(IMAGE, x, y)
 end
 
 -- ...
