@@ -122,7 +122,7 @@ function keepInBounds()
         Rightmost pixel of image should be flush with right of screen
      
         if x + IMAGE:getWidth() < WINDOW_WIDTH then
-            x = 0
+            x + IMAGE:getWidth() = WINDOW_WIDTH
         end
 
     --]]
