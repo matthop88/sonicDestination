@@ -99,6 +99,13 @@ function handleKeypressed(key)
     lastKeypressedTime = love.timer.getTime()
 end
 
+function isDoubleTap(key)
+    keypressedTime     = love.timer.getTime()
+    timeBetweenPresses = keypressedTime - lastKeypressedTime
+
+    return lastKeypressed == key and timeBetweenPresses < 0.3
+end
+
 function handleDirectionalKeypressed(key)
     if     key == "left"   then scrollLeft()
     elseif key == "right"  then scrollRight()
@@ -107,13 +114,6 @@ function handleDirectionalKeypressed(key)
     end
 end
   
-function isDoubleTap(key)
-    keypressedTime     = love.timer.getTime()
-    timeBetweenPresses = keypressedTime - lastKeypressedTime
-
-    return lastKeypressed == key and timeBetweenPresses < 0.3
-end
-
 function calculateScrollSpeed()
     if dashing then return SCROLL_SPEED * 2
     else            return SCROLL_SPEED
