@@ -32,9 +32,6 @@ IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
 x = 0
 y = 0
 
--- To Scroll Left:  Increase X
--- To Scroll Right: Decrease X
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -61,6 +58,9 @@ end
 function love.keypressed(key)
      -- Code to handle key press event goes here
      print(key)
+
+     -- To Scroll Left:  Increase X
+     -- To Scroll Right: Decrease X
 end
 
 -- ...
