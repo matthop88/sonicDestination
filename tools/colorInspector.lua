@@ -105,6 +105,14 @@ function handleScrollKeypressed(key)
     elseif key == "down"  then scrollDown()
     end
 end
+
+function handleScrollKeyreleased(key)
+    if     key == "left"  then stopScrollingLeft()
+    elseif key == "right" then stopScrollingRight()
+    elseif key == "up"    then stopScrollingUp()
+    elseif key == "down"  then stopScrollingDown()
+    end
+end
     
 function updateScrolling(dt)
 	  x = x + xSpeed * dt * scale
@@ -165,12 +173,10 @@ function handleKeypressed(key)
 end
 
 function handleKeyreleased(key)
-	  if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
-    elseif key == "z" 	  then stopZoomingIn()
-	  elseif key == "a"     then stopZoomingOut()
+	  handleScrollKeyreleased()
+  
+    if     key == "z" then stopZoomingIn()
+	  elseif key == "a" then stopZoomingOut()
     end
   
     updateImage()
