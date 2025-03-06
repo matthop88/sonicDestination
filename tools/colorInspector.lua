@@ -101,13 +101,10 @@ function handleLeftKeypressed()
     keypressedTime     = love.timer.getTime()
     timeBetweenPresses = keypressedTime - lastKeypressedTime
 
-    if lastKeypressed == "left" then
-        if timeBetweenPresses < 0.3 then
-            print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
-            
-            burstScrollLeft()
-            return
-        end
+    if lastKeypressed == "left" and timeBetweenPresses < 0.3 then
+        print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
+        burstScrollLeft()
+        return
     end 
   
     scrollLeft()  
@@ -117,13 +114,10 @@ function handleRightKeypressed()
     keypressedTime     = love.timer.getTime()
     timeBetweenPresses = keypressedTime - lastKeypressedTime
 
-    if lastKeypressed == "right" then
-        if timeBetweenPresses < 0.3 then
-            print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
-
-            burstScrollRight()
-            return
-        end
+    if lastKeypressed == "right" and timeBetweenPresses < 0.3 then
+        print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
+        burstScrollRight()
+        return
     end 
 
     scrollRight()  
