@@ -123,6 +123,8 @@ function handleDirectionalKeypressed(key)
     elseif key == "right"  then scrollRight()
     elseif key == "up"     then scrollUp()
     elseif key == "down"   then scrollDown()
+    elseif key == "z"      then scaleDelta =  1
+    elseif key == "a"      then scaleDelta = -1
     end
 end
   
