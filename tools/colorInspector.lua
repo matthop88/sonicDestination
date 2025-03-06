@@ -75,14 +75,7 @@ function love.update(dt)
 	updateScrolling(dt)
 
 	-- Update Zooming
-    scale = scale + scaleDelta * dt * scale
-
-	if scaleDelta ~= 0 then
-		--[[
-        	Adjust x and y of image so that we are zooming in at point
-        	the mouse is at
-		--]]
-	end
+    updateZooming(dt)
 
 	-- Update Image
     normalizeImage()
@@ -119,6 +112,17 @@ end
 function updateScrolling(dt)
 	x = x + xSpeed * dt * scale
 	y = y + ySpeed * dt * scale
+end
+
+function updateZooming(dt)
+    scale = scale + scaleDelta * dt * scale
+
+	if scaleDelta ~= 0 then
+        --[[
+            Adjust x and y of image so that we are zooming in at point
+            the mouse is at
+        --]]
+    end
 end
 
 function handleKeypressed(key)
