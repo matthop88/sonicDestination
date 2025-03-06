@@ -33,7 +33,7 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
+IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
         -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 
 x = 0
@@ -62,9 +62,12 @@ end
 
 -- Function Name: love.update()
 -- Called By:     LOVE2D application, every single frame
+-- Parameters:    dt - time lapsed between update calls
+--                     (in fractions of a second)
 --------------------------------------------------------------
-function love.update()
-    -- Code to execute "AUTOMAGICALLY" goes here
+function love.update(dt)
+    -- If scrolling has begun, continue scrolling in proper direction
+    -- at a constant rate.
 end
 
 -- Function Name: love.keypressed()
