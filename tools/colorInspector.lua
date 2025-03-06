@@ -30,7 +30,7 @@ IMAGE          = love.graphics.newImage("resources/images/spriteSheets/sonic1.pn
                  -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 SCROLL_SPEED                = 400
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
-DOUBLE_TAP_THRESHOLD        = 0.3
+DOUBLE_TAP_THRESHOLD        = 0.2
 
 x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
