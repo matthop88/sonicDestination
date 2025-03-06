@@ -39,6 +39,7 @@ IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
 x = 0
 y = 0
 
+SCROLL_SPEED = 200
 X_SPEED = 0
 Y_SPEED = 0
 
@@ -112,22 +113,22 @@ end
 --------------------------------------------------------------
 
 function scrollLeft()
-    X_SPEED =  200
+    X_SPEED =  SCROLL_SPEED
     Y_SPEED =  0
 end
 
 function scrollRight()
-    X_SPEED = -200
+    X_SPEED = -SCROLL_SPEED
     Y_SPEED =  0
 end
 
 function scrollUp()
-    Y_SPEED =  200
+    Y_SPEED =  SCROLL_SPEED
     X_SPEED =  0
 end
 
 function scrollDown()
-    Y_SPEED = -200
+    Y_SPEED = -SCROLL_SPEED
     X_SPEED =  0
 end
 
