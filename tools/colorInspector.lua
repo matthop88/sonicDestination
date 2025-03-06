@@ -25,8 +25,8 @@
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
--- ...
--- ...
+love.window.setTitle("Color Inspector")
+love.window.setMode(800, 600, { display = 2 })
 -- ...
 
 --------------------------------------------------------------
