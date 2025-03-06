@@ -48,6 +48,9 @@ dashing                     = false
 
 showTimeOver                = false
 
+backgroundAlpha             = nil
+foregroundAlpha             = nil
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -64,8 +67,18 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     love.graphics.draw(IMAGE, x, y)
+    if backgroundAlpha ~= nil then
+        love.graphics.setColor(0, 0, 0, backgroundAlpha)
+        love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        love.graphics.setColor(1, 1, 1)
+    end
     if showTimeOver then
         love.graphics.draw(TIME_OVER_IMAGE, TIME_OVER_QUAD, 55, 260, 0, 5, 5)
+    end
+    if foregroundAlpha ~= nil then
+        love.graphics.setColor(0, 0, 0, foregroundAlpha)
+        love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        love.graphics.setColor(1, 1, 1)
     end
 end
 
@@ -78,6 +91,12 @@ function love.update(dt)
     x = x + (xSpeed * dt)
     y = y + (ySpeed * dt)
 
+    if backgroundAlpha ~= nil then
+        backgroundAlpha = backgroundAlpha + (0.2 * dt)
+    end
+    if foregroundAlpha ~= nil then
+        foregroundAlpha = foregroundAlpha + (0.6 * dt)
+    end
     normalizeImage()
 end
 
@@ -91,8 +110,11 @@ function love.keypressed(key)
         showTimeOver = not showTimeOver
         if showTimeOver then
             local gameOverSound = love.audio.newSource("resources/game-over.mp3", "static")
+            backgroundAlpha = -0.5
             gameOverSound:play()
         end
+    elseif key == "return" then
+        foregroundAlpha = 0
     end
 end
 
