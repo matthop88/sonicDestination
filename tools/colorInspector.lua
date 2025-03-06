@@ -89,15 +89,7 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-    if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
-    elseif key == "z" 	  then stopZoomingIn()
-	  elseif key == "a"     then stopZoomingOut()
-    end
-  
-    updateImage()
+    handleKeyreleased(key)
 end
 
 --------------------------------------------------------------
@@ -153,6 +145,18 @@ function handleKeypressed(key)
     handleDirectionalKeypressed(key)
     lastKeypressed     = key 
     lastKeypressedTime = love.timer.getTime()
+end
+
+function handleKeyreleased(key)
+	  if     key == "left"  then stopScrollingLeft()
+    elseif key == "right" then stopScrollingRight()
+    elseif key == "up"    then stopScrollingUp()
+    elseif key == "down"  then stopScrollingDown()
+    elseif key == "z" 	  then stopZoomingIn()
+	  elseif key == "a"     then stopZoomingOut()
+    end
+  
+    updateImage()
 end
 
 function isDoubleTap(key)
