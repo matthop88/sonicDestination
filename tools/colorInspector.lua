@@ -135,7 +135,6 @@ function handleRightKeypressed()
     lastKeypressedTime = keypressedTime                  
 end
   
-function handleRightKeypressed() scrollRight()                end
 function handleUpKeypressed()    scrollUp()                   end
 function handleDownKeypressed()  scrollDown()                 end
 
