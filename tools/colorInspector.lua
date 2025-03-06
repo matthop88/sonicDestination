@@ -27,7 +27,7 @@
 --------------------------------------------------------------
 
 if __INSPECTOR_FILE ~= nil then
-    IMAGE = love.graphics.newImage("resources/images/" .. __INSPECTOR_FILE)
+    IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
     IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
