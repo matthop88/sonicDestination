@@ -109,6 +109,16 @@ function keepInBounds()
                          or too far down
         then correct
     --]]
+
+    -- Don't scroll too far to left
+    if x > 0 then
+        x = 0
+    end
+
+    -- Don't scroll too far up
+    if y > 0 then
+        y = 0
+    end
 end
 
 
