@@ -59,6 +59,8 @@ end
 function love.update(dt)
     x = x + (xSpeed * dt)
     y = y + (ySpeed * dt)
+
+    keepInBounds()
 end
 
 -- Function Name: love.keypressed()
@@ -99,7 +101,15 @@ function stopScrollingRight() xSpeed = math.max(0, xSpeed) end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed) end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed) end
 
-
+function keepInBounds()
+    --[[
+        If we have scrolled too far to the left
+                         or too far to the right
+                         or too far up
+                         or too far down
+        then correct
+    --]]
+end
 
 
 
