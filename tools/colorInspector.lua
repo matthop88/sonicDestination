@@ -43,6 +43,8 @@ dashing                     = false
 scale                       = 1
 scaleDelta                  = 0
 
+scaleOutFrom   = { x = 0, y = 0 }
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -51,9 +53,9 @@ love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 if __INSPECTOR_FILE ~= nil then
-	IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+    IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
-	IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
+    IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
 --------------------------------------------------------------
@@ -64,8 +66,10 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-	mX, mY = love.mouse:getPosition()
-	love.graphics.draw(IMAGE, ((x - mX) * scale) + mX, ((y - mY) * scale) + mY, 0, scale, scale)
+    love.graphics.draw(IMAGE, 
+    	((x - scaleOutFrom.x) * scale) + scaleOutFrom.x, 
+    	((y - scaleOutFrom.y) * scale) + scaleOutFrom.y, 
+     	0, scale, scale)
 end
 
 -- Function Name: love.update()
@@ -74,16 +78,17 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-	x = x + xSpeed * dt
-    y = y + ySpeed * dt
+    x = x + (xSpeed * dt)
+    y = y + (ySpeed * dt)
      
     if scaleDelta ~= 0 then
     	--[[
-        	Adjust x and y of image so that we are zooming in at point
+            Adjust x and y of image so that we are zooming in at point
             the mouse is at
-        --]]
-          
-		scale = scale + (scaleDelta * scale * dt)
+		--]]
+
+		scaleOutFrom.x, scaleOutFrom.y = love.mouse:getPosition()
+        scale = scale + (scaleDelta * scale * dt)
         keepImageInBounds() 
 	end
 end
@@ -93,7 +98,7 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-	handleKeypressed(key)
+    handleKeypressed(key)
 end
 
 -- Function Name: love.keyreleased()
@@ -101,7 +106,7 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-	if     key == "left"  then stopScrollingLeft()
+    if     key == "left"  then stopScrollingLeft()
     elseif key == "right" then stopScrollingRight()
     elseif key == "up"    then stopScrollingUp()
     elseif key == "down"  then stopScrollingDown()
