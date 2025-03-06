@@ -89,6 +89,22 @@ function love.keypressed(key)
     end
 end
 
+-- Function Name: love.keyreleased()
+-- Called By:     LOVE2D application, when any key is released
+-- Parameters:    key - text value of key released by the user
+--------------------------------------------------------------
+function love.keyreleased(key)
+    if key == "left" then
+        X_SPEED = 0
+    elseif key == "right" then
+        X_SPEED = 0
+    elseif key == "up" then
+        Y_SPEED = 0
+    elseif key == "down" then
+        Y_SPEED = 0
+    end
+end
+
 -- ...
 
 --------------------------------------------------------------
