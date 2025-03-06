@@ -112,22 +112,22 @@ end
 --------------------------------------------------------------
 
 function scrollLeft()
-    X_SPEED =  100
+    X_SPEED =  200
     Y_SPEED =  0
 end
 
 function scrollRight()
-    X_SPEED = -100
+    X_SPEED = -200
     Y_SPEED =  0
 end
 
 function scrollUp()
-    Y_SPEED =  100
+    Y_SPEED =  200
     X_SPEED =  0
 end
 
 function scrollDown()
-    Y_SPEED = -100
+    Y_SPEED = -200
     X_SPEED =  0
 end
 
