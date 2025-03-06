@@ -105,22 +105,18 @@ end
 
 function scrollLeft()
     xSpeed =  SCROLL_SPEED
-    ySpeed =  0
 end
 
 function scrollRight()
     xSpeed = -SCROLL_SPEED
-    ySpeed =  0
 end
 
 function scrollUp()
     ySpeed =  SCROLL_SPEED
-    xSpeed =  0
 end
 
 function scrollDown()
     ySpeed = -SCROLL_SPEED
-    xSpeed =  0
 end
 
 function stopScrollingLeft()
