@@ -80,10 +80,10 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-    if key == "left" then scrollLeft()
+    if     key == "left"  then scrollLeft()
     elseif key == "right" then scrollRight()
-    elseif key == "up" then scrollUp()
-    elseif key == "down" then scrollDown()
+    elseif key == "up"    then scrollUp()
+    elseif key == "down"  then scrollDown()
     end
 end
 
