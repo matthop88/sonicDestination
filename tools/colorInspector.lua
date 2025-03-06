@@ -29,7 +29,7 @@
 IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
         -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
 
-x = 0
+x = -300
 y = 0
 
 --------------------------------------------------------------
