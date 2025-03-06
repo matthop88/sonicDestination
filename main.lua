@@ -8,9 +8,10 @@
 --                       passed by user in console
 --------------------------------------------------------------
 function love.load(args)
-	print(args[1])
-	require "tools/colorInspector"
+	if args[1] == "inspector" then
+		require "tools/colorInspector"
+	else
+		require "game/main"
+	end
 end
-
---require "game/main"
 
