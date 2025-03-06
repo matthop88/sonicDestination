@@ -97,6 +97,31 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+function isDoubleTap(key)
+    keypressedTime     = love.timer.getTime()
+    timeBetweenPresses = keypressedTime - lastKeypressedTime
+
+    return lastKeypressed == key and timeBetweenPresses < 0.3
+end
+
+function handleLeftKeypressed() 
+    if isDoubleTap("left") then
+        print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
+        burstScrollLeft()
+    else 
+        scrollLeft()  
+    end         
+end
+
+function handleRightKeypressed() 
+    if isDoubleTap("right") then
+        print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
+        burstScrollRight()
+    else
+        scrollRight() 
+    end                
+end
+  
 function handleLeftKeypressed() 
     keypressedTime     = love.timer.getTime()
     timeBetweenPresses = keypressedTime - lastKeypressedTime
