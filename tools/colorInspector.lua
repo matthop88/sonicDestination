@@ -39,7 +39,7 @@ IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
 x = 0
 y = 0
 
-SCROLL_SPEED = 20
+SCROLL_SPEED = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -68,7 +68,7 @@ end
 function love.update(dt)
     -- If scrolling has begun, continue scrolling in proper direction
     -- at a constant rate.
-    x = x + (100 * dt)
+    x = x + (SCROLL_SPEED * dt)
 end
 
 -- Function Name: love.keypressed()
@@ -94,11 +94,11 @@ end
 --------------------------------------------------------------
 
 function scrollLeft()
-    x = x + SCROLL_SPEED
+    SCROLL_SPEED =  100
 end
 
 function scrollRight()
-    x = x - SCROLL_SPEED
+    SCROLL_SPEED = -100
 end
 
 function scrollUp()
