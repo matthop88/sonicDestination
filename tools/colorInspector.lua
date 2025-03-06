@@ -51,9 +51,9 @@ love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 if __INSPECTOR_FILE ~= nil then
-	IMAGE = love.graphics.newImage("game/resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+	IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
-	IMAGE = love.graphics.newImage("tools/resources/images/sadNoFileImage.png")
+	IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
 --------------------------------------------------------------
