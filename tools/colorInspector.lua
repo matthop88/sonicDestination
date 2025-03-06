@@ -58,17 +58,11 @@ end
 function love.keypressed(key)
     if key == "left" then
         x = x + 100
-    end
-
-    if key == "right" then
+    elseif key == "right" then
         x = x - 100
-    end
-
-    if key == "up" then
+    elseif key == "up" then
         y = y + 100
-    end
-
-    if key == "down" then
+    elseif key == "down" then
         y = y - 100
     end
 end
@@ -177,4 +171,3 @@ if showMessage then
           end
      end 
 end
-
