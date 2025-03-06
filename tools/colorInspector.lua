@@ -32,7 +32,7 @@ IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
 x = 0
 y = 0
 
-SCROLL_SPEED = 100
+SCROLL_SPEED = 20
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -75,9 +75,21 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
--- ...
--- ...
+function scrollLeft()
+     -- Scrolling Left code goes here
+end
+
+function scrollRight()
+     -- Scrolling Right code goes here
+end
+
+function scrollUp()
+     -- Scrolling Up code goes here
+end
+
+function scrollDown()
+     -- Scrolling Down code goes here
+end
 
 
 
