@@ -29,8 +29,7 @@
 if __INSPECTOR_FILE ~= nil then
     IMAGE = love.graphics.newImage("resources/images/" .. __INSPECTOR_FILE)
 else
-    IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
-            -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
+    IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
 SCROLL_SPEED                = 400
