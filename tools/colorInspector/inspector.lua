@@ -71,9 +71,9 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-	  updateScrolling(dt)
-	  updateZooming(dt)
-	  updateImage()
+	updateScrolling(dt)
+	updateZooming(dt)
+	updateImage()
 end
 
 -- Function Name: love.keypressed()
@@ -101,7 +101,7 @@ end
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     
-	  handleScrollKeypressed(key)
+	handleScrollKeypressed(key)
     handleZoomKeypressed(key)
    
     lastKeypressed     = key 
@@ -109,8 +109,8 @@ function handleKeypressed(key)
 end
 
 function handleKeyreleased(key)
-	  handleScrollKeyreleased()
-    handleZoomKeyreleased()
+	handleScrollKeyreleased(key)
+    handleZoomKeyreleased(key)
     
     updateImage()
 end
@@ -130,7 +130,7 @@ function updateImage()
 end
 
 function isMotionless()
-	  return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
+	return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
 end
 
 function keepImageInBounds()
@@ -157,8 +157,8 @@ function handleScrollKeyreleased(key)
 end
     
 function updateScrolling(dt)
-	  x = x + xSpeed * dt * scale
-	  y = y + ySpeed * dt * scale
+	x = x + xSpeed * dt * scale
+	y = y + ySpeed * dt * scale
 end
 
 function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
@@ -187,12 +187,12 @@ end
 
 function handleZoomKeyreleased(key)
     if     key == "z" then stopZoomingIn()
-	  elseif key == "a" then stopZoomingOut()
+	elseif key == "a" then stopZoomingOut()
     end
 end
     
 function updateZooming(dt)
-	  if scaleDelta ~= 0 then
+	if scaleDelta ~= 0 then
         --[[
             Adjust x and y of image so that we are zooming in at point
             the mouse is at
