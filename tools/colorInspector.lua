@@ -26,8 +26,12 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-IMAGE                       = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
-                              -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
+if __INSPECTOR_FILE ~= nil then
+    IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+else
+    IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
+end
+
 SCROLL_SPEED                = 400
 ZOOM_SPEED                  = 2
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
@@ -43,51 +47,12 @@ dashing                     = false
 scale                       = 1
 scaleDelta                  = 0
 
-scaleOutFrom   = { x = 0, y = 0 }
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-if __INSPECTOR_FILE ~= nil then
-	IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
-else
-    IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
-end
-
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    love.graphics.draw(IMAGE, 
-		((x - scaleOutFrom.x) * scale) + scaleOutFrom.x, 
-    	((y - scaleOutFrom.y) * scale) + scaleOutFrom.y, 
-     	0, scale, scale)
-end
-
--- Function Name: love.update()
--- Called By:     LOVE2D application, every single frame
--- Parameters:    dt - time lapsed between update calls
---                     (in fractions of a second)
---------------------------------------------------------------
-function love.update(dt)
-    x = x + (xSpeed * dt)
-    y = y + (ySpeed * dt)
-     
-    if scaleDelta ~= 0 then 
-    	scale = scale + (scaleDelta * scale * dt)
-        local oldScaleOutFromX, oldScaleOutFromY = scaleOutFrom.x, scaleOutFrom.y
-        local viewX = ((x - oldScaleOutFromX) * scale) + oldScaleOutFromX
-        local viewY = ((y - oldScaleOutFromY) * scale) + oldScaleOutFromY
-        	scaleOutFrom.x, scaleOutFrom.y = love.mouse:getPosition()
-          	scaleOutFrom.x = scaleOutFrom.x - viewX
-          	scaleOutFrom.y = scaleOutFrom.y - viewY
-          	keepInBounds() 
-	end
-end
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -97,10 +62,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, 
-    	((x - scaleOutFrom.x) * scale) + scaleOutFrom.x, 
-    	((y - scaleOutFrom.y) * scale) + scaleOutFrom.y, 
-     	0, scale, scale)
+    love.graphics.draw(IMAGE, x, y, 0, scale, scale)
 end
 
 -- Function Name: love.update()
@@ -109,25 +71,18 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    x = x + (xSpeed * dt)
-    y = y + (ySpeed * dt)
-     
-    if scaleDelta ~= 0 then 
-    	--[[
-        	Adjust x and y of image so that we are zooming in at point
-            the mouse is at
-        --]]
+    x     = x     + xSpeed     * dt * scale
+	y     = y     + ySpeed     * dt * scale
+    scale = scale + scaleDelta * dt * scale
 
-        scale = scale + (scaleDelta * scale * dt)
-        local oldScaleOutFromX, oldScaleOutFromY = scaleOutFrom.x, scaleOutFrom.y
-        local viewX = ((x - oldScaleOutFromX) * scale) + oldScaleOutFromX
-        local viewY = ((y - oldScaleOutFromY) * scale) + oldScaleOutFromY
-        scaleOutFrom.x, scaleOutFrom.y = love.mouse:getPosition()
-        scaleOutFrom.x = scaleOutFrom.x - viewX
-        scaleOutFrom.y = scaleOutFrom.y - viewY
-          
-        keepImageInBounds()
+	if scaleDelta ~= 0 then
+		--[[
+        	Adjust x and y of image so that we are zooming in at point
+        	the mouse is at
+		--]]
 	end
+		
+    normalizeImage()
 end
 
 -- Function Name: love.keypressed()
@@ -147,12 +102,11 @@ function love.keyreleased(key)
     elseif key == "right" then stopScrollingRight()
     elseif key == "up"    then stopScrollingUp()
     elseif key == "down"  then stopScrollingDown()
-    elseif key == "z"     then stopZoomingIn()
-    elseif key == "a"     then stopZoomingOut()
+    elseif key == "z" 	  then stopZoomingIn()
+	elseif key == "a"     then stopZoomingOut()
     end
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD then
-    	keepImageInBounds()
-    end
+  
+    normalizeImage()
 end
 
 --------------------------------------------------------------
@@ -161,7 +115,7 @@ end
 
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
-    handleDirectionalKeyPressed(key)
+    handleDirectionalKeypressed(key)
     lastKeypressed     = key 
     lastKeypressedTime = love.timer.getTime()
 end
@@ -174,7 +128,7 @@ function getTimeElapsedSinceLastKeypress()
     return love.timer.getTime() - lastKeypressedTime
 end
 
-function handleDirectionalKeyPressed(key)
+function handleDirectionalKeypressed(key)
     if     key == "left"   then scrollLeft()
     elseif key == "right"  then scrollRight()
     elseif key == "up"     then scrollUp()
@@ -183,22 +137,22 @@ function handleDirectionalKeyPressed(key)
     elseif key == "a"      then zoomOut()
     end
 end
+  
+function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
+function scrollRight()        xSpeed = -(calculateScrollSpeed()) end  
+function scrollUp()           ySpeed =   calculateScrollSpeed()  end
+function scrollDown()         ySpeed = -(calculateScrollSpeed()) end
+  
+function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)       end
+function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
+function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
+function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
 
-function scrollLeft()         xSpeed =    calculateScrollSpeed()  end
-function scrollRight()        xSpeed = - (calculateScrollSpeed()) end          
-function scrollUp()           ySpeed =    calculateScrollSpeed()  end
-function scrollDown()         ySpeed = - (calculateScrollSpeed()) end
+function zoomIn()             scaleDelta =  ZOOM_SPEED           end
+function zoomOut()            scaleDelta = -ZOOM_SPEED           end
 
-function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)        end
-function stopScrollingRight() xSpeed = math.max(0, xSpeed)        end
-function stopScrollingUp()    ySpeed = math.min(0, ySpeed)        end
-function stopScrollingDown()  ySpeed = math.max(0, ySpeed)        end
-
-function zoomIn()             scaleDelta =  ZOOM_SPEED            end
-function zoomOut()            scaleDelta = -ZOOM_SPEED            end
-
-function stopZoomingIn()      scaleDelta =  0                     end
-function stopZoomingOut()     scaleDelta =  0                     end
+function stopZoomingIn()      scaleDelta =  0                    end
+function stopZoomingOut()     scaleDelta =  0                    end
 
 function calculateScrollSpeed()
     if dashing then return SCROLL_SPEED * 2
@@ -206,16 +160,58 @@ function calculateScrollSpeed()
     end
 end
 
+function normalizeImage()
+    if scaleDelta ~= 0 or isMotionless() then
+        keepImageInBounds()
+    end
+end
+
+function isMotionless()
+	return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
+end
+
 function keepImageInBounds()
-    keepImage_X_InBounds()
-    keepImage_Y_InBounds()
-end
-
-function keepImage_X_InBounds()
-    x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth() * scale)))
-end
-
-function keepImage_Y_InBounds()
+    x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth()  * scale)))
     y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--[[
+
+          *************     ******************    ******************           *****           
+      *****************   ********************  ********************         **********      
+     ******              ******                *****                        ************            
+    ****   ************  ***** *************** **** ****************       *****   ******           
+   ****  **************  ***** *************** **** ****************      *****  ** *****           
+   **** ****             ***** ***             **** ****                  ***** ***  *****          
+    ***  **********      ***** *************   **** **** ***********     ***** ***** ******         
+     ****    ********    ***** *************   **** **** ***********    ****** ****** *****         
+      *******     ****   ***** *************   **** **** ****** ****    ***** ******* ******        
+        **********  ***  ***** *************   **** **** ****** ****   *****  *** **** *****        
+               **** **** ***** ***             **** ****   **** ****  ****** ****  **** *****       
+    **************  ***  ***** *************** **** *********** ****  ***** *********** ******      
+    ************   ****  ***** *************** **** *********** **** ****** ************ *****      
+                ******   ******                *****            **** ***** ***            *****     
+    ****************      ********************  ************************* ***  *****************    
+    *************           ******************    *********************** ***  *****************   
+
+--]]
+
+
+
+
 
