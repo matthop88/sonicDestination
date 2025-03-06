@@ -60,7 +60,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, x, y, 0, scale, scale)
+    love.graphics.draw(IMAGE, x, y, 0, scale, 2)
 end
 
 -- Function Name: love.update()
