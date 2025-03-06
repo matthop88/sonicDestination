@@ -154,9 +154,13 @@ function calculateScrollSpeed()
 end
 
 function normalizeImage()
-    if scaleDelta ~= 0 or (getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0) then
+    if scaleDelta ~= 0 or isMotionless() then
         keepImageInBounds()
     end
+end
+
+function isMotionless()
+	return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
 end
 
 function keepImageInBounds()
