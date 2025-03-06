@@ -116,10 +116,8 @@ function keepInBounds()
     -- Don't scroll too far to right or too far to left
     x = math.min(0, math.max(x, WINDOW_WIDTH - IMAGE:getWidth()))
      
-    -- Don't scroll too far up
-    if y > 0 then
-        y = 0
-    end
+    -- Don't scroll too far up or too far down
+    y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
 end
 
 
