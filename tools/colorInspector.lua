@@ -95,7 +95,7 @@ end
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     if     key == "left"   then scrollLeft()
-    elseif key == "right"  then handleRightKeypressed()
+    elseif key == "right"  then scrollRight()
     elseif key == "up"     then handleUpKeypressed()
     elseif key == "down"   then handleDownKeypressed()
     else                        dashing = false
@@ -111,12 +111,6 @@ function isDoubleTap(key)
     return lastKeypressed == key and timeBetweenPresses < 0.3
 end
 
-function handleRightKeypressed() 
-    if isDoubleTap("right") then burstScrollRight()
-    else                         scrollRight() 
-    end                
-end
-  
 function handleUpKeypressed()    
     if isDoubleTap("up")    then burstScrollUp()
     else                         scrollUp() 
@@ -135,11 +129,15 @@ function scrollLeft()
     end
 end
 
-function scrollRight()           xSpeed = -SCROLL_SPEED       end
+function scrollRight()           
+     if dashing then xSpeed = -SCROLL_SPEED * 2
+     else            xSpeed = -SCROLL_SPEED       
+     end
+end
+  
 function scrollUp()              ySpeed =  SCROLL_SPEED       end
 function scrollDown()            ySpeed = -SCROLL_SPEED       end
 
-function burstScrollRight()      xSpeed = -SCROLL_SPEED * 2   end
 function burstScrollUp()         ySpeed =  SCROLL_SPEED * 2   end
 function burstScrollDown()       ySpeed = -SCROLL_SPEED * 2   end
 
