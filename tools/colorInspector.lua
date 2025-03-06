@@ -68,6 +68,7 @@ end
 function love.update(dt)
     -- If scrolling has begun, continue scrolling in proper direction
     -- at a constant rate.
+    x = x + (100 * dt)
 end
 
 -- Function Name: love.keypressed()
