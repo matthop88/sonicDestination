@@ -64,6 +64,9 @@ end
 function love.update(dt)
     x = x + (xSpeed * dt)
     y = y + (ySpeed * dt)
+    if getTimeElapsedSinceLastKeypress() >= 0.3 and xSpeed == 0 and ySpeed == 0 then
+        keepImageInBounds()
+    end
 end
 
 -- Function Name: love.keypressed()
