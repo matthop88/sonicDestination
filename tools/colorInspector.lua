@@ -43,7 +43,7 @@ lastKeypressed              = nil
 lastKeypressedTime          = 0
 dashing                     = false
 
-scale                       = 1
+scale                       = 4
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
