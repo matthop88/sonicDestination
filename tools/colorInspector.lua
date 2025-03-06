@@ -74,7 +74,14 @@ function love.update(dt)
     x     = x     + xSpeed     * dt * scale
 	y     = y     + ySpeed     * dt * scale
     scale = scale + scaleDelta * dt * scale
-  
+
+	if scaleDelta ~= 0 then
+		--[[
+        	Adjust x and y of image so that we are zooming in at point
+        	the mouse is at
+		--]]
+	end
+		
     normalizeImage()
 end
 
