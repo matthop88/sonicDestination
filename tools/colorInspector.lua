@@ -142,6 +142,12 @@ function handleZoomKeypressed(key)
     elseif key == "a" then zoomOut()
     end
 end
+
+function handleZoomKeyreleased(key)
+    if     key == "z" then stopZoomingIn()
+	  elseif key == "a" then stopZoomingOut()
+    end
+end
     
 function updateZooming(dt)
 	  if scaleDelta ~= 0 then
@@ -174,11 +180,8 @@ end
 
 function handleKeyreleased(key)
 	  handleScrollKeyreleased()
-  
-    if     key == "z" then stopZoomingIn()
-	  elseif key == "a" then stopZoomingOut()
-    end
-  
+    handleZoomKeyreleased()
+    
     updateImage()
 end
 
