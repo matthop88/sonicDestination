@@ -99,10 +99,10 @@ end
 ------------------------- SCROLLING --------------------------
 
 function handleScrollKeypressed(key)
-    if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
+    if     key == "left"  then scrollLeft()
+    elseif key == "right" then scrollRight()
+    elseif key == "up"    then scrollUp()
+    elseif key == "down"  then scrollDown()
     end
 end
     
