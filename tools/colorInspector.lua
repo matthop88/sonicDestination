@@ -121,6 +121,12 @@ function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
 
+function calculateScrollSpeed()
+    if dashing then return SCROLL_SPEED * 2
+    else            return SCROLL_SPEED
+    end
+end
+
 -------------------------- ZOOMING ---------------------------
 
 function updateZooming(dt)
@@ -133,6 +139,12 @@ function updateZooming(dt)
         scale = scale + scaleDelta * dt * scale
     end
 end
+
+function zoomIn()             scaleDelta =  ZOOM_SPEED           end
+function zoomOut()            scaleDelta = -ZOOM_SPEED           end
+
+function stopZoomingIn()      scaleDelta =  0                    end
+function stopZoomingOut()     scaleDelta =  0                    end
 
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
@@ -156,18 +168,6 @@ function handleDirectionalKeypressed(key)
     elseif key == "down"   then scrollDown()
     elseif key == "z"      then zoomIn()
     elseif key == "a"      then zoomOut()
-    end
-end
-  
-function zoomIn()             scaleDelta =  ZOOM_SPEED           end
-function zoomOut()            scaleDelta = -ZOOM_SPEED           end
-
-function stopZoomingIn()      scaleDelta =  0                    end
-function stopZoomingOut()     scaleDelta =  0                    end
-
-function calculateScrollSpeed()
-    if dashing then return SCROLL_SPEED * 2
-    else            return SCROLL_SPEED
     end
 end
 
