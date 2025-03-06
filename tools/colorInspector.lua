@@ -111,6 +111,12 @@ function isDoubleTap(key)
     return lastKeypressed == key and timeBetweenPresses < 0.3
 end
 
+function calculateScrollSpeed()
+    if dashing then return SCROLL_SPEED * 2
+    else            return SCROLL_SPEED
+    end
+end
+
 function handleUpKeypressed()    
     if isDoubleTap("up")    then burstScrollUp()
     else                         scrollUp() 
@@ -123,28 +129,19 @@ function handleDownKeypressed()
     end 
 end
 
-function scrollLeft()            
-    if dashing then xSpeed = SCROLL_SPEED * 2
-    else            xSpeed = SCROLL_SPEED       
-    end
-end
-
-function scrollRight()           
-     if dashing then xSpeed = -SCROLL_SPEED * 2
-     else            xSpeed = -SCROLL_SPEED       
-     end
-end
+function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
+function scrollRight()        xSpeed = -(calculateScrollSpeed()) end  
   
-function scrollUp()              ySpeed =  SCROLL_SPEED       end
-function scrollDown()            ySpeed = -SCROLL_SPEED       end
+function scrollUp()           ySpeed =  SCROLL_SPEED             end
+function scrollDown()         ySpeed = -SCROLL_SPEED             end
 
-function burstScrollUp()         ySpeed =  SCROLL_SPEED * 2   end
-function burstScrollDown()       ySpeed = -SCROLL_SPEED * 2   end
+function burstScrollUp()      ySpeed =  SCROLL_SPEED * 2         end
+function burstScrollDown()    ySpeed = -SCROLL_SPEED * 2         end
 
-function stopScrollingLeft()     xSpeed = math.min(0, xSpeed) end
-function stopScrollingRight()    xSpeed = math.max(0, xSpeed) end
-function stopScrollingUp()       ySpeed = math.min(0, ySpeed) end
-function stopScrollingDown()     ySpeed = math.max(0, ySpeed) end
+function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)       end
+function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
+function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
+function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
 
 function keepImageInBounds()
     x = math.min(0, math.max(x, WINDOW_WIDTH  - IMAGE:getWidth()))
