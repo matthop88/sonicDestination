@@ -33,7 +33,7 @@ else
 end
 
 SCROLL_SPEED                = 400
-ZOOM_SPEED                  = 1
+ZOOM_SPEED                  = 2
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
