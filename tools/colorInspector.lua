@@ -125,8 +125,8 @@ function handleDirectionalKeypressed(key)
     elseif key == "right"  then scrollRight()
     elseif key == "up"     then scrollUp()
     elseif key == "down"   then scrollDown()
-    elseif key == "z"      then scaleDelta =  1
-    elseif key == "a"      then scaleDelta = -1
+    elseif key == "z"      then zoomIn()
+    elseif key == "a"      then zoomOut()
     end
 end
   
@@ -139,6 +139,9 @@ function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)       end
 function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
 function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
 function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
+
+function zoomIn()             scaleDelta =  1                    end
+function zoomOut()            scaleDelta = -1                    end
 
 function calculateScrollSpeed()
     if dashing then return SCROLL_SPEED * 2
