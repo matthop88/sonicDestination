@@ -26,8 +26,13 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-IMAGE          = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
-                 -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
+if __INSPECTOR_FILE ~= nil then
+    IMAGE = love.graphics.newImage("resources/images/" .. __INSPECTOR_FILE)
+else
+    IMAGE = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
+            -- https://www.spriters-resource.com/sega_genesis_32x/sonicth1/sheet/21628/
+end
+
 SCROLL_SPEED                = 400
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
