@@ -69,8 +69,6 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    -- If scrolling has begun, continue scrolling in proper direction
-    -- at a constant rate.
     x = x + (xSpeed * dt)
     y = y + (ySpeed * dt)
 end
