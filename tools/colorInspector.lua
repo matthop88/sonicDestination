@@ -103,21 +103,13 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function scrollLeft()
-    xSpeed =  SCROLL_SPEED
-end
+function scrollLeft() xSpeed =  SCROLL_SPEED end
 
-function scrollRight()
-    xSpeed = -SCROLL_SPEED
-end
+function scrollRight() xSpeed = -SCROLL_SPEED end
 
-function scrollUp()
-    ySpeed =  SCROLL_SPEED
-end
+function scrollUp() ySpeed =  SCROLL_SPEED end
 
-function scrollDown()
-    ySpeed = -SCROLL_SPEED
-end
+function scrollDown() ySpeed = -SCROLL_SPEED end
 
 function stopScrollingLeft()
     if xSpeed > 0 then
