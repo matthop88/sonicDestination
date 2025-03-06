@@ -96,6 +96,48 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+------------------------ MISCELLANEOUS -------------------------
+
+function handleKeypressed(key)
+    dashing = isDoubleTap(key)
+    
+	  handleScrollKeypressed(key)
+    handleZoomKeypressed(key)
+   
+    lastKeypressed     = key 
+    lastKeypressedTime = love.timer.getTime()
+end
+
+function handleKeyreleased(key)
+	  handleScrollKeyreleased()
+    handleZoomKeyreleased()
+    
+    updateImage()
+end
+
+function isDoubleTap(key)
+    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
+end
+
+function getTimeElapsedSinceLastKeypress()
+    return love.timer.getTime() - lastKeypressedTime
+end
+
+function updateImage()
+    if scaleDelta ~= 0 or isMotionless() then
+        keepImageInBounds()
+    end
+end
+
+function isMotionless()
+	  return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
+end
+
+function keepImageInBounds()
+    x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth()  * scale)))
+    y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
+end
+	
 ------------------------- SCROLLING --------------------------
 
 function handleScrollKeypressed(key)
@@ -166,47 +208,7 @@ function zoomOut()            scaleDelta = -ZOOM_SPEED           end
 function stopZoomingIn()      scaleDelta =  0                    end
 function stopZoomingOut()     scaleDelta =  0                    end
 
------------------------- MISCELLANEOUS -------------------------
 
-function handleKeypressed(key)
-    dashing = isDoubleTap(key)
-    
-	  handleScrollKeypressed(key)
-    handleZoomKeypressed(key)
-   
-    lastKeypressed     = key 
-    lastKeypressedTime = love.timer.getTime()
-end
-
-function handleKeyreleased(key)
-	  handleScrollKeyreleased()
-    handleZoomKeyreleased()
-    
-    updateImage()
-end
-
-function isDoubleTap(key)
-    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
-end
-
-function getTimeElapsedSinceLastKeypress()
-    return love.timer.getTime() - lastKeypressedTime
-end
-
-function updateImage()
-    if scaleDelta ~= 0 or isMotionless() then
-        keepImageInBounds()
-    end
-end
-
-function isMotionless()
-	  return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
-end
-
-function keepImageInBounds()
-    x = math.min(0, math.max(x, WINDOW_WIDTH  - (IMAGE:getWidth()  * scale)))
-    y = math.min(0, math.max(y, WINDOW_HEIGHT - (IMAGE:getHeight() * scale)))
-end
 
 
 
