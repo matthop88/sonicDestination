@@ -73,7 +73,7 @@ end
 function love.update(dt)
     x     = x     + xSpeed     * dt * scale
 	y     = y     + ySpeed     * dt * scale
-    scale = scale + scaleDelta * dt
+    scale = scale + scaleDelta * dt * scale
   
     normalizeImage()
 end
