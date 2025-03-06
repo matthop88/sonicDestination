@@ -89,6 +89,10 @@ function love.keypressed(key)
     handleKeypressed(key)
     if key == "space" then
         showTimeOver = not showTimeOver
+        if showTimeOver then
+            local gameOverSound = love.audio.newSource("resources/game-over.mp3", "static")
+            gameOverSound:play()
+        end
     end
 end
 
