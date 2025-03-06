@@ -12,9 +12,9 @@
 
                            Features
                            --------
-       [X] Image can be scrolled using the up, down,
+       [.] Image can be scrolled using the up, down,
            left and right arrow keys.
-       [.] Image can be zoomed in using the 'z' key
+       [ ] Image can be zoomed in using the 'z' key
            and zoomed out using the 'a' key
        [ ] Clicking on any pixel of the image prints
            an RGB description of the color both to
@@ -32,6 +32,9 @@ else
     IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
+TIME_OVER_IMAGE             = love.graphics.newImage("resources/images/spriteSheets/timeOverSheet.png")
+TIME_OVER_QUAD              = love.graphics.newQuad(474, 431, 138, 16, TIME_OVER_IMAGE:getWidth(), TIME_OVER_IMAGE:getHeight())
+
 SCROLL_SPEED                = 400
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
@@ -42,6 +45,8 @@ xSpeed, ySpeed              = 0, 0
 lastKeypressed              = nil
 lastKeypressedTime          = 0
 dashing                     = false
+
+showTimeOver                = false
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -59,6 +64,9 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     love.graphics.draw(IMAGE, x, y)
+    if showTimeOver then
+        love.graphics.draw(TIME_OVER_IMAGE, TIME_OVER_QUAD, 55, 260, 0, 5, 5)
+    end
 end
 
 -- Function Name: love.update()
@@ -79,6 +87,9 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     handleKeypressed(key)
+    if key == "space" then
+        showTimeOver = not showTimeOver
+    end
 end
 
 -- Function Name: love.keyreleased()
