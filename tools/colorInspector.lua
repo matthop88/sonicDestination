@@ -43,7 +43,7 @@ lastKeypressed              = nil
 lastKeypressedTime          = 0
 dashing                     = false
 
-scale                       = 4
+scale                       = 1
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -60,7 +60,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, x, y, 0, scale, 2)
+    love.graphics.draw(IMAGE, x, y, 0, scale, scale)
 end
 
 -- Function Name: love.update()
