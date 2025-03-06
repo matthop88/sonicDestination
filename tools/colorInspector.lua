@@ -100,7 +100,7 @@ function handleLeftKeypressed()
     timeBetweenPresses = keypressedTime - lastKeypressedTime
 
     if lastKeypressed == "left" then
-        if timeBetweenPresses < 60 then
+        if timeBetweenPresses < 0.3 then
             print("DOUBLE-TAPPING: " .. lastKeypressed .. " within " .. timeBetweenPresses)
         end
     end 
