@@ -35,7 +35,7 @@ x,      y                   = 0, 0
 xSpeed, ySpeed              = 0, 0
 
 lastKeypressed              = nil
-keypressedTime              = 0
+lastKeypressedTime          = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
