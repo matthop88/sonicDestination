@@ -56,14 +56,6 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-    -- Code to handle key press event goes here
-    print(key)
-
-    -- To Scroll Left:  Increase X
-    -- To Scroll Right: Decrease X
-    -- To Scroll Up:    Increase Y
-    -- To Scroll Down:  Decrease Y
-
     if key == "left" then
         x = x + 100
     end
@@ -185,3 +177,4 @@ if showMessage then
           end
      end 
 end
+
