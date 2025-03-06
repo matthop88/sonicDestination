@@ -44,7 +44,7 @@ lastKeypressedTime          = 0
 dashing                     = false
 
 scale                       = 1
-scaleDelta                  = 1
+scaleDelta                  = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
