@@ -113,13 +113,9 @@ function keepInBounds()
         then correct
     --]]
 
-    -- Don't scroll too far to right;
-    -- Rightmost pixel of image should be flush with right of screen
-    x = math.max(x, WINDOW_WIDTH - IMAGE:getWidth())
-
-    -- Don't scroll too far to left
-    x = math.min(x, 0)
-
+    -- Don't scroll too far to right or too far to left
+    x = math.min(0, math.max(x, WINDOW_WIDTH - IMAGE:getWidth()))
+     
     -- Don't scroll too far up
     if y > 0 then
         y = 0
