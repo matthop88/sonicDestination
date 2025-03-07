@@ -39,6 +39,6 @@ function calculateScrollSpeed()
 end
 
 function isMotionless()
-    return getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0
+    return not isWithinDoubleTapThreshold() and xSpeed == 0 and ySpeed == 0
 end
 
