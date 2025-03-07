@@ -27,8 +27,6 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 WINDOW_WIDTH     = 1024
 WINDOW_HEIGHT    =  768
 
-endOfLineY       =  WINDOW_HEIGHT * 3 / 4
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -48,23 +46,6 @@ function love.draw()
 	drawSonic()
 end
 
-function love.keypressed(key)
-    if key == "space" then
-        endOfLineY = WINDOW_HEIGHT / 4
-    elseif key == "return" then
-        fading = 0
-    end
-end
-
-function love.update(dt)
-    if fading ~= nil then
-        fading = fading + (50 * dt)
-        if fading > 70 then
-            love.mouse.setVisible(false)
-        end
-    end
-end
-
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
@@ -72,7 +53,6 @@ end
 function drawWorkspace()
 	drawBackground()
 	drawHorizontalLine()
-    drawForeground()
 end
 
 function drawBackground()
@@ -83,14 +63,7 @@ end
 function drawHorizontalLine()
 	love.graphics.setColor(COLOR_PURE_WHITE)
 	love.graphics.setLineWidth(3)
-	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, endOfLineY)
-end
-
-function drawForeground()
-    if fading ~= nil then
-        love.graphics.setColor(0, 0, 0, fading / 100)
-        love.graphics.rectangle("fill", 0, 0, 1024, 768)
-    end
+	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
 end
 
 function drawSonic()
@@ -153,8 +126,8 @@ function drawSonic()
 
 							
 
-					Sonic ASCII art credits
-					-----------------------
+                                    Sonic ASCII art credits
+                                    -----------------------
 	"ASCII Art of Sonic"
 	posted by put-mutt on
 	https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
