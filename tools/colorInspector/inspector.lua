@@ -96,8 +96,8 @@ function updateImage()
 end
 
 function keepImageInBounds()
-    x = math.min(0, math.max(x, (WINDOW_WIDTH  - (IMAGE:getWidth()  * scale)) / scale))
-    y = math.min(0, math.max(y, (WINDOW_HEIGHT - (IMAGE:getHeight() * scale)) / scale))
+    x = math.min(0, math.max(x, (WINDOW_WIDTH  / scale) - IMAGE:getWidth()))
+    y = math.min(0, math.max(y, (WINDOW_HEIGHT / scale) - IMAGE:getHeight()))
 end
 
 
