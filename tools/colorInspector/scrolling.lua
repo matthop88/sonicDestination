@@ -2,11 +2,15 @@ local SCROLL_SPEED   = 400
 local xSpeed, ySpeed = 0,   0
 
 function handleScrollKeypressed(key)
+    dashing = isDoubleTap(key)
+    
     if     key == "left"  then scrollLeft()
     elseif key == "right" then scrollRight()
     elseif key == "up"    then scrollUp()
     elseif key == "down"  then scrollDown()
     end
+
+    setLastKeypressed(key)
 end
 
 function handleScrollKeyreleased(key)
