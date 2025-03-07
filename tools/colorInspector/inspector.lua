@@ -93,12 +93,8 @@ end
 --------------------------------------------------------------
 
 function handleKeypressed(key)
-    dashing = isDoubleTap(key)
-    
     handleScrollKeypressed(key)
     handleZoomKeypressed(key)
-   
-    setLastKeypressed(key)
 end
 
 function handleKeyreleased(key)
