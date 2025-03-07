@@ -106,6 +106,10 @@ function getTimeElapsedSinceLastKeypress()
     return love.timer.getTime() - lastKeypressedTime
 end
 
+function isWithinDoubleTapThreshold()
+    return getTimeElapsedSinceLastKeypress() <= DOUBLE_TAP_THRESHOLD
+end
+
 ----------------------------------------------------
 
 function handleKeypressed(key)
