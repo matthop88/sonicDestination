@@ -36,12 +36,11 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
 x,      y                   = 0, 0
+scale                       = 1
 
 lastKeypressed              = nil
 lastKeypressedTime          = 0
 dashing                     = false
-
-scale                       = 1
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
