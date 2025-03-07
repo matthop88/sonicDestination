@@ -15,12 +15,11 @@ end
     
 function updateZooming(dt)
     if scaleDelta ~= 0 then
-        zoomFromMousePosition(dt)
+        zoomFromCoordinates(dt, love.mouse.getPosition())
     end
 end
 
-function zoomFromMousePosition(dt)
-    local mx, my   = love.mouse.getPosition()
+function zoomFromCoordinates(dt, px, py)
     local oldScale = scale
         
     scale = oldScale + scaleDelta * dt * oldScale
