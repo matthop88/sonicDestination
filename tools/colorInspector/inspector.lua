@@ -92,9 +92,7 @@ end
 --------------------------------------------------------------
 
 function updateImage()
-    if isMotionless() then
-        keepImageInBounds()
-    end
+    if isMotionless() then keepImageInBounds() end
 end
 
 function keepImageInBounds()
