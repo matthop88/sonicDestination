@@ -30,11 +30,8 @@ function updateZooming(dt)
         scale = oldScale + scaleDelta * dt * oldScale
             
         -- 3. Translate x, y back so that point at upper left corner of screen becomes (mx, my)
-        x = x - (mx / oldScale)
-        y = y - (my / oldScale)
-
-        x = x + (mx / scale)
-        y = y + (my / scale)  
+        x = x - (mx / oldScale) + (mx / scale)
+        y = y - (my / oldScale) + (my / scale)  
     end
 end
 
