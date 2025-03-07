@@ -35,7 +35,15 @@ function updateZooming(dt)
 end
 
 function love.mousepressed(mx, my)
-    print("Mouse Pressed at " .. mx .. ", " .. my)
+    -- Translate x, y so that point at (mx, my) is at upper left corner of screen
+    local leftX = 0
+    local topY  = 0
+
+    local dx = (mx - leftX) / scale
+    local dy = (my -  topY) / scale
+
+    x = x - dx
+    y = y - dy
 end
 
 function zoomIn()             scaleDelta =  ZOOM_SPEED           end
