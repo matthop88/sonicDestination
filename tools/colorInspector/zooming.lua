@@ -34,6 +34,10 @@ function updateZooming(dt)
     end
 end
 
+function love.mousepressed(mx, my)
+    print("Mouse Pressed at " .. mx .. ", " .. my)
+end
+
 function zoomIn()             scaleDelta =  ZOOM_SPEED           end
 function zoomOut()            scaleDelta = -ZOOM_SPEED           end
 
