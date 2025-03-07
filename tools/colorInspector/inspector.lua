@@ -32,7 +32,6 @@ else
     IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
-SCROLL_SPEED                = 400
 ZOOM_SPEED                  = 2
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
@@ -139,6 +138,8 @@ function keepImageInBounds()
 end
 	
 ------------------------- SCROLLING --------------------------
+
+SCROLL_SPEED = 400
 
 function handleScrollKeypressed(key)
     if     key == "left"  then scrollLeft()
