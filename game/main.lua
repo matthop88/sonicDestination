@@ -51,6 +51,15 @@ end
 function love.keypressed(key)
     if key == "space" then
         endOfLineY = WINDOW_HEIGHT / 4
+    elseif key == "return" then
+        love.mouse.setVisible(false)
+        fading = 0
+    end
+end
+
+function love.update(dt)
+    if fading ~= nil then
+        fading = fading + (50 * dt)
     end
 end
 
@@ -61,6 +70,7 @@ end
 function drawWorkspace()
 	drawBackground()
 	drawHorizontalLine()
+    drawForeground()
 end
 
 function drawBackground()
@@ -72,6 +82,13 @@ function drawHorizontalLine()
 	love.graphics.setColor(COLOR_PURE_WHITE)
 	love.graphics.setLineWidth(3)
 	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, endOfLineY)
+end
+
+function drawForeground()
+    if fading ~= nil then
+        love.graphics.setColor(0, 0, 0, fading / 100)
+        love.graphics.rectangle("fill", 0, 0, 1024, 768)
+    end
 end
 
 function drawSonic()
