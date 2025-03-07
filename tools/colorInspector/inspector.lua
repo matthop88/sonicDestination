@@ -66,9 +66,9 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-	updateScrolling(dt)
-	updateZooming(dt)
-	updateImage()
+    updateScrolling(dt)
+    updateZooming(dt)
+    updateImage()
 end
 
 -- Function Name: love.keypressed()
@@ -96,7 +96,7 @@ end
 function handleKeypressed(key)
     dashing = isDoubleTap(key)
     
-	handleScrollKeypressed(key)
+    handleScrollKeypressed(key)
     handleZoomKeypressed(key)
    
     lastKeypressed     = key 
@@ -104,10 +104,8 @@ function handleKeypressed(key)
 end
 
 function handleKeyreleased(key)
-	handleScrollKeyreleased(key)
+    handleScrollKeyreleased(key)
     handleZoomKeyreleased(key)
-    
-    updateImage()
 end
 
 function isDoubleTap(key)
@@ -119,7 +117,7 @@ function getTimeElapsedSinceLastKeypress()
 end
 
 function updateImage()
-    if scaleDelta ~= 0 or isMotionless() then
+    if isMotionless() then
         keepImageInBounds()
     end
 end
