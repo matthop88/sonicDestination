@@ -42,7 +42,6 @@ lastKeypressedTime          = 0
 dashing                     = false
 
 scale                       = 1
-scaleDelta                  = 0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -138,6 +137,7 @@ require "tools/colorInspector/scrolling"
 -------------------------- ZOOMING ---------------------------
 
 ZOOM_SPEED = 2
+scaleDelta = 0
 
 function handleZoomKeypressed(key)
     if     key == "z" then zoomIn()
