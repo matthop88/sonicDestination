@@ -28,30 +28,6 @@ function zoomFromCoordinates(dt, px, py)
     y = y - (py / oldScale) + (py / scale)  
 end
 
-function love.mousepressed(mx, my)
-    -- Translate x, y so that point at (mx, my) is at upper left corner of screen
-    local leftX = 0
-    local topY  = 0
-
-    local dx = (mx - leftX) / scale
-    local dy = (my -  topY) / scale
-
-    x = x - dx
-    y = y - dy
-end
-
-function love.mousereleased(mx, my)
-    -- Translate x, y so that point at upper left corner of screen moves to (mx, my)
-    local leftX = 0
-    local topY  = 0
-
-    local dx = (mx - leftX) / scale
-    local dy = (my -  topY) / scale
-
-    x = x + dx
-    y = y + dy
-end
-
 function zoomIn()             scaleDelta =  ZOOM_SPEED           end
 function zoomOut()            scaleDelta = -ZOOM_SPEED           end
 
