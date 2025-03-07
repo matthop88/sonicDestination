@@ -24,7 +24,7 @@ function updateZooming(dt)
         local mx, my = love.mouse.getPosition()
         
         -- 1. Translate x, y so that point at (mx, my) is at upper left corner of screen
-        local dx = (mx - 0 / scale
+        local dx = (mx - 0) / scale
         local dy = (my - 0) / scale
 
         x = x - dx
