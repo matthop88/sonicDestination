@@ -52,7 +52,6 @@ function love.keypressed(key)
     if key == "space" then
         endOfLineY = WINDOW_HEIGHT / 4
     elseif key == "return" then
-        love.mouse.setVisible(false)
         fading = 0
     end
 end
@@ -60,6 +59,9 @@ end
 function love.update(dt)
     if fading ~= nil then
         fading = fading + (50 * dt)
+        if fading > 70 then
+            love.mouse.setVisible(false)
+        end
     end
 end
 
