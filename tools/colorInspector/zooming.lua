@@ -9,12 +9,12 @@ end
 
 function handleZoomKeyreleased(key)
     if     key == "z" then stopZoomingIn()
-	elseif key == "a" then stopZoomingOut()
+    elseif key == "a" then stopZoomingOut()
     end
 end
     
 function updateZooming(dt)
-	if scaleDelta ~= 0 then
+    if scaleDelta ~= 0 then
         --[[
             Adjust x and y of image so that we are zooming in at point
             the mouse is at
