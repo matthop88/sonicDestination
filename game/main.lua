@@ -27,6 +27,8 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 WINDOW_WIDTH     = 1024
 WINDOW_HEIGHT    =  768
 
+endOfLineY       =  WINDOW_HEIGHT * 3 / 4
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -46,6 +48,12 @@ function love.draw()
 	drawSonic()
 end
 
+function love.keypressed(key)
+    if key == "space" then
+        endOfLineY = WINDOW_HEIGHT / 4
+    end
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
@@ -57,13 +65,13 @@ end
 
 function drawBackground()
 	love.graphics.setColor(COLOR_GREEN)
-	love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+	love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
 function drawHorizontalLine()
 	love.graphics.setColor(COLOR_PURE_WHITE)
 	love.graphics.setLineWidth(3)
-	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
+	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, endOfLineY)
 end
 
 function drawSonic()
@@ -124,14 +132,7 @@ function drawSonic()
     
 	
 
-										
-
-
-
-
-
-
-
+							
 
 					Sonic ASCII art credits
 					-----------------------
@@ -142,6 +143,3 @@ function drawSonic()
 	
     --]]
 end
-
-
-
