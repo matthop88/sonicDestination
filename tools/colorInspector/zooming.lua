@@ -24,8 +24,8 @@ function zoomFromCoordinates(dt, px, py)
         
     scale = oldScale + scaleDelta * dt * oldScale
             
-    x = x - (mx / oldScale) + (mx / scale)
-    y = y - (my / oldScale) + (my / scale)  
+    x = x - (px / oldScale) + (px / scale)
+    y = y - (py / oldScale) + (py / scale)  
 end
 
 function love.mousepressed(mx, my)
