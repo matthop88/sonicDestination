@@ -15,11 +15,6 @@ end
     
 function updateZooming(dt)
     if scaleDelta ~= 0 then
-        --[[
-            Adjust x and y of image so that we are zooming in at point
-            the mouse is at
-        --]]
-        
         local mx, my   = love.mouse.getPosition()
         local oldScale = scale
         
