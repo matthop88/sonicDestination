@@ -15,11 +15,11 @@ end
     
 function updateZooming(dt)
     if scaleDelta ~= 0 then
-        zoomFromMousePosition()
+        zoomFromMousePosition(dt)
     end
 end
 
-function zoomFromMousePosition()
+function zoomFromMousePosition(dt)
     local mx, my   = love.mouse.getPosition()
     local oldScale = scale
         
