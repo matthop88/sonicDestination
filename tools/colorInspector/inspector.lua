@@ -32,7 +32,6 @@ else
     IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
-ZOOM_SPEED                  = 2
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 DOUBLE_TAP_THRESHOLD        = 0.2
 
@@ -137,6 +136,8 @@ end
 require "tools/colorInspector/scrolling"
 
 -------------------------- ZOOMING ---------------------------
+
+ZOOM_SPEED = 2
 
 function handleZoomKeypressed(key)
     if     key == "z" then zoomIn()
