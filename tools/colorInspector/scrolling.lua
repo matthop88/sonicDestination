@@ -1,7 +1,9 @@
 require "tools/colorInspector/doubleTap"
 
 local SCROLL_SPEED   = 400
+
 local xSpeed, ySpeed = 0,   0
+local dashing        = false
 
 function handleScrollKeypressed(key)
     dashing = isDoubleTap(key)
