@@ -1,5 +1,5 @@
-SCROLL_SPEED   = 400
-xSpeed, ySpeed = 0,   0
+local SCROLL_SPEED   = 400
+local xSpeed, ySpeed = 0,   0
 
 function handleScrollKeypressed(key)
     if     key == "left"  then scrollLeft()
