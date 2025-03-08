@@ -60,7 +60,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
+    drawImage()
     drawReadout()
 end
 
@@ -105,6 +105,10 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function drawImage()
+    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
+end
 
 function updateImage()
     if isMotionless() then keepImageInBounds() end
