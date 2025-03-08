@@ -133,9 +133,6 @@ function drawReadout()
     love.graphics.setFont(READOUT_FONT)
     
     love.graphics.printf(readoutMsg, 0, 200, WINDOW_WIDTH, "center")
-
-    love.graphics.setColor(1, 1, 1)
-    -- XXX: This assumes that original color was white
 end
 
 function printToReadout(msg)
