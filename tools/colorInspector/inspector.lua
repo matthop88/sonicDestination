@@ -154,6 +154,13 @@ function updateReadout(dt)
         if readoutTimer >= MAX_TIMER_VALUE_TICKS then
             readoutTimer = nil
         end
+    --[[
+        Value of readoutYOffset over time:
+        At 0                          : 70
+        At 30                         :  0
+        At MAX_TIMER_VALUE_TICKS - 30 :  0
+        At MAX_TIMER_VALUE_TICKS      : 70
+    --]]
     end
 end
 
