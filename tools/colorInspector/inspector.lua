@@ -92,6 +92,15 @@ function love.keyreleased(key)
     handleZoomKeyreleased(key)
 end
 
+-- Function Name: love.mousepressed()
+-- Called By:     LOVE2D application, when mouse button is pressed
+-- Parameters:    mx - x coordinate of mouse
+--                my - y coordinate of mouse
+--------------------------------------------------------------
+function love.mousepressed(mx, my)
+    printToReadout("Mouse clicked at (" .. mx .. ", " .. my .. ")")
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
