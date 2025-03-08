@@ -50,7 +50,7 @@ scale                       = 1
 
 readoutMsg                  = nil
 readoutTimer                = nil
-readoutYOffset              = 0
+readoutYOffset              = 20
 
 --[[
     Aspects of Timer:
