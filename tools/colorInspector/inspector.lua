@@ -136,7 +136,7 @@ function drawReadout()
 end
 
 function drawReadoutBox()
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(0, 0, 0, 0.5)
     love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
 
     love.graphics.setColor(1, 1, 1)
