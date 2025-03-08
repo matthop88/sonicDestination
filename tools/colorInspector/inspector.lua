@@ -41,6 +41,7 @@ else
 end
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+FONT_SIZE                   = 40
 
 x,      y                   = 0, 0
 scale                       = 1
@@ -127,7 +128,7 @@ end
 function drawReadout()
     -- Draw message on screen
     love.graphics.setColor(0, 0, 0)
-    love.graphics.setNewFont(40)
+    love.graphics.setNewFont(FONT_SIZE)
     
     local rMsg    = "HEY THERE!"
     local rX      = 100
