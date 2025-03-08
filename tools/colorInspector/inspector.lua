@@ -116,6 +116,10 @@ end
 
 --------------------------- READOUT ------------------------------
 
+function drawReadout()
+    -- Draw message on screen
+end
+
 function printToReadout(msg)
     print("Printing to readout: ", msg)
 end
