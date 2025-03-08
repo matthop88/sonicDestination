@@ -47,7 +47,7 @@ READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 x,      y                   = 0, 0
 scale                       = 1
 
-readoutMsg                  = ""
+readoutMsg                  = nil
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -129,14 +129,16 @@ end
 --------------------------- READOUT ------------------------------
 
 function drawReadout()
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
+    if readoutMsg ~= nil then
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
 
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
     
-    love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60, WINDOW_WIDTH, "center")
+        love.graphics.setFont(READOUT_FONT)
+        love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60, WINDOW_WIDTH, "center")
+    end
 end
 
 function printToReadout(msg)
