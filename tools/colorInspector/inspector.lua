@@ -87,6 +87,7 @@ function love.update(dt)
     updateScrolling(dt)
     updateZooming(dt)
     updateImage()
+    updateReadout(dt)
 end
 
 -- Function Name: love.keypressed()
@@ -143,6 +144,10 @@ function drawReadout()
         drawReadoutBox()
         drawReadoutMessage()
     end
+end
+
+function updateReadout(dt)
+    -- Code to increase readoutTimer goes here
 end
 
 function drawReadoutBox()
