@@ -47,7 +47,7 @@ READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
 x,      y                   = 0, 0
 scale                       = 1
 
-readoutMsg                  = "NO MESSAGE YET"
+readoutMsg                  = ""
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
