@@ -50,6 +50,7 @@ scale                       = 1
 
 readoutMsg                  = nil
 readoutTimer                = nil
+readoutYOffset              = 0
 
 --[[
     Aspects of Timer:
@@ -158,16 +159,16 @@ end
 
 function drawReadoutBox()
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70 + readoutYOffset, WINDOW_WIDTH, 70)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70, WINDOW_WIDTH, 70) 
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70 + readoutYOffset, WINDOW_WIDTH, 70) 
 end
 
 function drawReadoutMessage()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60, WINDOW_WIDTH, "center")
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60 + readoutYOffset, WINDOW_WIDTH, "center")
 end
 
 function printToReadout(msg)
