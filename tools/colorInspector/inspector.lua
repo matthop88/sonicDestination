@@ -14,13 +14,16 @@
                            --------
        [X] Image can be scrolled using the up, down,
            left and right arrow keys.
-       [.] Image can be zoomed in using the 'z' key
+       [X] Image can be zoomed in using the 'z' key
            and zoomed out using the 'a' key
        [ ] Clicking on any pixel of the image prints
            an RGB description of the color both to
            the screen and to the text console.
 
 --]]
+
+require "tools/colorInspector/scrolling"
+require "tools/colorInspector/zooming"
 
 --------------------------------------------------------------
 --                      Global Variables                    --
@@ -32,16 +35,10 @@ else
     IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
 end
 
-SCROLL_SPEED                = 400
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
-DOUBLE_TAP_THRESHOLD        = 0.2
 
 x,      y                   = 0, 0
-xSpeed, ySpeed              = 0, 0
-
-lastKeypressed              = nil
-lastKeypressedTime          = 0
-dashing                     = false
+scale                       = 1
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -58,7 +55,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    love.graphics.draw(IMAGE, x, y)
+    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
 end
 
 -- Function Name: love.update()
@@ -67,10 +64,9 @@ end
 --                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
-    x = x + (xSpeed * dt)
-    y = y + (ySpeed * dt)
-
-    normalizeImage()
+    updateScrolling(dt)
+    updateZooming(dt)
+    updateImage()
 end
 
 -- Function Name: love.keypressed()
@@ -78,7 +74,8 @@ end
 -- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
-    handleKeypressed(key)
+    handleScrollKeypressed(key)
+    handleZoomKeypressed(key)
 end
 
 -- Function Name: love.keyreleased()
@@ -86,68 +83,23 @@ end
 -- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
-    if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
-    end
-  
-    normalizeImage()
+    handleScrollKeyreleased(key)
+    handleZoomKeyreleased(key)
 end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function handleKeypressed(key)
-    dashing = isDoubleTap(key)
-    handleDirectionalKeypressed(key)
-    lastKeypressed     = key 
-    lastKeypressedTime = love.timer.getTime()
-end
-
-function isDoubleTap(key)
-    return lastKeypressed == key and getTimeElapsedSinceLastKeypress() < DOUBLE_TAP_THRESHOLD
-end
-
-function getTimeElapsedSinceLastKeypress()
-    return love.timer.getTime() - lastKeypressedTime
-end
-
-function handleDirectionalKeypressed(key)
-    if     key == "left"   then scrollLeft()
-    elseif key == "right"  then scrollRight()
-    elseif key == "up"     then scrollUp()
-    elseif key == "down"   then scrollDown()
-    end
-end
-  
-function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
-function scrollRight()        xSpeed = -(calculateScrollSpeed()) end  
-function scrollUp()           ySpeed =   calculateScrollSpeed()  end
-function scrollDown()         ySpeed = -(calculateScrollSpeed()) end
-  
-function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)       end
-function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
-function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
-function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
-
-function calculateScrollSpeed()
-    if dashing then return SCROLL_SPEED * 2
-    else            return SCROLL_SPEED
-    end
-end
-
-function normalizeImage()
-    if getTimeElapsedSinceLastKeypress() >= DOUBLE_TAP_THRESHOLD and xSpeed == 0 and ySpeed == 0 then
-        keepImageInBounds()
-    end
+function updateImage()
+    if isMotionless() then keepImageInBounds() end
 end
 
 function keepImageInBounds()
-    x = math.min(0, math.max(x, WINDOW_WIDTH  - IMAGE:getWidth()))
-    y = math.min(0, math.max(y, WINDOW_HEIGHT - IMAGE:getHeight()))
+    x = math.min(0, math.max(x, (WINDOW_WIDTH  / scale) - IMAGE:getWidth()))
+    y = math.min(0, math.max(y, (WINDOW_HEIGHT / scale) - IMAGE:getHeight()))
 end
+
 
 
 
@@ -184,8 +136,3 @@ end
     *************           ******************    *********************** ***  *****************   
 
 --]]
-
-
-
-
-

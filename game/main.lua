@@ -57,7 +57,7 @@ end
 
 function drawBackground()
 	love.graphics.setColor(COLOR_GREEN)
-	love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+	love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
 function drawHorizontalLine()
@@ -124,17 +124,10 @@ function drawSonic()
     
 	
 
-										
+							
 
-
-
-
-
-
-
-
-					Sonic ASCII art credits
-					-----------------------
+                                    Sonic ASCII art credits
+                                    -----------------------
 	"ASCII Art of Sonic"
 	posted by put-mutt on
 	https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
@@ -142,6 +135,3 @@ function drawSonic()
 	
     --]]
 end
-
-
-
