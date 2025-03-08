@@ -160,7 +160,8 @@ function drawReadoutMessage()
 end
 
 function printToReadout(msg)
-    readoutMsg = msg
+    readoutMsg   = msg
+    readoutTimer = 0
     print("Printing to readout: ", msg)
 end
 
