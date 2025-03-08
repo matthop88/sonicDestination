@@ -105,6 +105,8 @@ function keepImageInBounds()
     y = math.min(0, math.max(y, (WINDOW_HEIGHT / scale) - IMAGE:getHeight()))
 end
 
+--------------------------- READOUT ------------------------------
+
 function printToReadout(msg)
     print("Printing to readout: ", msg)
 end
