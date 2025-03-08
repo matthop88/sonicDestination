@@ -148,7 +148,12 @@ function drawReadout()
 end
 
 function updateReadout(dt)
-    -- Code to increase readoutTimer goes here
+    if readoutTimer ~= nil then
+        readoutTimer = readoutTimer + (60 * dt)
+        if readoutTimer >= MAX_TIMER_VALUE_TICKS then
+            readoutTimer = nil
+        end
+    end
 end
 
 function drawReadoutBox()
