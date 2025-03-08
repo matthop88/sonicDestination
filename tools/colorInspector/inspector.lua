@@ -106,6 +106,8 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+---------------------------- IMAGE -------------------------------
+
 function drawImage()
     love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
 end
