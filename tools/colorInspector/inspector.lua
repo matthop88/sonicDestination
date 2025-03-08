@@ -135,6 +135,9 @@ function drawReadout()
     local rAlign  = "center"
 
     love.graphics.printf(rMsg, rX, rY, rWidth, rAlign)
+
+    love.graphics.setColor(1, 1, 1)
+    -- XXX: This assumes that original color was white
 end
 
 function printToReadout(msg)
