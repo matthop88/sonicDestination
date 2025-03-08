@@ -125,6 +125,15 @@ end
 
 function drawReadout()
     -- Draw message on screen
+    love.graphics.setColor(0, 0, 0)
+
+    local rMsg    = "HEY THERE!"
+    local rX      = 100
+    local rY      = 200
+    local rWidth  = 500
+    local rAlign  = "center"
+
+    love.graphics.printf(rMsg, rX, rY, rWidth, rAlign)
 end
 
 function printToReadout(msg)
