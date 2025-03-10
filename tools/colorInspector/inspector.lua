@@ -137,10 +137,11 @@ end
 FONT_SIZE         = 40
 READOUT_FONT      = love.graphics.newFont(FONT_SIZE)
 READOUT_SUSTAIN   = 180
-READOUT_ATTACK    = 30
+READOUT_ATTACK    = 10
 READOUT_DECAY     = 30
 READOUT_DURATION  = READOUT_SUSTAIN + READOUT_ATTACK + READOUT_DECAY
-READOUT_AMPLITUDE = 70
+READOUT_AMPLITUDE = 140
+READOUT_HEIGHT    = 70
 
 readoutMsg        = nil
 readoutTimer      = READOUT_DURATION
@@ -175,10 +176,10 @@ end
 
 function drawReadoutBox()
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_AMPLITUDE)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_AMPLITUDE) 
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT) 
 end
 
 function drawReadoutMessage()
@@ -192,7 +193,6 @@ function printToReadout(msg)
     readoutTimer = 0
     print("Printing to readout: ", msg)
 end
-
 
 
 
