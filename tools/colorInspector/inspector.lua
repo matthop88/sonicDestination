@@ -41,9 +41,6 @@ else
 end
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
-FONT_SIZE                   = 40
-READOUT_FONT                = love.graphics.newFont(FONT_SIZE)
-MAX_TIMER_VALUE_TICKS       = 300
 
 x,      y                   = 0, 0
 scale                       = 1
@@ -137,9 +134,13 @@ end
 
 --------------------------- READOUT ------------------------------
 
-readoutMsg     = nil
-readoutTimer   = nil
-readoutYOffset = 20
+FONT_SIZE             = 40
+READOUT_FONT          = love.graphics.newFont(FONT_SIZE)
+MAX_TIMER_VALUE_TICKS = 300
+
+readoutMsg            = nil
+readoutTimer          = nil
+readoutYOffset        = 20
 
 function drawReadout()
     if readoutMsg ~= nil and readoutTimer ~= nil then
