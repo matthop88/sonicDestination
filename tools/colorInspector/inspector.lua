@@ -154,11 +154,6 @@ function drawReadout()
 end
 
 function updateReadout(dt)
-    if readoutTimer ~= nil then
-        readoutTimer = readoutTimer + (60 * dt)
-        if readoutTimer >= READOUT_DURATION then
-            readoutTimer = nil
-        end
     --[[
         Value of readoutYOffset over time:
         At 0                                : READOUT_AMPLITUDE
@@ -166,6 +161,12 @@ function updateReadout(dt)
         At READOUT_DURATION - READOUT_DECAY :  0
         At READOUT_DURATION                 : READOUT_AMPLITUDE
     --]]
+    if readoutTimer <= READOUT_ATTACK then
+        -- code here for scaling to READOUT_AMPLITUDE
+    elseif readoutTimer >= READOUT_DURATION - READOUT_DECAY then
+        -- code here for scaling from READOUT_AMPLITUDE
+     else
+        readoutYOffset = 0  
     end
 end
 
