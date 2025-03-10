@@ -134,13 +134,13 @@ end
 
 --------------------------- READOUT ------------------------------
 
-FONT_SIZE             = 40
-READOUT_FONT          = love.graphics.newFont(FONT_SIZE)
-MAX_TIMER_VALUE_TICKS = 300
+FONT_SIZE        = 40
+READOUT_FONT     = love.graphics.newFont(FONT_SIZE)
+READOUT_DURATION = 300
 
-readoutMsg            = nil
-readoutTimer          = nil
-readoutYOffset        = 20
+readoutMsg       = nil
+readoutTimer     = nil
+readoutYOffset   = 20
 
 function drawReadout()
     if readoutMsg ~= nil and readoutTimer ~= nil then
@@ -152,20 +152,19 @@ end
 function updateReadout(dt)
     if readoutTimer ~= nil then
         readoutTimer = readoutTimer + (60 * dt)
-        if readoutTimer >= MAX_TIMER_VALUE_TICKS then
+        if readoutTimer >= READOUT_DURATION then
             readoutTimer = nil
         end
     --[[
         Value of readoutYOffset over time:
-        At 0                          : 70
-        At 30                         :  0
-        At MAX_TIMER_VALUE_TICKS - 30 :  0
-        At MAX_TIMER_VALUE_TICKS      : 70
+        At 0                     : 70
+        At 30                    :  0
+        At READOUT_DURATION - 30 :  0
+        At READOUT_DURATION      : 70
 
         Here,
             READOUT_ATTACK    is 30
             READOUT_AMPLITUDE is 70
-            READOUT_DURATION  is MAX_TIMER_VALUE_TICKS
     --]]
     end
 end
