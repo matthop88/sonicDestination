@@ -48,10 +48,6 @@ MAX_TIMER_VALUE_TICKS       = 300
 x,      y                   = 0, 0
 scale                       = 1
 
-readoutMsg                  = nil
-readoutTimer                = nil
-readoutYOffset              = 20
-
 --[[
     Aspects of Timer:
 
@@ -140,6 +136,10 @@ function keepImageInBounds()
 end
 
 --------------------------- READOUT ------------------------------
+
+readoutMsg     = nil
+readoutTimer   = nil
+readoutYOffset = 20
 
 function drawReadout()
     if readoutMsg ~= nil and readoutTimer ~= nil then
