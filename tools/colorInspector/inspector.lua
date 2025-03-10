@@ -162,9 +162,9 @@ function updateReadout(dt)
         At READOUT_DURATION                 : READOUT_AMPLITUDE
     --]]
     if readoutTimer <= READOUT_ATTACK then
-        -- code here for scaling to READOUT_AMPLITUDE
+        readoutYOffset = readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK
     elseif readoutTimer >= READOUT_DURATION - READOUT_DECAY then
-        -- code here for scaling from READOUT_AMPLITUDE
+        readoutYOffset = (READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY
      else
         readoutYOffset = 0  
     end
