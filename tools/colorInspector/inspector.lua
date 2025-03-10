@@ -143,7 +143,7 @@ READOUT_DURATION  = READOUT_SUSTAIN + READOUT_ATTACK + READOUT_DECAY
 READOUT_AMPLITUDE = 70
 
 readoutMsg        = nil
-readoutTimer      = nil
+readoutTimer      = READOUT_DURATION
 readoutYOffset    = 20
 
 function drawReadout()
@@ -154,6 +154,9 @@ function drawReadout()
 end
 
 function updateReadout(dt)
+    if readoutTimer < READOUT_DURATION then
+        readoutTimer = readoutTimer + (60 * dt)
+    end
     --[[
         Value of readoutYOffset over time:
         At 0                                : READOUT_AMPLITUDE
