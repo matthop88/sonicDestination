@@ -165,9 +165,9 @@ function updateReadout(dt)
         At READOUT_DURATION                 : READOUT_AMPLITUDE
     --]]
     if readoutTimer <= READOUT_ATTACK then
-        readoutYOffset = readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK
+        readoutYOffset = READOUT_AMPLITUDE - (readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK)
     elseif readoutTimer >= READOUT_DURATION - READOUT_DECAY then
-        readoutYOffset = (READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY
+        readoutYOffset = READOUT_AMPLITUDE - ((READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY)
      else
         readoutYOffset = 0  
     end
