@@ -161,6 +161,11 @@ function updateReadout(dt)
         At 30                         :  0
         At MAX_TIMER_VALUE_TICKS - 30 :  0
         At MAX_TIMER_VALUE_TICKS      : 70
+
+        Here,
+            READOUT_ATTACK    is 30
+            READOUT_AMPLITUDE is 70
+            READOUT_DURATION  is MAX_TIMER_VALUE_TICKS
     --]]
     end
 end
