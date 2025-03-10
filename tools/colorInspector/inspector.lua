@@ -134,13 +134,17 @@ end
 
 --------------------------- READOUT ------------------------------
 
-FONT_SIZE        = 40
-READOUT_FONT     = love.graphics.newFont(FONT_SIZE)
-READOUT_DURATION = 300
+FONT_SIZE         = 40
+READOUT_FONT      = love.graphics.newFont(FONT_SIZE)
+READOUT_SUSTAIN   = 180
+READOUT_ATTACK    = 30
+READOUT_DECAY     = 30
+READOUT_DURATION  = READOUT_SUSTAIN + READOUT_ATTACK + READOUT_DECAY
+READOUT_AMPLITUDE = 70
 
-readoutMsg       = nil
-readoutTimer     = nil
-readoutYOffset   = 20
+readoutMsg        = nil
+readoutTimer      = nil
+readoutYOffset    = 20
 
 function drawReadout()
     if readoutMsg ~= nil and readoutTimer ~= nil then
@@ -157,30 +161,26 @@ function updateReadout(dt)
         end
     --[[
         Value of readoutYOffset over time:
-        At 0                     : 70
-        At 30                    :  0
-        At READOUT_DURATION - 30 :  0
-        At READOUT_DURATION      : 70
-
-        Here,
-            READOUT_ATTACK    is 30
-            READOUT_AMPLITUDE is 70
+        At 0                                : READOUT_AMPLITUDE
+        At READOUT_ATTACK                   :  0
+        At READOUT_DURATION - READOUT_DECAY :  0
+        At READOUT_DURATION                 : READOUT_AMPLITUDE
     --]]
     end
 end
 
 function drawReadoutBox()
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - 70 + readoutYOffset, WINDOW_WIDTH, 70)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_AMPLITUDE)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - 70 + readoutYOffset, WINDOW_WIDTH, 70) 
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_AMPLITUDE) 
 end
 
 function drawReadoutMessage()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - 60 + readoutYOffset, WINDOW_WIDTH, "center")
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - READOUT_AMPLITUDE + 10 + readoutYOffset, WINDOW_WIDTH, "center")
 end
 
 function printToReadout(msg)
