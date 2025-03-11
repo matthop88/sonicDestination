@@ -7,17 +7,19 @@ local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
 local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
 
-local JET_BLACK         = { 0, 0, 0      }
-local TRANSPARENT_BLACK = { 0, 0, 0, 0.5 }
-local TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 }
-local PURE_WHITE        = { 1, 1, 1      }
-local TRANSPARENT_WHITE = { 1, 1, 1, 0.5 }
-local RED               = { 1, 0, 0      }
-local YELLOW            = { 1, 1, 0      }
+local COLOR          = {
+    JET_BLACK         = { 0, 0, 0      },
+    TRANSPARENT_BLACK = { 0, 0, 0, 0.5 },
+    TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 },
+    PURE_WHITE        = { 1, 1, 1      },
+    TRANSPARENT_WHITE = { 1, 1, 1, 0.5 },
+    RED               = { 1, 0, 0      },
+    YELLOW            = { 1, 1, 0      },
+}
 
-local BOX_COLOR      = TRANSPARENT_WHITE
-local BORDER_COLOR   = YELLOW
-local TEXT_COLOR     = JET_BLACK
+local BOX_COLOR      = COLOR.TRANSPARENT_WHITE
+local BORDER_COLOR   = COLOR.YELLOW
+local TEXT_COLOR     = COLOR.JET_BLACK
 
 local message    = nil
 local timer      = TOTAL_DURATION
