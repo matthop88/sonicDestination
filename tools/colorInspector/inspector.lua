@@ -196,11 +196,11 @@ function updateReadout(dt)
 end
 
 function calculateAttackingYOffset()
-    return getTimeElapsed() * READOUT_AMPLITUDE / READOUT_ATTACK
+    return getTimeElapsed()   / READOUT_ATTACK * READOUT_AMPLITUDE
 end
 
 function calculateDecayingYOffset()
-    return getTimeRemaining() * READOUT_AMPLITUDE / READOUT_DECAY
+    return getTimeRemaining() / READOUT_DECAY  * READOUT_AMPLITUDE
 end
 
 function calculateSustainingYOffset()
