@@ -179,17 +179,21 @@ function updateReadout(dt)
     if isReadoutActive() then
         updateReadoutTimer(dt)
     end
-    if     isReadoutAttacking() then
-        readoutYOffset = calculateAttackingYOffset()
-    elseif isReadoutDecaying()  then
-        readoutYOffset = calculateDecayingYOffset()
-    else
-        readoutYOffset = calculateSustainingYOffset()  
-    end
+    readoutYOffset = calculateYOffset()
 end
 
 function updateReadoutTimer(dt)
     readoutTimer = readoutTimer + (60 * dt)
+end
+
+function calculateYOffset()
+    if     isReadoutAttacking() then
+        return calculateAttackingYOffset()
+    elseif isReadoutDecaying()  then
+        return calculateDecayingYOffset()
+    else
+        return calculateSustainingYOffset()  
+    end
 end
 
 function calculateAttackingYOffset()
