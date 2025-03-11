@@ -14,10 +14,12 @@ local BOX_COLOR      = COLOR.TRANSPARENT_BLACK
 local BORDER_COLOR   = COLOR.PURE_WHITE
 local TEXT_COLOR     = COLOR.PURE_WHITE
 
+local MAX_LETTERS_PER_SECOND = 600000
+    
 local message    = {
     text = nil,
     letterCount = 0,
-    lettersPerSecond = 60,
+    lettersPerSecond = MAX_LETTERS_PER_SECOND,
     
     get    = function(self)    
         return self:getPartialText()
