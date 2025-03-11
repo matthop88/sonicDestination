@@ -134,8 +134,8 @@ end
 
 --------------------------- READOUT ------------------------------
 
-FONT_SIZE         = 40
-READOUT_FONT      = love.graphics.newFont(FONT_SIZE)
+READOUT_FONT_SIZE = 40
+READOUT_FONT      = love.graphics.newFont(READOUT_FONT_SIZE)
 READOUT_SUSTAIN   = 180
 READOUT_ATTACK    = 10
 READOUT_DECAY     = 30
