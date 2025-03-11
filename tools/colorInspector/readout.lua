@@ -6,7 +6,11 @@ local DECAY          = 30
 local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
 local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
-local BOX_COLOR      = { 0, 0, 0, 0.5 }
+
+local TRANSPARENT_BLACK = { 0, 0, 0, 0.5 }
+local TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 }
+
+local BOX_COLOR      = TRANSPARENT_BLUE
 
 local message    = nil
 local timer      = TOTAL_DURATION
