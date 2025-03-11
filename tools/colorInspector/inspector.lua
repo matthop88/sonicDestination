@@ -145,7 +145,7 @@ READOUT_HEIGHT    = 70
 
 readoutMsg        = nil
 readoutTimer      = READOUT_DURATION
-readoutYOffset    = 20
+readoutYOffset    = 0
 
 function getTimeElapsed()     return readoutTimer                           end
 function getTimeRemaining()   return READOUT_DURATION - readoutTimer        end
@@ -179,13 +179,6 @@ function updateReadout(dt)
     if isReadoutActive() then
         updateReadoutTimer(dt)
     end
-    --[[
-        Value of readoutYOffset over time:
-        At 0                                : 0
-        At READOUT_ATTACK                   : READOUT_AMPLITUDE
-        At READOUT_DURATION - READOUT_DECAY : READOUT_AMPLITUDE
-        At READOUT_DURATION                 : 0
-    --]]
     if     isReadoutAttacking() then
         readoutYOffset = calculateAttackingYOffset()
     elseif isReadoutDecaying()  then
