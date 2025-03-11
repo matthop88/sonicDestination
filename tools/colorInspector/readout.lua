@@ -6,6 +6,7 @@ local DECAY          = 30
 local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
 local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
+local BOX_COLOR      = { 0, 0, 0, 0.5 }
 
 local message    = nil
 local timer      = TOTAL_DURATION
@@ -22,7 +23,7 @@ function drawReadout()
 end
 
 function drawBox()
-    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.setColor(BOX_COLOR)
     love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT)
 
     love.graphics.setColor(1, 1, 1)
