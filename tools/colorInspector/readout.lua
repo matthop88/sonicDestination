@@ -1,15 +1,15 @@
-READOUT_FONT_SIZE = 40
-READOUT_FONT      = love.graphics.newFont(READOUT_FONT_SIZE)
-READOUT_SUSTAIN   = 180
-READOUT_ATTACK    = 10
-READOUT_DECAY     = 30
-READOUT_DURATION  = READOUT_SUSTAIN + READOUT_ATTACK + READOUT_DECAY
-READOUT_AMPLITUDE = 140
-READOUT_HEIGHT    = 70
+local READOUT_FONT_SIZE = 40
+local READOUT_FONT      = love.graphics.newFont(READOUT_FONT_SIZE)
+local READOUT_SUSTAIN   = 180
+local READOUT_ATTACK    = 10
+local READOUT_DECAY     = 30
+local READOUT_DURATION  = READOUT_SUSTAIN + READOUT_ATTACK + READOUT_DECAY
+local READOUT_AMPLITUDE = 140
+local READOUT_HEIGHT    = 70
 
-readoutMsg        = nil
-readoutTimer      = READOUT_DURATION
-readoutYOffset    = 0
+local readoutMsg        = nil
+local readoutTimer      = READOUT_DURATION
+local readoutYOffset    = 0
 
 function getTimeElapsed()     return readoutTimer                           end
 function getTimeRemaining()   return READOUT_DURATION - readoutTimer        end
