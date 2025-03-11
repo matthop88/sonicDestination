@@ -16,7 +16,8 @@ local TEXT_COLOR     = COLOR.PURE_WHITE
 
 local message    = {
     text = nil,
-    letterCount = 12,
+    letterCount = nil,
+    lettersPerSecond = 60,
     
     get    = function(self)    
         if self.letterCount == nil then
@@ -26,13 +27,32 @@ local message    = {
         end
     end,
 
-    set    = function(self, t) self.text = t           end,
-    exists = function(self)    return self.text ~= nil end,
-
-    getPartialText = function(self)
-        return string.sub(self.text, 1, self.letterCount)
+    set    = function(self, t) 
+        self.text = t           
+        self:resetLetterCount()
+    end,
+    
+    exists = function(self)    
+        return self.text ~= nil 
     end,
 
+    getPartialText = function(self)
+        if self.letterCount < 1 then
+            return ""
+        else
+            return string.sub(self.text, 1, self.letterCount)
+        end
+    end,
+
+    update = function(self, dt)
+        if self.letterCount ~= nil then
+            self.letterCount = self.letterCount + (dt * self.lettersPerSecond)
+        end
+    end,
+
+    resetLetterCount = function(self)
+        self.letterCount = -math.sqrt(self.lettersPerSecond)
+    end,
 }
 
 local timer      = TOTAL_DURATION
