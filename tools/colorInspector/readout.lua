@@ -10,9 +10,9 @@ local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
 local HORIZ_MARGINS  = 30
 
-local BOX_COLOR      = COLOR.TRANSPARENT_WHITE
-local BORDER_COLOR   = COLOR.YELLOW
-local TEXT_COLOR     = COLOR.JET_BLACK
+local BOX_COLOR      = COLOR.TRANSPARENT_BLACK
+local BORDER_COLOR   = COLOR.PURE_WHITE
+local TEXT_COLOR     = COLOR.PURE_WHITE
 
 local message    = nil
 local timer      = TOTAL_DURATION
