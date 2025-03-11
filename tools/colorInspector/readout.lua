@@ -7,9 +7,12 @@ local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
 local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
 
+local JET_BLACK         = { 0, 0, 0      }
 local TRANSPARENT_BLACK = { 0, 0, 0, 0.5 }
 local TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 }
 local PURE_WHITE        = { 1, 1, 1      }
+local TRANSPARENT_WHITE = { 1, 1, 1, 0.5 }
+local RED               = { 1, 0, 0      }
 
 local BOX_COLOR      = TRANSPARENT_BLUE
 local BORDER_COLOR   = PURE_WHITE
