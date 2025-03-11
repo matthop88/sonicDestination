@@ -199,15 +199,13 @@ function isReadoutAttacking()
     return getTimeElapsed() <= READOUT_ATTACK
 end
 
-function calculateAttackingYOffset()
-    return getTimeElapsed() * READOUT_AMPLITUDE / READOUT_ATTACK
-end
-
 function isReadoutDecaying()
     return getTimeRemaining() <= READOUT_DECAY
 end
 
-
+function calculateAttackingYOffset()
+    return getTimeElapsed() * READOUT_AMPLITUDE / READOUT_ATTACK
+end
 
 function calculateDecayingYOffset()
     return getTimeRemaining() * READOUT_AMPLITUDE / READOUT_DECAY
