@@ -1,88 +1,88 @@
-local READOUT_FONT_SIZE = 40
-local READOUT_FONT      = love.graphics.newFont(READOUT_FONT_SIZE)
-local READOUT_SUSTAIN   = 180
-local READOUT_ATTACK    = 10
-local READOUT_DECAY     = 30
-local READOUT_DURATION  = READOUT_SUSTAIN + READOUT_ATTACK + READOUT_DECAY
-local READOUT_AMPLITUDE = 140
-local READOUT_HEIGHT    = 70
+local FONT_SIZE      = 40
+local FONT           = love.graphics.newFont(FONT_SIZE)
+local SUSTAIN        = 180
+local ATTACK         = 10
+local DECAY          = 30
+local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
+local AMPLITUDE      = 140
+local BOX_HEIGHT     = 70
 
-local readoutMsg        = nil
-local readoutTimer      = READOUT_DURATION
-local readoutYOffset    = 0
+local message    = nil
+local timer      = TOTAL_DURATION
+local yOffset    = 0
 
-function getTimeElapsed()     return readoutTimer                           end
-function getTimeRemaining()   return READOUT_DURATION - readoutTimer        end
+function getTimeElapsed()     return timer                  end
+function getTimeRemaining()   return TOTAL_DURATION - timer end
 
 function drawReadout()
-    if readoutMsg ~= nil and readoutTimer ~= nil then
-        drawReadoutBox()
-        drawReadoutMessage()
+    if message ~= nil and timer ~= nil then
+        drawBox()
+        drawMessage()
     end
 end
 
-function drawReadoutBox()
+function drawBox()
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT) 
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT) 
 end
 
 function drawReadoutMessage()
     love.graphics.setColor(1, 1, 1)
-    love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - readoutYOffset + 10, WINDOW_WIDTH, "center")
+    love.graphics.setFont(FONT)
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
 end
 
 function updateReadout(dt)
-    if isReadoutActive() then
-        updateReadoutTimer(dt)
+    if isActive() then
+        updateTimer(dt)
     end
-    readoutYOffset = calculateYOffset()
+    yOffset = calculateYOffset()
 end
 
-function isReadoutActive() return getTimeElapsed() < READOUT_DURATION end
+function isActive() return getTimeElapsed() < TOTAL_DURATION end
 
-function updateReadoutTimer(dt)
-    readoutTimer = readoutTimer + (60 * dt)
+function updateTimer(dt)
+    timer = timer + (60 * dt)
 end
 
 function calculateYOffset()
-    if     isReadoutAttacking() then
+    if     isAttacking() then
         return calculateAttackingYOffset()
-    elseif isReadoutDecaying()  then
+    elseif isDecaying()  then
         return calculateDecayingYOffset()
     else
         return calculateSustainingYOffset()  
     end
 end
 
-function isReadoutAttacking() return getTimeElapsed()   <= READOUT_ATTACK   end
-function isReadoutDecaying()  return getTimeRemaining() <= READOUT_DECAY    end
+function isAttacking() return getTimeElapsed()   <= ATTACK   end
+function isDecaying()  return getTimeRemaining() <= DECAY    end
 
 function calculateAttackingYOffset()
-    return getTimeElapsed()   / READOUT_ATTACK * READOUT_AMPLITUDE
+    return getTimeElapsed()   / ATTACK * AMPLITUDE
 end
 
 function calculateDecayingYOffset()
-    return getTimeRemaining() / READOUT_DECAY  * READOUT_AMPLITUDE
+    return getTimeRemaining() / DECAY  * AMPLITUDE
 end
 
 function calculateSustainingYOffset()
-    return READOUT_AMPLITUDE
+    return AMPLITUDE
 end
 
 function printToReadout(msg)
-    readoutMsg   = msg
+    message = msg
     resetTimer()
     print("Printing to readout: ", msg)
 end
 
 function resetTimer()
-    if not isReadoutActive() or isReadoutDecaying() then
-        readoutTimer = 0
+    if not isActive() or isDecaying() then
+        timer = 0
     else
-        readoutTimer = READOUT_ATTACK
+        timer = ATTACK
     end
 end
