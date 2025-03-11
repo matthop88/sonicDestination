@@ -154,6 +154,20 @@ function drawReadout()
     end
 end
 
+function drawReadoutBox()
+    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT)
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT) 
+end
+
+function drawReadoutMessage()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(READOUT_FONT)
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - READOUT_AMPLITUDE + 10 + readoutYOffset, WINDOW_WIDTH, "center")
+end
+
 function updateReadout(dt)
     if readoutTimer < READOUT_DURATION then
         readoutTimer = readoutTimer + (60 * dt)
@@ -172,20 +186,6 @@ function updateReadout(dt)
      else
         readoutYOffset = 0  
     end
-end
-
-function drawReadoutBox()
-    love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT)
-
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT) 
-end
-
-function drawReadoutMessage()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - READOUT_AMPLITUDE + 10 + readoutYOffset, WINDOW_WIDTH, "center")
 end
 
 function printToReadout(msg)
