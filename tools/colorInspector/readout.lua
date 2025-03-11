@@ -28,7 +28,9 @@ local message    = {
     end,
 
     set    = function(self, t) 
-        self.text = t           
+        self.text = t
+        self.textWidth = FONT:getWidth(t)
+        self.leftX     = (WINDOW_WIDTH - self.textWidth) / 2    
         self:resetLetterCount()
     end,
     
@@ -42,6 +44,12 @@ local message    = {
         else
             return string.sub(self.text, 1, self.letterCount)
         end
+    end,
+
+    draw = function(self, y)
+        love.graphics.setFont(FONT)
+        love.graphics.setColor(TEXT_COLOR)
+        love.graphics.printf(self:get(), self.leftX, y, self.textWidth, "left")
     end,
 
     update = function(self, dt)
@@ -77,9 +85,9 @@ function drawBox()
 end
 
 function drawMessage()
-    love.graphics.setColor(TEXT_COLOR)
-    love.graphics.setFont(FONT)
-    love.graphics.printf(message:get(), 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
+    if message:exists() then
+        message:draw(WINDOW_HEIGHT - yOffset + 10)
+    end
 end
 
 function updateReadout(dt)
