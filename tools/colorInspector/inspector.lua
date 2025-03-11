@@ -169,7 +169,7 @@ function drawReadoutMessage()
 end
 
 function updateReadout(dt)
-    if readoutTimer < READOUT_DURATION then
+    if isReadoutActive() then
         readoutTimer = readoutTimer + (60 * dt)
     end
     --[[
@@ -186,6 +186,10 @@ function updateReadout(dt)
     else
         readoutYOffset = calculateSustainingYOffset()  
     end
+end
+
+function isReadoutActive()
+    return readoutTimer < READOUT_DURATION
 end
 
 function isReadoutAttacking()
