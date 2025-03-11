@@ -1,3 +1,5 @@
+require "tools/colorInspector/color"
+
 local FONT_SIZE      = 40
 local FONT           = love.graphics.newFont(FONT_SIZE)
 local SUSTAIN        = 180
@@ -6,16 +8,6 @@ local DECAY          = 30
 local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
 local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
-
-local COLOR          = {
-    JET_BLACK         = { 0, 0, 0      },
-    TRANSPARENT_BLACK = { 0, 0, 0, 0.5 },
-    TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 },
-    PURE_WHITE        = { 1, 1, 1      },
-    TRANSPARENT_WHITE = { 1, 1, 1, 0.5 },
-    RED               = { 1, 0, 0      },
-    YELLOW            = { 1, 1, 0      },
-}
 
 local BOX_COLOR      = COLOR.TRANSPARENT_WHITE
 local BORDER_COLOR   = COLOR.YELLOW
