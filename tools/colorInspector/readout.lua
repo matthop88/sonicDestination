@@ -29,10 +29,10 @@ function drawBox()
     love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT) 
 end
 
-function drawReadoutMessage()
+function drawMessage()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
+    love.graphics.printf(message, 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
 end
 
 function updateReadout(dt)
