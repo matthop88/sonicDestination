@@ -150,10 +150,6 @@ readoutYOffset    = 0
 function getTimeElapsed()     return readoutTimer                           end
 function getTimeRemaining()   return READOUT_DURATION - readoutTimer        end
 
-function isReadoutActive()    return getTimeElapsed()   <  READOUT_DURATION end
-function isReadoutAttacking() return getTimeElapsed()   <= READOUT_ATTACK   end
-function isReadoutDecaying()  return getTimeRemaining() <= READOUT_DECAY    end
-
 function drawReadout()
     if readoutMsg ~= nil and readoutTimer ~= nil then
         drawReadoutBox()
@@ -182,6 +178,8 @@ function updateReadout(dt)
     readoutYOffset = calculateYOffset()
 end
 
+function isReadoutActive() return getTimeElapsed() < READOUT_DURATION end
+
 function updateReadoutTimer(dt)
     readoutTimer = readoutTimer + (60 * dt)
 end
@@ -195,6 +193,9 @@ function calculateYOffset()
         return calculateSustainingYOffset()  
     end
 end
+
+function isReadoutAttacking() return getTimeElapsed()   <= READOUT_ATTACK   end
+function isReadoutDecaying()  return getTimeRemaining() <= READOUT_DECAY    end
 
 function calculateAttackingYOffset()
     return getTimeElapsed()   / READOUT_ATTACK * READOUT_AMPLITUDE
