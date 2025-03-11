@@ -156,16 +156,16 @@ end
 
 function drawReadoutBox()
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT)
+    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - READOUT_AMPLITUDE + readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT) 
+    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - readoutYOffset, WINDOW_WIDTH, READOUT_HEIGHT) 
 end
 
 function drawReadoutMessage()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(READOUT_FONT)
-    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - READOUT_AMPLITUDE + 10 + readoutYOffset, WINDOW_WIDTH, "center")
+    love.graphics.printf(readoutMsg, 0, WINDOW_HEIGHT - readoutYOffset + 10, WINDOW_WIDTH, "center")
 end
 
 function updateReadout(dt)
@@ -174,17 +174,17 @@ function updateReadout(dt)
     end
     --[[
         Value of readoutYOffset over time:
-        At 0                                : READOUT_AMPLITUDE
-        At READOUT_ATTACK                   :  0
-        At READOUT_DURATION - READOUT_DECAY :  0
-        At READOUT_DURATION                 : READOUT_AMPLITUDE
+        At 0                                : 0
+        At READOUT_ATTACK                   : READOUT_AMPLITUDE
+        At READOUT_DURATION - READOUT_DECAY : READOUT_AMPLITUDE
+        At READOUT_DURATION                 : 0
     --]]
     if     isReadoutAttacking() then
         readoutYOffset = calculateAttackingYOffset()
     elseif isReadoutDecaying()  then
         readoutYOffset = calculateDecayingYOffset()
-     else
-        readoutYOffset = 0  
+    else
+        readoutYOffset = READOUT_AMPLITUDE  
     end
 end
 
@@ -193,7 +193,7 @@ function isReadoutAttacking()
 end
 
 function calculateAttackingYOffset()
-    return READOUT_AMPLITUDE - (readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK)
+    return readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK
 end
 
 function isReadoutDecaying()
@@ -201,7 +201,7 @@ function isReadoutDecaying()
 end
 
 function calculateDecayingYOffset()
-    return READOUT_AMPLITUDE - ((READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY)
+    return ((READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY)
 end
 
 function printToReadout(msg)
