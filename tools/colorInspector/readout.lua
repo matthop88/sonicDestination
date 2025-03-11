@@ -42,11 +42,9 @@ function updateReadout(dt)
     yOffset = calculateYOffset()
 end
 
-function isActive() return getTimeElapsed() < TOTAL_DURATION end
+function isActive()      return getTimeElapsed() < TOTAL_DURATION end
 
-function updateTimer(dt)
-    timer = timer + (60 * dt)
-end
+function updateTimer(dt) timer = timer + (60 * dt)                end
 
 function calculateYOffset()
     if     isAttacking() then return calculateAttackingYOffset()
