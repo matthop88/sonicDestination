@@ -16,10 +16,23 @@ local TEXT_COLOR     = COLOR.PURE_WHITE
 
 local message    = {
     text = nil,
+    letterCount = 12,
+    
+    get    = function(self)    
+        if self.letterCount == nil then
+            return self.text        
+        else
+            return self:getPartialText()
+        end
+    end,
 
-    get    = function(self)    return self.text        end,
     set    = function(self, t) self.text = t           end,
     exists = function(self)    return self.text ~= nil end,
+
+    getPartialText = function(self)
+        return string.sub(self.text, 1, self.letterCount)
+    end,
+
 }
 
 local timer      = TOTAL_DURATION
