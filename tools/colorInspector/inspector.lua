@@ -180,9 +180,9 @@ function updateReadout(dt)
         At READOUT_DURATION                 : READOUT_AMPLITUDE
     --]]
     if     isReadoutAttacking() then
-        readoutYOffset = READOUT_AMPLITUDE - (readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK)
+        readoutYOffset = calculateAttackingYOffset()
     elseif isReadoutDecaying()  then
-        readoutYOffset = READOUT_AMPLITUDE - ((READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY)
+        readoutYOffset = calculateDecayingYOffset()
      else
         readoutYOffset = 0  
     end
@@ -192,8 +192,16 @@ function isReadoutAttacking()
     return readoutTimer <= READOUT_ATTACK
 end
 
+function calculateAttackingYOffset()
+    return READOUT_AMPLITUDE - (readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK)
+end
+
 function isReadoutDecaying()
     return readoutTimer >= READOUT_DURATION - READOUT_DECAY
+end
+
+function calculateDecayingYOffset()
+    return READOUT_AMPLITUDE - ((READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY)
 end
 
 function printToReadout(msg)
