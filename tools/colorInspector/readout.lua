@@ -9,8 +9,11 @@ local BOX_HEIGHT     = 70
 
 local TRANSPARENT_BLACK = { 0, 0, 0, 0.5 }
 local TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 }
+local PURE_WHITE        = { 1, 1, 1      }
 
 local BOX_COLOR      = TRANSPARENT_BLUE
+local BORDER_COLOR   = PURE_WHITE
+local TEXT_COLOR     = PURE_WHITE
 
 local message    = nil
 local timer      = TOTAL_DURATION
@@ -30,12 +33,12 @@ function drawBox()
     love.graphics.setColor(BOX_COLOR)
     love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT)
 
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(BORDER_COLOR)
     love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT) 
 end
 
 function drawMessage()
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(TEXT_COLOR)
     love.graphics.setFont(FONT)
     love.graphics.printf(message, 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
 end
