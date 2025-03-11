@@ -211,8 +211,12 @@ end
 
 function printToReadout(msg)
     readoutMsg   = msg
-    readoutTimer = 0
+    resetTimer()
     print("Printing to readout: ", msg)
+end
+
+function resetTimer()
+    readoutTimer = 0
 end
 
 
