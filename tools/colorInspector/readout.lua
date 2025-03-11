@@ -3,10 +3,10 @@ require "tools/colorInspector/color"
 local FONT_SIZE      = 40
 local FONT           = love.graphics.newFont(FONT_SIZE)
 local SUSTAIN        = 180
-local ATTACK         = 10
-local DECAY          = 30
+local ATTACK         = 8
+local DECAY          = 24
 local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
-local AMPLITUDE      = 140
+local AMPLITUDE      = 90
 local BOX_HEIGHT     = 70
 local HORIZ_MARGINS  = 30
 
