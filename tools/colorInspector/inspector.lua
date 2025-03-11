@@ -201,11 +201,15 @@ function calculateAttackingYOffset()
 end
 
 function isReadoutDecaying()
-    return READOUT_DURATION - readoutTimer <= READOUT_DECAY
+    return getTimeRemaining() <= READOUT_DECAY
+end
+
+function getTimeRemaining()
+    return READOUT_DURATION - readoutTimer
 end
 
 function calculateDecayingYOffset()
-    return (READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY
+    return getTimeRemaining() * READOUT_AMPLITUDE / READOUT_DECAY
 end
 
 function calculateSustainingYOffset()
