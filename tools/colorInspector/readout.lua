@@ -49,29 +49,18 @@ function updateTimer(dt)
 end
 
 function calculateYOffset()
-    if     isAttacking() then
-        return calculateAttackingYOffset()
-    elseif isDecaying()  then
-        return calculateDecayingYOffset()
-    else
-        return calculateSustainingYOffset()  
+    if     isAttacking() then return calculateAttackingYOffset()
+    elseif isDecaying()  then return calculateDecayingYOffset()
+    else                      return calculateSustainingYOffset()  
     end
 end
 
 function isAttacking() return getTimeElapsed()   <= ATTACK   end
 function isDecaying()  return getTimeRemaining() <= DECAY    end
 
-function calculateAttackingYOffset()
-    return getTimeElapsed()   / ATTACK * AMPLITUDE
-end
-
-function calculateDecayingYOffset()
-    return getTimeRemaining() / DECAY  * AMPLITUDE
-end
-
-function calculateSustainingYOffset()
-    return AMPLITUDE
-end
+function calculateAttackingYOffset()  return getTimeElapsed()   / ATTACK * AMPLITUDE end
+function calculateDecayingYOffset()   return getTimeRemaining() / DECAY  * AMPLITUDE end
+function calculateSustainingYOffset() return AMPLITUDE                               end
 
 function printToReadout(msg)
     message = msg
@@ -80,9 +69,7 @@ function printToReadout(msg)
 end
 
 function resetTimer()
-    if not isActive() or isDecaying() then
-        timer = 0
-    else
-        timer = ATTACK
+    if not isActive() or isDecaying() then timer = 0
+    else                                   timer = ATTACK
     end
 end
