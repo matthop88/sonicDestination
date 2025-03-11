@@ -193,11 +193,15 @@ function isReadoutActive()
 end
 
 function isReadoutAttacking()
-    return readoutTimer <= READOUT_ATTACK
+    return getTimeElapsed() <= READOUT_ATTACK
+end
+
+function getTimeElapsed()
+    return readoutTimer
 end
 
 function calculateAttackingYOffset()
-    return readoutTimer * READOUT_AMPLITUDE / READOUT_ATTACK
+    return getTimeElapsed() * READOUT_AMPLITUDE / READOUT_ATTACK
 end
 
 function isReadoutDecaying()
