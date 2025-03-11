@@ -184,7 +184,7 @@ function updateReadout(dt)
     elseif isReadoutDecaying()  then
         readoutYOffset = calculateDecayingYOffset()
     else
-        readoutYOffset = READOUT_AMPLITUDE  
+        readoutYOffset = calculateSustainingYOffset()  
     end
 end
 
@@ -202,6 +202,10 @@ end
 
 function calculateDecayingYOffset()
     return ((READOUT_DURATION - readoutTimer) * READOUT_AMPLITUDE / READOUT_DECAY)
+end
+
+function calculateSustainingYOffset()
+    return READOUT_AMPLITUDE
 end
 
 function printToReadout(msg)
