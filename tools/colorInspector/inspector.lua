@@ -177,7 +177,7 @@ end
 
 function updateReadout(dt)
     if isReadoutActive() then
-        readoutTimer = readoutTimer + (60 * dt)
+        updateReadoutTimer(dt)
     end
     --[[
         Value of readoutYOffset over time:
@@ -193,6 +193,10 @@ function updateReadout(dt)
     else
         readoutYOffset = calculateSustainingYOffset()  
     end
+end
+
+function updateReadoutTimer(dt)
+    readoutTimer = readoutTimer + (60 * dt)
 end
 
 function calculateAttackingYOffset()
