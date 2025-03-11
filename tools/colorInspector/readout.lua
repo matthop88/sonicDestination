@@ -8,6 +8,7 @@ local DECAY          = 30
 local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
 local AMPLITUDE      = 140
 local BOX_HEIGHT     = 70
+local HORIZ_MARGINS  = 30
 
 local BOX_COLOR      = COLOR.TRANSPARENT_WHITE
 local BORDER_COLOR   = COLOR.YELLOW
@@ -29,10 +30,10 @@ end
 
 function drawBox()
     love.graphics.setColor(BOX_COLOR)
-    love.graphics.rectangle("fill", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT)
+    love.graphics.rectangle("fill", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT)
 
     love.graphics.setColor(BORDER_COLOR)
-    love.graphics.rectangle("line", 0,  WINDOW_HEIGHT - yOffset, WINDOW_WIDTH, BOX_HEIGHT) 
+    love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT) 
 end
 
 function drawMessage()
