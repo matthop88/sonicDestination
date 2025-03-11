@@ -13,9 +13,10 @@ local TRANSPARENT_BLUE  = { 0, 0, 1, 0.5 }
 local PURE_WHITE        = { 1, 1, 1      }
 local TRANSPARENT_WHITE = { 1, 1, 1, 0.5 }
 local RED               = { 1, 0, 0      }
+local YELLOW            = { 1, 1, 0      }
 
 local BOX_COLOR      = TRANSPARENT_WHITE
-local BORDER_COLOR   = RED
+local BORDER_COLOR   = YELLOW
 local TEXT_COLOR     = JET_BLACK
 
 local message    = nil
