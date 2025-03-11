@@ -65,7 +65,6 @@ function calculateSustainingYOffset() return AMPLITUDE                          
 function printToReadout(msg)
     message = msg
     resetTimer()
-    print("Printing to readout: ", msg)
 end
 
 function resetTimer()
