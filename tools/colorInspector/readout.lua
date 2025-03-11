@@ -16,15 +16,11 @@ local TEXT_COLOR     = COLOR.PURE_WHITE
 
 local message    = {
     text = nil,
-    letterCount = nil,
+    letterCount = 0,
     lettersPerSecond = 60,
     
     get    = function(self)    
-        if self.letterCount == nil then
-            return self.text        
-        else
-            return self:getPartialText()
-        end
+        return self:getPartialText()
     end,
 
     set    = function(self, t) 
@@ -53,13 +49,15 @@ local message    = {
     end,
 
     update = function(self, dt)
-        if self.letterCount ~= nil then
-            self.letterCount = self.letterCount + (dt * self.lettersPerSecond)
-        end
+        self.letterCount = self.letterCount + (dt * self.lettersPerSecond)
     end,
 
     resetLetterCount = function(self)
         self.letterCount = -math.sqrt(self.lettersPerSecond)
+    end,
+
+    maximizeLetterCount = function(self)
+        self.letterCount = string.len(self.text)
     end,
 }
 
@@ -118,6 +116,10 @@ function calculateSustainingYOffset() return AMPLITUDE                          
 
 function printToReadout(msg)
     message:set(msg)
+    if isActive() then 
+        message:maximizeLetterCount()
+    end
+
     resetTimer()
 end
 
