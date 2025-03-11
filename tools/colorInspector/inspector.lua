@@ -216,7 +216,11 @@ function printToReadout(msg)
 end
 
 function resetTimer()
-    readoutTimer = 0
+    if not isReadoutActive() or isReadoutDecaying() then
+        readoutTimer = 0
+    else
+        readoutTimer = READOUT_ATTACK
+    end
 end
 
 
