@@ -14,7 +14,14 @@ local BOX_COLOR      = COLOR.TRANSPARENT_BLACK
 local BORDER_COLOR   = COLOR.PURE_WHITE
 local TEXT_COLOR     = COLOR.PURE_WHITE
 
-local message    = nil
+local message    = {
+    text = nil,
+
+    get    = function(self)    return self.text        end,
+    set    = function(self, t) self.text = t           end,
+    exists = function(self)    return self.text ~= nil end,
+}
+
 local timer      = TOTAL_DURATION
 local yOffset    = 0
 
@@ -22,7 +29,7 @@ function getTimeElapsed()     return timer                  end
 function getTimeRemaining()   return TOTAL_DURATION - timer end
 
 function drawReadout()
-    if message ~= nil then
+    if message:exists() then
         drawBox()
         drawMessage()
     end
@@ -39,7 +46,7 @@ end
 function drawMessage()
     love.graphics.setColor(TEXT_COLOR)
     love.graphics.setFont(FONT)
-    love.graphics.printf(message, 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
+    love.graphics.printf(message:get(), 0, WINDOW_HEIGHT - yOffset + 10, WINDOW_WIDTH, "center")
 end
 
 function updateReadout(dt)
@@ -68,7 +75,7 @@ function calculateDecayingYOffset()   return getTimeRemaining() / DECAY  * AMPLI
 function calculateSustainingYOffset() return AMPLITUDE                               end
 
 function printToReadout(msg)
-    message = msg
+    message:set(msg)
     resetTimer()
 end
 
