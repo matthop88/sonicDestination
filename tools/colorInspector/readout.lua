@@ -15,7 +15,7 @@ function getTimeElapsed()     return timer                  end
 function getTimeRemaining()   return TOTAL_DURATION - timer end
 
 function drawReadout()
-    if message ~= nil and timer ~= nil then
+    if message ~= nil then
         drawBox()
         drawMessage()
     end
