@@ -87,6 +87,7 @@ function updateReadout(dt)
         updateTimer(dt)
     end
     yOffset = calculateYOffset()
+    message:update(dt)
 end
 
 function isActive()      return getTimeElapsed() < TOTAL_DURATION end
