@@ -10,9 +10,9 @@ local AMPLITUDE      = 90
 local BOX_HEIGHT     = 70
 local HORIZ_MARGINS  = 30
 
-local BOX_COLOR      = COLOR.TRANSPARENT_WHITE
+local BOX_COLOR      = COLOR.TRANSPARENT_BLACK
 local BORDER_COLOR   = COLOR.PURE_WHITE
-local TEXT_COLOR     = COLOR.YELLOW
+local TEXT_COLOR     = COLOR.PURE_WHITE
 local SHADOW_COLOR   = COLOR.JET_BLACK
 
 local MAX_LETTERS_PER_SECOND = 600000
@@ -20,8 +20,8 @@ local MAX_LETTERS_PER_SECOND = 600000
 local message    = {
     text             = nil,
     letterCount      = 0,
-    lettersPerSecond = 30,
-    isDrawShadow     = true,
+    lettersPerSecond = MAX_LETTERS_PER_SECOND,
+    isDrawShadow     = false,
     
     get    = function(self)    
         if self.letterCount < 1 then return ""
