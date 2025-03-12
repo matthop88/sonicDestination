@@ -46,15 +46,6 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 x,      y                   = 0, 0
 scale                       = 1
 
---[[
-    Aspects of Timer:
-
-    printToReadout() sets timer to 0
-    drawReadout()    draws readout if timer is non-nil
-    updateReadout()  increases timer. If timer passes MAX_TIMER_VALUE,
-                                      timer is set to nil.
---]]
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
