@@ -82,7 +82,7 @@ function getTimeRemaining()   return TOTAL_DURATION - timer end
 function drawReadout()
     if message:exists() then
         drawBox()
-        drawMessage()
+        message:draw(WINDOW_HEIGHT - yOffset + 10)
     end
 end
 
@@ -92,12 +92,6 @@ function drawBox()
 
     love.graphics.setColor(BORDER_COLOR)
     love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT) 
-end
-
-function drawMessage()
-    if message:exists() then 
-        message:draw(WINDOW_HEIGHT - yOffset + 10) 
-    end
 end
 
 function updateReadout(dt)
