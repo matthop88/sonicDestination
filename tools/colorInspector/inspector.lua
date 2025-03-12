@@ -67,8 +67,6 @@ end
 
 -- Function Name: love.update()
 -- Called By:     LOVE2D application, every single frame
--- Parameters:    dt - time lapsed between update calls
---                     (in fractions of a second)
 --------------------------------------------------------------
 function love.update(dt)
     updateScrolling(dt)
@@ -79,7 +77,6 @@ end
 
 -- Function Name: love.keypressed()
 -- Called By:     LOVE2D application, when any key is pressed
--- Parameters:    key - text value of key pressed by the user
 --------------------------------------------------------------
 function love.keypressed(key)
     handleScrollKeypressed(key)
@@ -88,7 +85,6 @@ end
 
 -- Function Name: love.keyreleased()
 -- Called By:     LOVE2D application, when any key is released
--- Parameters:    key - text value of key released by the user
 --------------------------------------------------------------
 function love.keyreleased(key)
     handleScrollKeyreleased(key)
@@ -97,8 +93,6 @@ end
 
 -- Function Name: love.mousepressed()
 -- Called By:     LOVE2D application, when mouse button is pressed
--- Parameters:    mx - x coordinate of mouse
---                my - y coordinate of mouse
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     printToReadout("Mouse clicked at (" .. mx .. ", " .. my .. ")")
@@ -107,8 +101,6 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
-
----------------------------- IMAGE -------------------------------
 
 function drawImage()
     love.graphics.setColor(1, 1, 1)
