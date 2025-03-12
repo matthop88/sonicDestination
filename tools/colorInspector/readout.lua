@@ -10,41 +10,51 @@ local AMPLITUDE      = 90
 local BOX_HEIGHT     = 70
 local HORIZ_MARGINS  = 30
 
-local BOX_COLOR      = COLOR.TRANSPARENT_BLACK
+local BOX_COLOR      = COLOR.TRANSPARENT_WHITE
 local BORDER_COLOR   = COLOR.PURE_WHITE
-local TEXT_COLOR     = COLOR.PURE_WHITE
+local TEXT_COLOR     = COLOR.YELLOW
+local SHADOW_COLOR   = COLOR.JET_BLACK
 
 local MAX_LETTERS_PER_SECOND = 600000
     
 local message    = {
-    text = nil,
-    letterCount = 0,
+    text             = nil,
+    letterCount      = 0,
     lettersPerSecond = MAX_LETTERS_PER_SECOND,
+    isDrawShadow     = true,
     
     get    = function(self)    
-        return self:getPartialText()
+        if self.letterCount < 1 then return ""
+        else                         return string.sub(self.text, 1, self.letterCount)
+        end
     end,
 
     set    = function(self, t) 
-        self.text = t
+        self.text      = t
         self.textWidth = FONT:getWidth(t)
-        self.leftX     = (WINDOW_WIDTH - self.textWidth) / 2    
-        self:resetLetterCount()
+        self.leftX     = (WINDOW_WIDTH - self.textWidth) / 2 
+        self:resetLetterCount()   
     end,
     
     exists = function(self)    
         return self.text ~= nil 
     end,
 
-    getPartialText = function(self)
-        if self.letterCount < 1 then
-            return ""
-        else
-            return string.sub(self.text, 1, self.letterCount)
+    draw = function(self, y)
+        if self.isDrawShadow then
+            self:drawShadow(y)
         end
+        self:drawText(y)
     end,
 
-    draw = function(self, y)
+    drawShadow = function(self, y)
+        love.graphics.setColor(SHADOW_COLOR)
+        love.graphics.printf(self:get(), self.leftX - 5, y + 5, self.textWidth, "left")
+        love.graphics.printf(self:get(), self.leftX - 3, y + 3, self.textWidth, "left")
+        love.graphics.printf(self:get(), self.leftX - 1, y + 1, self.textWidth, "left")
+    end,
+
+    drawText = function(self, y)
         love.graphics.setFont(FONT)
         love.graphics.setColor(TEXT_COLOR)
         love.graphics.printf(self:get(), self.leftX, y, self.textWidth, "left")
@@ -85,8 +95,8 @@ function drawBox()
 end
 
 function drawMessage()
-    if message:exists() then
-        message:draw(WINDOW_HEIGHT - yOffset + 10)
+    if message:exists() then 
+        message:draw(WINDOW_HEIGHT - yOffset + 10) 
     end
 end
 
