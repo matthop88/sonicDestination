@@ -20,7 +20,7 @@ local MAX_LETTERS_PER_SECOND = 600000
 local message    = {
     text             = nil,
     letterCount      = 0,
-    lettersPerSecond = MAX_LETTERS_PER_SECOND,
+    lettersPerSecond = 30,
     isDrawShadow     = true,
     
     get    = function(self)    
