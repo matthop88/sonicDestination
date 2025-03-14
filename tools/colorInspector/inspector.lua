@@ -126,6 +126,11 @@ PALETTE_LEFT = WINDOW_WIDTH - 134
 
 function drawPalette()
     local mx, my = love.mouse.getPosition()
+    drawPaletteGrid(mx)
+    drawPaletteColors(mx)
+end
+
+function drawPaletteGrid(mx)
     if mx >= PALETTE_LEFT then
         love.graphics.setColor(COLOR.MEDIUM_GREY)
     else
@@ -138,7 +143,6 @@ function drawPalette()
         love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
         love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
     end
-    drawPaletteColors(mx)
 end
 
 function drawPaletteColors(mx)
