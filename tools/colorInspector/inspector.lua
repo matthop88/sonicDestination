@@ -45,8 +45,6 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 x,      y                   = 0, 0
 scale                       = 1
 
-selectedColor               = nil
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -114,6 +112,8 @@ end
 --------------------------------------------------------------
 
 ---------------------------- COLOR -------------------------------
+
+selectedColor = nil
 
 function identifyColor(mx, my)
     local imageX = math.min(getImageWidth(),  math.floor((mx / scale) - x))
