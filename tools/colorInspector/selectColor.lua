@@ -6,6 +6,10 @@ function selectColorAt(mx, my)
     selectedColor = identifyColor(mx, my)
 end
 
+function getSelectedColor()
+    return selectedColor
+end
+
 function clearSelectedColor()
     selectedColor = nil
 end
