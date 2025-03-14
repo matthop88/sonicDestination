@@ -52,7 +52,6 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 x,      y                   = 0, 0
 scale                       = 1
 
-colorSelected               = false
 selectedColor               = nil
 
 --------------------------------------------------------------
@@ -106,7 +105,6 @@ end
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     identifyColor(mx, my)
-    colorSelected = true
 end
 
 -- Function Name: love.mousereleased()
@@ -115,7 +113,7 @@ end
 --                my - y coordinate of mouse
 --------------------------------------------------------------
 function love.mousereleased(mx, my)
-     colorSelected = false
+     selectedColor = nil
 end
 
 --------------------------------------------------------------
@@ -153,7 +151,7 @@ function identifyColor(mx, my)
 end
 
 function drawSelectedColor()
-    if colorSelected then
+    if selectedColor ~= nil then
         -- Draw solid rectangular block of selected color at mouse position
         local mx, my = love.mouse.getPosition()
         love.graphics.setColor(selectedColor)
