@@ -39,14 +39,6 @@ require "tools/colorInspector/color"
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-if __INSPECTOR_FILE ~= nil then
-    IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
-else
-    IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
-end
-
-IMAGE = love.graphics.newImage(IMAGE_DATA)
-
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 x,      y                   = 0, 0
@@ -121,6 +113,14 @@ end
 --------------------------------------------------------------
 
 ---------------------------- IMAGE -------------------------------
+
+if __INSPECTOR_FILE ~= nil then
+    IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+else
+    IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
+end
+
+IMAGE = love.graphics.newImage(IMAGE_DATA)
 
 function drawImage()
     love.graphics.setColor(1, 1, 1)
