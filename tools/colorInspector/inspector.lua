@@ -33,6 +33,7 @@
 require "tools/colorInspector/scrolling"
 require "tools/colorInspector/zooming"
 require "tools/colorInspector/readout"
+require "tools/colorInspector/color"
 
 --------------------------------------------------------------
 --                      Global Variables                    --
@@ -140,8 +141,8 @@ function drawSelectedColor()
     -- Draw solid rectangular block of selected color at mouse position
     local mx, my = love.mouse.getPosition()
 
-	love.graphics.setColor(0.5, 0.5, 0.5)
-	love.graphics.rectangle("fill", mx - 50, my - 50, 100, 100)
+    love.graphics.setColor(COLOR.MEDIUM_GREY)
+    love.graphics.rectangle("fill", mx - 50, my - 50, 100, 100)
 end
 
 
