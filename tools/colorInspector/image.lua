@@ -6,6 +6,18 @@ end
 
 local IMAGE = love.graphics.newImage(IMAGE_DATA)
 
+function getImageWidth()
+    return IMAGE:getWidth()
+end
+
+function getImageHeight()
+    return IMAGE:getHeight()
+end
+
+function getImagePixelAt(x, y)
+    return IMAGE_DATA:getPixel(imageX, imageY)
+end
+
 function drawImage()
     love.graphics.setColor(1, 1, 1)
     love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
