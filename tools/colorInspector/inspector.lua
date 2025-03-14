@@ -21,7 +21,7 @@
            from below, remains for 3-5 seconds and then
            recedes in same manner. Does not recede if content
            changes within 3-5 seconds.
-       [.] Clicking on any pixel of the image prints
+       [X] Clicking on any pixel of the image prints
            an RGB description of the color both to
            the screen and to the text console.
 
