@@ -95,10 +95,7 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    local imageX = math.min(IMAGE:getWidth(),  math.floor((mx / scale) - x))
-    local imageY = math.min(IMAGE:getHeight(), math.floor((my / scale) - y))
-
-    printToReadout("Mouse clicked at (" .. imageX .. ", " .. imageY .. ") of image")
+    identifyColor(mx, my)
 end
 
 --------------------------------------------------------------
@@ -119,7 +116,14 @@ function keepImageInBounds()
     y = math.min(0, math.max(y, (WINDOW_HEIGHT / scale) - IMAGE:getHeight()))
 end
 
+---------------------------- COLOR -------------------------------
 
+function identifyColor(mx, my)
+    local imageX = math.min(IMAGE:getWidth(),  math.floor((mx / scale) - x))
+    local imageY = math.min(IMAGE:getHeight(), math.floor((my / scale) - y))
+
+    printToReadout("Color at (" .. imageX .. ", " .. imageY .. ") of image")
+end
 
 
 
