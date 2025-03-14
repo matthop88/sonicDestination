@@ -105,7 +105,7 @@ end
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     selectColorAt(mx, my)
-    table.insert(PALETTE, getSelectedColor())
+    insertColorIntoPalette(getSelectedColor())
 end
 
 -- Function Name: love.mousereleased()
@@ -144,6 +144,15 @@ function drawPalette()
         love.graphics.setColor(c)
         love.graphics.rectangle("fill", PALETTE_LEFT + (66 * h) + 3, (v * 66) + 6, 60, 60)
     end
+end
+
+function insertColorIntoPalette(color)
+    for _, c in ipairs(PALETTE) do
+        if c[1] == color[1] and c[2] == color[2] and c[3] == color[3] then
+            return
+        end
+    end
+    table.insert(PALETTE, color)
 end
 
 -- ...
