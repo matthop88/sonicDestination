@@ -147,14 +147,14 @@ end
 
 function drawPaletteColors(mx)
     for i, c in ipairs(PALETTE) do
-        local h = (i - 1) % 2
-        local v = math.floor((i - 1) / 2)
-        
-        drawPaletteColor(mx, h, v)
+        drawPaletteColor(mx, i, c)
     end
 end
 
-function drawPaletteColor(mx, h, v)
+function drawPaletteColor(mx, i, c)
+    local h = (i - 1) % 2
+    local v = math.floor((i - 1) / 2)
+        
     if mx >= PALETTE_LEFT or c == getSelectedColor() then
         love.graphics.setColor(c)
     else
