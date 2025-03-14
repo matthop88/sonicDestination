@@ -138,6 +138,10 @@ function drawPalette()
         love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
         love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
     end
+    drawPaletteColors(mx)
+end
+
+function drawPaletteColors(mx)
     for i, c in ipairs(PALETTE) do
         local h = (i - 1) % 2
         local v = math.floor((i - 1) / 2)
