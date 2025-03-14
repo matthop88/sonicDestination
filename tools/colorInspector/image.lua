@@ -15,7 +15,7 @@ function getImageHeight()
 end
 
 function getImagePixelAt(x, y)
-    return IMAGE_DATA:getPixel(imageX, imageY)
+    return IMAGE_DATA:getPixel(x, y)
 end
 
 function drawImage()
