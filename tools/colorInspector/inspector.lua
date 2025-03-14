@@ -127,10 +127,9 @@ function identifyColor(mx, my)
     local imageY = math.min(IMAGE_DATA:getHeight(), math.floor((my / scale) - y))
     
     local r, g, b = IMAGE_DATA:getPixel(imageX, imageY)
+    
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
-  
-    r, g, b = love.math.colorToBytes(r, g, b)
-    printToReadout("R = " .. r .. ", G = " .. g .. ", B = " .. b)
+    printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
 end
 
 
