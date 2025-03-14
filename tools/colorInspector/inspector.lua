@@ -96,7 +96,7 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    selectedColor = identifyColor(mx, my)
+    selectColorAt(mx, my)
 end
 
 -- Function Name: love.mousereleased()
@@ -105,7 +105,7 @@ end
 --                my - y coordinate of mouse
 --------------------------------------------------------------
 function love.mousereleased(mx, my)
-     selectedColor = nil
+    clearSelectedColor()
 end
 
 --------------------------------------------------------------
