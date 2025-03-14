@@ -141,10 +141,10 @@ function drawPalette()
     for i, c in ipairs(PALETTE) do
         local h = (i - 1) % 2
         local v = math.floor((i - 1) / 2)
-        if mx >= PALETTE_LEFT then
-        	love.graphics.setColor(c)
+        if mx >= PALETTE_LEFT or c == getSelectedColor() then
+            love.graphics.setColor(c)
         else
-        	love.graphics.setColor(c[1], c[2], c[3], 0.5)
+            love.graphics.setColor(c[1], c[2], c[3], 0.5)
         end
         
         love.graphics.rectangle("fill", PALETTE_LEFT + (66 * h) + 3, (v * 66) + 6, 60, 60)
