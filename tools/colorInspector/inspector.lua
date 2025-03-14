@@ -100,8 +100,6 @@ end
 
 -- Function Name: love.mousereleased()
 -- Called By:     LOVE2D application, when mouse button is released
--- Parameters:    mx - x coordinate of mouse
---                my - y coordinate of mouse
 --------------------------------------------------------------
 function love.mousereleased(mx, my)
     clearSelectedColor()
