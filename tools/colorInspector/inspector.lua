@@ -137,7 +137,11 @@ function identifyColor(mx, my)
 end
 
 function drawSelectedColor()
-	-- Draw solid rectangular block of selected color at mouse position
+    -- Draw solid rectangular block of selected color at mouse position
+    local mx, my = love.mouse.getPosition()
+
+	love.graphics.setColor(0.5, 0.5, 0.5)
+	love.graphics.rectangle("fill", mx - 50, my - 50, 100, 100)
 end
 
 
