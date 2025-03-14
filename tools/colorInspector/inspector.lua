@@ -123,6 +123,9 @@ end
 ---------------------------- COLOR -------------------------------
 
 function identifyColor(mx, my)
+    local imageX = math.min(IMAGE_DATA:getWidth(),  math.floor((mx / scale) - x))
+    local imageY = math.min(IMAGE_DATA:getHeight(), math.floor((my / scale) - y))
+    
     local r, g, b = IMAGE_DATA:getPixel(imageX, imageY)
     print("{ " .. r .. ", " .. g .. ", " .. b .. " }")
 
