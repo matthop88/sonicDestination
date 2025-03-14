@@ -9,8 +9,8 @@ function clearSelectedColor()
 end
 
 function identifyColor(mx, my)
-    local imageX = math.min(getImageWidth(),  math.floor((mx / scale) - x))
-    local imageY = math.min(getImageHeight(), math.floor((my / scale) - y))
+    local imageX = math.min(getImageWidth()  - 1, math.floor((mx / scale) - x))
+    local imageY = math.min(getImageHeight() - 1, math.floor((my / scale) - y))
     
     local r, g, b = getImagePixelAt(imageX, imageY)
     
