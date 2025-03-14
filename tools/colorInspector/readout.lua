@@ -90,6 +90,7 @@ function drawBox()
     love.graphics.setColor(BOX_COLOR)
     love.graphics.rectangle("fill", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT)
 
+    love.graphics.setLineWidth(1)
     love.graphics.setColor(BORDER_COLOR)
     love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT) 
 end
