@@ -53,6 +53,7 @@ x,      y                   = 0, 0
 scale                       = 1
 
 colorSelected               = false
+selectedColor               = nil
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -147,13 +148,15 @@ function identifyColor(mx, my)
     
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
     printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+
+    selectedColor = { r, g, b }
 end
 
 function drawSelectedColor()
     if colorSelected then
         -- Draw solid rectangular block of selected color at mouse position
         local mx, my = love.mouse.getPosition()
-        love.graphics.setColor(COLOR.MEDIUM_GREY)
+        love.graphics.setColor(selectedColor)
         love.graphics.rectangle("fill", mx - 50, my - 50, 100, 100)
     end
 end
