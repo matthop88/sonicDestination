@@ -36,10 +36,12 @@ require "tools/colorInspector/readout"
 --------------------------------------------------------------
 
 if __INSPECTOR_FILE ~= nil then
-    IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+    IMAGE_DATA = love.graphics.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
-    IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
+    IMAGE_DATA = love.graphics.newImageData("resources/images/sadNoFileImage.png")
 end
+
+IMAGE = love.graphics.newImage(IMAGE_DATA)
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
