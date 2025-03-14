@@ -1,4 +1,4 @@
-selectedColor = nil
+local selectedColor = nil
 
 function selectColorAt(mx, my)
     selectedColor = identifyColor(mx, my)
