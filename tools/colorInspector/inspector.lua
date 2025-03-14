@@ -52,6 +52,8 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 x,      y                   = 0, 0
 scale                       = 1
 
+colorSelected               = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -103,6 +105,7 @@ end
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     identifyColor(mx, my)
+    colorSelected = true
 end
 
 --------------------------------------------------------------
@@ -138,11 +141,12 @@ function identifyColor(mx, my)
 end
 
 function drawSelectedColor()
-    -- Draw solid rectangular block of selected color at mouse position
-    local mx, my = love.mouse.getPosition()
-
-    love.graphics.setColor(COLOR.MEDIUM_GREY)
-    love.graphics.rectangle("fill", mx - 50, my - 50, 100, 100)
+    if colorSelected then
+        -- Draw solid rectangular block of selected color at mouse position
+        local mx, my = love.mouse.getPosition()
+        love.graphics.setColor(COLOR.MEDIUM_GREY)
+        love.graphics.rectangle("fill", mx - 50, my - 50, 100, 100)
+    end
 end
 
 
