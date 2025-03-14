@@ -120,6 +120,7 @@ end
 
 --------------------------- PALETTE --------------------------
 
+PALETTE      = { }
 PALETTE_LEFT = WINDOW_WIDTH - 134
 
 function drawPalette()
