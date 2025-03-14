@@ -70,8 +70,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     drawImage()
-    drawReadout()
     drawSelectedColor()
+    drawReadout()
 end
 
 -- Function Name: love.update()
