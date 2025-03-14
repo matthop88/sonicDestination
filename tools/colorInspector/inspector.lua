@@ -68,6 +68,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 function love.draw()
     drawImage()
     drawReadout()
+    drawSelectedColor()
 end
 
 -- Function Name: love.update()
@@ -134,6 +135,11 @@ function identifyColor(mx, my)
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
     printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
 end
+
+function drawSelectedColor()
+	-- Draw solid rectangular block of selected color at mouse position
+end
+
 
 
 
