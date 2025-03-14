@@ -1,7 +1,7 @@
+local IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
+
 if __INSPECTOR_FILE ~= nil then
-    local IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
-else
-    local IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
+    IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 end
 
 local IMAGE = love.graphics.newImage(IMAGE_DATA)
