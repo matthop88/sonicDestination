@@ -118,6 +118,8 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+--------------------------- PALETTE --------------------------
+
 function drawPalette()
     love.graphics.setColor(COLOR.PURE_WHITE)
 	love.graphics.setLineWidth(3)
