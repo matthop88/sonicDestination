@@ -1,3 +1,5 @@
+require "tools/colorInspector/color"
+
 local selectedColor = nil
 
 function selectColorAt(mx, my)
