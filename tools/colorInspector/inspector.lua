@@ -105,6 +105,7 @@ end
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     selectColorAt(mx, my)
+    table.insert(PALETTE, getSelectedColor())
 end
 
 -- Function Name: love.mousereleased()
@@ -126,7 +127,7 @@ PALETTE_LEFT = WINDOW_WIDTH - 134
 function drawPalette()
     local mx, my = love.mouse.getPosition()
     if mx >= PALETTE_LEFT then
-    	love.graphics.setColor(COLOR.MEDIUM_GREY)
+        love.graphics.setColor(COLOR.MEDIUM_GREY)
     else
         love.graphics.setColor(COLOR.TRANSPARENT_WHITE)
     end
