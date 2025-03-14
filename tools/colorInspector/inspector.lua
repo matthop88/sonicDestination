@@ -36,9 +36,9 @@ require "tools/colorInspector/readout"
 --------------------------------------------------------------
 
 if __INSPECTOR_FILE ~= nil then
-    IMAGE_DATA = love.graphics.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+    IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 else
-    IMAGE_DATA = love.graphics.newImageData("resources/images/sadNoFileImage.png")
+    IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
 end
 
 IMAGE = love.graphics.newImage(IMAGE_DATA)
