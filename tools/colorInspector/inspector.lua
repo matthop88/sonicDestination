@@ -27,7 +27,14 @@
        [X] Clicking on any pixel of the image draws a solid
            rectangular block of the selected color at the
            mouse position.
-
+       [.] Palette (2 x 9 grid) is displayed on right side of screen
+           - Palette is transparent until mouse enters it
+           - Any time a color is selected, it is added to palette
+           - Palette contains no duplicate colors
+           - Colors can be selected from palette as well
+           - If clicking on image color already existing in palette, 
+             corresponding color in palette is highlighted
+       
 --]]
 
 require "tools/colorInspector/scrolling"
