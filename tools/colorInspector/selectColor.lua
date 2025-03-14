@@ -1,5 +1,13 @@
 selectedColor = nil
 
+function selectColorAt(mx, my)
+    selectedColor = identifyColor(mx, my)
+end
+
+function clearSelectedColor()
+    selectedColor = nil
+end
+
 function identifyColor(mx, my)
     local imageX = math.min(getImageWidth(),  math.floor((mx / scale) - x))
     local imageY = math.min(getImageHeight(), math.floor((my / scale) - y))
