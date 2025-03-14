@@ -146,10 +146,10 @@ function drawPaletteGrid(mx)
 end
 
 function drawPaletteColors(mx)
-    local h = (i - 1) % 2
-    local v = math.floor((i - 1) / 2)
-    
     for i, c in ipairs(PALETTE) do
+        local h = (i - 1) % 2
+        local v = math.floor((i - 1) / 2)
+        
         drawPaletteColor(mx, h, v)
     end
 end
