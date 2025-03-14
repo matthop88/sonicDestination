@@ -24,6 +24,9 @@
        [X] Clicking on any pixel of the image prints
            an RGB description of the color both to
            the screen and to the text console.
+       [.] Clicking on any pixel of the image draws a solid
+           rectangular block of the selected color at the
+           mouse position.
 
 --]]
 
