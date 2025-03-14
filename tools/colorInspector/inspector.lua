@@ -104,7 +104,7 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    identifyColor(mx, my)
+    selectedColor = identifyColor(mx, my)
 end
 
 -- Function Name: love.mousereleased()
@@ -147,7 +147,7 @@ function identifyColor(mx, my)
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
     printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
 
-    selectedColor = { r, g, b }
+    return { r, g, b }
 end
 
 function drawSelectedColor()
