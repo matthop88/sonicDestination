@@ -120,13 +120,15 @@ end
 
 --------------------------- PALETTE --------------------------
 
+PALETTE_LEFT = WINDOW_WIDTH - 134
+
 function drawPalette()
     love.graphics.setColor(COLOR.TRANSPARENT_WHITE)
     love.graphics.setLineWidth(3)
-    love.graphics.rectangle("line", WINDOW_WIDTH - 134, 3, 132, WINDOW_HEIGHT - 6)
+    love.graphics.rectangle("line", PALETTE_LEFT, 3, 132, WINDOW_HEIGHT - 6)
     for i = 0, 8 do
-        love.graphics.rectangle("line", WINDOW_WIDTH - 134, (i * 66) + 3, 66, 66)
-        love.graphics.rectangle("line", WINDOW_WIDTH -  68, (i * 66) + 3, 66, 66)
+        love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
+        love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
     end
 end
 
