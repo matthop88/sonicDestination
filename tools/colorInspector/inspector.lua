@@ -95,8 +95,8 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    local imageX = math.floor((mx / scale) - x)
-    local imageY = math.floor((my / scale) - y)
+    local imageX = math.min(IMAGE:getWidth(),  math.floor((mx / scale) - x))
+    local imageY = math.min(IMAGE:getHeight(), math.floor((my / scale) - y))
 
     printToReadout("Mouse clicked at (" .. imageX .. ", " .. imageY .. ") of image")
 end
