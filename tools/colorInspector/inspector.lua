@@ -209,6 +209,9 @@ function selectPaletteColorAt(mx, my)
     print("H Index = " .. hIndex .. ", V Index = " .. vIndex)
     local selectedIndex = vIndex * 2 + hIndex + 1
     print("Selected Index: " .. selectedIndex)
+    if PALETTE[selectedIndex] then
+        return PALETTE[selectedIndex]
+	end
 end
 
 -- ...
