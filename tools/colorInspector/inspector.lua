@@ -202,7 +202,8 @@ function colorBelongsToPalette(color)
 end
 
 function selectColorFromPaletteAt(mx, my)
-    -- Do nothing thus far
+    -- Temporary hack to prevent program from crashing
+    selectColorAt(0, 0)
 end
 
 -- ...
