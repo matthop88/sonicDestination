@@ -203,7 +203,7 @@ end
 
 function selectPaletteColorAt(mx, my)
     -- Temporary hack to prevent program from crashing
-    selectColorAt(0, 0)
+    selectImageColorAt(0, 0)
 end
 
 -- ...
