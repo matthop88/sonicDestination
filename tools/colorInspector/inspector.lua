@@ -152,15 +152,19 @@ function drawPaletteColors(mx)
         else
             love.graphics.setColor(color[1], color[2], color[3], 0.5)
         end
-        drawColorAtPalettePosition(colorIndex)
+        local x, y = calculatePositionInPalette(colorIndex)
+        love.graphics.rectangle("fill", x, y, 60, 60)
     end
 end
 
-function drawColorAtPalettePosition(colorIndex)
-    local h = (colorIndex - 1) % 2
-    local v = math.floor((colorIndex - 1) / 2)
-    
-    love.graphics.rectangle("fill", PALETTE_LEFT + (66 * h) + 3, (v * 66) + 6, 60, 60)
+function calculatePositionInPalette(colorIndex)
+    local column = (colorIndex - 1) % 2
+    local row    = math.floor((colorIndex - 1) / 2)
+
+    local x = PALETTE_LEFT + (column * 66) + 3
+    local y =                (row    * 66) + 6
+
+    return x, y
 end
 
 function insertColorIntoPalette(color)
