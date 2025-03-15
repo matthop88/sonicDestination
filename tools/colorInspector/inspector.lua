@@ -202,16 +202,13 @@ function colorBelongsToPalette(color)
 end
 
 function selectPaletteColorAt(mx, my)
-    -- Temporary hack to prevent program from crashing
-    selectImageColorAt(0, 0)
     local hIndex = math.floor((mx - PALETTE_LEFT) / 68)
     local vIndex = math.floor((my - 3           ) / 66)
-    print("H Index = " .. hIndex .. ", V Index = " .. vIndex)
     local selectedIndex = vIndex * 2 + hIndex + 1
-    print("Selected Index: " .. selectedIndex)
+    
     if PALETTE[selectedIndex] then
         setSelectedColor(PALETTE[selectedIndex])
-	end
+    end
 end
 
 -- ...
