@@ -105,7 +105,7 @@ end
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     if isPaletteInFocus then
-        selectColorFromPaletteAt(mx, my)
+        selectPaletteColorAt(mx, my)
     else
         selectColorAt(mx, my)
     end
@@ -201,7 +201,7 @@ function colorBelongsToPalette(color)
     end
 end
 
-function selectColorFromPaletteAt(mx, my)
+function selectPaletteColorAt(mx, my)
     -- Temporary hack to prevent program from crashing
     selectColorAt(0, 0)
 end
