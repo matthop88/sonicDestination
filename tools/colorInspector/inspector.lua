@@ -136,17 +136,20 @@ function drawPalette()
 end
 
 function drawPaletteGrid()
-    if isPaletteInFocus then
-        love.graphics.setColor(COLOR.MEDIUM_GREY)
-    else
-        love.graphics.setColor(COLOR.TRANSPARENT_WHITE)
-    end
-    
+    love.graphics.setColor(calculatePaletteGridColor()
     love.graphics.setLineWidth(3)
     love.graphics.rectangle("line", PALETTE_LEFT, 3, 132, WINDOW_HEIGHT - 6)
     for i = 0, 8 do
         love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
         love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
+    end
+end
+
+function calculatePaletteGridColor()
+    if isPaletteInFocus then
+        return COLOR.MEDIUM_GREY
+    else
+        return COLOR.TRANSPARENT_WHITE
     end
 end
 
