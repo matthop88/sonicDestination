@@ -139,10 +139,7 @@ function drawPaletteGrid()
     love.graphics.setColor(calculatePaletteGridColor())
     love.graphics.setLineWidth(3)
     love.graphics.rectangle("line", PALETTE_LEFT, 3, 132, WINDOW_HEIGHT - 6)
-    for i = 0, 8 do
-        love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
-        love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
-    end
+    drawPaletteGridLines()
 end
 
 function calculatePaletteGridColor()
@@ -150,6 +147,13 @@ function calculatePaletteGridColor()
         return COLOR.MEDIUM_GREY
     else
         return COLOR.TRANSPARENT_WHITE
+    end
+end
+
+function drawPaletteGridLines()
+    for i = 0, 8 do
+        love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
+        love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
     end
 end
 
