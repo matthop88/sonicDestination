@@ -210,7 +210,7 @@ function selectPaletteColorAt(mx, my)
     local selectedIndex = vIndex * 2 + hIndex + 1
     print("Selected Index: " .. selectedIndex)
     if PALETTE[selectedIndex] then
-        return PALETTE[selectedIndex]
+        setSelectedColor(PALETTE[selectedIndex])
 	end
 end
 
