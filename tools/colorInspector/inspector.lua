@@ -136,7 +136,7 @@ function drawPalette()
 end
 
 function drawPaletteGrid()
-    love.graphics.setColor(calculatePaletteGridColor()
+    love.graphics.setColor(calculatePaletteGridColor())
     love.graphics.setLineWidth(3)
     love.graphics.rectangle("line", PALETTE_LEFT, 3, 132, WINDOW_HEIGHT - 6)
     for i = 0, 8 do
