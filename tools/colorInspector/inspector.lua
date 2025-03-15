@@ -180,12 +180,17 @@ function calculateCoordinatesOfPaletteColor(colorIndex)
 end
 
 function insertColorIntoPalette(color)
+    if not colorBelongsToPalette(color) then
+        table.insert(PALETTE, color)
+    end
+end
+
+function colorBelongsToPalette(color)
     for _, c in ipairs(PALETTE) do
         if c[1] == color[1] and c[2] == color[2] and c[3] == color[3] then
-            return
+            return true
         end
     end
-    table.insert(PALETTE, color)
 end
 
 -- ...
