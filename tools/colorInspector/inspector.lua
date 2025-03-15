@@ -104,7 +104,11 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    selectColorAt(mx, my)
+    if isPaletteInFocus then
+        selectColorFromPaletteAt(mx, my)
+    else
+        selectColorAt(mx, my)
+    end
     insertColorIntoPalette(getSelectedColor())
 end
 
@@ -195,6 +199,10 @@ function colorBelongsToPalette(color)
             return true
         end
     end
+end
+
+function selectColorFromPaletteAt(mx, my)
+    -- Do nothing thus far
 end
 
 -- ...
