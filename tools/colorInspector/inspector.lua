@@ -155,13 +155,17 @@ end
 
 function drawPaletteColors()
     for colorIndex, color in ipairs(PALETTE) do
-        if isPaletteInFocus or color == getSelectedColor() then
-            love.graphics.setColor(color)
-        else
-            love.graphics.setColor(color[1], color[2], color[3], 0.5)
-        end
+        love.graphics.setColor(calculatePaletteColorToDraw(color))
         local x, y = calculateCoordinatesOfPaletteColor(colorIndex)
         love.graphics.rectangle("fill", x, y, 60, 60)
+    end
+end
+
+function calculatePaletteColorToDraw(baseColor)
+    if isPaletteInFocus or baseColor == getSelectedColor() then
+        return baseColor
+    else
+        return { color[1], color[2], color[3], 0.5 }
     end
 end
 
