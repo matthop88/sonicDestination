@@ -129,11 +129,7 @@ isPaletteInFocus = false
 function drawPalette()
     local mx, my = love.mouse.getPosition()
    
-    if mx >= PALETTE_LEFT then
-        isPaletteInFocus = true
-    else
-        isPaletteInFocus = false
-    end
+    isPaletteInFocus = mx >= PALETTE_LEFT
     
     drawPaletteGrid()
     drawPaletteColors()
