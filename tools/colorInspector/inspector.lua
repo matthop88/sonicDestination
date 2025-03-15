@@ -107,7 +107,7 @@ function love.mousepressed(mx, my)
     if isPaletteInFocus then
         selectPaletteColorAt(mx, my)
     else
-        selectColorAt(mx, my)
+        selectImageColorAt(mx, my)
     end
     insertColorIntoPalette(getSelectedColor())
 end
