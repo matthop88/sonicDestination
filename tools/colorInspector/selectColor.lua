@@ -6,6 +6,10 @@ function selectColorAt(mx, my)
     selectedColor = identifyColor(mx, my)
 end
 
+function setSelectedColor(color)
+    selectedColor = color
+end
+
 function getSelectedColor()
     return selectedColor
 end
