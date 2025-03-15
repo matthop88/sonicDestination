@@ -146,21 +146,20 @@ function drawPaletteGrid(mx)
 end
 
 function drawPaletteColors(mx)
-    for colorIndex, paletteColor in ipairs(PALETTE) do
-        drawPaletteColor(mx, colorIndex, paletteColor)
+    for colorIndex, color in ipairs(PALETTE) do
+        if mx >= PALETTE_LEFT or color == getSelectedColor() then
+            love.graphics.setColor(color)
+        else
+            love.graphics.setColor(color[1], color[2], color[3], 0.5)
+        end
+        drawColorAtPalettePosition(colorIndex)
     end
 end
 
-function drawPaletteColor(mx, colorIndex, paletteColor)
+function drawColorAtPalettePosition(colorIndex)
     local h = (colorIndex - 1) % 2
     local v = math.floor((colorIndex - 1) / 2)
-        
-    if mx >= PALETTE_LEFT or paletteColor == getSelectedColor() then
-        love.graphics.setColor(paletteColor)
-    else
-        love.graphics.setColor(paletteColor[1], paletteColor[2], paletteColor[3], 0.5)
-    end
-        
+    
     love.graphics.rectangle("fill", PALETTE_LEFT + (66 * h) + 3, (v * 66) + 6, 60, 60)
 end
 
