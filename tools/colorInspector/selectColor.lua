@@ -4,10 +4,12 @@ local selectedColor = nil
 
 function selectImageColorAt(mx, my)
     selectedColor = identifyImageColor(mx, my)
+    printSelectedColor()
 end
 
 function setSelectedColor(color)
     selectedColor = color
+    printSelectedColor()
 end
 
 function getSelectedColor()
@@ -23,11 +25,13 @@ function identifyImageColor(mx, my)
     local imageY = math.min(getImageHeight() - 1, math.floor((my / scale) - y))
     
     local r, g, b = getImagePixelAt(imageX, imageY)
-    
+    return { r, g, b }
+end
+
+function printSelectedColor()
+    local r, g, b = unpack(selectedColor)
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
     printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
-    
-    return { r, g, b }
 end
 
 function drawSelectedColor()
