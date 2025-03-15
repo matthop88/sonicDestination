@@ -124,14 +124,23 @@ end
 PALETTE      = { }
 PALETTE_LEFT = WINDOW_WIDTH - 134
 
+isPaletteInFocus = false
+
 function drawPalette()
     local mx, my = love.mouse.getPosition()
-    drawPaletteGrid(mx)
-    drawPaletteColors(mx)
+   
+    if mx >= PALETTE_LEFT then
+        isPaletteInFocus = true
+    else
+        isPaletteInFocus = false
+    end
+    
+    drawPaletteGrid()
+    drawPaletteColors()
 end
 
-function drawPaletteGrid(mx)
-    if mx >= PALETTE_LEFT then
+function drawPaletteGrid()
+    if isPaletteInFocus then
         love.graphics.setColor(COLOR.MEDIUM_GREY)
     else
         love.graphics.setColor(COLOR.TRANSPARENT_WHITE)
@@ -145,9 +154,9 @@ function drawPaletteGrid(mx)
     end
 end
 
-function drawPaletteColors(mx)
+function drawPaletteColors()
     for colorIndex, color in ipairs(PALETTE) do
-        if mx >= PALETTE_LEFT or color == getSelectedColor() then
+        if isPaletteInFocus or color == getSelectedColor() then
             love.graphics.setColor(color)
         else
             love.graphics.setColor(color[1], color[2], color[3], 0.5)
