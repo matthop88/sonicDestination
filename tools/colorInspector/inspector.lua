@@ -204,9 +204,9 @@ end
 function selectPaletteColorAt(mx, my)
     -- Temporary hack to prevent program from crashing
     selectImageColorAt(0, 0)
-    local hIndex = (mx - PALETTE_LEFT) / 68
-    local vIndex = (my - 3           ) / 66
-    print("H Index = " .. hIndex .. ", V Index = " .. vIndex)
+    local hIndex = math.floor((mx - PALETTE_LEFT) / 68) + 1
+		local vIndex = math.floor((my - 3           ) / 66) + 1
+		print("H Index = " .. hIndex .. ", V Index = " .. vIndex)
 end
 
 -- ...
