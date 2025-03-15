@@ -191,11 +191,11 @@ end
 function highlightSelectedColor()
     for i, color in ipairs(PALETTE) do
         local x, y = calculateCoordinatesOfPaletteColor(i)
-        if color == selectedColor then
-        	love.graphics.setColor(COLOR.YELLOW)
-        	love.graphics.setLineWidth(6)
-        	love.graphics.rectangle("line", x, y, 60, 60)
-    	end
+        if color == getSelectedColor() then
+            love.graphics.setColor(COLOR.YELLOW)
+            love.graphics.setLineWidth(6)
+            love.graphics.rectangle("line", x, y, 60, 60)
+        end
     end
 end
 
