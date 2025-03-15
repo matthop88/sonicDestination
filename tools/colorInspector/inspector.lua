@@ -137,6 +137,7 @@ function drawPalette()
     
     drawPaletteGrid()
     drawPaletteColors()
+    highlightSelectedColor()
 end
 
 function drawPaletteGrid()
@@ -185,6 +186,17 @@ function calculateCoordinatesOfPaletteColor(colorIndex)
     local y =                (row    * 66) + 6
 
     return x, y
+end
+
+function highlightSelectedColor()
+    for i, color in ipairs(PALETTE) do
+        local x, y = calculateCoordinatesOfPaletteColor(i)
+        if color == selectedColor then
+        	love.graphics.setColor(COLOR.YELLOW)
+        	love.graphics.setLineWidth(6)
+        	love.graphics.rectangle("line", x, y, 60, 60)
+    	end
+    end
 end
 
 function insertColorIntoPalette(color)
