@@ -2,8 +2,8 @@ require "tools/colorInspector/color"
 
 local selectedColor = nil
 
-function selectColorAt(mx, my)
-    selectedColor = identifyColor(mx, my)
+function selectImageColorAt(mx, my)
+    selectedColor = identifyImageColor(mx, my)
 end
 
 function setSelectedColor(color)
@@ -18,7 +18,7 @@ function clearSelectedColor()
     selectedColor = nil
 end
 
-function identifyColor(mx, my)
+function identifyImageColor(mx, my)
     local imageX = math.min(getImageWidth()  - 1, math.floor((mx / scale) - x))
     local imageY = math.min(getImageHeight() - 1, math.floor((my / scale) - y))
     
