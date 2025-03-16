@@ -37,14 +37,6 @@
        
 --]]
 
-require "tools/colorInspector/scrolling"
-require "tools/colorInspector/zooming"
-require "tools/colorInspector/readout"
-require "tools/colorInspector/image"
-require "tools/colorInspector/selectColor"
-require "tools/colorInspector/color"
-require "tools/colorInspector/palette"
-
 --------------------------------------------------------------
 --                      Global Variables                    --
 --------------------------------------------------------------
@@ -53,6 +45,18 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 x,      y                   = 0, 0
 scale                       = 1
+
+--------------------------------------------------------------
+--                     External Libraries                   --
+--------------------------------------------------------------
+
+require "tools/colorInspector/scrolling"
+require "tools/colorInspector/zooming"
+require "tools/colorInspector/readout"
+require "tools/colorInspector/image"
+require "tools/colorInspector/selectColor"
+require "tools/colorInspector/color"
+require "tools/colorInspector/palette"
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
