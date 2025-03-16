@@ -109,7 +109,7 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    if isPaletteInFocus then
+    if isPaletteInFocus() then
         selectPaletteColorAt(mx, my)
     else
         selectImageColorAt(mx, my)
