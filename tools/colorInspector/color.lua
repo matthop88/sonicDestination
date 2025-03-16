@@ -9,3 +9,11 @@ COLOR = {
     YELLOW            = { 1,   1,   0      },
     MEDIUM_GREY       = { 0.5, 0.5, 0.5    },
 }
+
+function compareColors(color1, color2)
+    if color1 == nil or color2 == nil then 
+        return false 
+    end
+    
+    return color1[1] == color2[1] and color1[2] == color2[2] and color1[3] == color2[3]
+end
