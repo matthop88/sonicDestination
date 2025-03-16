@@ -68,7 +68,7 @@ end
 function highlightSelectedColor()
     for i, color in ipairs(PALETTE) do
         local x, y = calculateCoordinatesOfPaletteColor(i)
-        if color == getSelectedColor() then
+        if compareColors(color, getSelectedColor()) then
             love.graphics.setColor(COLOR.YELLOW)
             love.graphics.setLineWidth(6)
             love.graphics.rectangle("line", x, y, 60, 60)
@@ -84,7 +84,7 @@ end
 
 function colorBelongsToPalette(color)
     for _, c in ipairs(PALETTE) do
-        if c[1] == color[1] and c[2] == color[2] and c[3] == color[3] then
+        if compareColors(c, color) then
             return true
         end
     end
