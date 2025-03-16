@@ -55,7 +55,6 @@ require "tools/colorInspector/zooming"
 require "tools/colorInspector/readout"
 require "tools/colorInspector/image"
 require "tools/colorInspector/selectColor"
-require "tools/colorInspector/color"
 require "tools/colorInspector/palette"
 
 --------------------------------------------------------------
