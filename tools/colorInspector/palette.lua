@@ -48,7 +48,7 @@ function drawPaletteColors()
 end
 
 function calculatePaletteColorToDraw(baseColor)
-    if isPaletteInFocus() or baseColor == getSelectedColor() then
+    if isPaletteInFocus() or compareColors(baseColor, getSelectedColor()) then
         return baseColor
     else
         return { baseColor[1], baseColor[2], baseColor[3], 0.2 }
