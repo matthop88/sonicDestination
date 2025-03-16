@@ -1,7 +1,7 @@
-PALETTE      = { }
-PALETTE_LEFT = WINDOW_WIDTH - 134
+local PALETTE      = { }
+local PALETTE_LEFT = WINDOW_WIDTH - 134
 
-paletteInFocus = false
+local paletteInFocus = false
 
 function isPaletteInFocus()
     return paletteInFocus
