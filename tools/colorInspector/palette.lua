@@ -10,8 +10,7 @@ function isPaletteInFocus()
 end
 
 function drawPalette()
-    local mx, my = love.mouse.getPosition()
-   
+    local mx, my   = love.mouse.getPosition()
     paletteInFocus = mx >= PALETTE_LEFT
     
     drawPaletteGrid()
