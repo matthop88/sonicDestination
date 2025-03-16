@@ -1,3 +1,5 @@
+require "tools/colorInspector/color"
+
 local PALETTE      = { }
 local PALETTE_LEFT = WINDOW_WIDTH - 134
 
