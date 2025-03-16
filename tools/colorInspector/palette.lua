@@ -27,10 +27,8 @@ function drawPaletteGrid()
 end
 
 function calculatePaletteGridColor()
-    if isPaletteInFocus() then
-        return COLOR.MEDIUM_GREY
-    else
-        return COLOR.TRANSPARENT_WHITE
+    if isPaletteInFocus() then return COLOR.MEDIUM_GREY
+    else                       return COLOR.TRANSPARENT_WHITE
     end
 end
 
