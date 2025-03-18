@@ -2,13 +2,9 @@ require "tools/colorInspector/color"
 
 PALETTE = {
     table       = { },
-    LEFT_BORDER = nil,
+    LEFT_BORDER = love.graphics:getWidth() - 134,
     inFocus     = false,
 
-    init = function(self)
-        self.LEFT_BORDER = WINDOW_WIDTH - 134
-    end,
-    
     isInFocus = function(self)
         return self.inFocus
     end,
@@ -101,5 +97,3 @@ PALETTE = {
         end
     end
 }
-
-PALETTE:init()
