@@ -106,7 +106,7 @@ end
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
     if PALETTE:isInFocus() then PALETTE:selectColorAt(mx, my)
-    else                        SELECTED_COLOR:selectImageColorAt(mx, my)
+    else                        SELECTED_COLOR:selectFromImageAt(mx, my)
     end
     
     PALETTE:insertColor(SELECTED_COLOR:get())
