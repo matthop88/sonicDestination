@@ -26,7 +26,7 @@ function handleScrollKeyreleased(key)
 end
     
 function updateScrolling(dt)
-    moveImage(xSpeed * dt, ySpeed * dt)
+    IMAGE_VIEWER:moveImage(xSpeed * dt, ySpeed * dt)
 end
 
 function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
