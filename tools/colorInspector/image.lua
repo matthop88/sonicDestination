@@ -50,6 +50,10 @@ function setScale(val)
     scale = val
 end
 
+function adjustScaleGeometrically(delta)
+    scale = scale + (delta * scale)
+end
+
 function getImageWidth()
     return IMAGE:getWidth()
 end
