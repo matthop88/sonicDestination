@@ -81,7 +81,7 @@ end
 function love.update(dt)
     updateScrolling(dt)
     updateZooming(dt)
-    IMAGE_VIEWER:update()
+    IMAGE_VIEWER:update(dt)
     READOUT:update(dt)
 end
 
