@@ -24,7 +24,7 @@ function zoomFromCoordinates(dt, px, py)
         
     scale = oldScale + scaleDelta * dt * oldScale
             
-    moveImage(-(px / oldScale) + (px / scale), -(py / oldScale) + (py / scale)) 
+    moveImage((px / scale) - (px / oldScale), (py / scale) - (py / oldScale)) 
 end
 
 function zoomIn()             scaleDelta =  ZOOM_SPEED           end
