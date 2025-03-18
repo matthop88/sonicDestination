@@ -21,30 +21,41 @@
            from below, remains for 3-5 seconds and then
            recedes in same manner. Does not recede if content
            changes within 3-5 seconds.
-       [ ] Clicking on any pixel of the image prints
+       [X] Clicking on any pixel of the image prints
            an RGB description of the color both to
            the screen and to the text console.
-
+       [X] Clicking on any pixel of the image draws a solid
+           rectangular block of the selected color at the
+           mouse position.
+       [X] Palette (2 x 9 grid) is displayed on right side of screen
+           - Palette is transparent until mouse enters it
+           - Any time a color is selected, it is added to palette
+           - Palette contains no duplicate colors
+           - Colors can be selected from palette as well
+           - If clicking on image color already existing in palette, 
+             corresponding color in palette is highlighted
+       
 --]]
-
-require "tools/colorInspector/scrolling"
-require "tools/colorInspector/zooming"
-require "tools/colorInspector/readout"
 
 --------------------------------------------------------------
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-if __INSPECTOR_FILE ~= nil then
-    IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
-else
-    IMAGE = love.graphics.newImage("resources/images/sadNoFileImage.png")
-end
-
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 x,      y                   = 0, 0
 scale                       = 1
+
+--------------------------------------------------------------
+--                     External Libraries                   --
+--------------------------------------------------------------
+
+require "tools/colorInspector/scrolling"
+require "tools/colorInspector/zooming"
+require "tools/colorInspector/readout"
+require "tools/colorInspector/image"
+require "tools/colorInspector/selectColor"
+require "tools/colorInspector/palette"
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -62,6 +73,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     drawImage()
+    drawPalette()
+    drawSelectedColor()
     drawReadout()
 end
 
@@ -95,40 +108,27 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    printToReadout("Mouse clicked at (" .. mx .. ", " .. my .. ")")
+    if isPaletteInFocus() then selectPaletteColorAt(mx, my)
+    else                       selectImageColorAt(mx, my)
+    end
+    
+    insertColorIntoPalette(getSelectedColor())
+end
+
+-- Function Name: love.mousereleased()
+-- Called By:     LOVE2D application, when mouse button is released
+--------------------------------------------------------------
+function love.mousereleased(mx, my)
+    clearSelectedColor()
 end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawImage()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
-end
-
-function updateImage()
-    if isMotionless() then keepImageInBounds() end
-end
-
-function keepImageInBounds()
-    x = math.min(0, math.max(x, (WINDOW_WIDTH  / scale) - IMAGE:getWidth()))
-    y = math.min(0, math.max(y, (WINDOW_HEIGHT / scale) - IMAGE:getHeight()))
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- ...
+-- ...
+-- ...
 
 
 --[[
