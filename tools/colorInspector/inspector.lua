@@ -69,7 +69,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    drawImage()
+    IMAGE_VIEWER:drawImage()
     drawPalette()
     drawSelectedColor()
     drawReadout()
@@ -81,7 +81,7 @@ end
 function love.update(dt)
     updateScrolling(dt)
     updateZooming(dt)
-    updateImage()
+    IMAGE_VIEWER:updateImage()
     updateReadout(dt)
 end
 
