@@ -35,6 +35,11 @@ function moveTo(newX, newY)
     y = newY
 end
 
+function moveImage(deltaX, deltaY)
+    x = x + deltaX
+    y = y + deltaY
+end
+
 function getImageWidth()
     return IMAGE:getWidth()
 end
