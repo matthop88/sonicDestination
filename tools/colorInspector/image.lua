@@ -1,61 +1,59 @@
------------------- LOCALS -----------------
-
-local x, y  = 0, 0
-local scale = 1
-
 local IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
 
 if __INSPECTOR_FILE ~= nil then
     IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
 end
 
-local IMAGE = love.graphics.newImage(IMAGE_DATA)
+IMAGE_VIEWER = {
+    x     = 0,
+    y     = 0,
+    scale = 1,
+    image = love.graphics.newImage(IMAGE_DATA),
 
----------------- FUNCTIONS ----------------
+    moveImage = function(self, deltaX, deltaY)
+        self.x = self.x + deltaX
+        self.y = self.y + deltaY
+    end,
 
-function moveImage(deltaX, deltaY)
-    x = x + deltaX
-    y = y + deltaY
-end
+    adjustScaleGeometrically = function(self, delta)
+        self.scale = self.scale + (delta * self.scale)
+    end,
 
-function adjustScaleGeometrically(delta)
-    scale = scale + (delta * scale)
-end
+    screenToImageCoordinates = function(self, sX, sY)
+        local imageX = math.min(self:getImageWidth()  - 1, (sX / self.scale) - x)
+        local imageY = math.min(self:getImageHeight() - 1, (sY / self.scale) - y)
 
-function screenToImageCoordinates(sX, sY)
-    local imageX = math.min(getImageWidth()  - 1, (sX / scale) - x)
-    local imageY = math.min(getImageHeight() - 1, (sY / scale) - y)
+        return imageX, imageY
+    end,
 
-    return imageX, imageY
-end
-
-function syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
-    x = (screenX / scale) - imageX
-    y = (screenY / scale) - imageY
-end
+    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        self.x = (screenX / self.scale) - imageX
+        self.y = (screenY / self.scale) - imageY
+    end,
     
-function getImageWidth()
-    return IMAGE:getWidth()
-end
+    getImageWidth = function(self)
+        return self.image:getWidth()
+    end,
 
-function getImageHeight()
-    return IMAGE:getHeight()
-end
+    getImageHeight = function(self)
+        return self.image:getHeight()
+    end,
 
-function getImagePixelAt(x, y)
-    return IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
-end
+    getImagePixelAt = function(self, x, y)
+        return IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
+    end,
 
-function drawImage()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(IMAGE, x * scale, y * scale, 0, scale, scale)
-end
+    drawImage = function(self)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(self.image, self.x * self.scale, self.y * self.scale, 0, self.scale, self.scale)
+    end,
 
-function updateImage()
-    if isMotionless() then keepImageInBounds() end
-end
+    updateImage = function(self)
+        if self:isMotionless() then self:keepImageInBounds() end
+    end,
 
-function keepImageInBounds()
-    x = math.min(0, math.max(x, (WINDOW_WIDTH  / scale) - IMAGE:getWidth()))
-    y = math.min(0, math.max(y, (WINDOW_HEIGHT / scale) - IMAGE:getHeight()))
-end
+    keepImageInBounds = function(self)
+        self.x = math.min(0, math.max(self.x, (WINDOW_WIDTH  / self.scale) - self:getImageWidth()))
+        self.y = math.min(0, math.max(self.y, (WINDOW_HEIGHT / self.scale) - self:getImageHeight()))
+    end,
+}
