@@ -1,10 +1,7 @@
------------------- GLOBALS ----------------
-
-scale = 1
-
 ------------------ LOCALS -----------------
 
-local x, y = 0, 0
+local x, y  = 0, 0
+local scale = 1
 
 local IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
 
