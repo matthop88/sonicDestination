@@ -2,7 +2,7 @@ require "tools/colorInspector/doubleTap"
 
 local SCROLL_SPEED   = 400
 
-SCROLL = {
+SCROLLING = {
     xSpeed  = 0,   
     ySpeed  = 0,
     dashing = false,
