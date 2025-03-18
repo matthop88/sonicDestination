@@ -38,12 +38,6 @@
 --]]
 
 --------------------------------------------------------------
---                      Global Variables                    --
---------------------------------------------------------------
-
-WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
-
---------------------------------------------------------------
 --                     External Libraries                   --
 --------------------------------------------------------------
 
@@ -53,6 +47,12 @@ require "tools/colorInspector/readout"
 require "tools/colorInspector/image"
 require "tools/colorInspector/selectColor"
 require "tools/colorInspector/palette"
+
+--------------------------------------------------------------
+--                      Global Variables                    --
+--------------------------------------------------------------
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 600
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
