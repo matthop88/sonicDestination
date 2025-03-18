@@ -61,6 +61,13 @@ require "tools/colorInspector/palette"
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+DRAWABLES = {
+    IMAGE_VIEWER,
+    PALETTE,
+    SELECTED_COLOR,
+    READOUT
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -69,10 +76,9 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    IMAGE_VIEWER:draw()
-    PALETTE:draw()
-    SELECTED_COLOR:draw()
-    READOUT:draw()
+    for _, drawable in ipairs(DRAWABLES) do
+        drawable:draw()
+    end
 end
 
 -- Function Name: love.update()
