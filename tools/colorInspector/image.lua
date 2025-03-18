@@ -13,38 +13,9 @@ local IMAGE = love.graphics.newImage(IMAGE_DATA)
 
 ---------------- FUNCTIONS ----------------
 
-function getX()
-    return x
-end
-
-function getY()
-    return y
-end
-
-function setX(val)
-    x = val
-end
-
-function setY(val)
-    y = val
-end
-
-function moveTo(newX, newY)
-    x = newX
-    y = newY
-end
-
 function moveImage(deltaX, deltaY)
     x = x + deltaX
     y = y + deltaY
-end
-
-function getScale()
-    return scale
-end
-
-function setScale(val)
-    scale = val
 end
 
 function adjustScaleGeometrically(delta)
