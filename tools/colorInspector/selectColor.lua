@@ -1,6 +1,6 @@
 require "tools/colorInspector/color"
 
-COLOR_SELECTOR = {
+SELECTED_COLOR = {
     selectedColor = nil,
 
     selectImageColorAt = function(self, mx, my)
