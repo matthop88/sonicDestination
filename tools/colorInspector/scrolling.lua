@@ -2,50 +2,53 @@ require "tools/colorInspector/doubleTap"
 
 local SCROLL_SPEED   = 400
 
-local xSpeed, ySpeed = 0,   0
-local dashing        = false
+SCROLL = {
+    xSpeed  = 0,   
+    ySpeed  = 0,
+    dashing = false,
 
-function handleScrollKeypressed(key)
-    dashing = isDoubleTap(key)
+    handleScrollKeypressed = function(self, key)
+        self.dashing = isDoubleTap(key)
+        
+        if     key == "left"  then self:scrollLeft()
+        elseif key == "right" then self:scrollRight()
+        elseif key == "up"    then self:scrollUp()
+        elseif key == "down"  then self:scrollDown()
+        end
     
-    if     key == "left"  then scrollLeft()
-    elseif key == "right" then scrollRight()
-    elseif key == "up"    then scrollUp()
-    elseif key == "down"  then scrollDown()
-    end
+        setLastKeypressed(key)
+    end,
 
-    setLastKeypressed(key)
-end
-
-function handleScrollKeyreleased(key)
-    if     key == "left"  then stopScrollingLeft()
-    elseif key == "right" then stopScrollingRight()
-    elseif key == "up"    then stopScrollingUp()
-    elseif key == "down"  then stopScrollingDown()
-    end
-end
+    handleScrollKeyreleased = function(self, key)
+        if     key == "left"  then self:stopScrollingLeft()
+        elseif key == "right" then self:stopScrollingRight()
+        elseif key == "up"    then self:stopScrollingUp()
+        elseif key == "down"  then self:stopScrollingDown()
+        end
+    end,
     
-function updateScrolling(dt)
-    IMAGE_VIEWER:moveImage(xSpeed * dt, ySpeed * dt)
-end
-
-function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
-function scrollRight()        xSpeed = -(calculateScrollSpeed()) end  
-function scrollUp()           ySpeed =   calculateScrollSpeed()  end
-function scrollDown()         ySpeed = -(calculateScrollSpeed()) end
-  
-function stopScrollingLeft()  xSpeed = math.min(0, xSpeed)       end
-function stopScrollingRight() xSpeed = math.max(0, xSpeed)       end
-function stopScrollingUp()    ySpeed = math.min(0, ySpeed)       end
-function stopScrollingDown()  ySpeed = math.max(0, ySpeed)       end
-
-function calculateScrollSpeed()
-    if dashing then return SCROLL_SPEED * 2
-    else            return SCROLL_SPEED
-    end
-end
-
-function isMotionless()
-    return not isWithinDoubleTapThreshold() and xSpeed == 0 and ySpeed == 0
-end
+    updateScrolling = function(self, dt)
+        IMAGE_VIEWER:moveImage(self.xSpeed * dt, self.ySpeed * dt)
+    end,
+    
+    scrollLeft         = function(self) self.xSpeed =   self:calculateScrollSpeed()  end,
+    scrollRight        = function(self) self.xSpeed = -(self:calculateScrollSpeed()) end,
+    scrollUp           = function(self) self.ySpeed =   self:calculateScrollSpeed()  end,
+    scrollDown         = function(self) self.ySpeed = -(self:calculateScrollSpeed()) end,
+      
+    stopScrollingLeft  = function(self) self.xSpeed = math.min(0, self.xSpeed)       end,
+    stopScrollingRight = function(self) self.xSpeed = math.max(0, self.xSpeed)       end,
+    stopScrollingUp    = function(self) self.ySpeed = math.min(0, self.ySpeed)       end,
+    stopScrollingDown  = function(self) self.ySpeed = math.max(0, self.ySpeed)       end,
+    
+    calculateScrollSpeed = function(self)
+        if self:dashing then return SCROLL_SPEED * 2
+        else                 return SCROLL_SPEED
+        end
+    end,
+    
+    isMotionless = function(self)
+        return not isWithinDoubleTapThreshold() and self:xSpeed == 0 and self:ySpeed == 0
+    end,
+}
 
