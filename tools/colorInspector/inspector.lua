@@ -68,6 +68,13 @@ DRAWABLES = {
     READOUT
 }
 
+UPDATABLES = {
+    SCROLLING,
+    ZOOMING,
+    IMAGE_VIEWER,
+    READOUT
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -85,10 +92,9 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.update(dt)
-    SCROLLING:update(dt)
-    ZOOMING:update(dt)
-    IMAGE_VIEWER:update(dt)
-    READOUT:update(dt)
+    for _, updatable in ipairs(UPDATABLES) do
+        updatable:update(dt)
+    end
 end
 
 -- Function Name: love.keypressed()
