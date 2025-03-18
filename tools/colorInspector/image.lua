@@ -51,6 +51,13 @@ function adjustScaleGeometrically(delta)
     scale = scale + (delta * scale)
 end
 
+function screenToImageCoordinates(sX, sY)
+    local imageX = math.min(getImageWidth()  - 1, math.floor((sX / scale) - x))
+    local imageY = math.min(getImageHeight() - 1, math.floor((sY / scale) - y))
+
+    return imageX, imageY
+end
+    
 function getImageWidth()
     return IMAGE:getWidth()
 end
