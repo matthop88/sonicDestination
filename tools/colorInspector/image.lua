@@ -42,6 +42,14 @@ function moveImage(deltaX, deltaY)
     y = y + deltaY
 end
 
+function getScale()
+    return scale
+end
+
+function setScale(val)
+    scale = val
+end
+
 function getImageWidth()
     return IMAGE:getWidth()
 end
