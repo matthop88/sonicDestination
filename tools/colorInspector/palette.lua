@@ -1,100 +1,99 @@
 require "tools/colorInspector/color"
 
-local PALETTE      = { }
-local PALETTE_LEFT = WINDOW_WIDTH - 134
+PALETTE = {
+    paletteTable   = { },
+    PALETTE_LEFT   = WINDOW_WIDTH - 134,
+    paletteInFocus = false,
 
-local paletteInFocus = false
+    isPaletteInFocus = function(self)
+        return self.paletteInFocus
+    end,
 
-function isPaletteInFocus()
-    return paletteInFocus
-end
-
-function drawPalette()
-    local mx, my   = love.mouse.getPosition()
-    paletteInFocus = mx >= PALETTE_LEFT
+    drawPalette = function(self)
+        local mx, my   = love.mouse.getPosition()
+        self.paletteInFocus = mx >= self.PALETTE_LEFT
     
-    drawPaletteGrid()
-    drawPaletteColors()
-    highlightSelectedColor()
-end
+        self:drawPaletteGrid()
+        self:drawPaletteColors()
+        self:highlightSelectedColor()
+    end,
 
-function drawPaletteGrid()
-    love.graphics.setColor(calculatePaletteGridColor())
-    love.graphics.setLineWidth(3)
-    love.graphics.rectangle("line", PALETTE_LEFT, 3, 132, WINDOW_HEIGHT - 6)
-    drawPaletteGridLines()
-end
+    drawPaletteGrid = function(self)
+        love.graphics.setColor(self:calculatePaletteGridColor())
+        love.graphics.setLineWidth(3)
+        love.graphics.rectangle("line", self.PALETTE_LEFT, 3, 132, WINDOW_HEIGHT - 6)
+        self:drawPaletteGridLines()
+    end,
 
-function calculatePaletteGridColor()
-    if isPaletteInFocus() then return COLOR.MEDIUM_GREY
-    else                       return COLOR.TRANSPARENT_WHITE
-    end
-end
+    calculatePaletteGridColor = function(self)
+        if self:isPaletteInFocus() then return COLOR.MEDIUM_GREY
+        else                            return COLOR.TRANSPARENT_WHITE
+        end
+    end,
 
-function drawPaletteGridLines()
-    for i = 0, 8 do
-        love.graphics.rectangle("line", PALETTE_LEFT,      (i * 66) + 3, 66, 66)
-        love.graphics.rectangle("line", WINDOW_WIDTH - 68, (i * 66) + 3, 66, 66)
-    end
-end
+    drawPaletteGridLines = function(self)
+        for i = 0, 8 do
+            love.graphics.rectangle("line", self.PALETTE_LEFT,      (i * 66) + 3, 66, 66)
+            love.graphics.rectangle("line", WINDOW_WIDTH - 68,      (i * 66) + 3, 66, 66)
+        end
+    end,
 
-function drawPaletteColors()
-    for colorIndex, color in ipairs(PALETTE) do
-        love.graphics.setColor(calculatePaletteColorToDraw(color))
-        local x, y = calculateCoordinatesOfPaletteColor(colorIndex)
-        love.graphics.rectangle("fill", x, y, 60, 60)
-    end
-end
+    drawPaletteColors = function(self)
+        for colorIndex, color in ipairs(self.paletteTable) do
+            love.graphics.setColor(self:calculatePaletteColorToDraw(color))
+            local x, y = self:calculateCoordinatesOfPaletteColor(colorIndex)
+            love.graphics.rectangle("fill", x, y, 60, 60)
+        end
+    end,
 
-function calculatePaletteColorToDraw(baseColor)
-    if isPaletteInFocus() or compareColors(baseColor, getSelectedColor()) then
-        return baseColor
-    else
-        return { baseColor[1], baseColor[2], baseColor[3], 0.2 }
-    end
-end
+    calculatePaletteColorToDraw = function(self, baseColor)
+        if self:isPaletteInFocus() or compareColors(baseColor, getSelectedColor()) then
+            return baseColor
+        else
+            return { baseColor[1], baseColor[2], baseColor[3], 0.2 }
+        end
+    end,
 
-function calculateCoordinatesOfPaletteColor(colorIndex)
-    local column = (colorIndex - 1) % 2
-    local row    = math.floor((colorIndex - 1) / 2)
+    calculateCoordinatesOfPaletteColor = function(self, colorIndex)
+        local column = (colorIndex - 1) % 2
+        local row    = math.floor((colorIndex - 1) / 2)
+    
+        local x = self.PALETTE_LEFT + (column * 66) + 3
+        local y =                     (row    * 66) + 6
+    
+        return x, y
+    end,
 
-    local x = PALETTE_LEFT + (column * 66) + 3
-    local y =                (row    * 66) + 6
+    highlightSelectedColor = function(self)
+        for i, color in ipairs(self.paletteTable) do
+            local x, y = self:calculateCoordinatesOfPaletteColor(i)
+            if compareColors(color, getSelectedColor()) then
+                love.graphics.setColor(COLOR.YELLOW)
+                love.graphics.setLineWidth(6)
+                love.graphics.rectangle("line", x, y, 60, 60)
+            end
+        end
+    end,
 
-    return x, y
-end
+    insertColorIntoPalette = function(self, color)
+        if not self:colorBelongsToPalette(color) then
+            table.insert(self.paletteTable, color)
+        end
+    end,
 
-function highlightSelectedColor()
-    for i, color in ipairs(PALETTE) do
-        local x, y = calculateCoordinatesOfPaletteColor(i)
-        if compareColors(color, getSelectedColor()) then
-            love.graphics.setColor(COLOR.YELLOW)
-            love.graphics.setLineWidth(6)
-            love.graphics.rectangle("line", x, y, 60, 60)
+    colorBelongsToPalette = function(self, color)
+        for _, c in ipairs(self.paletteTable) do
+            if compareColors(c, color) then return true end
+        end
+    end,
+
+    selectPaletteColorAt = function(self, mx, my)
+        local hIndex = math.floor((mx - self.PALETTE_LEFT) / 68)
+        local vIndex = math.floor((my - 3                ) / 66)
+        local selectedIndex = vIndex * 2 + hIndex + 1
+    
+        if self.paletteTable[selectedIndex] then
+            setSelectedColor(self.paletteTable[selectedIndex])
         end
     end
-end
-
-function insertColorIntoPalette(color)
-    if not colorBelongsToPalette(color) then
-        table.insert(PALETTE, color)
-    end
-end
-
-function colorBelongsToPalette(color)
-    for _, c in ipairs(PALETTE) do
-        if compareColors(c, color) then
-            return true
-        end
-    end
-end
-
-function selectPaletteColorAt(mx, my)
-    local hIndex = math.floor((mx - PALETTE_LEFT) / 68)
-    local vIndex = math.floor((my - 3           ) / 66)
-    local selectedIndex = vIndex * 2 + hIndex + 1
-    
-    if PALETTE[selectedIndex] then
-        setSelectedColor(PALETTE[selectedIndex])
-    end
-end
+}
