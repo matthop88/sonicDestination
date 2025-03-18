@@ -62,6 +62,10 @@ function syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     --[[
     x = some equation with imageX, screenX and scale
     y = some equation with imageY, screenY and scale
+
+    From drawImage():
+    screenX = x * scale
+    screenY = y * scale
     --]]
 end
     
