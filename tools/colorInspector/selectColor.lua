@@ -5,7 +5,7 @@ SELECTED_COLOR = {
 
     selectImageColorAt = function(self, mx, my)
         self.selectedColor = self:identifyImageColor(mx, my)
-        self:printSelectedColor()
+        self:print()
     end,
 
     set = function(self, color)
