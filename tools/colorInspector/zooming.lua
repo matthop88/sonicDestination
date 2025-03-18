@@ -20,11 +20,13 @@ function updateZooming(dt)
 end
 
 function zoomFromCoordinates(dt, px, py)
-    local oldScale = scale
+    local oldScale = getScale()
         
-    scale = oldScale + scaleDelta * dt * oldScale
-            
-    moveImage((px / scale) - (px / oldScale), (py / scale) - (py / oldScale)) 
+    setScale(oldScale + scaleDelta * dt * oldScale)
+
+    local newScale = getScale()
+    
+    moveImage((px / newScale) - (px / oldScale), (py / newScale) - (py / oldScale)) 
 end
 
 function zoomIn()             scaleDelta =  ZOOM_SPEED           end
