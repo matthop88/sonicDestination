@@ -57,6 +57,13 @@ function screenToImageCoordinates(sX, sY)
 
     return imageX, imageY
 end
+
+function syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    --[[
+    x = some equation with imageX, screenX and scale
+    y = some equation with imageY, screenY and scale
+    --]]
+end
     
 function getImageWidth()
     return IMAGE:getWidth()
