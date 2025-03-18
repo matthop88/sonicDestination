@@ -64,8 +64,8 @@ function syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     y = some equation with imageY, screenY and scale
 
     From drawImage():
-    screenX = x * scale
-    screenY = y * scale
+    screenX = (x + imageX) * scale
+    screenY = (y + imageY) * scale
     --]]
 end
     
