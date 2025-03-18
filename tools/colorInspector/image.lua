@@ -23,8 +23,8 @@ function adjustScaleGeometrically(delta)
 end
 
 function screenToImageCoordinates(sX, sY)
-    local imageX = math.min(getImageWidth()  - 1, math.floor((sX / scale) - x))
-    local imageY = math.min(getImageHeight() - 1, math.floor((sY / scale) - y))
+    local imageX = math.min(getImageWidth()  - 1, (sX / scale) - x)
+    local imageY = math.min(getImageHeight() - 1, (sY / scale) - y)
 
     return imageX, imageY
 end
@@ -43,7 +43,7 @@ function getImageHeight()
 end
 
 function getImagePixelAt(x, y)
-    return IMAGE_DATA:getPixel(x, y)
+    return IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
 end
 
 function drawImage()
