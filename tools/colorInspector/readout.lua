@@ -85,7 +85,7 @@ READOUT = {
         return TOTAL_DURATION - self.timer 
     end,
 
-    drawReadout = function(self)
+    draw = function(self)
         if self.message:exists() then
             self:drawBox()
             self.message:draw(WINDOW_HEIGHT - self.yOffset + 10)
@@ -101,7 +101,7 @@ READOUT = {
         love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - self.yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT) 
     end,
 
-    updateReadout = function(self, dt)
+    update = function(self, dt)
         if self:isActive() then
             self:updateTimer(dt)
         end
@@ -144,7 +144,7 @@ READOUT = {
         return AMPLITUDE
     end,
     
-    printToReadout = function(self, msg)
+    printMessage = function(self, msg)
         self.message:set(msg)
         if self:isActive() then 
             self.message:maximizeLetterCount()
