@@ -3,7 +3,7 @@ require "tools/colorInspector/color"
 SELECTED_COLOR = {
     selectedColor = nil,
 
-    selectImageColorAt = function(self, mx, my)
+    selectFromImageAt = function(self, mx, my)
         self.selectedColor = self:identifyImageColor(mx, my)
         self:print()
     end,
