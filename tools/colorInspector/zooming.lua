@@ -1,32 +1,35 @@
 local ZOOM_SPEED = 2
-local scaleDelta = 0
 
-function handleZoomKeypressed(key)
-    if     key == "z" then zoomIn()
-    elseif key == "a" then zoomOut()
-    end
-end
+ZOOMING = {
+    scaleDelta = 0,
 
-function handleZoomKeyreleased(key)
-    if     key == "z" then stopZoomingIn()
-    elseif key == "a" then stopZoomingOut()
-    end
-end
+    handleKeypressed = function(self, key)
+        if     key == "z" then self:startIn()
+        elseif key == "a" then self:startOut()
+        end
+    end,
+
+    handleKeyreleased = function(self, key)
+        if     key == "z" then self:stopIn()
+        elseif key == "a" then self:stopOut()
+        end
+    end,
     
-function updateZooming(dt)
-    if scaleDelta ~= 0 then
-        zoomFromCoordinates(dt, love.mouse.getPosition())
-    end
-end
+    update = function(self, dt)
+        if self.scaleDelta ~= 0 then
+            self:zoomFromCoordinates(dt, love.mouse.getPosition())
+        end
+    end,
 
-function zoomFromCoordinates(dt, screenX, screenY)
-    local imageX, imageY = IMAGE_VIEWER:screenToImageCoordinates(screenX, screenY)
-    IMAGE_VIEWER:adjustScaleGeometrically(scaleDelta * dt)
-    IMAGE_VIEWER:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
-end
+    zoomFromCoordinates= function(self, dt, screenX, screenY)
+        local imageX, imageY = IMAGE_VIEWER:screenToImageCoordinates(screenX, screenY)
+        IMAGE_VIEWER:adjustScaleGeometrically(self.scaleDelta * dt)
+        IMAGE_VIEWER:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    end,
 
-function zoomIn()             scaleDelta =  ZOOM_SPEED           end
-function zoomOut()            scaleDelta = -ZOOM_SPEED           end
+    startIn  = function(self)  self.scaleDelta =  ZOOM_SPEED end,
+    startOut = function(self)) self.scaleDelta = -ZOOM_SPEED end,
 
-function stopZoomingIn()      scaleDelta =  0                    end
-function stopZoomingOut()     scaleDelta =  0                    end
+    stopIn   = function(self)  self.scaleDelta =  0          end,
+    stopOut  = function(self)  self.scaleDelta =  0          end,
+}
