@@ -72,7 +72,7 @@ function love.draw()
     IMAGE_VIEWER:drawImage()
     PALETTE:draw()
     SELECTED_COLOR:draw()
-    READOUT:drawReadout()
+    READOUT:draw()
 end
 
 -- Function Name: love.update()
@@ -82,7 +82,7 @@ function love.update(dt)
     updateScrolling(dt)
     updateZooming(dt)
     IMAGE_VIEWER:updateImage()
-    READOUT:updateReadout(dt)
+    READOUT:update(dt)
 end
 
 -- Function Name: love.keypressed()
