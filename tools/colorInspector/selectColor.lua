@@ -21,8 +21,8 @@ function clearSelectedColor()
 end
 
 function identifyImageColor(mx, my)
-    local imageX, imageY = screenToImageCoordinates(mx, my)
-    local r, g, b        = getImagePixelAt(imageX, imageY)
+    local imageX, imageY = IMAGE_VIEWER:screenToImageCoordinates(mx, my)
+    local r, g, b        = IMAGE_VIEWER:getImagePixelAt(imageX, imageY)
     
     return { r, g, b }
 end
