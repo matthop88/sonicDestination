@@ -79,7 +79,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.update(dt)
-    SCROLLING:updateScrolling(dt)
+    SCROLLING:update(dt)
     updateZooming(dt)
     IMAGE_VIEWER:update(dt)
     READOUT:update(dt)
@@ -89,7 +89,7 @@ end
 -- Called By:     LOVE2D application, when any key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    SCROLLING:handleScrollKeypressed(key)
+    SCROLLING:handleKeypressed(key)
     handleZoomKeypressed(key)
 end
 
@@ -97,7 +97,7 @@ end
 -- Called By:     LOVE2D application, when any key is released
 --------------------------------------------------------------
 function love.keyreleased(key)
-    SCROLLING:handleScrollKeyreleased(key)
+    SCROLLING:handleKeyreleased(key)
     handleZoomKeyreleased(key)
 end
 
