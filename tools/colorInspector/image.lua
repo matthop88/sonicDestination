@@ -30,6 +30,11 @@ function setY(val)
     y = val
 end
 
+function moveTo(newX, newY)
+    x = newX
+    y = newY
+end
+
 function getImageWidth()
     return IMAGE:getWidth()
 end
