@@ -80,7 +80,7 @@ end
 --------------------------------------------------------------
 function love.update(dt)
     SCROLLING:update(dt)
-    updateZooming(dt)
+    ZOOMING:update(dt)
     IMAGE_VIEWER:update(dt)
     READOUT:update(dt)
 end
@@ -90,7 +90,7 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     SCROLLING:handleKeypressed(key)
-    handleZoomKeypressed(key)
+    ZOOMING:handleKeypressed(key)
 end
 
 -- Function Name: love.keyreleased()
@@ -98,7 +98,7 @@ end
 --------------------------------------------------------------
 function love.keyreleased(key)
     SCROLLING:handleKeyreleased(key)
-    handleZoomKeyreleased(key)
+    ZOOMING:handleKeyreleased(key)
 end
 
 -- Function Name: love.mousepressed()
