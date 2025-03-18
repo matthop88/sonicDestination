@@ -48,12 +48,12 @@ IMAGE_VIEWER = {
         return self.imageData:getPixel(math.floor(x), math.floor(y))
     end,
 
-    drawImage = function(self)
+    draw = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.image, self.x * self.scale, self.y * self.scale, 0, self.scale, self.scale)
     end,
 
-    updateImage = function(self)
+    update = function(self)
         if isMotionless() then self:keepImageInBounds() end
     end,
 
