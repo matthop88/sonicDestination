@@ -49,7 +49,7 @@ IMAGE_VIEWER = {
     end,
 
     updateImage = function(self)
-        if self:isMotionless() then self:keepImageInBounds() end
+        if isMotionless() then self:keepImageInBounds() end
     end,
 
     keepImageInBounds = function(self)
