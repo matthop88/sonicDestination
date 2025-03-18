@@ -16,122 +16,146 @@ local TEXT_COLOR     = COLOR.PURE_WHITE
 local SHADOW_COLOR   = COLOR.JET_BLACK
 
 local MAX_LETTERS_PER_SECOND = 600000
+
+READOUT = {
+    message    = {
+        text             = nil,
+        letterCount      = 0,
+        lettersPerSecond = MAX_LETTERS_PER_SECOND,
+        isDrawShadow     = false,
     
-local message    = {
-    text             = nil,
-    letterCount      = 0,
-    lettersPerSecond = MAX_LETTERS_PER_SECOND,
-    isDrawShadow     = false,
+        get    = function(self)    
+            if self.letterCount < 1 then return ""
+            else                         return string.sub(self.text, 1, self.letterCount)
+            end
+        end,
     
-    get    = function(self)    
-        if self.letterCount < 1 then return ""
-        else                         return string.sub(self.text, 1, self.letterCount)
+        set    = function(self, t) 
+            self.text      = t
+            self.textWidth = FONT:getWidth(t)
+            self.leftX     = (WINDOW_WIDTH - self.textWidth) / 2 
+            self:resetLetterCount()   
+        end,
+        
+        exists = function(self)    
+            return self.text ~= nil 
+        end,
+    
+        draw = function(self, y)
+            if self.isDrawShadow then
+                self:drawShadow(y)
+            end
+            self:drawText(y)
+        end,
+    
+        drawShadow = function(self, y)
+            love.graphics.setColor(SHADOW_COLOR)
+            love.graphics.printf(self:get(), self.leftX - 5, y + 5, self.textWidth, "left")
+            love.graphics.printf(self:get(), self.leftX - 3, y + 3, self.textWidth, "left")
+            love.graphics.printf(self:get(), self.leftX - 1, y + 1, self.textWidth, "left")
+        end,
+    
+        drawText = function(self, y)
+            love.graphics.setFont(FONT)
+            love.graphics.setColor(TEXT_COLOR)
+            love.graphics.printf(self:get(), self.leftX, y, self.textWidth, "left")
+        end,
+    
+        update = function(self, dt)
+            self.letterCount = self.letterCount + (dt * self.lettersPerSecond)
+        end,
+    
+        resetLetterCount = function(self)
+            self.letterCount = -math.sqrt(self.lettersPerSecond)
+        end,
+    
+        maximizeLetterCount = function(self)
+            self.letterCount = string.len(self.text)
+        end,
+    },
+
+    timer      = TOTAL_DURATION,
+    yOffset    = 0,
+
+    getTimeElapsed = function(self)     
+        return self.timer                  
+    end,
+    
+    getTimeRemaining = function(self)  
+        return TOTAL_DURATION - self.timer 
+    end,
+
+    drawReadout = function(self)
+        if self.message:exists() then
+            self:drawBox()
+            self.message:draw(WINDOW_HEIGHT - self.yOffset + 10)
+        end
+    end,
+    
+    drawBox = function(self)
+        love.graphics.setColor(BOX_COLOR)
+        love.graphics.rectangle("fill", HORIZ_MARGINS, WINDOW_HEIGHT - self.yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT)
+    
+        love.graphics.setLineWidth(1)
+        love.graphics.setColor(BORDER_COLOR)
+        love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - self.yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT) 
+    end,
+
+    updateReadout = function(self, dt)
+        if self:isActive() then
+            self:updateTimer(dt)
+        end
+        self.yOffset = self:calculateYOffset()
+        self.message:update(dt)
+    end,
+
+    isActive = function(self)     
+        return self:getTimeElapsed() < TOTAL_DURATION 
+    end,
+
+    updateTimer = function(self, dt) 
+        self.timer = self.timer + (60 * dt)                
+    end,
+
+    calculateYOffset = function(self)
+        if     self:isAttacking() then return self:calculateAttackingYOffset()
+        elseif self:isDecaying()  then return self:calculateDecayingYOffset()
+        else                           return self:calculateSustainingYOffset()  
         end
     end,
 
-    set    = function(self, t) 
-        self.text      = t
-        self.textWidth = FONT:getWidth(t)
-        self.leftX     = (WINDOW_WIDTH - self.textWidth) / 2 
-        self:resetLetterCount()   
+    isAttacking = function(self)
+        return self:getTimeElapsed() <= ATTACK   
     end,
     
-    exists = function(self)    
-        return self.text ~= nil 
+    isDecaying = function(self)  
+        return self:getTimeRemaining() <= DECAY    
     end,
 
-    draw = function(self, y)
-        if self.isDrawShadow then
-            self:drawShadow(y)
+    calculateAttackingYOffset = function(self)  
+        return self:getTimeElapsed() / ATTACK * AMPLITUDE 
+    end,
+    
+    calculateDecayingYOffset = function(self)
+        return self:getTimeRemaining() / DECAY  * AMPLITUDE 
+    end,
+    
+    calculateSustainingYOffset = function(self) 
+        return AMPLITUDE
+    end,
+    
+    printToReadout = function(self, msg)
+        self.message:set(msg)
+        if self:isActive() then 
+            self.message:maximizeLetterCount()
         end
-        self:drawText(y)
+    
+        self:resetTimer()
     end,
-
-    drawShadow = function(self, y)
-        love.graphics.setColor(SHADOW_COLOR)
-        love.graphics.printf(self:get(), self.leftX - 5, y + 5, self.textWidth, "left")
-        love.graphics.printf(self:get(), self.leftX - 3, y + 3, self.textWidth, "left")
-        love.graphics.printf(self:get(), self.leftX - 1, y + 1, self.textWidth, "left")
-    end,
-
-    drawText = function(self, y)
-        love.graphics.setFont(FONT)
-        love.graphics.setColor(TEXT_COLOR)
-        love.graphics.printf(self:get(), self.leftX, y, self.textWidth, "left")
-    end,
-
-    update = function(self, dt)
-        self.letterCount = self.letterCount + (dt * self.lettersPerSecond)
-    end,
-
-    resetLetterCount = function(self)
-        self.letterCount = -math.sqrt(self.lettersPerSecond)
-    end,
-
-    maximizeLetterCount = function(self)
-        self.letterCount = string.len(self.text)
+    
+    resetTimer = function(self)
+        if not self:isActive() or self:isDecaying() then self.timer = 0
+        else                                             self.timer = ATTACK
+        end
     end,
 }
-
-local timer      = TOTAL_DURATION
-local yOffset    = 0
-
-function getTimeElapsed()     return timer                  end
-function getTimeRemaining()   return TOTAL_DURATION - timer end
-
-function drawReadout()
-    if message:exists() then
-        drawBox()
-        message:draw(WINDOW_HEIGHT - yOffset + 10)
-    end
-end
-
-function drawBox()
-    love.graphics.setColor(BOX_COLOR)
-    love.graphics.rectangle("fill", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT)
-
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(BORDER_COLOR)
-    love.graphics.rectangle("line", HORIZ_MARGINS, WINDOW_HEIGHT - yOffset, WINDOW_WIDTH - (HORIZ_MARGINS * 2), BOX_HEIGHT) 
-end
-
-function updateReadout(dt)
-    if isActive() then
-        updateTimer(dt)
-    end
-    yOffset = calculateYOffset()
-    message:update(dt)
-end
-
-function isActive()      return getTimeElapsed() < TOTAL_DURATION end
-
-function updateTimer(dt) timer = timer + (60 * dt)                end
-
-function calculateYOffset()
-    if     isAttacking() then return calculateAttackingYOffset()
-    elseif isDecaying()  then return calculateDecayingYOffset()
-    else                      return calculateSustainingYOffset()  
-    end
-end
-
-function isAttacking() return getTimeElapsed()   <= ATTACK   end
-function isDecaying()  return getTimeRemaining() <= DECAY    end
-
-function calculateAttackingYOffset()  return getTimeElapsed()   / ATTACK * AMPLITUDE end
-function calculateDecayingYOffset()   return getTimeRemaining() / DECAY  * AMPLITUDE end
-function calculateSustainingYOffset() return AMPLITUDE                               end
-
-function printToReadout(msg)
-    message:set(msg)
-    if isActive() then 
-        message:maximizeLetterCount()
-    end
-
-    resetTimer()
-end
-
-function resetTimer()
-    if not isActive() or isDecaying() then timer = 0
-    else                                   timer = ATTACK
-    end
-end
