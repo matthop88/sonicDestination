@@ -8,16 +8,16 @@ SELECTED_COLOR = {
         self:printSelectedColor()
     end,
 
-    setSelectedColor = function(self, color)
+    set = function(self, color)
         self.selectedColor = color
-        self:printSelectedColor()
+        self:print()
     end,
 
-    getSelectedColor = function(self)
+    get = function(self)
         return self.selectedColor
     end,
 
-    clearSelectedColor = function(self)
+    clear = function(self)
         self.selectedColor = nil
     end,
 
@@ -28,13 +28,13 @@ SELECTED_COLOR = {
         return { r, g, b }
     end,
 
-    printSelectedColor = function(self)
+    print = function(self)
         local r, g, b = unpack(self.selectedColor)
         print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
         printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
     end,
 
-    drawSelectedColor = function(self)
+    draw = function(self)
         if self.selectedColor ~= nil then
             local mx, my = love.mouse.getPosition()
             self:drawCursorBody(mx, my)
