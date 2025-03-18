@@ -14,6 +14,22 @@ local IMAGE = love.graphics.newImage(IMAGE_DATA)
 
 ---------------- FUNCTIONS ----------------
 
+function getX()
+    return x
+end
+
+function getY()
+    return y
+end
+
+function setX(val)
+    x = val
+end
+
+function setY(val)
+    y = val
+end
+
 function getImageWidth()
     return IMAGE:getWidth()
 end
