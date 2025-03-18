@@ -2,9 +2,13 @@ require "tools/colorInspector/color"
 
 PALETTE = {
     table       = { },
-    LEFT_BORDER = WINDOW_WIDTH - 134,
+    LEFT_BORDER = nil,
     inFocus     = false,
 
+    init = function(self)
+        self.LEFT_BORDER = WINDOW_WIDTH - 134
+    end,
+    
     isInFocus = function(self)
         return self.inFocus
     end,
@@ -97,3 +101,5 @@ PALETTE = {
         end
     end
 }
+
+PALETTE:init()
