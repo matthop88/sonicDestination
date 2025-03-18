@@ -21,9 +21,7 @@ end
 
 function zoomFromCoordinates(dt, px, py)
     local oldScale = getScale()
-        
-    setScale(oldScale + scaleDelta * dt * oldScale)
-
+    adjustScaleGeometrically(scaleDelta * dt)
     local newScale = getScale()
     
     moveImage((px / newScale) - (px / oldScale), (py / newScale) - (py / oldScale)) 
