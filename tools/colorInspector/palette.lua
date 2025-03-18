@@ -47,7 +47,7 @@ PALETTE = {
     end,
 
     calculateColorToDraw = function(self, baseColor)
-        if self:isInFocus() or compareColors(baseColor, SELECTED_COLOR:getSelectedColor()) then
+        if self:isInFocus() or compareColors(baseColor, SELECTED_COLOR:get()) then
             return baseColor
         else
             return { baseColor[1], baseColor[2], baseColor[3], 0.2 }
@@ -67,7 +67,7 @@ PALETTE = {
     highlightSelectedColor = function(self)
         for i, color in ipairs(self.table) do
             local x, y = self:calculateCoordinatesOfColor(i)
-            if compareColors(color, SELECTED_COLOR:getSelectedColor()) then
+            if compareColors(color, SELECTED_COLOR:get()) then
                 love.graphics.setColor(COLOR.YELLOW)
                 love.graphics.setLineWidth(6)
                 love.graphics.rectangle("line", x, y, 60, 60)
@@ -93,7 +93,7 @@ PALETTE = {
         local selectedIndex = vIndex * 2 + hIndex + 1
     
         if self.table[selectedIndex] then
-            SELECTED_COLOR:setSelectedColor(self.table[selectedIndex])
+            SELECTED_COLOR:set(self.table[selectedIndex])
         end
     end
 }
