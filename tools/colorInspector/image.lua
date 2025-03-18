@@ -53,7 +53,7 @@ IMAGE_VIEWER = {
         love.graphics.draw(self.image, self.x * self.scale, self.y * self.scale, 0, self.scale, self.scale)
     end,
 
-    update = function(self)
+    update = function(self, dt)
         if isMotionless() then self:keepImageInBounds() end
     end,
 
