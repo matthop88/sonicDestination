@@ -27,9 +27,9 @@ ZOOMING = {
         IMAGE_VIEWER:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
-    startIn  = function(self)  self.scaleDelta =  ZOOM_SPEED end,
-    startOut = function(self)) self.scaleDelta = -ZOOM_SPEED end,
+    startIn  = function(self) self.scaleDelta =  ZOOM_SPEED end,
+    startOut = function(self) self.scaleDelta = -ZOOM_SPEED end,
 
-    stopIn   = function(self)  self.scaleDelta =  0          end,
-    stopOut  = function(self)  self.scaleDelta =  0          end,
+    stopIn   = function(self) self.scaleDelta =  0          end,
+    stopOut  = function(self) self.scaleDelta =  0          end,
 }
