@@ -75,6 +75,11 @@ UPDATABLES = {
     READOUT
 }
 
+KEY_HANDLERS = {
+    SCROLLING,
+    ZOOMING
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -101,16 +106,18 @@ end
 -- Called By:     LOVE2D application, when any key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    SCROLLING:handleKeypressed(key)
-    ZOOMING:handleKeypressed(key)
+    for _, keyHandler in ipairs(KEY_HANDLERS) do
+        keyHandler:handleKeypressed(key)
+    end
 end
 
 -- Function Name: love.keyreleased()
 -- Called By:     LOVE2D application, when any key is released
 --------------------------------------------------------------
 function love.keyreleased(key)
-    SCROLLING:handleKeyreleased(key)
-    ZOOMING:handleKeyreleased(key)
+    for _, keyHandler in ipairs(KEY_HANDLERS) do
+        keyHandler:handleKeyreleased(key)
+    end
 end
 
 -- Function Name: love.mousepressed()
