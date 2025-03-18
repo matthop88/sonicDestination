@@ -26,8 +26,8 @@ function handleScrollKeyreleased(key)
 end
     
 function updateScrolling(dt)
-    x = x + xSpeed * dt
-    y = y + ySpeed * dt
+    setX(getX() + xSpeed * dt)
+    setY(getY() + ySpeed * dt)
 end
 
 function scrollLeft()         xSpeed =   calculateScrollSpeed()  end
