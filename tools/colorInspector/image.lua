@@ -1,14 +1,19 @@
-local IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
-
-if __INSPECTOR_FILE ~= nil then
-    IMAGE_DATA = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
-end
-
 IMAGE_VIEWER = {
-    x     = 0,
-    y     = 0,
-    scale = 1,
-    image = love.graphics.newImage(IMAGE_DATA),
+    x         = 0,
+    y         = 0,
+    scale     = 1,
+    imageData = nil,
+    image     = nil,
+
+    init = function(self)
+        self.imageData = love.image.newImageData("resources/images/sadNoFileImage.png")
+
+        if __INSPECTOR_FILE ~= nil then
+            self.imageData = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
+        end
+
+        self.image = love.graphics.newImage(self.imageData)
+    end,
 
     moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
@@ -40,7 +45,7 @@ IMAGE_VIEWER = {
     end,
 
     getImagePixelAt = function(self, x, y)
-        return IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
+        return self.imageData:getPixel(math.floor(x), math.floor(y))
     end,
 
     drawImage = function(self)
@@ -57,3 +62,6 @@ IMAGE_VIEWER = {
         self.y = math.min(0, math.max(self.y, (WINDOW_HEIGHT / self.scale) - self:getImageHeight()))
     end,
 }
+
+IMAGE_VIEWER:init()
+
