@@ -95,5 +95,9 @@ PALETTE = {
         if self.table[selectedIndex] then
             SELECTED_COLOR:set(self.table[selectedIndex])
         end
-    end
+    end,
+
+    update = function(self, dt)
+        self.LEFT_BORDER = love.graphics:getWidth() - 134
+    end,
 }
