@@ -70,7 +70,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     IMAGE_VIEWER:drawImage()
-    PALETTE:drawPalette()
+    PALETTE:draw()
     drawSelectedColor()
     drawReadout()
 end
@@ -105,11 +105,11 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    if PALETTE:isPaletteInFocus() then PALETTE:selectPaletteColorAt(mx, my)
-    else                               selectImageColorAt(mx, my)
+    if PALETTE:isInFocus() then PALETTE:selectColorAt(mx, my)
+    else                        selectImageColorAt(mx, my)
     end
     
-    PALETTE:insertColorIntoPalette(getSelectedColor())
+    PALETTE:insertColor(getSelectedColor())
 end
 
 -- Function Name: love.mousereleased()
