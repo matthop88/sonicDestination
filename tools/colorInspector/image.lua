@@ -1,3 +1,5 @@
+------------------ LOCALS -----------------
+
 local IMAGE_DATA = love.image.newImageData("resources/images/sadNoFileImage.png")
 
 if __INSPECTOR_FILE ~= nil then
@@ -5,6 +7,8 @@ if __INSPECTOR_FILE ~= nil then
 end
 
 local IMAGE = love.graphics.newImage(IMAGE_DATA)
+
+---------------- FUNCTIONS ----------------
 
 function getImageWidth()
     return IMAGE:getWidth()
