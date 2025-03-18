@@ -54,7 +54,7 @@ IMAGE_VIEWER = {
     end,
 
     update = function(self, dt)
-        if isMotionless() then self:keepImageInBounds() end
+        if SCROLLING:isMotionless() then self:keepImageInBounds() end
     end,
 
     keepImageInBounds = function(self)
