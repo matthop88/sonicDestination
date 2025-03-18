@@ -59,10 +59,8 @@ function screenToImageCoordinates(sX, sY)
 end
 
 function syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
-    --[[
     x = (screenX / scale) - imageX
     y = (screenY / scale) - imageY
-    --]]
 end
     
 function getImageWidth()
