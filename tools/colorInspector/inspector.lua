@@ -115,6 +115,10 @@ PLUGINS = {
             end
         end
     end,
+
+    add = function(self, plugin)
+        table.insert(self, plugin)
+    end,
 }
 
 --------------------------------------------------------------
