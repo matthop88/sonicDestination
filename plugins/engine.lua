@@ -49,5 +49,6 @@ return {
 
     add = function(self, plugin)
         table.insert(self, plugin)
+        return self
     end,
 }
