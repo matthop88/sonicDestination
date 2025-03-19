@@ -8,6 +8,8 @@ return {
     init = function(self, imagePath)
         self.imageData = love.image.newImageData(imagePath)
         self.image = love.graphics.newImage(self.imageData)
+
+        return self
     end,
 
     moveImage = function(self, deltaX, deltaY)
