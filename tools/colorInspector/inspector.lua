@@ -80,7 +80,10 @@ function love.draw()
     love.graphics.rectangle("draw", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 end
 
+local oldDrawFunction = love.draw
+
 function love.draw()
+    oldDrawFunction()
     PLUGINS:draw()
 end
 
