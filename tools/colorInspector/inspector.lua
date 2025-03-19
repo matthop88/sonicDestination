@@ -61,13 +61,6 @@ end
 --------------------------------------------------------------
 
 PLUGINS = {
-    require("tools/colorInspector/image"):init(imagePath),
-    require("tools/colorInspector/palette"),
-    require("tools/colorInspector/selectColor"):init(),
-    require("tools/colorInspector/readout"):init(),
-    require("tools/colorInspector/scrolling"),
-    require("tools/colorInspector/zooming"),
-
     draw = function(self)
         for _, plugin in ipairs(self) do
             if plugin.draw ~= nil then
@@ -120,6 +113,13 @@ PLUGINS = {
         table.insert(self, plugin)
     end,
 }
+
+PLUGINS:add(require("tools/colorInspector/image"):init(imagePath))
+PLUGINS:add(require("tools/colorInspector/palette"))
+PLUGINS:add(require("tools/colorInspector/selectColor"):init())
+PLUGINS:add(require("tools/colorInspector/readout"):init())
+PLUGINS:add(require("tools/colorInspector/scrolling"))
+PLUGINS:add(require("tools/colorInspector/zooming"))
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
