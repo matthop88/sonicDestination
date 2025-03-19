@@ -60,13 +60,6 @@ end
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.update()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.update(dt)
-    PLUGINS:update(dt)
-end
-
 -- Function Name: love.keypressed()
 -- Called By:     LOVE2D application, when any key is pressed
 --------------------------------------------------------------
