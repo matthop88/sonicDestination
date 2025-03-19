@@ -80,13 +80,6 @@ function love.draw()
     love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 end
 
-local oldDrawFunction = love.draw
-
-function love.draw()
-    oldDrawFunction()
-    PLUGINS:draw()
-end
-
 -- Function Name: love.update()
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
