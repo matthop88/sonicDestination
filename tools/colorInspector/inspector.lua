@@ -162,7 +162,7 @@ end
 -- Called By:     LOVE2D application, when mouse button is released
 --------------------------------------------------------------
 function love.mousereleased(mx, my)
-    SELECTED_COLOR:clear()
+    PLUGINS:mousereleased(mx, my)
 end
 
 --------------------------------------------------------------
