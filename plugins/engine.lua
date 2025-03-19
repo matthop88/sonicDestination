@@ -47,7 +47,8 @@ return {
         end
     end,
 
-    add = function(self, plugin)
+    add = function(self, pluginPath, param)
+        local plugin = require("plugins/modules/" .. pluginPath):init(param)
         table.insert(self, plugin)
         return self
     end,
