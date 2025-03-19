@@ -62,16 +62,14 @@ end
 
 PALETTE        = require "tools/colorInspector/palette"
 SELECTED_COLOR = require "tools/colorInspector/selectColor"
-SCROLLING      = require "tools/colorInspector/scrolling"
-ZOOMING        = require "tools/colorInspector/zooming"
 
 PLUGINS = {
     require("tools/colorInspector/image"):init(imagePath),
     PALETTE,
     SELECTED_COLOR,
     require("tools/colorInspector/readout"):init(),
-    SCROLLING,
-    ZOOMING,
+    require("tools/colorInspector/scrolling"),
+    require("tools/colorInspector/zooming"),
 
     draw = function(self)
         for _, plugin in ipairs(self) do
