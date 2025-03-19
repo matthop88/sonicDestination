@@ -41,7 +41,8 @@
 --                     External Libraries                   --
 --------------------------------------------------------------
 
-require "tools/colorInspector/image"
+IMAGE_VIEWER = require "tools/colorInspector/image"
+
 require "tools/colorInspector/palette"
 require "tools/colorInspector/selectColor"
 require "tools/colorInspector/readout"
