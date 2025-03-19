@@ -57,18 +57,6 @@ if __INSPECTOR_FILE ~= nil then
 end
 
 --------------------------------------------------------------
---                     External Libraries                   --
---------------------------------------------------------------
-
-PLUGINS = require("plugins/engine")
-    :add("imageViewer", imagePath)
-    :add("palette")
-    :add("selectColor")
-    :add("readout")
-    :add("scrolling")
-    :add("zooming")
-
---------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
@@ -116,12 +104,16 @@ function love.mousereleased(mx, my)
 end
 
 --------------------------------------------------------------
---                  Specialized Functions                   --
+--                         Plugins                          --
 --------------------------------------------------------------
 
--- ...
--- ...
--- ...
+PLUGINS = require("plugins/engine")
+    :add("imageViewer", imagePath)
+    :add("palette")
+    :add("selectColor")
+    :add("readout")
+    :add("scrolling")
+    :add("zooming")
 
 
 --[[
