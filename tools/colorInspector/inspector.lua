@@ -109,6 +109,14 @@ PLUGINS = {
             end
         end
     end,
+
+    mousereleased = function(self, mx, my)
+        for _, plugin in ipairs(self) do
+            if plugin.handleMousereleased ~= nil then
+                plugin:handleMousereleased(mx, my)
+            end
+        end
+    end,
 }
 
 --------------------------------------------------------------
