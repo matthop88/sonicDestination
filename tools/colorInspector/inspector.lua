@@ -108,13 +108,13 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
+    :init()
     :add("imageViewer", imagePath)
     :add("palette")
     :add("selectColor")
     :add("readout")
     :add("scrolling")
     :add("zooming")
-
 
 --[[
 
