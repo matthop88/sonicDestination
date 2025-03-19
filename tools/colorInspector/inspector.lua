@@ -38,17 +38,6 @@
 --]]
 
 --------------------------------------------------------------
---                     External Libraries                   --
---------------------------------------------------------------
-
-IMAGE_VIEWER   = require "tools/colorInspector/image"
-PALETTE        = require "tools/colorInspector/palette"
-SELECTED_COLOR = require "tools/colorInspector/selectColor"
-READOUT        = require "tools/colorInspector/readout"
-SCROLLING      = require "tools/colorInspector/scrolling"
-ZOOMING        = require "tools/colorInspector/zooming"
-
---------------------------------------------------------------
 --                      Global Variables                    --
 --------------------------------------------------------------
 
@@ -66,6 +55,18 @@ local imagePath = "resources/images/sadNoFileImage.png"
 if __INSPECTOR_FILE ~= nil then
     imagePath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
 end
+
+--------------------------------------------------------------
+--                     External Libraries                   --
+--------------------------------------------------------------
+
+IMAGE_VIEWER   = require "tools/colorInspector/image"
+PALETTE        = require "tools/colorInspector/palette"
+SELECTED_COLOR = require "tools/colorInspector/selectColor"
+READOUT        = require "tools/colorInspector/readout"
+SCROLLING      = require "tools/colorInspector/scrolling"
+ZOOMING        = require "tools/colorInspector/zooming"
+
 
 IMAGE_VIEWER:init(imagePath)
 
