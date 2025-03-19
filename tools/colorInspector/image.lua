@@ -58,8 +58,8 @@ IMAGE_VIEWER = {
     end,
 
     keepImageInBounds = function(self)
-        self.x = math.min(0, math.max(self.x, (WINDOW_WIDTH  / self.scale) - self:getImageWidth()))
-        self.y = math.min(0, math.max(self.y, (WINDOW_HEIGHT / self.scale) - self:getImageHeight()))
+        self.x = math.min(0, math.max(self.x, (love.graphics:getWidth()  / self.scale) - self:getImageWidth()))
+        self.y = math.min(0, math.max(self.y, (love.graphics:getHeight() / self.scale) - self:getImageHeight()))
     end,
 }
 
