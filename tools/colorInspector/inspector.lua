@@ -60,14 +60,6 @@ end
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    love.graphics.setColor(0, 0, 0.5)
-    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-end
-
 -- Function Name: love.update()
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
