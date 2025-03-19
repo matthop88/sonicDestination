@@ -1,4 +1,4 @@
-require "tools/colorInspector/color"
+require "plugins/libraries/color"
 
 local FONT_SIZE      = 40
 local FONT           = love.graphics.newFont(FONT_SIZE)
