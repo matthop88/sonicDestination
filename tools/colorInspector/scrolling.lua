@@ -29,6 +29,9 @@ SCROLLING = {
     
     update = function(self, dt)
         IMAGE_VIEWER:moveImage(self.xSpeed * dt, self.ySpeed * dt)
+        if self:isMotionless() then
+            IMAGE_VIEWER:keepImageInBounds()
+        end
     end,
     
     startLeft  = function(self) self.xSpeed =   self:calculateSpeed()  end,
