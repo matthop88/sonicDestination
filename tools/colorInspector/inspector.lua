@@ -46,8 +46,7 @@ PALETTE        = require "tools/colorInspector/palette"
 SELECTED_COLOR = require "tools/colorInspector/selectColor"
 READOUT        = require "tools/colorInspector/readout"
 SCROLLING      = require "tools/colorInspector/scrolling"
-
-require "tools/colorInspector/zooming"
+ZOOMING        = require "tools/colorInspector/zooming"
 
 --------------------------------------------------------------
 --                      Global Variables                    --
