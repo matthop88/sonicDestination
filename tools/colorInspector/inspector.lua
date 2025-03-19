@@ -103,7 +103,7 @@ PLUGINS = {
         end
     end,
 
-    handleMousepressed = function(self, mx, my)
+    mousepressed = function(self, mx, my)
         for _, plugin in ipairs(self) do
             if plugin.handleMousepressed ~= nil then
                 plugin:handleMousepressed(mx, my)
