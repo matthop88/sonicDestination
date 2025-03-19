@@ -92,6 +92,22 @@ PLUGINS = {
             end
         end
     end,
+
+    keypressed = function(self, key)
+        for _, plugin in ipairs(self) do
+            if plugin.handleKeypressed ~= nil then
+                plugin:handleKeypressed(key)
+            end
+        end
+    end,
+
+    keyreleased = function(self, key)
+        for _, plugin in ipairs(self) do
+            if plugin.handleKeyreleased ~= nil then
+                plugin:handleKeyreleased(key)
+            end
+        end
+    end,
 }
 
 --------------------------------------------------------------
@@ -116,22 +132,14 @@ end
 -- Called By:     LOVE2D application, when any key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    for _, plugin in ipairs(PLUGINS) do
-        if plugin.handleKeypressed ~= nil then
-            plugin:handleKeypressed(key)
-        end
-    end
+    PLUGINS:keypressed(key)
 end
 
 -- Function Name: love.keyreleased()
 -- Called By:     LOVE2D application, when any key is released
 --------------------------------------------------------------
 function love.keyreleased(key)
-    for _, plugin in ipairs(PLUGINS) do
-        if plugin.handleKeyreleased ~= nil then
-            plugin:handleKeyreleased(key)
-        end
-    end
+    PLUGINS:keyreleased(key)
 end
 
 -- Function Name: love.mousepressed()
