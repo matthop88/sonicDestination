@@ -102,9 +102,10 @@ return {
     end,
 
     handleMousepressed = function(self, mx, my)
-        if self:isInFocus() then 
-            self:selectColorAt(mx, my)
-            return true
+        if self:isInFocus() then self:selectColorAt(mx, my)
+        else                     SELECTED_COLOR:selectFromImageAt(mx, my)
         end
+
+        self:insertColor(SELECTED_COLOR:get())
     end,
 }
