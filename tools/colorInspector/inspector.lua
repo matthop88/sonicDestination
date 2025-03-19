@@ -69,24 +69,13 @@ end
 
 IMAGE_VIEWER:init(imagePath)
 
-DRAWABLES = {
+PLUGINS = {
     IMAGE_VIEWER,
     PALETTE,
     SELECTED_COLOR,
-    READOUT
-}
-
-UPDATABLES = {
+    READOUT,
     SCROLLING,
     ZOOMING,
-    IMAGE_VIEWER,
-    READOUT,
-    PALETTE
-}
-
-KEY_HANDLERS = {
-    SCROLLING,
-    ZOOMING
 }
 
 --------------------------------------------------------------
@@ -97,8 +86,10 @@ KEY_HANDLERS = {
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    for _, drawable in ipairs(DRAWABLES) do
-        drawable:draw()
+    for _, plugin in ipairs(PLUGINS) do
+        if plugin.draw ~= nil then
+            plugin:draw()
+        end
     end
 end
 
@@ -106,8 +97,10 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.update(dt)
-    for _, updatable in ipairs(UPDATABLES) do
-        updatable:update(dt)
+    for _, plugin in ipairs(PLUGINS) do
+        if plugin.update ~= nil then
+            plugin:update(dt)
+        end
     end
 end
 
@@ -115,8 +108,10 @@ end
 -- Called By:     LOVE2D application, when any key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    for _, keyHandler in ipairs(KEY_HANDLERS) do
-        keyHandler:handleKeypressed(key)
+    for _, plugin in ipairs(PLUGINS) do
+        if plugin.handleKeypressed ~= nil then
+            plugin:handleKeypressed(key)
+        end
     end
 end
 
@@ -124,8 +119,10 @@ end
 -- Called By:     LOVE2D application, when any key is released
 --------------------------------------------------------------
 function love.keyreleased(key)
-    for _, keyHandler in ipairs(KEY_HANDLERS) do
-        keyHandler:handleKeyreleased(key)
+    for _, plugin in ipairs(PLUGINS) do
+        if plugin.handleKeyreleased ~= nil then
+            plugin:handleKeyreleased(key)
+        end
     end
 end
 
