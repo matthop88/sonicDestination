@@ -148,11 +148,7 @@ end
 -- Called By:     LOVE2D application, when mouse button is pressed
 --------------------------------------------------------------
 function love.mousepressed(mx, my)
-    if PALETTE:isInFocus() then PALETTE:selectColorAt(mx, my)
-    else                        SELECTED_COLOR:selectFromImageAt(mx, my)
-    end
-    
-    PALETTE:insertColor(SELECTED_COLOR:get())
+    PLUGINS:mousepressed(mx, my)
 end
 
 -- Function Name: love.mousereleased()
