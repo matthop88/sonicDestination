@@ -28,9 +28,9 @@ return {
     end,
     
     update = function(self, dt)
-        IMAGE_VIEWER:moveImage(self.xSpeed * dt, self.ySpeed * dt)
+        getIMAGE_VIEWER():moveImage(self.xSpeed * dt, self.ySpeed * dt)
         if self:isMotionless() then
-            IMAGE_VIEWER:keepImageInBounds()
+            getIMAGE_VIEWER():keepImageInBounds()
         end
     end,
     
