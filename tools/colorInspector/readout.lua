@@ -17,7 +17,7 @@ local SHADOW_COLOR   = COLOR.JET_BLACK
 
 local MAX_LETTERS_PER_SECOND = 600000
 
-READOUT = {
+return {
     message    = {
         text             = nil,
         letterCount      = 0,
