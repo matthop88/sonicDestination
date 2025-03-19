@@ -52,7 +52,7 @@ require "tools/colorInspector/palette"
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 600
+WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
