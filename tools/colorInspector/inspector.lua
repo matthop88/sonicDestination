@@ -74,9 +74,9 @@ PLUGINS = require("plugins/engine")
     :add("palette")
     :add("selectColor")
     :add("readout")
-    :add("scrolling")
     :add("zooming")
-
+    :add("scrolling")
+    
 --[[
 
           *************     ******************    ******************           *****           
