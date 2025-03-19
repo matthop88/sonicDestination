@@ -1,4 +1,4 @@
-return {
+return ({
     init = function(self)
         
         self.oldDraw = love.draw
@@ -106,4 +106,4 @@ return {
         table.insert(self, plugin)
         return self
     end,
-}
+}):init()
