@@ -43,20 +43,6 @@
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
-x,      y                   = 0, 0
-scale                       = 1
-
---------------------------------------------------------------
---                     External Libraries                   --
---------------------------------------------------------------
-
-require "tools/colorInspector/scrolling"
-require "tools/colorInspector/zooming"
-require "tools/colorInspector/readout"
-require "tools/colorInspector/image"
-require "tools/colorInspector/selectColor"
-require "tools/colorInspector/palette"
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -64,73 +50,32 @@ require "tools/colorInspector/palette"
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+local imagePath = "resources/images/sadNoFileImage.png"
+
+if __INSPECTOR_FILE ~= nil then
+    imagePath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
+end
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    drawImage()
-    drawPalette()
-    drawSelectedColor()
-    drawReadout()
-end
+-- ...
+-- ...
+-- ...
 
--- Function Name: love.update()
--- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
-function love.update(dt)
-    updateScrolling(dt)
-    updateZooming(dt)
-    updateImage()
-    updateReadout(dt)
-end
+--                          Plugins                         --
+--------------------------------------------------------------
 
--- Function Name: love.keypressed()
--- Called By:     LOVE2D application, when any key is pressed
---------------------------------------------------------------
-function love.keypressed(key)
-    handleScrollKeypressed(key)
-    handleZoomKeypressed(key)
-end
-
--- Function Name: love.keyreleased()
--- Called By:     LOVE2D application, when any key is released
---------------------------------------------------------------
-function love.keyreleased(key)
-    handleScrollKeyreleased(key)
-    handleZoomKeyreleased(key)
-end
-
--- Function Name: love.mousepressed()
--- Called By:     LOVE2D application, when mouse button is pressed
---------------------------------------------------------------
-function love.mousepressed(mx, my)
-    if isPaletteInFocus() then selectPaletteColorAt(mx, my)
-    else                       selectImageColorAt(mx, my)
-    end
+PLUGINS = require("plugins/engine")
+    :add("imageViewer", imagePath)
+    :add("palette")
+    :add("selectColor")
+    :add("readout")
+    :add("zooming")
+    :add("scrolling")
     
-    insertColorIntoPalette(getSelectedColor())
-end
-
--- Function Name: love.mousereleased()
--- Called By:     LOVE2D application, when mouse button is released
---------------------------------------------------------------
-function love.mousereleased(mx, my)
-    clearSelectedColor()
-end
-
---------------------------------------------------------------
---                  Specialized Functions                   --
---------------------------------------------------------------
-
--- ...
--- ...
--- ...
-
-
 --[[
 
           *************     ******************    ******************           *****           

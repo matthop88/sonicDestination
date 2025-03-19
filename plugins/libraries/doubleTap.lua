@@ -19,3 +19,4 @@ function setLastKeypressed(key)
     lastKeypressed     = key 
     lastKeypressedTime = love.timer.getTime()
 end
+
