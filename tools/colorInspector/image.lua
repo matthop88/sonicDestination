@@ -5,13 +5,8 @@ IMAGE_VIEWER = {
     imageData = nil,
     image     = nil,
 
-    init = function(self)
-        self.imageData = love.image.newImageData("resources/images/sadNoFileImage.png")
-
-        if __INSPECTOR_FILE ~= nil then
-            self.imageData = love.image.newImageData("resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png")
-        end
-
+    init = function(self, imagePath)
+        self.imageData = love.image.newImageData(imagePath)
         self.image = love.graphics.newImage(self.imageData)
     end,
 
@@ -63,5 +58,4 @@ IMAGE_VIEWER = {
     end,
 }
 
-IMAGE_VIEWER:init()
 
