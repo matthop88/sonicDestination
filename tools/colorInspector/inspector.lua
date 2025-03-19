@@ -76,6 +76,14 @@ PLUGINS = {
     READOUT,
     SCROLLING,
     ZOOMING,
+
+    draw = function(self)
+        for _, plugin in ipairs(self) do
+            if plugin.draw ~= nil then
+                plugin:draw()
+            end
+        end
+    end,
 }
 
 --------------------------------------------------------------
@@ -86,11 +94,7 @@ PLUGINS = {
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    for _, plugin in ipairs(PLUGINS) do
-        if plugin.draw ~= nil then
-            plugin:draw()
-        end
-    end
+    PLUGINS:draw()
 end
 
 -- Function Name: love.update()
