@@ -61,13 +61,12 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-
-PLUGINS:add(require("tools/colorInspector/image"):init(imagePath))
-PLUGINS:add(require("tools/colorInspector/palette"))
-PLUGINS:add(require("tools/colorInspector/selectColor"):init())
-PLUGINS:add(require("tools/colorInspector/readout"):init())
-PLUGINS:add(require("tools/colorInspector/scrolling"))
-PLUGINS:add(require("tools/colorInspector/zooming"))
+    :add(require("tools/colorInspector/image"):init(imagePath))
+    :add(require("tools/colorInspector/palette"))
+    :add(require("tools/colorInspector/selectColor"):init())
+    :add(require("tools/colorInspector/readout"):init())
+    :add(require("tools/colorInspector/scrolling"))
+    :add(require("tools/colorInspector/zooming"))
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
