@@ -17,6 +17,22 @@ return {
             self:update(dt)
         end
 
+        self.oldKeypressed = love.keypressed
+        love.keypressed = function(key)
+            if self.oldKeypressed ~= nil then
+                self.oldKeypressed(key)
+            end
+            self:keypressed(key)
+        end
+
+        self.oldKeyreleased = love.keyreleased
+        love.keyreleased = function(key)
+            if self.oldKeyreleased ~= nil then
+                self.oldKeyreleased(key)
+            end
+            self:keyreleased(key)
+        end
+
         return self
     end,
             
