@@ -1,4 +1,17 @@
 return {
+    init = function(self)
+        self.oldDraw = love.draw
+
+        love.draw = function()
+            if self.oldDraw ~= nil then
+                self.oldDraw()
+            end
+            self:draw()
+        end
+
+        return self
+    end,
+            
     draw = function(self)
         for _, plugin in ipairs(self) do
             if plugin.draw ~= nil then
