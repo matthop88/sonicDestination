@@ -100,4 +100,11 @@ return {
     update = function(self, dt)
         self.LEFT_BORDER = love.graphics:getWidth() - 134
     end,
+
+    handleMousepressed = function(self, mx, my)
+        if self:isInFocus() then 
+            self:selectColorAt(mx, my)
+            return true
+        end
+    end,
 }
