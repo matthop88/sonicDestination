@@ -76,6 +76,11 @@ PLUGINS = require("plugins/engine")
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
+    love.graphics.setColor(0, 0, 0.5)
+    love.graphics.rectangle("draw", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+end
+
+function love.draw()
     PLUGINS:draw()
 end
 
