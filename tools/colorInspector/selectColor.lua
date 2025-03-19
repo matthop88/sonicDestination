@@ -60,4 +60,8 @@ return {
         love.graphics.setColor(COLOR.JET_BLACK)
         love.graphics.rectangle("line", mx - 50, my - 50, 100, 100)
     end,
+
+    handleMousereleased = function(self, mx, my)
+        self:clear()
+    end,
 }
