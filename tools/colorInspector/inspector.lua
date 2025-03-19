@@ -84,6 +84,14 @@ PLUGINS = {
             end
         end
     end,
+
+    update = function(self, dt)
+        for _, plugin in ipairs(self) do
+            if plugin.update ~= nil then
+                plugin:update(dt)
+            end
+        end
+    end,
 }
 
 --------------------------------------------------------------
@@ -101,11 +109,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.update(dt)
-    for _, plugin in ipairs(PLUGINS) do
-        if plugin.update ~= nil then
-            plugin:update(dt)
-        end
-    end
+    PLUGINS:update(dt)
 end
 
 -- Function Name: love.keypressed()
