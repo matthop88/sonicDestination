@@ -1,4 +1,4 @@
-require "tools/colorInspector/doubleTap"
+require "plugins/libraries/doubleTap"
 
 local SCROLL_SPEED   = 400
 
