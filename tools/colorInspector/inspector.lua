@@ -41,12 +41,12 @@
 --                     External Libraries                   --
 --------------------------------------------------------------
 
+require "tools/colorInspector/image"
+require "tools/colorInspector/palette"
+require "tools/colorInspector/selectColor"
+require "tools/colorInspector/readout"
 require "tools/colorInspector/scrolling"
 require "tools/colorInspector/zooming"
-require "tools/colorInspector/readout"
-require "tools/colorInspector/image"
-require "tools/colorInspector/selectColor"
-require "tools/colorInspector/palette"
 
 --------------------------------------------------------------
 --                      Global Variables                    --
