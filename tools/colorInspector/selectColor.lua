@@ -3,6 +3,14 @@ require "tools/colorInspector/color"
 return {
     selectedColor = nil,
 
+    init = function(self)
+        getSELECTED_COLOR = function()
+            return self
+        end
+
+        return self
+    end,
+    
     selectFromImageAt = function(self, mx, my)
         self.selectedColor = self:identifyImageColor(mx, my)
         self:print()
