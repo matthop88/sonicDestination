@@ -9,25 +9,25 @@
 [ ] 3. When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
-					Border Finding Algorithm
-					------------------------
-	   Scan each line of image.
-	   Look for edges of borders.
+                    Border Finding Algorithm
+                    ------------------------
+       Scan each line of image.
+       Look for edges of borders.
 
-	   Left edge:  Transition from Margin Background color
-								to Sprite Background color.
+       Left edge:  Transition from Margin Background color
+                                to Sprite Background color.
 
-	   Right edge: Transition from Sprite Background color
-								to Margin Background color.
+       Right edge: Transition from Sprite Background color
+                                to Margin Background color.
 
-	   Same transition applies to top and bottom edges.
+       Same transition applies to top and bottom edges.
 
-	   Border information is captured in a data structure.
+       Border information is captured in a data structure.
 
-						  Prerequisites
-						  -------------
-	   [ ] Identify Margin Background color
-	   [ ] Identify Sprite Background color
+                          Prerequisites
+                          -------------
+       [ ] Identify Margin Background color
+       [ ] Identify Sprite Background color
 
 --]]
 
@@ -56,16 +56,17 @@ SPRITE_BACKGROUND_COLOR = { }
 -- Called By:	  LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-	-- All drawing code goes here
+    -- All drawing code goes here
 end
 
 -- ...
 -- ...
 
 --------------------------------------------------------------
---                  Specialized Functions                   --
+--                          Plugins                         --
 --------------------------------------------------------------
 
--- ...
--- ...
--- ...
+PLUGINS = require("plugins/engine")
+    :add("imageViewer", "resources/images/spriteSheets/sonic1.png")
+    :add("zooming")
+    :add("scrolling")
