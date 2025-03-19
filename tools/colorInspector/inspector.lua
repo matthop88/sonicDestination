@@ -42,8 +42,8 @@
 --------------------------------------------------------------
 
 IMAGE_VIEWER = require "tools/colorInspector/image"
+PALETTE      = require "tools/colorInspector/palette"
 
-require "tools/colorInspector/palette"
 require "tools/colorInspector/selectColor"
 require "tools/colorInspector/readout"
 require "tools/colorInspector/scrolling"
