@@ -33,6 +33,22 @@ return {
             self:keyreleased(key)
         end
 
+        self.oldMousepressed = love.mousepressed
+        love.mousepressed = function(mx, my)
+            if self.oldMousepressed ~= nil then
+                self.oldMousepressed(mx, my)
+            end
+            self:mousepressed(mx, my)
+        end
+
+        self.oldMousereleased= love.mousereleased
+        love.mousereleased = function(mx, my)
+            if self.oldMousereleased ~= nil then
+                self.oldMousereleased(mx, my)
+            end
+            self:mousereleased(mx, my)
+        end
+
         return self
     end,
             
