@@ -22,9 +22,9 @@ return {
     end,
 
     zoomFromCoordinates= function(self, dt, screenX, screenY)
-        local imageX, imageY = IMAGE_VIEWER:screenToImageCoordinates(screenX, screenY)
-        IMAGE_VIEWER:adjustScaleGeometrically(self.scaleDelta * dt)
-        IMAGE_VIEWER:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+        local imageX, imageY = getIMAGE_VIEWER():screenToImageCoordinates(screenX, screenY)
+        getIMAGE_VIEWER():adjustScaleGeometrically(self.scaleDelta * dt)
+        getIMAGE_VIEWER():syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
     startIn  = function(self) self.scaleDelta =  ZOOM_SPEED end,
