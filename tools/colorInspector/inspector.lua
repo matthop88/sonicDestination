@@ -69,7 +69,7 @@ PLUGINS = {
     require("tools/colorInspector/image"):init(imagePath),
     PALETTE,
     SELECTED_COLOR,
-    require "tools/colorInspector/readout",
+    require("tools/colorInspector/readout"):init(),
     SCROLLING,
     ZOOMING,
 
