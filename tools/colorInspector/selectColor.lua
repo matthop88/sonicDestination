@@ -31,7 +31,7 @@ return {
     print = function(self)
         local r, g, b = unpack(self.selectedColor)
         print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
-        READOUT:printMessage(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+        printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
     end,
 
     draw = function(self)
