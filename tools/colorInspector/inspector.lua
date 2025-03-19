@@ -106,9 +106,7 @@ PLUGINS = {
     handleMousepressed = function(self, mx, my)
         for _, plugin in ipairs(self) do
             if plugin.handleMousepressed ~= nil then
-                if plugin:handleMousepressed(mx, my) then
-                    return
-                end
+                plugin:handleMousepressed(mx, my)
             end
         end
     end,
