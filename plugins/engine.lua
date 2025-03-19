@@ -1,53 +1,30 @@
 return ({
+    oldDraw          = function()       end,
+	oldUpdate        = function(dt)     end,
+	oldKeypressed    = function(key)    end,
+	oldKeyreleased   = function(key)    end,
+	oldMousepressed  = function(mx, my) end,
+	oldMousereleased = function(mx, my) end,
+
     init = function(self)
         
-        self.oldDraw = love.draw
-        love.draw = function()
-            if self.oldDraw ~= nil then
-                self.oldDraw()
-            end
-            self:draw()
-        end
+        self.oldDraw = love.draw or self.oldDraw
+        love.draw          = function() self:draw()                      end
 
-        self.oldUpdate = love.update
-        love.update = function(dt)
-            if self.oldUpdate ~= nil then
-                self.oldUpdate(dt)
-            end
-            self:update(dt)
-        end
+        self.oldUpdate = love.update or self.oldUpdate
+        love.update        = function(dt) self:update(dt)                end
 
-        self.oldKeypressed = love.keypressed
-        love.keypressed = function(key)
-            if self.oldKeypressed ~= nil then
-                self.oldKeypressed(key)
-            end
-            self:keypressed(key)
-        end
+        self.oldKeypressed = love.keypressed or self.oldKeypressed
+        love.keypressed    = function(key) self:keypressed(key)          end
 
-        self.oldKeyreleased = love.keyreleased
-        love.keyreleased = function(key)
-            if self.oldKeyreleased ~= nil then
-                self.oldKeyreleased(key)
-            end
-            self:keyreleased(key)
-        end
+        self.oldKeyreleased = love.keyreleased or self.oldKeyreleased
+        love.keyreleased   = function(key) self:keyreleased(key)         end
 
-        self.oldMousepressed = love.mousepressed
-        love.mousepressed = function(mx, my)
-            if self.oldMousepressed ~= nil then
-                self.oldMousepressed(mx, my)
-            end
-            self:mousepressed(mx, my)
-        end
+        self.oldMousepressed = love.mousepressed or self.oldMousepressed
+        love.mousepressed  = function(mx, my) self:mousepressed(mx, my)  end
 
-        self.oldMousereleased= love.mousereleased
-        love.mousereleased = function(mx, my)
-            if self.oldMousereleased ~= nil then
-                self.oldMousereleased(mx, my)
-            end
-            self:mousereleased(mx, my)
-        end
+        self.oldMousereleased = love.mousereleased or self.oldMousereleased
+        love.mousereleased = function(mx, my) self:mousereleased(mx, my) end
 
         return self
     end,
