@@ -18,3 +18,9 @@ EX:
     love . inspector sonic1
 
 inspects the sonicDestination/resources/images/spriteSheets/sonic1.png file.
+
+To execute the Sprite Sheet Slicer application, use the command
+
+    love . slicer
+
+
