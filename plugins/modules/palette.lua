@@ -1,4 +1,4 @@
-require "tools/colorInspector/color"
+require "plugins/libraries/color"
 
 return {
     table       = { },
