@@ -1,6 +1,6 @@
 require "tools/colorInspector/color"
 
-PALETTE = {
+return {
     table       = { },
     LEFT_BORDER = love.graphics:getWidth() - 134,
     inFocus     = false,
