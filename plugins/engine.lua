@@ -1,12 +1,20 @@
 return {
     init = function(self)
+        
         self.oldDraw = love.draw
-
         love.draw = function()
             if self.oldDraw ~= nil then
                 self.oldDraw()
             end
             self:draw()
+        end
+
+        self.oldUpdate = love.update
+        love.update = function(dt)
+            if self.oldUpdate ~= nil then
+                self.oldUpdate(dt)
+            end
+            self:update(dt)
         end
 
         return self
