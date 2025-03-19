@@ -60,22 +60,12 @@ end
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.mousepressed()
--- Called By:     LOVE2D application, when mouse button is pressed
---------------------------------------------------------------
-function love.mousepressed(mx, my)
-    PLUGINS:mousepressed(mx, my)
-end
-
--- Function Name: love.mousereleased()
--- Called By:     LOVE2D application, when mouse button is released
---------------------------------------------------------------
-function love.mousereleased(mx, my)
-    PLUGINS:mousereleased(mx, my)
-end
+-- ...
+-- ...
+-- ...
 
 --------------------------------------------------------------
---                         Plugins                          --
+--                          Plugins                         --
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
