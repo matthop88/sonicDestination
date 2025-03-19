@@ -1,6 +1,6 @@
 local ZOOM_SPEED = 2
 
-ZOOMING = {
+return {
     scaleDelta = 0,
 
     handleKeypressed = function(self, key)
