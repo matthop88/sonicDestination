@@ -60,12 +60,10 @@ end
 --                     External Libraries                   --
 --------------------------------------------------------------
 
-SELECTED_COLOR = require "tools/colorInspector/selectColor"
-
 PLUGINS = {
     require("tools/colorInspector/image"):init(imagePath),
     require("tools/colorInspector/palette"),
-    SELECTED_COLOR,
+    require("tools/colorInspector/selectColor"),
     require("tools/colorInspector/readout"):init(),
     require("tools/colorInspector/scrolling"),
     require("tools/colorInspector/zooming"),
