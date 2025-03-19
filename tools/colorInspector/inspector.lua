@@ -69,7 +69,6 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :init()
     :add("imageViewer", imagePath)
     :add("palette")
     :add("selectColor")
