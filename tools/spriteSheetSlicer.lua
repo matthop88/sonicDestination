@@ -26,8 +26,8 @@
 
                           Prerequisites
                           -------------
-       [ ] Identify Margin Background color
-       [ ] Identify Sprite Background color
+       [X] Identify Margin Background color
+       [X] Identify Sprite Background color
 
 --]]
 
@@ -35,8 +35,8 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-MARGIN_BACKGROUND_COLOR = { }
-SPRITE_BACKGROUND_COLOR = { }
+MARGIN_BACKGROUND_COLOR = { 0.05, 0.28, 0.03 }
+SPRITE_BACKGROUND_COLOR = { 0.26, 0.60, 0.19 }
 -- ...
 -- ...
 
