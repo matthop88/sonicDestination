@@ -66,7 +66,7 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function getImageViewer()
+function getIMAGE_VIEWER()
     -- Overridden by imageViewer plugin
 end
 
@@ -76,7 +76,7 @@ function scan()
     -- that matches MARGIN_BACKGROUND_COLOR
 
     --[[
-        local imageViewer = getImageViewer()
+        local imageViewer = getIMAGE_VIEWER()
         local widthInPixels, heightInPixels = imageViewer:getImageSize()
 
         for y = 0, heightInPixels - 1 do
