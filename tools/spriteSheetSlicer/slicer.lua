@@ -53,7 +53,7 @@ SPRITE_BACKGROUND_COLOR = { 0.26, 0.60, 0.19 }
 --------------------------------------------------------------
 
 -- Function Name: love.draw()
--- Called By:	  LOVE2D application, every single frame
+-- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
     -- All drawing code goes here
@@ -66,15 +66,21 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+function getImageViewer()
+    -- Overridden by imageViewer plugin
+end
+
 function scan()
     -- Scan all pixels in image in a systematic way
     -- Print out the coordinates of the first pixel in each row 
     -- that matches MARGIN_BACKGROUND_COLOR
 
     --[[
+        local imageViewer = getImageViewer()
+
         for y = 0, heightInPixels - 1 do
             for x = 0, widthInPixels - 1 do
-                getImagePixelAt(x, y)
+                imageViewer:getImagePixelAt(x, y)
                 -- Process color somehow
             end
         end
