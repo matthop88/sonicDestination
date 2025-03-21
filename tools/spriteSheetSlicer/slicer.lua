@@ -81,7 +81,7 @@ function scan()
 
         for y = 0, heightInPixels - 1 do
             for x = 0, widthInPixels - 1 do
-                imageViewer:getImagePixelAt(x, y)
+                local r, g, b = imageViewer:getImagePixelAt(x, y)
                 -- Process color somehow
             end
         end
