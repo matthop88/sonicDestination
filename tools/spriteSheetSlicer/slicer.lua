@@ -97,3 +97,9 @@ PLUGINS = require("plugins/engine")
     :add("imageViewer", "resources/images/spriteSheets/sonic1.png")
     :add("zooming")
     :add("scrolling")
+
+--------------------------------------------------------------
+--                Static code - is executed last            --
+--------------------------------------------------------------
+
+scan()
