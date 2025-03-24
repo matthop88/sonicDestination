@@ -9,11 +9,6 @@
 [ ] 3. When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
-                          Prerequisites
-                          -------------
-       [X] Identify Margin Background color
-       [X] Identify Sprite Background color
-
 --]]
 
 --------------------------------------------------------------
