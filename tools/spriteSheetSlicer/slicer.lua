@@ -35,17 +35,20 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
+WINDOW_WIDTH  = 1024
+WINDOW_HEIGHT = 768
+
 --MARGIN_BACKGROUND_COLOR = { 0.05, 0.28, 0.03 }
-MARGIN_BACKGROUND_COLOR = { 0,    0,    0    }
-SPRITE_BACKGROUND_COLOR = { 0.26, 0.60, 0.19 }
--- ...
--- ...
+MARGIN_BACKGROUND_COLOR   = { 0,    0,    0    }
+SPRITE_BACKGROUND_COLOR   = { 0.26, 0.60, 0.19 }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
--- ...
+love.window.setTitle("Spritesheet Slicer")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
 -- ...
 -- ...
 
