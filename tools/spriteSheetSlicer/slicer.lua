@@ -81,7 +81,12 @@ function scan()
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
             local r, g, b = imageViewer:getImagePixelAt(x, y)
-            -- Process color somehow
+            if r == MARGIN_BACKGROUND_COLOR[1] and
+               g == MARGIN_BACKGROUND_COLOR[2] and
+               b == MARGIN_BACKGROUND_COLOR[3] then
+                print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y))
+                break
+            end
         end
     end
 end
