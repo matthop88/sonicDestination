@@ -35,7 +35,8 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-MARGIN_BACKGROUND_COLOR = { 0.05, 0.28, 0.03 }
+--MARGIN_BACKGROUND_COLOR = { 0.05, 0.28, 0.03 }
+MARGIN_BACKGROUND_COLOR = { 0,    0,    0    }
 SPRITE_BACKGROUND_COLOR = { 0.26, 0.60, 0.19 }
 -- ...
 -- ...
