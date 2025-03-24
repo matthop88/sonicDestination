@@ -38,8 +38,7 @@
 WINDOW_WIDTH  = 1024
 WINDOW_HEIGHT = 768
 
---MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
-MARGIN_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0    }
+MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 --------------------------------------------------------------
@@ -94,9 +93,9 @@ function scan()
 end
 
 function colorsMatch(c1, c2)
-    return c1.r == c2.r
-       and c1.g == c2.g 
-       and c1.b == c2.b
+    return math.abs(c1.r - c2.r) < 0.005
+       and math.abs(c1.g - c2.g) < 0.005 
+       and math.abs(c1.b - c2.b) < 0.005
 end
 
 -- ...
