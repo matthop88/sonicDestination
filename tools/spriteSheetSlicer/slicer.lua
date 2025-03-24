@@ -75,17 +75,15 @@ function scan()
     -- Print out the coordinates of the first pixel in each row 
     -- that matches MARGIN_BACKGROUND_COLOR
 
-    --[[
-        local imageViewer = getIMAGE_VIEWER()
-        local widthInPixels, heightInPixels = imageViewer:getImageSize()
+    local imageViewer = getIMAGE_VIEWER()
+    local widthInPixels, heightInPixels = imageViewer:getImageSize()
 
-        for y = 0, heightInPixels - 1 do
-            for x = 0, widthInPixels - 1 do
-                local r, g, b = imageViewer:getImagePixelAt(x, y)
-                -- Process color somehow
-            end
+    for y = 0, heightInPixels - 1 do
+        for x = 0, widthInPixels - 1 do
+            local r, g, b = imageViewer:getImagePixelAt(x, y)
+            -- Process color somehow
         end
-    --]]
+    end
 end
 
 -- ...
