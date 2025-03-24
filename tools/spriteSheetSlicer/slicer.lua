@@ -84,7 +84,7 @@ function scan()
             if r == MARGIN_BACKGROUND_COLOR[1] and
                g == MARGIN_BACKGROUND_COLOR[2] and
                b == MARGIN_BACKGROUND_COLOR[3] then
-                print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y))
+                print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y)
                 break
             end
         end
