@@ -47,10 +47,15 @@ return {
 
     getImageSize = function(self)
         return self:getImageWidth(), self:getImageHeight()
-	end,
+    end,
 
     getImagePixelAt = function(self, x, y)
         return self.imageData:getPixel(math.floor(x), math.floor(y))
+    end,
+
+    getPixelColorAt = function(self, x, y)
+        local rr, gg, bb = self:getImagePixelAt(x, y)
+        return { r = rr, g = gg, b = bb }
     end,
 
     draw = function(self)
