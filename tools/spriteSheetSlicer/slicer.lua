@@ -38,9 +38,9 @@
 WINDOW_WIDTH  = 1024
 WINDOW_HEIGHT = 768
 
---MARGIN_BACKGROUND_COLOR = { 0.05, 0.28, 0.03 }
-MARGIN_BACKGROUND_COLOR   = { 0,    0,    0    }
-SPRITE_BACKGROUND_COLOR   = { 0.26, 0.60, 0.19 }
+--MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
+MARGIN_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0    }
+SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -85,7 +85,7 @@ function scan()
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
             local r, g, b = imageViewer:getImagePixelAt(x, y)
-            if colorsMatch({ r, g, b }, MARGIN_BACKGROUND_COLOR) then
+            if colorsMatch({ r = r, g = g, b = b }, MARGIN_BACKGROUND_COLOR) then
                 print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y)
                 break
             end
@@ -94,7 +94,9 @@ function scan()
 end
 
 function colorsMatch(c1, c2)
-    return c1[1] == c2[1] and c1[2] == c2[2] and c1[3] == c2[3]
+    return c1.r == c2.r
+       and c1.g == c2.g 
+       and c1.b == c2.b
 end
 
 -- ...
