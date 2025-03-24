@@ -85,9 +85,7 @@ function scan()
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
             local r, g, b = imageViewer:getImagePixelAt(x, y)
-            if r == MARGIN_BACKGROUND_COLOR[1] and
-               g == MARGIN_BACKGROUND_COLOR[2] and
-               b == MARGIN_BACKGROUND_COLOR[3] then
+            if colorsMatch(r, g, b, MARGIN_BACKGROUND_COLOR) then
                 print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y)
                 break
             end
@@ -95,7 +93,10 @@ function scan()
     end
 end
 
--- ...
+function colorsMatch(r, g, b, color)
+    return r == color[1] and g == color[2] and b == color[3]
+end
+
 -- ...
 
 --------------------------------------------------------------
