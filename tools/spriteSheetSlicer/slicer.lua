@@ -79,6 +79,20 @@ function colorsMatch(c1, c2)
 end
 
 function slice()
+    local imageViewer = getImageViewer()
+
+	local widthInPixels, heightInPixels = imageViewer:getImageSize()
+
+	for y = 0, heightInPixels - 1 do
+		for x = 0, widthInPixels - 1 do
+			local pixelColor = rgbToColor(imageViewer:getImagePixelAt(x, y))
+			if colorsMatch(pixelColor, SPRITE_BACKGROUND_COLOR) then
+			   	print("Found SPRITE_BACKGROUND_COLOR at " .. x .. ", " .. y)
+			   	break
+			end
+		end
+	end
+    
     --[[
                     Border Finding Algorithm
                     ------------------------
