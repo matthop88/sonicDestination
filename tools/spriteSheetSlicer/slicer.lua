@@ -24,7 +24,7 @@ SPRITE_RECTS            = {
     add = function(self, rect)
         local adjacentRect = self:findAdjacentRect(rect.x, rect.y)
         if adjacentRect == nil then
-            table.insert(self:getRectsWithLeftX(rect.x), rect)
+            self:addNewRect(rect)
         else
             adjacentRect.h = adjacentRect.h + 1
         end
@@ -36,6 +36,10 @@ SPRITE_RECTS            = {
                 return rect
             end
         end
+    end,
+
+    addNewRect = function(self, rect)
+        table.insert(self:getRectsWithLeftX(rect.x), rect)
     end,
 
     getRectsWithLeftX = function(self, x)
