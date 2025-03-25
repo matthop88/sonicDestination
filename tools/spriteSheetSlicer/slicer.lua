@@ -97,9 +97,11 @@ PLUGINS = require("plugins/engine")
         imagePath    = "resources/images/spriteSheets/sonic1.png",
         accessFnName = "getImageViewer" 
     })
-    :add("zooming",      { imageViewer = getImageViewer() })
-    :add("scrolling",    { imageViewer = getImageViewer() })
-    :add("drawingLayer", { drawingFn   = drawSlices })
+    :add("zooming",      { imageViewer  = getImageViewer() })
+    :add("scrolling",    { imageViewer  = getImageViewer() })
+    :add("drawingLayer", { drawingFn    = drawSlices })
+    :add("readout",      { accessFnName = "getReadout" })
+
 
 --------------------------------------------------------------
 --                Static code - is executed last            --
