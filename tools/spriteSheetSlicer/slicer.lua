@@ -42,10 +42,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     -- All drawing code goes here
-    love.graphics.setColor(1, 1, 1)
-    for _, spriteRect in ipairs(SPRITE_RECTS) do
-        love.graphics.rectangle("line", spriteRect.x - 5, spriteRect.y, 5, 1)
-    end
+    drawSlices()
 end
 
 -- ...
@@ -54,6 +51,13 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function drawSlices()
+    love.graphics.setColor(1, 1, 1)
+    for _, spriteRect in ipairs(SPRITE_RECTS) do
+        love.graphics.rectangle("line", spriteRect.x - 5, spriteRect.y, 5, 1)
+    end
+end
 
 function getIMAGE_VIEWER()
     -- Overridden by imageViewer plugin
