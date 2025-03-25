@@ -1,8 +1,23 @@
 local ZOOM_SPEED = 2
 
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        imageViewer    -> Image Viewer object, with methods
+                          screenToImageCoordinates(),
+                          adjustScaleGeometrically(),
+                          syncImageCoordinatesWithScreen()
+        -------------------------------------------------------
+    --]]
+    
     scaleDelta = 0,
 
+    init             = function(self, params)
+        self.imageViewer = params.imageViewer
+        return self
+    end,
+    
     handleKeypressed = function(self, key)
         if     key == "z" then self:startIn()
         elseif key == "a" then self:startOut()
@@ -22,9 +37,9 @@ return {
     end,
 
     zoomFromCoordinates= function(self, dt, screenX, screenY)
-        local imageX, imageY = getIMAGE_VIEWER():screenToImageCoordinates(screenX, screenY)
-        getIMAGE_VIEWER():adjustScaleGeometrically(self.scaleDelta * dt)
-        getIMAGE_VIEWER():syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+        local imageX, imageY = self.imageViewer:screenToImageCoordinates(screenX, screenY)
+        self.imageViewer:adjustScaleGeometrically(self.scaleDelta * dt)
+        self.imageViewer:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
     startIn  = function(self) self.scaleDelta =  ZOOM_SPEED end,
