@@ -9,11 +9,9 @@ return ({
     init = function(self)
         self:initDraw()
         self:initUpdate()
-        self:initKeypressed()
-        self:initKeyreleased()
-        self:initMousepressed()
-        self:initMousereleased()
-
+        self:initKeyevents()
+        self:initMouseevents()
+        
         return self
     end,
 
@@ -33,6 +31,11 @@ return ({
         end
     end,
 
+    initKeyevents = function(self)
+        self:initKeypressed()
+        self:initKeyreleased()
+    end,
+
     initKeypressed = function(self)
         self.oldKeypressed = love.keypressed or self.oldKeypressed
         love.keypressed = function(key) 
@@ -45,6 +48,11 @@ return ({
         love.keyreleased = function(key) 
             if not self.oldKeyreleased(key) then self:keyreleased(key) end
         end
+    end,
+
+    initMouseevents = function(self)
+        self:initMousepressed()
+        self:initMousereleased()
     end,
 
     initMousepressed = function(self)
