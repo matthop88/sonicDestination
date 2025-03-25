@@ -83,13 +83,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    -- All drawing code goes here
-end
-
+-- ...
 -- ...
 -- ...
 
