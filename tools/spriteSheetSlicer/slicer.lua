@@ -26,6 +26,7 @@ SPRITE_RECTS            = {
     end,
 
     getRectsWithLeftX = function(self, x)
+        if self[x] == nil then self[x] = {} end
         return self[x]
     end,
 }
