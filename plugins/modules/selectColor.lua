@@ -12,11 +12,6 @@ return {
 
     init = function(self, params)
         self.imageViewer = params.imageViewer
-        
-        getSELECTED_COLOR = function()
-            return self
-        end
-
         return self
     end,
     
