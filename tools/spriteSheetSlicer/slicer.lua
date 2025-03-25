@@ -103,16 +103,12 @@ end
 drawSlices = function()
     love.graphics.setColor(1, 1, 1)
     for _, rect in SPRITE_RECTS:elements() do
-        love.graphics.rectangle("line", getIMAGE_VIEWER():imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
     end
 end
 
-getIMAGE_VIEWER = function()
-    -- Overridden by imageViewer plugin
-end
-
 slice = function()
-    local widthInPixels, heightInPixels = getIMAGE_VIEWER():getImageSize()
+    local widthInPixels, heightInPixels = getImageViewer():getImageSize()
 
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
@@ -148,7 +144,7 @@ createPixelProcessor = function()
     
         if x == 0 then prevColor = nil end
         
-        local thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
+        local thisColor = getImageViewer():getPixelColorAt(x, y)
         
         if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
            and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
@@ -176,6 +172,10 @@ PLUGINS = require("plugins/engine")
     :add("zooming")
     :add("scrolling")
     :add("drawingLayer", drawSlices)
+
+getImageViewer = function()
+    return getIMAGE_VIEWER()
+end
 
 --------------------------------------------------------------
 --                Static code - is executed last            --
