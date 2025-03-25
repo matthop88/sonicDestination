@@ -130,7 +130,6 @@ function processPixelAt(x, y, colorData)
     colorData.thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
     if colorsMatch(colorData.prevColor, MARGIN_BACKGROUND_COLOR) and
        colorsMatch(colorData.thisColor, SPRITE_BACKGROUND_COLOR) then
-        print("Found left sprite edge at x =", x, "y =", y)
         table.insert(SPRITE_RECTS, { x = x, y = y, w = 100, h = 100 })
     end
     colorData.prevColor = colorData.thisColor
