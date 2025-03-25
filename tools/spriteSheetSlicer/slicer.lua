@@ -65,32 +65,6 @@ function getIMAGE_VIEWER()
     -- Overridden by imageViewer plugin
 end
 
-function scan()
-    -- Scan all pixels in image in a systematic way
-    -- Print out the coordinates of the first pixel in each row
-    -- that matches MARGIN_BACKGROUND_COLOR
-
-    local imageViewer = getIMAGE_VIEWER()
-    local widthInPixels, heightInPixels = imageViewer:getImageSize()
-    
-    for y = 0, heightInPixels - 1 do
-        for x = 0, widthInPixels - 1 do
-            local pixelColor = imageViewer:getPixelColorAt(x, y)
-            if colorsMatch(pixelColor, MARGIN_BACKGROUND_COLOR) then
-                print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y)
-                break
-            end
-        end
-    end
-end
-
-function colorsMatch(c1, c2)
-    return c1 ~= nil and c2 ~= nil
-       and math.abs(c1.r - c2.r) < 0.005
-       and math.abs(c1.g - c2.g) < 0.005 
-       and math.abs(c1.b - c2.b) < 0.005
-end
-
 function slice()
     local imageViewer = getIMAGE_VIEWER()
     local widthInPixels, heightInPixels = imageViewer:getImageSize()
@@ -134,6 +108,13 @@ function processPixelAt(x, y)
            table.insert(SPRITE_RECTS, { x = x, y = y, w = 100, h = 100 })
     end
     prevColor = thisColor
+end
+
+function colorsMatch(c1, c2)
+    return c1 ~= nil and c2 ~= nil
+       and math.abs(c1.r - c2.r) < 0.005
+       and math.abs(c1.g - c2.g) < 0.005 
+       and math.abs(c1.b - c2.b) < 0.005
 end
 
 --------------------------------------------------------------
