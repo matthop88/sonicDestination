@@ -23,8 +23,6 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS            = { }
 
-prevColor = nil
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -66,8 +64,8 @@ function getIMAGE_VIEWER()
 end
 
 function slice()
-    local imageViewer = getIMAGE_VIEWER()
-    local widthInPixels, heightInPixels = imageViewer:getImageSize()
+    local widthInPixels, heightInPixels = getIMAGE_VIEWER():getImageSize()
+    local processPixelAt                = createPixelProcessor()
     
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
@@ -94,20 +92,23 @@ function slice()
     --]]
 end
 
-function processPixelAt(x, y)
-    -- Left edge: Transition from Margin Background color
-    --                         to Sprite Background color.
-
-    if x == 0 then
-        prevColor = nil
-    end
+function createPixelProcessor()
+    local prevColor = nil
     
-    local thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
-    if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
-       and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-           table.insert(SPRITE_RECTS, { x = x, y = y, w = 100, h = 100 })
+    return function(x, y)
+        -- Left edge: Transition from Margin Background color
+        --                         to Sprite Background color.
+    
+        if x == 0 then prevColor = nil end
+        
+        local thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
+        
+        if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
+           and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
+               table.insert(SPRITE_RECTS, { x = x, y = y, w = 100, h = 100 })
+        end
+        prevColor = thisColor
     end
-    prevColor = thisColor
 end
 
 function colorsMatch(c1, c2)
