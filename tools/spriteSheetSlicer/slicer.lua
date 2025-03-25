@@ -65,6 +65,11 @@ SPRITE_RECTS            = {
 
         return list
     end,
+    
+    elements = function(self)
+        return ipairs(self:getWalkableRectList())
+    end,
+
 }
 
 --------------------------------------------------------------
@@ -97,7 +102,7 @@ end
 
 drawSlices = function()
     love.graphics.setColor(1, 1, 1)
-    for _, rect in pairs(SPRITE_RECTS:getWalkableRectList()) do
+    for _, rect in SPRITE_RECTS:elements() do
         love.graphics.rectangle("line", getIMAGE_VIEWER():imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
     end
 end
