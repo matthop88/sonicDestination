@@ -8,7 +8,6 @@
 [ ] 2. Border is drawn when mouse moves over a sprite
 [ ] 3. When a sprite is clicked on, x, y, width and height are
        displayed on screen.
-
 --]]
 
 --------------------------------------------------------------
@@ -51,7 +50,7 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawSlices()
+drawSlices = function()
     love.graphics.setColor(1, 1, 1)
     for _, spriteRect in ipairs(SPRITE_RECTS) do
         local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
@@ -59,11 +58,11 @@ function drawSlices()
     end
 end
 
-function getIMAGE_VIEWER()
+getIMAGE_VIEWER = function()
     -- Overridden by imageViewer plugin
 end
 
-function slice()
+slice = function()
     local widthInPixels, heightInPixels = getIMAGE_VIEWER():getImageSize()
 
     for y = 0, heightInPixels - 1 do
@@ -91,7 +90,7 @@ function slice()
     --]]
 end
 
-function createPixelProcessor()
+createPixelProcessor = function()
     local prevColor = nil
     
     return function(x, y)
@@ -112,7 +111,7 @@ end
 
 processPixelAt = createPixelProcessor()
 
-function colorsMatch(c1, c2)
+colorsMatch = function(c1, c2)
     return c1 ~= nil and c2 ~= nil
        and math.abs(c1.r - c2.r) < 0.005
        and math.abs(c1.g - c2.g) < 0.005 
