@@ -111,6 +111,8 @@ slice = function()
             processPixelAt(x, y)
         end
     end
+
+    print(ASCII_ART)
 end
 
 createPixelProcessor = function()
