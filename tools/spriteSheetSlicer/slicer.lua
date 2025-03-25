@@ -95,7 +95,7 @@ PLUGINS = require("plugins/engine")
     :add("imageViewer",  { imagePath = "resources/images/spriteSheets/sonic1.png" })
     :add("zooming")
     :add("scrolling")
-    :add("drawingLayer", drawSlices)
+    :add("drawingLayer", { drawingFn = drawSlices })
 
 getImageViewer = function()
     return getIMAGE_VIEWER()
