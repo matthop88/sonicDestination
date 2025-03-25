@@ -32,11 +32,11 @@ return {
         return imageX, imageY
     end,
 
-    imageToScreenCoordinates = function(self, sX, sY)
-        local sX = (imageX + self.x) * self.scale
-        local sY = (imageY + self.y) * self.scale
+    imageToScreenCoordinates = function(self, imageX, imageY)
+        local screenX = (imageX + self.x) * self.scale
+        local screenY = (imageY + self.y) * self.scale
 
-        return sX, sY
+        return screenX, screenY
     end,
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
