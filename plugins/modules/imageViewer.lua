@@ -13,8 +13,8 @@ return {
     imageData = nil,
     image     = nil,
 
-    init = function(self, imagePath)
-        self.imageData = love.image.newImageData(imagePath)
+    init = function(self, parameters)
+        self.imageData = love.image.newImageData(parameters.imagePath)
         self.image = love.graphics.newImage(self.imageData)
 
         getIMAGE_VIEWER = function()
