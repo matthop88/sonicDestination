@@ -102,8 +102,9 @@ end
 
 drawSlices = function()
     love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(3 * getImageViewer():getScale())
     for _, rect in SPRITE_RECTS:elements() do
-        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4))
     end
 end
 
