@@ -1,8 +1,18 @@
 
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        imageViewer    -> Image Viewer object, with methods
+                          screenToImageCoordinates(), getImagePixelAt()
+        -------------------------------------------------------
+    --]]
+    
     selectedColor = nil,
 
-    init = function(self)
+    init = function(self, params)
+        self.imageViewer = params.imageViewer
+        
         getSELECTED_COLOR = function()
             return self
         end
@@ -29,8 +39,8 @@ return {
     end,
 
     identifyImageColor = function(self, mx, my)
-        local imageX, imageY = getIMAGE_VIEWER():screenToImageCoordinates(mx, my)
-        local r, g, b        = getIMAGE_VIEWER():getImagePixelAt(imageX, imageY)
+        local imageX, imageY = self.imageViewer:screenToImageCoordinates(mx, my)
+        local r, g, b        = self.imageViewer:getImagePixelAt(imageX, imageY)
     
         return { r, g, b }
     end,
