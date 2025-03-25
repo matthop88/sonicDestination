@@ -83,18 +83,14 @@ function slice()
     local imageViewer = getIMAGE_VIEWER()
     local widthInPixels, heightInPixels = imageViewer:getImageSize()
     
-    for y = 0, heightInPixels - 1 do
+    local colorData = { }
+        for y = 0, heightInPixels - 1 do
         -- Left edge: Transition from Margin Background color
         --                         to Sprite Background color.
 
-        local previousPixelColor = nil
-        for x = 0, widthInPixels - 1 do
-            local pixelColor = imageViewer:getPixelColorAt(x, y)
-            if colorsMatch(previousPixelColor, MARGIN_BACKGROUND_COLOR) and
-               colorsMatch(pixelColor,         SPRITE_BACKGROUND_COLOR) then
-                print("Found left sprite edge at x =", x, "y =", y)
-            end
-            previousPixelColor = pixelColor
+        colorData.prevColor = nil
+            for x = 0, widthInPixels - 1 do
+            processPixelAt(x, y, colorData)
         end
     end
     
@@ -115,6 +111,18 @@ function slice()
         Border information is captured in a data structure.
     
     --]]
+end
+
+function processPixelAt(x, y, colorData)
+	-- Left edge: Transition from Margin Background color
+    --                         to Sprite Background color.
+
+    colorData.thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
+    if colorsMatch(colorData.prevColor, MARGIN_BACKGROUND_COLOR) and
+       colorsMatch(colorData.thisColor, SPRITE_BACKGROUND_COLOR) then
+        print("Found left sprite edge at x =", x, "y =", y)
+    end
+    colorData.prevColor = colorData.thisColor
 end
 
 --------------------------------------------------------------
