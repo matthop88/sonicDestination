@@ -20,7 +20,11 @@ WINDOW_HEIGHT = 768
 MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
-SPRITE_RECTS            = { }
+SPRITE_RECTS            = { 
+    add = function(self, rect)
+        table.insert(self, rect)
+    end,
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -103,7 +107,7 @@ createPixelProcessor = function()
         
         if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
            and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-               table.insert(SPRITE_RECTS, { x = x, y = y, w = 100, h = 100 })
+               SPRITE_RECTS:add({ x = x, y = y, w = 100, h = 100 })
         end
         prevColor = thisColor
     end
