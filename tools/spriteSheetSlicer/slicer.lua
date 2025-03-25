@@ -83,12 +83,17 @@ function slice()
     local widthInPixels, heightInPixels = imageViewer:getImageSize()
     
     for y = 0, heightInPixels - 1 do
+        -- Left edge: Transition from Margin Background color
+        --                         to Sprite Background color.
+
+        local previousPixelColor = nil
         for x = 0, widthInPixels - 1 do
             local pixelColor = imageViewer:getPixelColorAt(x, y)
-            if colorsMatch(pixelColor, MARGIN_BACKGROUND_COLOR) then
-                print("Found MARGIN_BACKGROUND_COLOR at x =", x, "y =", y)
-                break
+            if colorsMatch(previousPixelColor, MARGIN_BACKGROUND_COLOR) and
+               colorsMatch(pixelColor,         SPRITE_BACKGROUND_COLOR) then
+                print("Found left sprite edge at x =", x, "y =", y)
             end
+            previousPixelColor = pixelColor
         end
     end
     
@@ -124,4 +129,4 @@ PLUGINS = require("plugins/engine")
 --                Static code - is executed last            --
 --------------------------------------------------------------
 
-scan()
+slice()
