@@ -21,6 +21,8 @@ WINDOW_HEIGHT = 768
 MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
+SPRITE_RECTS            = { }
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
