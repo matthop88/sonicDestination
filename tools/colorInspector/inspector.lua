@@ -69,8 +69,8 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("imageViewer", { imagePath = imgPath })
-    :add("palette")
+    :add("imageViewer", { imagePath       = imgPath })
+    :add("palette",     { colorSelectorFn = function() return getSELECTED_COLOR() end })
     :add("selectColor")
     :add("readout")
     :add("zooming")
