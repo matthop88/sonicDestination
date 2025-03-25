@@ -33,7 +33,14 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+love.mousepressed = function(mx, my)
+    local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
+    local rect = SPRITE_RECTS:findEnclosingRect(imageX, imageY)
+    if rect ~= nil then
+        getReadout():printMessage("{ x = " .. rect.x .. ", y = " .. rect.y .. ", w = " .. rect.w .. ", h = " .. rect.h .. " }")
+    end
+end
+
 -- ...
 -- ...
 
