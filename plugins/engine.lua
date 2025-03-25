@@ -125,7 +125,7 @@ return ({
                 return plugin
             end
         end
-        if plugin.init ~= nil then plugin:init(param) end
+        if plugin.init ~= nil then plugin:init(params) end
         table.insert(self, plugin)
         return self
     end,
