@@ -32,6 +32,13 @@ return {
         return imageX, imageY
     end,
 
+    imageToScreenCoordinates = function(self, sX, sY)
+        local imageX = math.min(self:getImageWidth()  - 1, (sX / self.scale) - self.x)
+        local imageY = math.min(self:getImageHeight() - 1, (sY / self.scale) - self.y)
+
+        return imageX, imageY
+    end,
+
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         self.x = (screenX / self.scale) - imageX
         self.y = (screenY / self.scale) - imageY
