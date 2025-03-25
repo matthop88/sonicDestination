@@ -29,6 +29,20 @@ SPRITE_RECTS            = {
         if self[x] == nil then self[x] = {} end
         return self[x]
     end,
+
+    getWalkableRectList = function(self)
+        local walkableList = {}
+
+        for _, spriteRects in pairs(self) do
+            if type(spriteRects) ~= "function" then
+                for _, spriteRect in ipairs(spriteRects) do
+                    table.insert(walkableList, spriteRect)
+                end
+            end
+        end
+
+        return walkableList
+    end,
 }
 
 --------------------------------------------------------------
@@ -61,13 +75,9 @@ end
 
 drawSlices = function()
     love.graphics.setColor(1, 1, 1)
-    for _, spriteRects in pairs(SPRITE_RECTS) do
-        if type(spriteRects) ~= "function" then
-            for _, spriteRect in ipairs(spriteRects) do
-                local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
-                love.graphics.rectangle("line", x - 5, y, 5, 1)
-            end
-        end
+    for _, spriteRect in pairs(SPRITE_RECTS:getWalkableRectList()) do
+        local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
+        love.graphics.rectangle("line", x - 5, y, 5, 1)
     end
 end
 
