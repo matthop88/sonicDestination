@@ -9,6 +9,13 @@
 [ ] 3. When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
+--]]
+
+--------------------------------------------------------------
+--                      Global Variables                    --
+--------------------------------------------------------------
+
+ASCII_ART = [[
                eeeeeeeeeeee                                     
        ZeeeeeeeeZeeeee2222eeeeeeZ                               
    ÕëëëëëëëëZeeeeeeeeZZZZZ222222eeeeZ      ÕëëÕ                 
@@ -52,11 +59,7 @@
                ÆÆÆÕÕÕÕÕëno¿¿eZZZZZZZZZZZÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕ      
                ÆÆÆÕÕÕÕÕënnZZZZZZZZZZZZZZZZZZZZNNNNÕÕÕÕÕÕÕÕÕ     
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
---]]
-
---------------------------------------------------------------
---                      Global Variables                    --
---------------------------------------------------------------
+]]
 
 WINDOW_WIDTH  = 1024
 WINDOW_HEIGHT = 768
