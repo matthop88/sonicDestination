@@ -20,57 +20,7 @@ WINDOW_HEIGHT = 768
 MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
-SPRITE_RECTS            = { 
-    add = function(self, rect)
-        local adjacentRect = self:findAdjacentRect(rect.x, rect.y)
-        if adjacentRect == nil then
-            self:addNewRect(rect)
-        else
-            adjacentRect.h = adjacentRect.h + 1
-        end
-    end,
-
-    findAdjacentRect = function(self, x, y)
-        for _, rect in ipairs(self:getRectsWithLeftX(x)) do
-            if rect.y + rect.h == y then
-                return rect
-            end
-        end
-    end,
-
-    addNewRect = function(self, rect)
-        table.insert(self:getRectsWithLeftX(rect.x), rect)
-    end,
-
-    getRectsWithLeftX = function(self, x)
-        if self[x] == nil then self[x] = {} end
-        return self[x]
-    end,
-
-    getWalkableRectList = function(self)
-        self.walkableList = self.walkableList or self:createWalkableList()
-        return self.walkableList
-    end,
-
-    createWalkableList = function(self)
-        local list = {}
-
-        for _, spriteRects in pairs(self) do
-            if type(spriteRects) ~= "function" then
-                for _, spriteRect in ipairs(spriteRects) do
-                    table.insert(list, spriteRect)
-                end
-            end
-        end
-
-        return list
-    end,
-    
-    elements = function(self)
-        return ipairs(self:getWalkableRectList())
-    end,
-
-}
+SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
