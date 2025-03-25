@@ -1,4 +1,12 @@
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        imagePath      -> Path to image which is drawn,
+                          including file name and extension
+        -------------------------------------------------------
+    --]]
+    
     x         = 0,
     y         = 0,
     scale     = 1,
