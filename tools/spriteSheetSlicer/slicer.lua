@@ -152,7 +152,7 @@ createPixelProcessor = function()
         
         if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
            and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-               SPRITE_RECTS:add({ x = x, y = y, w = 100, h = 1 })
+               SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
         end
         prevColor = thisColor
     end
