@@ -65,8 +65,7 @@ end
 
 function slice()
     local widthInPixels, heightInPixels = getIMAGE_VIEWER():getImageSize()
-    local processPixelAt                = createPixelProcessor()
-    
+
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
             processPixelAt(x, y)
@@ -110,6 +109,8 @@ function createPixelProcessor()
         prevColor = thisColor
     end
 end
+
+processPixelAt = createPixelProcessor()
 
 function colorsMatch(c1, c2)
     return c1 ~= nil and c2 ~= nil
