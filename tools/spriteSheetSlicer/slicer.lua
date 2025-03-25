@@ -62,8 +62,12 @@ end
 drawSlices = function()
     love.graphics.setColor(1, 1, 1)
     for _, spriteRect in ipairs(SPRITE_RECTS) do
-        local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
-        love.graphics.rectangle("line", x - 5, y, 5, 1)
+        if type(spriteRects) ~= "function" then
+            for _, spriteRect in ipairs(spriteRects) do
+                local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
+                love.graphics.rectangle("line", x - 5, y, 5, 1)
+            end
+        end
     end
 end
 
