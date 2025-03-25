@@ -22,7 +22,7 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS            = { 
     add = function(self, rect)
-        table.insert(self, rect)
+        table.insert(self:getRectsWithLeftX(rect.x), rect)
     end,
 
     getRectsWithLeftX = function(self, x)
