@@ -79,9 +79,6 @@ SPRITE_RECTS            = {
 love.window.setTitle("Spritesheet Slicer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
--- ...
--- ...
-
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
