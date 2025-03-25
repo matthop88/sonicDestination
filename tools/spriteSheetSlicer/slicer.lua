@@ -42,7 +42,6 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     -- All drawing code goes here
-    drawSlices()
 end
 
 -- ...
@@ -141,9 +140,10 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("imageViewer", "resources/images/spriteSheets/sonic1.png")
+    :add("imageViewer",  "resources/images/spriteSheets/sonic1.png")
     :add("zooming")
     :add("scrolling")
+    :add("drawingLayer", drawSlices)
 
 --------------------------------------------------------------
 --                Static code - is executed last            --
