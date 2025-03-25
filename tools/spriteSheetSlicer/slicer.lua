@@ -90,7 +90,7 @@ drawSlices = function()
     love.graphics.setColor(1, 1, 1)
     for _, spriteRect in pairs(SPRITE_RECTS:getWalkableRectList()) do
         local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
-        love.graphics.rectangle("line", x - 5, y, 5, 1)
+        love.graphics.rectangle("line", x, y, spriteRect.w, spriteRect.h)
     end
 end
 
@@ -139,7 +139,7 @@ createPixelProcessor = function()
         
         if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
            and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-               SPRITE_RECTS:add({ x = x, y = y, w = 100, h = 100 })
+               SPRITE_RECTS:add({ x = x, y = y, w = 100, h = 1 })
         end
         prevColor = thisColor
     end
