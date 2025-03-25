@@ -94,12 +94,8 @@ function slice()
     local widthInPixels, heightInPixels = imageViewer:getImageSize()
     
     local colorData = { }
-        for y = 0, heightInPixels - 1 do
-        -- Left edge: Transition from Margin Background color
-        --                         to Sprite Background color.
-
-        colorData.prevColor = nil
-            for x = 0, widthInPixels - 1 do
+    for y = 0, heightInPixels - 1 do
+        for x = 0, widthInPixels - 1 do
             processPixelAt(x, y, colorData)
         end
     end
@@ -127,6 +123,10 @@ function processPixelAt(x, y, colorData)
     -- Left edge: Transition from Margin Background color
     --                         to Sprite Background color.
 
+    if x == 0 then
+        colorData.prevColor = nil
+    end
+    
     colorData.thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
     if colorsMatch(colorData.prevColor, MARGIN_BACKGROUND_COLOR) and
        colorsMatch(colorData.thisColor, SPRITE_BACKGROUND_COLOR) then
