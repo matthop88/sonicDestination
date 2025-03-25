@@ -117,8 +117,14 @@ return ({
         end
     end,
 
-    add = function(self, pluginPath, param)
+    add = function(self, pluginPath, params)
+        params = params or { }
         local plugin = require("plugins/modules/" .. pluginPath)
+        if params.accessFnName ~= nil then
+            _G[params.accessFnName] = function()
+                return plugin
+            end
+        end
         if plugin.init ~= nil then plugin:init(param) end
         table.insert(self, plugin)
         return self
