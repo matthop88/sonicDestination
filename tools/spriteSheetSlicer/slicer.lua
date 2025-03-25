@@ -32,9 +32,7 @@ SPRITE_RECTS            = {
     end,
 
     getWalkableRectList = function(self)
-        if self.walkableList == nil then
-            self.walkableList = self:createWalkableList()
-        end
+        self.walkableList = self.walkableList or self:createWalkableList()
         return self.walkableList
     end,
 
