@@ -15,12 +15,7 @@ return {
 
     init = function(self, parameters)
         self.imageData = love.image.newImageData(parameters.imagePath)
-        self.image = love.graphics.newImage(self.imageData)
-
-        getIMAGE_VIEWER = function()
-            return self
-        end
-        
+        self.image     = love.graphics.newImage(self.imageData)
         return self
     end,
 
