@@ -16,6 +16,10 @@ return {
         return self
     end,
 
+    getScale = function(self)
+        return self.scale
+    end,
+
     moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
         self.y = self.y + deltaY
