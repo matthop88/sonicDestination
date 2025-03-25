@@ -98,9 +98,7 @@ end
 drawSlices = function()
     love.graphics.setColor(1, 1, 1)
     for _, spriteRect in pairs(SPRITE_RECTS:getWalkableRectList()) do
-        local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
-        local w    = spriteRect.w * getIMAGE_VIEWER():getScale()
-        local h    = spriteRect.h * getIMAGE_VIEWER():getScale()
+        local x, y, w, h = getIMAGE_VIEWER():imageToScreenRect(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h)
         love.graphics.rectangle("line", x, y, w, h)
     end
 end
