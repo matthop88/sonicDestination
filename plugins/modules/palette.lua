@@ -1,6 +1,16 @@
 require "plugins/libraries/color"
 
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        colorSelector  -> Color Selector object, with methods
+                          get(), set() and
+                          selectFromImageAt(mx, my)
+                          Latter is a poorly-coupled dependency
+	    -------------------------------------------------------
+    --]]
+    
     table       = { },
     LEFT_BORDER = love.graphics:getWidth() - 134,
     inFocus     = false,
