@@ -22,7 +22,14 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS            = { 
     add = function(self, rect)
-        table.insert(self:getRectsWithLeftX(rect.x), rect)
+        local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+        for _, preExistingRect in ipairs(rectsWithLeftX) do
+            if preExistingRect.y + preExistingRect.h == rect.y then
+                preExistingRect.h = preExistingRect.h + 1
+                return
+            end
+        end
+        table.insert(rectsWithLeftX, rect)
         self.walkableList = nil
     end,
 
