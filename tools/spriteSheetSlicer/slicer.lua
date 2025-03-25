@@ -101,7 +101,7 @@ drawSlices = function()
         local x, y = getIMAGE_VIEWER():imageToScreenCoordinates(spriteRect.x, spriteRect.y)
         local w    = spriteRect.w * getIMAGE_VIEWER():getScale()
         local h    = spriteRect.h * getIMAGE_VIEWER():getScale()
-        love.graphics.rectangle("line", x, y, w, h))
+        love.graphics.rectangle("line", x, y, w, h)
     end
 end
 
