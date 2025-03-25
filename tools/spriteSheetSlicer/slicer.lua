@@ -23,6 +23,7 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 SPRITE_RECTS            = { 
     add = function(self, rect)
         table.insert(self:getRectsWithLeftX(rect.x), rect)
+        self.walkableList = nil
     end,
 
     getRectsWithLeftX = function(self, x)
@@ -31,17 +32,24 @@ SPRITE_RECTS            = {
     end,
 
     getWalkableRectList = function(self)
-        local walkableList = {}
+        if self.walkableList == nil then
+            self.walkableList = self:createWalkableList()
+        end
+        return self.walkableList
+    end,
+
+    createWalkableList = function(self)
+        local list = {}
 
         for _, spriteRects in pairs(self) do
             if type(spriteRects) ~= "function" then
                 for _, spriteRect in ipairs(spriteRects) do
-                    table.insert(walkableList, spriteRect)
+                    table.insert(list, spriteRect)
                 end
             end
         end
 
-        return walkableList
+        return list
     end,
 }
 
