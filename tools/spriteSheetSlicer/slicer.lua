@@ -24,6 +24,10 @@ SPRITE_RECTS            = {
     add = function(self, rect)
         table.insert(self, rect)
     end,
+
+    getRectsWithLeftX = function(self, x)
+        return self[x]
+    end,
 }
 
 --------------------------------------------------------------
