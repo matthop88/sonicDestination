@@ -40,6 +40,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     -- All drawing code goes here
+    love.graphics.setColor(1, 1, 1)
+    for _, spriteRect in ipairs(SPRITE_RECTS) do
+        love.graphics.rectangle("line", spriteRect.x - 5, spriteRect.y, 5, 1)
+    end
 end
 
 -- ...
@@ -114,13 +118,14 @@ function slice()
 end
 
 function processPixelAt(x, y, colorData)
-	-- Left edge: Transition from Margin Background color
+    -- Left edge: Transition from Margin Background color
     --                         to Sprite Background color.
 
     colorData.thisColor = getIMAGE_VIEWER():getPixelColorAt(x, y)
     if colorsMatch(colorData.prevColor, MARGIN_BACKGROUND_COLOR) and
        colorsMatch(colorData.thisColor, SPRITE_BACKGROUND_COLOR) then
         print("Found left sprite edge at x =", x, "y =", y)
+        table.insert(SPRITE_RECTS, { x = x, y = y, w = 100, h = 100 })
     end
     colorData.prevColor = colorData.thisColor
 end
