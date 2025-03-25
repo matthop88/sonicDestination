@@ -71,10 +71,10 @@ end
 PLUGINS = require("plugins/engine")
     :add("imageViewer", { imagePath       = imgPath })
     :add("palette",     { colorSelectorFn = function() return getSELECTED_COLOR() end })
-    :add("selectColor")
+    :add("selectColor", { imageViewer     = getIMAGE_VIEWER() })
     :add("readout")
     :add("zooming")
-    :add("scrolling",   { imageViewer = getIMAGE_VIEWER() })
+    :add("scrolling",   { imageViewer     = getIMAGE_VIEWER() })
     
 --[[
 
