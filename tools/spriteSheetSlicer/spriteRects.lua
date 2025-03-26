@@ -1,11 +1,16 @@
 return { 
     add = function(self, rect)
-        local adjacentRect = self:findAdjacentRect(rect.x, rect.y)
-        if adjacentRect == nil then
+        if not self:updateAdjacentRect(rect) then
             self:addNewRect(rect)
-        else
+        end
+    end,
+
+    updateAdjacentRect = function(self, rect)
+        local adjacentRect = self:findAdjacentRect(rect.x, rect.y)
+        if adjacentRect ~= nil then
             adjacentRect.h = adjacentRect.h + 1
         end
+        return adjacentRect
     end,
 
     findAdjacentRect = function(self, x, y)
