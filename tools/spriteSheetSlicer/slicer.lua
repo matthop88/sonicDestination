@@ -119,9 +119,6 @@ createPixelProcessor = function()
     local prevColor = nil
     
     return function(x, y)
-        -- Left edge: Transition from Margin Background color
-        --                         to Sprite Background color.
-    
         if x == 0 then prevColor = nil end
         
         local thisColor = getImageViewer():getPixelColorAt(x, y)
