@@ -70,12 +70,17 @@ return {
     findEnclosingRect = function(self, imageX, imageY)
         for _, rect in self:elements() do
             if  rect ~= nil 
-            and imageX >= rect.x and imageX <= rect.x + rect.w - 1
-            and imageY >= rect.y and imageY <= rect.y + rect.h - 1 
-            then 
-                return rect 
+            and self:ptInRect(x, y, rect) then
+                return rect
             end
         end
+    end,
+
+    ptInRect = function(x, y, rect)
+        return  x >= rect.x 
+            and x <= rect.x + rect.w - 1
+            and y >= rect.y
+            and y <= rect.y + rect.h - 1
     end,
 
     markAsHavingValidLeftBorder = function(self, rect)
