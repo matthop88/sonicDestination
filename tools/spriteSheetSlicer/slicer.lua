@@ -126,10 +126,8 @@ end
 
 createPixelProcessor = function()
     local prevColor, leftX = nil, nil
-    
-    return function(x, y, thisColor)
-        if x == 0 then prevColor, leftX = nil, nil end
-        
+
+    local doPixelProcessing = function(x, y, thisColor)
         if enteringLeftOfSprite(prevColor, thisColor) then
             local hasValidLeftBorder = colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR)
             SPRITE_RECTS:addSlice(x, y, hasValidLeftBorder)
@@ -138,6 +136,13 @@ createPixelProcessor = function()
             SPRITE_RECTS:updateSpriteWidth(leftX, y, x)
             leftX = nil
         end
+    end
+    
+    return function(x, y, thisColor)
+        if x == 0 then prevColor, leftX = nil, nil end
+        
+        doPixelProcessing(x, y, thisColor)
+        
         prevColor = thisColor
     end
 end
