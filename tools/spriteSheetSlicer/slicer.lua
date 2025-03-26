@@ -104,16 +104,19 @@ drawSpriteRects = function()
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
     if visibleRect == nil or not ptInRect(imageX, imageY, visibleRect) then
-        for _, rect in SPRITE_RECTS:elements() do
-            if ptInRect(imageX, imageY, rect) then
-                visibleRect = rect
-                break
-            end
-        end
+        visibleRect = calculateVisibleRect(imageX, imageY)
     end
 
     if visibleRect ~= nil then
         love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
+    end
+end
+
+calculateVisibleRect = function(x, y)
+    for _, rect in SPRITE_RECTS:elements() do
+        if ptInRect(imageX, imageY, rect) then
+            return rect
+        end
     end
 end
 
