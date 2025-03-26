@@ -114,10 +114,14 @@ end
 doSlicing = function(pixWidth, pixHeight)
     for y = 0, pixHeight - 1 do
         for x = 0, pixWidth - 1 do
-            local pixelColor = getImageViewer():getPixelColorAt(x, y)
-            processPixelAt(x, y, pixelColor)
+            doSlicingAt(x, y)
         end
     end
+end
+
+doSlicingAt = function(x, y)
+    local pixelColor = getImageViewer():getPixelColorAt(x, y)
+    processPixelAt(x, y, pixelColor)
 end
 
 createPixelProcessor = function()
@@ -143,6 +147,11 @@ addSpriteRect = function(x, y, thisColor)
     if colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
         SPRITE_RECTS:markAsValid(spriteRect)
     end
+end
+
+exitingRightOfSprite = function(prevColor, thisColor)
+    return not colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
+           and colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR)
 end
 
 processPixelAt = createPixelProcessor()
