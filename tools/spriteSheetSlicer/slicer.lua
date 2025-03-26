@@ -106,9 +106,7 @@ drawSpriteRects = function()
     end
 
     if visibleRect ~= nil then
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setLineWidth(3 * getImageViewer():getScale())
-        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
+        drawVisibleRect()
     end
 end
 
@@ -126,6 +124,12 @@ ptInRect = function(x, y, rect)
         and y >= rect.y
         and y <= rect.y + rect.h - 1
 end
+
+drawVisibleRect = function()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(3 * getImageViewer():getScale())
+    love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
+end   
 
 slice = function()
     local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
