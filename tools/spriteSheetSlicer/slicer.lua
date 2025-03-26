@@ -104,11 +104,12 @@ drawSlices = function()
 end
 
 slice = function()
-    local widthInPixels, heightInPixels = getImageViewer():getImageSize()
-
+    local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
+        
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
-            processPixelAt(x, y)
+            local pixelColor = getImageViewer():getPixelColorAt(x, y)
+            processPixelAt(x, y, pixelColor)
         end
     end
 
@@ -118,10 +119,8 @@ end
 createPixelProcessor = function()
     local prevColor = nil
     
-    return function(x, y)
+    return function(x, y, thisColor)
         if x == 0 then prevColor = nil end
-        
-        local thisColor = getImageViewer():getPixelColorAt(x, y)
         
         if enteringLeftOfSprite(prevColor, thisColor) then
             addSpriteRect(x, y, thisColor)
