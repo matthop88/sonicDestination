@@ -47,7 +47,7 @@ return {
         for _, spriteRects in pairs(self) do
             if type(spriteRects) ~= "function" then
                 for _, spriteRect in ipairs(spriteRects) do
-                    if spriteRect.isValid then
+                    if spriteRect.hasValidLeftBorder then
                         table.insert(list, spriteRect)
                     end
                 end
@@ -72,8 +72,8 @@ return {
         end
     end,
 
-    markAsValid = function(self, rect)
-        rect.isValid = true
+    markAsHavingValidLeftBorder = function(self, rect)
+        rect.hasValidLeftBorder = true
     end,
 
     updateSpriteWidth = function(self, x, y, rightX)
