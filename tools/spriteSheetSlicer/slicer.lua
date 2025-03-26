@@ -106,14 +106,18 @@ end
 slice = function()
     local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
         
-    for y = 0, heightInPixels - 1 do
-        for x = 0, widthInPixels - 1 do
+    doSlicing(widthInPixels, heightInPixels)
+
+    print(ASCII_ART)
+end
+
+doSlicing = function(pixWidth, pixHeight)
+    for y = 0, pixHeight - 1 do
+        for x = 0, pixWidth - 1 do
             local pixelColor = getImageViewer():getPixelColorAt(x, y)
             processPixelAt(x, y, pixelColor)
         end
     end
-
-    print(ASCII_ART)
 end
 
 createPixelProcessor = function()
