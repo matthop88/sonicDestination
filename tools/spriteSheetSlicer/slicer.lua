@@ -136,9 +136,9 @@ enteringLeftOfSprite = function(prevColor, thisColor)
 end
 
 addSpriteRect = function(x, y, thisColor)
-    SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
+    local spriteRect = SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
     if colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-        SPRITE_RECTS:markExactColorMatchAt(x, y)
+        spriteRect.isExactColorMatch = true
     end
 end
 
