@@ -1,5 +1,5 @@
 return { 
-    addUnfinishedRect = function(self, x, y)
+    addSliceAt = function(self, x, y)
         return self:add({ x = x, y = y, w = 50, h = 1 })
     end,
     
