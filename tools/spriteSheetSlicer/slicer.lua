@@ -69,6 +69,8 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
 
+visibleRect = nil
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -101,10 +103,17 @@ drawSlices = function()
 
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
-    for _, rect in SPRITE_RECTS:elements() do
-        if ptInRect(imageX, imageY, rect) then
-            love.graphics.rectangle("line", getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4))
+    if visibleRect == nil or not ptInRect(imageX, imageY, visibleRect) then
+        for _, rect in SPRITE_RECTS:elements() do
+            if ptInRect(imageX, imageY, rect) then
+                visibleRect = rect
+                break
+            end
         end
+    end
+
+    if visibleRect ~= nil then
+        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4))
     end
 end
 
