@@ -132,7 +132,7 @@ createPixelProcessor = function()
         processExitingRightOfSprite(x, y, thisColor)
     end
 
-    local processEnteringLeftOfSprite(x, y, thisColor)
+    local processEnteringLeftOfSprite = function(x, y, thisColor)
         if enteringLeftOfSprite(prevColor, thisColor) then
             local hasValidLeftBorder = colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR)
             SPRITE_RECTS:addSlice(x, y, hasValidLeftBorder)
@@ -140,7 +140,7 @@ createPixelProcessor = function()
         end
     end
 
-    local processExitingRightOfSprite(x, y, thisColor)
+    local processExitingRightOfSprite = function(x, y, thisColor)
         if exitingRightOfSprite(prevColor, thisColor) then
             SPRITE_RECTS:updateSpriteWidth(leftX, y, x)
             leftX = nil
