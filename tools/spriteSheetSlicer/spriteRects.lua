@@ -1,4 +1,8 @@
 return { 
+    addUnfinishedRect = function(self, x, y)
+        return self:add({ x = x, y = y, w = 50, h = 1 })
+    end,
+    
     add = function(self, rect)
         local concatenatedRect = self:updateAdjacentRect(rect)
         if not concatenatedRect then
