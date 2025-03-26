@@ -72,6 +72,15 @@ return {
         rect.isValid = true
     end,
 
+    updateSpriteWidth = function(x, y, rightX)
+        if x ~= nil then
+            local spriteRect = self:getRectAt(x, y)
+            if spriteRect ~= nil then
+                spriteRect.w = rightX - x + 1
+            end
+        end
+    end,
+
     getRectAt = function(self, x, y)
         for _, rect in ipairs(self:getRectsWithLeftX(x)) do
             if rect.y <= y and (rect.y + rect.h) >= y then
