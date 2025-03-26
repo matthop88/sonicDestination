@@ -114,7 +114,7 @@ end
 
 calculateVisibleRect = function(x, y)
     for _, rect in SPRITE_RECTS:elements() do
-        if ptInRect(imageX, imageY, rect) then
+        if ptInRect(x, y, rect) then
             return rect
         end
     end
