@@ -65,7 +65,10 @@ return {
     end,
 
     markExactColorMatchAt = function(self, x, y)
-        -- do nothing
+        local rect = self:getRectAt(x, y)
+        if rect then
+            rect.isExactColorMatch = true
+        end
     end,
 
     getRectAt = function(self, x, y)
