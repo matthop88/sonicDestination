@@ -76,7 +76,7 @@ return {
         if x ~= nil then
             local spriteRect = self:getRectAt(x, y)
             if spriteRect ~= nil then
-                spriteRect.w = rightX - x + 1
+                spriteRect.w = rightX - x
             end
         end
     end,
