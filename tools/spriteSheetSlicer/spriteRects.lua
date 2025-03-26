@@ -1,8 +1,10 @@
 return { 
     add = function(self, rect)
-        if not self:updateAdjacentRect(rect) then
+        local concatenatedRect = self:updateAdjacentRect(rect)
+        if not concatenatedRect then
             self:addNewRect(rect)
         end
+        return concatenatedRect or rect
     end,
 
     updateAdjacentRect = function(self, rect)
