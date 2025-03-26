@@ -64,4 +64,8 @@ return {
         end
     end,
 
+    markExactColorMatchAt = function(self, x, y)
+        -- do nothing
+    end,
+
 }
