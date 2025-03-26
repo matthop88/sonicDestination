@@ -1,6 +1,12 @@
 return { 
-    addSliceAt = function(self, x, y)
-        return self:add({ x = x, y = y, w = 50, h = 1 })
+    addSlice = function(self, x, y, hasValidLeftBorder)
+        local resultingRect = self:add({ x = x, y = y, w = 50, h = 1 })
+        
+        if hasValidLeftBorder then
+            self:markAsHavingValidLeftBorder(resultingRect)
+        end
+        
+        return resultingRect
     end,
     
     add = function(self, rect)
