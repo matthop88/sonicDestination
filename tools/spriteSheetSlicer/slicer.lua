@@ -125,13 +125,16 @@ doSlicingAt = function(x, y)
 end
 
 createPixelProcessor = function()
-    local prevColor = nil
+    local prevColor, leftX = nil, nil
     
     return function(x, y, thisColor)
-        if x == 0 then prevColor = nil end
+        if x == 0 then prevColor, leftX = nil, nil end
         
         if enteringLeftOfSprite(prevColor, thisColor) then
             addSpriteRect(x, y, thisColor)
+            leftX = x
+        elseif exitingRightOfSprite(prevColor, thisColor) then
+            leftX = nil
         end
         prevColor = thisColor
     end
