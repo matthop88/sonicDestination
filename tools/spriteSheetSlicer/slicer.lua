@@ -102,13 +102,17 @@ drawSlices = function()
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
     for _, rect in SPRITE_RECTS:elements() do
-        if      imageX >= rect.x
-            and imageX <= rect.x + rect.w - 1
-            and imageY >= rect.y
-            and imageY <= rect.y + rect.h - 1 then
+        if ptInRect(imageX, imageY, rect) then
             love.graphics.rectangle("line", getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4))
         end
     end
+end
+
+ptInRect = function(x, y, rect)
+    return  x >= rect.x 
+        and x <= rect.x + rect.w - 1
+        and y >= rect.y
+        and y <= rect.y + rect.h - 1
 end
 
 slice = function()
