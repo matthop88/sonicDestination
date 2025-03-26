@@ -72,7 +72,7 @@ return {
         rect.isValid = true
     end,
 
-    updateSpriteWidth = function(x, y, rightX)
+    updateSpriteWidth = function(self, x, y, rightX)
         if x ~= nil then
             local spriteRect = self:getRectAt(x, y)
             if spriteRect ~= nil then
