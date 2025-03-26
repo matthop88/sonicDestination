@@ -131,7 +131,7 @@ createPixelProcessor = function()
         if x == 0 then prevColor, leftX = nil, nil end
         
         if enteringLeftOfSprite(prevColor, thisColor) then
-            addSpriteRect(x, y, thisColor)
+            addSlice(x, y, thisColor)
             leftX = x
         elseif exitingRightOfSprite(prevColor, thisColor) then
             SPRITE_RECTS:updateSpriteWidth(leftX, y, x)
@@ -146,8 +146,8 @@ enteringLeftOfSprite = function(prevColor, thisColor)
     and not colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR)
 end
 
-addSpriteRect = function(x, y, thisColor)
-    local spriteRect = SPRITE_RECTS:addUnfinishedRect(x, y)
+addSlice = function(x, y, thisColor)
+    local spriteRect = SPRITE_RECTS:addSliceAt(x, y)
     if colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
         SPRITE_RECTS:markAsHavingValidLeftBorder(spriteRect)
     end
