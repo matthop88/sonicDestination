@@ -1,19 +1,26 @@
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        imagePath      -> Path to image which is drawn,
+                          including file name and extension
+        -------------------------------------------------------
+    --]]
+    
     x         = 0,
     y         = 0,
     scale     = 1,
     imageData = nil,
     image     = nil,
 
-    init = function(self, imagePath)
-        self.imageData = love.image.newImageData(imagePath)
-        self.image = love.graphics.newImage(self.imageData)
-
-        getIMAGE_VIEWER = function()
-            return self
-        end
-        
+    init = function(self, parameters)
+        self.imageData = love.image.newImageData(parameters.imagePath)
+        self.image     = love.graphics.newImage(self.imageData)
         return self
+    end,
+
+    getScale = function(self)
+        return self.scale
     end,
 
     moveImage = function(self, deltaX, deltaY)
@@ -32,6 +39,21 @@ return {
         return imageX, imageY
     end,
 
+    imageToScreenCoordinates = function(self, imageX, imageY)
+        local screenX = (imageX + self.x) * self.scale
+        local screenY = (imageY + self.y) * self.scale
+
+        return screenX, screenY
+    end,
+
+    imageToScreenRect = function(self, x, y, w, h)
+        local rectX, rectY = self:imageToScreenCoordinates(x, y)
+        local rectW        = w * self.scale
+        local rectH        = h * self.scale
+
+        return rectX, rectY, rectW, rectH
+    end,
+
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         self.x = (screenX / self.scale) - imageX
         self.y = (screenY / self.scale) - imageY
@@ -45,8 +67,17 @@ return {
         return self.image:getHeight()
     end,
 
+    getImageSize = function(self)
+        return self:getImageWidth(), self:getImageHeight()
+    end,
+
     getImagePixelAt = function(self, x, y)
         return self.imageData:getPixel(math.floor(x), math.floor(y))
+    end,
+
+    getPixelColorAt = function(self, x, y)
+        local rr, gg, bb = self:getImagePixelAt(x, y)
+        return { r = rr, g = gg, b = bb }
     end,
 
     draw = function(self)

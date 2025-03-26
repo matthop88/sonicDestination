@@ -1,12 +1,20 @@
 
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        imageViewer    -> Image Viewer object, with methods
+                          screenToImageCoordinates(), getImagePixelAt()
+        readout        -> Readout object with printMessage() function
+                          (This is poorly coupled!!!)
+        -------------------------------------------------------
+    --]]
+    
     selectedColor = nil,
 
-    init = function(self)
-        getSELECTED_COLOR = function()
-            return self
-        end
-
+    init = function(self, params)
+        self.imageViewer = params.imageViewer
+        self.readout     = params.readout
         return self
     end,
     
@@ -29,16 +37,16 @@ return {
     end,
 
     identifyImageColor = function(self, mx, my)
-        local imageX, imageY = getIMAGE_VIEWER():screenToImageCoordinates(mx, my)
-        local r, g, b        = getIMAGE_VIEWER():getImagePixelAt(imageX, imageY)
+        local imageX, imageY = self.imageViewer:screenToImageCoordinates(mx, my)
+        local r, g, b        = self.imageViewer:getImagePixelAt(imageX, imageY)
     
         return { r, g, b }
     end,
 
     print = function(self)
         local r, g, b = unpack(self.selectedColor)
-        print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
-        printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+        print(string.format("{ r = %.2f, g = %.2f, b = %.2f }", r, g, b))
+        self.readout:printMessage(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
     end,
 
     draw = function(self)

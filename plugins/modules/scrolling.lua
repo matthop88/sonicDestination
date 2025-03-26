@@ -3,10 +3,23 @@ require "plugins/libraries/doubleTap"
 local SCROLL_SPEED   = 400
 
 return {
+    --[[
+        Depends upon these initialization parameters:
+        -------------------------------------------------------
+        imageViewer    -> Image Viewer object, with methods
+                          moveImage(), keepInBounds()
+        -------------------------------------------------------
+    --]]
+    
     xSpeed  = 0,   
     ySpeed  = 0,
     dashing = false,
 
+    init             = function(self, params)
+        self.imageViewer = params.imageViewer
+        return self
+    end,
+    
     handleKeypressed = function(self, key)
         self.dashing = isDoubleTap(key)
         
@@ -28,9 +41,9 @@ return {
     end,
     
     update = function(self, dt)
-        getIMAGE_VIEWER():moveImage(self.xSpeed * dt, self.ySpeed * dt)
+        self.imageViewer:moveImage(self.xSpeed * dt, self.ySpeed * dt)
         if self:isMotionless() then
-            getIMAGE_VIEWER():keepImageInBounds()
+            self.imageViewer:keepImageInBounds()
         end
     end,
     
