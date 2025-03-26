@@ -69,7 +69,7 @@ return {
 
     findEnclosingRect = function(self, imageX, imageY)
         for _, rect in self:elements() do
-            if rect ~= nil and self:ptInRect(x, y, rect) then
+            if rect ~= nil and self:ptInRect(imageX, imageY, rect) then
                 return rect
             end
         end
