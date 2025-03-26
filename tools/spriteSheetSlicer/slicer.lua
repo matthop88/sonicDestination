@@ -97,7 +97,7 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-drawSlices = function()
+drawSpriteRects = function()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setLineWidth(3 * getImageViewer():getScale())
 
@@ -208,7 +208,7 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",      { imageViewer  = getImageViewer() })
     :add("scrolling",    { imageViewer  = getImageViewer() })
-    :add("drawingLayer", { drawingFn    = drawSlices })
+    :add("drawingLayer", { drawingFn    = drawSpriteRects })
     :add("readout",      { printFnName  = "printToReadout" })
 
 
