@@ -98,21 +98,15 @@ end
 --------------------------------------------------------------
 
 drawSpriteRects = function()
-    
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
-    if visibleRect == nil or not ptInRect(imageX, imageY, visibleRect) then
-        visibleRect = calculateVisibleRect(imageX, imageY)
-    end
-
+    calculateVisibleRect(imageX, imageY)
     drawVisibleRect()
 end
 
 calculateVisibleRect = function(x, y)
-    for _, rect in SPRITE_RECTS:elements() do
-        if ptInRect(x, y, rect) then
-            return rect
-        end
+    if visibleRect == nil or not ptInRect(x, y, visibleRect) then
+        visibleRect = calculateEnclosingRect(x, y)
     end
 end
 
@@ -121,6 +115,14 @@ ptInRect = function(x, y, rect)
         and x <= rect.x + rect.w - 1
         and y >= rect.y
         and y <= rect.y + rect.h - 1
+end
+
+calculateEnclosingRect = function(x, y)
+    for _, rect in SPRITE_RECTS:elements() do
+        if ptInRect(x, y, rect) then
+            return rect
+        end
+    end
 end
 
 drawVisibleRect = function()
