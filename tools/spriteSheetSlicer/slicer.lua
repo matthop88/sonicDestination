@@ -134,7 +134,7 @@ createPixelProcessor = function()
             addSpriteRect(x, y, thisColor)
             leftX = x
         elseif exitingRightOfSprite(prevColor, thisColor) then
-            updateSpriteWidth(x, y, leftX)
+            SPRITE_RECTS:updateSpriteWidth(leftX, y, x)
             leftX = nil
         end
         prevColor = thisColor
@@ -156,15 +156,6 @@ end
 exitingRightOfSprite = function(prevColor, thisColor)
     return not colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
            and colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR)
-end
-
-updateSpriteWidth = function(x, y, leftX)
-    if leftX ~= nil then
-        local spriteRect = SPRITE_RECTS:getRectAt(leftX, y)
-        if spriteRect ~= nil then
-            spriteRect.w = x - leftX + 1
-        end
-    end
 end
 
 processPixelAt = createPixelProcessor()
