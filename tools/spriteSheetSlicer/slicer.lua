@@ -126,9 +126,12 @@ createPixelProcessor = function()
         
         local thisColor = getImageViewer():getPixelColorAt(x, y)
         
-        if         colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
-           and not colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR) then
-               SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
+        if      colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
+        and not colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR) then
+            SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
+            if  colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
+                SPRITE_RECTS:markExactColorMatchAt(x, y)
+            end
         end
         prevColor = thisColor
     end
