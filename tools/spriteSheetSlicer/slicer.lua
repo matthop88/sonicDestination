@@ -113,7 +113,7 @@ drawSlices = function()
     end
 
     if visibleRect ~= nil then
-        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4))
+        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
     end
 end
 
