@@ -98,9 +98,7 @@ end
 --------------------------------------------------------------
 
 drawSpriteRects = function()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(3 * getImageViewer():getScale())
-
+    
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
     if visibleRect == nil or not ptInRect(imageX, imageY, visibleRect) then
@@ -108,6 +106,8 @@ drawSpriteRects = function()
     end
 
     if visibleRect ~= nil then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(3 * getImageViewer():getScale())
         love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
     end
 end
