@@ -138,7 +138,7 @@ end
 addSpriteRect = function(x, y, thisColor)
     local spriteRect = SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
     if colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-        spriteRect.isExactColorMatch = true
+        SPRITE_RECTS:markExactColorMatch(spriteRect)
     end
 end
 
