@@ -43,7 +43,7 @@ return {
         for _, spriteRects in pairs(self) do
             if type(spriteRects) ~= "function" then
                 for _, spriteRect in ipairs(spriteRects) do
-                    if spriteRect.isExactColorMatch then
+                    if spriteRect.isValid then
                         table.insert(list, spriteRect)
                     end
                 end
@@ -68,16 +68,8 @@ return {
         end
     end,
 
-    markExactColorMatch = function(self, rect)
-        rect.isExactColorMatch = true
-    end,
-
-    getRectAt = function(self, x, y)
-        for _, rect in ipairs(self:getRectsWithLeftX(x)) do
-            if rect.y <= y and (rect.y + rect.h) >= y then
-                return rect
-            end
-        end
+    markAsValid = function(self, rect)
+        rect.isValid = true
     end,
 
 }
