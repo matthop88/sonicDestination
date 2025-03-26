@@ -124,10 +124,7 @@ createPixelProcessor = function()
         local thisColor = getImageViewer():getPixelColorAt(x, y)
         
         if enteringLeftOfSprite(prevColor, thisColor) then
-            SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
-            if  colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-                SPRITE_RECTS:markExactColorMatchAt(x, y)
-            end
+            addSpriteRect(x, y, thisColor)
         end
         prevColor = thisColor
     end
@@ -136,6 +133,13 @@ end
 enteringLeftOfSprite = function(prevColor, thisColor)
     return  colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
     and not colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR)
+end
+
+addSpriteRect = function(x, y, thisColor)
+    SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
+    if colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
+        SPRITE_RECTS:markExactColorMatchAt(x, y)
+    end
 end
 
 processPixelAt = createPixelProcessor()
