@@ -84,7 +84,7 @@ love.mousepressed = function(mx, my)
     local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
     local rect = SPRITE_RECTS:findEnclosingRect(imageX, imageY)
     if rect ~= nil then
-        getReadout():printMessage("{ x = " .. rect.x .. ", y = " .. rect.y .. ", w = " .. rect.w .. ", h = " .. rect.h .. " }")
+        printToReadout("{ x = " .. rect.x .. ", y = " .. rect.y .. ", w = " .. rect.w .. ", h = " .. rect.h .. " }")
     end
 end
 
@@ -188,7 +188,7 @@ PLUGINS = require("plugins/engine")
     :add("zooming",      { imageViewer  = getImageViewer() })
     :add("scrolling",    { imageViewer  = getImageViewer() })
     :add("drawingLayer", { drawingFn    = drawSlices })
-    :add("readout",      { accessFnName = "getReadout" })
+    :add("readout",      { printFnName  = "printToReadout" })
 
 
 --------------------------------------------------------------
