@@ -41,7 +41,9 @@ return {
         for _, spriteRects in pairs(self) do
             if type(spriteRects) ~= "function" then
                 for _, spriteRect in ipairs(spriteRects) do
-                    table.insert(list, spriteRect)
+                    if spriteRect.isExactColorMatch then
+                        table.insert(list, spriteRect)
+                    end
                 end
             end
         end
