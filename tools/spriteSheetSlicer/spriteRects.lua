@@ -72,4 +72,12 @@ return {
         rect.isValid = true
     end,
 
+    getRectAt = function(self, x, y)
+        for _, rect in ipairs(self:getRectsWithLeftX(x)) do
+            if rect.y <= y and (rect.y + rect.h) >= y then
+                return rect
+            end
+        end
+    end,
+
 }
