@@ -149,7 +149,7 @@ end
 addSpriteRect = function(x, y, thisColor)
     local spriteRect = SPRITE_RECTS:addUnfinishedRect(x, y)
     if colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-        SPRITE_RECTS:markAsValid(spriteRect)
+        SPRITE_RECTS:markAsHavingValidLeftBorder(spriteRect)
     end
 end
 
