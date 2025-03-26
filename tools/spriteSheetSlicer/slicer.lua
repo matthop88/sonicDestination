@@ -127,11 +127,6 @@ end
 createPixelProcessor = function()
     local prevColor, leftX = nil, nil
 
-    local doPixelProcessing = function(x, y, thisColor)
-        processEnteringLeftOfSprite(x, y, thisColor)
-        processExitingRightOfSprite(x, y, thisColor)
-    end
-
     local processEnteringLeftOfSprite = function(x, y, thisColor)
         if enteringLeftOfSprite(prevColor, thisColor) then
             local hasValidLeftBorder = colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR)
@@ -146,7 +141,12 @@ createPixelProcessor = function()
             leftX = nil
         end
     end
-    
+
+    local doPixelProcessing = function(x, y, thisColor)
+        processEnteringLeftOfSprite(x, y, thisColor)
+        processExitingRightOfSprite(x, y, thisColor)
+    end
+
     return function(x, y, thisColor)
         if x == 0 then 
             prevColor, leftX = nil, nil 
