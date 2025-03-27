@@ -66,8 +66,6 @@ WINDOW_HEIGHT = 768
 
 currentRect   = require("tools/spriteSheetSlicer/smartRect")
 
-spriteRects   = require("tools/spriteSheetSlicer/slicingEngine"):slice()
-
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -90,6 +88,15 @@ drawCurrentRect = function()
 end
 
 --------------------------------------------------------------
+--                Static code - is executed last            --
+--------------------------------------------------------------
+
+love.window.setTitle("Spritesheet Slicer")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+spriteRects = require("tools/spriteSheetSlicer/slicingEngine"):slice()
+
+--------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
 
@@ -104,10 +111,3 @@ PLUGINS = require("plugins/engine")
     :add("drawingLayer", { drawingFn    = drawCurrentRect })
     :add("readout",      { printFnName  = "printToReadout" })
 
-
---------------------------------------------------------------
---                Static code - is executed last            --
---------------------------------------------------------------
-
-love.window.setTitle("Spritesheet Slicer")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
