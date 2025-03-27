@@ -78,12 +78,11 @@ smartRect = {
     h = nil,
 
     containsPt = function(self, x, y)
-        if self:isValid() then
-            return  x >= self.x
-                and x <= self.x + self.w - 1
-                and y >= self.y
-                and y <= self.y + self.h - 1
-        end
+        return  self:isValid()
+            and x >= self.x
+            and x <= self.x + self.w - 1
+            and y >= self.y
+            and y <= self.y + self.h - 1
     end,
 
     isValid = function(self)
