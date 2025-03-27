@@ -91,8 +91,19 @@ smartRect = {
             and y <= self:getY() + self:getH() - 1
     end,
 
+    drawFilled = function(self)
+        love.graphics.setColor(1, 1, 0.8, 0.5)
+        love.graphics.rectangle("fill", self:toScreenRect())
+    end,
+
     toScreenRect = function(self)
         return getImageViewer():imageToScreenRect(self:getX() - 2, self:getY() - 2, self:getW() + 4, self:getH() + 4)
+    end,
+
+    drawOutline = function(self)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(3 * getImageViewer():getScale())
+        love.graphics.rectangle("line", self:toScreenRect())
     end,
 }
 
