@@ -77,6 +77,13 @@ smartRect = {
     w = nil,
     h = nil,
 
+    initFromRect = function(self, rect)
+        self.x = rect.x
+        self.y = rect.y
+        self.w = rect.w
+        self.h = rect.h
+    end,
+    
     containsPt = function(self, x, y)
         return  self:isValid()
             and x >= self.x
