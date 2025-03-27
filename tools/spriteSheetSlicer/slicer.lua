@@ -83,15 +83,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 love.mousepressed = function(mx, my)
-    local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
-    local rect = SPRITE_RECTS:findEnclosingRect(imageX, imageY)
-    if rect ~= nil then
-        printToReadout("{ x = " .. rect.x .. ", y = " .. rect.y .. ", w = " .. rect.w .. ", h = " .. rect.h .. " }")
+    if visibleRect ~= nil then
+        printToReadout("{ x = " .. visibleRect.x .. ", y = " .. visibleRect.y .. ", w = " .. visibleRect.w .. ", h = " .. visibleRect.h .. " }")
     end
 end
-
--- ...
--- ...
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
