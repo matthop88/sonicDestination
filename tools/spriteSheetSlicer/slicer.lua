@@ -65,6 +65,7 @@ WINDOW_WIDTH  = 1024
 WINDOW_HEIGHT = 768
 
 currentRect   = require("tools/spriteSheetSlicer/smartRect")
+spriteRects   = nil
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
