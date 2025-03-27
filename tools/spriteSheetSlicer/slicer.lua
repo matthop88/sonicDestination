@@ -69,7 +69,7 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
 
-visibleRect  = require("tools/spriteSheetSlicer/smartRect")
+currentRect  = require("tools/spriteSheetSlicer/smartRect")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -83,18 +83,18 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 love.mousepressed = function(mx, my)
-    visibleRect:printUsing(printToReadout)
+    currentRect:printUsing(printToReadout)
 end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-drawSpriteRects = function()
+drawCurrentRect = function()
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
-    visibleRect:calculateUsing(imageX, imageY, findEnclosingRect)
-    visibleRect:draw()
+    currentRect:calculateUsing(imageX, imageY, findEnclosingRect)
+    currentRect:draw()
 end
 
 findEnclosingRect = function(imageX, imageY)
@@ -185,7 +185,7 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",      { imageViewer  = getImageViewer() })
     :add("scrolling",    { imageViewer  = getImageViewer() })
-    :add("drawingLayer", { drawingFn    = drawSpriteRects })
+    :add("drawingLayer", { drawingFn    = drawCurrentRect })
     :add("readout",      { printFnName  = "printToReadout" })
 
 
