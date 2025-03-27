@@ -64,7 +64,6 @@ ASCII_ART = [[
 WINDOW_WIDTH  = 1024
 WINDOW_HEIGHT = 768
 
-SPRITE_RECTS  = require("tools/spriteSheetSlicer/spriteRects")
 currentRect   = require("tools/spriteSheetSlicer/smartRect")
 
 --------------------------------------------------------------
@@ -84,10 +83,6 @@ drawCurrentRect = function()
     
     currentRect:calculateUsing(imageX, imageY, findEnclosingRect)
     currentRect:draw()
-end
-
-findEnclosingRect = function(imageX, imageY)
-    return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
 
 --------------------------------------------------------------
