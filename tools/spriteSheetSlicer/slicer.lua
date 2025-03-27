@@ -97,7 +97,7 @@ drawCurrentRect = function()
     currentRect:draw()
 end
 
-findEnclosingRect = function(imageX, imageY))
+findEnclosingRect = function(imageX, imageY)
     return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
 
