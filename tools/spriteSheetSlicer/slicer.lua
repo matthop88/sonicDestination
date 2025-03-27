@@ -108,4 +108,4 @@ PLUGINS = require("plugins/engine")
 love.window.setTitle("Spritesheet Slicer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-require("tools/spriteSheetSlicer/slicingEngine"):slice()
+local spriteRects = require("tools/spriteSheetSlicer/slicingEngine"):slice()
