@@ -69,8 +69,6 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
 
-visibleRect = nil
-
 smartRect = {
     rect   = nil,
     
@@ -149,30 +147,8 @@ calculateVisibleRect = function(imageX, imageY)
     end
 end
 
-ptInRect = function(x, y, rect)
-    return  x >= rect.x 
-        and x <= rect.x + rect.w - 1
-        and y >= rect.y
-        and y <= rect.y + rect.h - 1
-end
-
 drawVisibleRect = function()
     smartRect:draw()
-end
-
-drawFilledVisibleRect = function()
-    love.graphics.setColor(1, 1, 0.8, 0.5)
-    love.graphics.rectangle("fill", spriteRectToScreenRect(visibleRect))
-end
-
-spriteRectToScreenRect = function(rect)
-    return getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4)
-end
-
-drawOutlinedVisibleRect = function()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(3 * getImageViewer():getScale())
-    love.graphics.rectangle("line", spriteRectToScreenRect(visibleRect))
 end
 
 slice = function()
