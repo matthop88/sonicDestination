@@ -91,6 +91,14 @@ smartRect = {
             and y <= self:getY() + self:getH() - 1
     end,
 
+    draw = function(self)
+        if self:isActive() then
+            if love.mouse.isDown(1) then self:drawFilled()
+            else                         self:drawOutline()
+            end
+        end
+    end,
+
     drawFilled = function(self)
         love.graphics.setColor(1, 1, 0.8, 0.5)
         love.graphics.rectangle("fill", self:toScreenRect())
