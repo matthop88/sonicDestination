@@ -66,6 +66,8 @@ WINDOW_HEIGHT = 768
 
 currentRect   = require("tools/spriteSheetSlicer/smartRect")
 
+spriteRects   = require("tools/spriteSheetSlicer/slicingEngine"):slice()
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -109,5 +111,3 @@ PLUGINS = require("plugins/engine")
 
 love.window.setTitle("Spritesheet Slicer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-local spriteRects = require("tools/spriteSheetSlicer/slicingEngine"):slice()
