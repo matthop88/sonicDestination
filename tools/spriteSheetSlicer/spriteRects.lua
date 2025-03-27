@@ -60,28 +60,24 @@ return {
             end
         end
 
+        list.findEnclosingRect = function(self, imageX, imageY)
+            for _, rect in ipairs(self) do
+                if rect ~= nil and self:ptInRect(imageX, imageY, rect) then
+                    return rect
+                end
+            end
+        end
+
+        list.ptInRect = function(self, x, y, rect)
+            return  x >= rect.x 
+                and x <= rect.x + rect.w - 1
+                and y >= rect.y
+                and y <= rect.y + rect.h - 1
+        end
+        
         return list
     end,
     
-    elements = function(self)
-        return ipairs(self:getWalkableRectList())
-    end,
-
-    findEnclosingRect = function(self, imageX, imageY)
-        for _, rect in self:elements() do
-            if rect ~= nil and self:ptInRect(imageX, imageY, rect) then
-                return rect
-            end
-        end
-    end,
-
-    ptInRect = function(self, x, y, rect)
-        return  x >= rect.x 
-            and x <= rect.x + rect.w - 1
-            and y >= rect.y
-            and y <= rect.y + rect.h - 1
-    end,
-
     markAsHavingValidLeftBorder = function(self, rect)
         rect.hasValidLeftBorder = true
     end,
