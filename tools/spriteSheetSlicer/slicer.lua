@@ -71,6 +71,22 @@ SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
 
 visibleRect = nil
 
+smartRect = {
+    x = nil,
+    y = nil,
+    w = nil,
+    h = nil,
+
+    containsPt = function(self, x, y)
+        if self.x ~= nil and self.y ~= nil and self.w ~= nil and self.h ~= nil then
+            return      x >= self.x
+                    and x <= self.x + self.w - 1
+                    and y >= self.y
+                    and y <= self.y + self.h - 1
+        end
+    end,
+}
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
