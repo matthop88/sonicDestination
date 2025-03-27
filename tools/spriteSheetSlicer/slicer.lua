@@ -104,9 +104,9 @@ drawSpriteRects = function()
     drawVisibleRect()
 end
 
-calculateVisibleRect = function(x, y)
-    if visibleRect == nil or not ptInRect(x, y, visibleRect) then
-        visibleRect = calculateEnclosingRect(x, y)
+calculateVisibleRect = function(imageX, imageY)
+    if visibleRect == nil or not ptInRect(imageX, imageY, visibleRect) then
+        visibleRect = SPRITE_RECTS:findEnclosingRect(imageX, imageY)
     end
 end
 
@@ -115,14 +115,6 @@ ptInRect = function(x, y, rect)
         and x <= rect.x + rect.w - 1
         and y >= rect.y
         and y <= rect.y + rect.h - 1
-end
-
-calculateEnclosingRect = function(x, y)
-    for _, rect in SPRITE_RECTS:elements() do
-        if ptInRect(x, y, rect) then
-            return rect
-        end
-    end
 end
 
 drawVisibleRect = function()
