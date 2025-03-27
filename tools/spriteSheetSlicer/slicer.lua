@@ -69,7 +69,7 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
 
-smartRect    = require("tools/spriteSheetSlicer/smartRect")
+visibleRect  = require("tools/spriteSheetSlicer/smartRect")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -83,8 +83,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 love.mousepressed = function(mx, my)
-    if smartRect:isActive() then
-        printToReadout("{ x = " .. smartRect:getX() .. ", y = " .. smartRect:getY() .. ", w = " .. smartRect:getW() .. ", h = " .. smartRect:getH() .. " }")
+    if visibleRect:isActive() then
+        printToReadout("{ x = " .. visibleRect:getX() .. ", y = " .. visibleRect:getY() .. ", w = " .. visibleRect:getW() .. ", h = " .. visibleRect:getH() .. " }")
     end
 end
 
@@ -100,13 +100,13 @@ drawSpriteRects = function()
 end
 
 calculateVisibleRect = function(imageX, imageY)
-    if not smartRect:containsPt(imageX, imageY) then
-        smartRect:initFrom(SPRITE_RECTS:findEnclosingRect(imageX, imageY))
+    if not visibleRect:containsPt(imageX, imageY) then
+        visibleRect:initFrom(SPRITE_RECTS:findEnclosingRect(imageX, imageY))
     end
 end
 
 drawVisibleRect = function()
-    smartRect:draw()
+    visibleRect:draw()
 end
 
 slice = function()
