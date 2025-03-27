@@ -67,19 +67,18 @@ WINDOW_HEIGHT = 768
 MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
-SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
+SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
 
 smartRect = {
-    rect   = nil,
+    rect = nil,
     
-    activateFromRect = function(self, rect)        self.rect  = rect end,
-    deactivate       = function(self)              self.rect  = nil  end,
-    isActive         = function(self)       return self.rect ~= nil  end,
+    initFrom = function(self, rect)        self.rect  = rect end,
+    isActive = function(self)       return self.rect ~= nil  end,
     
-    getX             = function(self)       return self.rect.x       end,
-    getY             = function(self)       return self.rect.y       end,
-    getW             = function(self)       return self.rect.w       end,
-    getH             = function(self)       return self.rect.h       end,
+    getX     = function(self)       return self.rect.x       end,
+    getY     = function(self)       return self.rect.y       end,
+    getW     = function(self)       return self.rect.w       end,
+    getH     = function(self)       return self.rect.h       end,
     
     containsPt = function(self, x, y)
         return  self:isActive()
@@ -143,7 +142,7 @@ end
 
 calculateVisibleRect = function(imageX, imageY)
     if not smartRect:containsPt(imageX, imageY) then
-        smartRect:activateFromRect(SPRITE_RECTS:findEnclosingRect(imageX, imageY))
+        smartRect:initFrom(SPRITE_RECTS:findEnclosingRect(imageX, imageY))
     end
 end
 
