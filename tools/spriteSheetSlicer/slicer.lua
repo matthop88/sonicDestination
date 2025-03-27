@@ -129,7 +129,7 @@ drawVisibleRect = function()
     if visibleRect ~= nil then
         if love.mouse.isDown(1) then
             love.graphics.setColor(1, 1, 0.8, 0.5)
-            love.graphics.rectangle("fill", getImageViewer():imageToScreenRect(visibleRect.x, visibleRect.y, visibleRect.w, visibleRect.h))
+            love.graphics.rectangle("fill", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
         else
             love.graphics.setColor(1, 1, 1)
             love.graphics.setLineWidth(3 * getImageViewer():getScale())
