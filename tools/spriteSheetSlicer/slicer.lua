@@ -77,11 +77,12 @@ smartRect = {
     w = nil,
     h = nil,
 
-    initFromRect = function(self, rect)
-        self.x = rect.x
-        self.y = rect.y
-        self.w = rect.w
-        self.h = rect.h
+    activateFromRect = function(self, rect)
+        self.x, self.y, self.w, self.h = rect.x, rect.y, rect.w, rect.h
+    end,
+
+    deactivate = function(self)
+        self.x, self.y, self.w, self.h = nil, nil, nil, nil
     end,
     
     containsPt = function(self, x, y)
@@ -92,7 +93,7 @@ smartRect = {
             and y <= self.y + self.h - 1
     end,
 
-    isValid = function(self)
+    isActive = function(self)
         return  self.x ~= nil
             and self.y ~= nil
             and self.w ~= nil
