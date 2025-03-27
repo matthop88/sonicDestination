@@ -101,16 +101,6 @@ findEnclosingRect = function(imageX, imageY)
     return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
 
-calculateVisibleRect = function(imageX, imageY)
-    if not visibleRect:containsPt(imageX, imageY) then
-        visibleRect:initFrom(SPRITE_RECTS:findEnclosingRect(imageX, imageY))
-    end
-end
-
-drawVisibleRect = function()
-    visibleRect:draw()
-end
-
 slice = function()
     local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
         
