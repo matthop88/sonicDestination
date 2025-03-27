@@ -93,7 +93,7 @@ end
 drawCurrentRect = function()
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
-    currentRect:calculateUsing(imageX, imageY, SPRITE_RECTS:findEnclosingRect)
+    currentRect:calculateUsing(imageX, imageY, SPRITE_RECTS.findEnclosingRect)
     currentRect:draw()
 end
 
