@@ -8,6 +8,12 @@ return {
     getY     = function(self)       return self.rect.y       end,
     getW     = function(self)       return self.rect.w       end,
     getH     = function(self)       return self.rect.h       end,
+
+    calculateUsing = function(self, imageX, imageY, rectCalculator)
+        if not self:containsPt(imageX, imageY) then
+            self:initFrom(rectCalculator(imageX, imageY))
+        end
+    end,
     
     containsPt = function(self, x, y)
         return  self:isActive()
