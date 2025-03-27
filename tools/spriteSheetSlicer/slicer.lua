@@ -72,21 +72,22 @@ SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
 visibleRect = nil
 
 smartRect = {
-    x = nil,
-    y = nil,
-    w = nil,
-    h = nil,
+    x      = nil,    y     = nil,
+    w      = nil,    h     = nil,
+
+    active = false,
 
     activateFromRect = function(self, rect)
         self.x, self.y, self.w, self.h = rect.x, rect.y, rect.w, rect.h
+        self.active = true
     end,
 
     deactivate = function(self)
-        self.x, self.y, self.w, self.h = nil, nil, nil, nil
+        self.active = false
     end,
     
     containsPt = function(self, x, y)
-        return  self:isValid()
+        return  self:isActive()
             and x >= self.x
             and x <= self.x + self.w - 1
             and y >= self.y
@@ -94,10 +95,7 @@ smartRect = {
     end,
 
     isActive = function(self)
-        return  self.x ~= nil
-            and self.y ~= nil
-            and self.w ~= nil
-            and self.h ~= nil
+        return self.active
     end,
 }
 
