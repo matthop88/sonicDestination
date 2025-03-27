@@ -127,19 +127,25 @@ end
 
 drawVisibleRect = function()
     if visibleRect ~= nil then
-        if love.mouse.isDown(1) then
-            love.graphics.setColor(1, 1, 0.8, 0.5)
-            love.graphics.rectangle("fill", spriteRectToScreenRect(visibleRect))
-        else
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.setLineWidth(3 * getImageViewer():getScale())
-            love.graphics.rectangle("line", spriteRectToScreenRect(visibleRect))
+        if love.mouse.isDown(1) then drawFilledVisibleRect()
+        else                         drawOutlinedVisibleRect()
         end
     end
 end
 
+drawFilledVisibleRect = function()
+    love.graphics.setColor(1, 1, 0.8, 0.5)
+    love.graphics.rectangle("fill", spriteRectToScreenRect(visibleRect))
+end
+
 spriteRectToScreenRect = function(rect)
     return getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4)
+end
+
+drawOutlinedVisibleRect = function()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(3 * getImageViewer():getScale())
+    love.graphics.rectangle("line", spriteRectToScreenRect(visibleRect))
 end
 
 slice = function()
