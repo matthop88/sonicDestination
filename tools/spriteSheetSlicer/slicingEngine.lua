@@ -59,12 +59,14 @@ findEnclosingRect = function(imageX, imageY)
 end
 
 return {
-	slice = function(self)
+    slice = function(self)
         local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
         
         self:doSlicing(widthInPixels, heightInPixels)
 
         print(ASCII_ART)
+
+        return SPRITE_RECTS:getWalkableRectList()
     end,
 
     doSlicing = function(self, pixWidth, pixHeight)
