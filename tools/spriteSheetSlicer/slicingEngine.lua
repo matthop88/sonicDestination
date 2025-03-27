@@ -1,9 +1,9 @@
-MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
-SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
+local MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
+local SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
-SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
+local SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
 
-createPixelProcessor = function()
+local createPixelProcessor = function()
     local prevColor, leftX = nil, nil
 
     local processEnteringLeftOfSprite = function(x, y, thisColor)
@@ -35,27 +35,23 @@ createPixelProcessor = function()
     end
 end
 
-enteringLeftOfSprite = function(prevColor, thisColor)
+local enteringLeftOfSprite = function(prevColor, thisColor)
     return  colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
     and not colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR)
 end
 
-exitingRightOfSprite = function(prevColor, thisColor)
+local exitingRightOfSprite = function(prevColor, thisColor)
     return not colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
            and colorsMatch(thisColor, MARGIN_BACKGROUND_COLOR)
 end
 
-processPixelAt = createPixelProcessor()
+local processPixelAt = createPixelProcessor()
 
-colorsMatch = function(c1, c2)
+local colorsMatch = function(c1, c2)
     return c1 ~= nil and c2 ~= nil
        and math.abs(c1.r - c2.r) < 0.005
        and math.abs(c1.g - c2.g) < 0.005 
        and math.abs(c1.b - c2.b) < 0.005
-end
-
-findEnclosingRect = function(imageX, imageY)
-    return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
 
 return {
