@@ -90,6 +90,10 @@ smartRect = {
             and y >= self:getY()
             and y <= self:getY() + self:getH() - 1
     end,
+
+    toScreenRect = function(self)
+        return getImageViewer():imageToScreenRect(self:getX() - 2, self:getY() - 2, self:getW() + 4, self:getH() + 4)
+    end,
 }
 
 --------------------------------------------------------------
