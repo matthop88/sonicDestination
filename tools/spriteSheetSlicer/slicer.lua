@@ -129,14 +129,18 @@ drawVisibleRect = function()
     if visibleRect ~= nil then
         if love.mouse.isDown(1) then
             love.graphics.setColor(1, 1, 0.8, 0.5)
-            love.graphics.rectangle("fill", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
+            love.graphics.rectangle("fill", spriteRectToScreenRect(visibleRect))
         else
             love.graphics.setColor(1, 1, 1)
             love.graphics.setLineWidth(3 * getImageViewer():getScale())
-            love.graphics.rectangle("line", getImageViewer():imageToScreenRect(visibleRect.x - 2, visibleRect.y - 2, visibleRect.w + 4, visibleRect.h + 4))
+            love.graphics.rectangle("line", spriteRectToScreenRect(visibleRect))
         end
     end
-end   
+end
+
+spriteRectToScreenRect = function(rect)
+    return getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4)
+end
 
 slice = function()
     local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
