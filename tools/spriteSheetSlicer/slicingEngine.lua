@@ -3,27 +3,6 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
 
-slice = function()
-    local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
-        
-    doSlicing(widthInPixels, heightInPixels)
-
-    print(ASCII_ART)
-end
-
-doSlicing = function(pixWidth, pixHeight)
-    for y = 0, pixHeight - 1 do
-        for x = 0, pixWidth - 1 do
-            doSlicingAt(x, y)
-        end
-    end
-end
-
-doSlicingAt = function(x, y)
-    local pixelColor = getImageViewer():getPixelColorAt(x, y)
-    processPixelAt(x, y, pixelColor)
-end
-
 createPixelProcessor = function()
     local prevColor, leftX = nil, nil
 
@@ -78,3 +57,26 @@ end
 findEnclosingRect = function(imageX, imageY)
     return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
+
+return {
+	slice = function(self)
+        local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
+        
+        self:doSlicing(widthInPixels, heightInPixels)
+
+        print(ASCII_ART)
+    end,
+
+    doSlicing = function(self, pixWidth, pixHeight)
+        for y = 0, pixHeight - 1 do
+            for x = 0, pixWidth - 1 do
+                self:doSlicingAt(x, y)
+            end
+        end
+    end,
+
+    doSlicingAt = function(self, x, y)
+        local pixelColor = getImageViewer():getPixelColorAt(x, y)
+        processPixelAt(x, y, pixelColor)
+    end,
+}
