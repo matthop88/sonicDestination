@@ -68,13 +68,6 @@ SPRITE_RECTS  = require("tools/spriteSheetSlicer/spriteRects")
 currentRect   = require("tools/spriteSheetSlicer/smartRect")
 
 --------------------------------------------------------------
---              Static code - is executed first             --
---------------------------------------------------------------
-
-love.window.setTitle("Spritesheet Slicer")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
---------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
@@ -117,7 +110,9 @@ PLUGINS = require("plugins/engine")
 --                Static code - is executed last            --
 --------------------------------------------------------------
 
-require("tools/spriteSheetSlicer/slicingEngine")
+love.window.setTitle("Spritesheet Slicer")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+require("tools/spriteSheetSlicer/slicingEngine")
 slice()
 
