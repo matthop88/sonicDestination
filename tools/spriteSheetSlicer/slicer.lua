@@ -83,9 +83,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 love.mousepressed = function(mx, my)
-    if visibleRect:isActive() then
-        printToReadout("{ x = " .. visibleRect:getX() .. ", y = " .. visibleRect:getY() .. ", w = " .. visibleRect:getW() .. ", h = " .. visibleRect:getH() .. " }")
-    end
+    visibleRect:printUsing(printToReadout)
 end
 
 --------------------------------------------------------------
