@@ -93,8 +93,12 @@ end
 drawSpriteRects = function()
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
     
-    calculateVisibleRect(imageX, imageY)
-    drawVisibleRect()
+    visibleRect:calculateUsing(imageX, imageY, findEnclosingRect)
+    visibleRect:draw()
+end
+
+findEnclosingRect = function(imageX, imageY)
+    return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
 
 calculateVisibleRect = function(imageX, imageY)
