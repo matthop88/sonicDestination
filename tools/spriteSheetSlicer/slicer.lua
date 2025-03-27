@@ -74,29 +74,14 @@ visibleRect = nil
 smartRect = {
     rect   = nil,
     
-    activateFromRect = function(self, rect)
-        self.rect = rect
-    end,
-
-    deactivate = function(self)
-        self.rect = nil
-    end,
-
-    getX       = function(self)
-        return self.rect.x
-    end,
-
-    getY       = function(self)
-        return self.rect.y
-    end,
-
-    getW       = function(self)
-        return self.rect.w
-    end,
-
-    getH       = function(self)
-        return self.rect.h
-    end,
+    activateFromRect = function(self, rect)        self.rect  = rect end,
+    deactivate       = function(self)              self.rect  = nil  end,
+    isActive         = function(self)       return self.rect ~- nil  end,
+    
+    getX             = function(self)       return self.rect.x       end,
+    getY             = function(self)       return self.rect.y       end,
+    getW             = function(self)       return self.rect.w       end,
+    getH             = function(self)       return self.rect.h       end,
     
     containsPt = function(self, x, y)
         return  self:isActive()
@@ -104,10 +89,6 @@ smartRect = {
             and x <= self:getX() + self:getW() - 1
             and y >= self:getY()
             and y <= self:getY() + self:getH() - 1
-    end,
-
-    isActive = function(self)
-        return self.rect ~- nil
     end,
 }
 
