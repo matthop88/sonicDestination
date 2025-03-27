@@ -80,8 +80,10 @@ end
 
 drawCurrentRect = function()
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
-    
-    currentRect:calculateUsing(imageX, imageY, findEnclosingRect)
+
+    if not currentRect:containsPt(imageX, imageY) then
+        currentRect:initFrom(spriteRects:findEnclosingRect(imageX, imageY))
+    end
     currentRect:draw()
 end
 
