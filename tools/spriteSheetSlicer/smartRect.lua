@@ -34,6 +34,12 @@ return {
         return getImageViewer():imageToScreenRect(self:getX() - 2, self:getY() - 2, self:getW() + 4, self:getH() + 4)
     end,
 
+    printUsing = function(self, printFn)
+        if self:isActive() then
+            printFn("{ x = " .. self:getX() .. ", y = " .. self:getY() .. ", w = " .. self:getW() .. ", h = " .. self:getH() .. " }")
+        end
+    end,
+
     drawOutline = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(3 * getImageViewer():getScale())
