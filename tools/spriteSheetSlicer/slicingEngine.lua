@@ -1,6 +1,8 @@
 MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
+SPRITE_RECTS = require("tools/spriteSheetSlicer/spriteRects")
+
 slice = function()
     local widthInPixels, heightInPixels = getImageViewer():getImageSize()    
         
@@ -71,4 +73,8 @@ colorsMatch = function(c1, c2)
        and math.abs(c1.r - c2.r) < 0.005
        and math.abs(c1.g - c2.g) < 0.005 
        and math.abs(c1.b - c2.b) < 0.005
+end
+
+findEnclosingRect = function(imageX, imageY)
+    return SPRITE_RECTS:findEnclosingRect(imageX, imageY)
 end
