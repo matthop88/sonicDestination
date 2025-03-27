@@ -76,7 +76,7 @@ smartRect = {
     
     activateFromRect = function(self, rect)        self.rect  = rect end,
     deactivate       = function(self)              self.rect  = nil  end,
-    isActive         = function(self)       return self.rect ~- nil  end,
+    isActive         = function(self)       return self.rect ~= nil  end,
     
     getX             = function(self)       return self.rect.x       end,
     getY             = function(self)       return self.rect.y       end,
