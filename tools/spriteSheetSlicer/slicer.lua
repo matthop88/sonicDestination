@@ -127,8 +127,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 love.mousepressed = function(mx, my)
-    if visibleRect ~= nil then
-        printToReadout("{ x = " .. visibleRect.x .. ", y = " .. visibleRect.y .. ", w = " .. visibleRect.w .. ", h = " .. visibleRect.h .. " }")
+    if smartRect:isActive() then
+        printToReadout("{ x = " .. smartRect:getX() .. ", y = " .. smartRect:getY() .. ", w = " .. smartRect:getW() .. ", h = " .. smartRect:getH() .. " }")
     end
 end
 
@@ -144,8 +144,8 @@ drawSpriteRects = function()
 end
 
 calculateVisibleRect = function(imageX, imageY)
-    if visibleRect == nil or not ptInRect(imageX, imageY, visibleRect) then
-        visibleRect = SPRITE_RECTS:findEnclosingRect(imageX, imageY)
+    if not smartRect:containsPt(imageX, imageY) then
+        smartRect:activateFromRect(SPRITE_RECTS:findEnclosingRect(imageX, imageY))
     end
 end
 
@@ -157,11 +157,7 @@ ptInRect = function(x, y, rect)
 end
 
 drawVisibleRect = function()
-    if visibleRect ~= nil then
-        if love.mouse.isDown(1) then drawFilledVisibleRect()
-        else                         drawOutlinedVisibleRect()
-        end
-    end
+    smartRect:draw()
 end
 
 drawFilledVisibleRect = function()
