@@ -127,7 +127,7 @@ function drawSonic()
                           J.` .!           %
                             JiJ           .`
                               .1.         J
-                                 ?1.     .'  
+                                 ?1.     .'
                                      7<..%
 
 
