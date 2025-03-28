@@ -14,6 +14,7 @@
           positioned 3/4 of way down the screen
 [ ] 3. Draw Sonic the Hedgehog sprite in Workspace
        a. Sonic is standing on the line
+       b. Sonic is drawn at the proper scale
 --]]
 
 --------------------------------------------------------------
