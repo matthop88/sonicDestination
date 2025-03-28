@@ -76,6 +76,8 @@ end
 
 function drawSonic()
     -- Code to draw Sonic goes here
+    love.graphics.setColor(COLOR_PURE_WHITE)
+    love.graphics.draw(SONIC_IMAGE, SONIC_QUAD, 500, 450)
     --[[
                              ...,?77??!~~~~!???77?<~....
                         ..?7`                           `7!..
