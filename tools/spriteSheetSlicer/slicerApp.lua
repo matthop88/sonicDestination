@@ -107,7 +107,11 @@ PLUGINS = require("plugins/engine")
     :add("zooming",      { imageViewer  = getImageViewer() })
     :add("scrolling",    { imageViewer  = getImageViewer() })
     :add("drawingLayer", { drawingFn    = drawCurrentRect })
-    :add("readout",      { printFnName  = "printToReadout" })
+    :add("readout",      
+    { 
+        printFnName   = "printToReadout",
+        echoToConsole = true,
+    })
 
 --------------------------------------------------------------
 --                Static code - is executed last            --
