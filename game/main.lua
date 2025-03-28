@@ -20,12 +20,14 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-COLOR_GREEN      = { 0, 0.45, 0 }
-                   -- https://htmlcolorcodes.com/colors/shades-of-green/
-COLOR_PURE_WHITE = { 1, 1,    1 }
+COLOR_GREEN         = { 0, 0.45, 0 }
+                      -- https://htmlcolorcodes.com/colors/shades-of-green/
+COLOR_PURE_WHITE    = { 1, 1,    1 }
 
-WINDOW_WIDTH     = 1024
-WINDOW_HEIGHT    =  768
+WINDOW_WIDTH        = 1024
+WINDOW_HEIGHT       =  768
+
+SONIC_STANDING_RECT = { x = 43, y = 257, w = 32, h = 40 }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -42,8 +44,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-	drawWorkspace()
-	drawSonic()
+    drawWorkspace()
+    drawSonic()
 end
 
 --------------------------------------------------------------
@@ -51,24 +53,24 @@ end
 --------------------------------------------------------------
 
 function drawWorkspace()
-	drawBackground()
-	drawHorizontalLine()
+    drawBackground()
+    drawHorizontalLine()
 end
 
 function drawBackground()
-	love.graphics.setColor(COLOR_GREEN)
-	love.graphics.rectangle("fill", 0, 0, 1024, 768)
+    love.graphics.setColor(COLOR_GREEN)
+    love.graphics.rectangle("fill", 0, 0, 1024, 768)
 end
 
 function drawHorizontalLine()
-	love.graphics.setColor(COLOR_PURE_WHITE)
-	love.graphics.setLineWidth(3)
-	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
+    love.graphics.setColor(COLOR_PURE_WHITE)
+    love.graphics.setLineWidth(3)
+    love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
 end
 
 function drawSonic()
-	-- Code to draw Sonic goes here
-	--[[
+    -- Code to draw Sonic goes here
+    --[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
                     .,=`          ..~7^`   I                  ?1. 
@@ -128,10 +130,10 @@ function drawSonic()
 
                                     Sonic ASCII art credits
                                     -----------------------
-	"ASCII Art of Sonic"
-	posted by put-mutt on
-	https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
-	---------------------------------------------------------------------------------------
+    "ASCII Art of Sonic"
+    posted by put-mutt on
+    https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
+    ---------------------------------------------------------------------------------------
 	
     --]]
 end
