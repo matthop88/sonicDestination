@@ -12,7 +12,8 @@ function love.load(args)
         __INSPECTOR_FILE = args[2]
         require "tools/colorInspector/inspector"
     elseif args[1] == "slicer" then
-        require "tools/spriteSheetSlicer/slicer"
+        __SLICER_FILE = args[2]
+        require "tools/spriteSheetSlicer/slicerApp"
     else
         require "game/main"
     end

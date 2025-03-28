@@ -1,13 +1,12 @@
 --[[
-
 --------------------------------------------------------------
 --                  Functional Specifications               --
 --------------------------------------------------------------
 
-[ ] 1. Program "automagically" finds borders of all sprites in image
-[ ] 2. Border is drawn when mouse moves over a sprite
-[ ] 3. When a sprite is clicked on, x, y, width and height are
-       displayed on screen.
+* Program "automagically" finds borders of all sprites in image
+* Border is drawn when mouse moves over a sprite
+* When a sprite is clicked on, x, y, width and height are 
+  displayed on screen.
 
 --]]
 
@@ -61,86 +60,40 @@ ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-WINDOW_WIDTH  = 1024
-WINDOW_HEIGHT = 768
-
-MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
-SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
-
-SPRITE_RECTS            = require("tools/spriteSheetSlicer/spriteRects")
+WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 --------------------------------------------------------------
---              Static code - is executed first             --
+--                       Local Variables                    --
 --------------------------------------------------------------
 
-love.window.setTitle("Spritesheet Slicer")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+local currentRect = require("tools/spriteSheetSlicer/smartRect")
+local spriteRects = nil
+
+local imgPath     = "resources/images/slicerSadNoFile.png"
+
+if __SLICER_FILE ~= nil then
+    imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
+end
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 love.mousepressed = function(mx, my)
-    local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
-    local rect = SPRITE_RECTS:findEnclosingRect(imageX, imageY)
-    if rect ~= nil then
-        getReadout():printMessage("{ x = " .. rect.x .. ", y = " .. rect.y .. ", w = " .. rect.w .. ", h = " .. rect.h .. " }")
-    end
+    currentRect:printUsing(printToReadout)
 end
-
--- ...
--- ...
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-drawSlices = function()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(3 * getImageViewer():getScale())
-    for _, rect in SPRITE_RECTS:elements() do
-        love.graphics.rectangle("line", getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4))
+drawCurrentRect = function()
+    local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
+
+    if not currentRect:containsPt(imageX, imageY) then
+        currentRect:initFrom(spriteRects:findEnclosingRect(imageX, imageY))
     end
-end
-
-slice = function()
-    local widthInPixels, heightInPixels = getImageViewer():getImageSize()
-
-    for y = 0, heightInPixels - 1 do
-        for x = 0, widthInPixels - 1 do
-            processPixelAt(x, y)
-        end
-    end
-
-    print(ASCII_ART)
-end
-
-createPixelProcessor = function()
-    local prevColor = nil
-    
-    return function(x, y)
-        -- Left edge: Transition from Margin Background color
-        --                         to Sprite Background color.
-    
-        if x == 0 then prevColor = nil end
-        
-        local thisColor = getImageViewer():getPixelColorAt(x, y)
-        
-        if     colorsMatch(prevColor, MARGIN_BACKGROUND_COLOR)
-           and colorsMatch(thisColor, SPRITE_BACKGROUND_COLOR) then
-               SPRITE_RECTS:add({ x = x, y = y, w = 50, h = 1 })
-        end
-        prevColor = thisColor
-    end
-end
-
-processPixelAt = createPixelProcessor()
-
-colorsMatch = function(c1, c2)
-    return c1 ~= nil and c2 ~= nil
-       and math.abs(c1.r - c2.r) < 0.005
-       and math.abs(c1.g - c2.g) < 0.005 
-       and math.abs(c1.b - c2.b) < 0.005
+    currentRect:draw()
 end
 
 --------------------------------------------------------------
@@ -150,18 +103,27 @@ end
 PLUGINS = require("plugins/engine")
     :add("imageViewer",  
     { 
-        imagePath    = "resources/images/spriteSheets/sonic1.png",
+        imagePath    = imgPath,
         accessFnName = "getImageViewer" 
     })
     :add("zooming",      { imageViewer  = getImageViewer() })
     :add("scrolling",    { imageViewer  = getImageViewer() })
-    :add("drawingLayer", { drawingFn    = drawSlices })
-    :add("readout",      { accessFnName = "getReadout" })
-
+    :add("drawingLayer", { drawingFn    = drawCurrentRect })
+    :add("readout",      
+    { 
+        printFnName   = "printToReadout",
+        echoToConsole = true,
+    })
 
 --------------------------------------------------------------
 --                Static code - is executed last            --
 --------------------------------------------------------------
 
-slice()
+local MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
+local SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
+
+love.window.setTitle("Spritesheet Slicer")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+spriteRects = require("tools/spriteSheetSlicer/slicingEngine"):slice(MARGIN_BACKGROUND_COLOR, SPRITE_BACKGROUND_COLOR, getImageViewer)
 
