@@ -67,6 +67,10 @@ function love.keypressed(key)
         sonicY = sonicY - 1
     elseif key == "space" then
         print("Sonic Y = " .. sonicY)
+    elseif key == "w" then
+        sonicY = sonicY - 10
+    elseif key == "s" then
+        sonicY = sonicY + 10
     end
 end
 
