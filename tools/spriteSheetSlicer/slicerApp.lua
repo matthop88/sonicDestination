@@ -67,6 +67,12 @@ WINDOW_HEIGHT = 768
 currentRect   = require("tools/spriteSheetSlicer/smartRect")
 spriteRects   = nil
 
+local imgPath = "resources/images/slicerSadNoFile.png"
+
+if __SLICER_FILE ~= nil then
+    imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
+end
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -95,7 +101,7 @@ end
 PLUGINS = require("plugins/engine")
     :add("imageViewer",  
     { 
-        imagePath    = "resources/images/spriteSheets/sonic1.png",
+        imagePath    = imgPath,
         accessFnName = "getImageViewer" 
     })
     :add("zooming",      { imageViewer  = getImageViewer() })
