@@ -1,13 +1,12 @@
 --[[
-
 --------------------------------------------------------------
 --                  Functional Specifications               --
 --------------------------------------------------------------
 
-[X] 1. Program "automagically" finds borders of all sprites in image
-[X] 2. Border is drawn when mouse moves over a sprite
-[X] 3. When a sprite is clicked on, x, y, width and height are
-       displayed on screen.
+* Program "automagically" finds borders of all sprites in image
+* Border is drawn when mouse moves over a sprite
+* When a sprite is clicked on, x, y, width and height are 
+  displayed on screen.
 
 --]]
 
@@ -61,13 +60,16 @@ ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-WINDOW_WIDTH  = 1024
-WINDOW_HEIGHT = 768
+WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-currentRect   = require("tools/spriteSheetSlicer/smartRect")
-spriteRects   = nil
+--------------------------------------------------------------
+--                       Local Variables                    --
+--------------------------------------------------------------
 
-local imgPath = "resources/images/slicerSadNoFile.png"
+local currentRect = require("tools/spriteSheetSlicer/smartRect")
+local spriteRects = nil
+
+local imgPath     = "resources/images/slicerSadNoFile.png"
 
 if __SLICER_FILE ~= nil then
     imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
