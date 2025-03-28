@@ -60,8 +60,10 @@ end
 -- Called By:     LOVE2D application, when a key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    if key == "down" then
+    if     key == "down"  then
         sonicY = sonicY + 1
+    elseif key == "up"    then
+        sonicY = sonicY - 1
     elseif key == "space" then
         print("Sonic Y = " .. sonicY)
     end
