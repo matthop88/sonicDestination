@@ -64,7 +64,9 @@ return ({
     mousepressed = function(self, mx, my)
         for _, plugin in ipairs(self) do
             if plugin.handleMousepressed ~= nil then
-                plugin:handleMousepressed(mx, my)
+                if plugin:handleMousepressed(mx, my) then
+                    return true
+                end
             end
         end
     end,
