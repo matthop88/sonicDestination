@@ -7,10 +7,6 @@ return {
         self.imageViewer = params.imageViewer
         self.onColorSelected = params.onColorSelected or self.onColorSelected
         
-        getSELECTED_COLOR = function()
-            return self
-        end
-
         return self
     end,
     
