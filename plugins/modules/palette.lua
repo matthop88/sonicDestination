@@ -5,6 +5,11 @@ return {
     LEFT_BORDER = love.graphics:getWidth() - 134,
     inFocus     = false,
 
+    init = function(self, params)
+        self.getColorSelector = params.colorSelectorFunc
+        return self
+    end,
+    
     isInFocus = function(self)
         return self.inFocus
     end,
@@ -47,7 +52,7 @@ return {
     end,
 
     calculateColorToDraw = function(self, baseColor)
-        if self:isInFocus() or compareColors(baseColor, getSELECTED_COLOR():get()) then
+        if self:isInFocus() or compareColors(baseColor, self.getColorSelector():get()) then
             return baseColor
         else
             return { baseColor[1], baseColor[2], baseColor[3], 0.2 }
@@ -67,7 +72,7 @@ return {
     highlightSelectedColor = function(self)
         for i, color in ipairs(self.table) do
             local x, y = self:calculateCoordinatesOfColor(i)
-            if compareColors(color, getSELECTED_COLOR():get()) then
+            if compareColors(color, self.getColorSelector():get()) then
                 love.graphics.setColor(COLOR.YELLOW)
                 love.graphics.setLineWidth(6)
                 love.graphics.rectangle("line", x, y, 60, 60)
@@ -93,7 +98,7 @@ return {
         local selectedIndex = vIndex * 2 + hIndex + 1
     
         if self.table[selectedIndex] then
-            getSELECTED_COLOR():set(self.table[selectedIndex])
+            self.getColorSelector():set(self.table[selectedIndex])
         end
     end,
 
@@ -103,9 +108,9 @@ return {
 
     handleMousepressed = function(self, mx, my)
         if self:isInFocus() then self:selectColorAt(mx, my)
-        else                     getSELECTED_COLOR():selectFromImageAt(mx, my)
+        else                     self.getColorSelector():selectFromImageAt(mx, my)
         end
 
-        self:insertColor(getSELECTED_COLOR():get())
+        self:insertColor(self.getColorSelector():get())
     end,
 }
