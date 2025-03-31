@@ -68,7 +68,7 @@ end
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
-onColorSelected = function(self, selectedColor)
+printSelectedColor = function(self, selectedColor)
     local r, g, b = unpack(selectedColor)
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
     printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
@@ -85,7 +85,11 @@ PLUGINS = require("plugins/engine")
         accessorFnName = "getImageViewer"
     })
     :add("palette")
-    :add("selectColor", { imageViewer = getImageViewer() })
+    :add("selectColor", 
+    {
+        imageViewer     = getImageViewer(),
+        onColorSelected = printSelectedColor
+    })
     :add("readout")
     :add("zooming",     { imageViewer = getImageViewer() })
     :add("scrolling",   { imageViewer = getImageViewer() })
