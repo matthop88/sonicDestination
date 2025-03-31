@@ -69,7 +69,11 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("imageViewer", { imagePath = imgPath })
+    :add("imageViewer", 
+    { 
+        imagePath      = imgPath,
+        accessorFnName = "getImageViewer"
+    })
     :add("palette")
     :add("selectColor")
     :add("readout")
