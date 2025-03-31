@@ -9,10 +9,6 @@ return {
         self.imageData = love.image.newImageData(params.imagePath)
         self.image = love.graphics.newImage(self.imageData)
 
-        getIMAGE_VIEWER = function()
-            return self
-        end
-        
         return self
     end,
 
