@@ -48,7 +48,9 @@ return ({
     keypressed = function(self, key)
         for _, plugin in ipairs(self) do
             if plugin.handleKeypressed ~= nil then
-                plugin:handleKeypressed(key)
+                if plugin:handleKeypressed(key) then
+                    return true
+                end
             end
         end
     end,
@@ -56,7 +58,9 @@ return ({
     keyreleased = function(self, key)
         for _, plugin in ipairs(self) do
             if plugin.handleKeyreleased ~= nil then
-                plugin:handleKeyreleased(key)
+                if plugin:handleKeyreleased(key) then
+                    return true
+                end
             end
         end
     end,
@@ -74,7 +78,9 @@ return ({
     mousereleased = function(self, mx, my)
         for _, plugin in ipairs(self) do
             if plugin.handleMousereleased ~= nil then
-                plugin:handleMousereleased(mx, my)
+                if plugin:handleMousereleased(mx, my) then
+                    return true
+                end
             end
         end
     end,
