@@ -1,10 +1,10 @@
 return ({
     oldDraw          = function()       end,
-	oldUpdate        = function(dt)     end,
-	oldKeypressed    = function(key)    end,
-	oldKeyreleased   = function(key)    end,
-	oldMousepressed  = function(mx, my) end,
-	oldMousereleased = function(mx, my) end,
+    oldUpdate        = function(dt)     end,
+    oldKeypressed    = function(key)    end,
+    oldKeyreleased   = function(key)    end,
+    oldMousepressed  = function(mx, my) end,
+    oldMousereleased = function(mx, my) end,
 
     init = function(self)
         
@@ -77,9 +77,9 @@ return ({
         end
     end,
 
-    add = function(self, pluginPath, param)
+    add = function(self, pluginPath, params)
         local plugin = require("plugins/modules/" .. pluginPath)
-        if plugin.init ~= nil then plugin:init(param) end
+        if plugin.init ~= nil then plugin:init(params) end
         table.insert(self, plugin)
         return self
     end,
