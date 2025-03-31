@@ -50,10 +50,10 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local imagePath = "resources/images/sadNoFileImage.png"
+local imgPath = "resources/images/sadNoFileImage.png"
 
 if __INSPECTOR_FILE ~= nil then
-    imagePath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
+    imgPath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
 end
 
 --------------------------------------------------------------
@@ -69,7 +69,7 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("imageViewer", imagePath)
+    :add("imageViewer", { imagePath = imgPath })
     :add("palette")
     :add("selectColor")
     :add("readout")
