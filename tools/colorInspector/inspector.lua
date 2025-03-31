@@ -65,6 +65,16 @@ end
 -- ...
 
 --------------------------------------------------------------
+--                   Specialized Functions                  --
+--------------------------------------------------------------
+
+onColorSelected = function(self, selectedColor)
+    local r, g, b = unpack(selectedColor)
+    print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
+    printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+end,
+
+--------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
 
