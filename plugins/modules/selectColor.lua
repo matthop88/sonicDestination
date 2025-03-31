@@ -57,6 +57,11 @@ return {
         love.graphics.rectangle("line", mx - 50, my - 50, 100, 100)
     end,
 
+    handleMousepressed  = function(self, mx, my)
+        self:selectFromImageAt(mx, my)
+        return true
+    end,
+    
     handleMousereleased = function(self, mx, my)
         self:clear()
     end,
