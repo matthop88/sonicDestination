@@ -9,22 +9,44 @@ return ({
     init = function(self)
         
         self.oldDraw = love.draw or self.oldDraw
-        love.draw          = function() self:draw()                      end
+        love.draw          = function() 
+            self.oldDraw()
+            self:draw()                      
+        end
 
         self.oldUpdate = love.update or self.oldUpdate
-        love.update        = function(dt) self:update(dt)                end
+        love.update        = function(dt) 
+            self.oldUpdate(dt)
+            self:update(dt)                
+        end
 
         self.oldKeypressed = love.keypressed or self.oldKeypressed
-        love.keypressed    = function(key) self:keypressed(key)          end
+        love.keypressed    = function(key)
+            if not self:keypressed(key) then
+                self.oldKeypressed(key)
+            end
+        end
 
         self.oldKeyreleased = love.keyreleased or self.oldKeyreleased
-        love.keyreleased   = function(key) self:keyreleased(key)         end
+        love.keyreleased   = function(key)
+            if not self:keyreleased(key) then
+                self.oldKeyreleased(key)
+            end
+        end
 
         self.oldMousepressed = love.mousepressed or self.oldMousepressed
-        love.mousepressed  = function(mx, my) self:mousepressed(mx, my)  end
-
+        love.mousepressed  = function(mx, my)
+            if not self.mousepressed(key) then
+                self.oldMousepressed(mx, my)  
+            end
+        end
+            
         self.oldMousereleased = love.mousereleased or self.oldMousereleased
-        love.mousereleased = function(mx, my) self:mousereleased(mx, my) end
+        love.mousereleased = function(mx, my)
+            if not self:mousereleased(mx, my) then
+                self.oldMousereleased(mx, my)
+            end
+        end
 
         return self
     end,
