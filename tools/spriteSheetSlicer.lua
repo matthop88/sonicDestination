@@ -37,15 +37,16 @@
 
 MARGIN_BACKGROUND_COLOR = { }
 SPRITE_BACKGROUND_COLOR = { }
--- ...
+
+WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 -- ...
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
--- ...
--- ...
+love.window.setTitle("Sprite Sheet Slicer")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- ...
 
 --------------------------------------------------------------
