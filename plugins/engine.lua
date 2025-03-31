@@ -62,7 +62,9 @@ return ({
     update = function(self, dt)
         for _, plugin in ipairs(self) do
             if plugin.update ~= nil then
-                plugin:update(dt)
+                if plugin:update(dt) then
+                    return true
+                end
             end
         end
     end,
