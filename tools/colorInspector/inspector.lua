@@ -68,8 +68,13 @@ end
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
-printSelectedColor = function(selectedColor)
-    local r, g, b = unpack(selectedColor)
+onColorSelected = function(color)
+    getPalette():insertColor(color)
+    printSelectedColor(color)
+end
+
+printSelectedColor = function(color)
+    local r, g, b = unpack(color)
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
     printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
 end
@@ -92,7 +97,7 @@ PLUGINS = require("plugins/engine")
     :add("selectColor", 
     {
         imageViewer       = getImageViewer(),
-        onColorSelected   = printSelectedColor,
+        onColorSelected   = onColorSelected,
         accessorFnName    = "getColorSelector"
     })
     :add("readout")
