@@ -79,8 +79,13 @@ return ({
 
     add = function(self, pluginPath, params)
         local plugin = require("plugins/modules/" .. pluginPath)
-        if plugin.init ~= nil then plugin:init(params) end
-        table.insert(self, plugin)
+        self:addPlugin(plugin, params)
         return self
     end,
+
+    addPlugin = function(self, plugin, params)
+        if plugin.init ~= nil then plugin:init(params) end
+        table.insert(self.plugin)
+    end,
+    
 }):init()
