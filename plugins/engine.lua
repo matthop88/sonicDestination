@@ -82,10 +82,23 @@ return ({
         self:addPlugin(plugin, params or { })
         return self
     end,
-
+        
     addPlugin = function(self, plugin, params)
-        if plugin.init ~= nil then plugin:init(params) end
+        self:initPlugin(plugin, params)
         table.insert(self, plugin)
+    end,
+
+    initPlugin = function(self, plugin, params)
+        if plugin.init ~= nil then plugin:init(params) end
+        if params.accessorFnName ~= nil then
+            self:createGlobalAccessorFn(params.accessorFnName, plugin)
+        end
+    end,
+
+    createGlobalAccessorFn = function(self, name, plugin)
+        _G[name] = function()
+			return plugin
+		end
     end,
     
 }):init()
