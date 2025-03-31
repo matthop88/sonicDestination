@@ -84,11 +84,12 @@ PLUGINS = require("plugins/engine")
         imagePath      = imgPath,
         accessorFnName = "getImageViewer"
     })
-    :add("palette")
+    :add("palette",     { colorSelectorFunc = function() return getColorSelector() end })
     :add("selectColor", 
     {
         imageViewer     = getImageViewer(),
-        onColorSelected = printSelectedColor
+        onColorSelected = printSelectedColor,
+        accessorFnName  = "getColorSelector",
     })
     :add("readout")
     :add("zooming",     { imageViewer = getImageViewer() })
