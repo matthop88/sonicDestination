@@ -97,8 +97,8 @@ return ({
 
     createGlobalAccessorFn = function(self, name, plugin)
         _G[name] = function()
-			return plugin
-		end
+            return plugin
+        end
     end,
     
 }):init()
