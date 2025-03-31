@@ -19,10 +19,6 @@ local MAX_LETTERS_PER_SECOND = 600000
 
 return {
     init = function(self)
-        printToREADOUT = function(msg)
-            self:printMessage(msg)
-        end
-
         return self
     end,
     
