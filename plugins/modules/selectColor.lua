@@ -1,9 +1,11 @@
 
 return {
-    selectedColor = nil,
-
+    selectedColor   = nil,
+    onColorSelected = function(selectedColor) end,
+    
     init = function(self, params)
         self.imageViewer = params.imageViewer
+        self.onColorSelected = params.onColorSelected or self.onColorSelected
         
         getSELECTED_COLOR = function()
             return self
@@ -13,13 +15,12 @@ return {
     end,
     
     selectFromImageAt = function(self, mx, my)
-        self.selectedColor = self:identifyImageColor(mx, my)
-        self:print()
+        self:set(self:identifyImageColor(mx, my))
     end,
 
     set = function(self, color)
         self.selectedColor = color
-        self:print()
+        self.onColorSelected(color)
     end,
 
     get = function(self)
@@ -35,12 +36,6 @@ return {
         local r, g, b        = self.imageViewer:getImagePixelAt(imageX, imageY)
     
         return { r, g, b }
-    end,
-
-    print = function(self)
-        local r, g, b = unpack(self.selectedColor)
-        print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
-        printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
     end,
 
     draw = function(self)
