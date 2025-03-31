@@ -24,6 +24,14 @@ return {
     update = function(self, dt)
         if self.scaleDelta ~= 0 then
             self:zoomFromCoordinates(dt, love.mouse.getPosition())
+            self:adjustImagePositionIfZoomingOut()
+            return true
+        end
+    end,
+
+    adjustImagePositionIfZoomingOut = function(self)
+        if self.scaleDelta < 0 then
+            self.imageViewer:keepImageInBounds()
         end
     end,
 
