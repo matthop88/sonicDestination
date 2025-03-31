@@ -79,7 +79,7 @@ return ({
 
     add = function(self, pluginPath, params)
         local plugin = require("plugins/modules/" .. pluginPath)
-        self:addPlugin(plugin, params)
+        self:addPlugin(plugin, params or { })
         return self
     end,
 
