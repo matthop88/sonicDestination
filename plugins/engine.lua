@@ -85,7 +85,7 @@ return ({
 
     addPlugin = function(self, plugin, params)
         if plugin.init ~= nil then plugin:init(params) end
-        table.insert(self.plugin)
+        table.insert(self, plugin)
     end,
     
 }):init()
