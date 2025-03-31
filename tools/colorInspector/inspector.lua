@@ -76,7 +76,7 @@ end
 printSelectedColor = function(color)
     local r, g, b = unpack(color)
     print(string.format("{ %.2f, %.2f, %.2f }", r, g, b))
-    printToREADOUT(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+    getReadout():printMessage(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
 end
 
 --------------------------------------------------------------
@@ -100,9 +100,9 @@ PLUGINS = require("plugins/engine")
         onColorSelected   = onColorSelected,
         accessorFnName    = "getColorSelector"
     })
-    :add("readout")
-    :add("zooming",     { imageViewer = getImageViewer() })
-    :add("scrolling",   { imageViewer = getImageViewer() })
+    :add("readout",     { accessorFnName = "getReadout"     })
+    :add("zooming",     { imageViewer    = getImageViewer() })
+    :add("scrolling",   { imageViewer    = getImageViewer() })
     
 --[[
 
