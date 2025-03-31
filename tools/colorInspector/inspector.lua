@@ -75,10 +75,10 @@ PLUGINS = require("plugins/engine")
         accessorFnName = "getImageViewer"
     })
     :add("palette")
-    :add("selectColor")
+    :add("selectColor", { imageViewer = getImageViewer() })
     :add("readout")
-    :add("zooming",   { imageViewer = getImageViewer() })
-    :add("scrolling", { imageViewer = getImageViewer() })
+    :add("zooming",     { imageViewer = getImageViewer() })
+    :add("scrolling",   { imageViewer = getImageViewer() })
     
 --[[
 
