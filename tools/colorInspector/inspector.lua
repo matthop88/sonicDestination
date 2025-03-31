@@ -77,7 +77,7 @@ PLUGINS = require("plugins/engine")
     :add("palette")
     :add("selectColor")
     :add("readout")
-    :add("zooming")
+    :add("zooming",   { imageViewer = getImageViewer() })
     :add("scrolling", { imageViewer = getImageViewer() })
     
 --[[
