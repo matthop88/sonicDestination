@@ -59,6 +59,16 @@ end
 -- ...
 
 --------------------------------------------------------------
+--                  Specialized Functions                   --
+--------------------------------------------------------------
+
+function scan()
+    -- Scan all pixels in image in a systematic way
+    -- Print out the coordinates of the first pixel in each row
+    -- that matches MARGIN_BACKGROUND_COLOR
+end
+
+--------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
 
