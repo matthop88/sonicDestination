@@ -71,6 +71,7 @@ local scanner = {
                 self.y = self.y + 1
             else
                 self.running = false
+                love.window.setTitle("Sprite Sheet Slicer")
             end
         end
     end
@@ -80,7 +81,7 @@ local scanner = {
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
-love.window.setTitle("Sprite Sheet Slicer")
+love.window.setTitle("Sprite Sheet Slicer - SLICING...")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- ...
 
