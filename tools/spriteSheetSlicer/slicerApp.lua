@@ -68,8 +68,9 @@ function scan()
     -- that matches MARGIN_BACKGROUND_COLOR
 
     --[[
-    for y = 0, heightInPixels do
-        for x = 0, widthInPixels do
+
+    for y = 0, heightInPixels - 1 do
+        for x = 0, widthInPixels - 1 do
             getImagePixelAt(x, y)
             -- Process color somehow
         end
