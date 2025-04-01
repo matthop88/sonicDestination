@@ -56,10 +56,6 @@ local scanner = {
     end,
     
     update = function(self, dt)
-        -- Scan all pixels in image pixel row in a systematic way
-        -- Print out the coordinates of every pixel
-        -- that matches MARGIN_BACKGROUND_COLOR
-        
         if self.running then
             self:scanUntilWorkUnitIsDone()
             self:setupNextWorkUnit(dt)
