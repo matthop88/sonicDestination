@@ -41,6 +41,10 @@ return {
         return self.image:getHeight()
     end,
 
+    getImageSize   = function(self)
+        return self:getImageWidth(), self:getImageHeight()
+    end,
+
     getImagePixelAt = function(self, x, y)
         return self.imageData:getPixel(math.floor(x), math.floor(y))
     end,
