@@ -72,7 +72,8 @@ function scan()
     -- that matches MARGIN_BACKGROUND_COLOR
 
     --[[
-    local imageViewer = getImageViewer()
+    local imageViewer                   = getImageViewer()
+    local widthInPixels, heightInPixels = imageViewer:getImageSize()
     
     for y = 0, heightInPixels - 1 do
         for x = 0, widthInPixels - 1 do
