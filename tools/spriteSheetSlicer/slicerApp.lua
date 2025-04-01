@@ -66,6 +66,15 @@ function scan()
     -- Scan all pixels in image in a systematic way
     -- Print out the coordinates of the first pixel in each row
     -- that matches MARGIN_BACKGROUND_COLOR
+
+    --[[
+    for y = 0, heightInPixels do
+        for x = 0, widthInPixels do
+            getImagePixelAt(x, y)
+            -- Process color somehow
+        end
+    end
+    --]]
 end
 
 --------------------------------------------------------------
