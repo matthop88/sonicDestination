@@ -65,20 +65,22 @@ local scanner = {
             for y = self.y, math.floor(self.nextY - 1) do
                 if y < self.heightInPixels then
                     for x = 0, self.widthInPixels - 1 do
-                        local pixelColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, y))
-                        if self:colorsMatch(pixelColor, MARGIN_BACKGROUND_COLOR) then
-                            print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
-                            self.matchesFound = self.matchesFound + 1
-                        end
+                        self:findMatchAt(x, y)
                     end
-                    self.y = math.floor(self.nextY)
+                self.y = math.floor(self.nextY)
                 else
-                    self.running = false
-                    love.window.setTitle("Sprite Sheet Slicer")
-                    print("Matches Found: " .. self.matchesFound)
+                    self:stopScanning()
                     break
                 end
             end
+        end
+    end,
+
+    findMatchAt = function(self, x, y)
+        local pixelColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, y))
+        if self:colorsMatch(pixelColor, MARGIN_BACKGROUND_COLOR) then
+            print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
+            self.matchesFound = self.matchesFound + 1
         end
     end,
 
@@ -90,6 +92,12 @@ local scanner = {
         return math.abs(c1.r - c2.r) < 0.005
            and math.abs(c1.g - c2.g) < 0.005 
            and math.abs(c1.b - c2.b) < 0.005
+    end,
+
+    stopScanning = function(self)
+        self.running = false
+        love.window.setTitle("Sprite Sheet Slicer")
+        print("Matches Found: " .. self.matchesFound)
     end,
 }
 
