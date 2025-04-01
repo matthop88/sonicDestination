@@ -63,10 +63,7 @@ local scanner = {
         if self.running then
             self.nextY = self.y + (self.linesPerSecond * dt)
             self:scanUntilUnitOfWorkIsDone()
-            self.y = math.floor(self.nextY)
-            if self.y >= self.heightInPixels then
-                self:stopScanning()
-            end
+            self:setupNextUnitOfWork()
         end
     end,
 
@@ -98,6 +95,13 @@ local scanner = {
         return math.abs(c1.r - c2.r) < 0.005
            and math.abs(c1.g - c2.g) < 0.005 
            and math.abs(c1.b - c2.b) < 0.005
+    end,
+
+    setupNextUnitOfWork = function(self)
+        self.y = math.floor(self.nextY)
+        if self.y >= self.heightInPixels then
+            self:stopScanning()
+        end
     end,
 
     stopScanning = function(self)
