@@ -64,16 +64,15 @@ local scanner = {
             self.nextY = self.y + (self.linesPerSecond * dt)
             self:scanUntilUnitOfWorkIsDone()
             self.y = math.floor(self.nextY)
+            if self.y >= self.heightInPixels then
+                self:stopScanning()
+            end
         end
     end,
 
     scanUntilUnitOfWorkIsDone = function(self)
-        for y = self.y, math.floor(self.nextY - 1) do
-            if y < self.heightInPixels then
-                self:scanLine(y)
-            else
-                self:stopScanning()
-            end
+        for y = self.y, math.min(self.heightInPixels, math.floor(self.nextY)) - 1 do
+            self:scanLine(y)
         end
     end,
     
