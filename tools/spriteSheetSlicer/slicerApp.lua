@@ -78,6 +78,7 @@ local scanner = {
                     break
                 end
             end
+        end
     end,
 
     rgbToColor  = function(self, r, g, b)
