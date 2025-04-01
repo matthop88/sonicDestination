@@ -45,6 +45,7 @@ local scanner = {
     imageViewer    = nil,
     widthInPixels  = nil,
     heightInPixels = nil,
+    linesPerSecond = 200,
     running        = false,
     matchesFound   = 0,
 
@@ -60,7 +61,7 @@ local scanner = {
         -- that matches MARGIN_BACKGROUND_COLOR
         
         if self.running then
-            self.nextY = self.y + (200 * dt)
+            self.nextY = self.y + (self.linesPerSecond * dt)
             for y = self.y, math.floor(self.nextY - 1) do
                 if y < self.heightInPixels then
                     for x = 0, self.widthInPixels - 1 do
