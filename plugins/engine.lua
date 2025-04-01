@@ -36,7 +36,7 @@ return ({
 
         self.oldMousepressed = love.mousepressed or self.oldMousepressed
         love.mousepressed  = function(mx, my)
-            if not self:mousepressed(key) then
+            if not self:mousepressed(mx, my) then
                 self.oldMousepressed(mx, my)  
             end
         end
