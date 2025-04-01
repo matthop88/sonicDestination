@@ -30,9 +30,9 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
---MARGIN_BACKGROUND_COLOR = { 0.05, 0.28, 0.03 }
-MARGIN_BACKGROUND_COLOR = { 0,    0,    0    }
-SPRITE_BACKGROUND_COLOR = { 0.26, 0.60, 0.19 }
+--MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
+MARGIN_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0    }
+SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
@@ -62,7 +62,7 @@ local scanner = {
             if self.y < self.heightInPixels then
                 for x = 0, self.widthInPixels - 1 do
                     local r, g, b = self.imageViewer:getImagePixelAt(x, self.y)
-                    if self:colorsMatch({ r, g, b }, MARGIN_BACKGROUND_COLOR) then
+                    if self:colorsMatch({ r = r, g = g, b = b }, MARGIN_BACKGROUND_COLOR) then
                         print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. self.y)
                     end
                 end
@@ -75,7 +75,9 @@ local scanner = {
     end,
 
     colorsMatch = function(self, c1, c2)
-        return c1[1] == c2[1] and c1[2] == c2[2] and c1[3] == c2[3]
+        return c1.r == c2.r 
+           and c1.g == c2.g 
+           and c1.b == c2.b
     end,
 }
 
