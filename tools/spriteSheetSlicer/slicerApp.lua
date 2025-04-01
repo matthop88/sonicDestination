@@ -40,20 +40,20 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 --------------------------------------------------------------
 
 local scanner = {
-    y              = 0,
-    nextY          = 0,
-    imageViewer    = nil,
-    widthInPixels  = nil,
-    heightInPixels = nil,
-    linesPerSecond = 500,
-    running        = false,
-    matchesFound   = 0,
-    callbackFn     = function() end,
+    y                    = 0,
+    nextY                = 0,
+    imageViewer          = nil,
+    widthInPixels        = nil,
+    heightInPixels       = nil,
+    linesPerSecond       = 500,
+    running              = false,
+    matchesFound         = 0,
+    callbackWhenComplete = function() end,
 
-    start = function(self, callbackFn)
+    start = function(self, callbackWhenComplete)
         self.imageViewer = getImageViewer()
         self.widthInPixels, self.heightInPixels = self.imageViewer:getImageSize()
-        self.callbackFn  = callbackFn or self.callbackFn
+        self.callbackWhenComplete = callbackWhenComplete or self.callbackWhenComplete
         self.running = true
     end,
     
@@ -116,7 +116,7 @@ local scanner = {
 
     stop = function(self)
         self.running = false
-        self:callbackFn()
+        self:callbackWhenComplete()
         print("Matches Found: " .. self.matchesFound)
     end,
 }
