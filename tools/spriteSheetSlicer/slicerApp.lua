@@ -45,7 +45,7 @@ local scanner = {
     imageViewer    = nil,
     widthInPixels  = nil,
     heightInPixels = nil,
-    linesPerSecond = 200,
+    linesPerSecond = 500,
     running        = false,
     matchesFound   = 0,
 
