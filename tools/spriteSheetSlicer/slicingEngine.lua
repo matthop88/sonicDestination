@@ -1,6 +1,8 @@
 return {
     y                    = 0,
     nextY                = 0,
+    marginBGColor        = nil,
+    spriteBGColor        = nil,
     imageViewer          = nil,
     widthInPixels        = nil,
     heightInPixels       = nil,
@@ -9,10 +11,13 @@ return {
     matchesFound         = 0,
     callbackWhenComplete = function() end,
 
-    start = function(self, callbackWhenComplete)
-        self.imageViewer = getImageViewer()
+    start = function(self, params)
+        self.imageViewer          = params.imageViewer
+        self.marginBGColor        = params.marginBGColor
+        self.spriteBGColor        = params.spriteBGColor
+        self.callbackWhenComplete = params.callbackWhenComplete or self.callbackWhenComplete
+
         self.widthInPixels, self.heightInPixels = self.imageViewer:getImageSize()
-        self.callbackWhenComplete = callbackWhenComplete or self.callbackWhenComplete
         self.running = true
     end,
     
@@ -48,7 +53,7 @@ return {
 
     findMatchAt = function(self, x, y)
         local pixelColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, y))
-        if self:colorsMatch(pixelColor, MARGIN_BACKGROUND_COLOR) then
+        if self:colorsMatch(pixelColor, self.marginBGColor) then
             print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
             self.matchesFound = self.matchesFound + 1
         end
