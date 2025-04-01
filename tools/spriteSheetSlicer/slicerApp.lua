@@ -74,6 +74,10 @@ function getImageViewer()
     -- Overridden by imageViewer plugin
 end
 
+function onSlicingCompletion()
+    love.window.setTitle("Sprite Sheet Slicer")
+end
+
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
@@ -91,4 +95,10 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
-slicer:start(function() love.window.setTitle("Sprite Sheet Slicer") end)
+slicer:start({
+    imageViewer          = getImageViewer(),
+    marginBGColor        = MARGIN_BACKGROUND_COLOR,
+    spriteBGColor        = SPRITE_BACKGROUND_COLOR,
+    callbackWhenComplete = onSlicingCompletion
+})
+
