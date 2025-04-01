@@ -61,18 +61,22 @@ local scanner = {
         -- that matches MARGIN_BACKGROUND_COLOR
         
         if self.running then
-            self:scanUntilUnitOfWorkIsDone()
-            self:setupNextUnitOfWork(dt)
+            self:scanUntilWorkUnitIsDone()
+            self:setupNextWorkUnit(dt)
             if self:isWorkComplete() then
                 self:stop()
             end
         end
     end,
 
-    scanUntilUnitOfWorkIsDone = function(self)
-        for y = self.y, math.min(self.heightInPixels, math.floor(self.nextY)) - 1 do
+    scanUntilWorkUnitIsDone = function(self)
+        for y = self.y, self:calculateYAtEndOfWorkUnit() do
             self:scanLine(y)
         end
+    end,
+
+    calculateYAtEndOfWorkUnit = function(self)
+        return math.min(self.heightInPixels, math.floor(self.nextY)) - 1
     end,
     
     scanLine = function(self, y)
@@ -99,7 +103,7 @@ local scanner = {
            and math.abs(c1.b - c2.b) < 0.005
     end,
 
-    setupNextUnitOfWork = function(self, dt)
+    setupNextWorkUnit = function(self, dt)
         self.y     = math.floor(self.nextY)
         self.nextY = self.y + (self.linesPerSecond * dt)
     end,
