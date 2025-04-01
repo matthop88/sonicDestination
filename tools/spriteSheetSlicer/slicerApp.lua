@@ -48,10 +48,12 @@ local scanner = {
     linesPerSecond = 500,
     running        = false,
     matchesFound   = 0,
+    callbackFn     = function() end,
 
-    start = function(self)
+    start = function(self, callbackFn)
         self.imageViewer = getImageViewer()
         self.widthInPixels, self.heightInPixels = self.imageViewer:getImageSize()
+        self.callbackFn  = callbackFn or self.callbackFn
         self.running = true
     end,
     
@@ -114,7 +116,7 @@ local scanner = {
 
     stop = function(self)
         self.running = false
-        love.window.setTitle("Sprite Sheet Slicer")
+        self:callbackFn()
         print("Matches Found: " .. self.matchesFound)
     end,
 }
@@ -169,4 +171,4 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
-scanner:start()
+scanner:start(function() love.window.setTitle("Sprite Sheet Slicer") end)
