@@ -36,7 +36,33 @@ SPRITE_BACKGROUND_COLOR = { 0.26, 0.60, 0.19 }
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-scanY = 0
+--------------------------------------------------------------
+--                      Local Variables                     --
+--------------------------------------------------------------
+
+local scanY = 0
+
+local scanner = {
+    scan = function(self, y)
+        -- Scan all pixels in image pixel row in a systematic way
+        -- Print out the coordinates of every pixel
+        -- that matches MARGIN_BACKGROUND_COLOR
+    
+        local imageViewer                   = getImageViewer()
+        local widthInPixels, heightInPixels = imageViewer:getImageSize()
+        
+        if y < heightInPixels then
+            for x = 0, widthInPixels - 1 do
+                local r, g, b = imageViewer:getImagePixelAt(x, y)
+                if  r == MARGIN_BACKGROUND_COLOR[1]
+                and g == MARGIN_BACKGROUND_COLOR[2]
+                and b == MARGIN_BACKGROUND_COLOR[3] then
+                    print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
+                end
+            end
+        end
+    end
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -71,28 +97,6 @@ end
 function getImageViewer()
     -- Overridden by imageViewer plugin
 end
-
-local scanner = {
-    scan = function(self, y)
-        -- Scan all pixels in image pixel row in a systematic way
-        -- Print out the coordinates of every pixel
-        -- that matches MARGIN_BACKGROUND_COLOR
-    
-        local imageViewer                   = getImageViewer()
-        local widthInPixels, heightInPixels = imageViewer:getImageSize()
-        
-        if y < heightInPixels then
-            for x = 0, widthInPixels - 1 do
-                local r, g, b = imageViewer:getImagePixelAt(x, y)
-                if  r == MARGIN_BACKGROUND_COLOR[1]
-                and g == MARGIN_BACKGROUND_COLOR[2]
-                and b == MARGIN_BACKGROUND_COLOR[3] then
-                    print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
-                end
-            end
-        end
-    end
-}
 
 --------------------------------------------------------------
 --                          Plugins                         --
