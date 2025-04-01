@@ -57,11 +57,11 @@ local scanner = {
     
     update = function(self, dt)
         if self.running then
-            self:doScanning()
+            self:doScanning(dt)
         end
     end,
 
-    doScanning = function(self)
+    doScanning = function(self, dt)
         self:scanUntilWorkUnitIsDone()
         self:setupNextWorkUnit(dt)
         if self:isWorkComplete() then
