@@ -62,6 +62,10 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+function getImageViewer()
+    -- Overridden by imageViewer plugin
+end
+
 function scan()
     -- Scan all pixels in image in a systematic way
     -- Print out the coordinates of the first pixel in each row
