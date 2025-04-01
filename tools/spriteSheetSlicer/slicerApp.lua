@@ -61,8 +61,8 @@ local scanner = {
         if self.running then
             if self.y < self.heightInPixels then
                 for x = 0, self.widthInPixels - 1 do
-                    local r, g, b = self.imageViewer:getImagePixelAt(x, self.y)
-                    if self:colorsMatch({ r = r, g = g, b = b }, MARGIN_BACKGROUND_COLOR) then
+                    local pixelColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, self.y))
+                    if self:colorsMatch(pixelColor, MARGIN_BACKGROUND_COLOR) then
                         print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. self.y)
                     end
                 end
@@ -72,6 +72,10 @@ local scanner = {
                 love.window.setTitle("Sprite Sheet Slicer")
             end
         end
+    end,
+
+    rgbToColor  = function(self, r, g, b)
+        return { r = r, g = g, b = b }
     end,
 
     colorsMatch = function(self, c1, c2)
