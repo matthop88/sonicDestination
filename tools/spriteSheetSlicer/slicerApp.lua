@@ -63,10 +63,9 @@ local scanner = {
         if self.running then
             self:scanUntilUnitOfWorkIsDone()
             self:setupNextUnitOfWork(dt)
-        end
-
-        if self:isWorkComplete() then
-            self:stopScanning()
+            if self:isWorkComplete() then
+                self:stop()
+            end
         end
     end,
 
@@ -109,7 +108,7 @@ local scanner = {
         return self.y >= self.heightInPixels
     end,
 
-    stopScanning = function(self)
+    stop = function(self)
         self.running = false
         love.window.setTitle("Sprite Sheet Slicer")
         print("Matches Found: " .. self.matchesFound)
