@@ -67,11 +67,11 @@ local scanner = {
                     for x = 0, self.widthInPixels - 1 do
                         self:findMatchAt(x, y)
                     end
-                self.y = math.floor(self.nextY)
                 else
                     self:stopScanning()
                 end
             end
+            self.y = math.floor(self.nextY)
         end
     end,
 
