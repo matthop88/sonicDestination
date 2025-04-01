@@ -39,7 +39,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local scanner = {
+local slicer = {
     y                    = 0,
     nextY                = 0,
     imageViewer          = nil,
@@ -59,21 +59,21 @@ local scanner = {
     
     update = function(self, dt)
         if self.running then
-            self:doScanning(dt)
+            self:doSlicing(dt)
         end
     end,
 
-    doScanning = function(self, dt)
-        self:scanUntilWorkUnitIsDone()
+    doSlicing = function(self, dt)
+        self:sliceUntilWorkUnitIsDone()
         self:setupNextWorkUnit(dt)
         if self:isWorkComplete() then
             self:stop()
         end
     end,
     
-    scanUntilWorkUnitIsDone = function(self)
+    sliceUntilWorkUnitIsDone = function(self)
         for y = self.y, self:calculateYAtEndOfWorkUnit() do
-            self:scanLine(y)
+            self:sliceLine(y)
         end
     end,
 
@@ -81,7 +81,7 @@ local scanner = {
         return math.min(self.heightInPixels, math.floor(self.nextY)) - 1
     end,
     
-    scanLine = function(self, y)
+    sliceLine = function(self, y)
         for x = 0, self.widthInPixels - 1 do
             self:findMatchAt(x, y)
         end
@@ -171,4 +171,4 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
-scanner:start(function() love.window.setTitle("Sprite Sheet Slicer") end)
+slicer:start(function() love.window.setTitle("Sprite Sheet Slicer") end)
