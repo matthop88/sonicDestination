@@ -62,17 +62,21 @@ local scanner = {
         
         if self.running then
             self.nextY = self.y + (self.linesPerSecond * dt)
-            for y = self.y, math.floor(self.nextY - 1) do
-                if y < self.heightInPixels then
-                    self:scanLine(y)
-                else
-                    self:stopScanning()
-                end
-            end
+            self:scanUntilUnitOfWorkIsDone()
             self.y = math.floor(self.nextY)
         end
     end,
 
+    scanUntilUnitOfWorkIsDone = function(self)
+        for y = self.y, math.floor(self.nextY - 1) do
+            if y < self.heightInPixels then
+                self:scanLine(y)
+            else
+                self:stopScanning()
+            end
+        end
+    end,
+    
     scanLine = function(self, y)
         for x = 0, self.widthInPixels - 1 do
             self:findMatchAt(x, y)
