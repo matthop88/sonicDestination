@@ -62,7 +62,7 @@ local scanner = {
             if self.y < self.heightInPixels then
                 for x = 0, self.widthInPixels - 1 do
                     local r, g, b = self.imageViewer:getImagePixelAt(x, self.y)
-                    if self:colorsMatch(r, g, b, MARGIN_BACKGROUND_COLOR) then
+                    if self:colorsMatch({ r, g, b }, MARGIN_BACKGROUND_COLOR) then
                         print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. self.y)
                     end
                 end
@@ -74,8 +74,8 @@ local scanner = {
         end
     end,
 
-    colorsMatch = function(self, r, g, b, color)
-        return r == color[1] and g == color[2] and b == color[3]
+    colorsMatch = function(self, c1, c2)
+        return c1[1] == c2[1] and c1[2] == c2[2] and c1[3] == c2[3]
     end,
 }
 
