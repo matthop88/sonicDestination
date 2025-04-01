@@ -79,9 +79,9 @@ local scanner = {
     end,
 
     colorsMatch = function(self, c1, c2)
-        return c1.r == c2.r 
-           and c1.g == c2.g 
-           and c1.b == c2.b
+        return math.abs(c1.r - c2.r) < 0.005
+           and math.abs(c1.g - c2.g) < 0.005 
+           and math.abs(c1.b - c2.b) < 0.005
     end,
 }
 
