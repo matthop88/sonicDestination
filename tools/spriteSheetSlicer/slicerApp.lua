@@ -40,25 +40,37 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local scanY = 0
-
 local scanner = {
-    scan = function(self, y)
+    y              = 0,
+    imageViewer    = nil,
+    widthInPixels  = nil,
+    heightInPixels = nil,
+    running        = false,
+
+    start = function(self)
+        self.imageViewer = getImageViewer()
+        self.widthInPixels, self.heightInPixels = self.imageViewer:getImageSize()
+        self.running = true
+    end,
+    
+    update = function(self, dt)
         -- Scan all pixels in image pixel row in a systematic way
         -- Print out the coordinates of every pixel
         -- that matches MARGIN_BACKGROUND_COLOR
-    
-        local imageViewer                   = getImageViewer()
-        local widthInPixels, heightInPixels = imageViewer:getImageSize()
         
-        if y < heightInPixels then
-            for x = 0, widthInPixels - 1 do
-                local r, g, b = imageViewer:getImagePixelAt(x, y)
-                if  r == MARGIN_BACKGROUND_COLOR[1]
-                and g == MARGIN_BACKGROUND_COLOR[2]
-                and b == MARGIN_BACKGROUND_COLOR[3] then
-                    print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
+        if self.running then
+            if self.y < self.heightInPixels then
+                for x = 0, self.widthInPixels - 1 do
+                    local r, g, b = self.imageViewer:getImagePixelAt(x, self.y)
+                    if  r == MARGIN_BACKGROUND_COLOR[1]
+                    and g == MARGIN_BACKGROUND_COLOR[2]
+                    and b == MARGIN_BACKGROUND_COLOR[3] then
+                        print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. self.y)
+                    end
                 end
+                self.y = self.y + 1
+            else
+                self.running = false
             end
         end
     end
@@ -84,8 +96,7 @@ function love.draw()
 end
 
 function love.update(dt)
-    scanner:scan(scanY)
-    scanY = scanY + 1
+    scanner:update(dt)
 end
 
 -- ...
@@ -110,3 +121,9 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",   { imageViewer = getImageViewer() })
     :add("scrolling", { imageViewer = getImageViewer() })
+
+--------------------------------------------------------------
+--             Static code - is executed last               --
+--------------------------------------------------------------
+
+scanner:start()
