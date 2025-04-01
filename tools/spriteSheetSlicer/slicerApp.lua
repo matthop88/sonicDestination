@@ -94,3 +94,9 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",   { imageViewer = getImageViewer() })
     :add("scrolling", { imageViewer = getImageViewer() })
+
+--------------------------------------------------------------
+--             Static code - is executed last               --
+--------------------------------------------------------------
+
+scan()
