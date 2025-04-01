@@ -24,11 +24,6 @@
 
        Border information is captured in a data structure.
 
-                          Prerequisites
-                          -------------
-       [X] Identify Margin Background color
-       [X] Identify Sprite Background color
-
 --]]
 
 --------------------------------------------------------------
