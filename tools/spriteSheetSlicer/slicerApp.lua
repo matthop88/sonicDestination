@@ -61,9 +61,8 @@ local scanner = {
         -- that matches MARGIN_BACKGROUND_COLOR
         
         if self.running then
-            self.nextY = self.y + (self.linesPerSecond * dt)
             self:scanUntilUnitOfWorkIsDone()
-            self:setupNextUnitOfWork()
+            self:setupNextUnitOfWork(dt)
         end
     end,
 
@@ -97,8 +96,10 @@ local scanner = {
            and math.abs(c1.b - c2.b) < 0.005
     end,
 
-    setupNextUnitOfWork = function(self)
-        self.y = math.floor(self.nextY)
+    setupNextUnitOfWork = function(self, dt)
+        self.y     = math.floor(self.nextY)
+        self.nextY = self.y + (self.linesPerSecond * dt)
+        
         if self.y >= self.heightInPixels then
             self:stopScanning()
         end
