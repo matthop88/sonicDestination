@@ -141,7 +141,7 @@ function love.draw()
 end
 
 function love.update(dt)
-    scanner:update(dt)
+    slicer:update(dt)
 end
 
 -- ...
