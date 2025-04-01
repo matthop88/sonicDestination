@@ -70,7 +70,6 @@ local scanner = {
                 self.y = math.floor(self.nextY)
                 else
                     self:stopScanning()
-                    break
                 end
             end
         end
