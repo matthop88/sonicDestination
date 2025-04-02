@@ -122,6 +122,6 @@ return {
     stop = function(self)
         self.running = false
         self:callbackWhenComplete()
-        print("Matches Found: " .. #self.spriteRects)
+        print("Matches Found: " .. #self.spriteRects:getWalkableList())
     end,
 }
