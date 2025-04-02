@@ -87,7 +87,8 @@ return {
         
         for _, rect in self.spriteRects:elements() do
             local x, y = self.imageViewer:imageToScreenCoordinates(rect.x, rect.y)
-            love.graphics.rectangle("line", x, y, rect.w, rect.h)
+            local w, h = rect.w * self.imageViewer:getScale(), rect.h * self.imageViewer:getScale()
+            love.graphics.rectangle("line", x, y, w, h)
         end
     end,
     
