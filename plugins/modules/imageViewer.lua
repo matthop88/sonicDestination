@@ -21,7 +21,7 @@ return {
         self.scale = self.scale + (delta * self.scale)
     end,
 
-    screenToImageCoordinates = function(self, sX, sY)
+    screenToImageCoordinates = function(self, screenX, screenY)
         local imageX = math.min(self:getImageWidth()  - 1, (screenX / self.scale) - self.x)
         local imageY = math.min(self:getImageHeight() - 1, (screenY / self.scale) - self.y)
 
