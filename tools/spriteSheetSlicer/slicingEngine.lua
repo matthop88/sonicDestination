@@ -55,13 +55,13 @@ return {
     processPixelAt = function(self, x, y)
         if x == 0 then self.prevColor = nil end
 
-        self:findLeftEdge(x, y)
+        local pixelColor = self.imageViewer:getPixelColorAt(x, y)
+        self:findLeftEdge(pixelColor, x, y)
         
-        self.prevColor = thisColor
+        self.prevColor = pixelColor
     end,
 
-    findLeftEdge = function(self, x, y)
-        local pixelColor = self.imageViewer:getPixelColorAt(x, y)
+    findLeftEdge = function(self, pixelColor, x, y)
         if self:isLeftEdge(pixelColor) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
             self.matchesFound = self.matchesFound + 1
