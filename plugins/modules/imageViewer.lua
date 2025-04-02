@@ -22,8 +22,8 @@ return {
     end,
 
     screenToImageCoordinates = function(self, sX, sY)
-        local imageX = math.min(self:getImageWidth()  - 1, (sX / self.scale) - self.x)
-        local imageY = math.min(self:getImageHeight() - 1, (sY / self.scale) - self.y)
+        local imageX = (sX / self.scale) - self.x
+        local imageY = (sY / self.scale) - self.y
 
         return imageX, imageY
     end,
