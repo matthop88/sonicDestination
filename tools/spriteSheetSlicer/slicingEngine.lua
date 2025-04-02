@@ -42,12 +42,16 @@ return {
         
         addLeftEdge = function(self, x, y)
             local rect = { x = x, y = y, w = 50, h = 1 }
-            local adjacentRect = self.rectsGroupedByLeftX:getRectAdjacentTo(rect)
+            local adjacentRect = self:getRectAdjacentTo(rect)
             if adjacentRect ~= nil then
                 adjacentRect.h = adjacentRect.h + 1
             else
                 self:addRect(rect)
             end
+        end,
+
+        getRectAdjacentTo = function(self, rect)
+            return self.rectsGroupedByLeftX:getRectAdjacentTo(rect)
         end,
 
         addRect = function(self, rect)
