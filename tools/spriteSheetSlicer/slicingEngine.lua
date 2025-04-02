@@ -25,7 +25,7 @@ return {
         getWalkableList = function(self)
             local walkableList = { }
 
-            for leftX, rects in ipairs(self) do
+            for leftX, rects in pairs(self) do
                 if type(rects) ~= "function" then
                     for _, rect in ipairs(rects) do
                         table.insert(walkableList, rect)
