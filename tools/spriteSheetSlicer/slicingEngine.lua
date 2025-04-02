@@ -25,6 +25,10 @@ return {
             return self[x]
         end,
 
+        elements = function(self)
+            return ipairs(self:getWalkableList())
+        end,
+        
         getWalkableList = function(self)
             return self.walkableList
         end,
@@ -45,7 +49,7 @@ return {
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(1)
         
-        for _, rect in ipairs(self.spriteRects:getWalkableList()) do
+        for _, rect in self.spriteRects:elements() do
             local x, y = self.imageViewer:imageToScreenCoordinates(rect.x, rect.y)
             love.graphics.rectangle("line", x, y, rect.w, rect.h)
         end
