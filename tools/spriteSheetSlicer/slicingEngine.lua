@@ -62,8 +62,7 @@ return {
 
         local thisColor = self.imageViewer:getPixelColorAt(x, y)
        
-        if self:colorsMatch(self.prevColor, self.marginBGColor)
-        and self:colorsMatch(thisColor,     self.spriteBGColor) then
+        if self:isLeftEdge(thisColor) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
             self.matchesFound = self.matchesFound + 1
         end
@@ -71,6 +70,11 @@ return {
         self.prevColor = thisColor
     end,
 
+    isLeftEdge  = function(self, thisColor)
+        return  self:colorsMatch(self.prevColor, self.marginBGColor)
+            and self:colorsMatch(thisColor,      self.spriteBGColor)
+    end,
+    
     colorsMatch = function(self, c1, c2)
         return c1 ~= nil 
            and c2 ~= nil
