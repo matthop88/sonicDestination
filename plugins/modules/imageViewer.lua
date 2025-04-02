@@ -22,15 +22,15 @@ return {
     end,
 
     screenToImageCoordinates = function(self, sX, sY)
-        local imageX + self.x = (sX / self.scale)
-        local imageY + self.y = (sY / self.scale)
+        local imageX = math.min(self:getImageWidth()  - 1, (screenX / self.scale) - self.x)
+        local imageY = math.min(self:getImageHeight() - 1, (screenY / self.scale) - self.y)
 
         return imageX, imageY
     end,
 
     imageToScreenCoordinates = function(self, imageX, imageY)
-        local imageX = math.min(self:getImageWidth()  - 1, (screenX / self.scale) - self.x)
-        local imageY = math.min(self:getImageHeight() - 1, (screenY / self.scale) - self.y)
+        local imageX = (screenX / self.scale) - self.x
+        local imageY = (screenY / self.scale) - self.y
 
         return screenX, screenY
     end,
