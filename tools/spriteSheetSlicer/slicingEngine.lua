@@ -20,17 +20,15 @@ return {
         
         rectsGroupedByLeftX = {
             add = function(self, rect)
-                local adjacentRect = self:getRectAdjacentTo(rect)
-                if adjacentRect ~= nil then
-                    adjacentRect.h = adjacentRect.h + 1
-                    return nil
-                else
-                    local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
-                    table.insert(rectsWithLeftX, rect)
-                    return rect
-                end
+                local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+                table.insert(rectsWithLeftX, rect)
             end,
 
+            getRectsWithLeftX = function(self, x)
+                self[x] = self[x] or { }
+                return self[x]
+            end,
+            
             getRectAdjacentTo = function(self, rect)
                 local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
 
@@ -40,17 +38,15 @@ return {
                     end
                 end
             end,
-            
-            getRectsWithLeftX = function(self, x)
-                self[x] = self[x] or { }
-                return self[x]
-            end,
         },
         
         add = function(self, rect)
-            local lastRectAdded = self.rectsGroupedByLeftX:add(rect)
-            if lastRectAdded ~= nil then
-                self.rects:add(lastRectAdded)
+            local adjacentRect = self.rectsGroupedByLeftX:getRectAdjacentTo(rect)
+            if adjacentRect ~= nil then
+                adjacentRect.h = adjacentRect.h + 1
+            else
+                self.rects:add(rect)
+                self.rectsGroupedByLeftX:add(rect)
             end
         end,
 
