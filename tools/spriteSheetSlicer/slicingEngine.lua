@@ -1,8 +1,8 @@
 return {
     imageViewer          = nil,
-    marginBGColor        = nil,   spriteBGColor        = nil,
-    callbackWhenComplete = function() end,
     widthInPixels        = nil,   heightInPixels       = nil,
+    marginBGColor        = nil,   spriteBGColor        = nil,
+    callbackWhenComplete = nil,
     running              = false,
     spriteRects          = require "tools/spriteSheetSlicer/spriteRects",
     y                    = 0,
@@ -11,12 +11,14 @@ return {
     linesPerSecond       = 500,
     
     start = function(self, params)
-        self.imageViewer          = params.imageViewer
-        self.marginBGColor        = params.marginBGColor
-        self.spriteBGColor        = params.spriteBGColor
-        self.callbackWhenComplete = params.callbackWhenComplete or self.callbackWhenComplete
+        self.imageViewer           = params.imageViewer
+        self.widthInPixels, 
+        self.heightInPixels        = self.imageViewer:getImageSize()
+        
+        self.marginBGColor         = params.marginBGColor
+        self.spriteBGColor         = params.spriteBGColor
+        self.callbackWhenComplete  = params.callbackWhenComplete or function() end
 
-        self.widthInPixels, self.heightInPixels = self.imageViewer:getImageSize()
         self.running = true
     end,
 
