@@ -86,9 +86,7 @@ return {
         love.graphics.setLineWidth(1)
         
         for _, rect in self.spriteRects:elements() do
-            local x, y = self.imageViewer:imageToScreenCoordinates(rect.x, rect.y)
-            local w, h = rect.w * self.imageViewer:getScale(), rect.h * self.imageViewer:getScale()
-            love.graphics.rectangle("line", x, y, w, h)
+            love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
         end
     end,
     
