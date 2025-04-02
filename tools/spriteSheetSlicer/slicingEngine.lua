@@ -12,12 +12,20 @@ return {
     callbackWhenComplete = function() end,
 
     spriteRects          = {
-        walkableList = { },
+        rectList = { },
         
         add = function(self, rect)
+            self:addWithLeftXGrouping(rect)
+            self:addToRectList(rect)
+        end,
+
+        addWithLeftXGrouping = function(self, rect)
             local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
             table.insert(rectsWithLeftX, rect)
-            table.insert(self.walkableList, rect)
+        end,
+
+        addToRectList = function(self, rect)
+            table.insert(self.rectList, rect)
         end,
 
         getRectsWithLeftX = function(self, x)
@@ -26,11 +34,11 @@ return {
         end,
 
         elements = function(self)
-            return ipairs(self.walkableList)
+            return ipairs(self.rectList)
         end,
         
         count = function(self)
-            return #self.walkableList
+            return #self.rectList
         end,
         
     },
