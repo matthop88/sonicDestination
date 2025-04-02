@@ -131,7 +131,6 @@ return {
 
     findLeftEdge = function(self, pixelColor, x, y)
         if self:isLeftEdge(pixelColor) then
-            print("Found Left Edge at x = " .. x .. ", y = " .. y)
             self.spriteRects:addLeftEdge(x, y)
         end
     end,
@@ -161,6 +160,5 @@ return {
     stop = function(self)
         self.running = false
         self:callbackWhenComplete()
-        print("Matches Found: " .. self.spriteRects:count())
     end,
 }
