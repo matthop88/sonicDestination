@@ -34,9 +34,11 @@ return {
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(1)
         
-        for _, spriteRect in ipairs(self.spriteRects) do
-            local x, y = self.imageViewer:imageToScreenCoordinates(spriteRect.x, spriteRect.y)
-            love.graphics.rectangle("line", x, y, spriteRect.w, spriteRect.h)
+        for leftX, rectsWithMatchingLeftX in pairs(self.spriteRects) do
+            for _, rect in ipairs(rectsWithMatchingLeftX) do
+                local x, y = self.imageViewer:imageToScreenCoordinates(rect.x, rect.y)
+                love.graphics.rectangle("line", x, y, rect.w, rect.h)
+            end
         end
     end,
     
