@@ -13,7 +13,10 @@ return {
 
     spriteRects          = {
         add = function(self, rect)
-            table.insert(self, rect)
+            if self[rect.x] == nil then
+                self[rect.x] = { }
+            end
+            table.insert(self[rect.x], rect)
         end,
     },
 
