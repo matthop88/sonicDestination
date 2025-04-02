@@ -13,10 +13,15 @@ return {
 
     spriteRects          = {
         add = function(self, rect)
-            if self[rect.x] == nil then
-                self[rect.x] = { }
+            local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+            table.insert(rectsWithLeftX, rect)
+        end,
+
+        getRectsWithLeftX = function(self, x)
+            if self[x] == nil then
+                self[x] = { }
             end
-            table.insert(self[rect.x], rect)
+            return self[x]
         end,
     },
 
