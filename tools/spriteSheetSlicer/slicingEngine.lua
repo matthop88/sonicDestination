@@ -84,7 +84,9 @@ return {
     end,
 
     colorsMatch = function(self, c1, c2)
-        return math.abs(c1.r - c2.r) < 0.005
+        return c1 ~= nil 
+           and c2 ~= nil
+           and math.abs(c1.r - c2.r) < 0.005
            and math.abs(c1.g - c2.g) < 0.005 
            and math.abs(c1.b - c2.b) < 0.005
     end,
