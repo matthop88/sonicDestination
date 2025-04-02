@@ -60,7 +60,7 @@ return {
             self.prevColor = nil
         end
 
-        local thisColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, y))
+        local thisColor = self.imageViewer:getPixelColorAt(x, y)
        
         if self:colorsMatch(self.prevColor, self.marginBGColor)
         and self:colorsMatch(thisColor,     self.spriteBGColor) then
@@ -69,10 +69,6 @@ return {
         end
 
         self.prevColor = thisColor
-    end,
-
-    rgbToColor  = function(self, r, g, b)
-        return { r = r, g = g, b = b }
     end,
 
     colorsMatch = function(self, c1, c2)
