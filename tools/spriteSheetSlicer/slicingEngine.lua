@@ -48,7 +48,7 @@ return {
     
     sliceLine = function(self, y)
         for x = 0, self.widthInPixels - 1 do
-            self:findMatchAt(x, y)
+            self:processPixelAt(x, y)
         end
     end,
 
