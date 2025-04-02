@@ -1,15 +1,15 @@
 return {
+    imageViewer          = nil,
+    marginBGColor        = nil,   spriteBGColor        = nil,
+    callbackWhenComplete = function() end,
+    widthInPixels        = nil,   heightInPixels       = nil,
+    running              = false,
+    spriteRects          = require "tools/spriteSheetSlicer/spriteRects",
     y                    = 0,
     nextY                = 0,
-    marginBGColor        = nil,   spriteBGColor        = nil,
-    imageViewer          = nil,
-    widthInPixels        = nil,   heightInPixels       = nil,
-    linesPerSecond       = 500,
-    running              = false,
     prevColor            = nil,
-    callbackWhenComplete = function() end,
-    spriteRects          = require "tools/spriteSheetSlicer/spriteRects",
-
+    linesPerSecond       = 500,
+    
     start = function(self, params)
         self.imageViewer          = params.imageViewer
         self.marginBGColor        = params.marginBGColor
