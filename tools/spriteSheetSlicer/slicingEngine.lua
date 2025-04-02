@@ -9,6 +9,7 @@ return {
     linesPerSecond       = 500,
     running              = false,
     prevColor            = nil,
+    walkableList         = nil,
     callbackWhenComplete = function() end,
 
     spriteRects          = {
@@ -23,17 +24,24 @@ return {
         end,
 
         getWalkableList = function(self)
-            local walkableList = { }
-
-            for leftX, rects in pairs(self) do
-                if type(rects) ~= "function" then
-                    for _, rect in ipairs(rects) do
-                        table.insert(walkableList, rect)
-                    end
-                end
+            if self.walkableList == nil then
+                self:createWalkableList()
             end
 
             return walkableList
+        end,
+
+        createWalkableList = function(self)
+            print("Creating walkable list...")
+            self.walkableList = { }
+            
+            for leftX, rects in pairs(self) do
+                if type(rects) ~= "function" then
+                    for _, rect in ipairs(rects) do
+                        table.insert(self.walkableList, rect)
+                    end
+                end
+            end
         end,
         
     },
