@@ -60,9 +60,7 @@ return {
             self.prevColor = nil
         end
 
-        local thisColor = self.imageViewer:getPixelColorAt(x, y)
-       
-        if self:isLeftEdge(thisColor) then
+        if self:isLeftEdge(self.imageViewer:getPixelColorAt(x, y)) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
             self.matchesFound = self.matchesFound + 1
         end
