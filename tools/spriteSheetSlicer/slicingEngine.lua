@@ -11,7 +11,11 @@ return {
     prevColor            = nil,
     callbackWhenComplete = function() end,
 
-    spriteRects          = {},
+    spriteRects          = {
+        add = function(self, rect)
+            table.insert(self, rect)
+        end,
+    },
 
     start = function(self, params)
         self.imageViewer          = params.imageViewer
@@ -75,7 +79,7 @@ return {
     findLeftEdge = function(self, pixelColor, x, y)
         if self:isLeftEdge(pixelColor) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
-            table.insert(self.spriteRects, { x = x, y = y, w = 50, h = 1 })
+            self.spriteRects:add({ x = x, y = y, w = 50, h = 1 })
         end
     end,
 
