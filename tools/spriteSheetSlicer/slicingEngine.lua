@@ -25,11 +25,12 @@ return {
                 for _, preExistingRect in ipairs(rectsWithLeftX) do
                     if preExistingRect.y + preExistingRect.h == rect.y then
                         preExistingRect.h = preExistingRect.h + 1
-                        return
+                        return nil
                     end
                 end
                 
                 table.insert(rectsWithLeftX, rect)
+                return rect
             end,
 
             getRectsWithLeftX = function(self, x)
@@ -39,8 +40,10 @@ return {
         },
         
         add = function(self, rect)
-            self.rects:add(rect)
-            self.rectsGroupedByLeftX:add(rect)
+            local lastRectAdded = self.rectsGroupedByLeftX:add(rect)
+            if lastRectAdded ~= nil then
+                self.rects:add(lastRectAdded)
+            end
         end,
 
         elements = function(self)
