@@ -54,10 +54,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 -- Function Name: love.draw()
--- Called By:	  LOVE2D application, every single frame
+-- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    -- All drawing code goes here
+    slicer:draw()
 end
 
 function love.update(dt)
