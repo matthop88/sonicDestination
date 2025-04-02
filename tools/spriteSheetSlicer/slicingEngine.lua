@@ -12,6 +12,8 @@ return {
     prevColor            = nil,
     callbackWhenComplete = function() end,
 
+    spriteRects          = {},
+
     start = function(self, params)
         self.imageViewer          = params.imageViewer
         self.marginBGColor        = params.marginBGColor
@@ -64,6 +66,7 @@ return {
     findLeftEdge = function(self, pixelColor, x, y)
         if self:isLeftEdge(pixelColor) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
+            table.insert(self.spriteRects, { x = x, y = y, w = 50, h = 1 })
             self.matchesFound = self.matchesFound + 1
         end
     end,
