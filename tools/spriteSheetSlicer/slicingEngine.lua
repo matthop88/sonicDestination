@@ -83,7 +83,7 @@ return {
 
     draw = function(self)
         love.graphics.setColor(1, 1, 1)
-        love.graphics.setLineWidth(1)
+        love.graphics.setLineWidth(1 * self.imageViewer:getScale())
         
         for _, rect in self.spriteRects:elements() do
             love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
