@@ -9,6 +9,7 @@ return {
     linesPerSecond       = 500,
     running              = false,
     matchesFound         = 0,
+    prevColor            = nil,
     callbackWhenComplete = function() end,
 
     start = function(self, params)
@@ -49,6 +50,25 @@ return {
         for x = 0, self.widthInPixels - 1 do
             self:findMatchAt(x, y)
         end
+    end,
+
+    processPixelAt = function(self, x, y)
+        -- Left edge: Transition from Margin Background color
+        --                         to Sprite Background color.
+    
+        if x == 0 then
+            self.prevColor = nil
+        end
+
+        local thisColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, y))
+       
+        if self:colorsMatch(self.prevColor, self.marginBGColor)
+        and self:colorsMatch(thisColor,     self.spriteBGColor) then
+            print("Found Left Edge at x = " .. x .. ", y = " .. y)
+            self.matchesFound = self.matchesFound + 1
+        end
+
+        self.prevColor = thisColor
     end,
 
     findMatchAt = function(self, x, y)
