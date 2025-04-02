@@ -21,6 +21,14 @@ return {
         rectsGroupedByLeftX = {
             add = function(self, rect)
                 local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+
+                for _, preExistingRect in ipairs(rectsWithLeftX) do
+                    if preExistingRect.y + preExistingRect.h == rect.y then
+                        preExistingRect.h = preExistingRect.h + 1
+                        return
+                    end
+                end
+                
                 table.insert(rectsWithLeftX, rect)
             end,
 
