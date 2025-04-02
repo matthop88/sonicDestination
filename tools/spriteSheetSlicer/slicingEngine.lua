@@ -71,14 +71,6 @@ return {
         self.prevColor = thisColor
     end,
 
-    findMatchAt = function(self, x, y)
-        local pixelColor = self:rgbToColor(self.imageViewer:getImagePixelAt(x, y))
-        if self:colorsMatch(pixelColor, self.marginBGColor) then
-            print("Found MARGIN_BACKGROUND_COLOR at x = " .. x .. ", y = " .. y)
-            self.matchesFound = self.matchesFound + 1
-        end
-    end,
-
     rgbToColor  = function(self, r, g, b)
         return { r = r, g = g, b = b }
     end,
