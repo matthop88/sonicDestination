@@ -18,9 +18,7 @@ return {
         end,
 
         getRectsWithLeftX = function(self, x)
-            if self[x] == nil then
-                self[x] = { }
-            end
+            self[x] = self[x] or { }
             return self[x]
         end,
     },
