@@ -26,15 +26,11 @@ return {
         end,
 
         elements = function(self)
-            return ipairs(self:getWalkableList())
+            return ipairs(self.walkableList)
         end,
         
-        getWalkableList = function(self)
-            return self.walkableList
-        end,
-
         count = function(self)
-            return #self:getWalkableList()
+            return #self.walkableList
         end,
         
     },
