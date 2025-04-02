@@ -57,7 +57,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    slicer:draw()
+    -- Do nothing
 end
 
 function love.update(dt)
@@ -78,6 +78,10 @@ function onSlicingCompletion()
     love.window.setTitle("Sprite Sheet Slicer")
 end
 
+function drawSlices()
+    slicer:draw()
+end
+
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
@@ -88,8 +92,9 @@ PLUGINS = require("plugins/engine")
         imagePath      = "resources/images/spriteSheets/sonic1.png",
         accessorFnName = "getImageViewer"
     })
-    :add("zooming",   { imageViewer = getImageViewer() })
-    :add("scrolling", { imageViewer = getImageViewer() })
+    :add("zooming",      { imageViewer = getImageViewer() })
+    :add("scrolling",    { imageViewer = getImageViewer() })
+    :add("drawingLayer", { drawingFn   = drawSlices       }) 
 
 --------------------------------------------------------------
 --             Static code - is executed last               --
