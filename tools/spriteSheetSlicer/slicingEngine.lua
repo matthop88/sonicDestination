@@ -1,75 +1,14 @@
 return {
     y                    = 0,
     nextY                = 0,
-    marginBGColor        = nil,
-    spriteBGColor        = nil,
+    marginBGColor        = nil,   spriteBGColor        = nil,
     imageViewer          = nil,
-    widthInPixels        = nil,
-    heightInPixels       = nil,
+    widthInPixels        = nil,   heightInPixels       = nil,
     linesPerSecond       = 500,
     running              = false,
     prevColor            = nil,
     callbackWhenComplete = function() end,
-
-    spriteRects          = {
-        rects               = { 
-            add = function(self, rect)
-                table.insert(self, rect)
-            end,
-        },
-        
-        rectsGroupedByLeftX = {
-            add = function(self, rect)
-                local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
-                table.insert(rectsWithLeftX, rect)
-            end,
-
-            getRectsWithLeftX = function(self, x)
-                self[x] = self[x] or { }
-                return self[x]
-            end,
-            
-            getRectAdjacentTo = function(self, rect)
-                local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
-
-                for _, adjacentRect in ipairs(rectsWithLeftX) do
-                    if adjacentRect.y + adjacentRect.h == rect.y then
-                        return adjacentRect
-                    end
-                end
-            end,
-        },
-        
-        addLeftEdge = function(self, x, y)
-            local rect         = { x = x, y = y, w = 50, h = 1 }
-            local adjacentRect = self:getRectAdjacentTo(rect)
-            
-            if adjacentRect == nil then self:addRect(rect)
-            else                        self:appendRectToAdjacentRect(adjacentRect, rect)
-            end
-        end,
-
-        getRectAdjacentTo = function(self, rect)
-            return self.rectsGroupedByLeftX:getRectAdjacentTo(rect)
-        end,
-
-        appendRectToAdjacentRect = function(self, adjacentRect, rect)
-            adjacentRect.h = adjacentRect.h + rect.h
-        end,
-        
-        addRect = function(self, rect)
-            self.rects:add(rect)
-            self.rectsGroupedByLeftX:add(rect)
-        end,
-
-        elements = function(self)
-            return ipairs(self.rects)
-        end,
-        
-        count = function(self)
-            return #self.rects
-        end,
-    },
+    spriteRects          = require "tools/spriteSheetSlicer/spriteRects",
 
     start = function(self, params)
         self.imageViewer          = params.imageViewer
@@ -91,17 +30,14 @@ return {
     end,
     
     update = function(self, dt)
-        if self.running then
-            self:doSlicing(dt)
-        end
+        if self.running then self:doSlicing(dt) end
     end,
 
     doSlicing = function(self, dt)
         self:sliceUntilWorkUnitIsDone()
         self:setupNextWorkUnit(dt)
-        if self:isWorkComplete() then
-            self:stop()
-        end
+        
+        if self:isWorkComplete() then self:stop() end
     end,
     
     sliceUntilWorkUnitIsDone = function(self)
@@ -122,7 +58,7 @@ return {
 
     processPixelAt = function(self, x, y)
         if x == 0 then self.prevColor = nil end
-
+        
         local pixelColor = self.imageViewer:getPixelColorAt(x, y)
         self:findLeftEdge(pixelColor, x, y)
         
