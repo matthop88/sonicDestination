@@ -40,16 +40,17 @@ return {
             end,
         },
         
-        addOrAppend = function(self, rect)
+        addLeftEdge = function(self, x, y)
+            local rect = { x = x, y = y, w = 50, h = 1 }
             local adjacentRect = self.rectsGroupedByLeftX:getRectAdjacentTo(rect)
             if adjacentRect ~= nil then
                 adjacentRect.h = adjacentRect.h + 1
             else
-                self:add(rect)
+                self:addRect(rect)
             end
         end,
 
-        add = function(self, rect)
+        addRect = function(self, rect)
             self.rects:add(rect)
             self.rectsGroupedByLeftX:add(rect)
         end,
@@ -125,7 +126,7 @@ return {
     findLeftEdge = function(self, pixelColor, x, y)
         if self:isLeftEdge(pixelColor) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
-            self.spriteRects:addOrAppend({ x = x, y = y, w = 50, h = 1 })
+            self.spriteRects:addLeftEdge(x, y)
         end
     end,
 
