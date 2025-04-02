@@ -21,6 +21,21 @@ return {
             self[x] = self[x] or { }
             return self[x]
         end,
+
+        getWalkableList = function(self)
+            local walkableList = { }
+
+            for leftX, rects in ipairs(self) do
+                if type(rects) ~= "function" then
+                    for _, rect in ipairs(rects) do
+                        table.insert(walkableList, rect)
+                    end
+                end
+            end
+
+            return walkableList
+        end,
+        
     },
 
     start = function(self, params)
@@ -37,13 +52,9 @@ return {
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(1)
         
-        for leftX, rects in pairs(self.spriteRects) do
-            if type(rects) ~= "function" then
-                for _, rect in ipairs(rects) do
-                    local x, y = self.imageViewer:imageToScreenCoordinates(rect.x, rect.y)
-                    love.graphics.rectangle("line", x, y, rect.w, rect.h)
-                end
-            end
+        for _, rect in ipairs(self.spriteRects:getWalkableList()) do
+            local x, y = self.imageViewer:imageToScreenCoordinates(rect.x, rect.y)
+            love.graphics.rectangle("line", x, y, rect.w, rect.h)
         end
     end,
     
