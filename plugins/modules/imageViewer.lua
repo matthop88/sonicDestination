@@ -49,6 +49,11 @@ return {
         return self.imageData:getPixel(math.floor(x), math.floor(y))
     end,
 
+    getPixelColorAt = function(self, x, y)
+        local r, g, b = self:getImagePixelAt(x, y)
+        return { r = r, g = g, b = b }
+    end,
+
     draw = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.image, self.x * self.scale, self.y * self.scale, 0, self.scale, self.scale)
