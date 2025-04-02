@@ -41,12 +41,11 @@ return {
         },
         
         addLeftEdge = function(self, x, y)
-            local rect = { x = x, y = y, w = 50, h = 1 }
+            local rect         = { x = x, y = y, w = 50, h = 1 }
             local adjacentRect = self:getRectAdjacentTo(rect)
-            if adjacentRect ~= nil then
-                self:appendRectToAdjacentRect(adjacentRect, rect)
-            else
-                self:addRect(rect)
+            
+            if adjacentRect == nil then self:addRect(rect)
+            else                        self:appendRectToAdjacentRect(adjacentRect, rect)
             end
         end,
 
