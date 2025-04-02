@@ -61,6 +61,10 @@ return {
         return { r = r, g = g, b = b }
     end,
 
+    getScale = function(self)
+        return self.scale
+    end,
+
     draw = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.image, self.x * self.scale, self.y * self.scale, 0, self.scale, self.scale)
