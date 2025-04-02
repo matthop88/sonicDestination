@@ -20,19 +20,27 @@ return {
         
         rectsGroupedByLeftX = {
             add = function(self, rect)
-                local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
-
-                for _, preExistingRect in ipairs(rectsWithLeftX) do
-                    if preExistingRect.y + preExistingRect.h == rect.y then
-                        preExistingRect.h = preExistingRect.h + 1
-                        return nil
-                    end
+                local adjacentRect = self:getRectAdjacentTo(rect)
+                if adjacentRect ~= nil then
+                    adjacentRect.h = adjacentRect.h + 1
+                    return nil
+                else
+                    local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+                    table.insert(rectsWithLeftX, rect)
+                    return rect
                 end
-                
-                table.insert(rectsWithLeftX, rect)
-                return rect
             end,
 
+            getRectAdjacentTo = function(self, rect)
+                local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+
+                for _, adjacentRect in ipairs(rectsWithLeftX) do
+                    if adjacentRect.y + adjacentR.h == rect.y then
+                        return adjacentRect
+                    end
+                end
+            end,
+            
             getRectsWithLeftX = function(self, x)
                 self[x] = self[x] or { }
                 return self[x]
