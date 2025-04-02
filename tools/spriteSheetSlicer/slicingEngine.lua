@@ -8,7 +8,6 @@ return {
     heightInPixels       = nil,
     linesPerSecond       = 500,
     running              = false,
-    matchesFound         = 0,
     prevColor            = nil,
     callbackWhenComplete = function() end,
 
@@ -67,7 +66,6 @@ return {
         if self:isLeftEdge(pixelColor) then
             print("Found Left Edge at x = " .. x .. ", y = " .. y)
             table.insert(self.spriteRects, { x = x, y = y, w = 50, h = 1 })
-            self.matchesFound = self.matchesFound + 1
         end
     end,
 
@@ -96,6 +94,6 @@ return {
     stop = function(self)
         self.running = false
         self:callbackWhenComplete()
-        print("Matches Found: " .. self.matchesFound)
+        print("Matches Found: " .. #self.spriteRects)
     end,
 }
