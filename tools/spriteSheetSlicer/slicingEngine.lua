@@ -22,6 +22,15 @@ return {
         self.widthInPixels, self.heightInPixels = self.imageViewer:getImageSize()
         self.running = true
     end,
+
+    draw = function(self)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(1)
+        
+        for _, spriteRect in ipairs(self.spriteRects) do
+            love.graphics.rectangle("line", spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h)
+        end
+    end,
     
     update = function(self, dt)
         if self.running then
