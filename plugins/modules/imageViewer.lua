@@ -35,6 +35,13 @@ return {
         return screenX, screenY
     end,
 
+    imageToScreenRect = function(self, imageX, imageY, imageW, imageH)
+        local screenX, screenY = self:imageToScreenCoordinates(imageX, imageY)
+        local screenW, screenH = imageW * self.scale, imageH * self.scale
+
+        return screenX, screenY, screenW, screenH
+    end,
+
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         self.x = (screenX / self.scale) - imageX
         self.y = (screenY / self.scale) - imageY
