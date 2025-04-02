@@ -9,10 +9,11 @@ return {
     linesPerSecond       = 500,
     running              = false,
     prevColor            = nil,
-    walkableList         = { },
     callbackWhenComplete = function() end,
 
     spriteRects          = {
+        walkableList = { },
+        
         add = function(self, rect)
             local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
             table.insert(rectsWithLeftX, rect)
