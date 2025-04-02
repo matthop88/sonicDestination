@@ -12,7 +12,12 @@ return {
     callbackWhenComplete = function() end,
 
     spriteRects          = {
-        rects               = { },
+        rects               = { 
+            add = function(self, rect)
+                table.insert(self, rect)
+            end,
+        },
+        
         rectsGroupedByLeftX = {
             add = function(self, rect)
                 local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
@@ -23,19 +28,10 @@ return {
                 self[x] = self[x] or { }
                 return self[x]
             end,
-        
         },
         
         add = function(self, rect)
-            self:addToRects(rect)
-            self:addToGroupedRects(rect)
-        end,
-
-        addToRects = function(self, rect)
-            table.insert(self.rects, rect)
-        end,
-
-        addToGroupedRects = function(self, rect)
+            self.rects:add(rect)
             self.rectsGroupedByLeftX:add(rect)
         end,
 
@@ -46,7 +42,6 @@ return {
         count = function(self)
             return #self.rects
         end,
-        
     },
 
     start = function(self, params)
