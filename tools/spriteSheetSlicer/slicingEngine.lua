@@ -53,9 +53,6 @@ return {
     end,
 
     processPixelAt = function(self, x, y)
-        -- Left edge: Transition from Margin Background color
-        --                         to Sprite Background color.
-    
         if x == 0 then
             self.prevColor = nil
         end
