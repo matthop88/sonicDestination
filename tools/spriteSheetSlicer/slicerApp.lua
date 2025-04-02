@@ -47,24 +47,14 @@ local slicer = require "tools/spriteSheetSlicer/slicingEngine"
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
--- ...
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    -- Do nothing
-end
-
 function love.update(dt)
     slicer:update(dt)
 end
-
--- ...
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
