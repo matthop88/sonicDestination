@@ -28,7 +28,7 @@ return {
                 self:createWalkableList()
             end
 
-            return walkableList
+            return self.walkableList
         end,
 
         createWalkableList = function(self)
