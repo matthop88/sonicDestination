@@ -35,7 +35,7 @@ return {
                 local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
 
                 for _, adjacentRect in ipairs(rectsWithLeftX) do
-                    if adjacentRect.y + adjacentR.h == rect.y then
+                    if adjacentRect.y + adjacentRect.h == rect.y then
                         return adjacentRect
                     end
                 end
