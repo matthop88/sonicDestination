@@ -30,6 +30,52 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
+--[[
+               eeeeeeeeeeee                                     
+       ZeeeeeeeeZeeeee2222eeeeeeZ                               
+   ÕëëëëëëëëZeeeeeeeeZZZZZ222222eeeeZ      ÕëëÕ                 
+    ÕëëëëëëëëëëëëëZeeZëëooZZ2nn22222eeeeZÕëëëëÕ                 
+        ÕëëëëëëëëëëZZZee¦¦nnee2nnnn2222eeZëëëëÕ                 
+             ÕëëÕëëëëë2n¦››¦ee22oonnnnn2eeëëëëÕ                 
+              ZZëëZZëë2n¦¦¦¦¦¿22o¿¿¿¿onnn2eeëëë                 
+          ZeeZeeZZeZëë2nnnnnnnoooooooo¿onnn2eee                 
+         ZeeeeZZëëZeeeee2nnnoonnnnnnnnoonnn2eee                 
+     eeeeeeeeZëëëëZeee2nnn2nnnnn    ¿onnoonnn2eee               
+   eeeeeeeeeeZëëëëZeee2nnnnn2no¿      ¿onnnnnno¿o               
+ eeeeZëëëëëëZZëëëëZeeeee2nnnnno¿      ÕNZe2nn2NÆÆ               
+ëëëëëëëëëëëëëëëëëëëëZeee2nn2nno¿      ÕÆÆNZe22NÆÆ               
+ëëëëëëëëëÕëëëëëëëëëëZeeeeeee2nno      ÕÆÆNnnÕNÆÆÆ               
+          ÕëëÕëëëëëëëëZeeeeeeeeeo¿    ÕÆÆÕ››ÕNe22               
+            eZZëëëëëëëëZZe22¿¿¿¿22¦   onnn¦¦eZZZno              
+        eeeZeeeZëëëëëëëëeeno    on¦¦      ¿o2eNNe22             
+      eZeeeZZZZZëëëëëëëë2n¦›››››        ›››¦ÕÆÆÆÆÆÆ             
+     eeeZZZZëëëëëëëëëëëë2n¦¦››››››››››¦¦¦¦¦¦¦                   
+     ZZZëëëëëëëëëëëëëÕÕÕëë2n¦››››››››¦nnn2ëÕÕ                   
+   eeZëëëëëëëëëëëëëëëÕÆÆÕëëë2nnnnnnnn2ëÕÕÕÕ                     
+             ëëëëëëëëëëÕÆÆÆÆÕëëëZZëÕÕÕÕÕÕ                       
+                 Õëëëë¿¦¦¦¦¦¦¦ee2n¦¦¦¦n2ëÕÕ                     
+               ÕëZ¿¦¦¿onnnnn2e2n¦¦››››¦¦n22                     
+             ÕëZo¿ooonZZZZZZZenn¦››››››¦nnn                     
+             ëëZ¦¦n2ZZëëëëëëZennoo¦››¦onZëë                     
+            ëëÕëo¿¦¦oo22oo2eee22nn¿¿¿oeZÕNëZ                    
+           Õëëëëen    ¦¦  ¦¿eZZe222222ëÕNÕZeno                  
+           ëëëëëÕZ› oo     ›ZëZeZZZZZZÕÕZZnoooo                 
+           ÕëëëëëënneenoooonZëZZëÕNNÕÕÆÆëZnnooo                 
+           ëëÕÕ    nnnooooonn2eeeÕëëëÕÆÆÆNëZZ                   
+                   ÆÆNnoonëë2nn  ëëëëëë                         
+                         ëëë2nn  ëëëëëë                         
+                       ëëë222    ÕëëëÕÕ                         
+                       Õëë2nn    ëëëëëë                         
+                   ooo¦¦››     ZZZ2nnnooo                       
+                   oooo¿¿¦›››››ZZZeeeenoooo                     
+                  ÆNe2oooo222n  22ZZZZnoeee                     
+                 ÆÆÆÕë22n2ZZe2› onZZëZ22ëë2ooo                  
+                ÆÆNNÕÕÕëZZ¿¦››onnnZZÕÕÕÕëZ2222ZÕÕÕÕÕ            
+               ÆÆÆÕÕÕÕÕëno¿¿eZZZZZZZZZZZÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕÕ      
+               ÆÆÆÕÕÕÕÕënnZZZZZZZZZZZZZZZZZZZZNNNNÕÕÕÕÕÕÕÕÕ     
+               ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
+--]]
+
 MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
 SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
