@@ -32,6 +32,10 @@ return {
         getWalkableList = function(self)
             return self.walkableList
         end,
+
+        count = function(self)
+            return #self:getWalkableList()
+        end,
         
     },
 
@@ -126,6 +130,6 @@ return {
     stop = function(self)
         self.running = false
         self:callbackWhenComplete()
-        print("Matches Found: " .. #self.spriteRects:getWalkableList())
+        print("Matches Found: " .. self.spriteRects:count())
     end,
 }
