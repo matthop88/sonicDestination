@@ -13,7 +13,18 @@ return {
 
     spriteRects          = {
         rects               = { },
-        rectsGroupedByLeftX = { },
+        rectsGroupedByLeftX = {
+            add = function(self, rect)
+                local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
+                table.insert(rectsWithLeftX, rect)
+            end,
+
+            getRectsWithLeftX = function(self, x)
+                self[x] = self[x] or { }
+                return self[x]
+            end,
+        
+        },
         
         add = function(self, rect)
             self:addToRects(rect)
@@ -25,13 +36,7 @@ return {
         end,
 
         addToGroupedRects = function(self, rect)
-            local rectsWithLeftX = self:getRectsWithLeftX(rect.x)
-            table.insert(rectsWithLeftX, rect)
-        end,
-
-        getRectsWithLeftX = function(self, x)
-            self.rectsGroupedByLeftX[x] = self.rectsGroupedByLeftX[x] or { }
-            return self.rectsGroupedByLeftX[x]
+            self.rectsGroupedByLeftX:add(rect)
         end,
 
         elements = function(self)
