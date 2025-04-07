@@ -99,4 +99,8 @@ return {
         self.running = false
         self:callbackWhenComplete()
     end,
+
+    findEnclosingRect = function(self, imageX, imageY)
+        return self.spriteRects:findEnclosingRect(imageX, imageY)
+    end,
 }
