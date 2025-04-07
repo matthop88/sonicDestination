@@ -74,8 +74,8 @@ return {
     end,
 
     isLeftEdge  = function(self, thisColor)
-        return  self:colorsMatch(self.prevColor, self.marginBGColor)
-            and self:colorsMatch(thisColor,      self.spriteBGColor)
+        return      self:colorsMatch(self.prevColor, self.marginBGColor)
+            and not self:colorsMatch(thisColor,      self.marginBGColor)
     end,
     
     colorsMatch = function(self, c1, c2)
