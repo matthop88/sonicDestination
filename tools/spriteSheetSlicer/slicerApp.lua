@@ -102,6 +102,10 @@ function love.update(dt)
     slicer:update(dt)
 end
 
+function love.mousepressed(mx, my)
+    getReadout():printMessage("Mouse clicked at " .. mx .. ", " .. my)
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
@@ -129,9 +133,10 @@ PLUGINS = require("plugins/engine")
         imagePath      = "resources/images/spriteSheets/sonic1.png",
         accessorFnName = "getImageViewer"
     })
-    :add("zooming",      { imageViewer = getImageViewer() })
-    :add("scrolling",    { imageViewer = getImageViewer() })
-    :add("drawingLayer", { drawingFn   = drawSlices       }) 
+    :add("zooming",      { imageViewer    = getImageViewer() })
+    :add("scrolling",    { imageViewer    = getImageViewer() })
+    :add("drawingLayer", { drawingFn      = drawSlices       })
+    :add("readout",      { accessorFnName = "getReadout"     })
 
 --------------------------------------------------------------
 --             Static code - is executed last               --
