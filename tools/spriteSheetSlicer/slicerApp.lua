@@ -103,8 +103,11 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
-    getReadout():printMessage("Mouse clicked at " .. math.floor(imageX) .. ", " .. math.floor(imageY) .. " of image")
+    local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
+    local spriteRect = slicer:findEnclosingRect(imageX, imageY)
+    if spriteRect ~= nil then
+        getReadout():printMessage("{ x = " .. spriteRect.x .. ", y = " .. spriteRect.y .. ", w = " .. spriteRect.w .. ", h = " .. spriteRect.h .. " }")
+    end
 end
 
 --------------------------------------------------------------
