@@ -104,7 +104,7 @@ end
 
 function love.mousepressed(mx, my)
     imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
-    getReadout():printMessage("Mouse clicked at " .. imageX .. ", " .. imageY .. " of image")
+    getReadout():printMessage("Mouse clicked at " .. math.floor(imageX) .. ", " .. math.floor(imageY) .. " of image")
 end
 
 --------------------------------------------------------------
