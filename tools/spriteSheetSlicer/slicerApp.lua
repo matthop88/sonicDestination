@@ -103,7 +103,8 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    getReadout():printMessage("Mouse clicked at " .. mx .. ", " .. my)
+    imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
+    getReadout():printMessage("Mouse clicked at " .. imageX .. ", " .. imageY .. " of image")
 end
 
 --------------------------------------------------------------
