@@ -5,22 +5,20 @@ end
 return {
     imageViewer          = nil,
     widthInPixels        = nil,   heightInPixels       = nil,
-    marginBGColor        = nil,   spriteBGColor        = nil,
     callbackWhenComplete = nil,
+    pixelAnalyzer        = nil,
     running              = false,
     spriteRects          = require "tools/spriteSheetSlicer/spriteRects",
     y                    = 0,
     nextY                = 0,
-    prevColor            = nil,
     linesPerSecond       = 500,
     
     start = function(self, params)
         self.imageViewer           = params.imageViewer
         self.widthInPixels, 
         self.heightInPixels        = self.imageViewer:getImageSize()
-        
-        self.marginBGColor         = params.marginBGColor
-        self.spriteBGColor         = params.spriteBGColor
+        self.pixelAnalyzer         = require("tools/spriteSheetSlicer/pixelAnalyzer")
+                                        :init(self.imageViewer, params.marginBGColor, params.spriteBGColor)
         self.callbackWhenComplete  = params.callbackWhenComplete or function() end
 
         self.running = true
@@ -71,42 +69,15 @@ return {
     end,
 
     processPixelAt = function(self, x, y)
-        if x == 0 then self.prevColor = nil end
-        
-        local pixelColor = self.imageViewer:getPixelColorAt(x, y)
-        self:findLeftEdge(pixelColor, x, y)
-        
-        self.prevColor = pixelColor
+        self.pixelAnalyzer:processPixelAt(x, y)
+        self:findLeftEdge(x, y)
     end,
 
-    findLeftEdge = function(self, pixelColor, x, y)
-        if self:isProbablyLeftEdge(pixelColor) then
+    findLeftEdge = function(self, x, y)
+        if self.pixelAnalyzer:isProbablyLeftEdge() then
             local resultingRect = self.spriteRects:addLeftEdge(x, y)
-            resultingRect.valid = resultingRect.valid or self:isDefinitelyLeftEdge(pixelColor)
+            resultingRect.valid = resultingRect.valid or self.pixelAnalyzer:isDefinitelyLeftEdge()
         end
-    end,
-
-    isProbablyLeftEdge  = function(self, thisColor)
-        return      self:colorsMatch(self.prevColor, self.marginBGColor)
-            and not self:colorsMatch(thisColor,      self.marginBGColor)
-    end,
-
-    isDefinitelyLeftEdge  = function(self, thisColor)
-        return  self:colorsMatch(self.prevColor, self.marginBGColor)
-            and self:colorsMatch(thisColor,      self.spriteBGColor)
-    end,
-
-    isLikelyRightEdge = function(self, thisColor)
-        return not self:colorsMatch(self.prevColor, self.marginBGColor)
-               and self:colorsMatch(thisColor,      self.marginBGColor)
-    end,
-    
-    colorsMatch = function(self, c1, c2)
-        return c1 ~= nil 
-           and c2 ~= nil
-           and math.abs(c1.r - c2.r) < 0.005
-           and math.abs(c1.g - c2.g) < 0.005 
-           and math.abs(c1.b - c2.b) < 0.005
     end,
 
     setupNextWorkUnit = function(self, dt)
