@@ -103,7 +103,9 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 function love.update(dt)
     slicer:update(dt)
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
-    CURRENT_RECT = slicer:findEnclosingRect(imageX, imageY)
+    if not ptInRect(imageX, imageY, CURRENT_RECT) then
+        CURRENT_RECT = slicer:findEnclosingRect(imageX, imageY)
+    end
 end
 
 function love.mousepressed(mx, my)
@@ -138,6 +140,12 @@ function drawCurrentRect()
         love.graphics.rectangle("line", 
             getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
     end
+end
+
+function ptInRect(x, y, rect)
+    return rect ~= nil
+       and x >= rect.x and x <= rect.x + rect.w - 1
+       and y >= rect.y and y <= rect.y + rect.h - 1
 end
 
 --------------------------------------------------------------
