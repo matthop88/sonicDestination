@@ -106,7 +106,7 @@ function love.mousepressed(mx, my)
     local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
     local spriteRect = slicer:findEnclosingRect(imageX, imageY)
     if spriteRect ~= nil then
-        getReadout():printMessage("{ x = " .. spriteRect.x .. ", y = " .. spriteRect.y .. ", w = " .. spriteRect.w .. ", h = " .. spriteRect.h .. " }")
+        printToReadout("{ x = " .. spriteRect.x .. ", y = " .. spriteRect.y .. ", w = " .. spriteRect.w .. ", h = " .. spriteRect.h .. " }")
     end
 end
 
@@ -140,7 +140,7 @@ PLUGINS = require("plugins/engine")
     :add("zooming",      { imageViewer    = getImageViewer() })
     :add("scrolling",    { imageViewer    = getImageViewer() })
     :add("drawingLayer", { drawingFn      = drawSlices       })
-    :add("readout",      { accessorFnName = "getReadout"     })
+    :add("readout",      { printFnName    = "printToReadout" })
 
 --------------------------------------------------------------
 --             Static code - is executed last               --
