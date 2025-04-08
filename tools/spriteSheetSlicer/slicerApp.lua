@@ -81,6 +81,8 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
+CURRENT_RECT         = nil
+
 --------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
@@ -98,8 +100,20 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
+function love.draw()
+    if CURRENT_RECT ~= nil then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", 
+            getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h)
+    end
+end
+    
 function love.update(dt)
     slicer:update(dt)
+    if CURRENT_RECT == nil then
+        local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
+        CURRENT_RECT = slicer:findEnclosingRect(imageX, imageY)
+    end
 end
 
 function love.mousepressed(mx, my)
