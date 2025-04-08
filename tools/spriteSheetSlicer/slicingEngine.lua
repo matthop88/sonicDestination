@@ -39,7 +39,7 @@ return {
     update = function(self, dt)
         if self.running then self:doSlicing(dt) end
         for _, rect in self.spriteRects:elements() do
-            if not rect.valid then
+            if not rect.valid and rect.alpha ~= nil then
                 rect.alpha = math.max(0, rect.alpha - dt)
             end
         end
