@@ -1,3 +1,7 @@
+local whereRectIsNotDisabled = function(rect)
+    return not rect.disabled
+end
+
 return {
     imageViewer          = nil,
     widthInPixels        = nil,   heightInPixels       = nil,
@@ -120,6 +124,6 @@ return {
     end,
 
     findEnclosingRect = function(self, imageX, imageY)
-        return self.spriteRects:findEnclosingRect(imageX, imageY)
+        return self.spriteRects:findEnclosingRect(imageX, imageY, whereRectIsNotDisabled)
     end,
 }
