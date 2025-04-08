@@ -68,14 +68,19 @@ return {
     end,
 
     findLeftEdge = function(self, pixelColor, x, y)
-        if self:isLeftEdge(pixelColor) then
+        if self:isProbablyLeftEdge(pixelColor) then
             self.spriteRects:addLeftEdge(x, y)
         end
     end,
 
-    isLeftEdge  = function(self, thisColor)
+    isProbablyLeftEdge  = function(self, thisColor)
         return      self:colorsMatch(self.prevColor, self.marginBGColor)
             and not self:colorsMatch(thisColor,      self.marginBGColor)
+    end,
+
+    isDefinitelyLeftEdge  = function(self, thisColor)
+        return  self:colorsMatch(self.prevColor, self.marginBGColor)
+            and self:colorsMatch(thisColor,      self.spriteBGColor)
     end,
     
     colorsMatch = function(self, c1, c2)
