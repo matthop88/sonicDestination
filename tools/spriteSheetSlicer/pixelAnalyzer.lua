@@ -13,9 +13,12 @@ return {
     end,
 
     processPixelAt = function(self, x, y)
-        if x == 0 then self.prevColor = nil end
+        if x == 0 then 
+            self.prevColor = nil 
+        else
+            self.prevColor = self.thisColor
+        end
         self.thisColor = self.imageViewer:getPixelColorAt(x, y) 
-        self.prevColor = self.thisColor
     end,
     
     isProbablyLeftEdge  = function(self)
