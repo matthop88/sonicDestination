@@ -19,6 +19,10 @@ local MAX_LETTERS_PER_SECOND = 600000
 
 return {
     init = function(self)
+        if params.printFnName ~= nil then
+            _G[params.printFnName] = function(msg) self:printMessage(msg) end
+        end
+        
         return self
     end,
     
