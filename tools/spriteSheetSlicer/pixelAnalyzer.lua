@@ -1,25 +1,35 @@
 return {
+    imageViewer   = nil,
     marginBGColor = nil,   
     spriteBGColor = nil,
-
-    init = function(self, marginBGColor, spriteBGColor)
+    thisColor     = nil,
+    prevColor     = nil,
+    
+    init = function(self, imageViewer, marginBGColor, spriteBGColor)
+        self.imageViewer   = imageViewer
         self.marginBGColor = marginBGColor
         self.spriteBGColor = spriteBGColor
     end,
+
+    processPixelAt = function(self, x, y)
+        if x == 0 then self.prevColor = nil end
+        self.thisColor = self.imageViewer:getPixelColorAt(x, y) 
+        self.prevColor = self.thisColor
+    end,
     
-    isProbablyLeftEdge  = function(self, thisColor)
+    isProbablyLeftEdge  = function(self)
         return      self:colorsMatch(self.prevColor, self.marginBGColor)
-            and not self:colorsMatch(thisColor,      self.marginBGColor)
+            and not self:colorsMatch(self.thisColor, self.marginBGColor)
     end,
 
-    isDefinitelyLeftEdge  = function(self, thisColor)
+    isDefinitelyLeftEdge  = function(self)
         return  self:colorsMatch(self.prevColor, self.marginBGColor)
-            and self:colorsMatch(thisColor,      self.spriteBGColor)
+            and self:colorsMatch(self.thisColor, self.spriteBGColor)
     end,
 
-    isLikelyRightEdge = function(self, thisColor)
+    isLikelyRightEdge = function(self)
         return not self:colorsMatch(self.prevColor, self.marginBGColor)
-               and self:colorsMatch(thisColor,      self.marginBGColor)
+               and self:colorsMatch(self.thisColor, self.marginBGColor)
     end,
     
     colorsMatch = function(self, c1, c2)
