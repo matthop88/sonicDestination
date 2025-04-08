@@ -99,14 +99,6 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
-
-function love.draw()
-    if CURRENT_RECT ~= nil then
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.rectangle("line", 
-            getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
-    end
-end
     
 function love.update(dt)
     slicer:update(dt)
@@ -139,6 +131,15 @@ end
 
 function drawSlices()
     slicer:draw()
+    drawCurrentRect()
+end
+
+function drawCurrentRect()
+    if CURRENT_RECT ~= nil then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", 
+            getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
+    end
 end
 
 --------------------------------------------------------------
