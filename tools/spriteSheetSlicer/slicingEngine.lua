@@ -1,5 +1,5 @@
-local whereRectIsNotDisabled = function(rect)
-    return not rect.disabled
+local whereRectIsValid = function(rect)
+    return rect.valid
 end
 
 return {
@@ -39,7 +39,7 @@ return {
     update = function(self, dt)
         if self.running then self:doSlicing(dt) end
         for _, rect in self.spriteRects:elements() do
-            if rect.disabled then
+            if not rect.valid then
                 rect.alpha = math.max(0, rect.alpha - dt)
             end
         end
@@ -81,7 +81,7 @@ return {
         if self:isProbablyLeftEdge(pixelColor) then
             local resultingRect = self.spriteRects:addLeftEdge(x, y)
             if self:isDefinitelyLeftEdge(pixelColor) then
-                resultingRect.verifiedLeftEdge = true
+                resultingRect.enabled = true
             end
         end
     end,
@@ -122,11 +122,10 @@ return {
     cleanup = function(self)
         for _, rect in self.spriteRects:elements() do
             rect.alpha = 1
-            rect.disabled = not rect.verifiedLeftEdge
         end
     end,
 
     findEnclosingRect = function(self, imageX, imageY)
-        return self.spriteRects:findEnclosingRect(imageX, imageY, whereRectIsNotDisabled)
+        return self.spriteRects:findEnclosingRect(imageX, imageY, whereRectIsValid)
     end,
 }
