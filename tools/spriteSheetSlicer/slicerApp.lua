@@ -104,7 +104,7 @@ function love.draw()
     if CURRENT_RECT ~= nil then
         love.graphics.setColor(1, 1, 1)
         love.graphics.rectangle("line", 
-            getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h)
+            getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
     end
 end
     
