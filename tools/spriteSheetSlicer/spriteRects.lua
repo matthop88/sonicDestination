@@ -31,8 +31,8 @@ return {
         local rect         = { x = x, y = y, w = 50, h = 1 }
         local adjacentRect = self:getRectAdjacentTo(rect)
 
-        if adjacentRect == nil then self:addRect(rect)
-        else                        self:appendRectToAdjacentRect(adjacentRect, rect)
+        if adjacentRect == nil then return self:addRect(rect)
+        else                        return self:appendRectToAdjacentRect(adjacentRect, rect)
         end
     end,
 
@@ -42,11 +42,13 @@ return {
 
     appendRectToAdjacentRect = function(self, adjacentRect, rect)
         adjacentRect.h = adjacentRect.h + rect.h
+        return adjacentRect
     end,
         
     addRect = function(self, rect)
         self.rects:add(rect)
         self.rectsGroupedByLeftX:add(rect)
+        return rect
     end,
 
     elements = function(self)
