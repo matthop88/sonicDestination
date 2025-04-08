@@ -59,11 +59,13 @@ return {
         return #self.rects
     end,
 
-    findEnclosingRect = function(self, imageX, imageY)
+    findEnclosingRect = function(self, imageX, imageY, whereFn)
         for _, rect in self:elements() do
             if  imageX >= rect.x and imageX <= rect.x + rect.w - 1
             and imageY >= rect.y and imageY <= rect.y + rect.h - 1 then
-                return rect
+                if not whereFn or whereFn(rect) then
+                    return rect
+                end
             end
         end
     end,
