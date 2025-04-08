@@ -31,14 +31,20 @@ return {
         love.graphics.setLineWidth(1 * self.imageViewer:getScale())
         
         for _, rect in self.spriteRects:elements() do
-            if not rect.disabled then
-                love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+            if rect.alpha then
+                love.graphics.setColor(1, 1, 1, rect.alpha)
             end
+            love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
         end
     end,
     
     update = function(self, dt)
         if self.running then self:doSlicing(dt) end
+        for _, rect in self.spriteRects:elements() do
+            if rect.disabled then
+                rect.alpha = math.max(0, rect.alpha - dt)
+            end
+        end
     end,
 
     doSlicing = function(self, dt)
@@ -117,6 +123,7 @@ return {
 
     cleanup = function(self)
         for _, rect in self.spriteRects:elements() do
+            rect.alpha = 1
             if not rect.verifiedLeftEdge then
                 rect.disabled = true
             end
