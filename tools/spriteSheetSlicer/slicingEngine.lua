@@ -12,6 +12,7 @@ return {
     y                    = 0,
     nextY                = 0,
     linesPerSecond       = 500,
+    workingRect          = nil,
     
     start = function(self, params)
         self.imageViewer           = params.imageViewer
@@ -63,6 +64,7 @@ return {
     end,
     
     sliceLine = function(self, y)
+        self.workingRect = nil
         for x = 0, self.widthInPixels - 1 do
             self:processPixelAt(x, y)
         end
@@ -71,12 +73,20 @@ return {
     processPixelAt = function(self, x, y)
         self.pixelAnalyzer:processPixelAt(x, y)
         self:findLeftEdge(x, y)
+        self:findRightEdge(x, y)
     end,
 
     findLeftEdge = function(self, x, y)
         if self.pixelAnalyzer:isProbablyLeftEdge() then
-            local resultingRect = self.spriteRects:addLeftEdge(x, y)
-            resultingRect.valid = resultingRect.valid or self.pixelAnalyzer:isDefinitelyLeftEdge()
+            self.workingRect = self.spriteRects:addLeftEdge(x, y)
+            self.workingRect.valid = self.workingRect.valid or self.pixelAnalyzer:isDefinitelyLeftEdge()
+        end
+    end,
+
+    findRightEdge = function(self, x, y)
+        if self.pixelAnalyzer:isLikelyRightEdge() and self.workingRect then
+            self.workingRect.w = x - self.workingRect.x
+            self.workingRect = nil
         end
     end,
 
