@@ -41,6 +41,8 @@ return {
         for _, rect in self.spriteRects:elements() do
             if not rect.valid then
                 rect.alpha = math.max(0, (rect.alpha or 1) - dt)
+            else
+                rect.alpha = 1
             end
         end
     end,
