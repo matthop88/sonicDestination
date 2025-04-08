@@ -95,6 +95,11 @@ return {
         return  self:colorsMatch(self.prevColor, self.marginBGColor)
             and self:colorsMatch(thisColor,      self.spriteBGColor)
     end,
+
+    isLikelyRightEdge = function(self, thisColor)
+        return not self:colorsMatch(self.prevColor, self.marginBGColor)
+               and self:colorsMatch(thisColor,      self.marginBGColor)
+    end,
     
     colorsMatch = function(self, c1, c2)
         return c1 ~= nil 
