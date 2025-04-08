@@ -102,10 +102,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
     
 function love.update(dt)
     slicer:update(dt)
-    if CURRENT_RECT == nil then
-        local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
-        CURRENT_RECT = slicer:findEnclosingRect(imageX, imageY)
-    end
+    local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
+    CURRENT_RECT = slicer:findEnclosingRect(imageX, imageY)
 end
 
 function love.mousepressed(mx, my)
