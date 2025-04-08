@@ -81,7 +81,7 @@ return {
         if self:isProbablyLeftEdge(pixelColor) then
             local resultingRect = self.spriteRects:addLeftEdge(x, y)
             if self:isDefinitelyLeftEdge(pixelColor) then
-                resultingRect.enabled = true
+                resultingRect.valid = true
             end
         end
     end,
