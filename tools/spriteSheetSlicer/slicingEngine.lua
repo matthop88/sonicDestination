@@ -122,9 +122,7 @@ return {
     cleanup = function(self)
         for _, rect in self.spriteRects:elements() do
             rect.alpha = 1
-            if not rect.verifiedLeftEdge then
-                rect.disabled = true
-            end
+            rect.disabled = not rect.verifiedLeftEdge
         end
     end,
 
