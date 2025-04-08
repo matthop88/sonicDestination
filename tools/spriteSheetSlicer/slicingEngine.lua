@@ -80,9 +80,7 @@ return {
     findLeftEdge = function(self, pixelColor, x, y)
         if self:isProbablyLeftEdge(pixelColor) then
             local resultingRect = self.spriteRects:addLeftEdge(x, y)
-            if self:isDefinitelyLeftEdge(pixelColor) then
-                resultingRect.valid = true
-            end
+            resultingRect.valid = resultingRect.valid or self:isDefinitelyLeftEdge(pixelColor)
         end
     end,
 
