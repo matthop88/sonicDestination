@@ -1,4 +1,12 @@
 return {
+    marginBGColor = nil,   
+    spriteBGColor = nil,
+
+    init = function(self, marginBGColor, spriteBGColor)
+        self.marginBGColor = marginBGColor
+        self.spriteBGColor = spriteBGColor
+    end,
+    
     isProbablyLeftEdge  = function(self, thisColor)
         return      self:colorsMatch(self.prevColor, self.marginBGColor)
             and not self:colorsMatch(thisColor,      self.marginBGColor)
