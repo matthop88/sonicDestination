@@ -39,8 +39,8 @@ return {
     update = function(self, dt)
         if self.running then self:doSlicing(dt) end
         for _, rect in self.spriteRects:elements() do
-            if not rect.valid and rect.alpha ~= nil then
-                rect.alpha = math.max(0, rect.alpha - dt)
+            if not rect.valid then
+                rect.alpha = math.max(0, (rect.alpha or 1) - dt)
             end
         end
     end,
@@ -113,14 +113,7 @@ return {
 
     stop = function(self)
         self.running = false
-        self:cleanup()
         self:callbackWhenComplete()
-    end,
-
-    cleanup = function(self)
-        for _, rect in self.spriteRects:elements() do
-            rect.alpha = 1
-        end
     end,
 
     findEnclosingRect = function(self, imageX, imageY)
