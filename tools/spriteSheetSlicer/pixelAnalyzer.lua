@@ -9,6 +9,7 @@ return {
         self.imageViewer   = imageViewer
         self.marginBGColor = marginBGColor
         self.spriteBGColor = spriteBGColor
+        return self
     end,
 
     processPixelAt = function(self, x, y)
