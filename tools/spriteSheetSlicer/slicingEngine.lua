@@ -27,7 +27,9 @@ return {
         love.graphics.setLineWidth(1 * self.imageViewer:getScale())
         
         for _, rect in self.spriteRects:elements() do
-            love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+            if not rect.disabled then
+                love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+            end
         end
     end,
     
@@ -105,7 +107,16 @@ return {
 
     stop = function(self)
         self.running = false
+        self:cleanup()
         self:callbackWhenComplete()
+    end,
+
+    cleanup = function(self)
+        for _, rect in self.spriteRects:elements() do
+            if not rect.verifiedLeftEdge then
+                rect.disabled = true
+            end
+        end
     end,
 
     findEnclosingRect = function(self, imageX, imageY)
