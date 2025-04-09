@@ -8,11 +8,15 @@ return {
     end,
     
     draw = function(self)
-        if self.rect ~= nil then
+        if self:isValid() then
             if love.mouse.isDown(1) then self:drawFilled()
             else                         self:drawOutline()
             end
         end
+    end,
+
+    isValid = function(self)
+        return self.rect ~= nil
     end,
 
     drawFilled = function(self)
@@ -32,7 +36,7 @@ return {
     end,
 
     containsPt = function(self, x, y)
-        return self.rect ~= nil
+        return self:isValid()
            and x >= self.rect.x and x <= self.rect.x + self.rect.w - 1
            and y >= self.rect.y and y <= self.rect.y + self.rect.h - 1
 
