@@ -6,7 +6,7 @@
 
 [X] 1. Program "automagically" finds borders of all sprites in image
 [X] 2. Border is drawn when mouse moves over a sprite
-[ ] 3. When a sprite is clicked on, x, y, width and height are
+[X] 3. When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
                     Border Finding Algorithm
