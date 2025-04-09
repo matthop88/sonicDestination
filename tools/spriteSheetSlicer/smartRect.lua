@@ -3,11 +3,11 @@ local rectToString = function(self)
 end
 
 return {
-    rect   = nil,
-    filled = false,
+    rect     = nil,
+    selected = false,
     
     initFromRect = function(self, rect)
-        if not self.filled then
+        if not self.selected then
             if rect == nil then self.rect = nil
             else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h, toString = rectToString }
             end
@@ -22,8 +22,8 @@ return {
     
     draw = function(self)
         if self:isValid() then
-            if self.filled then self:drawFilled()
-            else                self:drawOutline()
+            if self.selected then self:drawSelected()
+            else                  self:drawUnselected()
             end
         end
     end,
@@ -32,12 +32,20 @@ return {
         return self.rect ~= nil
     end,
 
-    drawFilled = function(self)
+    isSelected = function(self)
+        return self.selected
+    end,
+
+    select = function(self, value)
+        self.selected = value
+    end,
+
+    drawSelected = function(self)
         love.graphics.setColor(1, 1, 0.8, 0.5)
         love.graphics.rectangle("fill", self:toScreenRect())
     end,
 
-    drawOutline = function(self)
+    drawUnselected = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(3 * getImageViewer():getScale())
         love.graphics.rectangle("line", self:toScreenRect())
