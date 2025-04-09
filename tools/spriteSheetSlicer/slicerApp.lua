@@ -134,11 +134,14 @@ end
 
 function drawCurrentRect()
     if CURRENT_RECT ~= nil then
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setLineWidth(3 * getImageViewer():getScale())
-        love.graphics.rectangle("line", 
-            getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
+        drawCurrentRectOutline()
     end
+end
+
+function drawCurrentRectOutline()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(3 * getImageViewer():getScale())
+    love.graphics.rectangle("line", getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
 end
 
 function ptInRect(x, y, rect)
