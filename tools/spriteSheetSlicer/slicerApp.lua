@@ -119,10 +119,8 @@ end
 
 function drawCurrentRect()
     if CURRENT_RECT ~= nil then
-        if love.mouse.isDown(1) then
-            drawCurrentRectFilled()
-        else
-            drawCurrentRectOutline()
+        if love.mouse.isDown(1) then drawCurrentRectFilled()
+        else                         drawCurrentRectOutline()
         end
     end
 end
