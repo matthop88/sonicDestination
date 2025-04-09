@@ -6,6 +6,10 @@ return {
         else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h }
         end
     end,
+
+    toString = function(self)
+        return "{ x = " .. self.rect.x .. ", y = " .. self.rect.y .. ", w = " .. self.rect.w .. ", h = " .. self.rect.h .. " }"
+    end,
     
     draw = function(self)
         if self:isValid() then
