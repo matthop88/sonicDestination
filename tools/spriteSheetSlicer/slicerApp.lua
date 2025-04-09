@@ -94,13 +94,13 @@ end
 
 function love.mousepressed(mx, my)
     if currentRect:isValid() then
-        currentRect.filled = true
+        currentRect:select(true)
         printToReadout(currentRect:toString())
     end
 end
 
 function love.mousereleased(mx, my)
-    currentRect.filled = false
+    currentRect:select(false)
 end
 
 --------------------------------------------------------------
