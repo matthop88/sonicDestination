@@ -108,7 +108,6 @@ end
 
 function onSlicingCompletion()
     love.window.setTitle("Sprite Sheet Slicer")
-    print(ASCII_ART)
 end
 
 function drawSlices()
