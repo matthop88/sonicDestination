@@ -1,14 +1,20 @@
+local rectToString = function(self)
+    return "{ x = " .. self.x .. ", y = " .. self.y .. ", w = " .. self.w .. ", h = " .. self.h .. " }"
+end
+
 return {
     rect = nil,
     
     initFromRect = function(self, rect)
         if rect == nil then self.rect = nil
-        else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h }
+        else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h, toString = rectToString }
         end
     end,
 
     toString = function(self)
-        return "{ x = " .. self.rect.x .. ", y = " .. self.rect.y .. ", w = " .. self.rect.w .. ", h = " .. self.rect.h .. " }"
+        if self:isValid() then return self.rect:toString()
+        else                   return nil
+        end
     end,
     
     draw = function(self)
@@ -31,7 +37,6 @@ return {
     drawOutline = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(3 * getImageViewer():getScale())
-        -- XXX do we want to access imageViewer this way?
         love.graphics.rectangle("line", self:toScreenRect())
     end,
 
@@ -43,8 +48,6 @@ return {
         return self:isValid()
            and x >= self.rect.x and x <= self.rect.x + self.rect.w - 1
            and y >= self.rect.y and y <= self.rect.y + self.rect.h - 1
-
-        -- XXX How is this function called?
     end,
 
 }
