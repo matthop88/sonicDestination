@@ -2,7 +2,9 @@ return {
     rect = nil,
     
     initFromRect = function(self, rect)
-        self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h }
+        if rect == nil then self.rect = nil
+        else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h }
+        end
     end,
     
     draw = function(self)
