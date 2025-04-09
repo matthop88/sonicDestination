@@ -134,8 +134,17 @@ end
 
 function drawCurrentRect()
     if CURRENT_RECT ~= nil then
-        drawCurrentRectOutline()
+        if love.mouse.isDown(1) then
+            drawCurrentRectFilled()
+        else
+            drawCurrentRectOutline()
+        end
     end
+end
+
+function drawCurrentRectFilled()
+    love.graphics.setColor(1, 1, 0.8, 0.5)
+    love.graphics.rectangle("fill", toScreenRect(CURRENT_RECT))
 end
 
 function drawCurrentRectOutline()
