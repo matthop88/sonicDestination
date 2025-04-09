@@ -66,13 +66,12 @@ SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-CURRENT_RECT         = nil
-
 --------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local slicer = require "tools/spriteSheetSlicer/slicingEngine"
+local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
+local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -88,12 +87,13 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 function love.update(dt)
     slicer:update(dt)
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
-    if not ptInRect(imageX, imageY, CURRENT_RECT) then
-        CURRENT_RECT = slicer:findEnclosingRect(imageX, imageY)
+    if not currentRect:containsPt(imageX, imageY) then
+        currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
 end
 
 function love.mousepressed(mx, my)
+    -- XXX leave this broken for now
     if CURRENT_RECT ~= nil then
         printToReadout("{ x = " .. CURRENT_RECT.x .. ", y = " .. CURRENT_RECT.y .. ", w = " .. CURRENT_RECT.w .. ", h = " .. CURRENT_RECT.h .. " }")
     end
@@ -114,36 +114,7 @@ end
 
 function drawSlices()
     slicer:draw()
-    drawCurrentRect()
-end
-
-function drawCurrentRect()
-    if CURRENT_RECT ~= nil then
-        if love.mouse.isDown(1) then drawCurrentRectFilled()
-        else                         drawCurrentRectOutline()
-        end
-    end
-end
-
-function drawCurrentRectFilled()
-    love.graphics.setColor(1, 1, 0.8, 0.5)
-    love.graphics.rectangle("fill", toScreenRect(CURRENT_RECT))
-end
-
-function drawCurrentRectOutline()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(3 * getImageViewer():getScale())
-    love.graphics.rectangle("line", toScreenRect(CURRENT_RECT))
-end
-
-function toScreenRect(rect)
-    return getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4)
-end
-
-function ptInRect(x, y, rect)
-    return rect ~= nil
-       and x >= rect.x and x <= rect.x + rect.w - 1
-       and y >= rect.y and y <= rect.y + rect.h - 1
+    currentRect:draw()
 end
 
 --------------------------------------------------------------
