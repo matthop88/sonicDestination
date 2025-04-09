@@ -3,7 +3,8 @@ local rectToString = function(self)
 end
 
 return {
-    rect = nil,
+    rect   = nil,
+    filled = false,
     
     initFromRect = function(self, rect)
         if rect == nil then self.rect = nil
@@ -19,8 +20,8 @@ return {
     
     draw = function(self)
         if self:isValid() then
-            if love.mouse.isDown(1) then self:drawFilled()
-            else                         self:drawOutline()
+            if self.filled then self:drawFilled()
+            else                self:drawOutline()
             end
         end
     end,
