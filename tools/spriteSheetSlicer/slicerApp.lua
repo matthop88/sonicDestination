@@ -93,9 +93,8 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    -- XXX leave this broken for now
-    if CURRENT_RECT ~= nil then
-        printToReadout("{ x = " .. CURRENT_RECT.x .. ", y = " .. CURRENT_RECT.y .. ", w = " .. CURRENT_RECT.w .. ", h = " .. CURRENT_RECT.h .. " }")
+    if currentRect:isValid() then
+        printToReadout(currentRect:toString())
     end
 end
 
