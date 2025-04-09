@@ -7,10 +7,10 @@ return {
     filled = false,
     
     initFromRect = function(self, rect)
-        self.filled = false
-        
-        if rect == nil then self.rect = nil
-        else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h, toString = rectToString }
+        if not self.filled then
+            if rect == nil then self.rect = nil
+            else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h, toString = rectToString }
+            end
         end
     end,
 
