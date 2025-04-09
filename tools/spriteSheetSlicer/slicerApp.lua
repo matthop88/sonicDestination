@@ -141,7 +141,11 @@ end
 function drawCurrentRectOutline()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setLineWidth(3 * getImageViewer():getScale())
-    love.graphics.rectangle("line", getImageViewer():imageToScreenRect(CURRENT_RECT.x, CURRENT_RECT.y, CURRENT_RECT.w, CURRENT_RECT.h))
+    love.graphics.rectangle("line", toScreenRect(CURRENT_RECT))
+end
+
+function toScreenRect(rect)
+    return getImageViewer():imageToScreenRect(rect.x - 2, rect.y - 2, rect.w + 4, rect.h + 4)
 end
 
 function ptInRect(x, y, rect)
