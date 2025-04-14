@@ -73,6 +73,12 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
+local imgPath     = "resources/images/sadSlicer.png"
+
+if __SLICER_FILE ~= nil then
+    imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
+end
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -127,7 +133,7 @@ end
 PLUGINS = require("plugins/engine")
     :add("imageViewer",
     {
-        imagePath      = "resources/images/spriteSheets/sonic1.png",
+        imagePath      = imgPath,
         accessorFnName = "getImageViewer"
     })
     :add("zooming",      { imageViewer = getImageViewer() })
