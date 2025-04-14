@@ -50,7 +50,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local imgPath = "resources/images/sadNoFileImage.png"
+local imgPath = "resources/images/sadInspector.png"
 
 if __INSPECTOR_FILE ~= nil then
     imgPath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
