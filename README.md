@@ -23,4 +23,13 @@ To execute the Sprite Sheet Slicer application, use the command
 
     love . slicer
 
+with an argument (REQUIRED) specifying the image you wish to slice.
+Only specify the image name (without an extension.)
+Image is expected to be a png image located in the resources/images/spriteSheets directory.
+
+EX: 
+
+    love . slicer sonic1
+
+will slice the sonicDestination/resources/images/spriteSheets/sonic1.png file.
 
