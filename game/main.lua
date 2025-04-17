@@ -16,6 +16,7 @@
        a. Sonic is standing on the line
        b. Sonic is drawn at the proper scale
        c. Sonic is centered horizontally on screen
+       d. Sonic must be in sharp focus
 --]]
 
 --------------------------------------------------------------
