@@ -27,6 +27,8 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 WINDOW_WIDTH     = 1024
 WINDOW_HEIGHT    =  768
 
+SONIC_IMAGE      = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -121,10 +123,10 @@ function drawSonic()
                               .1.         J 
                                  ?1.     .'         
                                      7<..%
-    
-	
 
-							
+
+
+						
 
                                     Sonic ASCII art credits
                                     -----------------------
@@ -132,6 +134,6 @@ function drawSonic()
     posted by put-mutt on
     https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
     ---------------------------------------------------------------------------------------
-	
+
     --]]
 end
