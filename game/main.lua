@@ -34,7 +34,7 @@ SONIC_QUAD          = love.graphics.newQuad(
                           SONIC_STANDING_RECT.w,  SONIC_STANDING_RECT.h,
                           SONIC_IMAGE:getWidth(), SONIC_IMAGE:getHeight())
 
-sonicX, sonicY      = 500, 450
+sonicX, sonicY      = 500, 533
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
