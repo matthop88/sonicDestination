@@ -105,6 +105,8 @@ end
 function drawSonic()
     love.graphics.setColor(COLOR_PURE_WHITE)
     love.graphics.draw(SONIC_IMAGE, SONIC_QUAD, sonicX, sonicY, 0, 3, 3)
+    love.graphics.setLineWidth(1)
+    love.graphics.line(WINDOW_WIDTH / 2, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT)
 
     --[[
                              ...,?77??!~~~~!???77?<~.... 
