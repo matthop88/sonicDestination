@@ -1,3 +1,5 @@
+COLOR_PURE_WHITE    = { 1, 1,    1 }
+
 return ({
     x = 464,   y = 454,
     image        = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png"),
