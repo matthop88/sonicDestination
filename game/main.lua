@@ -30,23 +30,7 @@ COLOR_PURE_WHITE    = { 1, 1,    1 }
 WINDOW_WIDTH        = 1024
 WINDOW_HEIGHT       =  768
 
-WORKSPACE           = {
-    draw = function(self)
-        self:drawBackground()
-        self:drawHorizontalLine()
-    end,
-
-    drawBackground = function(self)
-        love.graphics.setColor(COLOR_GREEN)
-        love.graphics.rectangle("fill", 0, 0, 1024, 768)
-    end,
-
-    drawHorizontalLine = function(self)
-        love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.setLineWidth(3)
-        love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
-    end,
-}
+WORKSPACE           = require("game/workspace")
 
 SONIC               = {
     x = 464,   y = 454,
