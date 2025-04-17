@@ -9,6 +9,8 @@ return {
                                                   self.standingRect.w,   self.standingRect.h,
                                                   self.image:getWidth(), self.image:getHeight())
         self.image:setFilter("nearest", "nearest")
+
+        return self
     end,
 
     draw = function(self)
