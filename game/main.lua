@@ -29,6 +29,10 @@ WINDOW_HEIGHT       =  768
 
 SONIC_IMAGE         = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
 SONIC_STANDING_RECT = { x = 43, y = 257, w = 32, h = 40 }
+SONIC_QUAD          = love.graphics.newQuad(
+                          SONIC_STANDING_RECT.x,  SONIC_STANDING_RECT.y,
+                          SONIC_STANDING_RECT.w,  SONIC_STANDING_RECT.h,
+                          SONIC_IMAGE:getWidth(), SONIC_IMAGE:getHeight())
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
