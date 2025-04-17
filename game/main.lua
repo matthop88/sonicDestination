@@ -20,14 +20,14 @@
 --]]
 
 --------------------------------------------------------------
---                      Global Variables                    --
+--                      Local Variables                     --
 --------------------------------------------------------------
 
-WINDOW_WIDTH        = 1024
-WINDOW_HEIGHT       =  768
+local WINDOW_WIDTH  = 1024
+local WINDOW_HEIGHT =  768
 
-WORKSPACE           = require("game/workspace")
-SONIC               = require("game/sonic")
+local WORKSPACE     = require("game/workspace")
+local SONIC         = require("game/sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
