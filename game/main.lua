@@ -31,7 +31,7 @@ WINDOW_WIDTH        = 1024
 WINDOW_HEIGHT       =  768
 
 WORKSPACE           = require("game/workspace")
-SONIC               = require("game/sonic"):init()
+SONIC               = require("game/sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
