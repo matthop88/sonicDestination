@@ -69,7 +69,9 @@ function drawHorizontalLine()
 end
 
 function drawSonic()
-    -- Code to draw Sonic goes here
+    love.graphics.setColor(COLOR_PURE_WHITE)
+	love.graphics.draw(SONIC_IMAGE, 0, 0)
+	
     --[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
@@ -126,7 +128,7 @@ function drawSonic()
 
 
 
-						
+
 
                                     Sonic ASCII art credits
                                     -----------------------
