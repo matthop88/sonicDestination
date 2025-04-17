@@ -10,12 +10,12 @@ return {
 
     drawBackground = function(self)
         love.graphics.setColor(COLOR_GREEN)
-        love.graphics.rectangle("fill", 0, 0, 1024, 768)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end,
 
     drawHorizontalLine = function(self)
         love.graphics.setColor(COLOR_PURE_WHITE)
         love.graphics.setLineWidth(3)
-        love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
+        love.graphics.line(0, love.graphics.getHeight() * 3 / 4, love.graphics.getWidth(), love.graphics.getHeight() * 3 / 4)
     end,
 }
