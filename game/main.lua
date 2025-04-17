@@ -36,7 +36,7 @@ SONIC_QUAD          = love.graphics.newQuad(
                           SONIC_STANDING_RECT.w,  SONIC_STANDING_RECT.h,
                           SONIC_IMAGE:getWidth(), SONIC_IMAGE:getHeight())
 
-sonicX, sonicY      = 500, 454
+sonicX, sonicY      = 464, 454
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -105,11 +105,7 @@ end
 function drawSonic()
     love.graphics.setColor(COLOR_PURE_WHITE)
     love.graphics.draw(SONIC_IMAGE, SONIC_QUAD, sonicX, sonicY, 0, 3, 3)
-    love.graphics.setLineWidth(1)
-    love.graphics.line(WINDOW_WIDTH / 2,      0, WINDOW_WIDTH / 2,      WINDOW_HEIGHT)
-    love.graphics.line(WINDOW_WIDTH / 2 - 48, 0, WINDOW_WIDTH / 2 - 48, WINDOW_HEIGHT)
-    love.graphics.line(WINDOW_WIDTH / 2 + 48, 0, WINDOW_WIDTH / 2 + 48, WINDOW_HEIGHT)
-
+   
     --[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
