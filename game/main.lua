@@ -20,14 +20,15 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-COLOR_GREEN      = { 0, 0.45, 0 }
-                   -- https://htmlcolorcodes.com/colors/shades-of-green/
-COLOR_PURE_WHITE = { 1, 1,    1 }
+COLOR_GREEN         = { 0, 0.45, 0 }
+                      -- https://htmlcolorcodes.com/colors/shades-of-green/
+COLOR_PURE_WHITE    = { 1, 1,    1 }
 
-WINDOW_WIDTH     = 1024
-WINDOW_HEIGHT    =  768
+WINDOW_WIDTH        = 1024
+WINDOW_HEIGHT       =  768
 
-SONIC_IMAGE      = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
+SONIC_IMAGE         = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
+SONIC_STANDING_RECT = { x = 43, y = 257, w = 32, h = 40 }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -70,8 +71,8 @@ end
 
 function drawSonic()
     love.graphics.setColor(COLOR_PURE_WHITE)
-	love.graphics.draw(SONIC_IMAGE, 0, 0)
-	
+    love.graphics.draw(SONIC_IMAGE, 0, 0)
+
     --[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
