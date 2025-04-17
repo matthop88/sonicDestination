@@ -57,31 +57,6 @@ function love.draw()
     drawSonic()
 end
 
--- Function Name: love.keypressed(key)
--- Called By:     LOVE2D application, when a key is pressed
---------------------------------------------------------------
-function love.keypressed(key)
-    if     key == "up"    then
-        sonicY = sonicY - 1
-    elseif key == "down"  then
-        sonicY = sonicY + 1
-    elseif key == "left"  then
-        sonicX = sonicX - 1
-    elseif key == "right" then
-        sonicX = sonicX + 1
-    elseif key == "w"     then
-        sonicY = sonicY - 10
-    elseif key == "s"     then
-        sonicY = sonicY + 10
-    elseif key == "j"     then
-        sonicX = sonicX - 10
-    elseif key == "k"     then
-        sonicX = sonicX + 10
-    elseif key == "space" then
-        print("Sonic X = " .. sonicX .. ", Sonic Y = " .. sonicY)
-    end
-end
-
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
