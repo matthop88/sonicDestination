@@ -30,14 +30,15 @@ COLOR_PURE_WHITE    = { 1, 1,    1 }
 WINDOW_WIDTH        = 1024
 WINDOW_HEIGHT       =  768
 
-SONIC_IMAGE         = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
-SONIC_STANDING_RECT = { x = 43, y = 257, w = 32, h = 40 }
-SONIC_QUAD          = love.graphics.newQuad(
-                          SONIC_STANDING_RECT.x,  SONIC_STANDING_RECT.y,
-                          SONIC_STANDING_RECT.w,  SONIC_STANDING_RECT.h,
-                          SONIC_IMAGE:getWidth(), SONIC_IMAGE:getHeight())
-
-sonicX, sonicY      = 464, 454
+SONIC               = {
+    x = 464,   y = 454,
+    image        = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png"),
+    standingRect = { x = 43, y = 257, w = 32, h = 40 },
+    standingQuad = love.graphics.newQuad(
+                        self.standingRect.x,   self.standingRect.y,
+                        self.standingRect.w,   self.standingRect.h,
+                        self.image:getWidth(), self.image:getHeight()),
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
