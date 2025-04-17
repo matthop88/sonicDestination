@@ -46,6 +46,8 @@ sonicX, sonicY      = 464, 454
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+SONIC_IMAGE:setFilter("nearest", "nearest")
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
