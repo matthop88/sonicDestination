@@ -1,4 +1,4 @@
-COLOR_PURE_WHITE    = { 1, 1,    1 }
+local COLOR_PURE_WHITE    = { 1, 1,    1 }
 
 return ({
     x = 464,   y = 454,
