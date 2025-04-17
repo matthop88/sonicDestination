@@ -31,7 +31,7 @@ WINDOW_WIDTH        = 1024
 WINDOW_HEIGHT       =  768
 
 WORKSPACE           = require("game/workspace")
-SONIC               = require("game/sonic")
+SONIC               = require("game/sonic"):init()
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -39,8 +39,6 @@ SONIC               = require("game/sonic")
 
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-SONIC:init()
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
