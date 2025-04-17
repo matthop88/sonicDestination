@@ -42,6 +42,11 @@ SONIC               = {
                                                   self.image:getWidth(), self.image:getHeight())
         self.image:setFilter("nearest", "nearest")
     end,
+
+    draw = function(self)
+        love.graphics.setColor(COLOR_PURE_WHITE)
+        love.graphics.draw(self.image, self.standingQuad, self.x, self.y, 0, 3, 3)
+    end,
 }
 
 --------------------------------------------------------------
@@ -62,7 +67,7 @@ SONIC:init()
 --------------------------------------------------------------
 function love.draw()
     drawWorkspace()
-    drawSonic()
+    SONIC:draw()
 end
 
 --------------------------------------------------------------
@@ -85,11 +90,7 @@ function drawHorizontalLine()
     love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
 end
 
-function drawSonic()
-    love.graphics.setColor(COLOR_PURE_WHITE)
-    love.graphics.draw(SONIC.image, SONIC.standingQuad, SONIC.x, SONIC.y, 0, 3, 3)
-   
-    --[[
+--[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
                     .,=`          ..~7^`   I                  ?1. 
@@ -154,5 +155,4 @@ function drawSonic()
     https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
     ---------------------------------------------------------------------------------------
 
-    --]]
-end
+--]]
