@@ -50,7 +50,9 @@ SONIC               = {
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-SONIC_IMAGE:setFilter("nearest", "nearest")
+SONIC.image:setFilter("nearest", "nearest")
+
+SONIC:init()
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -86,7 +88,7 @@ end
 
 function drawSonic()
     love.graphics.setColor(COLOR_PURE_WHITE)
-    love.graphics.draw(SONIC_IMAGE, SONIC_QUAD, sonicX, sonicY, 0, 3, 3)
+    love.graphics.draw(SONIC.image, SONIC.standingQuad, SONIC.x, SONIC.y, 0, 3, 3)
    
     --[[
                              ...,?77??!~~~~!???77?<~.... 
