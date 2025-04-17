@@ -1,3 +1,7 @@
+COLOR_GREEN         = { 0, 0.45, 0 }
+                      -- https://htmlcolorcodes.com/colors/shades-of-green/
+COLOR_PURE_WHITE    = { 1, 1,    1 }
+
 return {
     draw = function(self)
         self:drawBackground()
