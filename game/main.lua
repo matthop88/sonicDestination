@@ -40,6 +40,7 @@ SONIC               = {
         self.standingQuad = love.graphics.newQuad(self.standingRect.x,   self.standingRect.y,
                                                   self.standingRect.w,   self.standingRect.h,
                                                   self.image:getWidth(), self.image:getHeight())
+        self.image:setFilter("nearest", "nearest")
     end,
 }
 
@@ -49,8 +50,6 @@ SONIC               = {
 
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-SONIC.image:setFilter("nearest", "nearest")
 
 SONIC:init()
 
