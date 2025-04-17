@@ -27,7 +27,7 @@ COLOR_PURE_WHITE = { 1, 1,    1 }
 WINDOW_WIDTH     = 1024
 WINDOW_HEIGHT    =  768
 
-SONIC_IMAGE      = love.graphics.newImage("resources/images/spriteSheets/sonic1.png")
+SONIC_IMAGE      = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
