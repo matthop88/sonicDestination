@@ -23,10 +23,6 @@
 --                      Global Variables                    --
 --------------------------------------------------------------
 
-COLOR_GREEN         = { 0, 0.45, 0 }
-                      -- https://htmlcolorcodes.com/colors/shades-of-green/
-COLOR_PURE_WHITE    = { 1, 1,    1 }
-
 WINDOW_WIDTH        = 1024
 WINDOW_HEIGHT       =  768
 
