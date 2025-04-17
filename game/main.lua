@@ -34,10 +34,13 @@ SONIC               = {
     x = 464,   y = 454,
     image        = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png"),
     standingRect = { x = 43, y = 257, w = 32, h = 40 },
-    standingQuad = love.graphics.newQuad(
-                        self.standingRect.x,   self.standingRect.y,
-                        self.standingRect.w,   self.standingRect.h,
-                        self.image:getWidth(), self.image:getHeight()),
+    standingQuad = nil,
+
+    init = function(self)
+        self.standingQuad = love.graphics.newQuad(self.standingRect.x,   self.standingRect.y,
+                                                  self.standingRect.w,   self.standingRect.h,
+                                                  self.image:getWidth(), self.image:getHeight())
+    end,
 }
 
 --------------------------------------------------------------
