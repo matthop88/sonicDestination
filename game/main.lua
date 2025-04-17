@@ -15,6 +15,7 @@
 [.] 3. Draw Sonic the Hedgehog sprite in Workspace
        a. Sonic is standing on the line
        b. Sonic is drawn at the proper scale
+       c. Sonic is centered horizontally on screen
 --]]
 
 --------------------------------------------------------------
@@ -64,12 +65,20 @@ function love.keypressed(key)
         sonicY = sonicY - 1
     elseif key == "down"  then
         sonicY = sonicY + 1
+    elseif key == "left"  then
+        sonicX = sonicX - 1
+    elseif key == "right" then
+        sonicX = sonicX + 1
     elseif key == "w"     then
         sonicY = sonicY - 10
     elseif key == "s"     then
         sonicY = sonicY + 10
+    elseif key == "j"     then
+        sonicX = sonicX - 10
+    elseif key == "k"     then
+        sonicX = sonicX + 10
     elseif key == "space" then
-        print("Sonic Y = " .. sonicY)
+        print("Sonic X = " .. sonicX .. ", Sonic Y = " .. sonicY)
     end
 end
 
