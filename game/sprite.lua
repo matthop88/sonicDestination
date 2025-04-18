@@ -1,3 +1,5 @@
+local COLOR_PURE_WHITE = { 1, 1, 1 }
+
 return ({
     image        = love.graphics.newImage("game/resources/images/spriteSheets/sonic1.png"),
     offset       = { x = 16, y = 20 },
