@@ -1,4 +1,4 @@
-PATH_PREFIX = PATH_PREFIX or ""
+__PATH_PREFIX = __PATH_PREFIX or ""
 
 --------------------------------------------------------------
 --                      Local Variables                     --
