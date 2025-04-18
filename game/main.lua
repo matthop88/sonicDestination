@@ -50,9 +50,7 @@ end
 function love.keypressed(key)
     if key == 'm' then
         isFollowingMouse = not isFollowingMouse
-        if isFollowingMouse then
-            -- Do nothing
-        else
+        if not isFollowingMouse then
             SONIC:moveTo(origX, origY)
         end
         updateMouseVisibility()
