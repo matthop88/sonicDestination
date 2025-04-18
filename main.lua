@@ -8,6 +8,8 @@
 --                       passed by user in console
 --------------------------------------------------------------
 function love.load(args)
+    DEV_MODE = true
+	
     if args[1] == "inspector" then
         __INSPECTOR_FILE = args[2]
         require "tools/colorInspector/inspector"
