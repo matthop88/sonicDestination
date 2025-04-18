@@ -29,13 +29,8 @@ return ({
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    getX   = function(self)
-        return self.x
-    end,
-
-    getY   = function(self)
-        return self.y
-    end,
+    getX   = function(self) return self.x end,
+    getY   = function(self) return self.y end,
         
     moveTo = function(self, x, y)
         self.x, self.y = x, y
