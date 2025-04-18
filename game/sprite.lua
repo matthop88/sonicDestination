@@ -1,7 +1,7 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
 
 return ({
-    image        = love.graphics.newImage(__PATH_PREFIX .. "resources/images/spriteSheets/sonic1.png"),
+    image        = love.graphics.newImage(relativePath("resources/images/spriteSheets/sonic1.png")),
     offset       = { x = 16, y = 20 },
     standingRect = { x = 43, y = 257, w = 32, h = 40 },
     standingQuad = nil,
