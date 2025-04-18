@@ -7,8 +7,8 @@ PATH_PREFIX = PATH_PREFIX or ""
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local WORKSPACE          = require(PATH_PREFIX .. "workspace")
-local SONIC              = require(PATH_PREFIX .. "sonic")
+local WORKSPACE          = require(__PATH_PREFIX .. "workspace")
+local SONIC              = require(__PATH_PREFIX .. "sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -43,7 +43,7 @@ end
 --                          Plugins                         --
 --------------------------------------------------------------
 
-if DEV_MODE == true then
+if __DEV_MODE == true then
     PLUGINS = require("plugins/engine")
         :add("mouseTracking",
         {
