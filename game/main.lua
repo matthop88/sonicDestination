@@ -9,6 +9,7 @@ local WORKSPACE     = require("game/workspace")
 local SONIC         = require("game/sonic")
 
 local followMouse   = false
+local origX, origY  = 464, 514
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -16,6 +17,8 @@ local followMouse   = false
 
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+SONIC:moveTo(origX, origY)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
