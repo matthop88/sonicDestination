@@ -8,7 +8,9 @@ return {
         self.object = params.object
         self.origX  = params.originX
         self.origY  = params.originY
-
+        
+        self.object:moveTo(self.origX, self.origY)
+        
         return self
     end,
 
