@@ -10,4 +10,8 @@ return {
 
         return self
     end,
+
+    draw   = function(self)
+        self.object:draw()
+    end,
 }
