@@ -1,6 +1,6 @@
 return ({
-    x      = 464,   
-    y      = 454,
+    x = 464, y = 514,
+        
     sprite = require("game/sprite"),
     
     init = function(self)
