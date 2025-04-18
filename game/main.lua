@@ -26,6 +26,16 @@ function love.draw()
     WORKSPACE:draw()
 end
 
+function love.keypressed(key)
+    if key == "right" then
+        SONIC.x = SONIC.x + 1
+    elseif key == "left" then
+        SONIC.x = SONIC.x - 1
+    elseif key == "space" then
+        print("SONIC x = " .. SONIC:getX())
+    end
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
