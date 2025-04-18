@@ -43,15 +43,15 @@ end
 --                          Plugins                         --
 --------------------------------------------------------------
 
---[[
-PLUGINS = require("plugins/engine")
-    :add("mouseTracking",
-    {
-        object  = SONIC,
-        originX = 512,
-        originY = 514,
-    })
---]]
+if PATH_PREFIX ~= "" then
+    PLUGINS = require("plugins/engine")
+        :add("mouseTracking",
+        {
+            object  = SONIC,
+            originX = 512,
+            originY = 514,
+        })
+end
 
 --[[
                              ...,?77??!~~~~!???77?<~.... 
