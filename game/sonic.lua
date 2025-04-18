@@ -20,8 +20,8 @@ return ({
 
     draw = function(self)
         love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.draw(self.image, self.standingQuad, self.x - (self.offset.x * self.scale), 
-                                                          self.y - (self.offset.y * self.scale), 
+        love.graphics.draw(self.image, self.standingQuad, self:getX() - (self.offset.x * self.scale), 
+                                                          self:getY() - (self.offset.y * self.scale), 
                                                           0, self.scale, self.scale)
     end,
 
