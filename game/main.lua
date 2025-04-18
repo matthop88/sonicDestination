@@ -8,17 +8,12 @@ local WINDOW_HEIGHT      =  768
 local WORKSPACE          = require("game/workspace")
 local SONIC              = require("game/sonic")
 
-local isFollowingMouse   = false
-local origX, origY       = 464, 514
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-SONIC:moveTo(origX, origY)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -29,7 +24,6 @@ SONIC:moveTo(origX, origY)
 --------------------------------------------------------------
 function love.draw()
     WORKSPACE:draw()
-    --SONIC:draw()
 end
 
 --------------------------------------------------------------
@@ -48,8 +42,8 @@ PLUGINS = require("plugins/engine")
     :add("mouseTracking",
     {
         object  = SONIC,
-        originX = origX,
-        originY = origY,
+        originX = 464,
+        originY = 514,
     })
 
 --[[
