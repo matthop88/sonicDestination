@@ -33,7 +33,7 @@ end
 --                     (in fractions of a second)  
 --------------------------------------------------------------
 function love.update(dt)
-    -- Track Sonic's position with mouse
+    SONIC.x, SONIC.y = love.mouse.getPosition()
 end
 
 --------------------------------------------------------------
