@@ -33,7 +33,7 @@ end
 --                     (in fractions of a second)  
 --------------------------------------------------------------
 function love.update(dt)
-    SONIC.x, SONIC.y = love.mouse.getPosition()
+    SONIC:moveTo(love.mouse.getPosition())
 end
 
 --------------------------------------------------------------
