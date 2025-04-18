@@ -43,7 +43,7 @@ end
 --                          Plugins                         --
 --------------------------------------------------------------
 
-if PATH_PREFIX ~= "" then
+if DEV_MODE == true then
     PLUGINS = require("plugins/engine")
         :add("mouseTracking",
         {
