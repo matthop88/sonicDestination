@@ -2,14 +2,14 @@
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local WINDOW_WIDTH  = 1024
-local WINDOW_HEIGHT =  768
+local WINDOW_WIDTH       = 1024
+local WINDOW_HEIGHT      =  768
 
-local WORKSPACE     = require("game/workspace")
-local SONIC         = require("game/sonic")
+local WORKSPACE          = require("game/workspace")
+local SONIC              = require("game/sonic")
 
-local followMouse   = false
-local origX, origY  = 464, 514
+local isFollowingMouse   = false
+local origX, origY       = 464, 514
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -38,7 +38,7 @@ end
 --                     (in fractions of a second)  
 --------------------------------------------------------------
 function love.update(dt)
-    if followMouse then
+    if isFollowingMouse then
         SONIC:moveTo(love.mouse.getPosition())
     end
 end
@@ -49,8 +49,8 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     if key == 'm' then
-        followMouse = not followMouse
-        if followMouse then
+        isFollowingMouse = not isFollowingMouse
+        if isFollowingMouse then
             -- Do nothing
         else
             SONIC:moveTo(origX, origY)
@@ -64,7 +64,7 @@ end
 --------------------------------------------------------------
 
 function updateMouseVisibility()
-    love.mouse.setVisible(not followMouse)
+    love.mouse.setVisible(not isFollowingMouse)
 end
 
 -- ...
