@@ -55,7 +55,7 @@ function love.keypressed(key)
         else
             SONIC:moveTo(origX, origY)
         end
-        love.mouse.setVisible(not followMouse)
+        updateMouseVisibility()
     end
 end
 
@@ -63,7 +63,10 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function updateMouseVisibility()
+    love.mouse.setVisible(not followMouse)
+end
+
 -- ...
 -- ...
 
