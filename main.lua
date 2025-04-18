@@ -22,3 +22,7 @@ function love.load(args)
     end
 end
 
+function requireRelative(path)
+    return require("game/" .. path)
+end
+
