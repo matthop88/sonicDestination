@@ -27,6 +27,15 @@ function love.draw()
     SONIC:draw()
 end
 
+-- Function Name: love.update()
+-- Called By:     LOVE2D application, every single frame
+-- Parameters:    dt - time lapsed between update calls
+--                     (in fractions of a second)  
+--------------------------------------------------------------
+function love.update(dt)
+    -- Track Sonic's position with mouse
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
