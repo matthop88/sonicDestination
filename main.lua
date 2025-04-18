@@ -9,7 +9,7 @@
 --------------------------------------------------------------
 function love.load(args)
     __DEV_MODE = true
-	
+
     if args[1] == "inspector" then
         __INSPECTOR_FILE = args[2]
         require "tools/colorInspector/inspector"
@@ -20,6 +20,10 @@ function love.load(args)
         __PATH_PREFIX = "game/"
         require "game/main"
     end
+end
+
+function relativePath(path)
+    return "game/" .. path
 end
 
 function requireRelative(path)
