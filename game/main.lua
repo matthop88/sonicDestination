@@ -29,7 +29,7 @@ SONIC:moveTo(origX, origY)
 --------------------------------------------------------------
 function love.draw()
     WORKSPACE:draw()
-    SONIC:draw()
+    --SONIC:draw()
 end
 
 -- Function Name: love.update()
