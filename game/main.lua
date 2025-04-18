@@ -50,11 +50,11 @@ end
 function love.keypressed(key)
     if key == 'm' then
         followMouse = not followMouse
-        if not followMouse then
+        if followMouse then
+            love.mouse.setVisible(false)
+        else
             SONIC:moveTo(origX, origY)
             love.mouse.setVisible(true)
-        else
-            love.mouse.setVisible(false)
         end
     end
 end
