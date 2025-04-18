@@ -5,8 +5,8 @@
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local WORKSPACE          = require("game/workspace")
-local SONIC              = require("game/sonic")
+local WORKSPACE          = require("workspace")
+local SONIC              = require("sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -38,6 +38,7 @@ end
 --                          Plugins                         --
 --------------------------------------------------------------
 
+--[[
 PLUGINS = require("plugins/engine")
     :add("mouseTracking",
     {
@@ -45,6 +46,7 @@ PLUGINS = require("plugins/engine")
         originX = 512,
         originY = 514,
     })
+--]]
 
 --[[
                              ...,?77??!~~~~!???77?<~.... 
