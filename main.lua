@@ -15,6 +15,7 @@ function love.load(args)
         __SLICER_FILE = args[2]
         require "tools/spriteSheetSlicer/slicerApp"
     else
+        PATH_PREFIX = "game/"
         require "game/main"
     end
 end
