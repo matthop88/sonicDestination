@@ -9,5 +9,5 @@ return {
         self.origY  = params.originY
 
         return self
-    }
+    end,
 }
