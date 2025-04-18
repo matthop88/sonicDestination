@@ -1,3 +1,5 @@
+PATH_PREFIX = PATH_PREFIX or ""
+
 --------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
@@ -5,8 +7,8 @@
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local WORKSPACE          = require("workspace")
-local SONIC              = require("sonic")
+local WORKSPACE          = require(PATH_PREFIX .. "workspace")
+local SONIC              = require(PATH_PREFIX .. "sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
