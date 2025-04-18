@@ -1,5 +1,5 @@
 return ({
-    x = 464, y = 514,
+    x = 0, y = 0,
         
     sprite = require("game/sprite"),
     
