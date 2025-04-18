@@ -1,31 +1,12 @@
---[[
-
 --------------------------------------------------------------
---                  Functional Specifications               --
+--                      Local Variables                     --
 --------------------------------------------------------------
 
-[X] 1. Create Game Window
-       a. Window Title:      Sonic Destination
-       b. Window Dimensions: 1024 x 768
-       c. Window is displayed on 2nd monitor (TEMPORARY)
-[X] 2. Draw Workspace in Game Window
-       a. Background colored dark green
-       b. Thick white horizontal line across entire screen,
-          positioned 3/4 of way down the screen
-[ ] 3. Draw Sonic the Hedgehog sprite in Workspace
-       a. Sonic is standing on the line
---]]
+local WINDOW_WIDTH       = 1024
+local WINDOW_HEIGHT      =  768
 
---------------------------------------------------------------
---                      Global Variables                    --
---------------------------------------------------------------
-
-COLOR_GREEN      = { 0, 0.45, 0 }
-                   -- https://htmlcolorcodes.com/colors/shades-of-green/
-COLOR_PURE_WHITE = { 1, 1,    1 }
-
-WINDOW_WIDTH     = 1024
-WINDOW_HEIGHT    =  768
+local WORKSPACE          = require("game/workspace")
+local SONIC              = require("game/sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -42,33 +23,30 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-	drawWorkspace()
-	drawSonic()
+    WORKSPACE:draw()
 end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawWorkspace()
-	drawBackground()
-	drawHorizontalLine()
-end
+-- ...
+-- ...
+-- ...
 
-function drawBackground()
-	love.graphics.setColor(COLOR_GREEN)
-	love.graphics.rectangle("fill", 0, 0, 1024, 768)
-end
+--------------------------------------------------------------
+--                          Plugins                         --
+--------------------------------------------------------------
 
-function drawHorizontalLine()
-	love.graphics.setColor(COLOR_PURE_WHITE)
-	love.graphics.setLineWidth(3)
-	love.graphics.line(0, WINDOW_HEIGHT * 3 / 4, WINDOW_WIDTH, WINDOW_HEIGHT * 3 / 4)
-end
+PLUGINS = require("plugins/engine")
+    :add("mouseTracking",
+    {
+        object  = SONIC,
+        originX = 512,
+        originY = 514,
+    })
 
-function drawSonic()
-	-- Code to draw Sonic goes here
-	--[[
+--[[
                              ...,?77??!~~~~!???77?<~.... 
                         ..?7`                           `7!.. 
                     .,=`          ..~7^`   I                  ?1. 
@@ -121,17 +99,16 @@ function drawSonic()
                               .1.         J 
                                  ?1.     .'         
                                      7<..%
-    
-	
 
-							
+
+
+
 
                                     Sonic ASCII art credits
                                     -----------------------
-	"ASCII Art of Sonic"
-	posted by put-mutt on
-	https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
-	---------------------------------------------------------------------------------------
-	
-    --]]
-end
+    "ASCII Art of Sonic"
+    posted by put-mutt on
+    https://www.reddit.com/r/SonicTheHedgehog/comments/fpeyy4/ascii_art_of_sonic/?rdt=43749
+    ---------------------------------------------------------------------------------------
+
+--]]

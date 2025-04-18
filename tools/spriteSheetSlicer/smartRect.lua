@@ -1,54 +1,64 @@
+local rectToString = function(self)
+    return "{ x = " .. self.x .. ", y = " .. self.y .. ", w = " .. self.w .. ", h = " .. self.h .. " }"
+end
+
 return {
-    rect = nil,
+    rect     = nil,
+    selected = false,
     
-    initFrom = function(self, rect)        self.rect  = rect end,
-    isActive = function(self)       return self.rect ~= nil  end,
-    
-    getX     = function(self)       return self.rect.x       end,
-    getY     = function(self)       return self.rect.y       end,
-    getW     = function(self)       return self.rect.w       end,
-    getH     = function(self)       return self.rect.h       end,
-
-    calculateUsing = function(self, imageX, imageY, rectCalculator)
-        if not self:containsPt(imageX, imageY) then
-            self:initFrom(rectCalculator(imageX, imageY))
-        end
-    end,
-    
-    containsPt = function(self, x, y)
-        return  self:isActive()
-            and x >= self:getX()
-            and x <= self:getX() + self:getW() - 1
-            and y >= self:getY()
-            and y <= self:getY() + self:getH() - 1
-    end,
-
-    draw = function(self)
-        if self:isActive() then
-            if love.mouse.isDown(1) then self:drawFilled()
-            else                         self:drawOutline()
+    initFromRect = function(self, rect)
+        if not self.selected then
+            if rect == nil then self.rect = nil
+            else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h, toString = rectToString }
             end
         end
     end,
 
-    drawFilled = function(self)
+    toString = function(self)
+        if self:isValid() then return self.rect:toString()
+        else                   return nil
+        end
+    end,
+    
+    draw = function(self)
+        if self:isValid() then
+            if self.selected then self:drawSelected()
+            else                  self:drawUnselected()
+            end
+        end
+    end,
+
+    isValid = function(self)
+        return self.rect ~= nil
+    end,
+
+    isSelected = function(self)
+        return self.selected
+    end,
+
+    select = function(self, value)
+        self.selected = value
+    end,
+
+    drawSelected = function(self)
         love.graphics.setColor(1, 1, 0.8, 0.5)
         love.graphics.rectangle("fill", self:toScreenRect())
     end,
 
-    toScreenRect = function(self)
-        return getImageViewer():imageToScreenRect(self:getX() - 2, self:getY() - 2, self:getW() + 4, self:getH() + 4)
-    end,
-
-    printUsing = function(self, printFn)
-        if self:isActive() then
-            printFn("{ x = " .. self:getX() .. ", y = " .. self:getY() .. ", w = " .. self:getW() .. ", h = " .. self:getH() .. " }")
-        end
-    end,
-
-    drawOutline = function(self)
+    drawUnselected = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(3 * getImageViewer():getScale())
         love.graphics.rectangle("line", self:toScreenRect())
     end,
+
+    toScreenRect = function(self)
+        return getImageViewer():imageToScreenRect(self.rect.x - 2, self.rect.y - 2, self.rect.w + 4, self.rect.h + 4)
+    end,
+
+    containsPt = function(self, x, y)
+        return self:isValid()
+           and x >= self.rect.x and x <= self.rect.x + self.rect.w - 1
+           and y >= self.rect.y and y <= self.rect.y + self.rect.h - 1
+    end,
+
 }

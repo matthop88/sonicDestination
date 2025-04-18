@@ -1,15 +1,9 @@
 return {
-    --[[
-        Depends upon these initialization parameters:
-        -------------------------------------------------------
-        drawingFn      -> Function where drawing is to occur
-        -------------------------------------------------------
-    --]]
-    
-    drawingFn = function() end,
 	
-    init = function(self, params)
-        self.drawingFn = params.drawingFn or self.drawingFn
+    drawingFn = nil,
+	
+    init      = function(self, params)
+        self.drawingFn = params.drawingFn
         return self
     end,
 

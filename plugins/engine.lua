@@ -7,68 +7,50 @@ return ({
     oldMousereleased = function(mx, my) end,
 
     init = function(self)
-        self:initDraw()
-        self:initUpdate()
-        self:initKeyevents()
-        self:initMouseevents()
         
-        return self
-    end,
-
-    initDraw = function(self)
         self.oldDraw = love.draw or self.oldDraw
-        love.draw = function() 
+        love.draw          = function() 
             self.oldDraw()
-            self:draw()
+            self:draw()                      
         end
-    end,
 
-    initUpdate = function(self)
         self.oldUpdate = love.update or self.oldUpdate
         love.update        = function(dt) 
             self.oldUpdate(dt)
-            self:update(dt)
+            self:update(dt)                
         end
-    end,
 
-    initKeyevents = function(self)
-        self:initKeypressed()
-        self:initKeyreleased()
-    end,
-
-    initKeypressed = function(self)
         self.oldKeypressed = love.keypressed or self.oldKeypressed
-        love.keypressed = function(key) 
-            if not self.oldKeypressed(key) then self:keypressed(key) end
+        love.keypressed    = function(key)
+            if not self:keypressed(key) then
+                self.oldKeypressed(key)
+            end
         end
-    end,
 
-    initKeyreleased = function(self)
         self.oldKeyreleased = love.keyreleased or self.oldKeyreleased
-        love.keyreleased = function(key) 
-            if not self.oldKeyreleased(key) then self:keyreleased(key) end
+        love.keyreleased   = function(key)
+            if not self:keyreleased(key) then
+                self.oldKeyreleased(key)
+            end
         end
-    end,
 
-    initMouseevents = function(self)
-        self:initMousepressed()
-        self:initMousereleased()
-    end,
-
-    initMousepressed = function(self)
         self.oldMousepressed = love.mousepressed or self.oldMousepressed
         love.mousepressed  = function(mx, my)
-            if not self.oldMousepressed(mx, my) then self:mousepressed(mx, my) end
+            if not self:mousepressed(mx, my) then
+                self.oldMousepressed(mx, my)  
+            end
         end
-    end,
-
-    initMousereleased = function(self)
+            
         self.oldMousereleased = love.mousereleased or self.oldMousereleased
         love.mousereleased = function(mx, my)
-            if not self.oldMousereleased(mx, my) then self:mousereleased(mx, my) end
+            if not self:mousereleased(mx, my) then
+                self.oldMousereleased(mx, my)
+            end
         end
+
+        return self
     end,
-             
+            
     draw = function(self)
         for _, plugin in ipairs(self) do
             if plugin.draw ~= nil then
@@ -80,7 +62,9 @@ return ({
     update = function(self, dt)
         for _, plugin in ipairs(self) do
             if plugin.update ~= nil then
-                plugin:update(dt)
+                if plugin:update(dt) then
+                    return true
+                end
             end
         end
     end,
@@ -88,7 +72,9 @@ return ({
     keypressed = function(self, key)
         for _, plugin in ipairs(self) do
             if plugin.handleKeypressed ~= nil then
-                plugin:handleKeypressed(key)
+                if plugin:handleKeypressed(key) then
+                    return true
+                end
             end
         end
     end,
@@ -96,7 +82,9 @@ return ({
     keyreleased = function(self, key)
         for _, plugin in ipairs(self) do
             if plugin.handleKeyreleased ~= nil then
-                plugin:handleKeyreleased(key)
+                if plugin:handleKeyreleased(key) then
+                    return true
+                end
             end
         end
     end,
@@ -104,7 +92,9 @@ return ({
     mousepressed = function(self, mx, my)
         for _, plugin in ipairs(self) do
             if plugin.handleMousepressed ~= nil then
-                plugin:handleMousepressed(mx, my)
+                if plugin:handleMousepressed(mx, my) then
+                    return true
+                end
             end
         end
     end,
@@ -112,22 +102,35 @@ return ({
     mousereleased = function(self, mx, my)
         for _, plugin in ipairs(self) do
             if plugin.handleMousereleased ~= nil then
-                plugin:handleMousereleased(mx, my)
+                if plugin:handleMousereleased(mx, my) then
+                    return true
+                end
             end
         end
     end,
 
     add = function(self, pluginPath, params)
-        params = params or { }
         local plugin = require("plugins/modules/" .. pluginPath)
-        if params.accessFnName ~= nil then
-            _G[params.accessFnName] = function()
-                return plugin
-            end
-        end
-        if plugin.init ~= nil then plugin:init(params) end
-        table.insert(self, plugin)
+        self:addPlugin(plugin, params or { })
         return self
     end,
         
+    addPlugin = function(self, plugin, params)
+        self:initPlugin(plugin, params)
+        table.insert(self, plugin)
+    end,
+
+    initPlugin = function(self, plugin, params)
+        if plugin.init ~= nil then plugin:init(params) end
+        if params.accessorFnName ~= nil then
+            self:createGlobalAccessorFn(params.accessorFnName, plugin)
+        end
+    end,
+
+    createGlobalAccessorFn = function(self, name, plugin)
+        _G[name] = function()
+            return plugin
+        end
+    end,
+    
 }):init()

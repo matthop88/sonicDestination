@@ -1,26 +1,15 @@
 return {
-    --[[
-        Depends upon these initialization parameters:
-        -------------------------------------------------------
-        imagePath      -> Path to image which is drawn,
-                          including file name and extension
-        -------------------------------------------------------
-    --]]
-    
     x         = 0,
     y         = 0,
     scale     = 1,
     imageData = nil,
     image     = nil,
 
-    init = function(self, parameters)
-        self.imageData = love.image.newImageData(parameters.imagePath)
-        self.image     = love.graphics.newImage(self.imageData)
-        return self
-    end,
+    init = function(self, params)
+        self.imageData = love.image.newImageData(params.imagePath)
+        self.image = love.graphics.newImage(self.imageData)
 
-    getScale = function(self)
-        return self.scale
+        return self
     end,
 
     moveImage = function(self, deltaX, deltaY)
@@ -32,9 +21,9 @@ return {
         self.scale = self.scale + (delta * self.scale)
     end,
 
-    screenToImageCoordinates = function(self, sX, sY)
-        local imageX = math.min(self:getImageWidth()  - 1, (sX / self.scale) - self.x)
-        local imageY = math.min(self:getImageHeight() - 1, (sY / self.scale) - self.y)
+    screenToImageCoordinates = function(self, screenX, screenY)
+        local imageX = math.min(self:getImageWidth()  - 1, (screenX / self.scale) - self.x)
+        local imageY = math.min(self:getImageHeight() - 1, (screenY / self.scale) - self.y)
 
         return imageX, imageY
     end,
@@ -46,12 +35,11 @@ return {
         return screenX, screenY
     end,
 
-    imageToScreenRect = function(self, x, y, w, h)
-        local rectX, rectY = self:imageToScreenCoordinates(x, y)
-        local rectW        = w * self.scale
-        local rectH        = h * self.scale
+    imageToScreenRect = function(self, imageX, imageY, imageW, imageH)
+        local screenX, screenY = self:imageToScreenCoordinates(imageX, imageY)
+        local screenW, screenH = imageW * self.scale, imageH * self.scale
 
-        return rectX, rectY, rectW, rectH
+        return screenX, screenY, screenW, screenH
     end,
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
@@ -67,7 +55,7 @@ return {
         return self.image:getHeight()
     end,
 
-    getImageSize = function(self)
+    getImageSize   = function(self)
         return self:getImageWidth(), self:getImageHeight()
     end,
 
@@ -76,8 +64,12 @@ return {
     end,
 
     getPixelColorAt = function(self, x, y)
-        local rr, gg, bb = self:getImagePixelAt(x, y)
-        return { r = rr, g = gg, b = bb }
+        local r, g, b = self:getImagePixelAt(x, y)
+        return { r = r, g = g, b = b }
+    end,
+
+    getScale = function(self)
+        return self.scale
     end,
 
     draw = function(self)

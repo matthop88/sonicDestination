@@ -1,12 +1,13 @@
 --[[
+
 --------------------------------------------------------------
 --                  Functional Specifications               --
 --------------------------------------------------------------
 
-* Program "automagically" finds borders of all sprites in image
-* Border is drawn when mouse moves over a sprite
-* When a sprite is clicked on, x, y, width and height are 
-  displayed on screen.
+[X] 1. Program "automagically" finds borders of all sprites in image
+[X] 2. Border is drawn when mouse moves over a sprite
+[X] 3. When a sprite is clicked on, x, y, width and height are
+       displayed on screen.
 
 --]]
 
@@ -60,39 +61,68 @@ ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
+MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
+SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
+
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 --------------------------------------------------------------
---                       Local Variables                    --
+--                      Local Variables                     --
 --------------------------------------------------------------
 
-local currentRect = require("tools/spriteSheetSlicer/smartRect")
-local spriteRects = nil
+local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
+local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
-local imgPath     = "resources/images/slicerSadNoFile.png"
+local imgPath     = "resources/images/sadSlicer.png"
 
 if __SLICER_FILE ~= nil then
     imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
 end
 
 --------------------------------------------------------------
---                     LOVE2D Functions                     --
+--              Static code - is executed first             --
 --------------------------------------------------------------
 
-love.mousepressed = function(mx, my)
-    currentRect:printUsing(printToReadout)
+love.window.setTitle("Sprite Sheet Slicer - SLICING...")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+--------------------------------------------------------------
+--                     LOVE2D Functions                     --
+--------------------------------------------------------------
+    
+function love.update(dt)
+    slicer:update(dt)
+    local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
+    if not currentRect:containsPt(imageX, imageY) then
+        currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
+    end
+end
+
+function love.mousepressed(mx, my)
+    if currentRect:isValid() then
+        currentRect:select(true)
+        printToReadout(currentRect:toString())
+    end
+end
+
+function love.mousereleased(mx, my)
+    currentRect:select(false)
 end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-drawCurrentRect = function()
-    local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse:getPosition())
+function getImageViewer()
+    -- Overridden by imageViewer plugin
+end
 
-    if not currentRect:containsPt(imageX, imageY) then
-        currentRect:initFrom(spriteRects:findEnclosingRect(imageX, imageY))
-    end
+function onSlicingCompletion()
+    love.window.setTitle("Sprite Sheet Slicer")
+end
+
+function drawSlices()
+    slicer:draw()
     currentRect:draw()
 end
 
@@ -101,29 +131,28 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("imageViewer",  
-    { 
-        imagePath    = imgPath,
-        accessFnName = "getImageViewer" 
+    :add("imageViewer",
+    {
+        imagePath      = imgPath,
+        accessorFnName = "getImageViewer"
     })
-    :add("zooming",      { imageViewer  = getImageViewer() })
-    :add("scrolling",    { imageViewer  = getImageViewer() })
-    :add("drawingLayer", { drawingFn    = drawCurrentRect })
-    :add("readout",      
-    { 
-        printFnName   = "printToReadout",
-        echoToConsole = true,
+    :add("zooming",      { imageViewer = getImageViewer() })
+    :add("scrolling",    { imageViewer = getImageViewer() })
+    :add("drawingLayer", { drawingFn   = drawSlices       })
+    :add("readout",
+    {
+        printFnName    = "printToReadout",
+        echoToConsole  = true,
     })
 
 --------------------------------------------------------------
---                Static code - is executed last            --
+--             Static code - is executed last               --
 --------------------------------------------------------------
 
-local MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
-local SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
-
-love.window.setTitle("Spritesheet Slicer")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-spriteRects = require("tools/spriteSheetSlicer/slicingEngine"):slice(MARGIN_BACKGROUND_COLOR, SPRITE_BACKGROUND_COLOR, getImageViewer)
+slicer:start({
+    imageViewer          = getImageViewer(),
+    marginBGColor        = MARGIN_BACKGROUND_COLOR,
+    spriteBGColor        = SPRITE_BACKGROUND_COLOR,
+    callbackWhenComplete = onSlicingCompletion
+})
 

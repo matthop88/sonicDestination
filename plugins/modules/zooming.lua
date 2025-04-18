@@ -1,20 +1,11 @@
 local ZOOM_SPEED = 2
 
 return {
-    --[[
-        Depends upon these initialization parameters:
-        -------------------------------------------------------
-        imageViewer    -> Image Viewer object, with methods
-                          screenToImageCoordinates(),
-                          adjustScaleGeometrically(),
-                          syncImageCoordinatesWithScreen()
-        -------------------------------------------------------
-    --]]
-    
     scaleDelta = 0,
 
-    init             = function(self, params)
+    init = function(self, params)
         self.imageViewer = params.imageViewer
+
         return self
     end,
     
@@ -33,6 +24,14 @@ return {
     update = function(self, dt)
         if self.scaleDelta ~= 0 then
             self:zoomFromCoordinates(dt, love.mouse.getPosition())
+            self:adjustImagePositionIfZoomingOut()
+            return true
+        end
+    end,
+
+    adjustImagePositionIfZoomingOut = function(self)
+        if self.scaleDelta < 0 then
+            self.imageViewer:keepImageInBounds()
         end
     end,
 

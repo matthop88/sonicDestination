@@ -1,62 +1,110 @@
-local sliceTable   = require("tools/spriteSheetSlicer/sliceTable")
-local sliceFactory = require("tools/spriteSheetSlicer/sliceFactory")
+local whereRectIsValid = function(rect)
+    return rect.valid
+end
 
 return {
-    MARGIN_BACKGROUND_COLOR = nil,
-    SPRITE_BACKGROUND_COLOR = nil,
-    IMAGE_WIDTH             = nil,
-    IMAGE_HEIGHT            = nil,
-    getImageViewer          = nil,
-    pixelAnalyzer           = nil,
-    prevColor               = nil,
-    thisColor               = nil,
+    imageViewer          = nil,
+    widthInPixels        = nil,   heightInPixels       = nil,
+    callbackWhenComplete = nil,
+    pixelAnalyzer        = nil,
+    running              = false,
+    spriteRects          = require "tools/spriteSheetSlicer/spriteRects",
+    y                    = 0,
+    nextY                = 0,
+    linesPerSecond       = 500,
+    workingRect          = nil,
     
-    slice = function(self, marginBgColor, spriteBgColor, imageViewerFn)
-        self.getImageViewer = imageViewerFn
-        self.IMAGE_WIDTH, self.IMAGE_HEIGHT = self.getImageViewer():getImageSize()
-        self.pixelAnalyzer  = require("tools/spriteSheetSlicer/pixelAnalyzer")
-                                      :init(marginBgColor, spriteBgColor) 
+    start = function(self, params)
+        self.imageViewer           = params.imageViewer
+        self.widthInPixels, 
+        self.heightInPixels        = self.imageViewer:getImageSize()
+        self.pixelAnalyzer         = require("tools/spriteSheetSlicer/pixelAnalyzer")
+                                        :init(self.imageViewer, params.marginBGColor, params.spriteBGColor)
+        self.callbackWhenComplete  = params.callbackWhenComplete or function() end
 
-        self:doSlicing()
-        return self:finalizeSpriteRects()
+        self.running = true
     end,
 
-    doSlicing = function(self)
-        for y = 0, self.IMAGE_HEIGHT - 1 do
-            local newSlices = self:createHorizontalSlicesFromLine(y)
-            self:addHorizontalSlices(newSlices, y)
+    draw = function(self)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(1 * self.imageViewer:getScale())
+        
+        for _, rect in self.spriteRects:elements() do
+            love.graphics.setColor(1, 1, 1, rect.alpha or 1)
+            love.graphics.rectangle("line", self.imageViewer:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+        end
+    end,
+    
+    update = function(self, dt)
+        if self.running then self:doSlicing(dt) end
+        for _, rect in self.spriteRects:elements() do
+            if not rect.valid or not self.running then
+                rect.alpha = math.max(0, (rect.alpha or 1) - dt)
+            else
+                rect.alpha = 1
+            end
         end
     end,
 
-    createHorizontalSlicesFromLine = function(self, y)
-        self.prevColor = nil
-        return self:appendHorizontalSlicesTo({ }, y)
+    doSlicing = function(self, dt)
+        self:sliceUntilWorkUnitIsDone()
+        self:setupNextWorkUnit(dt)
+        
+        if self:isWorkComplete() then self:stop() end
     end,
-
-    appendHorizontalSlicesTo = function(self, sliceList, y)
-        for x = 0, self.IMAGE_WIDTH - 1 do
-            self.thisColor = self:getImageViewer():getPixelColorAt(x, y)
-            local newSlice = self:produceSliceFrom(x, y)
-            if newSlice ~= nil then table.insert(sliceList, newSlice) end
-        end
-        return sliceList
-    end,
-
-    produceSliceFrom = function(self, x, y)
-        local pixelTransitionData = self.pixelAnalyzer:analyzePixelTransition(self.prevColor, self.thisColor)
-        self.prevColor = self.thisColor
-        return sliceFactory:produceSliceUsing(pixelTransitionData, x, y)
-    end,
-
-    addHorizontalSlices = function(self, horizSlices, y)
-        sliceTable:markCompletedSlicesAbove(y)
-        sliceTable:update()
-        if #horizSlices > 0 then
-            sliceTable:addHorizontalSlices(horizSlices)
+    
+    sliceUntilWorkUnitIsDone = function(self)
+        for y = self.y, self:calculateYAtEndOfWorkUnit() do
+            self:sliceLine(y)
         end
     end,
 
-    finalizeSpriteRects = function(self)
-        return sliceTable:getFinishedSpriteRects()
+    calculateYAtEndOfWorkUnit = function(self)
+        return math.min(self.heightInPixels, math.floor(self.nextY)) - 1
+    end,
+    
+    sliceLine = function(self, y)
+        self.workingRect = nil
+        for x = 0, self.widthInPixels - 1 do
+            self:processPixelAt(x, y)
+        end
+    end,
+
+    processPixelAt = function(self, x, y)
+        self.pixelAnalyzer:processPixelAt(x, y)
+        self:findLeftEdge(x, y)
+        self:findRightEdge(x, y)
+    end,
+
+    findLeftEdge = function(self, x, y)
+        if self.pixelAnalyzer:isProbablyLeftEdge() then
+            self.workingRect = self.spriteRects:addLeftEdge(x, y)
+            self.workingRect.valid = self.workingRect.valid or self.pixelAnalyzer:isDefinitelyLeftEdge()
+        end
+    end,
+
+    findRightEdge = function(self, x, y)
+        if self.pixelAnalyzer:isLikelyRightEdge() and self.workingRect then
+            self.workingRect.w = x - self.workingRect.x
+            self.workingRect = nil
+        end
+    end,
+
+    setupNextWorkUnit = function(self, dt)
+        self.y     = math.floor(self.nextY)
+        self.nextY = self.y + (self.linesPerSecond * dt)
+    end,
+
+    isWorkComplete = function(self, dt)
+        return self.y >= self.heightInPixels
+    end,
+
+    stop = function(self)
+        self.running = false
+        self:callbackWhenComplete()
+    end,
+
+    findEnclosingRect = function(self, imageX, imageY)
+        return self.spriteRects:findEnclosingRect(imageX, imageY, whereRectIsValid)
     end,
 }

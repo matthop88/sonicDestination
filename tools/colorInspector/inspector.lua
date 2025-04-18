@@ -50,7 +50,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local imgPath = "resources/images/sadNoFileImage.png"
+local imgPath = "resources/images/sadInspector.png"
 
 if __INSPECTOR_FILE ~= nil then
     imgPath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
@@ -65,25 +65,44 @@ end
 -- ...
 
 --------------------------------------------------------------
+--                   Specialized Functions                  --
+--------------------------------------------------------------
+
+onColorSelected = function(color)
+    getPalette():insertColor(color)
+    printSelectedColor(color)
+end
+
+printSelectedColor = function(color)
+    local r, g, b = unpack(color)
+    print(string.format("{ r = %.2f, g = %.2f, b = %.2f }", r, g, b))
+    getReadout():printMessage(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+end
+
+--------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
     :add("imageViewer", 
     { 
-        imagePath    = imgPath,
-        accessFnName = "getImageViewer"
+        imagePath         = imgPath,
+        accessorFnName    = "getImageViewer"
     })
-    :add("palette",     { colorSelectorFn = function() return getSelectColor() end })
-    :add("readout",     { accessFnName = "getReadout" })
+    :add("palette",     
+    {
+        colorSelectorFunc = function() return getColorSelector() end,
+        accessorFnName    = "getPalette"
+    })
     :add("selectColor", 
-    { 
-        imageViewer  = getImageViewer(),
-        readout      = getReadout(),
-        accessFnName = "getSelectColor"
+    {
+        imageViewer       = getImageViewer(),
+        onColorSelected   = onColorSelected,
+        accessorFnName    = "getColorSelector"
     })
-    :add("zooming",     { imageViewer     = getImageViewer() })
-    :add("scrolling",   { imageViewer     = getImageViewer() })
+    :add("readout",     { accessorFnName = "getReadout"     })
+    :add("zooming",     { imageViewer    = getImageViewer() })
+    :add("scrolling",   { imageViewer    = getImageViewer() })
     
 --[[
 

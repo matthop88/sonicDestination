@@ -18,14 +18,15 @@ local SHADOW_COLOR   = COLOR.JET_BLACK
 local MAX_LETTERS_PER_SECOND = 600000
 
 return {
+    echoToConsole = false,
+    
     init = function(self, params)
-        printToREADOUT = function(msg)
-            self:printMessage(msg)
-            if params.echoToConsole then print(msg) end
+        if params.echoToConsole ~= nil then
+            self.echoToConsole = params.echoToConsole
         end
-
+        
         if params.printFnName ~= nil then
-            _G[params.printFnName] = function(msg) printToREADOUT(msg) end
+            _G[params.printFnName] = function(msg) self:printMessage(msg) end
         end
         
         return self
@@ -158,6 +159,8 @@ return {
     end,
     
     printMessage = function(self, msg)
+        if self.echoToConsole then print(msg) end
+        
         self.message:set(msg)
         if self:isActive() then 
             self.message:maximizeLetterCount()

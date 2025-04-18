@@ -3,20 +3,13 @@ require "plugins/libraries/doubleTap"
 local SCROLL_SPEED   = 400
 
 return {
-    --[[
-        Depends upon these initialization parameters:
-        -------------------------------------------------------
-        imageViewer    -> Image Viewer object, with methods
-                          moveImage(), keepInBounds()
-        -------------------------------------------------------
-    --]]
-    
     xSpeed  = 0,   
     ySpeed  = 0,
     dashing = false,
 
-    init             = function(self, params)
+    init = function(self, params)
         self.imageViewer = params.imageViewer
+
         return self
     end,
     
