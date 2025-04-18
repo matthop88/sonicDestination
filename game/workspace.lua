@@ -9,7 +9,7 @@ return {
     draw = function(self)
         self:drawBackground()
         self:drawHorizontalLine()
-        self:drawVerticalLines()
+        --self:drawVerticalLines()
     end,
 
     drawBackground = function(self)
