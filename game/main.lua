@@ -50,6 +50,9 @@ end
 function love.keypressed(key)
     if key == 'm' then
         followMouse = not followMouse
+        if not followMouse then
+            SONIC:moveTo(origX, origY)
+        end
     end
 end
 
