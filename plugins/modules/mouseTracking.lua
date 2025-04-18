@@ -16,6 +16,12 @@ return {
         self.object:draw()
     end,
 
+    update = function(self, dt)
+        if self.isFollowingMouse then
+            self.object:moveTo(love.mouse.getPosition())
+        end
+    end,
+
     handleKeypressed = function(self, key)
         if key == 'm' then
             self.isFollowingMouse = not self.isFollowingMouse
