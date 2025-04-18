@@ -8,6 +8,8 @@ local WINDOW_HEIGHT =  768
 local WORKSPACE     = require("game/workspace")
 local SONIC         = require("game/sonic")
 
+local followMouse   = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -33,7 +35,19 @@ end
 --                     (in fractions of a second)  
 --------------------------------------------------------------
 function love.update(dt)
-    SONIC:moveTo(love.mouse.getPosition())
+    if followMouse then
+        SONIC:moveTo(love.mouse.getPosition())
+    end
+end
+
+-- Function Name: love.keypressed()
+-- Called By:     LOVE2D application, when any key is pressed
+-- Parameters:    key - string representation of key
+--------------------------------------------------------------
+function love.keypressed(key)
+    if key == 'm' then
+        followMouse = not followMouse
+    end
 end
 
 --------------------------------------------------------------
