@@ -1,7 +1,7 @@
 return ({
     x = 0, y = 0,
         
-    sprite = require(PATH_PREFIX .. "sprite"),
+    sprite = require(__PATH_PREFIX .. "sprite"),
     
     init = function(self)
         -- Initialization code goes here
