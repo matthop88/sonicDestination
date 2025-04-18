@@ -1,4 +1,5 @@
 __PATH_PREFIX = __PATH_PREFIX or ""
+requireRelative = requireRelative or function(path) return require(path) end
 
 --------------------------------------------------------------
 --                      Local Variables                     --
@@ -7,8 +8,8 @@ __PATH_PREFIX = __PATH_PREFIX or ""
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local WORKSPACE          = require(__PATH_PREFIX .. "workspace")
-local SONIC              = require(__PATH_PREFIX .. "sonic")
+local WORKSPACE          = requireRelative("workspace")
+local SONIC              = requireRelative("sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
