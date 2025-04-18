@@ -24,4 +24,13 @@ return ({
                                                           self.y - (self.offset.y * self.scale), 
                                                           0, self.scale, self.scale)
     end,
+
+    --------------------------------------------------------------
+    --                  Specialized Functions                   --
+    --------------------------------------------------------------
+
+    moveTo = function(self, x, y)
+        self.x, self.y = x, y
+    end,
+
 }):init()
