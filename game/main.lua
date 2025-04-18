@@ -73,7 +73,12 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("mouseTracking")
+    :add("mouseTracking",
+    {
+        object  = SONIC,
+        originX = origX,
+        originY = origY,
+    })
 
 --[[
                              ...,?77??!~~~~!???77?<~.... 
