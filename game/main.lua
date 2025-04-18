@@ -43,28 +43,11 @@ function love.update(dt)
     end
 end
 
--- Function Name: love.keypressed()
--- Called By:     LOVE2D application, when any key is pressed
--- Parameters:    key - string representation of key
---------------------------------------------------------------
-function love.keypressed(key)
-    if key == 'm' then
-        isFollowingMouse = not isFollowingMouse
-        if not isFollowingMouse then
-            SONIC:moveTo(origX, origY)
-        end
-        updateMouseVisibility()
-    end
-end
-
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function updateMouseVisibility()
-    love.mouse.setVisible(not isFollowingMouse)
-end
-
+-- ...
 -- ...
 -- ...
 
