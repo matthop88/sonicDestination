@@ -20,19 +20,21 @@ return ({
 
     draw = function(self)
         love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.draw(self.image, self.standingQuad, self:getX() - (self.offset.x * self.scale), 
-                                                          self:getY() - (self.offset.y * self.scale), 
-                                                          0, self.scale, self.scale)
+        love.graphics.draw(self.image,       self.standingQuad,
+                           self:getImageX(), self:getImageY(),
+                        0, self.scale,       self.scale)
     end,
 
     --------------------------------------------------------------
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    getX   = function(self) return self.x end,
-    getY   = function(self) return self.y end,
+    getX      = function(self) return self.x                                     end,
+    getY      = function(self) return self.y                                     end,
+    getImageX = function(self) return self:getX() - (self.offset.x * self.scale) end,
+    getImageY = function(self) return self:getY() - (self.offset.y * self.scale) end,
         
-    moveTo = function(self, x, y)
+    moveTo    = function(self, x, y)
         self.x, self.y = x, y
     end,
 
