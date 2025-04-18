@@ -1,4 +1,4 @@
-__PATH_PREFIX = __PATH_PREFIX or ""
+relativePath    = relativePath    or function(path) return path          end
 requireRelative = requireRelative or function(path) return require(path) end
 
 --------------------------------------------------------------
