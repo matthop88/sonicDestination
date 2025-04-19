@@ -28,9 +28,19 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 --                        Plugins                           --
 --------------------------------------------------------------
 
--- ...
--- ...
--- ...
+PLUGINS = require("plugins/engine")
+    :add("imageViewer",
+    {
+        imagePath      = "resources/images/spriteSheets/sonic1.png",
+        accessorFnName = "getImageViewer"
+    })
+    :add("zooming",      { imageViewer = getImageViewer() })
+    :add("scrolling",    { imageViewer = getImageViewer() })
+    :add("readout",
+    {
+        printFnName    = "printToReadout",
+        echoToConsole  = true,
+    })
 
 --------------------------------------------------------------
 --               Static code - is executed last             --
