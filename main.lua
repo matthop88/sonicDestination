@@ -16,6 +16,8 @@ function love.load(args)
     elseif args[1] == "slicer" then
         __SLICER_FILE = args[2]
         require "tools/spriteSheetSlicer/slicerApp"
+    elseif args[1] == "transparency" then
+		require "tools/transparencyEditor/editorApp"
     else
         require "game/main"
     end
