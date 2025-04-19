@@ -26,6 +26,6 @@ function relativePath(path)
 end
 
 function requireRelative(path)
-    return require("game/" .. path)
+    return require(relativePath(path))
 end
 
