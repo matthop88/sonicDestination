@@ -36,6 +36,10 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",      { imageViewer = getImageViewer() })
     :add("scrolling",    { imageViewer = getImageViewer() })
+    :add("selectColor", 
+    {
+        imageViewer    = getImageViewer(),
+    }
     :add("readout",
     {
         printFnName    = "printToReadout",
