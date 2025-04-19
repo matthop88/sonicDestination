@@ -31,3 +31,8 @@ EX:
     love . slicer sonic1
 
 runs the Sprite Sheet Slicer application on the image file `sonicDestination/resources/images/spriteSheets/sonic1.png`.
+
+To execute the Transparency Editor application, use the command
+
+    love . transparency
+
