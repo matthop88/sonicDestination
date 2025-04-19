@@ -39,7 +39,7 @@ PLUGINS = require("plugins/engine")
     :add("selectColor", 
     {
         imageViewer    = getImageViewer(),
-    }
+    })
     :add("readout",
     {
         printFnName    = "printToReadout",
