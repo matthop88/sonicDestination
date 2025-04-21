@@ -31,7 +31,7 @@ return {
         local imageX, imageY = self.imageViewer:screenToImageCoordinates(mx, my)
         local r, g, b        = self.imageViewer:getImagePixelAt(imageX, imageY)
     
-        return { r, g, b }
+        return { r, g, b, r = r, g = g, b = b }
     end,
 
     draw = function(self)
