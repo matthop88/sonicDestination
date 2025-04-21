@@ -51,19 +51,20 @@ end
 PLUGINS = require("plugins/engine")
     :add("imageViewer",
     {
-        imagePath      = "resources/images/spriteSheets/sonic1.png",
-        accessorFnName = "getImageViewer"
+        imagePath       = "resources/images/spriteSheets/sonic1.png",
+        accessorFnName  = "getImageViewer"
     })
     :add("zooming",      { imageViewer = getImageViewer() })
     :add("scrolling",    { imageViewer = getImageViewer() })
     :add("selectColor", 
     {
-        imageViewer    = getImageViewer(),
+        imageViewer     = getImageViewer(),
+        onColorSelected = onColorSelected,
     })
     :add("readout",
     {
-        printFnName    = "printToReadout",
-        echoToConsole  = true,
+        printFnName     = "printToReadout",
+        echoToConsole   = true,
     })
 
 --------------------------------------------------------------
