@@ -32,7 +32,16 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+-- Function Name: love.keypressed(key)
+-- Called By:     LOVE2D application, when a key is pressed
+--------------------------------------------------------------
+love.keypressed = function(key)
+    if key == "space" then
+        makeSelectedColorTransparent()
+        printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
+    end
+end
+
 -- ...
 -- ...
 
@@ -42,6 +51,10 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 onColorSelected = function(color)
     printToReadout("Press 'space' to make the selected color transparent.")
+end
+
+makeSelectedColorTransparent = function()
+    -- Awesome code goes here
 end
 
 --------------------------------------------------------------
