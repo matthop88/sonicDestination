@@ -58,17 +58,17 @@ end
 makeSelectedColorTransparent = function()
     --[[
     imageData:mapPixel(pixelMapperFunction)
-
-    pixelMapperFunction = function(r, g, b, a)
-        if colorMatchesRGB(selectedColor, r, g, b) then
-            return 0, 0, 0, 0
-        else
-            return r, g, b, a
-        end
-    end
     --]]
 
     print(colorMatchesRGB(selectedColor, 0, 0, 0))
+end
+
+pixelMapperFunction = function(x, y, r, g, b, a)
+   if colorMatchesRGB(selectedColor, r, g, b) then
+       return 0, 0, 0, 0
+   else
+       return r, g, b, a
+   end
 end
 
 colorMatchesRGB = function(color, r, g, b)
