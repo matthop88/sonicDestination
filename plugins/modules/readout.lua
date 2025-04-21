@@ -33,6 +33,14 @@ return {
             FONT_SIZE = params.fontSize
             FONT = love.graphics.newFont(FONT_SIZE)
         end
+
+        if params.boxHeight ~= nil then
+            BOX_HEIGHT = params.boxHeight
+        end
+
+        if params.horizMargins ~= nil then
+            HORIZ_MARGINS = params.horizMargins
+        end
         
         return self
     end,
