@@ -28,6 +28,11 @@ return {
         if params.printFnName ~= nil then
             _G[params.printFnName] = function(msg) self:printMessage(msg) end
         end
+
+        if params.fontSize ~= nil then
+            FONT_SIZE = params.fontSize
+            FONT = love.graphics.newFont(FONT_SIZE)
+        end
         
         return self
     end,
