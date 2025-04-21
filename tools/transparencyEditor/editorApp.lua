@@ -63,6 +63,7 @@ PLUGINS = require("plugins/engine")
     })
     :add("readout",
     {
+        fontSize        = 28,
         printFnName     = "printToReadout",
         echoToConsole   = true,
     })
