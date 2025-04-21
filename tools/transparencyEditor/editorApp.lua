@@ -37,6 +37,14 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 -- ...
 
 --------------------------------------------------------------
+--                   Specialized Functions                  --
+--------------------------------------------------------------
+
+onColorSelected = function(color)
+    printToReadout("Press 'space' to make the selected color transparent.")
+end
+
+--------------------------------------------------------------
 --                        Plugins                           --
 --------------------------------------------------------------
 
