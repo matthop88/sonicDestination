@@ -68,7 +68,7 @@ makeSelectedColorTransparent = function()
     end
     --]]
 
-    print("r = ", selectedColor.r, "g = ", selectedColor.g, "b = ", selectedColor.b)
+    print(colorMatchesRGB(selectedColor, 0, 0, 0))
 end
 
 colorMatchesRGB = function(color, r, g, b)
