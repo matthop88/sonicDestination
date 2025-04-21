@@ -56,7 +56,18 @@ onColorSelected = function(color)
 end
 
 makeSelectedColorTransparent = function()
-    -- Awesome code goes here
+    --[[
+    imageData:mapPixel(pixelMapperFunction)
+
+    pixelMapperFunction = function(r, g, b, a)
+        if selectedColorMatches(r, g, b) then
+            return 0, 0, 0, 0
+        else
+            return r, g, b, a
+        end
+    end
+    
+    --]]
 end
 
 --------------------------------------------------------------
