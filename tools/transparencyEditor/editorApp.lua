@@ -64,6 +64,8 @@ PLUGINS = require("plugins/engine")
     :add("readout",
     {
         fontSize        = 28,
+        horizMargins    = 0,
+        boxHeight       = 56,
         printFnName     = "printToReadout",
         echoToConsole   = true,
     })
