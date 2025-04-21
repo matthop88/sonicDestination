@@ -21,10 +21,8 @@ return {
     echoToConsole = false,
     
     init = function(self, params)
-        if params.echoToConsole ~= nil then
-            self.echoToConsole = params.echoToConsole
-        end
-        
+        self.echoToConsole = params.echoToConsole or self.echoToConsole
+         
         if params.printFnName ~= nil then
             _G[params.printFnName] = function(msg) self:printMessage(msg) end
         end
@@ -34,13 +32,8 @@ return {
             FONT = love.graphics.newFont(FONT_SIZE)
         end
 
-        if params.boxHeight ~= nil then
-            BOX_HEIGHT = params.boxHeight
-        end
-
-        if params.horizMargins ~= nil then
-            HORIZ_MARGINS = params.horizMargins
-        end
+        BOX_HEIGHT    = params.boxHeight    or BOX_HEIGHT
+        HORIZ_MARGINS = params.horizMargins or HORIZ_MARGINS
         
         return self
     end,
