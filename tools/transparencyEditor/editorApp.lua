@@ -27,6 +27,7 @@
 --------------------------------------------------------------
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+selectedColor               = nil
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -50,6 +51,7 @@ end
 --------------------------------------------------------------
 
 onColorSelected = function(color)
+    selectedColor = color
     printToReadout("Press 'space' to make the selected color transparent.")
 end
 
