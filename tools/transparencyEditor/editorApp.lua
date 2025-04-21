@@ -71,7 +71,7 @@ makeSelectedColorTransparent = function()
 end
 
 colorMatchesRGB = function(color, r, g, b)
-     return color ~= nil and color[1] == r and color[2] == g and color[3] == b
+     return color ~= nil and color.r == r and color.g == g and color.b == b
 end
 
 --------------------------------------------------------------
