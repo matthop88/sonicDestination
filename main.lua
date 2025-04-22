@@ -19,6 +19,9 @@ function love.load(args)
     elseif args[1] == "transparency" then
         __TRANSPARENCY_FILE = args[2]
         require "tools/transparencyEditor/editorApp"
+    elseif args[1] == "scribbler" then
+        __SCRIBBLER_FILE = args[2]
+        require "tools/scribbler/scribblerApp"
     else
         require "game/main"
     end
