@@ -70,10 +70,8 @@ makeSelectedColorTransparent = function()
 end
 
 createTransparency = function(x, y, r, g, b, a)
-   if colorMatchesRGB(selectedColor, r, g, b) then
-       return 0, 0, 0, 0
-   else
-       return r, g, b, a
+   if colorMatchesRGB(selectedColor, r, g, b) then return 0, 0, 0, 0
+   else                                            return r, g, b, a
    end
 end
 
