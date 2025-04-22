@@ -85,6 +85,8 @@ local lineJot = {
             end
             prevX, prevY = pt.x, pt.y
         end
+
+        love.graphics.line(prevX, prevY, mx, my)
         
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
