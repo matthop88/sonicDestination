@@ -75,7 +75,7 @@ local lineJot = {
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(5)
         
-        local prevX, prevY = nil, nil
+        local prevX, prevY = mx, my
         
         for n, pt in ipairs(self.data) do
             if n == 1 then
