@@ -23,7 +23,8 @@ To execute the Sprite Sheet Slicer application, use the command
 
     love . slicer
 
-with an argument (REQUIRED) specifying the image you wish to slice.Only specify the image name (without an extension.)
+with an argument (REQUIRED) specifying the image you wish to slice.
+Only specify the image name (without an extension.)
 Image is expected to be a png image located in the resources/images/spriteSheets directory.
 
 EX: 
@@ -36,3 +37,12 @@ To execute the Transparency Editor application, use the command
 
     love . transparency
 
+with an argument (REQUIRED) specifying the image you wish to edit the transparencies of.
+Only specify the image name (without an extension.)
+Image is expected to be a png image located in the resources/images/spriteSheets directory.
+
+EX: 
+
+    love . transparency sonic1
+
+runs the Transparency Editor application on the image file `sonicDestination/resources/images/spriteSheets/sonic1.png`.
