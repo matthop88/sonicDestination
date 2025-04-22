@@ -100,13 +100,13 @@ end
 
 function love.update(dt)
     if mousePosition:isChanged() then
-        mousePosition:update()
         if love.mouse.isDown(1) then
             scribbleJot:penDragged(mousePosition:get())
         else
             scribbleJot:penMoved(mousePosition:get())
         end
      end
+    mousePosition:update()
 end
 
 function love.mousepressed(mx, my)
