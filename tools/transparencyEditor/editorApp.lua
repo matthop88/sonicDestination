@@ -40,6 +40,9 @@ love.keypressed = function(key)
     if key == "space" then
         makeSelectedColorTransparent()
         printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
+    elseif key == "escape" then
+        getImageViewer():reload()
+        printToReadout("Changes have been reverted.")
     end
 end
 
