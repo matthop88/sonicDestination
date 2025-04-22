@@ -56,11 +56,7 @@ onColorSelected = function(color)
 end
 
 makeSelectedColorTransparent = function()
-    --[[
-    imageData:mapPixel(pixelMapperFunction)
-    --]]
-
-    print(colorMatchesRGB(selectedColor, 0, 0, 0))
+    getImageViewer().imageData:mapPixel(pixelMapperFunction)
 end
 
 pixelMapperFunction = function(x, y, r, g, b, a)
