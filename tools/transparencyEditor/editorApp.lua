@@ -39,7 +39,6 @@ selectedColor               = nil
 love.keypressed = function(key)
     if key == "space" then
         makeSelectedColorTransparent()
-        printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
     elseif key == "escape" then
         revertChanges()
     end
@@ -59,6 +58,7 @@ end
 
 makeSelectedColorTransparent = function()
     getImageViewer():editPixels(createTransparency)
+    printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
 end
 
 createTransparency = function(x, y, r, g, b, a)
