@@ -70,19 +70,21 @@ local scribbleJot = {
 --------------------------------------------------------------
 
 function love.draw()
-    -- do something awesome
+    scribbleJot:draw()
 end
 
 function love.update(dt)
-    -- do something else awesome
+    -- if mouse position has changed,
+    -- call scribbleJot:penDragged() if button IS pressed,
+    -- call scribbleJot:penMoved()   if button is NOT pressed.
 end
 
 function love.mousepressed(mx, my)
-    -- is there no end to the awesomeness?
+    scribbleJot:penDown(mx, my)
 end
 
 function love.mousereleased(mx, my)
-    -- ANSWER: NO.
+    scribbleJot:penUp(mx, my)
 end
 
 --------------------------------------------------------------
