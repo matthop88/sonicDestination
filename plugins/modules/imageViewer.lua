@@ -2,10 +2,12 @@ return {
     x         = 0,
     y         = 0,
     scale     = 1,
+    imagePath = nil,
     imageData = nil,
     image     = nil,
 
     init = function(self, params)
+        self.imagePath = params.imagePath
         self.imageData = love.image.newImageData(params.imagePath)
         self.pixelated = params.pixelated
         
@@ -19,6 +21,11 @@ return {
         if self.pixelated then
             self.image:setFilter("nearest", "nearest")
         end
+    end,
+
+    reload = function(self)
+        self.imageData = love.image.newImageData(self.imagePath)
+        self:refresh()
     end,
 
     moveImage = function(self, deltaX, deltaY)
