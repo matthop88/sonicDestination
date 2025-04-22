@@ -42,6 +42,16 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
+local prevMousePosition = ({
+    x, y = nil, nil,
+        
+    init = function(self)
+        self.x, self.y = love.mouse.getPosition()
+        return self
+    end,
+        
+}):init()
+
 local scribbleJot = { 
     
     draw = function(self)
@@ -74,9 +84,14 @@ function love.draw()
 end
 
 function love.update(dt)
-    -- if mouse position has changed,
-    -- call scribbleJot:penDragged() if button IS pressed,
-    -- call scribbleJot:penMoved()   if button is NOT pressed.
+    local mx, my = love.mouse.getPosition()
+    if mx ~= prevMousePosition.x or my ~= prevMousePosition.y then
+        print("Mouse coordinates have changed")
+        -- call scribbleJot:penDragged() if button IS pressed,
+        -- call scribbleJot:penMoved()   if button is NOT pressed.
+
+        prevMousePosition.x, prevMousePosition.y = mx, my
+    end
 end
 
 function love.mousepressed(mx, my)
