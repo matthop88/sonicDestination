@@ -114,9 +114,8 @@ end
 --                        Plugins                           --
 --------------------------------------------------------------
 
--- ...
--- ...
--- ...
+PLUGINS = require("plugins/engine")
+    :add("readout", { printFnName = "printToReadout" } )
 
 --------------------------------------------------------------
 --               Static code - is executed last             --
