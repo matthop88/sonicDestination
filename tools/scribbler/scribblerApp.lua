@@ -67,11 +67,11 @@ local scribbleJot = {
     end,
 
     penMoved = function(self, mx, my)
-        -- ...
+        printToReadout("Pen moved to x = " .. mx .. ", y = " .. my)
     end,
 
     penDragged = function(self, mx, my)
-        -- ...
+        printMessage("Pen dragged to x = " .. mx .. ", y = " .. my)
     end,
 
 }
@@ -86,14 +86,14 @@ end
 function love.update(dt)
     local mx, my = love.mouse.getPosition()
     if mx ~= prevMousePosition.x or my ~= prevMousePosition.y then
-        printToReadout("Mouse coordinates have changed")
-        -- call scribbleJot:penDragged() if button IS pressed,
-        -- call scribbleJot:penMoved()   if button is NOT pressed.
-
+        if love.mouse.isDown(1) then
+            scribbleJot:penDragged(mx, my)
+        else
+            scribbleJot:penMoved(mx, my)
+        end
+        
         prevMousePosition.x, prevMousePosition.y = mx, my
-    else
-        printToReadout("Mouse coordinates have NOT changed")
-    end
+     end
 end
 
 function love.mousepressed(mx, my)
