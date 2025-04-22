@@ -68,10 +68,17 @@ local mousePosition = ({
 }):init()
 
 local scribbleJot = { 
+
+    data = { },
     
     draw = function(self, mx, my)
-        love.mouse.setVisible(false)
         love.graphics.setColor(1, 1, 1)
+
+        if self.data.x amd self.data.y then
+            love.graphics.rectangle("fill", self.data.x - 2, self.data.y - 2, 5, 5)
+        end
+        
+        love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
@@ -81,6 +88,7 @@ local scribbleJot = {
 
     penDown = function(self, mx, my)
         printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
+        self.data.x, self.data.y = mx, my
     end,
 
     penMoved = function(self, mx, my)
