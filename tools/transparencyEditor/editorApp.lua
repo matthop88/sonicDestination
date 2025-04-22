@@ -46,17 +46,11 @@ end
 -- Called By:     LOVE2D application, when a key is pressed
 --------------------------------------------------------------
 love.keypressed = function(key)
-    if     key == "space" then
-        makeSelectedColorTransparent()
-    elseif key == "escape" then
-        revertChanges()
-    elseif key == "return" then
-        saveChanges()
+    if     key == "space"  then makeSelectedColorTransparent()
+    elseif key == "escape" then revertChanges()
+    elseif key == "return" then saveChanges()
     end
 end
-
--- ...
--- ...
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
