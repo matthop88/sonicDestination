@@ -8,14 +8,18 @@ return {
 
     init = function(self, params)
         self.imagePath = params.imagePath
-        self.imageData = love.image.newImageData(params.imagePath)
         self.pixelated = params.pixelated
-        
-        self:refresh()
 
+        self:loadImage()
+        
         return self
     end,
 
+    loadImage = function(self)
+        self.imageData = love.image.newImageData(self.imagePath)
+        self:refresh()
+    end,
+    
     refresh = function(self)
         self.image = love.graphics.newImage(self.imageData)
         if self.pixelated then
@@ -24,10 +28,9 @@ return {
     end,
 
     reload = function(self)
-        self.imageData = love.image.newImageData(self.imagePath)
-        self:refresh()
+        self:loadImage()
     end,
-
+    
     moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
         self.y = self.y + deltaY
