@@ -73,6 +73,7 @@ local lineJot = {
     
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(5)
         
         local prevX, prevY = nil, nil
         
@@ -153,12 +154,14 @@ local scribbleJot = {
 
 }
 
+local currentJot = lineJot
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
-    scribbleJot:draw(mousePosition:get())
+    currentJot:draw(mousePosition:get())
 end
 
 function love.update(dt)
@@ -166,19 +169,19 @@ function love.update(dt)
     
     if mousePosition:isChanged() then
         if love.mouse.isDown(1) then
-            scribbleJot:penDragged(mousePosition:get())
+            currentJot:penDragged(mousePosition:get())
         else
-            scribbleJot:penMoved(mousePosition:get())
+            currentJot:penMoved(mousePosition:get())
         end
      end
 end
 
 function love.mousepressed(mx, my)
-    scribbleJot:penDown(mx, my)
+    currentJot:penDown(mx, my)
 end
 
 function love.mousereleased(mx, my)
-    scribbleJot:penUp(mx, my)
+    currentJot:penUp(mx, my)
 end
 
 --------------------------------------------------------------
