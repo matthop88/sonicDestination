@@ -86,11 +86,13 @@ end
 function love.update(dt)
     local mx, my = love.mouse.getPosition()
     if mx ~= prevMousePosition.x or my ~= prevMousePosition.y then
-        print("Mouse coordinates have changed")
+        printToReadout("Mouse coordinates have changed")
         -- call scribbleJot:penDragged() if button IS pressed,
         -- call scribbleJot:penMoved()   if button is NOT pressed.
 
         prevMousePosition.x, prevMousePosition.y = mx, my
+    else
+        printToReadout("Mouse coordinates have NOT changed")
     end
 end
 
