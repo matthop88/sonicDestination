@@ -19,7 +19,7 @@
         [X] Once a color is selected, pressing 'space' will
             turn the selected color transparent.
         [X] Pressing 'escape' will revert the transparency.
-        [ ] Pressing 'return' will save the edited image to disk.
+        [X] Pressing 'return' will save the edited image to disk.
 --]]
 
 --------------------------------------------------------------
