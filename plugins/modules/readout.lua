@@ -17,6 +17,8 @@ local SHADOW_COLOR   = COLOR.JET_BLACK
 
 local MAX_LETTERS_PER_SECOND = 600000
 
+local WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+
 return {
     echoToConsole = false,
     
@@ -125,6 +127,7 @@ return {
         if self:isActive() then
             self:updateTimer(dt)
         end
+        self:updateWindowDimensions()
         self.yOffset = self:calculateYOffset()
         self.message:update(dt)
     end,
@@ -135,6 +138,10 @@ return {
 
     updateTimer = function(self, dt) 
         self.timer = self.timer + (60 * dt)                
+    end,
+
+    updateWindowDimensions = function(self)
+        WINDOW_WIDTH, WINDOW_HEIGHT = love.graphics.getWidth(), love.graphics.getHeight()
     end,
 
     calculateYOffset = function(self)
