@@ -16,7 +16,7 @@
             and zoomed out using the 'a' key
         [X] Clicking on any pixel of the image shows
             a filled-in rectangle of the color for verification purposes.
-        [ ] Once a color is selected, pressing 'space' will
+        [X] Once a color is selected, pressing 'space' will
             turn the selected color transparent.
         [ ] Pressing 'escape' will revert the transparency.
         [ ] Pressing 'return' will save the edited image to disk.
