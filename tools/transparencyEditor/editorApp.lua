@@ -43,10 +43,12 @@ end
 -- Called By:     LOVE2D application, when a key is pressed
 --------------------------------------------------------------
 love.keypressed = function(key)
-    if key == "space" then
+    if     key == "space" then
         makeSelectedColorTransparent()
     elseif key == "escape" then
         revertChanges()
+    elseif key == "return" then
+        saveChanges()
     end
 end
 
@@ -87,6 +89,14 @@ revertChanges = function()
         selectedColor = nil
         printToReadout("Changes have been reverted.")
     end
+end
+
+saveChanges = function()
+    -- ...
+    -- ...
+    -- ...
+
+    printToReadout("Changes have been saved.")
 end
 
 --------------------------------------------------------------
