@@ -57,6 +57,7 @@ end
 
 makeSelectedColorTransparent = function()
     getImageViewer().imageData:mapPixel(pixelMapperFunction)
+    getImageViewer():refresh()
 end
 
 pixelMapperFunction = function(x, y, r, g, b, a)
