@@ -136,7 +136,9 @@ local scribbleJot = {
 
     penDown = function(self, mx, my)
         printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
-        table.insert(self.data, { x = mx, y = my })
+        self.data = {
+            { x = mx, y = my }
+        }
     end,
 
     penMoved = function(self, mx, my)
@@ -145,6 +147,7 @@ local scribbleJot = {
 
     penDragged = function(self, mx, my)
         printToReadout("Pen dragged to x = " .. mx .. ", y = " .. my)
+        table.insert(self.data, { x = mx, y = my })
     end,
 
 }
