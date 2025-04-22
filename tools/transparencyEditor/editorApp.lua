@@ -31,10 +31,9 @@ selectedColor               = nil
 changesMade                 = false
 
 imgPath                     = "resources/images/transparencySad.png"
-imgName                     = nil
+imgName                     = __TRANSPARENCY_FILE
 
-if __TRANSPARENCY_FILE ~= nil then
-    imgName = __TRANSPARENCY_FILE
+if imgName ~= nil then
     imgPath = "resources/images/spriteSheets/" .. imgName .. ".png"
 end
 
