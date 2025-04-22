@@ -42,6 +42,29 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
+local scribbleJot = { 
+    
+    draw = function(self)
+        -- ...
+    end,
+
+    penUp = function(self, mx, my)
+        -- ...
+    end,
+
+    penDown = function(self, mx, my)
+        -- ...
+    end,
+
+    penMoved = function(self, mx, my)
+        -- ...
+    end,
+
+    penDragged = function(self, mx, my)
+        -- ...
+    end,
+
+}
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
