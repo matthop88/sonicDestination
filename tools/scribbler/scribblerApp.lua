@@ -42,7 +42,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-local prevMousePosition = ({
+local mousePosition = ({
     x, y = nil, nil,
         
     init = function(self)
@@ -50,7 +50,7 @@ local prevMousePosition = ({
         return self
     end,
         
-    isPositionChanged = function(self, mx, my)
+    isChanged = function(self, mx, my)
         return self.x ~= mx or self.y ~= my
     end,
 
@@ -93,14 +93,14 @@ end
 
 function love.update(dt)
     local mx, my = love.mouse.getPosition()
-    if prevMousePosition:isPositionChanged(mx, my) then
+    if mousePosition:isChanged(mx, my) then
         if love.mouse.isDown(1) then
             scribbleJot:penDragged(mx, my)
         else
             scribbleJot:penMoved(mx, my)
         end
         
-        prevMousePosition:update(mx, my)
+        mousePosition:update(mx, my)
      end
 end
 
