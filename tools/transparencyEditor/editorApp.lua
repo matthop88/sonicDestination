@@ -41,8 +41,7 @@ love.keypressed = function(key)
         makeSelectedColorTransparent()
         printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
     elseif key == "escape" then
-        getImageViewer():reload()
-        printToReadout("Changes have been reverted.")
+        revertChanges()
     end
 end
 
@@ -72,6 +71,11 @@ end
 
 colorMatchesRGB = function(color, r, g, b)
      return color ~= nil and color.r == r and color.g == g and color.b == b
+end
+
+revertChanges = function()
+    getImageViewer():reload()
+    printToReadout("Changes have been reverted.")
 end
 
 --------------------------------------------------------------
