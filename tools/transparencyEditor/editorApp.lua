@@ -10,16 +10,16 @@
         Changes can be saved or reverted.
 
      Features:
-        [X] Image can be scrolled using the up, down,
-            left and right arrow keys.
-        [X] Image can be zoomed in using the 'z' key
-            and zoomed out using the 'a' key
-        [X] Clicking on any pixel of the image shows
-            a filled-in rectangle of the color for verification purposes.
-        [X] Once a color is selected, pressing 'space' will
-            turn the selected color transparent.
-        [X] Pressing 'escape' will revert the transparency.
-        [X] Pressing 'return' will save the edited image to disk.
+         * Image can be scrolled using the up, down,
+           left and right arrow keys.
+         * Image can be zoomed in using the 'z' key 
+           and zoomed out using the 'a' key
+         * Clicking on any pixel of the image shows
+           a filled-in rectangle of the color for verification purposes.
+         * Once a color is selected, pressing 'space' will
+           turn the selected color transparent.
+         * Pressing 'escape' will revert the transparency.
+         * Pressing 'return' will save the edited image to disk.
 --]]
 
 --------------------------------------------------------------
