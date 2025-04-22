@@ -75,6 +75,7 @@ end
 
 revertChanges = function()
     getImageViewer():reload()
+    selectedColor = nil
     printToReadout("Changes have been reverted.")
 end
 
