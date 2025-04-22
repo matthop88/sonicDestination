@@ -69,8 +69,10 @@ local mousePosition = ({
 
 local scribbleJot = { 
     
-    draw = function(self)
-        -- ...
+    draw = function(self, mx, my)
+        love.mouse.setVisible(false)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
@@ -95,7 +97,7 @@ local scribbleJot = {
 --------------------------------------------------------------
 
 function love.draw()
-    scribbleJot:draw()
+    scribbleJot:draw(mousePosition:get())
 end
 
 function love.update(dt)
