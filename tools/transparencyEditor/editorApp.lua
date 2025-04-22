@@ -28,6 +28,7 @@
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 selectedColor               = nil
+changesMade                 = false
 
 imgPath                     = "resources/images/transparencySad.png"
 imgName                     = nil
@@ -69,6 +70,7 @@ end
 makeSelectedColorTransparent = function()
     if selectedColor ~= nil then
         getImageViewer():editPixels(createTransparency)
+        changesMade = true
         printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
     end
 end
@@ -86,22 +88,26 @@ colorMatchesRGB = function(color, r, g, b)
 end
 
 revertChanges = function()
-    if selectedColor ~= nil then
+    if changesMade then
         getImageViewer():reload()
+        changesMade = false
         selectedColor = nil
         printToReadout("Changes have been reverted.")
     end
 end
 
 saveChanges = function()
-    if imgName == nil then
-        printToReadout("Cannot save changes without valid file.")
-    else
-        -- ...
-        -- ...
-        -- ...
-        
-        printToReadout("Changes have been saved.")
+    if changesMade then
+        if imgName == nil then
+            printToReadout("Cannot save changes without valid file.")
+        else
+            -- ...
+            -- ...
+            -- ...
+            
+            printToReadout("Changes have been saved.")
+        end
+        changesMade = false
     end
 end
 
