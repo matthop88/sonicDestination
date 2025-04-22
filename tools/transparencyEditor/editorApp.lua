@@ -57,8 +57,10 @@ onColorSelected = function(color)
 end
 
 makeSelectedColorTransparent = function()
-    getImageViewer():editPixels(createTransparency)
-    printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
+    if selectedColor ~= nil then
+        getImageViewer():editPixels(createTransparency)
+        printToReadout("Press 'escape' to revert all changes, or 'return' to save.")
+    end
 end
 
 createTransparency = function(x, y, r, g, b, a)
@@ -74,9 +76,11 @@ colorMatchesRGB = function(color, r, g, b)
 end
 
 revertChanges = function()
-    getImageViewer():reload()
-    selectedColor = nil
-    printToReadout("Changes have been reverted.")
+    if selectedColor ~= nil then
+        getImageViewer():reload()
+        selectedColor = nil
+        printToReadout("Changes have been reverted.")
+    end
 end
 
 --------------------------------------------------------------
