@@ -74,8 +74,8 @@ local scribbleJot = {
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
 
-        if self.data.x and self.data.y then
-            love.graphics.rectangle("fill", self.data.x - 2, self.data.y - 2, 5, 5)
+        for _, pt in ipairs(self.data) do
+            love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
         end
         
         love.mouse.setVisible(false)
@@ -88,7 +88,7 @@ local scribbleJot = {
 
     penDown = function(self, mx, my)
         printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
-        self.data.x, self.data.y = mx, my
+        table.insert(self.data, { x = mx, y = my })
     end,
 
     penMoved = function(self, mx, my)
