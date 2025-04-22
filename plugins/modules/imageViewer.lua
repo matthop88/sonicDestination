@@ -10,6 +10,7 @@ return {
         self.image = love.graphics.newImage(self.imageData)
 
         if params.pixelated then
+            self.pixelated = true
             self.image:setFilter("nearest", "nearest")
         end
 
