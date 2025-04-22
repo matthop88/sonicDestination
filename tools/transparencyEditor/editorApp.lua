@@ -101,7 +101,7 @@ saveChanges = function()
         if imgName == nil then
             printToReadout("Cannot save changes without valid file.")
         else
-            local fileData = getImageViewer().imageData:encode("png", imgName .. ".png")
+            local fileData = getImageViewer():saveImage(imgName)
             changesMade = false
             
             printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
