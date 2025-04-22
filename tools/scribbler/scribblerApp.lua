@@ -74,7 +74,7 @@ local scribbleJot = {
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
 
-        if self.data.x amd self.data.y then
+        if self.data.x and self.data.y then
             love.graphics.rectangle("fill", self.data.x - 2, self.data.y - 2, 5, 5)
         end
         
