@@ -92,6 +92,10 @@ return {
         self:refresh()
     end,
 
+    saveImage = function(self, imgName)
+        return self.imageData:encode("png", imgName .. ".png")
+    end,
+            
     getScale = function(self)
         return self.scale
     end,
