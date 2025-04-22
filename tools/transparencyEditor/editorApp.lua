@@ -30,9 +30,11 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 selectedColor               = nil
 
 imgPath                     = "resources/images/transparencySad.png"
+imgName                     = nil
 
 if __TRANSPARENCY_FILE ~= nil then
-    imgPath = "resources/images/spriteSheets/" .. __TRANSPARENCY_FILE .. ".png"
+    imgName = __TRANSPARENCY_FILE
+    imgPath = "resources/images/spriteSheets/" .. imgName .. ".png"
 end
 
 --------------------------------------------------------------
@@ -92,11 +94,15 @@ revertChanges = function()
 end
 
 saveChanges = function()
-    -- ...
-    -- ...
-    -- ...
-
-    printToReadout("Changes have been saved.")
+    if imgName == nil then
+        printToReadout("Cannot save changes without valid file.")
+    else
+        -- ...
+        -- ...
+        -- ...
+        
+        printToReadout("Changes have been saved.")
+    end
 end
 
 --------------------------------------------------------------
