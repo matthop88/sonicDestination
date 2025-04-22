@@ -186,6 +186,14 @@ function love.mousereleased(mx, my)
     currentJot:penUp(mx, my)
 end
 
+function love.keypressed(key)
+    if key == "l" then
+        currentJot = lineJot
+    elseif key == "s" then
+        currentJot = scribbleJot
+    end
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
