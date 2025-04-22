@@ -101,9 +101,11 @@ saveChanges = function()
         if imgName == nil then
             printToReadout("Cannot save changes without valid file.")
         else
-            getImageViewer().imageData:encode("png", imgName .. ".png")
+            local fileData = getImageViewer().imageData:encode("png", imgName .. ".png")
             changesMade = false
-            printToReadout("Changes have been saved.")
+            
+            printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+            print("Saved to " .. love.filesystem.getSaveDirectory())
         end
     end
 end
