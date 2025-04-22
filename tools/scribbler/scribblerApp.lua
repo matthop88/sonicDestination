@@ -50,6 +50,14 @@ local prevMousePosition = ({
         return self
     end,
         
+    isPositionChanged = function(self, mx, my)
+        return self.x ~= mx or self.y ~= my
+    end,
+
+    update = function(self, mx, my)
+        self.x, self.y = mx, my
+    end,
+        
 }):init()
 
 local scribbleJot = { 
@@ -85,14 +93,14 @@ end
 
 function love.update(dt)
     local mx, my = love.mouse.getPosition()
-    if mx ~= prevMousePosition.x or my ~= prevMousePosition.y then
+    if prevMousePosition:isPositionChanged(mx, my) then
         if love.mouse.isDown(1) then
             scribbleJot:penDragged(mx, my)
         else
             scribbleJot:penMoved(mx, my)
         end
         
-        prevMousePosition.x, prevMousePosition.y = mx, my
+        prevMousePosition:update(mx, my)
      end
 end
 
