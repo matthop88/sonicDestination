@@ -43,21 +43,22 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local mousePosition = ({
-    x, y = nil, nil,
+    x,     y     = nil, nil,
+    prevX, prevY = nil, nil,
         
     init = function(self)
-        self.x, self.y = love.mouse.getPosition()
+        self.x,     self.y     = love.mouse.getPosition()
+        self.prevX, self.prevY = self.x, self.y
         return self
     end,
         
     isChanged = function(self)
-        local mx, my = love.mouse.getPosition()
-        return self.x ~= mx or self.y ~= my
+        return self.x ~= self.prevX or self.y ~= self.prevY
     end,
 
     update = function(self)
-        local mx, my = love.mouse.getPosition()
-        self.x, self.y = mx, my
+        self.prevX, self.prevY = self.x, self.y
+        self.x,     self.y     = love.mouse.getPosition()
     end,
 
     get = function(self)
