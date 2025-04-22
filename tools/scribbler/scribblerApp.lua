@@ -59,11 +59,11 @@ local scribbleJot = {
     end,
 
     penUp = function(self, mx, my)
-        -- ...
+        printToReadout("Pen up at x = " .. mx .. ", y = " .. my)
     end,
 
     penDown = function(self, mx, my)
-        -- ...
+        printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
     end,
 
     penMoved = function(self, mx, my)
