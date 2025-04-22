@@ -95,7 +95,6 @@ PLUGINS = require("plugins/engine")
         horizMargins    = 0,
         boxHeight       = 56,
         printFnName     = "printToReadout",
-        echoToConsole   = true,
     })
 
 --------------------------------------------------------------
