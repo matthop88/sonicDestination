@@ -18,7 +18,7 @@
             a filled-in rectangle of the color for verification purposes.
         [X] Once a color is selected, pressing 'space' will
             turn the selected color transparent.
-        [ ] Pressing 'escape' will revert the transparency.
+        [X] Pressing 'escape' will revert the transparency.
         [ ] Pressing 'return' will save the edited image to disk.
 --]]
 
