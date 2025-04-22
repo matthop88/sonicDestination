@@ -29,6 +29,12 @@
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 selectedColor               = nil
 
+imgPath                     = "resources/images/transparencySad.png"
+
+if __TRANSPARENCY_FILE ~= nil then
+    imgPath = "resources/images/spriteSheets/" .. __TRANSPARENCY_FILE .. ".png"
+end
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -90,7 +96,7 @@ end
 PLUGINS = require("plugins/engine")
     :add("imageViewer",
     {
-        imagePath       = "resources/images/spriteSheets/sonic1.png",
+        imagePath       = imgPath,
         accessorFnName  = "getImageViewer",
         pixelated       = true,
     })
