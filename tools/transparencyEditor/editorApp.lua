@@ -56,11 +56,10 @@ onColorSelected = function(color)
 end
 
 makeSelectedColorTransparent = function()
-    getImageViewer().imageData:mapPixel(pixelMapperFunction)
-    getImageViewer():refresh()
+    getImageViewer():editPixels(createTransparency)
 end
 
-pixelMapperFunction = function(x, y, r, g, b, a)
+createTransparency = function(x, y, r, g, b, a)
    if colorMatchesRGB(selectedColor, r, g, b) then
        return 0, 0, 0, 0
    else
