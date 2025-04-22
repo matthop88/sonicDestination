@@ -104,10 +104,10 @@ saveChanges = function()
             -- ...
             -- ...
             -- ...
-            
+
+            changesMade = false
             printToReadout("Changes have been saved.")
         end
-        changesMade = false
     end
 end
 
