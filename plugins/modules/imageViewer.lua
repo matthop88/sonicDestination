@@ -16,6 +16,13 @@ return {
         return self
     end,
 
+    refresh = function(self)
+        self.image = love.graphics.newImage(self.imageData)
+        if self.pixelated then
+            self.image:setFilter("nearest", "nearest")
+        end
+    end,
+
     moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
         self.y = self.y + deltaY
