@@ -90,16 +90,18 @@ end
 
 saveChanges = function()
     if changesMade then
-        if imgName == nil then
-            printToReadout("Cannot save changes without valid file.")
-        else
-            local fileData = getImageViewer():saveImage(imgName)
-            changesMade = false
-            
-            printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
-            print("Saved to " .. love.filesystem.getSaveDirectory())
+        if imgName == nil then printToReadout("Cannot save changes without valid file.")
+        else                   doSaveChanges()
         end
     end
+end
+
+doSaveChanges = function()
+    local fileData = getImageViewer():saveImage(imgName)
+    changesMade = false
+            
+    printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+    print("Saved to " .. love.filesystem.getSaveDirectory())
 end
 
 --------------------------------------------------------------
