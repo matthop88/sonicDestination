@@ -103,7 +103,7 @@ doSaveChanges = function()
     print("Saved to " .. love.filesystem.getSaveDirectory())
 end
 
---[[
+ASCII_ART = [[
                                                                                                                     
                                          $$XXXxxxxxxxxXXX$$                                                         
                                     $XXxxx+++++xxXXXXXX$$&&                                                         
@@ -153,7 +153,7 @@ $$$XXXX$$$$$$&                   &$XXXX$$
                                   &$XXX$$                                                                           
                                   &$XXX$                                                                            
                                     $$$                                                                             
---]]
+]]
 
 --------------------------------------------------------------
 --                        Plugins                           --
