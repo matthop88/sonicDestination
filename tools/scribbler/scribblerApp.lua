@@ -73,7 +73,7 @@ local lineJot = {
     
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
-
+        
         local prevX, prevY = nil, nil
         
         for n, pt in ipairs(self.data) do
@@ -114,7 +114,8 @@ local scribbleJot = {
     
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
-
+        love.graphics.setLineWidth(5)
+        
         local prevX, prevY = nil, nil
         
         for n, pt in ipairs(self.data) do
