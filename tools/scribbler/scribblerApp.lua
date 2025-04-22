@@ -67,6 +67,47 @@ local mousePosition = ({
         
 }):init()
 
+local lineJot = { 
+
+    data = { },
+    
+    draw = function(self, mx, my)
+        love.graphics.setColor(1, 1, 1)
+
+        local prevX, prevY = nil, nil
+        
+        for n, pt in ipairs(self.data) do
+            if n == 1 then
+                love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
+            else
+                love.graphics.line(prevX, prevY, pt.x, pt.y)
+            end
+            prevX, prevY = pt.x, pt.y
+        end
+        
+        love.mouse.setVisible(false)
+        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
+    end,
+
+    penUp = function(self, mx, my)
+        printToReadout("Pen up at x = " .. mx .. ", y = " .. my)
+    end,
+
+    penDown = function(self, mx, my)
+        printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
+        table.insert(self.data, { x = mx, y = my })
+    end,
+
+    penMoved = function(self, mx, my)
+        printToReadout("Pen moved to x = " .. mx .. ", y = " .. my)
+    end,
+
+    penDragged = function(self, mx, my)
+        printToReadout("Pen dragged to x = " .. mx .. ", y = " .. my)
+    end,
+
+}
+
 local scribbleJot = { 
 
     data = { },
@@ -107,6 +148,7 @@ local scribbleJot = {
     end,
 
 }
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
