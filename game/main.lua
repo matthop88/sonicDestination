@@ -1,3 +1,9 @@
+relativePath    = relativePath    or function(path) return path end
+
+requireRelative = function(path)
+    return require(relativePath(path))
+end
+
 --------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
@@ -5,8 +11,8 @@
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local WORKSPACE          = require("game/workspace")
-local SONIC              = require("game/sonic")
+local WORKSPACE          = requireRelative("workspace")
+local SONIC              = requireRelative("sonic")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -14,6 +20,8 @@ local SONIC              = require("game/sonic")
 
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+SONIC:moveTo(512, 514)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -24,6 +32,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 function love.draw()
     WORKSPACE:draw()
+    SONIC:draw()
 end
 
 --------------------------------------------------------------
@@ -38,13 +47,15 @@ end
 --                          Plugins                         --
 --------------------------------------------------------------
 
-PLUGINS = require("plugins/engine")
-    :add("mouseTracking",
-    {
-        object  = SONIC,
-        originX = 512,
-        originY = 514,
-    })
+if __DEV_MODE == true then
+    PLUGINS = require("plugins/engine")
+        :add("mouseTracking",
+        {
+            object  = SONIC,
+            originX = 512,
+            originY = 514,
+        })
+end
 
 --[[
                              ...,?77??!~~~~!???77?<~.... 

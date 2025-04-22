@@ -2,16 +2,35 @@ return {
     x         = 0,
     y         = 0,
     scale     = 1,
+    imagePath = nil,
     imageData = nil,
     image     = nil,
 
     init = function(self, params)
-        self.imageData = love.image.newImageData(params.imagePath)
-        self.image = love.graphics.newImage(self.imageData)
+        self.imagePath = params.imagePath
+        self.pixelated = params.pixelated
 
+        self:loadImage()
+        
         return self
     end,
 
+    loadImage = function(self)
+        self.imageData = love.image.newImageData(self.imagePath)
+        self:refresh()
+    end,
+    
+    refresh = function(self)
+        self.image = love.graphics.newImage(self.imageData)
+        if self.pixelated then
+            self.image:setFilter("nearest", "nearest")
+        end
+    end,
+
+    reload = function(self)
+        self:loadImage()
+    end,
+    
     moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
         self.y = self.y + deltaY
@@ -68,6 +87,15 @@ return {
         return { r = r, g = g, b = b }
     end,
 
+    editPixels = function(self, pixelMapper)
+        self.imageData:mapPixel(pixelMapper)
+        self:refresh()
+    end,
+
+    saveImage = function(self, imgName)
+        return self.imageData:encode("png", imgName .. ".png")
+    end,
+            
     getScale = function(self)
         return self.scale
     end,
