@@ -50,12 +50,18 @@ local mousePosition = ({
         return self
     end,
         
-    isChanged = function(self, mx, my)
+    isChanged = function(self)
+        local mx, my = love.mouse.getPosition()
         return self.x ~= mx or self.y ~= my
     end,
 
-    update = function(self, mx, my)
+    update = function(self)
+        local mx, my = love.mouse.getPosition()
         self.x, self.y = mx, my
+    end,
+
+    get = function(self)
+        return self.x, self.y
     end,
         
 }):init()
@@ -92,15 +98,13 @@ function love.draw()
 end
 
 function love.update(dt)
-    local mx, my = love.mouse.getPosition()
-    if mousePosition:isChanged(mx, my) then
+    if mousePosition:isChanged() then
+        mousePosition:update()
         if love.mouse.isDown(1) then
-            scribbleJot:penDragged(mx, my)
+            scribbleJot:penDragged(mousePosition:get())
         else
-            scribbleJot:penMoved(mx, my)
+            scribbleJot:penMoved(mousePosition:get())
         end
-        
-        mousePosition:update(mx, my)
      end
 end
 
