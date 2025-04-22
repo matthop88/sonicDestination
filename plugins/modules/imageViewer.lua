@@ -77,6 +77,11 @@ return {
         return { r = r, g = g, b = b }
     end,
 
+    editPixels = function(self, pixelMapper)
+        self.imageData:mapPixel(pixelMapper)
+        self:refresh()
+    end,
+
     getScale = function(self)
         return self.scale
     end,
