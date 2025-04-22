@@ -7,12 +7,9 @@ return {
 
     init = function(self, params)
         self.imageData = love.image.newImageData(params.imagePath)
-        self.image = love.graphics.newImage(self.imageData)
-
-        if params.pixelated then
-            self.pixelated = true
-            self.image:setFilter("nearest", "nearest")
-        end
+        self.pixelated = params.pixelated
+        
+        self:refresh()
 
         return self
     end,
