@@ -71,7 +71,7 @@ local scribbleJot = {
     end,
 
     penDragged = function(self, mx, my)
-        printMessage("Pen dragged to x = " .. mx .. ", y = " .. my)
+        printToReadout("Pen dragged to x = " .. mx .. ", y = " .. my)
     end,
 
 }
