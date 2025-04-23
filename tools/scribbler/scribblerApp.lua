@@ -85,12 +85,9 @@ end
 
 function love.update(dt)
     mousePosition:update()
-    
     if mousePosition:isChanged() then
-        if love.mouse.isDown(1) then
-            currentTool:penDragged(mousePosition:get())
-        else
-            currentTool:penMoved(mousePosition:get())
+        if love.mouse.isDown(1) then currentTool:penDragged(mousePosition:get())
+        else                         currentTool:penMoved(mousePosition:get())
         end
      end
 end
@@ -108,15 +105,8 @@ function love.keypressed(key)
     elseif key == "r" then currentTool = rectTool
     elseif key == "s" then currentTool = scribbleTool
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
-        if love.keyboard.isDown("lshift", "rshift") then
-            picture:redo()
-        else
-            picture:undo()
-        end
-    else
-        if currentTool.keypressed then
-            currentTool:keypressed(key)
-        end
+        implementUndoOrRedo()
+    elseif currentTool.keypressed then currentTool:keypressed(key)
     end
 end
 
@@ -124,7 +114,12 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function implementUndoOrRedo()
+    if love.keyboard.isDown("lshift", "rshift") then picture:redo()
+    else                                             picture:undo()
+    end
+end
+
 -- ...
 -- ...
 
