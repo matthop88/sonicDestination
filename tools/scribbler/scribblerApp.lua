@@ -68,16 +68,21 @@ local mousePosition = ({
 }):init()
 
 local picture = {
-    jots = {},
+    jots = {
+        tailIndex = 0,
+    },
 
     draw = function(self)
-        for _, jot in ipairs(self.jots) do
-            jot:draw()
+        for n, jot in ipairs(self.jots) do
+            if n <= self.jots.tailIndex then
+                jot:draw()
+            end
         end
     end,
 
     addJot = function(self, jot)
         table.insert(self.jots, jot)
+        self.jots.tailIndex = self.jots.tailIndex + 1
     end,
 }
 
