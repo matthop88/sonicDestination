@@ -28,15 +28,17 @@ return {
 
     draw = function(self, mx, my)
         self.jot:draw(mx, my)
+        self:drawWorkingLine(mx, my)
+        self:drawCursor(mx, my) 
+    end,
 
-        if #self.jot.data > 0 then
+    drawWorkingLine = function(self, mx, my)
+        if #self.jot.data > 0 then 
             love.graphics.setColor(1, 1, 1, 0.5)
             local prevX = self.jot.data[#self.jot.data].x
             local prevY = self.jot.data[#self.jot.data].y
             love.graphics.line(prevX, prevY, mx, my)
         end
-
-        self:drawCursor(mx, my) 
     end,
 
     drawCursor = function(self, mx, my)
