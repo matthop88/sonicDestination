@@ -9,8 +9,8 @@
         Stretch goal: straight line, rectangle and text support
 
     Features:
-        [ ] Mouse-down draws lines between mouse position and previous mouse position
-        [ ] Mouse-up allows movement without drawing
+        [X] Mouse-down draws lines between mouse position and previous mouse position
+        [X] Mouse-up allows movement without drawing
         [ ] Command Z undoes one action at a time
         [ ] Shift Command Z redoes one action at a time
         [ ] 'G' shows a grid
