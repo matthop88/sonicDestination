@@ -88,7 +88,7 @@ local rectJot = {
     end,
 
     penDown = function(self, mx, my)
-        table.insert(self.data, { x = mx, y = my })
+        self.data.x, self.data.y = mx, my
     end,
 
     penMoved = function(self, mx, my)
