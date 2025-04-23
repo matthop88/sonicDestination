@@ -88,6 +88,10 @@ local picture = {
     undo = function(self)
         self.jots.tailIndex = math.max(0, self.jots.tailIndex - 1)
     end,
+
+    redo = function(self)
+        self.jots.tailIndex = math.min(#self.jots, self.jots.tailIndex + 1)
+    end,    
 }
 
 local scribbleTool = require("tools/scribbler/jotTools/scribble"):init(picture)
@@ -134,7 +138,7 @@ function love.keypressed(key)
         currentTool = scribbleTool
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
         if love.keyboard.isDown("lshift", "rshift") then
-            printToReadout("REDO")
+            picture:redo()
         else
             picture:undo()
         end
