@@ -116,6 +116,10 @@ function love.keypressed(key)
         else
             picture:undo()
         end
+    else
+        if currentTool.keypressed then
+            currentTool:keypressed(key)
+        end
     end
 end
 
