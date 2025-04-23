@@ -221,8 +221,10 @@ function love.mousereleased(mx, my)
 end
 
 function love.keypressed(key)
-    if key == "l" then
+    if     key == "l" then
         currentJot = lineJot
+    elseif key == "r" then
+        currentJot = rectJot
     elseif key == "s" then
         currentJot = scribbleJot
     end
