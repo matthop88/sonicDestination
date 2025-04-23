@@ -1,4 +1,20 @@
- return { 
+local drawLineJot = function(self, mx, my)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(5)
+            
+    local prevX, prevY = mx, my
+
+    for n, pt in ipairs(self.data) do
+        if n == 1 then
+            love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
+        else
+            love.graphics.line(prevX, prevY, pt.x, pt.y)
+        end
+        prevX, prevY = pt.x, pt.y
+    end
+end
+
+return { 
 
     init = function(self, picture)
         self.picture = picture
@@ -7,22 +23,7 @@
 
     jot = {
         data = { },
-    
-        draw = function(self, mx, my)
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.setLineWidth(5)
-            
-            local prevX, prevY = mx, my
-            
-            for n, pt in ipairs(self.data) do
-                if n == 1 then
-                    love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
-                else
-                    love.graphics.line(prevX, prevY, pt.x, pt.y)
-                end
-                prevX, prevY = pt.x, pt.y
-            end
-        end,
+        draw = drawLineJot,
     },
 
     draw = function(self, mx, my)
@@ -54,6 +55,17 @@
 
     penDragged = function(self, mx, my)
         -- Do nothing
+    end,
+
+    keypressed = function(self, key)
+        if key == "return" then
+            self.picture:addJot(self.jot)
+
+            self.jot = {
+                data  = { },
+                draw  = lineJotDraw,
+            }
+        end
     end,
 
 }
