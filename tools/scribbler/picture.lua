@@ -4,9 +4,7 @@ return {
 
         draw = function(self)
             for n, jot in ipairs(self) do
-                if n <= self.tailIndex then
-                    jot:draw()
-                end
+                if n <= self.tailIndex then jot:draw() end
             end
         end,
 
