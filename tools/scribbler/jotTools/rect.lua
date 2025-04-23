@@ -36,12 +36,7 @@ return {
     end,
 
     penUp = function(self, mx, my)
-        self.jot.data = {
-            x = self.originX,
-            y = self.originY,
-            w = mx - self.originX,
-            h = my - self.originY,
-        }
+        self:finishRectangle()
         self.picture:addJot(self.jot)
         self.jot = {
             data = nil,
@@ -60,6 +55,15 @@ return {
 
     penDragged = function(self, mx, my)
         -- Do nothing
+    end,
+
+    finishRectangle = function(self, mx, my)
+        self.jot.data = {
+            x = self.originX,
+            y = self.originY,
+            w = mx - self.originX,
+            h = my - self.originY,
+        }
     end,
 
 }
