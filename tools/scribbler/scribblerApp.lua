@@ -11,8 +11,8 @@
     Features:
         [X] Mouse-down draws lines between mouse position and previous mouse position
         [X] Mouse-up allows movement without drawing
-        [ ] Command Z undoes one action at a time
-        [ ] Shift Command Z redoes one action at a time
+        [X] Command Z undoes one action at a time
+        [X] Shift Command Z redoes one action at a time
         [ ] 'G' shows a grid
         [ ] Shift allows snapping to grid
         [ ] Command-S saves to disk
@@ -20,7 +20,7 @@
 
         ------------------------------ STRETCH GOALS -------------------------------
 
-        [ ] 'L' draws a line from pt 1 to pt 2
+        [X] 'L' draws a line from pt 1 to pt 2
         [ ] 'R' draws a rect with upper-left corner at pt 1, lower left at pt 2
         [ ] 'T' allows typing of text at mouse position. Left-justified
         [ ] 'C' allows cycling through various colors
