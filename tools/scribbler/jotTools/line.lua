@@ -16,6 +16,13 @@ local drawLineJot = function(self, mx, my)
     doLineJotDrawing(self, mx, my)
 end
 
+local newJot = function()
+    return {
+        data = { },
+        draw = drawLineJot,
+    }
+end
+
 return { 
 
     init = function(self, picture)
@@ -23,10 +30,7 @@ return {
         return self
     end,
 
-    jot = {
-        data = { },
-        draw = drawLineJot,
-    },
+    jot = newJot(),
 
     draw = function(self, mx, my)
         self.jot:draw(mx, my)
@@ -68,11 +72,7 @@ return {
     keypressed = function(self, key)
         if key == "return" then
             self.picture:addJot(self.jot)
-
-            self.jot = {
-                data  = { },
-                draw  = drawLineJot,
-            }
+            self.jot = newJot()
         end
     end,
 
