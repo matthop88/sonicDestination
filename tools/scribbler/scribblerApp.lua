@@ -76,7 +76,11 @@ local rectJot = {
         love.graphics.setLineWidth(5)
         
         if self.data.x ~= nil and self.data.y ~= nil then
-            love.graphics.rectangle("line", self.data.x, self.data.y, mx - self.data.x, my - self.data.y)
+            if self.data.w ~= nil and self.data.h ~= nil then
+                love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
+            else
+                love.graphics.rectangle("line", self.data.x, self.data.y, mx - self.data.x, my - self.data.y)
+            end
         end
 
         love.mouse.setVisible(false)
@@ -84,11 +88,13 @@ local rectJot = {
     end,
 
     penUp = function(self, mx, my)
-        -- Do nothing
+        self.data.w = mx - self.data.x
+        self.data.h = my - self.data.y
     end,
 
+
     penDown = function(self, mx, my)
-        self.data.x, self.data.y = mx, my
+        self.data = { x = mx, y = my }
     end,
 
     penMoved = function(self, mx, my)
