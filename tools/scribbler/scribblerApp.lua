@@ -21,7 +21,7 @@
         ------------------------------ STRETCH GOALS -------------------------------
 
         [X] 'L' draws a line from pt 1 to pt 2
-        [ ] 'R' draws a rect with upper-left corner at pt 1, lower left at pt 2
+        [X] 'R' draws a rect with upper-left corner at pt 1, lower left at pt 2
         [ ] 'T' allows typing of text at mouse position. Left-justified
         [ ] 'C' allows cycling through various colors
 
