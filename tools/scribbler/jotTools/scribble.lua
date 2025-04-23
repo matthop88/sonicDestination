@@ -39,7 +39,11 @@ return {
         
     draw = function(self, mx, my)
         self.jot:draw()
+        self:drawCursor(mx, my)
+    end,
 
+    drawCursor = function(self, mx, my)
+        love.graphics.setColor(1, 1, 1)
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
