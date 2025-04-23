@@ -34,7 +34,7 @@ return {
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
-    drawWorkingRectangle(self, mx, my)
+    drawWorkingRectangle = function(self, mx, my)
         if self.originX ~= nil and self.originY ~= nil then
             love.graphics.setColor(1, 1, 1, 0.5)
             love.graphics.setLineWidth(5)
