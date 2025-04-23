@@ -116,6 +116,12 @@ local scribbleTool = ({
     end,
     
     penUp = function(self, mx, my)
+        self.picture:addJot(self.jot)
+        self.jot = {
+            data = { },
+            draw = self.jot.draw,
+        }
+
         printToReadout("Pen up at x = " .. mx .. ", y = " .. my)
     end,
 
@@ -206,7 +212,6 @@ local rectTool = {
         self.data.h = my - self.data.y
     end,
 
-
     penDown = function(self, mx, my)
         self.data = { x = mx, y = my }
     end,
@@ -228,6 +233,7 @@ local currentTool = scribbleTool
 --------------------------------------------------------------
 
 function love.draw()
+    picture:draw()
     currentTool:draw(mousePosition:get())
 end
 
