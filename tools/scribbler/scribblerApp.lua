@@ -82,7 +82,7 @@ local picture = {
 }
 
 local scribbleTool = require("tools/scribbler/jotTools/scribble"):init(picture)
-local lineTool     = require("tools/scribbler/jotTools/scribble"):init(picture)
+local lineTool     = require("tools/scribbler/jotTools/line"    ):init(picture)
 
 local rectTool = { 
     
