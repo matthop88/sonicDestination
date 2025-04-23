@@ -15,13 +15,14 @@ local drawScribbleJot = function(self)
 end
 
 local addStrokeToJot = function(self, x, y)
-    table.insert(self.jot.data, { x = x, y = y })
+    table.insert(self.data, { x = x, y = y })
 end
 
 local newScribbleJot = function()
     return {
         data = { color = { 1, 1, 1, 0.5 } },
         draw = drawScribbleJot,
+        add  = addStrokeToJot,
     }
 end
 
@@ -50,7 +51,7 @@ return {
 
     penDown = function(self, mx, my)
         self.jot = newScribbleJot()
-        addStrokeToJot(mx, my)
+        self.jot:add(mx, my)
     end,
 
     penMoved = function(self, mx, my)
@@ -58,7 +59,7 @@ return {
     end,
 
     penDragged = function(self, mx, my)
-        addStrokeToJot(mx, my)
+        self.jot:add(mx, my)
     end,
 
 }
