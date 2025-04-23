@@ -81,8 +81,8 @@ local picture = {
     end,
 
     addJot = function(self, jot)
-        table.insert(self.jots, jot)
         self.jots.tailIndex = self.jots.tailIndex + 1
+        self.jots[self.jots.tailIndex] = jot
     end,
 
     undo = function(self)
