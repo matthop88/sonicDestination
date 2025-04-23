@@ -27,7 +27,7 @@ return {
     },
 
     draw = function(self, mx, my)
-        self.jot:draw()
+        self.jot:draw(mx, my)
 
         if #self.jot.data > 0 then
             love.graphics.setColor(1, 1, 1, 0.5)
@@ -63,7 +63,7 @@ return {
 
             self.jot = {
                 data  = { },
-                draw  = lineJotDraw,
+                draw  = drawLineJot,
             }
         end
     end,
