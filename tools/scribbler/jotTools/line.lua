@@ -35,7 +35,11 @@ return {
             local prevY = self.jot.data[#self.jot.data].y
             love.graphics.line(prevX, prevY, mx, my)
         end
-        
+
+        self:drawCursor(mx, my) 
+    end,
+
+    drawCursor = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
