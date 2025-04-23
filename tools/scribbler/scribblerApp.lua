@@ -67,42 +67,47 @@ local mousePosition = ({
         
 }):init()
 
-local rectJot = { 
-    
-    data = { },
+local scribbleJot = { 
 
+    data = { },
+    
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(5)
         
-        if self.data.x ~= nil and self.data.y ~= nil then
-            if self.data.w ~= nil and self.data.h ~= nil then
-                love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
+        local prevX, prevY = nil, nil
+        
+        for n, pt in ipairs(self.data) do
+            if n == 1 then
+                love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
             else
-                love.graphics.rectangle("line", self.data.x, self.data.y, mx - self.data.x, my - self.data.y)
+                love.graphics.line(prevX, prevY, pt.x, pt.y)
             end
+            prevX, prevY = pt.x, pt.y
         end
-
+        
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
-        self.data.w = mx - self.data.x
-        self.data.h = my - self.data.y
+        printToReadout("Pen up at x = " .. mx .. ", y = " .. my)
     end,
 
-
     penDown = function(self, mx, my)
-        self.data = { x = mx, y = my }
+        printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
+        self.data = {
+            { x = mx, y = my }
+        }
     end,
 
     penMoved = function(self, mx, my)
-        -- Do nothing
+        printToReadout("Pen moved to x = " .. mx .. ", y = " .. my)
     end,
 
     penDragged = function(self, mx, my)
-        -- Do nothing
+        printToReadout("Pen dragged to x = " .. mx .. ", y = " .. my)
+        table.insert(self.data, { x = mx, y = my })
     end,
 
 }
@@ -151,52 +156,47 @@ local lineJot = {
 
 }
 
-local scribbleJot = { 
-
-    data = { },
+local rectJot = { 
     
+    data = { },
+
     draw = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setLineWidth(5)
         
-        local prevX, prevY = nil, nil
-        
-        for n, pt in ipairs(self.data) do
-            if n == 1 then
-                love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
+        if self.data.x ~= nil and self.data.y ~= nil then
+            if self.data.w ~= nil and self.data.h ~= nil then
+                love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
             else
-                love.graphics.line(prevX, prevY, pt.x, pt.y)
+                love.graphics.rectangle("line", self.data.x, self.data.y, mx - self.data.x, my - self.data.y)
             end
-            prevX, prevY = pt.x, pt.y
         end
-        
+
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
-        printToReadout("Pen up at x = " .. mx .. ", y = " .. my)
+        self.data.w = mx - self.data.x
+        self.data.h = my - self.data.y
     end,
 
+
     penDown = function(self, mx, my)
-        printToReadout("Pen down at x = " .. mx .. ", y = " .. my)
-        self.data = {
-            { x = mx, y = my }
-        }
+        self.data = { x = mx, y = my }
     end,
 
     penMoved = function(self, mx, my)
-        printToReadout("Pen moved to x = " .. mx .. ", y = " .. my)
+        -- Do nothing
     end,
 
     penDragged = function(self, mx, my)
-        printToReadout("Pen dragged to x = " .. mx .. ", y = " .. my)
-        table.insert(self.data, { x = mx, y = my })
+        -- Do nothing
     end,
 
 }
 
-local currentJot = lineJot
+local currentJot = scribbleJot
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
