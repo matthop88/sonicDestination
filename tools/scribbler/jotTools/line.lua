@@ -16,7 +16,7 @@ local drawLineJot = function(self, mx, my)
     doLineJotDrawing(self, mx, my)
 end
 
-local newJot = function()
+local newLineJot = function()
     return {
         data = { },
         draw = drawLineJot,
@@ -30,7 +30,7 @@ return {
         return self
     end,
 
-    jot = newJot(),
+    jot = newLineJot(),
 
     draw = function(self, mx, my)
         self.jot:draw(mx, my)
@@ -70,10 +70,12 @@ return {
     end,
 
     keypressed = function(self, key)
-        if key == "return" then
-            self.picture:addJot(self.jot)
-            self.jot = newJot()
-        end
+        if key == "return" then self:finishPolygon() end
+    end,
+
+    finishPolygon = function(self)
+        self.picture:addJot(self.jot)
+        self.jot = newLineJot()
     end,
 
 }
