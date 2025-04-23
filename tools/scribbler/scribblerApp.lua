@@ -123,6 +123,12 @@ function love.keypressed(key)
         currentTool = rectTool
     elseif key == "s" then
         currentTool = scribbleTool
+    elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
+        if love.keyboard.isDown("lshift", "rshift") then
+            printToReadout("REDO")
+        else
+            printToReadout("UNDO")
+        end
     end
 end
 
