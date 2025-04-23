@@ -1,17 +1,19 @@
-local drawLineJot = function(self, mx, my)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(5)
-            
+local doLineJotDrawing = function(self, mx, my)
     local prevX, prevY = mx, my
 
     for n, pt in ipairs(self.data) do
-        if n == 1 then
-            love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
-        else
-            love.graphics.line(prevX, prevY, pt.x, pt.y)
+        if n == 1 then love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
+        else           love.graphics.line(prevX, prevY, pt.x, pt.y)
         end
         prevX, prevY = pt.x, pt.y
     end
+end
+
+local drawLineJot = function(self, mx, my)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(5)
+
+    doLineJotDrawing(self, mx, my)
 end
 
 return { 
