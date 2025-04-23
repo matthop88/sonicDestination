@@ -44,7 +44,7 @@ return {
     end,
 
     penUp = function(self, mx, my)
-        self:finishRectangle()
+        self:finishRectangle(mx, my)
         self.picture:addJot(self.jot)
         self.jot = newRectJot()
         self.originX, self.originY = nil, nil
