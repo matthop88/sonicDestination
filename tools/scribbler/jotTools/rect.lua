@@ -23,16 +23,20 @@ return {
 
     draw = function(self, mx, my)
         self.jot:draw()
+        self:drawWorkingRectangle(mx, my)
+        
+        love.mouse.setVisible(false)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
+    end,
+
+    drawWorkingRectangle(self, mx, my)
         if self.originX ~= nil and self.originY ~= nil then
             love.graphics.setColor(1, 1, 1, 0.5)
             love.graphics.setLineWidth(5)
 
             love.graphics.rectangle("line", self.originX, self.originY, mx - self.originX, my - self.originY)
         end
-        
-        love.mouse.setVisible(false)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
