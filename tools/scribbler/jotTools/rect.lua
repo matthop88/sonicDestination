@@ -6,6 +6,13 @@ local drawRectJot = function(self)
         love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
     end
 end
+
+local newRectJot = function()
+    return {
+        data = nil,
+        draw = drawRectJot,
+    }
+end
     
 return { 
     init = function(self, picture)
@@ -16,10 +23,7 @@ return {
     originX = nil, 
     originY = nil,
 
-    jot = {
-        data = nil,
-        draw = drawRectJot,
-    },
+    jot = newRectJot(),
 
     draw = function(self, mx, my)
         self.jot:draw()
@@ -42,10 +46,7 @@ return {
     penUp = function(self, mx, my)
         self:finishRectangle()
         self.picture:addJot(self.jot)
-        self.jot = {
-            data = nil,
-            draw = drawRectJot,
-        }
+        self.jot = newRectJot()
         self.originX, self.originY = nil, nil
     end,
 
