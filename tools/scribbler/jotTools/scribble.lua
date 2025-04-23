@@ -1,17 +1,20 @@
+local doScribbleJotDrawing = function(self)
+    local prevX, prevY = nil, nil
+    
+    for n, pt in ipairs(self.data) do
+        if n == 1 then love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
+        else           love.graphics.line(prevX, prevY, pt.x, pt.y)
+        end
+        
+        prevX, prevY = pt.x, pt.y
+    end
+end
+
 local drawScribbleJot = function(self)
     love.graphics.setColor(self.data.color)
     love.graphics.setLineWidth(5)
     
-    local prevX, prevY = nil, nil
-    
-    for n, pt in ipairs(self.data) do
-        if n == 1 then
-            love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
-        else
-            love.graphics.line(prevX, prevY, pt.x, pt.y)
-        end
-        prevX, prevY = pt.x, pt.y
-    end
+    doScribbleJotDrawing(self)
 end
 
 local addStrokeToJot = function(self, x, y)
