@@ -67,6 +67,16 @@ local mousePosition = ({
         
 }):init()
 
+local picture = {
+    jots = {},
+
+    draw = function(self)
+        for _, jot in ipairs(self.jots) do
+            jot:draw()
+        end
+    end,
+}
+
 local scribbleTool = { 
 
     jot = {
