@@ -69,27 +69,33 @@ local mousePosition = ({
 
 local scribbleTool = { 
 
-    data = { },
-    
-    draw = function(self, mx, my)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setLineWidth(5)
+    jot = {
+        data = { },
         
-        local prevX, prevY = nil, nil
-        
-        for n, pt in ipairs(self.data) do
-            if n == 1 then
-                love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
-            else
-                love.graphics.line(prevX, prevY, pt.x, pt.y)
+        draw = function(self)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.setLineWidth(5)
+            
+            local prevX, prevY = nil, nil
+            
+            for n, pt in ipairs(self.data) do
+                if n == 1 then
+                    love.graphics.rectangle("fill", pt.x - 2, pt.y - 2, 5, 5)
+                else
+                    love.graphics.line(prevX, prevY, pt.x, pt.y)
+                end
+                prevX, prevY = pt.x, pt.y
             end
-            prevX, prevY = pt.x, pt.y
-        end
-        
+        end,
+    },
+
+    draw = function(self, mx, my)
+        self.jot:draw()
+
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
-
+    
     penUp = function(self, mx, my)
         printToReadout("Pen up at x = " .. mx .. ", y = " .. my)
     end,
