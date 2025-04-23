@@ -104,12 +104,9 @@ function love.mousereleased(mx, my)
 end
 
 function love.keypressed(key)
-    if     key == "l" then
-        currentTool = lineTool
-    elseif key == "r" then
-        currentTool = rectTool
-    elseif key == "s" then
-        currentTool = scribbleTool
+    if     key == "l" then currentTool = lineTool
+    elseif key == "r" then currentTool = rectTool
+    elseif key == "s" then currentTool = scribbleTool
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
         if love.keyboard.isDown("lshift", "rshift") then
             picture:redo()
