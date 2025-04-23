@@ -75,10 +75,19 @@ local picture = {
             jot:draw()
         end
     end,
+
+    addJot = function(self, jot)
+        table.insert(self.jots, jot)
+    end,
 }
 
-local scribbleTool = { 
+local scribbleTool = ({ 
 
+    init = function(self, picture)
+        self.picture = picture
+        return self
+    end,
+        
     jot = {
         data = { },
         
@@ -126,7 +135,7 @@ local scribbleTool = {
         table.insert(self.jot.data, { x = mx, y = my })
     end,
 
-}
+}):init(picture)
 
 local lineTool = { 
 
