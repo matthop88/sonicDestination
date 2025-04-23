@@ -1,4 +1,4 @@
-local scribbleJotDraw = function(self)
+local drawScribbleJot = function(self)
     love.graphics.setColor(self.data.color)
     love.graphics.setLineWidth(5)
     
@@ -14,39 +14,43 @@ local scribbleJotDraw = function(self)
     end
 end
 
-return { 
+local addStrokeToJot = function(self, x, y)
+    table.insert(self.jot.data, { x = x, y = y })
+end
 
+local newScribbleJot = function()
+    return {
+        data = { color = { 1, 1, 1, 0.5 } },
+        draw = drawScribbleJot,
+    }
+end
+
+return { 
+    jot = newScribbleJot(),
+    
     init = function(self, picture)
         self.picture = picture
         return self
     end,
         
-    jot = nil,
-
     draw = function(self, mx, my)
-        if self.jot then self.jot:draw() end
+        self.jot:draw()
 
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
     
     penUp = function(self, mx, my)
-        if self.jot and self.picture then 
+        if self.picture then 
             self.jot.data.color = { 1, 1, 1 }
             self.picture:addJot(self.jot) 
         end
-        self.jot = nil
+        self.jot = newScribbleJot()
     end,
 
     penDown = function(self, mx, my)
-        self.jot = {
-            data = { 
-                color = { 1, 1, 1, 0.5 },
-                { x = mx, y = my },
-            },
-                
-            draw = scribbleJotDraw,
-        }
+        self.jot = newScribbleJot()
+        addStrokeToJot(mx, my)
     end,
 
     penMoved = function(self, mx, my)
@@ -54,7 +58,7 @@ return {
     end,
 
     penDragged = function(self, mx, my)
-        table.insert(self.jot.data, { x = mx, y = my })
+        addStrokeToJot(mx, my)
     end,
 
 }
