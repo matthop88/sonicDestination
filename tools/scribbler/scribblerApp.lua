@@ -67,7 +67,7 @@ local mousePosition = ({
         
 }):init()
 
-local scribbleJot = { 
+local scribbleTool = { 
 
     data = { },
     
@@ -112,7 +112,7 @@ local scribbleJot = {
 
 }
 
-local lineJot = { 
+local lineTool = { 
 
     data = { },
     
@@ -156,7 +156,7 @@ local lineJot = {
 
 }
 
-local rectJot = { 
+local rectTool = { 
     
     data = { },
 
@@ -196,14 +196,14 @@ local rectJot = {
 
 }
 
-local currentJot = scribbleJot
+local currentTool = scribbleTool
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
-    currentJot:draw(mousePosition:get())
+    currentTool:draw(mousePosition:get())
 end
 
 function love.update(dt)
@@ -211,28 +211,28 @@ function love.update(dt)
     
     if mousePosition:isChanged() then
         if love.mouse.isDown(1) then
-            currentJot:penDragged(mousePosition:get())
+            currentTool:penDragged(mousePosition:get())
         else
-            currentJot:penMoved(mousePosition:get())
+            currentTool:penMoved(mousePosition:get())
         end
      end
 end
 
 function love.mousepressed(mx, my)
-    currentJot:penDown(mx, my)
+    currentTool:penDown(mx, my)
 end
 
 function love.mousereleased(mx, my)
-    currentJot:penUp(mx, my)
+    currentTool:penUp(mx, my)
 end
 
 function love.keypressed(key)
     if     key == "l" then
-        currentJot = lineJot
+        currentTool = lineTool
     elseif key == "r" then
-        currentJot = rectJot
+        currentTool = rectTool
     elseif key == "s" then
-        currentJot = scribbleJot
+        currentTool = scribbleTool
     end
 end
 
