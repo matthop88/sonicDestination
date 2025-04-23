@@ -1,34 +1,57 @@
+local drawRectJot = function(self)
+    if self.data ~= nil then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(5)
+        
+        love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
+    end
+end
+    
 return { 
     init = function(self, picture)
         self.picture = picture
         return self
     end,
-  
-    data = { },
+
+    originX = nil, 
+    originY = nil,
+
+    jot = {
+        data = nil,
+        draw = drawRectJot,
+    },
 
     draw = function(self, mx, my)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setLineWidth(5)
-        
-        if self.data.x ~= nil and self.data.y ~= nil then
-            if self.data.w ~= nil and self.data.h ~= nil then
-                love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
-            else
-                love.graphics.rectangle("line", self.data.x, self.data.y, mx - self.data.x, my - self.data.y)
-            end
-        end
+        self.jot:draw()
+        if self.originX ~= nil and self.originY ~= nil then
+            love.graphics.setColor(1, 1, 1, 0.5)
+            love.graphics.setLineWidth(5)
 
+            love.graphics.rectangle("line", self.originX, self.originY, mx - self.originX, my - self.originY)
+        end
+        
         love.mouse.setVisible(false)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
-        self.data.w = mx - self.data.x
-        self.data.h = my - self.data.y
+        self.jot.data = {
+            x = self.originX,
+            y = self.originY,
+            w = mx - self.originX,
+            h = my - self.originY,
+        }
+        self.picture:addJot(self.jot)
+        self.jot = {
+            data = nil,
+            draw = drawRectJot,
+        }
+        self.originX, self.originY = nil, nil
     end,
 
     penDown = function(self, mx, my)
-        self.data = { x = mx, y = my }
+        self.originX, self.originY = mx, my
     end,
 
     penMoved = function(self, mx, my)
