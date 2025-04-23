@@ -84,6 +84,10 @@ local picture = {
         table.insert(self.jots, jot)
         self.jots.tailIndex = self.jots.tailIndex + 1
     end,
+
+    undo = function(self)
+        self.jots.tailIndex = math.max(0, self.jots.tailIndex - 1)
+    end,
 }
 
 local scribbleTool = require("tools/scribbler/jotTools/scribble"):init(picture)
@@ -132,7 +136,7 @@ function love.keypressed(key)
         if love.keyboard.isDown("lshift", "rshift") then
             printToReadout("REDO")
         else
-            printToReadout("UNDO")
+            picture:undo()
         end
     end
 end
