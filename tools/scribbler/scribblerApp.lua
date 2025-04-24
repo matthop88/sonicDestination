@@ -13,8 +13,8 @@
         [X] Mouse-up allows movement without drawing
         [X] Command Z undoes one action at a time
         [X] Shift Command Z redoes one action at a time
-        [ ] 'G' shows a grid
-        [ ] Shift allows snapping to grid
+        [X] 'G' shows a grid
+        [X] Shift allows snapping to grid
         [ ] Command-S saves to disk
         [ ] File name entered as command-line parameter loads from file
 
