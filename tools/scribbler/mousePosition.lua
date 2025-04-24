@@ -9,11 +9,12 @@ return ({
     end,
         
     isChanged = function(self)
-        return self.x ~= self.prevX or self.y ~= self.prevY
+        local x, y = self:get()
+        return x ~= self.prevX or y ~= self.prevY
     end,
 
     update = function(self)
-        self.prevX, self.prevY = self.x, self.y
+        self.prevX, self.prevY = self:get()
         self.x,     self.y     = love.mouse.getPosition()
     end,
 
