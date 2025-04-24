@@ -74,11 +74,14 @@ local rectTool     = require("tools/scribbler/jotTools/rect"    ):init(picture)
 
 local currentTool = scribbleTool
 
+local showGrid    = false
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
+    if showGrid then drawGrid() end
     picture:draw()
     currentTool:draw(mousePosition:get())
 end
@@ -104,6 +107,7 @@ function love.keypressed(key)
     if     key == "l" then currentTool = lineTool
     elseif key == "r" then currentTool = rectTool
     elseif key == "s" then currentTool = scribbleTool
+    elseif key == "g" then showGrid    = not showGrid
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
         implementUndoOrRedo()
     elseif currentTool.keypressed then currentTool:keypressed(key)
@@ -120,7 +124,19 @@ function implementUndoOrRedo()
     end
 end
 
--- ...
+function drawGrid()
+    love.graphics.setColor(0.5, 0.5, 0.5)
+    love.graphics.setLineWidth(1)
+
+    for x = 0, 1024, 32 do
+        love.graphics.line(x, 0, x,  768)
+    end
+
+    for y = 0, 768,  32 do
+        love.graphics.line(0, y, 1024, y)
+    end
+end
+
 -- ...
 
 --------------------------------------------------------------
