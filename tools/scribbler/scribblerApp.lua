@@ -62,7 +62,12 @@ local mousePosition = ({
     end,
 
     get = function(self)
-        return self.x, self.y
+        if love.keyboard.isDown("lshift", "rshift") then
+            return math.floor(self.x / 32) * 32,
+                   math.floor(self.y / 32) * 32
+        else
+            return self.x, self.y
+        end
     end,
         
 }):init()
