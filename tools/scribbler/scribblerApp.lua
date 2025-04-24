@@ -42,44 +42,15 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-local mousePosition = ({
-    x,     y     = nil, nil,
-    prevX, prevY = nil, nil,
-        
-    init = function(self)
-        self.x,     self.y     = love.mouse.getPosition()
-        self.prevX, self.prevY = self.x, self.y
-        return self
-    end,
-        
-    isChanged = function(self)
-        return self.x ~= self.prevX or self.y ~= self.prevY
-    end,
+local mousePosition = require("tools/scribbler/mousePosition")
+local picture       = require("tools/scribbler/picture")
+local scribbleTool  = require("tools/scribbler/jotTools/scribble"):init(picture)
+local lineTool      = require("tools/scribbler/jotTools/line"    ):init(picture)
+local rectTool      = require("tools/scribbler/jotTools/rect"    ):init(picture)
 
-    update = function(self)
-        self.prevX, self.prevY = self.x, self.y
-        self.x,     self.y     = love.mouse.getPosition()
-    end,
+local currentTool   = scribbleTool
 
-    get = function(self)
-        if love.keyboard.isDown("lshift", "rshift") then
-            return math.floor(self.x / 32) * 32,
-                   math.floor(self.y / 32) * 32
-        else
-            return self.x, self.y
-        end
-    end,
-        
-}):init()
-
-local picture      = require("tools/scribbler/picture")
-local scribbleTool = require("tools/scribbler/jotTools/scribble"):init(picture)
-local lineTool     = require("tools/scribbler/jotTools/line"    ):init(picture)
-local rectTool     = require("tools/scribbler/jotTools/rect"    ):init(picture)
-
-local currentTool = scribbleTool
-
-local showGrid    = false
+local showGrid      = false
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
