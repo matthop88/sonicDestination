@@ -29,7 +29,7 @@ return {
     save   = function(self)
         local serializedJots = ""
         for n, jot in ipairs(self) do
-            if n <= self.tailIndex then
+            if n <= self.jots.tailIndex then
                 serializedJots = serializedJots .. jot:toString()
             end
         end
