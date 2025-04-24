@@ -16,10 +16,15 @@ local drawLineJot = function(self, mx, my)
     doLineJotDrawing(self, mx, my)
 end
 
+local lineJotToString = function(self)
+    return "\n-- SERIALIZED LINE"
+end
+
 local newLineJot = function()
     return {
-        data = { },
-        draw = drawLineJot,
+        data     = { },
+        draw     = drawLineJot,
+        toString = lineJotToString,
     }
 end
 
