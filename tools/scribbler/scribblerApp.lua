@@ -101,11 +101,11 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    currentTool:penDown(mx, my)
+    currentTool:penDown(mousePosition:get())
 end
 
 function love.mousereleased(mx, my)
-    currentTool:penUp(mx, my)
+    currentTool:penUp(mousePosition:get())
 end
 
 function love.keypressed(key)
