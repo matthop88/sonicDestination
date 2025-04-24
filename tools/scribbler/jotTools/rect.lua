@@ -28,10 +28,7 @@ return {
     draw = function(self, mx, my)
         self.jot:draw()
         self:drawWorkingRectangle(mx, my)
-        
-        love.mouse.setVisible(false)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
+        self:drawCursor(mx, my)
     end,
 
     drawWorkingRectangle = function(self, mx, my)
@@ -41,6 +38,12 @@ return {
 
             love.graphics.rectangle("line", self.originX, self.originY, mx - self.originX, my - self.originY)
         end
+    end,
+
+    drawCursor = function(self, mx, my)
+        love.mouse.setVisible(false)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
