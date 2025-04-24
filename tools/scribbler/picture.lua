@@ -22,12 +22,13 @@ return {
         end,
 
         save = function(self)
-            local serializedJots = ""
+            local serializedJots = "return {\n"
             for n, jot in ipairs(self) do
                 if n <= self.tailIndex then
                     serializedJots = serializedJots .. jot:toString()
                 end
             end
+            serializedJots = serializedJots .. "\n}"
             print(serializedJots)
         end,
     },
