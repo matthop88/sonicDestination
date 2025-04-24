@@ -25,5 +25,8 @@ return {
     draw   = function(self)      self.jots:draw()   end,
     addJot = function(self, jot) self.jots:add(jot) end,
     undo   = function(self)      self.jots:undo()   end,
-    redo   = function(self)      self.jots:redo()   end,    
+    redo   = function(self)      self.jots:redo()   end, 
+    save   = function(self)
+        printToReadout("Saving...")
+    end,
 }
