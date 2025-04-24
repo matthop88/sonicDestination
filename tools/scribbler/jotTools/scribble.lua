@@ -22,7 +22,15 @@ local addStrokeToJot = function(self, x, y)
 end
 
 local scribbleJotToString = function(self)
-    return "\n-- SERIALIZED SCRIBBLE"
+    local scribbleString = "  {\n"
+        .. "    name  = \"scribble\",\n"
+        .. "    color = { " .. self.data.color[1] .. ", " .. self.data.color[2] .. ", " .. self.data.color[3] .. " },\n"
+        .. "    data  = {\n"
+
+    for _, pt in ipairs(self.data) do
+        scribbleString = scribbleString .. "      { x = " .. pt.x .. ", y = " .. pt.y .. " },\n"
+    end
+    return scribbleString .. "    },\n" .. "  },\n"
 end
 
 local newScribbleJot = function()
