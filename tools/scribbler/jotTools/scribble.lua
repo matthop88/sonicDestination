@@ -21,11 +21,16 @@ local addStrokeToJot = function(self, x, y)
     table.insert(self.data, { x = x, y = y })
 end
 
+local scribbleJotToString = function(self)
+    return "\n-- SERIALIZED SCRIBBLE"
+end
+
 local newScribbleJot = function()
     return {
-        data = { color = { 1, 1, 1, 0.5 } },
-        draw = drawScribbleJot,
-        add  = addStrokeToJot,
+        data     = { color = { 1, 1, 1, 0.5 } },
+        draw     = drawScribbleJot,
+        add      = addStrokeToJot,
+        toString = scribbleJotToString,
     }
 end
 
