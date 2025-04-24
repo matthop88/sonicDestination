@@ -27,6 +27,12 @@ return {
     undo   = function(self)      self.jots:undo()   end,
     redo   = function(self)      self.jots:redo()   end, 
     save   = function(self)
-        printToReadout("Saving...")
+        local serializedJots = ""
+        for n, jot in ipairs(self) do
+            if n <= self.tailIndex then
+                serializedJots = serializedJots .. jot:toString()
+            end
+        end
+        print(serializedJots)
     end,
 }
