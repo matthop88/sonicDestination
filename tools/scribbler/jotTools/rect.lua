@@ -7,10 +7,15 @@ local drawRectJot = function(self)
     end
 end
 
+rectJotToString = function(self)
+    return "\n-- SERIALIZED RECT"
+end
+
 local newRectJot = function()
     return {
-        data = nil,
-        draw = drawRectJot,
+        data     = nil,
+        draw     = drawRectJot,
+        toString = rectJotToString,
     }
 end
     
