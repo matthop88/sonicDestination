@@ -82,6 +82,8 @@ end
 function love.keypressed(key)
     if     key == "l" then currentTool = lineTool
     elseif key == "r" then currentTool = rectTool
+    elseif key == "s" and love.keyboard.isDown("lgui", "rgui") then
+        picture:save()
     elseif key == "s" then currentTool = scribbleTool
     elseif key == "g" then showGrid    = not showGrid
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
