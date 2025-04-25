@@ -105,4 +105,8 @@ return {
         self.jot:add(mx, my)
     end,
 
+    createJotFromData = function(self, data)
+        return newScribbleJot(data)
+    end,
+
 }
