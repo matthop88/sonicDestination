@@ -15,7 +15,7 @@
         [X] Shift Command Z redoes one action at a time
         [X] 'G' shows a grid
         [X] Shift allows snapping to grid
-        [ ] Command-S saves to disk
+        [X] Command-S saves to disk
         [ ] File name entered as command-line parameter loads from file
 
         ------------------------------ STRETCH GOALS -------------------------------
