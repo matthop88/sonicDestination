@@ -8,7 +8,12 @@ local drawRectJot = function(self)
 end
 
 rectJotToString = function(self)
-    return "\n-- SERIALIZED RECT"
+    local rectString = "  {\n"
+        .. "    name = \"rect\",\n"
+        .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y 
+        .. ", w = " .. self.data.w .. ", h = " .. self.data.h .. ", },\n"
+
+    return rectString .. "  },\n"
 end
 
 local newRectJot = function()
