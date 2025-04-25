@@ -27,9 +27,9 @@ local lineJotToString = function(self)
     return lineString .. "    },\n" .. "  },\n"
 end
 
-local newLineJot = function()
+local newLineJot = function(data)
     return {
-        data     = { },
+        data     = data or { },
         draw     = drawLineJot,
         toString = lineJotToString,
     }
