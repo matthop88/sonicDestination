@@ -131,3 +131,7 @@ PLUGINS = require("plugins/engine")
 love.window.setTitle("Scribbler Drawing Application")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+if __SCRIBBLER_FILE then
+    picture:load(__SCRIBBLER_FILE)
+end
+
