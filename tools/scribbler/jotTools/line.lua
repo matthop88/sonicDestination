@@ -61,8 +61,10 @@ return {
 
     drawCursor = function(self, mx, my)
         love.graphics.setColor(1, 1, 1)
+        love.graphics.setLineWidth(1)
         love.mouse.setVisible(false)
-        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
+        love.graphics.line(mx - 16, my, mx + 16, my)
+        love.graphics.line(mx, my - 16, mx, my + 16)
     end,
 
     penUp = function(self, mx, my)
