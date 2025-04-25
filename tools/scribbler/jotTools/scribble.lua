@@ -20,7 +20,7 @@ end
 local addStrokeToJot = function(self, x, y)
     if #self.data > 1 then
         local prevJotStroke1 = self.data[#self.data]
-        local prevJotStroke2 = self.data(#self.data - 1)
+        local prevJotStroke2 = self.data[#self.data - 1]
         local prevX1, prevY1 = prevJotStroke1.x, prevJotStroke1.y
         local prevX2, prevY2 = prevJotStroke2.x, prevJotStroke2.y
         if     x - prevX1 == prevX1 - prevX2 and y - prevY1 == prevY1 - prevY2 then
