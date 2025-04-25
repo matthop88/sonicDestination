@@ -18,7 +18,19 @@ local drawScribbleJot = function(self)
 end
 
 local addStrokeToJot = function(self, x, y)
-    table.insert(self.data, { x = x, y = y })
+    if #self.data > 0 then
+        local prevJotStroke = self.data[#self.data]
+        local prevX, prevY = prevJotStroke.x, prevJotStroke.y
+        if     x == prevX then
+            prevJotStroke.y = y
+        elseif y == prevY then
+            prevJotStroke.x = x
+        else
+            table.insert(self.data, { x = x, y = y })
+        end
+    else
+        table.insert(self.data, { x = x, y = y })
+    end
 end
 
 local scribbleJotToString = function(self)
@@ -79,7 +91,19 @@ return {
     end,
 
     penDragged = function(self, mx, my)
-        self.jot:add(mx, my)
+        if #self.jot.data > 0 then
+            local prevJotStroke = self.jot.data[#self.jot.data]
+            local prevX, prevY = prevJotStroke.x, prevJotStroke.y
+            if mx == prevX then
+                prevJotStroke.y = my
+            elseif my == prevY then
+                prevJotStroke.x = mx
+            else
+                self.jot:add(mx, my)
+            end
+        else
+            self.jot:add(mx, my)
+        end
     end,
 
 }
