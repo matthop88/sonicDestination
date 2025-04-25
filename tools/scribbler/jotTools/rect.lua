@@ -16,9 +16,9 @@ rectJotToString = function(self)
     return rectString .. "  },\n"
 end
 
-local newRectJot = function()
+local newRectJot = function(data)
     return {
-        data     = nil,
+        data     = data,
         draw     = drawRectJot,
         toString = rectJotToString,
     }
