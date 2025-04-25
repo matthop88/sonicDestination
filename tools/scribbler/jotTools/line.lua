@@ -113,7 +113,7 @@ return {
         elseif key == "tab" then
             mutableColor:next()
             self.jot.data.color = mutableColor:get()
-        endend
+        end
     end,
 
     finishPolygon = function(self)
