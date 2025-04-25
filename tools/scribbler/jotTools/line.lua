@@ -90,4 +90,7 @@ return {
         self.jot = newLineJot()
     end,
 
+    createJotFromData = function(self, data)
+        return newLineJot(data)
+    end,
 }
