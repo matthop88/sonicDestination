@@ -17,7 +17,7 @@ local drawScribbleJot = function(self)
     doScribbleJotDrawing(self)
 end
 
-local addOptimizedStrokeToJot(self, x, y)
+local addOptimizedStrokeToJot = function(self, x, y)
     local prevJotStroke1 = self.data[#self.data]
     local prevJotStroke2 = self.data[#self.data - 1]
     local prevX1, prevY1 = prevJotStroke1.x, prevJotStroke1.y
