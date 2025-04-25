@@ -32,7 +32,7 @@ local newLineJot = function(data)
     local color = { 1, 1, 1 }
     if data and data.color then color = data.color end
     return {
-        data     = data or { color = data.color },
+        data     = data or { color = color },
         draw     = drawLineJot,
         toString = lineJotToString,
     }
