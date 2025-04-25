@@ -17,7 +17,14 @@ local drawLineJot = function(self, mx, my)
 end
 
 local lineJotToString = function(self)
-    return "\n-- SERIALIZED LINE"
+    local lineString = "  {\n"
+        .. "    name = \"line\",\n"
+        .. "    data = {\n"
+
+    for _, pt in ipairs(self.data) do
+        lineString = lineString .. "      { x = " .. pt.x .. ", y = " .. pt.y .. " },\n"
+    end
+    return lineString .. "    },\n" .. "  },\n"
 end
 
 local newLineJot = function()
