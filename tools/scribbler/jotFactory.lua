@@ -5,7 +5,10 @@ return {
 		scribble = require("tools/scribbler/jotTools/scribble"),
 	},
 
-	createJot = function(self, name, data)
+	createJot = function(self, jotData)
+		local name, data, color = jotData.name, jotData.data, jotData.color
+		data.color = color
+		
 		return self.tools[name]:createJotFromData(data)
 	end,
 }
