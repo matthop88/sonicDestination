@@ -17,31 +17,30 @@ local drawScribbleJot = function(self)
     doScribbleJotDrawing(self)
 end
 
-local addOptimizedStrokeToJot = function(self, x, y)
-    local prevJotStroke1 = self.data[#self.data]
-    local prevJotStroke2 = self.data[#self.data - 1]
+local areStrokeSlopesEqual = function(prevJotStroke1, prevJotStroke2, x, y)
     local prevX1, prevY1 = prevJotStroke1.x, prevJotStroke1.y
     local prevX2, prevY2 = prevJotStroke2.x, prevJotStroke2.y
-    local slope1 = nil
-    local slope2 = nil
+    local slope1, slope2
     if x - prevX1 ~= 0 or prevX1 - prevX2 ~= 0 then
         slope1 = (y      - prevY1) / (x      - prevX1)
         slope2 = (prevY1 - prevY2) / (prevX1 - prevX2)
     end
+    return slope1 == slope2
+end
 
-    if slope1 == slope2 then
-        prevJotStroke1.x = x
-        prevJotStroke1.y = y
+local addOptimizedStrokeToJot = function(self, x, y)
+    local prevJotStroke1 = self.data[#self.data]
+    local prevJotStroke2 = self.data[#self.data - 1]
+    if areStrokeSlopesEqual(prevJotStroke1, prevJotStroke2, x, y) then
+        prevJotStroke1.x, prevJotStroke1.y = x, y
     else
         table.insert(self.data, { x = x, y = y })
     end
 end
 
 local addStrokeToJot = function(self, x, y)
-    if #self.data > 1 then
-        addOptimizedStrokeToJot(self, x, y)
-    else
-        table.insert(self.data, { x = x, y = y })
+    if #self.data > 1 then addOptimizedStrokeToJot(self, x, y)
+    else                   table.insert(self.data, { x = x, y = y })
     end
 end
 
