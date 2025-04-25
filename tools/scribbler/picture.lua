@@ -22,14 +22,24 @@ return {
         end,
 
         save = function(self)
-            local serializedJots = "return {\n"
+            local version = "0.1"
+            
+            local serializedJots = "return { version = \"" .. version .. "\", \n"
             for n, jot in ipairs(self) do
                 if n <= self.tailIndex then
                     serializedJots = serializedJots .. jot:toString()
                 end
             end
             serializedJots = serializedJots .. "\n}"
-            print(serializedJots)
+            local success, message = love.filesystem.write( "scribble.lua", serializedJots)
+
+            if success then
+                print("File created in " .. love.filesystem.getSaveDirectory())
+                printToReadout("File Saved: " .. string.len(serializedJots) .. " bytes")
+            else
+                print("File not created: " .. message)
+                printToReadout("ERROR when saving!")
+            end
         end,
     },
 
