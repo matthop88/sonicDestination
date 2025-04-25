@@ -10,7 +10,7 @@ local doLineJotDrawing = function(self, mx, my)
 end
 
 local drawLineJot = function(self, mx, my)
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(self.data.color)
     love.graphics.setLineWidth(5)
 
     doLineJotDrawing(self, mx, my)
@@ -29,11 +29,35 @@ end
 
 local newLineJot = function(data)
     return {
-        data     = data or { },
+        data     = data or { color = { 1, 1, 1 } },
         draw     = drawLineJot,
         toString = lineJotToString,
     }
 end
+
+local mutableColor = {
+    index = 1,
+
+    { 1, 1, 1 },
+    { 1, 1, 0 },
+    { 1, 0, 1 },
+    { 1, 0, 0 },
+    { 0, 1, 1 },
+    { 0, 1, 0 },
+    { 0, 0, 1 },
+    { 0, 0, 0 },
+
+    next = function(self)
+        self.index = self.index + 1
+        if self.index > #self then
+            self.index = 1
+        end
+    end,
+
+    get = function(self)
+        return self[self.index]
+    end,
+}
 
 return { 
 
@@ -84,7 +108,12 @@ return {
     end,
 
     keypressed = function(self, key)
-        if key == "return" then self:finishPolygon() end
+        if key == "return" then 
+            self:finishPolygon() 
+        elseif key == "tab" then
+            mutableColor:next()
+            self.jot.data.color = mutableColor:get()
+        endend
     end,
 
     finishPolygon = function(self)
