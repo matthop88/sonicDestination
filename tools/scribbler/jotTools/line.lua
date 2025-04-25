@@ -10,13 +10,14 @@ local doLineJotDrawing = function(self, mx, my)
 end
 
 local drawLineJot = function(self, mx, my)
-    love.graphics.setColor(self.data.color)
+    love.graphics.setColor(self.data.color or { 1, 1, 1 })
     love.graphics.setLineWidth(5)
 
     doLineJotDrawing(self, mx, my)
 end
 
 local lineJotToString = function(self)
+    local color = self.data.color or { 1, 1, 1 }
     local lineString = "  {\n"
         .. "    name = \"line\",\n"
         .. "    color = { " .. self.data.color[1] .. ", " .. self.data.color[2] .. ", " .. self.data.color[3] .. " },\n"
@@ -29,10 +30,8 @@ local lineJotToString = function(self)
 end
 
 local newLineJot = function(data)
-    local color = { 1, 1, 1 }
-    if data and data.color then color = data.color end
     return {
-        data     = data or { color = color },
+        data     = data or { color = { 1, 1, 1 } },
         draw     = drawLineJot,
         toString = lineJotToString,
     }
