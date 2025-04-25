@@ -54,7 +54,7 @@ return {
     load   = function(self, filename)
         local fileData = require("tools/scribbler/data/" .. filename)
         for _, jotData in ipairs(fileData) do
-            self:addJot(self.jotFactory:createJot(jotData.name, jotData.data))
+            self:addJot(self.jotFactory:createJot(jotData))
         end
     end,
 }
