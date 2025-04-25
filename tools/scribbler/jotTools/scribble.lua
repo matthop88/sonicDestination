@@ -18,7 +18,7 @@ local drawScribbleJot = function(self)
 end
 
 local addStrokeToJot = function(self, x, y)
-    if #self.data > 0 then
+    if #self.data > 1 then
         local prevJotStroke = self.data[#self.data]
         local prevX, prevY = prevJotStroke.x, prevJotStroke.y
         if     x == prevX then
