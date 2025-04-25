@@ -84,4 +84,8 @@ return {
         }
     end,
 
+    createJotFromData = function(self, data)
+        return newRectJot(data)
+    end,
+
 }
