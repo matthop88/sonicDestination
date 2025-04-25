@@ -20,7 +20,7 @@ local lineJotToString = function(self)
     local color = self.data.color or { 1, 1, 1 }
     local lineString = "  {\n"
         .. "    name = \"line\",\n"
-        .. "    color = { " .. self.data.color[1] .. ", " .. self.data.color[2] .. ", " .. self.data.color[3] .. " },\n"
+        .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
         .. "    data = {\n"
 
     for _, pt in ipairs(self.data) do
