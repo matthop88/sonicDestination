@@ -1,4 +1,6 @@
 return {
+    jotFactory = require("tools/scribbler/jotFactory"),
+
     jots = {
         tailIndex = 0,
 
@@ -47,5 +49,12 @@ return {
     addJot = function(self, jot) self.jots:add(jot) end,
     undo   = function(self)      self.jots:undo()   end,
     redo   = function(self)      self.jots:redo()   end,
-    save   = function(self)      self.jots:save()   end, 
+    save   = function(self)      self.jots:save()   end,
+
+    load   = function(self, filename)
+        local fileData = require("tools/scribbler/data/" .. filename)
+        for _, jotData in ipairs(fileData) do
+            self:addJot(self.jotFactory:createJot(jotData.name, jotData.data))
+        end
+    end,
 }
