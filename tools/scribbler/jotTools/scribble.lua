@@ -91,19 +91,7 @@ return {
     end,
 
     penDragged = function(self, mx, my)
-        if #self.jot.data > 0 then
-            local prevJotStroke = self.jot.data[#self.jot.data]
-            local prevX, prevY = prevJotStroke.x, prevJotStroke.y
-            if mx == prevX then
-                prevJotStroke.y = my
-            elseif my == prevY then
-                prevJotStroke.x = mx
-            else
-                self.jot:add(mx, my)
-            end
-        else
-            self.jot:add(mx, my)
-        end
+        self.jot:add(mx, my)
     end,
 
 }
