@@ -19,6 +19,7 @@ end
 local lineJotToString = function(self)
     local lineString = "  {\n"
         .. "    name = \"line\",\n"
+        .. "    color = { " .. self.data.color[1] .. ", " .. self.data.color[2] .. ", " .. self.data.color[3] .. " },\n"
         .. "    data = {\n"
 
     for _, pt in ipairs(self.data) do
@@ -28,8 +29,10 @@ local lineJotToString = function(self)
 end
 
 local newLineJot = function(data)
+    local color = { 1, 1, 1 }
+    if data and data.color then color = data.color end
     return {
-        data     = data or { color = { 1, 1, 1 } },
+        data     = data or { color = data.color },
         draw     = drawLineJot,
         toString = lineJotToString,
     }
