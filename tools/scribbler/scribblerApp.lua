@@ -16,7 +16,7 @@
         [X] 'G' shows a grid
         [X] Shift allows snapping to grid
         [X] Command-S saves to disk
-        [ ] File name entered as command-line parameter loads from file
+        [X] File name entered as command-line parameter loads from file
 
         ------------------------------ STRETCH GOALS -------------------------------
 
