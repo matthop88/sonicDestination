@@ -56,9 +56,9 @@ local scribbleJotToString = function(self)
     return scribbleString .. "    },\n" .. "  },\n"
 end
 
-local newScribbleJot = function()
+local newScribbleJot = function(data)
     return {
-        data     = { color = { 1, 1, 1, 0.5 } },
+        data     = data or { color = { 1, 1, 1, 0.5 } },
         draw     = drawScribbleJot,
         add      = addStrokeToJot,
         toString = scribbleJotToString,
