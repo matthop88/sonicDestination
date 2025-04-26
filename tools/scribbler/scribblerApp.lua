@@ -47,6 +47,7 @@ local picture       = require("tools/scribbler/picture")
 local scribbleTool  = require("tools/scribbler/jotTools/scribble"):init(picture)
 local lineTool      = require("tools/scribbler/jotTools/line"    ):init(picture)
 local rectTool      = require("tools/scribbler/jotTools/rect"    ):init(picture)
+local textTool      = require("tools/scribbler/jotTools/text"    ):init(picture)
 
 local currentTool   = scribbleTool
 
@@ -85,6 +86,7 @@ function love.keypressed(key)
     elseif key == "s" and love.keyboard.isDown("lgui", "rgui") then
         picture:save()
     elseif key == "s" then currentTool = scribbleTool
+    elseif key == "t" then currentTool = textTool
     elseif key == "g" then showGrid    = not showGrid
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
         implementUndoOrRedo()
