@@ -3,6 +3,7 @@ return {
 		line     = require("tools/scribbler/jotTools/line"),
 		rect     = require("tools/scribbler/jotTools/rect"),
 		scribble = require("tools/scribbler/jotTools/scribble"),
+		text     = require("tools/scribbler/jotTools/text"),
 	},
 
 	createJot = function(self, jotData)
