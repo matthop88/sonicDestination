@@ -86,7 +86,7 @@ return {
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
         love.graphics.setColor(1, 1, 1, 0.5)
         love.graphics.setLineWidth(1)
-        love.graphics.rectangle("line", mx - 3, mx - 3, 7, 7)
+        love.graphics.rectangle("line", mx - 3, my - 3, 7, 7)
     end,
     
     penUp = function(self, mx, my)
