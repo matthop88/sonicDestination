@@ -56,7 +56,7 @@ return {
 
     drawWorkingLine = function(self, mx, my)
         if #self.jot.data > 0 then 
-            love.graphics.setColor(1, 1, 1, 0.5)
+            love.graphics.setColor(mutableColor:getTransparent())
             local prevX = self.jot.data[#self.jot.data].x
             local prevY = self.jot.data[#self.jot.data].y
             love.graphics.line(prevX, prevY, mx, my)
