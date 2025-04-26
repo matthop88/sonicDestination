@@ -12,7 +12,7 @@ local doLineJotDrawing = function(self, mx, my)
 end
 
 local drawLineJot = function(self, mx, my)
-    love.graphics.setColor(self.data.color or mutableColor:get() )
+    love.graphics.setColor(self.data.color or { 1, 1, 1 } )
     love.graphics.setLineWidth(5)
 
     doLineJotDrawing(self, mx, my)
