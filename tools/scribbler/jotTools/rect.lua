@@ -14,7 +14,8 @@ end
 
 rectJotToString = function(self)
     local color = self.data.color or { 1, 1, 1 }
-    local filled = self.data.filled or false
+    local filled = "false"
+    if self.data.filled then filled = "true" end
     local rectString = "  {\n"
         .. "    name = \"rect\",\n"
         .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
