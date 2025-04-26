@@ -20,4 +20,9 @@ return {
     get = function(self)
         return self[self.index]
     end,
+
+    getTransparent = function(self)
+        local color = self:get()
+        return { color[1], color[2], color[3], 0.5 }
+    end,
 }
