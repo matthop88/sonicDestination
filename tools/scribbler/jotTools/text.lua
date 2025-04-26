@@ -11,7 +11,7 @@ local textJotToString = function(self)
     local color = self.data.color or { 1, 1, 1 }
     local textString = "  {\n"
         .. "    name = \"text\",\n"
-        .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y 
+        .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y .. ", " 
         .. "color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " }, "
         .. "message = \"" .. self.data.message .. "\", },\n"
                 
