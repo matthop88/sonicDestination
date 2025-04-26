@@ -1,3 +1,27 @@
+local mutableColor = {
+    index = 1,
+
+    { 1, 1, 1 },
+    { 1, 1, 0 },
+    { 1, 0, 1 },
+    { 1, 0, 0 },
+    { 0, 1, 1 },
+    { 0, 1, 0 },
+    { 0, 0, 1 },
+    { 0, 0, 0 },
+
+    next = function(self)
+        self.index = self.index + 1
+        if self.index > #self then
+            self.index = 1
+        end
+    end,
+
+    get = function(self)
+        return self[self.index]
+    end,
+}
+
 local doLineJotDrawing = function(self, mx, my)
     local prevX, prevY = mx, my
 
@@ -10,7 +34,7 @@ local doLineJotDrawing = function(self, mx, my)
 end
 
 local drawLineJot = function(self, mx, my)
-    love.graphics.setColor(self.data.color or { 1, 1, 1 })
+    love.graphics.setColor(self.data.color or mutableColor:get() )
     love.graphics.setLineWidth(5)
 
     doLineJotDrawing(self, mx, my)
@@ -36,30 +60,6 @@ local newLineJot = function(data)
         toString = lineJotToString,
     }
 end
-
-local mutableColor = {
-    index = 1,
-
-    { 1, 1, 1 },
-    { 1, 1, 0 },
-    { 1, 0, 1 },
-    { 1, 0, 0 },
-    { 0, 1, 1 },
-    { 0, 1, 0 },
-    { 0, 0, 1 },
-    { 0, 0, 0 },
-
-    next = function(self)
-        self.index = self.index + 1
-        if self.index > #self then
-            self.index = 1
-        end
-    end,
-
-    get = function(self)
-        return self[self.index]
-    end,
-}
 
 return { 
 
