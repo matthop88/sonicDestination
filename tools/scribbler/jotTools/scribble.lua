@@ -1,3 +1,5 @@
+local mutableColor = require("tools/scribbler/mutableColor")
+
 local doScribbleJotDrawing = function(self)
     local prevX, prevY = nil, nil
     
@@ -79,14 +81,17 @@ return {
     end,
 
     drawCursor = function(self, mx, my)
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(mutableColor:get())
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
+        love.graphics.setColor(1, 1, 1, 0.5)
+        love.graphics.setLineWidth(1)
+        love.graphics.rectangle("line", mx - 3, mx - 3, 7, 7)
     end,
     
     penUp = function(self, mx, my)
         if self.picture then 
-            self.jot.data.color = { 1, 1, 1 }
+            self.jot.data.color = mutableColor:get()
             self.picture:addJot(self.jot) 
         end
         self.jot = newScribbleJot()
@@ -107,6 +112,12 @@ return {
 
     createJotFromData = function(self, data)
         return newScribbleJot(data)
+    end,
+
+    keypressed = function(self, key)
+        if key == "tab" then
+            mutableColor:next()
+        end
     end,
 
 }
