@@ -1,5 +1,5 @@
 local mutableColor = require("tools/scribbler/mutableColor")
-local textFonr     = love.graphics.newFont(32)
+local textFont     = love.graphics.newFont(32)
 
 local drawTextJot = function(self)
     love.graphics.setColor(self.data.color or { 1, 1, 1 })
