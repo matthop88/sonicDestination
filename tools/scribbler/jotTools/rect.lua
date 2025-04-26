@@ -54,7 +54,7 @@ return {
 
     drawWorkingRectangle = function(self, mx, my)
         if self.originX ~= nil and self.originY ~= nil then
-            love.graphics.setColor(1, 1, 1, 0.5)
+            love.graphics.setColor(mutableColor:getTransparent())
             love.graphics.setLineWidth(5)
 
             if self.filled then
@@ -66,10 +66,15 @@ return {
     end,
 
     drawCursor = function(self, mx, my)
-        love.graphics.setColor(mutableColor:get())
         love.graphics.setLineWidth(1)
         love.mouse.setVisible(false)
-        love.graphics.circle("line", mx, my, 15, 15)
+        if self.filled then
+            love.graphics.setColor(mutableColor:getTransparent())
+            love.graphics.circle("fill", mx, my, 15, 15)
+        else
+            love.graphics.setColor(mutableColor:get())
+            love.graphics.circle("line", mx, my, 15, 15)
+        end
         love.graphics.setColor(1, 1, 1)
         love.graphics.line(mx - 24, my,      mx -  8, my)
         love.graphics.line(mx +  8, my,      mx + 24, my)
