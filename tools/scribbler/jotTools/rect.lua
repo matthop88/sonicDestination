@@ -2,7 +2,7 @@ local mutableColor = require("tools/scribbler/mutableColor")
 
 local drawRectJot = function(self)
     if self.data ~= nil then
-        love.graphics.setColor(data.color or { 1, 1, 1} )
+        love.graphics.setColor(self.data.color or { 1, 1, 1} )
         love.graphics.setLineWidth(5)
         
         love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
