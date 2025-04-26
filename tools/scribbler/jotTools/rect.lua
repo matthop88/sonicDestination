@@ -4,18 +4,22 @@ local drawRectJot = function(self)
     if self.data ~= nil then
         love.graphics.setColor(self.data.color or { 1, 1, 1} )
         love.graphics.setLineWidth(5)
-        
-        love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
+        if self.data.filled then
+            love.graphics.rectangle("fill", self.data.x, self.data.y, self.data.w, self.data.h)
+        else
+            love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
+        end
     end
 end
 
 rectJotToString = function(self)
     local color = self.data.color or { 1, 1, 1 }
+    local filled = self.data.filled or false
     local rectString = "  {\n"
         .. "    name = \"rect\",\n"
         .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
         .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y 
-        .. ", w = " .. self.data.w .. ", h = " .. self.data.h .. ", },\n"
+        .. ", w = " .. self.data.w .. ", h = " .. self.data.h .. ", filled = " .. filled .. " },\n"
 
     return rectString .. "  },\n"
 end
@@ -37,6 +41,8 @@ return {
     originX = nil, 
     originY = nil,
 
+    filled = false,
+
     jot = newRectJot(),
 
     draw = function(self, mx, my)
@@ -50,7 +56,11 @@ return {
             love.graphics.setColor(1, 1, 1, 0.5)
             love.graphics.setLineWidth(5)
 
-            love.graphics.rectangle("line", self.originX, self.originY, mx - self.originX, my - self.originY)
+            if self.filled then
+                love.graphics.rectangle("fill", self.originX, self.originY, mx - self.originX, my - self.originY)
+            else
+                love.graphics.rectangle("line", self.originX, self.originY, mx - self.originX, my - self.originY)
+            end
         end
     end,
 
@@ -93,8 +103,10 @@ return {
             y = self.originY,
             w = mx - self.originX,
             h = my - self.originY,
+            filled = self.filled,
             color = mutableColor:get(),
         }
+        self.filled = false
     end,
 
     createJotFromData = function(self, data)
@@ -102,8 +114,10 @@ return {
     end,
 
     keypressed = function(self, key)
-        if key == "tab" then
+        if     key == "tab" then
             mutableColor:next()
+        elseif key == "space" then
+            self.filled = not self.filled
         end
     end,
 
