@@ -55,7 +55,7 @@ end
 
 local newLineJot = function(data)
     return {
-        data     = data or { color = { 1, 1, 1 } },
+        data     = data or { color = mutableColor:get() },
         draw     = drawLineJot,
         toString = lineJotToString,
     }
