@@ -1,4 +1,6 @@
-local mutableColor = require("tools/scribbler/mutableColor")
+local mutableColor   = require("tools/scribbler/mutableColor")
+local mutableMessage = require("tools/scribbler/mutableMessage")
+
 local textFont     = love.graphics.newFont(32)
 
 local drawTextJot = function(self)
@@ -36,8 +38,7 @@ return {
 
     x       = nil,
     y       = nil,
-    message = "Standing Left",
-
+    
     draw = function(self, mx, my)
         if self.jot.data ~= nil then self.jot:draw() end
         self:drawCursor(mx, my)
@@ -47,7 +48,7 @@ return {
         self.jot.data = {
             color = mutableColor:get(),
             font = textFont,
-            message = self.message,
+            message = mutableMessage:get(),
             x = self.x,
             y = self.y,
         }
@@ -81,7 +82,11 @@ return {
         love.mouse.setVisible(false)
         love.graphics.setColor(mutableColor:getTransparent())
         love.graphics.setFont(textFont)
-        love.graphics.printf(self.message, mx, my, 1000, "left")
+        love.graphics.printf(mutableMessage:get(), mx, my, 1000, "left")
+    end,
+
+    keypressed = function(self, key)
+        if key == "tab" then mutableMessage:next() end
     end,
 
 }
