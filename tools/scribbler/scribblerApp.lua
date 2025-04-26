@@ -22,7 +22,7 @@
 
         [X] 'L' draws a line from pt 1 to pt 2
         [X] 'R' draws a rect with upper-left corner at pt 1, lower left at pt 2
-        [ ] 'T' allows typing of text at mouse position. Left-justified
+        [X] 'T' allows selecting text at mouse position. Left-justified
         [X] Allow cycling through various colors
 
     Basic Design:
