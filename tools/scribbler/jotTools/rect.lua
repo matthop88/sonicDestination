@@ -1,6 +1,8 @@
+local mutableColor = require("tools/scribbler/mutableColor")
+
 local drawRectJot = function(self)
     if self.data ~= nil then
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(data.color or { 1, 1, 1} )
         love.graphics.setLineWidth(5)
         
         love.graphics.rectangle("line", self.data.x, self.data.y, self.data.w, self.data.h)
@@ -8,8 +10,10 @@ local drawRectJot = function(self)
 end
 
 rectJotToString = function(self)
+    local color = self.data.color or { 1, 1, 1 }
     local rectString = "  {\n"
         .. "    name = \"rect\",\n"
+        .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
         .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y 
         .. ", w = " .. self.data.w .. ", h = " .. self.data.h .. ", },\n"
 
@@ -51,15 +55,16 @@ return {
     end,
 
     drawCursor = function(self, mx, my)
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(mutableColor:get())
         love.graphics.setLineWidth(1)
         love.mouse.setVisible(false)
         love.graphics.circle("line", mx, my, 15, 15)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.line(mx - 24, my,      mx -  8, my)
         love.graphics.line(mx +  8, my,      mx + 24, my)
         love.graphics.line(mx,      my - 24, mx,      my - 8)
         love.graphics.line(mx,      my +  8, mx,      my + 24)
-
+        love.graphics.setColor(mutableColor:get())
         love.graphics.rectangle("fill", mx - 2.5, my - 2.5, 5, 5)
     end,
 
@@ -88,11 +93,18 @@ return {
             y = self.originY,
             w = mx - self.originX,
             h = my - self.originY,
+            color = mutableColor:get(),
         }
     end,
 
     createJotFromData = function(self, data)
         return newRectJot(data)
+    end,
+
+    keypressed = function(self, key)
+        if key == "tab" then
+            mutableColor:next()
+        end
     end,
 
 }
