@@ -91,6 +91,8 @@ return {
         love.mouse.setVisible(false)
         love.graphics.line(mx - 16, my, mx + 16, my)
         love.graphics.line(mx, my - 16, mx, my + 16)
+        love.graphics.setColor(mutableColor:get())
+        love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
     penUp = function(self, mx, my)
