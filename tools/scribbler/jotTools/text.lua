@@ -96,12 +96,10 @@ return {
     end,
 
     keypressed = function(self, key)
-        if     key == "tab"  then 
-            mutableMessage:next()
-        elseif key == "up"   then
-            mutableFont:next()
-        elseif key == "down" then
-            mutableFont:prev()
+        if     key == "tab"    then mutableColor:next()
+        elseif key == "right"  then mutableMessage:next()
+        elseif key == "up"     then mutableFont:next()
+        elseif key == "down"   then mutableFont:prev()
         end
     end,
 
