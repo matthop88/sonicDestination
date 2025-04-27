@@ -24,7 +24,7 @@ return {
         end,
 
         save = function(self)
-            local version = "0.1"
+            local version = "0.2"
             
             local serializedJots = "return { version = \"" .. version .. "\", \n"
             for n, jot in ipairs(self) do
