@@ -97,6 +97,7 @@ return {
 
     keypressed = function(self, key)
         if     key == "tab"    then mutableColor:next()
+        elseif key == "left"   then mutableMessage:prev()
         elseif key == "right"  then mutableMessage:next()
         elseif key == "up"     then mutableFont:next()
         elseif key == "down"   then mutableFont:prev()
