@@ -1,11 +1,13 @@
-local mutableColor   = require("tools/scribbler/mutableColor")
-local mutableMessage = require("tools/scribbler/mutableMessage")
+local mutableColor      = require("tools/scribbler/mutableColor")
+local mutableMessage    = require("tools/scribbler/mutableMessage")
+local mutableFont       = require("tools/scribbler/mutableFont")
 
-local textFont     = love.graphics.newFont(32)
+local DEFAULT_FONT_SIZE = 32
+local defaultFont       = love.graphics.newFont(DEFAULT_FONT_SIZE)
 
 local drawTextJot = function(self)
     love.graphics.setColor(self.data.color or { 1, 1, 1 })
-    love.graphics.setFont(self.data.font or textFont)
+    love.graphics.setFont(self.data.font or defaultFont)
             
     love.graphics.printf(self.data.message, self.data.x, self.data.y, 1000, "left")
 end
@@ -15,8 +17,9 @@ local textJotToString = function(self)
     local textString = "  {\n"
         .. "    name = \"text\",\n"
         .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
-        .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y .. ", " 
-         .. "message = \"" .. self.data.message .. "\", },\n"
+        .. "    data = { x = " .. self.data.x .. ", y = " .. self.data.y .. ", "
+        .. "fontSize = " .. (self.data.fontSize or DEFAULT_FONT_SIZE) .. ", " 
+        .. "message = \"" .. self.data.message .. "\", },\n"
                 
     return textString .. "  },\n"
 end
@@ -47,7 +50,8 @@ return {
     penUp = function(self, mx, my)
         self.jot.data = {
             color = mutableColor:get(),
-            font = textFont,
+            fontSize = mutableFont:getFontSize(),
+            font = mutableFont:get(),
             message = mutableMessage:get(),
             x = self.x,
             y = self.y,
@@ -75,18 +79,30 @@ return {
     end,
 
     createJotFromData = function(self, data)
+        if data ~= nil then
+            if data.fontSize then data.font = mutableFont:getFontForSize(data.fontSize)
+            else                  data.font = defaultFont
+            end  
+        end
+        
         return newTextJot(data)
     end,
 
     drawCursor = function(self, mx, my)
         love.mouse.setVisible(false)
         love.graphics.setColor(mutableColor:getTransparent())
-        love.graphics.setFont(textFont)
+        love.graphics.setFont(mutableFont:get())
         love.graphics.printf(mutableMessage:get(), mx, my, 1000, "left")
     end,
 
     keypressed = function(self, key)
-        if key == "tab" then mutableMessage:next() end
+        if     key == "tab"  then 
+            mutableMessage:next()
+        elseif key == "up"   then
+            mutableFont:next()
+        elseif key == "down" then
+            mutableFont:prev()
+        end
     end,
 
 }
