@@ -3,7 +3,21 @@
 --------------------------------------------------------------
 
 --[[
-    
+    Short description:
+        State Machine components are drawn on a pegboard.
+        Mousing over the components cause them to light up.
+        Scrolling and zoom are also implemented
+
+        For the simplest type of interaction, the state machine
+        diagram will look as follows:
+
+        *-------------*         *-------------*
+        |             |   R On  |             |
+        |             |-------->|             |
+        |  Stand Left |         | Stand Right |
+        |             |   L On  |             |
+        |             |<--------|             |
+        *-------------*         *-------------*
 
 --]]
 
