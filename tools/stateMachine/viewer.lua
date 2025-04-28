@@ -19,6 +19,14 @@
         |             |<--------|             |
         *-------------*         *-------------*
 
+    Features:
+        [ ] Pegboard is drawn in background
+        [ ] Boxes are drawn with labels in the center
+        [ ] Arrows are drawn connecting boxes, with labels
+        [ ] Can scroll using arrow keys
+        [ ] Can zoom using 'z' and 'a' keys
+        [ ] Mousing over boxes  causes outline and text to light up
+        [ ] Mousing over arrows causes arrow   and text to light up
 --]]
 
 --------------------------------------------------------------
