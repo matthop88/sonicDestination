@@ -67,6 +67,27 @@ local PEGBOARD = {
     end,
 }
 
+local BOX = {
+    draw = function(self, label, x, y, w, h)
+        self:drawShape(       x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE)
+        self:drawLabel(label, x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE)
+    end,
+
+    drawShape = function(self, x, y, w, h)
+        love.graphics.setColor(COLOR_LIGHT_YELLOW)
+        love.graphics.rectangle("fill", x, y, w, h)
+        love.graphics.setColor(COLOR_JET_BLACK)
+        love.graphics.setLineWidth(5)
+        love.graphics.rectangle("line", x, y, w, h)
+    end,
+
+    drawLabel = function(self, label, x, y, w, h)
+        love.graphics.setFont(BOX_LABEL_FONT) 
+        love.graphics.setColor(COLOR_JET_BLACK)
+        love.graphics.printf(label, x, y + (h - BOX_LABEL_FONT:getHeight()) / 2, w, "center")
+    end,
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -77,8 +98,8 @@ local PEGBOARD = {
 function love.draw()
     PEGBOARD:draw()
 
-    drawBox("Stand Left",   3, 7, 9, 7)
-    drawBox("Stand Right", 20, 7, 9, 7)
+    BOX:draw("Stand Left",   3, 7, 9, 7)
+    BOX:draw("Stand Right", 20, 7, 9, 7)
 end
 
 -- ...
@@ -88,26 +109,9 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawBox(label, x, y, w, h)
-    x, y, w, h = x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE
-
-    drawBoxShape(x, y, w, h)
-    drawBoxLabel(label, x, y, w, h)
-end
-
-function drawBoxShape(x, y, w, h)
-    love.graphics.setColor(COLOR_LIGHT_YELLOW)
-    love.graphics.rectangle("fill", x, y, w, h)
-    love.graphics.setColor(COLOR_JET_BLACK)
-    love.graphics.setLineWidth(5)
-    love.graphics.rectangle("line", x, y, w, h)
-end
-
-function drawBoxLabel(label, x, y, w, h)
-    love.graphics.setFont(BOX_LABEL_FONT) 
-    love.graphics.setColor(COLOR_JET_BLACK)
-    love.graphics.printf(label, x, y + (h - BOX_LABEL_FONT:getHeight()) / 2, w, "center")
-end
+-- ...
+-- ...
+-- ...
 
 --------------------------------------------------------------
 --                        Plugins                           --
