@@ -88,16 +88,18 @@ end
 --------------------------------------------------------------
 
 function drawBox(label, x, y, w, h)
+    x, y, w, h = x * 32, y * 32, w * 32, h * 32
+
     drawBoxShape(x, y, w, h)
     drawBoxLabel(label, x, y, w, h)
 end
 
 function drawBoxShape(x, y, w, h)
     love.graphics.setColor(COLOR_MEDIUM_YELLOW)
-    love.graphics.rectangle("fill", x * 32, y * 32, w * 32, h * 32)
+    love.graphics.rectangle("fill", x, y, w, h)
     love.graphics.setColor(COLOR_JET_BLACK)
     love.graphics.setLineWidth(5)
-    love.graphics.rectangle("line", x * 32, y * 32, w * 32, h * 32)
+    love.graphics.rectangle("line", x, y, w, h)
 end
 
 function drawBoxLabel(label, x, y, w, h)
