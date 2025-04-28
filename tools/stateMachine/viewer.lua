@@ -91,9 +91,15 @@ function drawBox(label, x, y, w, h)
     love.graphics.setColor(COLOR_JET_BLACK)
     love.graphics.setLineWidth(3)
     love.graphics.rectangle("line", x * 32, y * 32, w * 32, h * 32)
+
+    drawBoxLabel(label, x, y, w, h)
 end
 
--- ...
+function drawBoxLabel(label, x, y, w, h)
+    love.graphics.setColor(COLOR_JET_BLACK)
+    love.graphics.printf(label, x * 32, y * 32, w * 32, "center")
+end
+
 -- ...
 
 --------------------------------------------------------------
