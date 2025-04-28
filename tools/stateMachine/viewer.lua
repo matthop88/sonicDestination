@@ -35,8 +35,8 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
+local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
--- ...
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -59,8 +59,13 @@ end
 function drawPegboard()
     love.graphics.setColor(COLOR_PEGBOARD_GREEN)
     love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-    -- Pegholes are semi-transparent white rectangles
-    --              spaced 32 pixels apart
+    
+    love.graphics.setColor(COLOR_PEGHOLES)
+    for y = 0, WINDOW_HEIGHT, 32 do
+        for x = 0, WINDOW_WIDTH, 32 do
+            love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
+        end
+    end
 end
 
 -- ...
