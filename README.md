@@ -46,3 +46,8 @@ EX:
     love . transparency sonic1
 
 runs the Transparency Editor application on the image file `sonicDestination/resources/images/spriteSheets/sonic1.png`.
+
+To execute the State Machine Viewer application, use the command
+
+    love . stateMachine
+
