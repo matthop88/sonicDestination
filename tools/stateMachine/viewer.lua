@@ -37,6 +37,30 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
+local PEGBOARD = {
+    draw = function(self)
+        self:drawBackground()
+        self:drawHoles()
+    end,
+
+    drawBackground = function(self)
+        love.graphics.setColor(COLOR_PEGBOARD_GREEN)
+        love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+    end,
+
+    drawHoles = function(self)
+        for y = 0, WINDOW_HEIGHT, 32 do
+            for x = 0, WINDOW_WIDTH, 32 do
+                self:drawHole(x, y)
+            end
+        end
+    end,
+
+    drawHole = function(self, x, y)
+        love.graphics.setColor(COLOR_PEGHOLES)
+        love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
+    end,
+}
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -46,7 +70,7 @@ local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    drawPegboard()
+    PEGBOARD:draw()
 end
 
 -- ...
@@ -56,29 +80,7 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawPegboard()
-    drawPegboardBackground()
-    drawPegholes()
-end
-
-function drawPegboardBackground()
-    love.graphics.setColor(COLOR_PEGBOARD_GREEN)
-    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-end
-
-function drawPegholes()
-    for y = 0, WINDOW_HEIGHT, 32 do
-        for x = 0, WINDOW_WIDTH, 32 do
-            drawPeghole(x, y)
-        end
-    end
-end
-
-function drawPeghole(x, y)
-    love.graphics.setColor(COLOR_PEGHOLES)
-    love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
-end
-
+-- ...
 -- ...
 -- ...
 
