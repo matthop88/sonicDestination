@@ -40,6 +40,7 @@ local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
 local PEGBOARD_FONT               = love.graphics.newFont(32)
+local GRID_SIZE                   = 32
 
 local PEGBOARD = {
     draw = function(self)
@@ -88,7 +89,7 @@ end
 --------------------------------------------------------------
 
 function drawBox(label, x, y, w, h)
-    x, y, w, h = x * 32, y * 32, w * 32, h * 32
+    x, y, w, h = x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE
 
     drawBoxShape(x, y, w, h)
     drawBoxLabel(label, x, y, w, h)
