@@ -73,8 +73,8 @@ local PEGBOARD = {
 function love.draw()
     PEGBOARD:draw()
 
-    drawBox("Stand Left",   4, 7, 9, 7)
-    drawBox("Stand Right", 21, 7, 9, 7)
+    drawBox("Stand Left",   3, 7, 9, 7)
+    drawBox("Stand Right", 20, 7, 9, 7)
 end
 
 -- ...
