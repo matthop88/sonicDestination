@@ -103,7 +103,7 @@ end
 function drawBoxLabel(label, x, y, w, h)
     love.graphics.setFont(PEGBOARD_FONT) 
     love.graphics.setColor(COLOR_JET_BLACK)
-    love.graphics.printf(label, x * 32, (y * 32) + (h * 16) - 16, w * 32, "center")
+    love.graphics.printf(label, x, y + (h - PEGBOARD_FONT:getHeight()) / 2, w, "center")
 end
 
 --------------------------------------------------------------
