@@ -34,7 +34,8 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
--- ...
+local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
+
 -- ...
 
 --------------------------------------------------------------
@@ -56,7 +57,10 @@ end
 --------------------------------------------------------------
 
 function drawPegboard()
-    -- Draw teal background with grid holes spaced every 32 pixels
+    love.graphics.setColor(COLOR_PEGBOARD_GREEN)
+    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+    -- Pegholes are semi-transparent white rectangles
+    --              spaced 32 pixels apart
 end
 
 -- ...
