@@ -39,6 +39,8 @@ local COLOR_MEDIUM_YELLOW         = { 1, 1,   0.5 }
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
+local PEGBOARD_FONT               = love.graphics.newFont(32)
+
 local PEGBOARD = {
     draw = function(self)
         self:drawBackground()
@@ -96,7 +98,7 @@ function drawBox(label, x, y, w, h)
 end
 
 function drawBoxLabel(label, x, y, w, h)
-    love.graphics.setNewFont(32) 
+    love.graphics.setNewFont(PEGBOARD_FONT) 
     love.graphics.setColor(COLOR_JET_BLACK)
     love.graphics.printf(label, x * 32, (y * 32) + (h * 16) - 16, w * 32, "center")
 end
