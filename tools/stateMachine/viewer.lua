@@ -35,6 +35,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local COLOR_JET_BLACK             = { 0, 0,   0   }
+local COLOR_MEDIUM_YELLOW         = { 1, 1,   0.5 }
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
@@ -85,6 +86,8 @@ end
 --------------------------------------------------------------
 
 function drawBox(label, x, y, w, h)
+    love.graphics.setColor(COLOR_MEDIUM_YELLOW)
+    love.graphics.rectangle("fill", x * 32, y * 32, w * 32, h * 32)
     love.graphics.setColor(COLOR_JET_BLACK)
     love.graphics.setLineWidth(3)
     love.graphics.rectangle("line", x * 32, y * 32, w * 32, h * 32)
