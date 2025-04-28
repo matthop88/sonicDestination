@@ -90,7 +90,7 @@ function love.keypressed(key)
     elseif key == "g" then showGrid    = not showGrid
     elseif key == "x" then
         local mx, my = love.mouse.getPosition()
-        printToReadout("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
+        printToReadout("X = " .. math.floor(mx / 32) + 1 .. ", Y = " .. math.floor(my / 32) + 1)
     elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
         implementUndoOrRedo()
     elseif currentTool.keypressed then currentTool:keypressed(key)
