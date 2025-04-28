@@ -39,7 +39,7 @@ local COLOR_LIGHT_YELLOW          = { 1, 1,   0.75      }
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
-local PEGBOARD_FONT               = love.graphics.newFont(32)
+local BOX_LABEL_FONT              = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
 
 local PEGBOARD = {
@@ -104,9 +104,9 @@ function drawBoxShape(x, y, w, h)
 end
 
 function drawBoxLabel(label, x, y, w, h)
-    love.graphics.setFont(PEGBOARD_FONT) 
+    love.graphics.setFont(BOX_LABEL_FONT) 
     love.graphics.setColor(COLOR_JET_BLACK)
-    love.graphics.printf(label, x, y + (h - PEGBOARD_FONT:getHeight()) / 2, w, "center")
+    love.graphics.printf(label, x, y + (h - BOX_LABEL_FONT:getHeight()) / 2, w, "center")
 end
 
 --------------------------------------------------------------
