@@ -34,6 +34,7 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
+local COLOR_JET_BLACK             = { 0, 0,   0   }
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
@@ -72,8 +73,8 @@ local PEGBOARD = {
 function love.draw()
     PEGBOARD:draw()
 
-    -- drawBox("Stand Left",   4, 7, 9, 7)
-    -- drawBox("Stand Right", 21, 7, 9, 7)
+    drawBox("Stand Left",   4, 7, 9, 7)
+    drawBox("Stand Right", 21, 7, 9, 7)
 end
 
 -- ...
@@ -83,7 +84,12 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function drawBox(label, x, y, w, h)
+    love.graphics.setColor(COLOR_JET_BLACK)
+    love.graphics.setLineWidth(3)
+    love.graphics.rectangle("line", x * 32, y * 32, w * 32, h * 32)
+end
+
 -- ...
 -- ...
 
