@@ -57,15 +57,26 @@ end
 --------------------------------------------------------------
 
 function drawPegboard()
+    drawPegboardBackground()
+    drawPegholes()
+end
+
+function drawPegboardBackground()
     love.graphics.setColor(COLOR_PEGBOARD_GREEN)
     love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-    
-    love.graphics.setColor(COLOR_PEGHOLES)
+end
+
+function drawPegholes()
     for y = 0, WINDOW_HEIGHT, 32 do
         for x = 0, WINDOW_WIDTH, 32 do
-            love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
+            drawPeghole(x, y)
         end
     end
+end
+
+function drawPeghole(x, y)
+    love.graphics.setColor(COLOR_PEGHOLES)
+    love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
 end
 
 -- ...
