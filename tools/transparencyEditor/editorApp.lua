@@ -23,15 +23,15 @@
 --]]
 
 --------------------------------------------------------------
---                     Global Variables                     --
+--                      Local Variables                     --
 --------------------------------------------------------------
 
-WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
-selectedColor               = nil
-changesMade                 = false
+local WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+local selectedColor               = nil
+local changesMade                 = false
 
-imgPath                     = "resources/images/transparencySad.png"
-imgName                     = __TRANSPARENCY_FILE
+local imgPath                     = "resources/images/transparencySad.png"
+local imgName                     = __TRANSPARENCY_FILE
 
 if imgName ~= nil then
     imgPath = "resources/images/spriteSheets/" .. imgName .. ".png"
