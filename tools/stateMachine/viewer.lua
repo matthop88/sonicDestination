@@ -41,7 +41,13 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+-- Function Name: love.draw()
+-- Called By:     LOVE2D application, every single frame
+--------------------------------------------------------------
+function love.draw()
+    drawPegboard()
+end
+
 -- ...
 -- ...
 
@@ -49,7 +55,10 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function drawPegboard()
+    -- Draw teal background with grid holes spaced every 32 pixels
+end
+
 -- ...
 -- ...
 
