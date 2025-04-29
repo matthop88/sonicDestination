@@ -92,11 +92,15 @@ local ARROW = {
     draw = function(self, label, x1, y1, x2, y2)
         love.graphics.setColor(1, 0.8, 0.5)
         love.graphics.setLineWidth(4)
-        self:drawBody(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
-        self:drawHead(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
-        self:drawLabel(label, x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+        self:drawComponents(label, x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
     end,
 
+    drawComponents = function(self, label, x1, y1, x2, y2)
+        self:drawBody(x1, y1, x2, y2)
+        self:drawHead(x1, y1, x2, y2)
+        self:drawLabel(label, x1, y1, x2, y2)
+    end,
+   
     drawBody = function(self, x1, y1, x2, y2)
         love.graphics.line(x1, y1, x2, y2)
     end,
