@@ -34,12 +34,7 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
-local COLOR_JET_BLACK             = { 0, 0,   0   }
-local COLOR_PURE_WHITE            = { 1, 1,   1         }
-local COLOR_LIGHT_YELLOW          = { 1, 1,   0.75      }
-local COLOR_MEDIUM_YELLOW         = { 1, 0.8, 0.5       }
-local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
-local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
+local COLORS                      = require("tools/lib/colors")
 
 local LABEL_FONT                  = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
@@ -51,7 +46,7 @@ local PEGBOARD = {
     end,
 
     drawBackground = function(self)
-        love.graphics.setColor(COLOR_PEGBOARD_GREEN)
+        love.graphics.setColor(COLORS.PEGBOARD_GREEN)
         love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
     end,
 
@@ -64,7 +59,7 @@ local PEGBOARD = {
     end,
 
     drawHole = function(self, x, y)
-        love.graphics.setColor(COLOR_PEGHOLES)
+        love.graphics.setColor(COLORS.PEGHOLES)
         love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
     end,
 }
@@ -80,23 +75,23 @@ local BOX = {
     end,
 
     drawShape = function(self, x, y, w, h)
-        love.graphics.setColor(COLOR_LIGHT_YELLOW)
+        love.graphics.setColor(COLORS.LIGHT_YELLOW)
         love.graphics.rectangle("fill", x, y, w, h)
-        love.graphics.setColor(COLOR_JET_BLACK)
+        love.graphics.setColor(COLORS.JET_BLACK)
         love.graphics.setLineWidth(5)
         love.graphics.rectangle("line", x, y, w, h)
     end,
 
     drawLabel = function(self, label, x, y, w, h)
         love.graphics.setFont(LABEL_FONT) 
-        love.graphics.setColor(COLOR_JET_BLACK)
+        love.graphics.setColor(COLORS.JET_BLACK)
         love.graphics.printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
     end,
 }
 
 local ARROW = {
     draw = function(self, label, x1, y1, x2, y2)
-        love.graphics.setColor(COLOR_MEDIUM_YELLOW)
+        love.graphics.setColor(COLORS.MEDIUM_YELLOW)
         love.graphics.setLineWidth(4)
         self:drawComponents(label, x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
     end,
@@ -130,7 +125,7 @@ local ARROW = {
     end,
 
     drawLabel = function(self, label, x1, y1, x2, y2)
-        love.graphics.setColor(COLOR_PURE_WHITE)
+        love.graphics.setColor(COLORS.PURE_WHITE)
         love.graphics.printf(label, math.min(x1,  x2), y1 - LABEL_FONT:getHeight(), 
                                     math.abs(x2 - x1), "center")
     end,
