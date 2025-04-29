@@ -1,8 +1,12 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local COLORS                      = require("tools/lib/colors")
-local GRID_SIZE                   = 32
 
 return {
+    init = function(self, gridSize)
+        self.gridSize = gridSize
+        return self
+    end,
+    
     draw = function(self)
         self:drawBackground()
         self:drawHoles()
@@ -14,8 +18,8 @@ return {
     end,
 
     drawHoles = function(self)
-        for y = 0, WINDOW_HEIGHT, GRID_SIZE do
-            for x = 0, WINDOW_WIDTH, GRID_SIZE do
+        for y = 0, WINDOW_HEIGHT, self.gridSize do
+            for x = 0, WINDOW_WIDTH, self.gridSize do
                 self:drawHole(x, y)
             end
         end
