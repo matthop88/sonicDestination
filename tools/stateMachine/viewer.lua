@@ -116,14 +116,28 @@ function drawArrow(label, x1, y1, x2, y2)
     love.graphics.setColor(1, 0.8, 0.5)
     love.graphics.setLineWidth(4)
     drawArrowLine(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+    drawArrowHead(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
 end
 
 function drawArrowLine(x1, y1, x2, y2)
     love.graphics.line(x1, y1, x2, y2)
 end
 
--- ...
--- ...
+function drawArrowHead(x1, y1, x2, y2)
+    if x2 > x1 then
+        drawArrowHeadRight(x1, y1, x2, y2)
+    else
+        drawArrowHeadLeft( x1, y1, x2, y2)
+    end
+end
+
+function drawArrowHeadRight(x1, y1, x2, y2)
+    -- Awesomeness
+end
+
+function drawArrowHeadLeft(x1, y1, x2, y2)
+    -- Son of awesomeness
+end
 
 --------------------------------------------------------------
 --                        Plugins                           --
