@@ -39,7 +39,7 @@ local COLOR_LIGHT_YELLOW          = { 1, 1,   0.75      }
 local COLOR_PEGBOARD_GREEN        = { 0, 0.3, 0.3 }
 local COLOR_PEGHOLES              = { 1, 1,   1,  0.5 }
 
-local BOX_LABEL_FONT              = love.graphics.newFont(32)
+local LABEL_FONT                  = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
 
 local PEGBOARD = {
@@ -82,9 +82,9 @@ local BOX = {
     end,
 
     drawLabel = function(self, label, x, y, w, h)
-        love.graphics.setFont(BOX_LABEL_FONT) 
+        love.graphics.setFont(LABEL_FONT) 
         love.graphics.setColor(COLOR_JET_BLACK)
-        love.graphics.printf(label, x, y + (h - BOX_LABEL_FONT:getHeight()) / 2, w, "center")
+        love.graphics.printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
     end,
 }
 
@@ -144,7 +144,7 @@ end
 
 function drawArrowLabel(label, x1, y1, x2, y2)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.printf(label, math.min(x1, x2),  y1 - BOX_LABEL_FONT:getHeight(), 
+    love.graphics.printf(label, math.min(x1, x2),  y1 - LABEL_FONT:getHeight(), 
                                 math.abs(x2 - x1), "center")
 end
 
