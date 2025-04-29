@@ -88,6 +88,45 @@ local BOX = {
     end,
 }
 
+local ARROW = {
+    draw = function(self, label, x1, y1, x2, y2)
+        love.graphics.setColor(1, 0.8, 0.5)
+        love.graphics.setLineWidth(4)
+        self:drawLine(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+        self:drawHead(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+        self:drawLabel(label, x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+    end,
+
+    drawLine = function(self, x1, y1, x2, y2)
+        love.graphics.line(x1, y1, x2, y2)
+    end,
+
+    drawHead = function(self, x1, y1, x2, y2)
+        if x2 > x1 then
+            self:drawHeadRight(x1, y1, x2, y2)
+        else
+            self:drawHeadLeft( x1, y1, x2, y2)
+        end
+    end,
+
+    drawHeadRight = function(self, x1, y1, x2, y2)
+        love.graphics.line(x2, y2, x2 - 24, y2 - 16)
+        love.graphics.line(x2, y2, x2 - 24, y2 + 16)
+    end,
+
+    drawHeadLeft = function(self, x1, y1, x2, y2)
+        love.graphics.line(x2, y2, x2 + 24, y2 - 16)
+        love.graphics.line(x2, y2, x2 + 24, y2 + 16)
+    end,
+
+    drawLabel = function(self, label, x1, y1, x2, y2)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.printf(label, math.min(x1,  x2), y1 - LABEL_FONT:getHeight(), 
+                                    math.abs(x2 - x1), "center")
+    end,
+
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -101,8 +140,8 @@ function love.draw()
     BOX:draw("Stand Left",   3, 7, 9, 7)
     BOX:draw("Stand Right", 20, 7, 9, 7)
 
-    drawArrow("L On", 20,  9, 12,  9)
-    drawArrow("R On", 12, 12, 20, 12)
+    ARROW:draw("L On", 20,  9, 12,  9)
+    ARROW:draw("R On", 12, 12, 20, 12)
 end
 
 -- ...
@@ -112,41 +151,9 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawArrow(label, x1, y1, x2, y2)
-    love.graphics.setColor(1, 0.8, 0.5)
-    love.graphics.setLineWidth(4)
-    drawArrowLine(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
-    drawArrowHead(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
-    drawArrowLabel(label, x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
-end
-
-function drawArrowLine(x1, y1, x2, y2)
-    love.graphics.line(x1, y1, x2, y2)
-end
-
-function drawArrowHead(x1, y1, x2, y2)
-    if x2 > x1 then
-        drawArrowHeadRight(x1, y1, x2, y2)
-    else
-        drawArrowHeadLeft( x1, y1, x2, y2)
-    end
-end
-
-function drawArrowHeadRight(x1, y1, x2, y2)
-    love.graphics.line(x2, y2, x2 - 24, y2 - 16)
-    love.graphics.line(x2, y2, x2 - 24, y2 + 16)
-end
-
-function drawArrowHeadLeft(x1, y1, x2, y2)
-    love.graphics.line(x2, y2, x2 + 24, y2 - 16)
-    love.graphics.line(x2, y2, x2 + 24, y2 + 16)
-end
-
-function drawArrowLabel(label, x1, y1, x2, y2)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.printf(label, math.min(x1, x2),  y1 - LABEL_FONT:getHeight(), 
-                                math.abs(x2 - x1), "center")
-end
+-- ...
+-- ...
+-- ...
 
 --------------------------------------------------------------
 --                        Plugins                           --
