@@ -100,6 +100,9 @@ function love.draw()
 
     BOX:draw("Stand Left",   3, 7, 9, 7)
     BOX:draw("Stand Right", 20, 7, 9, 7)
+
+    --drawArrow("L On", 20,  9, 12,  9)
+    --drawArrow("R On", 12, 12, 20, 12)
 end
 
 -- ...
