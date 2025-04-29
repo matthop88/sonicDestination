@@ -39,7 +39,7 @@ local COLORS                      = require("tools/lib/colors")
 local LABEL_FONT                  = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
 
-local PEGBOARD                    = require("tools/stateMachine/pegboard")
+local PEGBOARD                    = require("tools/stateMachine/pegboard"):init(GRID_SIZE)
 
 local BOX = {
     draw = function(self, label, x, y, w, h)
