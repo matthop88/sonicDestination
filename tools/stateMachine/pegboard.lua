@@ -1,4 +1,3 @@
-local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local COLORS                      = require("tools/lib/colors")
 
 return {
@@ -14,12 +13,12 @@ return {
 
     drawBackground = function(self)
         love.graphics.setColor(COLORS.MOSS_GREEN)
-        love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end,
 
     drawHoles = function(self)
-        for y = 0, WINDOW_HEIGHT, self.gridSize do
-            for x = 0, WINDOW_WIDTH, self.gridSize do
+        for y = 0, love.graphics.getHeight(), self.gridSize do
+            for x = 0, love.graphics.getWidth(), self.gridSize do
                 self:drawHole(x, y)
             end
         end
