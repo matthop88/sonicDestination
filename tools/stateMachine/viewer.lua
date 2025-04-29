@@ -101,8 +101,8 @@ function love.draw()
     BOX:draw("Stand Left",   3, 7, 9, 7)
     BOX:draw("Stand Right", 20, 7, 9, 7)
 
-    --drawArrow("L On", 20,  9, 12,  9)
-    --drawArrow("R On", 12, 12, 20, 12)
+    drawArrow("L On", 20,  9, 12,  9)
+    drawArrow("R On", 12, 12, 20, 12)
 end
 
 -- ...
@@ -112,7 +112,12 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function drawArrow(label, x1, y1, x2, y2)
+    love.graphics.setColor(1, 0.8, 0.5)
+    love.graphics.setLineWidth(4)
+    love.graphics.line(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+end
+
 -- ...
 -- ...
 
