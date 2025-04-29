@@ -46,7 +46,7 @@ local PEGBOARD = {
     end,
 
     drawBackground = function(self)
-        love.graphics.setColor(COLORS.PEGBOARD_GREEN)
+        love.graphics.setColor(COLORS.MOSS_GREEN)
         love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
     end,
 
@@ -59,7 +59,7 @@ local PEGBOARD = {
     end,
 
     drawHole = function(self, x, y)
-        love.graphics.setColor(COLORS.PEGHOLES)
+        love.graphics.setColor(COLORS.TRANSLUCENT_WHITE)
         love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
     end,
 }
