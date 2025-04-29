@@ -34,7 +34,6 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
-local COLORS                      = require("tools/lib/colors")
 
 local LABEL_FONT                  = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
