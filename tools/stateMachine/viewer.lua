@@ -117,6 +117,7 @@ function drawArrow(label, x1, y1, x2, y2)
     love.graphics.setLineWidth(4)
     drawArrowLine(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
     drawArrowHead(x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
+    drawArrowLabel(label, x1 * GRID_SIZE, y1 * GRID_SIZE, x2 * GRID_SIZE, y2 * GRID_SIZE)
 end
 
 function drawArrowLine(x1, y1, x2, y2)
@@ -139,6 +140,12 @@ end
 function drawArrowHeadLeft(x1, y1, x2, y2)
     love.graphics.line(x2, y2, x2 + 24, y2 - 16)
     love.graphics.line(x2, y2, x2 + 24, y2 + 16)
+end
+
+function drawArrowLabel(label, x1, y1, x2, y2)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.printf(label, math.min(x1, x2),  y1 - BOX_LABEL_FONT:getHeight(), 
+                                math.abs(x2 - x1), "center")
 end
 
 --------------------------------------------------------------
