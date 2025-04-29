@@ -132,13 +132,13 @@ function drawArrowHead(x1, y1, x2, y2)
 end
 
 function drawArrowHeadRight(x1, y1, x2, y2)
-    love.graphics.line(x2, y2, x2 - GRID_SIZE, y2 - GRID_SIZE)
-    love.graphics.line(x2, y2, x2 - GRID_SIZE, y2 + GRID_SIZE)
+    love.graphics.line(x2, y2, x2 - 24, y2 - 16)
+    love.graphics.line(x2, y2, x2 - 24, y2 + 16)
 end
 
 function drawArrowHeadLeft(x1, y1, x2, y2)
-    love.graphics.line(x2, y2, x2 + GRID_SIZE, y2 - GRID_SIZE)
-    love.graphics.line(x2, y2, x2 + GRID_SIZE, y2 + GRID_SIZE)
+    love.graphics.line(x2, y2, x2 + 24, y2 - 16)
+    love.graphics.line(x2, y2, x2 + 24, y2 + 16)
 end
 
 --------------------------------------------------------------
