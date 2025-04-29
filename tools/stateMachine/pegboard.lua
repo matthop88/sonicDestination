@@ -1,8 +1,9 @@
-local COLORS                      = require("tools/lib/colors")
+local COLORS = require("tools/lib/colors")
+local GRID_SIZE
 
 return {
     init = function(self, gridSize)
-        self.gridSize = gridSize
+        GRID_SIZE = gridSize
         return self
     end,
     
@@ -17,8 +18,8 @@ return {
     end,
 
     drawHoles = function(self)
-        for y = 0, love.graphics.getHeight(), self.gridSize do
-            for x = 0, love.graphics.getWidth(), self.gridSize do
+        for y = 0, love.graphics.getHeight(), GRID_SIZE do
+            for x = 0, love.graphics.getWidth(), GRID_SIZE do
                 self:drawHole(x, y)
             end
         end
