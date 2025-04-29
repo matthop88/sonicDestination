@@ -40,31 +40,7 @@ local LABEL_FONT                  = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
 
 local PEGBOARD                    = require("tools/stateMachine/pegboard"):init(GRID_SIZE)
-
-local BOX = {
-    draw = function(self, label, x, y, w, h)
-        self:drawComponents(label, x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE)
-    end,
-
-    drawComponents = function(self, label, x, y, w, h)
-        self:drawShape(       x, y, w, h)
-        self:drawLabel(label, x, y, w, h)
-    end,
-
-    drawShape = function(self, x, y, w, h)
-        love.graphics.setColor(COLORS.LIGHT_YELLOW)
-        love.graphics.rectangle("fill", x, y, w, h)
-        love.graphics.setColor(COLORS.JET_BLACK)
-        love.graphics.setLineWidth(5)
-        love.graphics.rectangle("line", x, y, w, h)
-    end,
-
-    drawLabel = function(self, label, x, y, w, h)
-        love.graphics.setFont(LABEL_FONT) 
-        love.graphics.setColor(COLORS.JET_BLACK)
-        love.graphics.printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
-    end,
-}
+local BOX                         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT)
 
 local ARROW = {
     draw = function(self, label, x1, y1, x2, y2)
