@@ -69,8 +69,12 @@ local PEGBOARD = {
 
 local BOX = {
     draw = function(self, label, x, y, w, h)
-        self:drawShape(       x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE)
-        self:drawLabel(label, x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE)
+        self:drawComponents(label, x * GRID_SIZE, y * GRID_SIZE, w * GRID_SIZE, h * GRID_SIZE)
+    end,
+
+    drawComponents = function(self, label, x, y, w, h)
+        self:drawShape(       x, y, w, h)
+        self:drawLabel(label, x, y, w, h)
     end,
 
     drawShape = function(self, x, y, w, h)
