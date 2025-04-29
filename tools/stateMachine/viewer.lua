@@ -22,7 +22,7 @@
     Features:
         [X] Pegboard is drawn in background
         [X] Boxes are drawn with labels in the center
-        [ ] Arrows are drawn connecting boxes, with labels
+        [X] Arrows are drawn connecting boxes, with labels
         [ ] Can scroll using arrow keys
         [ ] Can zoom using 'z' and 'a' keys
         [ ] Mousing over boxes  causes outline and text to light up
