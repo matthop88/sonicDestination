@@ -88,5 +88,3 @@ PLUGINS = require("plugins/engine")
 love.window.setTitle("State Machine Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-GRAFX:setX(320)
-GRAFX:setY(-160)
