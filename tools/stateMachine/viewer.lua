@@ -37,8 +37,9 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local LABEL_FONT                  = love.graphics.newFont(32)
 local GRID_SIZE                   = 32
+local GRAFX                       = require "tools/lib/graphics"
 
-local PEGBOARD                    = require("tools/stateMachine/pegboard"):init(GRID_SIZE)
+local PEGBOARD                    = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
 local BOX                         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT)
 local ARROW                       = require("tools/stateMachine/arrow"):init(GRID_SIZE, LABEL_FONT)
 
@@ -85,3 +86,5 @@ end
 love.window.setTitle("State Machine Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+GRAFX:setX(320)
+GRAFX:setY(-160)
