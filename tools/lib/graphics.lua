@@ -1,6 +1,5 @@
 return {
-    x = 0,
-    y = 0,
+    x = 0, y = 0, scale = 1,
 
     ---------------------- Property Setter Functions -------------------
     
@@ -42,8 +41,19 @@ return {
         self.y = y
     end,
 
-     moveImage = function(self, deltaX, deltaY)
+    moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
         self.y = self.y + deltaY
+    end,
+
+    ----------------------- Zooming Functions ----------------------
+
+    screenToImageCoordinates = function(self, mx, my)
+    end,
+    
+    adjustScaleGeometrically = function(self, deltaX)
+    end,
+    
+    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
     end,
 }
