@@ -40,7 +40,7 @@ local GRID_SIZE                   = 32
 local GRAFX                       = require "tools/lib/graphics"
 
 local PEGBOARD                    = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
-local BOX                         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT)
+local BOX                         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT, GRAFX)
 local ARROW                       = require("tools/stateMachine/arrow"):init(GRID_SIZE, LABEL_FONT)
 
 --------------------------------------------------------------
