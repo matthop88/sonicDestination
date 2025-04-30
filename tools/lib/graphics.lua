@@ -22,6 +22,10 @@ return {
         love.graphics.rectangle(mode, x + self.x, y + self.y, w, h)
     end,
 
+    line      = function(self, x1, y1, x2, y2)
+        love.graphics.line(x1 + self.x, y1 + self.y, x2 + self.x, y2 + self.y)
+    end,
+
     ------------------------ Text Drawing Functions --------------------
 
     printf    = function(self, text, x, y, w, align)
