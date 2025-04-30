@@ -1,10 +1,11 @@
 local COLORS = require "tools/lib/colors"
-local GRID_SIZE, LABEL_FONT
+local GRID_SIZE, LABEL_FONT, GRAFX
 
 return {
-    init = function(self, gridSize, labelFont)
-        GRID_SIZE = gridSize
+    init = function(self, gridSize, labelFont, graphics)
+        GRID_SIZE  = gridSize
         LABEL_FONT = labelFont
+        GRAFX      = graphics
         return self
     end,
 
@@ -20,9 +21,9 @@ return {
     end,
 
     drawBody = function(self, x1, y1, x2, y2)
-        love.graphics.setColor(COLORS.MEDIUM_YELLOW)
-        love.graphics.setLineWidth(4)
-        love.graphics.line(x1, y1, x2, y2)
+        GRAFX:setColor(COLORS.MEDIUM_YELLOW)
+        GRAFX:setLineWidth(4)
+        GRAFX:line(x1, y1, x2, y2)
     end,
 
     drawHead = function(self, x1, y1, x2, y2)
@@ -34,23 +35,23 @@ return {
     end,
 
     drawHeadRight = function(self, x1, y1, x2, y2)
-        love.graphics.setColor(COLORS.MEDIUM_YELLOW)
-        love.graphics.setLineWidth(4)
-        love.graphics.line(x2, y2, x2 - 24, y2 - 16)
-        love.graphics.line(x2, y2, x2 - 24, y2 + 16)
+        GRAFX:setColor(COLORS.MEDIUM_YELLOW)
+        GRAFX:setLineWidth(4)
+        GRAFX:line(x2, y2, x2 - 24, y2 - 16)
+        GRAFX:line(x2, y2, x2 - 24, y2 + 16)
     end,
 
     drawHeadLeft = function(self, x1, y1, x2, y2)
-        love.graphics.setColor(COLORS.MEDIUM_YELLOW)
-        love.graphics.setLineWidth(4)
-        love.graphics.line(x2, y2, x2 + 24, y2 - 16)
-        love.graphics.line(x2, y2, x2 + 24, y2 + 16)
+        GRAFX:setColor(COLORS.MEDIUM_YELLOW)
+        GRAFX:setLineWidth(4)
+        GRAFX:line(x2, y2, x2 + 24, y2 - 16)
+        GRAFX:line(x2, y2, x2 + 24, y2 + 16)
     end,
 
     drawLabel = function(self, label, x1, y1, x2, y2)
-        love.graphics.setFont(LABEL_FONT) 
-        love.graphics.setColor(COLORS.PURE_WHITE)
-        love.graphics.printf(label, math.min(x1,  x2), y1 - LABEL_FONT:getHeight(), 
+        GRAFX:setFont(LABEL_FONT) 
+        GRAFX:setColor(COLORS.PURE_WHITE)
+        GRAFX:printf(label, math.min(x1,  x2), y1 - LABEL_FONT:getHeight(), 
                                     math.abs(x2 - x1), "center")
     end,
 
