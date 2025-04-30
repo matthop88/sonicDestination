@@ -11,6 +11,10 @@ return {
     setFont  = function(self, font)
         love.graphics.setFont(font)
     end,
+
+    setLineWidth = function(self, lineWidth)
+        love.graphics.setLineWidth(lineWidth)
+    end,
     
     ----------------------- Shape Drawing Functions --------------------
     
