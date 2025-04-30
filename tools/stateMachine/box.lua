@@ -1,10 +1,11 @@
 local COLORS = require "tools/lib/colors"
-local GRID_SIZE, LABEL_FONT
+local GRID_SIZE, LABEL_FONT, GRAFX
 
 return {
-    init = function(self, gridSize, labelFont)
-        GRID_SIZE = gridSize
+    init = function(self, gridSize, labelFont, graphics)
+        GRID_SIZE  = gridSize
         LABEL_FONT = labelFont
+        GRAFX      = graphics
         return self
     end,
 
@@ -19,16 +20,16 @@ return {
     end,
 
     drawShape = function(self, x, y, w, h)
-        love.graphics.setColor(COLORS.LIGHT_YELLOW)
-        love.graphics.rectangle("fill", x, y, w, h)
-        love.graphics.setColor(COLORS.JET_BLACK)
+        GRAFX:setColor(COLORS.LIGHT_YELLOW)
+        GRAFX:rectangle("fill", x, y, w, h)
+        GRAFX:setColor(COLORS.JET_BLACK)
         love.graphics.setLineWidth(5)
-        love.graphics.rectangle("line", x, y, w, h)
+        GRAFX:rectangle("line", x, y, w, h)
     end,
 
     drawLabel = function(self, label, x, y, w, h)
         love.graphics.setFont(LABEL_FONT) 
-        love.graphics.setColor(COLORS.JET_BLACK)
+        GRAFX:setColor(COLORS.JET_BLACK)
         love.graphics.printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
     end,
 }
