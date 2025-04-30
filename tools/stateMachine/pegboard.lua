@@ -1,6 +1,8 @@
 local COLORS = require("tools/lib/colors")
 local GRID_SIZE
 
+local GRAFX = require("tools/lib/graphics")
+
 return {
     init = function(self, gridSize)
         GRID_SIZE = gridSize
@@ -13,8 +15,8 @@ return {
     end,
 
     drawBackground = function(self)
-        love.graphics.setColor(COLORS.MOSS_GREEN)
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        GRAFX:setColor(COLORS.MOSS_GREEN)
+        GRAFX:rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end,
 
     drawHoles = function(self)
@@ -26,7 +28,7 @@ return {
     end,
 
     drawHole = function(self, x, y)
-        love.graphics.setColor(COLORS.TRANSLUCENT_WHITE)
-        love.graphics.rectangle("fill", x - 1, y - 1, 3, 3)
+        GRAFX:setColor(COLORS.TRANSLUCENT_WHITE)
+        GRAFX:rectangle("fill", x - 1, y - 1, 3, 3)
     end,
 }
