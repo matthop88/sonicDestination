@@ -75,7 +75,9 @@ end
 --                        Plugins                           --
 --------------------------------------------------------------
 
--- ...
+PLUGINS = require("plugins/engine")
+    :add("scrolling", { imageViewer = GRAFX })
+    
 -- ...
 -- ...
 
