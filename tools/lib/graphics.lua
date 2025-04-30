@@ -8,10 +8,20 @@ return {
         love.graphics.setColor(color)
     end,
 
+    setFont  = function(self, font)
+        love.graphics.setFont(font)
+    end,
+    
     ----------------------- Shape Drawing Functions --------------------
     
     rectangle = function(self, mode, x, y, w, h)
         love.graphics.rectangle(mode, x + self.x, y + self.y, w, h)
+    end,
+
+    ------------------------ Text Drawing Functions --------------------
+
+    printf    = function(self, text, x, y, w, align)
+        love.graphics.printf(text, x + self.x, y + self.y, w, align)
     end,
 
     ------------------------- Scrolling Functions ----------------------
