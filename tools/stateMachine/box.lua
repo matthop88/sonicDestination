@@ -28,8 +28,8 @@ return {
     end,
 
     drawLabel = function(self, label, x, y, w, h)
-        love.graphics.setFont(LABEL_FONT) 
+        GRAFX:setFont(LABEL_FONT) 
         GRAFX:setColor(COLORS.JET_BLACK)
-        love.graphics.printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
+        GRAFX:printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
     end,
 }
