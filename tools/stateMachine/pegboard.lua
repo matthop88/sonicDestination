@@ -2,6 +2,8 @@ local COLORS = require("tools/lib/colors")
 local GRID_SIZE
 
 local GRAFX = require("tools/lib/graphics")
+GRAFX:setX(320)
+GRAFX:setY(-160)
 
 return {
     init = function(self, gridSize)
