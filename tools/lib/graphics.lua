@@ -18,12 +18,12 @@ return {
         self.y = y
     end,
 
-    keepInBounds = function(self)
-	    -- do nothing
-	end,
+    keepImageInBounds = function(self)
+        -- do nothing
+    end,
 
-	moveImage = function(self, deltaX, deltaY)
-		self.x = self.x + deltaX
-	    self.y = self.y + deltaY
-	end,
+    moveImage = function(self, deltaX, deltaY)
+        self.x = self.x + deltaX
+        self.y = self.y + deltaY
+    end,
 }
