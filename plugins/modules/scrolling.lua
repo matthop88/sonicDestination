@@ -35,7 +35,7 @@ return {
     
     update = function(self, dt)
         self.imageViewer:moveImage(self.xSpeed * dt, self.ySpeed * dt)
-        if self:isMotionless() then
+        if self:isMotionless() and self.imageViewer.keepImageInBounds then
             self.imageViewer:keepImageInBounds()
         end
     end,
