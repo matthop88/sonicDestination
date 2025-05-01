@@ -49,11 +49,18 @@ return {
     ----------------------- Zooming Functions ----------------------
 
     screenToImageCoordinates = function(self, mx, my)
+        local x = mx / self.scale - self.x
+        local y = my / self.scale - self.y
+
+        return x, y
     end,
     
-    adjustScaleGeometrically = function(self, deltaX)
+    adjustScaleGeometrically = function(self, delta)
+        self.scale = self.scale + (delta * self.scale)
     end,
     
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        self.x = screenX / self.scale - imageX
+        self.y = screenY / self.scale - imageY
     end,
 }
