@@ -1,11 +1,11 @@
 local COLORS = require "tools/lib/colors"
-local GRID_SIZE, LABEL_FONT, GRAFX
+local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
 return {
-    init = function(self, gridSize, labelFont, graphics)
-        GRID_SIZE  = gridSize
-        LABEL_FONT = labelFont
-        GRAFX      = graphics
+    init = function(self, gridSize, labelFontSize, graphics)
+        GRID_SIZE       = gridSize
+        LABEL_FONT_SIZE = labelFontSize
+        GRAFX           = graphics
         return self
     end,
 
@@ -28,7 +28,7 @@ return {
     end,
 
     drawLabel = function(self, label, x, y, w, h)
-        GRAFX:setFont(LABEL_FONT) 
+        GRAFX:setFontSize(LABEL_FONT_SIZE)) 
         GRAFX:setColor(COLORS.JET_BLACK)
         GRAFX:printf(label, x, y + (h - LABEL_FONT:getHeight()) / 2, w, "center")
     end,
