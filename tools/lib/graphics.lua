@@ -1,8 +1,9 @@
 return {
     x = 0, y = 0, scale = 1,
 
-    fontSize = 24,
-    font     = love.graphics.newFont(24),
+    fontSize  = 24,
+    font      = love.graphics.newFont(24),
+    lineWidth = 1,
 
     FONTS = {
         get = function(self, size)
@@ -32,17 +33,18 @@ return {
     end,
 
     setLineWidth = function(self, lineWidth)
-        love.graphics.setLineWidth(lineWidth)
+        self.lineWidth = lineWidth
     end,
 
     setFontSize = function(self, fontSize)
-		self.fontSize = fontSize
-		self:setFont(self.FONTS:get(self.fontSize * self.scale))
-	end,
+        self.fontSize = fontSize
+        self:setFont(self.FONTS:get(self.fontSize * self.scale))
+    end,
     
     ----------------------- Shape Drawing Functions --------------------
     
     rectangle = function(self, mode, x, y, w, h)
+        love.graphics.setLineWidth(self.lineWidth * self.scale)
         love.graphics.rectangle(mode, (x + self.x) * self.scale,
                                       (y + self.y) * self.scale,
                                                 w  * self.scale,
@@ -50,6 +52,7 @@ return {
     end,
 
     line      = function(self, x1, y1, x2, y2)
+        love.graphics.setLineWidth(self.lineWidth * self.scale)
         love.graphics.line((x1 + self.x) * self.scale,
                            (y1 + self.y) * self.scale,
                            (x2 + self.x) * self.scale, 
