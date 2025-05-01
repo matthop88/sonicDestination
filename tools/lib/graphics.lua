@@ -5,6 +5,12 @@ return {
 
     fonts = {},
 
+    ---------------------- Property Getter Functions -------------------
+
+    getFontHeight = function(self)
+        return self.font:getHeight()
+    end,
+    
     ---------------------- Property Setter Functions -------------------
     
     setColor = function(self, color)
