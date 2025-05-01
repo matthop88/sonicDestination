@@ -34,7 +34,9 @@ return {
     ------------------------ Text Drawing Functions --------------------
 
     printf    = function(self, text, x, y, w, align)
-        love.graphics.printf(text, x + self.x, y + self.y, w, align)
+        love.graphics.printf(text, (x + self.x) * self.scale, 
+                                   (y + self.y) * self.scale,
+                                             w  * self.scale, align)
     end,
 
     ------------------------- Scrolling Functions ----------------------
