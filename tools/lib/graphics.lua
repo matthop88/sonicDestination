@@ -1,6 +1,10 @@
 return {
     x = 0, y = 0, scale = 1,
 
+    fontSize = 24,
+
+    fonts = {},
+
     ---------------------- Property Setter Functions -------------------
     
     setColor = function(self, color)
@@ -13,6 +17,16 @@ return {
 
     setLineWidth = function(self, lineWidth)
         love.graphics.setLineWidth(lineWidth)
+    end,
+
+    setFontSize = function(self, fontSize)
+        self.fontSize = fontSize
+        local font = self.fonts[fontSize]
+        if font == nil then
+            font = love.graphics.newFont(fontSize)
+            self.fonts[fontSize] = font
+        end
+        self:setFont(font)
     end,
     
     ----------------------- Shape Drawing Functions --------------------
