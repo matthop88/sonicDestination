@@ -35,12 +35,13 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-local LABEL_FONT                  = love.graphics.newFont(32)
+local LABEL_FONT_SIZE             = 32
+local LABEL_FONT                  = love.graphics.newFont(LABEL_FONT_SIZE)
 local GRID_SIZE                   = 32
 local GRAFX                       = require "tools/lib/graphics"
 
 local PEGBOARD                    = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
-local BOX                         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT, GRAFX)
+local BOX                         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 local ARROW                       = require("tools/stateMachine/arrow"):init(GRID_SIZE, LABEL_FONT, GRAFX)
 
 --------------------------------------------------------------
