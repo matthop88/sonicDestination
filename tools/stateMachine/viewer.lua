@@ -77,6 +77,7 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("scrolling", { imageViewer = GRAFX })
+    :add("zooming",   { imageViewer = GRAFX })
     
 -- ...
 -- ...
