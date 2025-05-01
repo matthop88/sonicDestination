@@ -51,7 +51,7 @@ return {
     drawLabel = function(self, label, x1, y1, x2, y2)
         GRAFX:setFontSize(LABEL_FONT_SIZE) 
         GRAFX:setColor(COLORS.PURE_WHITE)
-        GRAFX:printf(label, math.min(x1,  x2), y1 - self.graphics:getFontHeight(), 
+        GRAFX:printf(label, math.min(x1,  x2), y1 - GRAFX:getFontHeight(), 
                             math.abs(x2 - x1), "center")
     end,
 
