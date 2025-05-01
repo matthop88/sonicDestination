@@ -2,6 +2,7 @@ return {
     x = 0, y = 0, scale = 1,
 
     fontSize = 24,
+    font     = love.graphics.newFont(24),
 
     fonts = {},
 
@@ -27,14 +28,15 @@ return {
     end,
 
     setFontSize = function(self, fontSize)
-        self.fontSize = fontSize
-        local font = self.fonts[fontSize]
-        if font == nil then
-            font = love.graphics.newFont(fontSize)
-            self.fonts[fontSize] = font
-        end
-        self:setFont(font)
-    end,
+		self.fontSize = fontSize
+		local scaledSize = math.floor(fontSize * self.scale)
+		local font = self.fonts[scaledSize]
+		if font == nil then
+			font = love.graphics.newFont(scaledSize)
+			self.fonts[scaledSize] = font
+		end
+		self:setFont(font)
+	end,
     
     ----------------------- Shape Drawing Functions --------------------
     
