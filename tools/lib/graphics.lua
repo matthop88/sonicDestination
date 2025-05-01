@@ -14,11 +14,11 @@ return {
     ---------------------- Property Setter Functions -------------------
     
     setColor = function(self, color)
-        self.font = font
         love.graphics.setColor(color)
     end,
 
     setFont  = function(self, font)
+        self.font = font
         love.graphics.setFont(font)
     end,
 
