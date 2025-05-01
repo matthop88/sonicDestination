@@ -4,12 +4,20 @@ return {
     fontSize = 24,
     font     = love.graphics.newFont(24),
 
-    fonts = {},
+    FONTS = {
+        get = function(self, size)
+            local fontSize = math.floor(size)
+            if self[fontSize] == nil then
+                self[fontSize] = love.graphics.newFont(fontSize)
+            end
+            return self[fontSize]
+        end,
+    },
 
     ---------------------- Property Getter Functions -------------------
 
     getFontHeight = function(self)
-        return self.font:getHeight()
+        return self.FONTS:get(self.fontSize):getHeight()
     end,
     
     ---------------------- Property Setter Functions -------------------
@@ -29,13 +37,7 @@ return {
 
     setFontSize = function(self, fontSize)
 		self.fontSize = fontSize
-		local scaledSize = math.floor(fontSize * self.scale)
-		local font = self.fonts[scaledSize]
-		if font == nil then
-			font = love.graphics.newFont(scaledSize)
-			self.fonts[scaledSize] = font
-		end
-		self:setFont(font)
+		self:setFont(self.FONTS:get(fontSize * self.scale))
 	end,
     
     ----------------------- Shape Drawing Functions --------------------
