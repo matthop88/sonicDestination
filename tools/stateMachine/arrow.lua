@@ -4,7 +4,7 @@ local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 return {
     init = function(self, gridSize, labelFontSize, graphics)
         GRID_SIZE       = gridSize
-        LABEL_FONT_SIZE = labelFont
+        LABEL_FONT_SIZE = labelFontSize
         GRAFX           = graphics
         return self
     end,
