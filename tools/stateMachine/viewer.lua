@@ -24,7 +24,7 @@
         [X] Boxes are drawn with labels in the center
         [X] Arrows are drawn connecting boxes, with labels
         [X] Can scroll using arrow keys
-        [ ] Can zoom using 'z' and 'a' keys
+        [X] Can zoom using 'z' and 'a' keys
         [ ] Mousing over boxes  causes outline and text to light up
         [ ] Mousing over arrows causes arrow   and text to light up
 --]]
