@@ -14,6 +14,7 @@ return {
     ---------------------- Property Setter Functions -------------------
     
     setColor = function(self, color)
+        self.font = font
         love.graphics.setColor(color)
     end,
 
