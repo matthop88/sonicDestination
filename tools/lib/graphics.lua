@@ -18,7 +18,10 @@ return {
     ----------------------- Shape Drawing Functions --------------------
     
     rectangle = function(self, mode, x, y, w, h)
-        love.graphics.rectangle(mode, x + self.x, y + self.y, w, h)
+        love.graphics.rectangle(mode, (x + self.x) * self.scale,
+                                      (y + self.y) * self.scale,
+                                                w  * self.scale,
+                                                h  * self.scale)
     end,
 
     line      = function(self, x1, y1, x2, y2)
