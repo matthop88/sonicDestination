@@ -37,7 +37,7 @@ return {
 
     setFontSize = function(self, fontSize)
 		self.fontSize = fontSize
-		self:setFont(self.FONTS:get(fontSize * self.scale))
+		self:setFont(self.FONTS:get(self.fontSize * self.scale))
 	end,
     
     ----------------------- Shape Drawing Functions --------------------
