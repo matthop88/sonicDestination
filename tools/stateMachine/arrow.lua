@@ -1,5 +1,4 @@
 local COLORS = require "tools/lib/colors"
-local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
 local function calculateXAndWidth(x1, x2)
     local x = math.min(x1,  x2)
@@ -42,6 +41,8 @@ local function isMouseInsideRect(x, y, w, h)
     
     return isPtInRect(mx, my, x, y, w, h)
 end
+
+local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
 return {
     init = function(self, gridSize, labelFontSize, graphics)
