@@ -25,11 +25,14 @@ return {
     end,
 
     drawBox = function(self, x, y, w, h)
-        GRAFX:setColor(COLORS.LIGHT_YELLOW)
-        GRAFX:rectangle("fill", x, y, w, h)
-        GRAFX:setColor(COLORS.JET_BLACK)
-        love.graphics.setLineWidth(5)
-        GRAFX:rectangle("line", x, y, w, h)
+        local mx, my = love.mouse.getPosition()
+        if not isPtInside(mx, my, x, y, w, h) then
+            GRAFX:setColor(COLORS.LIGHT_YELLOW)
+            GRAFX:rectangle("fill", x, y, w, h)
+            GRAFX:setColor(COLORS.JET_BLACK)
+            love.graphics.setLineWidth(5)
+            GRAFX:rectangle("line", x, y, w, h)
+        end
     end,
 
     drawLabel = function(self, label, x, y, w, h)
