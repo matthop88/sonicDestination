@@ -54,7 +54,7 @@ return {
             y2                = y2 * self.GRID_SIZE,
 
             draw = function(self)
-                if not self:isMouseInsideRect(lineToRect(x1, y1, x2, y2)) then
+                if not self:isMouseInsideRect(lineToRect(self.x1, self.y1, self.x2, self.y2)) then
                     self:drawBody()
                     self:drawHead()
                     self:drawLabel()
@@ -128,7 +128,7 @@ return {
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE + 2) 
                 self.graphics:setColor(COLORS.PURE_WHITE)
                 self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
-                                                 math.abs(self.x2 - x1), "center")
+                                                 math.abs(self.x2 - self.x1), "center")
             end,
         }
     end,
