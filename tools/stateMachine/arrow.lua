@@ -85,10 +85,7 @@ return {
             end,
         
             drawHead = function(self)
-                local arrowBackPt = 24
-                if self.x2 > self.x1 then
-                    arrowBackPt = -24
-                end
+                local arrowBackPt = (self.x2 > self.x1) and -24 or 24
 
                 self:setArrowColor()
                 self.graphics:setLineWidth(4)
