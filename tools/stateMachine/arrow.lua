@@ -61,7 +61,7 @@ return {
             end,
             
             draw = function(self)
-                self.highlighted = self:isMouseInsideRect(self.x, self.y, self.w, self.h))
+                self.highlighted = self:isMouseInsideRect(self.x, self.y, self.w, self.h)
                 
                 self:drawBody()
                 self:drawHead()
