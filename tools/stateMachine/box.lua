@@ -20,19 +20,29 @@ return {
     end,
 
     drawComponents = function(self, label, x, y, w, h)
-        self:drawBox(         x, y, w, h)
+        local mx, my = love.mouse.getPosition()
+        if isPtInside(mx, my, x, y, w, h) then
+            self:drawBox(           x, y, w, h)
+        else
+            self:drawHighlightedBox(x, y, w, h)
+        end
         self:drawLabel(label, x, y, w, h)
     end,
 
     drawBox = function(self, x, y, w, h)
-        local mx, my = love.mouse.getPosition()
-        if not isPtInside(mx, my, x, y, w, h) then
-            GRAFX:setColor(COLORS.LIGHT_YELLOW)
-            GRAFX:rectangle("fill", x, y, w, h)
-            GRAFX:setColor(COLORS.JET_BLACK)
-            love.graphics.setLineWidth(5)
-            GRAFX:rectangle("line", x, y, w, h)
-        end
+        GRAFX:setColor(COLORS.LIGHT_YELLOW)
+        GRAFX:rectangle("fill", x, y, w, h)
+        GRAFX:setColor(COLORS.JET_BLACK)
+        GRAFX:setLineWidth(5)
+        GRAFX:rectangle("line", x, y, w, h)
+    end,
+
+    drawHighlightedBox = function(self, x, y, w, h)
+        GRAFX:setColor(COLORS.LIGHT_YELLOW)
+        GRAFX:rectangle("fill", x - 5, y - 5, w + 10, h + 10)
+        GRAFX:setColor(COLORS.RED)
+        GRAFX:setLineWidth(5)
+        GRAFX:rectangle("line", x - 5, y - 5, w + 10, h + 10)
     end,
 
     drawLabel = function(self, label, x, y, w, h)
