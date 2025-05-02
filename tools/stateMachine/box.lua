@@ -1,6 +1,10 @@
 local COLORS = require "tools/lib/colors"
 local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
+local function isPtInside(px, py, x, y, w, h)
+    return px >= x and px <= x + w and py >= y and py <= y + h
+end
+
 return {
     init = function(self, gridSize, labelFontSize, graphics)
         GRID_SIZE       = gridSize
