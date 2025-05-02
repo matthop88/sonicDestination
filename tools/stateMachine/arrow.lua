@@ -61,11 +61,15 @@ return {
             end,
             
             draw = function(self)
-                self.highlighted = self:isMouseInsideRect(self.x, self.y, self.w, self.h)
+                self.highlighted = self:isMouseInside()
                 
                 self:drawBody()
                 self:drawHead()
                 self:drawLabel()
+            end,
+
+            isMouseInside = function(self)
+                return self:isMouseInsideRect(self.x, self.y, self.w, self.h)
             end,
             
             drawBody = function(self)
