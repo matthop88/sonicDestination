@@ -1,6 +1,25 @@
 local COLORS = require "tools/lib/colors"
 local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
+local function isPtInside(sx, sy, x, y, w, h)
+    local x = math.min(x1, x2)
+    local y = math.min(y1, y2)
+    local w = math.abs(x1 - x2)
+    local h = math.abs(y1 - y2)
+    
+    if w < 30 then
+        x = ((x1 + x2) / 2) - 15
+        w = 30
+    end
+    if h < 30 then
+        y = ((y1 + y2) / 2) - 15
+        h = 30
+    end
+
+    local px, py = GRAFX:screenToImageCoordinates(sx, sy)
+    return px >= x and px <= x + w and py >= y and py <= y + h
+end
+
 return {
     init = function(self, gridSize, labelFontSize, graphics)
         GRID_SIZE       = gridSize
