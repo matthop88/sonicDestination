@@ -22,11 +22,12 @@ return {
     drawComponents = function(self, label, x, y, w, h)
         local mx, my = love.mouse.getPosition()
         if not isPtInside(mx, my, x, y, w, h) then
-            self:drawBox(           x, y, w, h)
+            self:drawBox(         x, y, w, h)
+            self:drawLabel(label, x, y, w, h)
         else
-            self:drawHighlightedBox(x, y, w, h)
+            self:drawHighlightedBox(         x, y, w, h)
+            self:drawHighlightedLabel(label, x, y, w, h)
         end
-        self:drawLabel(label, x, y, w, h)
     end,
 
     drawBox = function(self, x, y, w, h)
@@ -47,6 +48,12 @@ return {
 
     drawLabel = function(self, label, x, y, w, h)
         GRAFX:setFontSize(LABEL_FONT_SIZE)
+        GRAFX:setColor(COLORS.JET_BLACK)
+        GRAFX:printf(label, x, y + (h - GRAFX:getFontHeight()) / 2, w, "center")
+    end,
+
+    drawHighlightedLabel = function(self, label, x, y, w, h)
+        GRAFX:setFontSize(LABEL_FONT_SIZE + 3) 
         GRAFX:setColor(COLORS.JET_BLACK)
         GRAFX:printf(label, x, y + (h - GRAFX:getFontHeight()) / 2, w, "center")
     end,
