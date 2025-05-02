@@ -53,31 +53,26 @@ return {
             x2                = x2 * self.GRID_SIZE,
             y2                = y2 * self.GRID_SIZE,
 
+            highlighted       = false,
+
             init = function(self)
                 self.x, self.y, self.w, self.h = lineToRect(self.x1, self.y1, self.x2, self.y2)
                 return self
             end,
             
             draw = function(self)
-                if not self:isMouseInsideRect(self.x, self.y, self.w, self.h) then
-                    self:drawBody()
-                    self:drawHead()
-                    self:drawLabel()
-                else
-                    self:drawHighlightedBody()
-                    self:drawHighlightedHead()
-                    self:drawHighlightedLabel()
-                end
+                self.highlighted = self:isMouseInsideRect(self.x, self.y, self.w, self.h))
+                
+                self:drawBody()
+                self:drawHead()
+                self:drawLabel()
             end,
             
             drawBody = function(self)
-                self.graphics:setColor(COLORS.MEDIUM_YELLOW)
-                self.graphics:setLineWidth(4)
-                self.graphics:line(self.x1, self.y1, self.x2, self.y2)
-            end,
-        
-            drawHighlightedBody = function(self)
-                self.graphics:setColor(COLORS.RED)
+                if   self.highlighted then self.graphics:setColor(COLORS.RED)
+                else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
+                end
+                
                 self.graphics:setLineWidth(4)
                 self.graphics:line(self.x1, self.y1, self.x2, self.y2)
             end,
@@ -88,49 +83,31 @@ return {
                 end
             end,
         
-            drawHighlightedHead = function(self)
-                if self.x2 > self.x1 then self:drawHighlightedHeadRight()
-                else                      self:drawHighlightedHeadLeft()
-                end
-            end,
-        
             drawHeadRight = function(self)
-                self.graphics:setColor(COLORS.MEDIUM_YELLOW)
-                self.graphics:setLineWidth(4)
-                self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 - 16)
-                self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 + 16)
-            end,
-        
-            drawHighlightedHeadRight = function(self)
-                self.graphics:setColor(COLORS.RED)
+                if   self.highlighted then self.graphics:setColor(COLORS.RED)
+                else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
+                end
+                
                 self.graphics:setLineWidth(4)
                 self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 - 16)
                 self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 + 16)
             end,
         
             drawHeadLeft = function(self)
-                self.graphics:setColor(COLORS.MEDIUM_YELLOW)
-                self.graphics:setLineWidth(4)
-                self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 - 16)
-                self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 + 16)
-            end,
-        
-            drawHighlightedHeadLeft = function(self)
-                self.graphics:setColor(COLORS.RED)
+                if   self.highlighted then self.graphics:setColor(COLORS.RED)
+                else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
+                end
+                
                 self.graphics:setLineWidth(4)
                 self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 - 16)
                 self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 + 16)
             end,
         
             drawLabel = function(self)
-                self.graphics:setFontSize(self.LABEL_FONT_SIZE) 
-                self.graphics:setColor(COLORS.PURE_WHITE)
-                self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
-                                                 math.abs(self.x2 - self.x1), "center")
-            end,
-        
-            drawHighlightedLabel = function(self)
-                self.graphics:setFontSize(self.LABEL_FONT_SIZE + 2) 
+                if   self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 2)
+                else                       self.graphics:setFontSize(self.LABEL_FONT_SIZE)
+                end
+                
                 self.graphics:setColor(COLORS.PURE_WHITE)
                 self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
                                                  math.abs(self.x2 - self.x1), "center")
