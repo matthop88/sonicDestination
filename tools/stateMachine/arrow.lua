@@ -40,9 +40,12 @@ return {
     end,
 
     drawBody = function(self, x1, y1, x2, y2)
-        GRAFX:setColor(COLORS.MEDIUM_YELLOW)
-        GRAFX:setLineWidth(4)
-        GRAFX:line(x1, y1, x2, y2)
+        local mx, my = love.mouse.getPosition()
+        if not isPtInside(mx, my, x1, y1, x2, y2) then
+            GRAFX:setColor(COLORS.MEDIUM_YELLOW)
+            GRAFX:setLineWidth(4)
+            GRAFX:line(x1, y1, x2, y2)
+        end
     end,
 
     drawHead = function(self, x1, y1, x2, y2)
