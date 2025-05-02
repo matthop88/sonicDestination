@@ -69,12 +69,15 @@ return {
             end,
             
             drawBody = function(self)
+                self:setArrowColor() 
+                self.graphics:setLineWidth(4)
+                self.graphics:line(self.x1, self.y1, self.x2, self.y2)
+            end,
+            
+            setArrowColor = function(self)
                 if   self.highlighted then self.graphics:setColor(COLORS.RED)
                 else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
                 end
-                
-                self.graphics:setLineWidth(4)
-                self.graphics:line(self.x1, self.y1, self.x2, self.y2)
             end,
         
             drawHead = function(self)
@@ -84,9 +87,7 @@ return {
             end,
         
             drawHeadRight = function(self)
-                if   self.highlighted then self.graphics:setColor(COLORS.RED)
-                else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
-                end
+                self:setArrowColor()
                 
                 self.graphics:setLineWidth(4)
                 self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 - 16)
@@ -94,9 +95,7 @@ return {
             end,
         
             drawHeadLeft = function(self)
-                if   self.highlighted then self.graphics:setColor(COLORS.RED)
-                else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
-                end
+                self:setArrowColor()
                 
                 self.graphics:setLineWidth(4)
                 self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 - 16)
