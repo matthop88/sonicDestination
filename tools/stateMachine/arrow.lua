@@ -139,7 +139,7 @@ return {
     end,
 
     isPtInRect = function(self, sx, sy, x, y, w, h)
-        local px, py = self.GRAFX:screenToImageCoordinates(sx, sy)
+        local px, py = self.graphics:screenToImageCoordinates(sx, sy)
         return px >= x and px <= x + w and py >= y and py <= y + h
     end,
 }
