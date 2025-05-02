@@ -103,14 +103,19 @@ return {
             end,
         
             drawLabel = function(self)
-                if   self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 2)
-                else                       self.graphics:setFontSize(self.LABEL_FONT_SIZE)
-                end
+                self:setLabelFont()
                 
                 self.graphics:setColor(COLORS.PURE_WHITE)
                 self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
                                                  math.abs(self.x2 - self.x1), "center")
             end,
+
+            setLabelFont = function(self)
+                if   self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
+                else                       self.graphics:setFontSize(self.LABEL_FONT_SIZE)
+                end
+            end,
+                
         }):init()
     end,
             
