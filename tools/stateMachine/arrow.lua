@@ -32,7 +32,7 @@ local function lineToRect(x1, y1, x2, y2)
     return x, y, w, h
 end
 
-local function isPtInRect(sx, sy, x, y, w, h))
+local function isPtInRect(sx, sy, x, y, w, h)
     local px, py = GRAFX:screenToImageCoordinates(sx, sy)
     return px >= x and px <= x + w and py >= y and py <= y + h
 end
