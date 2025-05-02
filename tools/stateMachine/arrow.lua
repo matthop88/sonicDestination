@@ -40,7 +40,7 @@ return {
     end,
 
     create = function(self, label, x1, y1, x2, y2)
-        return {
+        return ({
             LABEL_FONT_SIZE   = self.LABEL_FONT_SIZE,
             graphics          = self.GRAFX,
             
@@ -53,8 +53,13 @@ return {
             x2                = x2 * self.GRID_SIZE,
             y2                = y2 * self.GRID_SIZE,
 
+            init = function(self)
+                self.x, self.y, self.w, self.h = lineToRect(self.x1, self.y1, self.x2, self.y2)
+                return self
+            end,
+            
             draw = function(self)
-                if not self:isMouseInsideRect(lineToRect(self.x1, self.y1, self.x2, self.y2)) then
+                if not self:isMouseInsideRect(self.x, self.y, self.w, self.h) then
                     self:drawBody()
                     self:drawHead()
                     self:drawLabel()
@@ -130,7 +135,7 @@ return {
                 self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
                                                  math.abs(self.x2 - self.x1), "center")
             end,
-        }
+        }):init()
     end,
             
     isMouseInsideRect = function(self, x, y, w, h)
