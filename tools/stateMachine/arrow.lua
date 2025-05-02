@@ -85,25 +85,15 @@ return {
             end,
         
             drawHead = function(self)
-                if self.x2 > self.x1 then self:drawHeadRight()
-                else                      self:drawHeadLeft()
+                local arrowBackPt = 24
+                if self.x2 > self.x1 then
+                    arrowBackPt = -24
                 end
-            end,
-        
-            drawHeadRight = function(self)
+
                 self:setArrowColor()
-                
                 self.graphics:setLineWidth(4)
-                self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 - 16)
-                self.graphics:line(self.x2, self.y2, self.x2 - 24, self.y2 + 16)
-            end,
-        
-            drawHeadLeft = function(self)
-                self:setArrowColor()
-                
-                self.graphics:setLineWidth(4)
-                self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 - 16)
-                self.graphics:line(self.x2, self.y2, self.x2 + 24, self.y2 + 16)
+                self.graphics:line(self.x2, self.y2, self.x2 + arrowBackPt, self.y2 - 16)
+                self.graphics:line(self.x2, self.y2, self.x2 + arrowBackPt, self.y2 + 16)
             end,
         
             drawLabel = function(self)
