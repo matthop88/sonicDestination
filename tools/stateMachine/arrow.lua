@@ -1,5 +1,9 @@
 local COLORS = require "tools/lib/colors"
 
+local function ternary(params)
+    return params.IF and params.THEN or params.ELSE
+end
+
 local function calculateXAndWidth(x1, x2)
     local x = math.min(x1,  x2)
     local w = math.abs(x1 - x2)
@@ -85,8 +89,8 @@ return {
             end,
         
             drawHead = function(self)
-                local arrowBackPt = (self.x2 > self.x1) and -24 or 24
-
+                local arrowBackPt = ternary { IF = self.x2 > self.x1, THEN = -24, ELSE = 24 }
+                
                 self:setArrowColor()
                 self.graphics:setLineWidth(4)
                 self.graphics:line(self.x2, self.y2, self.x2 + arrowBackPt, self.y2 - 16)
