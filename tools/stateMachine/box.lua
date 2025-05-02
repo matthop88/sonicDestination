@@ -20,11 +20,11 @@ return {
     end,
 
     drawComponents = function(self, label, x, y, w, h)
-        self:drawShape(       x, y, w, h)
+        self:drawBox(         x, y, w, h)
         self:drawLabel(label, x, y, w, h)
     end,
 
-    drawShape = function(self, x, y, w, h)
+    drawBox = function(self, x, y, w, h)
         GRAFX:setColor(COLORS.LIGHT_YELLOW)
         GRAFX:rectangle("fill", x, y, w, h)
         GRAFX:setColor(COLORS.JET_BLACK)
