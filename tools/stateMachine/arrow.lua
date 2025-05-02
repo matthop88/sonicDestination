@@ -1,20 +1,33 @@
 local COLORS = require "tools/lib/colors"
 local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
-local function lineToRect(x1, y1, x2, y2)
-    local x = math.min(x1, x2)
-    local y = math.min(y1, y2)
+local function calculateXAndWidth(x1, x2)
+    local x = math.min(x1,  x2)
     local w = math.abs(x1 - x2)
-    local h = math.abs(y1 - y2)
     
     if w < 30 then
         x = ((x1 + x2) / 2) - 15
         w = 30
     end
+
+    return x, w
+end
+
+local function calculateYAndHeight(y1, y2)
+    local y = math.min(y1,  y2)
+    local h = math.abs(y1 - y2)
+
     if h < 30 then
         y = ((y1 + y2) / 2) - 15
         h = 30
     end
+
+    return y, h
+end
+        
+local function lineToRect(x1, y1, x2, y2)
+    local x, w = calculateXAndWidth( x1, x2)
+    local y, h = calculateYAndHeight(y1, y2)
 
     return x, y, w, h
 end
