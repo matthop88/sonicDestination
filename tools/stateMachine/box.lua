@@ -1,7 +1,8 @@
 local COLORS = require "tools/lib/colors"
 local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
 
-local function isPtInside(px, py, x, y, w, h)
+local function isPtInside(sx, sy, x, y, w, h)
+    local px, py = GRAFX:screenToImageCoordinates(sx, sy)
     return px >= x and px <= x + w and py >= y and py <= y + h
 end
 
