@@ -21,7 +21,7 @@ return {
 
     drawComponents = function(self, label, x, y, w, h)
         local mx, my = love.mouse.getPosition()
-        if isPtInside(mx, my, x, y, w, h) then
+        if not isPtInside(mx, my, x, y, w, h) then
             self:drawBox(           x, y, w, h)
         else
             self:drawHighlightedBox(x, y, w, h)
