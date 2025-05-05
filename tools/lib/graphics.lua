@@ -23,17 +23,12 @@ return {
     
     ---------------------- Property Setter Functions -------------------
     
-    setColor = function(self, color)
-        love.graphics.setColor(color)
-    end,
+    setColor     = function(self, color)     love.graphics.setColor(color) end,
+    setLineWidth = function(self, lineWidth) self.lineWidth = lineWidth    end,
 
     setFont  = function(self, font)
         self.font = font
         love.graphics.setFont(font)
-    end,
-
-    setLineWidth = function(self, lineWidth)
-        self.lineWidth = lineWidth
     end,
 
     setFontSize = function(self, fontSize)
@@ -69,13 +64,8 @@ return {
 
     ------------------------- Scrolling Functions ----------------------
     
-    setX = function(self, x)
-        self.x = x
-    end,
-    
-    setY = function(self, y)
-        self.y = y
-    end,
+    setX = function(self, x) self.x = x end,
+    setY = function(self, y) self.y = y end,
 
     moveImage = function(self, deltaX, deltaY)
         self.x = self.x + deltaX
