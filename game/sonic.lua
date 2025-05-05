@@ -25,4 +25,12 @@ return ({
         self.x, self.y = x, y
     end,
 
+    isFacingRight = function(self)
+        return not self.sprite:isXFlipped()
+    end,
+
+    isFacingLeft  = function(self)
+        return self.sprite:isXFlipped()
+    end,
+
 }):init()
