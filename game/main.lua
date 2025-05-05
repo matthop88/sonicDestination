@@ -40,7 +40,7 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     if key == "x" then
-        SONIC.sprite.scale.x = SONIC.sprite.scale.x * -1
+        SONIC.sprite:flipX()
     end
 end
 
