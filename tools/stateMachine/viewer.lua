@@ -43,8 +43,10 @@ local PEGBOARD    = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX
 local BOX         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 local ARROW       = require("tools/stateMachine/arrow"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 
-local LEFT_ARROW  = ARROW:create("L On", 20,  9, 12,  9)
-local RIGHT_ARROW = ARROW:create("R On", 12, 12, 20, 12)
+local LEFT_BOX    = BOX:create("Stand Left",   3,  7,  9,  7)
+local RIGHT_BOX   = BOX:create("Stand Right", 20,  7,  9,  7)
+local LEFT_ARROW  = ARROW:create("L On",      20,  9, 12,  9)
+local RIGHT_ARROW = ARROW:create("R On",      12, 12, 20, 12)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -56,9 +58,8 @@ local RIGHT_ARROW = ARROW:create("R On", 12, 12, 20, 12)
 function love.draw()
     PEGBOARD:draw()
 
-    BOX:draw("Stand Left",   3, 7, 9, 7)
-    BOX:draw("Stand Right", 20, 7, 9, 7)
-
+    LEFT_BOX:draw()
+    RIGHT_BOX:draw()
     LEFT_ARROW:draw()
     RIGHT_ARROW:draw()
 end
