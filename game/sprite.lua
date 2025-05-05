@@ -32,4 +32,6 @@ return ({
     getImageX = function(self, x) return x - (self.offset.x * self.scale.x) end,
     getImageY = function(self, y) return y - (self.offset.y * self.scale.y) end,
         
+    flipX     = function(self)    self.scale.x = self.scale.x * -1          end,
+          
 }):init()
