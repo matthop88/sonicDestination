@@ -6,7 +6,7 @@ return ({
     standingRect = { x = 43, y = 257, w = 32, h = 40 },
     standingQuad = nil,
 
-    scale        = 3,
+    scale        = { x = 3, y = 3 },
 
     init = function(self)
         self.standingQuad = love.graphics.newQuad(self.standingRect.x,   self.standingRect.y,
@@ -20,14 +20,14 @@ return ({
         love.graphics.setColor(COLOR_PURE_WHITE)
         love.graphics.draw(self.image,        self.standingQuad,
                            self:getImageX(x), self:getImageY(y),
-                        0, self.scale,        self.scale)
+                        0, self.scale.x,      self.scale.y)
     end,
 
     --------------------------------------------------------------
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    getImageX = function(self, x) return x - (self.offset.x * self.scale) end,
-    getImageY = function(self, y) return y - (self.offset.y * self.scale) end,
+    getImageX = function(self, x) return x - (self.offset.x * self.scale.x) end,
+    getImageY = function(self, y) return y - (self.offset.y * self.scale.y) end,
         
 }):init()
