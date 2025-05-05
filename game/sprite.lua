@@ -29,9 +29,10 @@ return ({
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    getImageX = function(self, x) return x - (self.offset.x * self.scale.x) end,
-    getImageY = function(self, y) return y - (self.offset.y * self.scale.y) end,
-        
-    flipX     = function(self)    self.scale.x = self.scale.x * -1          end,
+    getImageX  = function(self, x) return x - (self.offset.x * self.scale.x) end,
+    getImageY  = function(self, y) return y - (self.offset.y * self.scale.y) end,
+
+    isXFlipped = function(self)    return self.scale.x < 0                   end,
+    flipX      = function(self)    self.scale.x = self.scale.x * -1          end,
           
 }):init()
