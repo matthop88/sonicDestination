@@ -2,11 +2,11 @@ local COLOR_PURE_WHITE = { 1, 1, 1 }
 
 return ({
     image        = love.graphics.newImage(relativePath("resources/images/spriteSheets/sonic1Transparent.png")),
-    offset       = { x = 16, y = 20 },
     standingRect = { x = 43, y = 257, w = 32, h = 40 },
     standingQuad = nil,
 
-    scale        = { x = 3, y = 3 },
+    offset       = { x = 16, y = 20 },
+    scale        = { x =  3, y =  3 },
 
     init = function(self)
         self.standingQuad = love.graphics.newQuad(self.standingRect.x,   self.standingRect.y,
