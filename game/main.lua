@@ -39,8 +39,8 @@ end
 -- Called By:     LOVE2D application, whenever key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    if key == "x" then
-        SONIC.sprite:flipX()
+    if     key == "left"  then SONIC:faceLeft()
+    elseif key == "right" then SONIC:faceRight()
     end
 end
 
