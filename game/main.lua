@@ -35,6 +35,15 @@ function love.draw()
     SONIC:draw()
 end
 
+-- Function Name: love.keypressed(key)
+-- Called By:     LOVE2D application, whenever key is pressed
+--------------------------------------------------------------
+function love.keypressed(key)
+    if key == "x" then
+        SONIC.sprite.scale.x = SONIC.sprite.scale.x * -1
+    end
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
