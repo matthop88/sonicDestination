@@ -1,60 +1,69 @@
 local COLORS = require "tools/lib/colors"
-local GRID_SIZE, LABEL_FONT_SIZE, GRAFX
-
-local function isPtInside(sx, sy, x, y, w, h)
-    local px, py = GRAFX:screenToImageCoordinates(sx, sy)
-    return px >= x and px <= x + w and py >= y and py <= y + h
-end
 
 return {
     init = function(self, gridSize, labelFontSize, graphics)
-        GRID_SIZE       = gridSize
-        LABEL_FONT_SIZE = labelFontSize
-        GRAFX           = graphics
+        self.GRID_SIZE       = gridSize
+        self.LABEL_FONT_SIZE = labelFontSize
+        self.graphics        = graphics
         return self
     end,
 
-    draw = function(self, label, x, y, w, h)
-        self:drawComponents(label, x * GRID_SIZE, y * GRID_SIZE, 
-                                   w * GRID_SIZE, h * GRID_SIZE)
+    create = function(self, label, x, y, w, h)
+        return {
+            GRID_SIZE       = self.GRID_SIZE,
+            LABEL_FONT_SIZE = self.LABEL_FONT_SIZE,
+            graphics        = self.graphics,
+
+            label           = label,
+            x               = x * self.GRID_SIZE,
+            y               = y * self.GRID_SIZE,
+            w               = w * self.GRID_SIZE,
+            h               = h * self.GRID_SIZE,
+
+            draw = function(self)
+                if self:isMouseInside() then
+                    self:drawHighlightedBox()
+                    self:drawHighlightedLabel()
+                else
+                    self:drawBox()
+                    self:drawLabel()
+                end
+            end,
+            
+            drawBox = function(self)
+                self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                self.graphics:rectangle("fill", self.x, self.y, self.w, self.h)
+                self.graphics:setColor(COLORS.JET_BLACK)
+                self.graphics:setLineWidth(5)
+                self.graphics:rectangle("line", self.x, self.y, self.w, self.h)
+            end,
+
+            drawHighlightedBox = function(self)
+                self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
+                self.graphics:setColor(COLORS.RED)
+                self.graphics:setLineWidth(5)
+                self.graphics:rectangle("line", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
+            end,
+        
+            drawLabel = function(self)
+                self.graphics:setFontSize(self.LABEL_FONT_SIZE)
+                self.graphics:setColor(COLORS.JET_BLACK)
+                self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
+            end,
+        
+            drawHighlightedLabel = function(self)
+                self.graphics:setFontSize(self.LABEL_FONT_SIZE + 3) 
+                self.graphics:setColor(COLORS.JET_BLACK)
+                self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
+            end,
+
+            isMouseInside = function(self)
+                local px, py = self.graphics:screenToImageCoordinates(love.mouse.getPosition())
+                return px >= self.x and px <= self.x + self.w and py >= self.y and py <= self.y + self.h
+            end,
+        }
     end,
 
-    drawComponents = function(self, label, x, y, w, h)
-        local mx, my = love.mouse.getPosition()
-        if not isPtInside(mx, my, x, y, w, h) then
-            self:drawBox(         x, y, w, h)
-            self:drawLabel(label, x, y, w, h)
-        else
-            self:drawHighlightedBox(         x, y, w, h)
-            self:drawHighlightedLabel(label, x, y, w, h)
-        end
-    end,
-
-    drawBox = function(self, x, y, w, h)
-        GRAFX:setColor(COLORS.LIGHT_YELLOW)
-        GRAFX:rectangle("fill", x, y, w, h)
-        GRAFX:setColor(COLORS.JET_BLACK)
-        GRAFX:setLineWidth(5)
-        GRAFX:rectangle("line", x, y, w, h)
-    end,
-
-    drawHighlightedBox = function(self, x, y, w, h)
-        GRAFX:setColor(COLORS.LIGHT_YELLOW)
-        GRAFX:rectangle("fill", x - 5, y - 5, w + 10, h + 10)
-        GRAFX:setColor(COLORS.RED)
-        GRAFX:setLineWidth(5)
-        GRAFX:rectangle("line", x - 5, y - 5, w + 10, h + 10)
-    end,
-
-    drawLabel = function(self, label, x, y, w, h)
-        GRAFX:setFontSize(LABEL_FONT_SIZE)
-        GRAFX:setColor(COLORS.JET_BLACK)
-        GRAFX:printf(label, x, y + (h - GRAFX:getFontHeight()) / 2, w, "center")
-    end,
-
-    drawHighlightedLabel = function(self, label, x, y, w, h)
-        GRAFX:setFontSize(LABEL_FONT_SIZE + 3) 
-        GRAFX:setColor(COLORS.JET_BLACK)
-        GRAFX:printf(label, x, y + (h - GRAFX:getFontHeight()) / 2, w, "center")
-    end,
+    
 }
