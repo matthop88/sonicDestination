@@ -4,8 +4,18 @@ return ({
     sprite = requireRelative("sprite"),
 
     states = {
-        standLeft  = { onEnter = function(self) self:faceLeft()  end, },
-        standRight = { onEnter = function(self) self:faceRight() end, },
+        standLeft  = { 
+            onEnter    = function(self) self:faceLeft() end, 
+            keypressed = function(self, key)
+                if key == "right" then self:setState("standRight") end
+             end,
+        },
+        standRight = { 
+            onEnter = function(self) self:faceRight() end, 
+            keypressed = function(self, key)
+                if key == "left" then self:setState("standLeft") end
+            end,
+        },
     },
             
     init = function(self)
@@ -20,9 +30,7 @@ return ({
     end,
 
     keypressed = function(self, key)
-        if     key == "left"  then self:setState("standLeft")
-        elseif key == "right" then self:setState("standRight")
-        end
+        self.currentState.keypressed(self, key)
     end,
 
     --------------------------------------------------------------
