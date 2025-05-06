@@ -19,8 +19,7 @@ return ({
     },
             
     init = function(self)
-        -- Initialization code goes here
-        -- ...
+        self.currentState = self.states.standRight
             
         return self
     end,
