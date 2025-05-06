@@ -39,9 +39,7 @@ end
 -- Called By:     LOVE2D application, whenever key is pressed
 --------------------------------------------------------------
 function love.keypressed(key)
-    if     key == "left"  then SONIC:setState("standLeft")
-    elseif key == "right" then SONIC:setState("standRight")
-    end
+    SONIC:keypressed(key)
 end
 
 --------------------------------------------------------------
