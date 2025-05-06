@@ -19,6 +19,12 @@ return ({
         self.sprite:draw(self:getX(), self:getY())
     end,
 
+    keypressed = function(self, key)
+        if     key == "left"  then self:setState("standLeft")
+        elseif key == "right" then self:setState("standRight")
+        end
+    end,
+
     --------------------------------------------------------------
     --                  Specialized Functions                   --
     --------------------------------------------------------------
