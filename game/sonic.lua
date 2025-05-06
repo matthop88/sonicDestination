@@ -2,7 +2,12 @@ return ({
     x = 0, y = 0,
         
     sprite = requireRelative("sprite"),
-    
+
+    states = {
+        standLeft  = { onEnter = function(self) self:faceLeft()  end, },
+        standRight = { onEnter = function(self) self:faceRight() end, },
+    },
+            
     init = function(self)
         -- Initialization code goes here
         -- ...
@@ -28,5 +33,10 @@ return ({
        
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
+
+    setState      = function(self, newStateName)
+        self.currentState = self.states[newStateName]
+        self.currentState.onEnter(self)
+    end,
 
 }):init()
