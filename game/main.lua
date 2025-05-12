@@ -35,6 +35,13 @@ function love.draw()
     SONIC:draw()
 end
 
+-- Function Name: love.keypressed(key)
+-- Called By:     LOVE2D application, whenever key is pressed
+--------------------------------------------------------------
+function love.keypressed(key)
+    SONIC:keypressed(key)
+end
+
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------

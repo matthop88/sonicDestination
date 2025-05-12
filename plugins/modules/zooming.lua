@@ -30,7 +30,7 @@ return {
     end,
 
     adjustImagePositionIfZoomingOut = function(self)
-        if self.scaleDelta < 0 then
+        if self.scaleDelta < 0 and self.imageViewer.keepImageInBounds then
             self.imageViewer:keepImageInBounds()
         end
     end,

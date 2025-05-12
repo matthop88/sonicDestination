@@ -22,6 +22,9 @@ function love.load(args)
     elseif args[1] == "scribbler" then
         __SCRIBBLER_FILE = args[2]
         require "tools/scribbler/scribblerApp"
+    elseif args[1] == "stateMachine" then
+        __VIEWER_FILE = args[2]
+		require "tools/stateMachine/viewer"
     else
         require "game/main"
     end
