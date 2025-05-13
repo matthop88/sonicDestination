@@ -20,8 +20,8 @@ return ({
         quads = { },
     },
 
-    currentAnimation = nil,
-    currentFrame     = 1,
+    currentAnimation  = nil,
+    currentFrameIndex = 1,
         
     offset   = { x = 16, y = 20 },
     scale    = { x =  3, y =  3 },
@@ -40,7 +40,7 @@ return ({
 
     draw = function(self, x, y)
         love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.draw(self.image,        self.currentAnimation.quads[self.currentFrame],
+        love.graphics.draw(self.image,        self:getCurrentFrame(),
                            self:getImageX(x), self:getImageY(y),
                         0, self.scale.x,      self.scale.y)
     end,
@@ -49,6 +49,10 @@ return ({
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
+    getCurrentFrame = function(self)
+        return self.currentAnimation.quads[self.currentFrameIndex]
+    end,
+        
     getImageX  = function(self, x) return x - (self.offset.x * self.scale.x) end,
     getImageY  = function(self, y) return y - (self.offset.y * self.scale.y) end,
 
