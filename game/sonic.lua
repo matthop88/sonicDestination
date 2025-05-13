@@ -30,6 +30,9 @@ return ({
 
     keypressed = function(self, key)
         self.currentState.keypressed(self, key)
+        if key == "k" then
+            self.sprite:advanceFrame()
+        end
     end,
 
     --------------------------------------------------------------
