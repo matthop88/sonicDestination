@@ -27,16 +27,8 @@ return ({
     scale    = { x =  3, y =  3 },
 
     init = function(self)
-        table.insert(self.standing.quads, love.graphics.newQuad(
-            self.standing.rects[1].x,     self.standing.rects[1].y,
-            self.standing.rects[1].w,     self.standing.rects[1].h,
-            self.image:getWidth(),        self.image:getHeight()))
-
-        for _, rect in ipairs(self.running.rects) do
-            table.insert(self.running.quads, love.graphics.newQuad(
-                        rect.x, rect.y, rect.w, rect.h,
-                        self.image:getWidth(), self.image:getHeight()))
-        end
+        self:addQuads(self.standing)
+        self:addQuads(self.running)
 
         self.currentAnimation = self.running
         self.currentFrameIndex = 3
@@ -56,6 +48,14 @@ return ({
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
+    addQuads = function(self, animation)
+        for _, rect in ipairs(animation.rects) do
+            table.insert(animation.quads, love.graphics.newQuad(
+                rect.x, rect.y, rect.w, rect.h,
+                self.image:getWidth(), self.image:getHeight()))
+        end
+    end,
+        
     getCurrentFrame = function(self)
         return self.currentAnimation.quads[self.currentFrameIndex]
     end,
