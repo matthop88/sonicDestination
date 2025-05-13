@@ -59,6 +59,13 @@ return ({
     getCurrentFrame = function(self)
         return self.currentAnimation.quads[self.currentFrameIndex]
     end,
+
+    advanceFrame = function(self)
+        self.currentFrameIndex = self.currentFrameIndex + 1
+        if self.currentFrameIndex > #self.currentAnimation.quads then
+            self.currentFrameIndex = 1
+        end
+    end,
         
     getImageX  = function(self, x) return x - (self.offset.x * self.scale.x) end,
     getImageY  = function(self, y) return y - (self.offset.y * self.scale.y) end,
