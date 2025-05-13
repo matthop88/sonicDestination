@@ -19,7 +19,9 @@ return ({
         },
         quads = { },
     },
-    
+
+    currentAnimation = nil,
+        
     offset   = { x = 16, y = 20 },
     scale    = { x =  3, y =  3 },
 
@@ -28,14 +30,16 @@ return ({
             self.standing.rects[1].x,     self.standing.rects[1].y,
             self.standing.rects[1].w,     self.standing.rects[1].h,
             self.image:getWidth(),        self.image:getHeight()))
-        
+
+        self.currentAnimation = self.standing
+            
         self.image:setFilter("nearest", "nearest")
         return self
     end,
 
     draw = function(self, x, y)
         love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.draw(self.image,        self.standing.quads[1],
+        love.graphics.draw(self.image,        self.currentAnimation.quads[1],
                            self:getImageX(x), self:getImageY(y),
                         0, self.scale.x,      self.scale.y)
     end,
