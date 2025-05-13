@@ -50,7 +50,7 @@ return ({
     --------------------------------------------------------------
 
     addQuads = function(self)
-        for _, animation in ipairs(self.animations) do
+        for _, animation in pairs(self.animations) do
             for _, rect in ipairs(animation.rects) do
                 table.insert(animation.quads, love.graphics.newQuad(
                     rect.x, rect.y, rect.w, rect.h,
