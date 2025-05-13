@@ -32,12 +32,14 @@ return ({
             self.standing.rects[1].w,     self.standing.rects[1].h,
             self.image:getWidth(),        self.image:getHeight()))
 
-        table.insert(self.running.quads,  love.graphics.newQuad(
-            self.running.rects[1].x,      self.running.rects[1].y,
-            self.running.rects[1].w,      self.running.rects[1].h,
-            self.image:getWidth(),        self.image:getHeight()))
+        for _, rect in ipairs(self.running.rects) do
+            table.insert(self.running.quads, love.graphics.newQuad(
+                        rect.x, rect.y, rect.w, rect.h,
+                        self.image:getWidth(), self.image:getHeight()))
+        end
 
         self.currentAnimation = self.running
+        self.currentFrameIndex = 3
             
         self.image:setFilter("nearest", "nearest")
         return self
