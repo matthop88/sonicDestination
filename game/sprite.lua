@@ -2,24 +2,26 @@ local COLOR_PURE_WHITE = { 1, 1, 1 }
 
 return ({
     image    = love.graphics.newImage(relativePath("resources/images/spriteSheets/sonic1Transparent.png")),
-    standing = {
-        rects = {
-            { x =  43, y = 257, w = 32, h = 40 },
+    animations = {
+        standing = {
+            rects = {
+                { x =  43, y = 257, w = 32, h = 40 },
+            },
+            quads = { },
         },
-        quads = { },
-    },
-    running  = {
-        rects = {
-            { x =  46, y = 349, w = 24, h = 40 },
-            { x = 109, y = 347, w = 40, h = 40 },
-            { x = 178, y = 348, w = 32, h = 40 },
-            { x = 249, y = 349, w = 40, h = 40 },
-            { x = 319, y = 347, w = 40, h = 40 },
-            { x = 390, y = 348, w = 40, h = 40 },
+        running  = {
+            rects = {
+                { x =  46, y = 349, w = 24, h = 40 },
+                { x = 109, y = 347, w = 40, h = 40 },
+                { x = 178, y = 348, w = 32, h = 40 },
+                { x = 249, y = 349, w = 40, h = 40 },
+                { x = 319, y = 347, w = 40, h = 40 },
+                { x = 390, y = 348, w = 40, h = 40 },
+            },
+            quads = { },
         },
-        quads = { },
     },
-
+    
     currentAnimation  = nil,
     currentFrameIndex = 1,
         
@@ -27,10 +29,9 @@ return ({
     scale    = { x =  3, y =  3 },
 
     init = function(self)
-        self:addQuads(self.standing)
-        self:addQuads(self.running)
-
-        self.currentAnimation = self.running
+        self:addQuads()
+        
+        self.currentAnimation = self.animations.running
         self.currentFrameIndex = 3
             
         self.image:setFilter("nearest", "nearest")
@@ -48,11 +49,13 @@ return ({
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    addQuads = function(self, animation)
-        for _, rect in ipairs(animation.rects) do
-            table.insert(animation.quads, love.graphics.newQuad(
-                rect.x, rect.y, rect.w, rect.h,
-                self.image:getWidth(), self.image:getHeight()))
+    addQuads = function(self)
+        for _, animation in ipairs(self.animations) do
+            for _, rect in ipairs(animation.rects) do
+                table.insert(animation.quads, love.graphics.newQuad(
+                    rect.x, rect.y, rect.w, rect.h,
+                    self.image:getWidth(), self.image:getHeight()))
+            end
         end
     end,
         
