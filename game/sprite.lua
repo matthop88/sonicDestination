@@ -21,6 +21,7 @@ return ({
     },
 
     currentAnimation = nil,
+    currentFrame     = 1,
         
     offset   = { x = 16, y = 20 },
     scale    = { x =  3, y =  3 },
@@ -39,7 +40,7 @@ return ({
 
     draw = function(self, x, y)
         love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.draw(self.image,        self.currentAnimation.quads[1],
+        love.graphics.draw(self.image,        self.currentAnimation.quads[self.currentFrame],
                            self:getImageX(x), self:getImageY(y),
                         0, self.scale.x,      self.scale.y)
     end,
