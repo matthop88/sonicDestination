@@ -8,7 +8,11 @@ end
 --                     Global Variables                     --
 --------------------------------------------------------------
 
-graphics = require("tools/lib/graphics")
+if __DEV_MODE then
+    graphics = require("tools/lib/graphics")
+else
+    graphics = require("graphics")
+end
 
 --------------------------------------------------------------
 --                      Local Variables                     --
