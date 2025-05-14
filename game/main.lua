@@ -78,25 +78,25 @@ if __DEV_MODE == true then
             attributes      = {
                 offsetX = {
                     incrementFn = function()
-                        SONIC:getCurrentSprite().offset.x = SONIC:getCurrentSprite().offset.x + 1
+                        SONIC.animations:getCurrentOffset().x = SONIC.animations:getCurrentOffset().x + 1
                     end,
                     decrementFn = function()
-                        SONIC:getCurrentSprite().offset.x = SONIC:getCurrentSprite().offset.x - 1
+                        SONIC.animations:getCurrentOffset().x = SONIC.animations:getCurrentOffset().x - 1
                     end,
                     getValueFn  = function()
-                        return SONIC:getCurrentSprite().offset.x
+                        return SONIC.animations:getCurrentOffset().x
                     end,
                     toggleShowKey = "x"
                 },
                 offsetY = {
                     incrementFn = function()
-                        SONIC:getCurrentSprite().offset.y = SONIC:getCurrentSprite().offset.y + 1
+                        SONIC.animations:getCurrentOffset().y = SONIC.animations:getCurrentOffset().y + 1
                     end,
                     decrementFn = function()
-                        SONIC:getCurrentSprite().offset.y = SONIC:getCurrentSprite().offset.y - 1
+                        SONIC.animations:getCurrentOffset().y = SONIC.animations:getCurrentOffset().y - 1
                     end,
                     getValueFn  = function()
-                        return SONIC:getCurrentSprite().offset.y
+                        return SONIC.animations:getCurrentOffset().y
                     end,
                     toggleShowKey = "y"
                 },
