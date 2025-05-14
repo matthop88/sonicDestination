@@ -30,8 +30,10 @@ return ({
 
     keypressed = function(self, key)
         self.currentState.keypressed(self, key)
-        if key == "k" then
+        if     key == "k" then
             self.sprite.animations:advanceFrame()
+        elseif key == "j" then
+            self.sprite.animations:regressFrame()
         end
     end,
 
