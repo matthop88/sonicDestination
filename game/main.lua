@@ -5,6 +5,12 @@ requireRelative = function(path)
 end
 
 --------------------------------------------------------------
+--                     Global Variables                     --
+--------------------------------------------------------------
+
+graphics = require("tools/lib/graphics")
+
+--------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
 
@@ -62,6 +68,8 @@ if __DEV_MODE == true then
             originX = 512,
             originY = 514,
         })
+        :add("scrolling", { imageViewer = graphics })
+        :add("zooming",   { imageViewer = graphics })
 end
 
 --[[
