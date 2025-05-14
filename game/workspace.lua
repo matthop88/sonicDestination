@@ -1,5 +1,3 @@
-local graphics = require("tools/lib/graphics")
-
 local COLOR_GREEN         = { 0, 0.45, 0 }
                             -- https://htmlcolorcodes.com/colors/shades-of-green/
 local COLOR_PURE_WHITE    = { 1, 1,    1 }
