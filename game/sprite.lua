@@ -70,7 +70,7 @@ return {
     scale    = { x =  3, y =  3 },
 
     draw = function(self, x, y)
-        love.animations:draw(self:getImageX(x), self:getImageY(y), self.scale.x, self.scale.y)
+        self.animations:draw(self:getImageX(x), self:getImageY(y), self.scale.x, self.scale.y)
     end,
 
     --------------------------------------------------------------
