@@ -16,8 +16,8 @@ return {
     draw             = function(self)
         love.graphics.setColor(1, 1, 1)
         for attName, attribute in pairs(self.attributes) do
-            if attribute.active then
-                love.graphics.printf("" .. attName .. " IS ACTIVE", 0, 600, 1024, "center")
+            if attribute.active and attribute.getValueFn then
+                love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, 600, 1024, "center")
             end
         end
     end,
@@ -27,7 +27,6 @@ return {
         for attName, attribute in pairs(self.attributes) do
             if key == attribute.toggleShowKey then
                 attribute.active = not attribute.active
-                print("Attribute " .. attName .. " is active: ", attribute.active)
             end
         end
     end,
