@@ -22,6 +22,7 @@ return {
                 quads = { },
             },
         },
+        offset = { x = 16, y = 20 },
 
         currentAnimation  = nil,
         currentFrameIndex = 1,
@@ -47,7 +48,9 @@ return {
 
         draw = function(self, x, y, scaleX, scaleY)
             love.graphics.setColor(COLOR_PURE_WHITE)
-            love.graphics.draw(self:getImage(), self:getCurrentFrame(), x, y, 0, scaleX, scaleY)
+            love.graphics.draw(self:getImage(),        self:getCurrentFrame(), 
+                               self:getImageX(scaleX), self:getImageY(scaleY),
+                               0, scaleX, scaleY)
         end,
 
         getImage = function(self)
@@ -58,6 +61,14 @@ return {
             return self.currentAnimation.quads[self.currentFrameIndex]
         end,
 
+        getImageX = function(self, x, scaleX) 
+            return x - (self.offset.x * scaleX) 
+        end,
+
+        getImageY = function(self, y, scaleY)
+            return y - (self.offset.y * scaleY)
+        end,
+
         advanceFrame = function(self)
             self.currentFrameIndex = self.currentFrameIndex + 1
             if self.currentFrameIndex > #self.currentAnimation.quads then
@@ -66,19 +77,15 @@ return {
         end,
     }):init(),
        
-    offset   = { x = 16, y = 20 },
     scale    = { x =  3, y =  3 },
 
     draw = function(self, x, y)
-        self.animations:draw(self:getImageX(x), self:getImageY(y), self.scale.x, self.scale.y)
+        self.animations:draw(x, y, self.scale.x, self.scale.y)
     end,
 
     --------------------------------------------------------------
     --                  Specialized Functions                   --
     --------------------------------------------------------------
-
-    getImageX  = function(self, x) return x - (self.offset.x * self.scale.x) end,
-    getImageY  = function(self, y) return y - (self.offset.y * self.scale.y) end,
 
     isXFlipped = function(self)    return self.scale.x < 0                   end,
     flipX      = function(self)    self.scale.x = self.scale.x * -1          end,
