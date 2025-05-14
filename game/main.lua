@@ -70,6 +70,39 @@ if __DEV_MODE == true then
         })
         :add("scrolling", { imageViewer = graphics })
         :add("zooming",   { imageViewer = graphics })
+        --[[
+        :add("tweakAttributes", {
+            object          = SONIC,
+            incAttributeKey = ".",
+            decAttributeKey = ",",
+            attributes      = {
+                offsetX = {
+                    incrementFn = function()
+                        SONIC:getCurrentSprite().offset.x = SONIC:getCurrentSprite().offset.x + 1
+                    end,
+                    decrementFn = function()
+                        SONIC:getCurrentSprite().offset.x = SONIC:getCurrentSprite().offset.x - 1
+                    end,
+                    getValueFn  = function()
+                        return SONIC:getCurrentSprite().offset.x
+                    end,
+                    toggleShowKey = "x"
+                },
+                offsetY = {
+                    incrementFn = function()
+                        SONIC:getCurrentSprite().offset.y = SONIC:getCurrentSprite().offset.y + 1
+                    end,
+                    decrementFn = function()
+                        SONIC:getCurrentSprite().offset.y = SONIC:getCurrentSprite().offset.y - 1
+                    end,
+                    getValueFn  = function()
+                        return SONIC:getCurrentSprite().offset.y
+                    end,
+                    toggleShowKey = "y"
+                },
+            }
+        })
+        --]]
 end
 
 --[[
