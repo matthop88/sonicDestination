@@ -70,7 +70,6 @@ if __DEV_MODE == true then
         })
         :add("scrolling", { imageViewer = graphics })
         :add("zooming",   { imageViewer = graphics })
-        --[[
         :add("tweakAttributes", {
             object          = SONIC,
             incAttributeKey = ".",
@@ -102,7 +101,6 @@ if __DEV_MODE == true then
                 },
             }
         })
-        --]]
 end
 
 --[[
