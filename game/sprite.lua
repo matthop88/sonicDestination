@@ -1,7 +1,7 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
 
-return ({
-    animations = {
+return {
+    animations = ({
         image    = love.graphics.newImage(relativePath("resources/images/spriteSheets/sonic1Transparent.png")),
         data = {
             standing = {
@@ -30,7 +30,7 @@ return ({
             self.image:setFilter("nearest", "nearest")
             self:addQuads()
             self.currentAnimation  = self.data.running
-            self.currentFrameIndex = 1,
+            self.currentFrameIndex = 1
 
             return self
         end,
@@ -59,7 +59,7 @@ return ({
                 self.currentFrameIndex = 1
             end
         end,
-    },
+    }):init(),
        
     offset   = { x = 16, y = 20 },
     scale    = { x =  3, y =  3 },
@@ -81,4 +81,4 @@ return ({
     isXFlipped = function(self)    return self.scale.x < 0                   end,
     flipX      = function(self)    self.scale.x = self.scale.x * -1          end,
           
-}):init()
+}
