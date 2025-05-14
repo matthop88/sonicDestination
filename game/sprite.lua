@@ -75,6 +75,14 @@ return {
                 self.currentFrameIndex = 1
             end
         end,
+
+        regressFrame = function(self)
+            self.currentFrameIndex = self.currentFrameIndex - 1
+            if self.currentFrameIndex < 1 then
+                self.currentFrameIndex = #self.currentAnimation.quads
+            end
+        end,
+
     }):init(),
        
     scale    = { x =  3, y =  3 },
