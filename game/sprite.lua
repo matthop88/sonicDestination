@@ -45,6 +45,11 @@ return {
             end
         end,
 
+        draw = function(self, x, y, scaleX, scaleY)
+            love.graphics.setColor(COLOR_PURE_WHITE)
+            love.graphics.draw(self:getImage(), self:getCurrentFrame(), x, y, 0, scaleX, scaleY)
+        end,
+
         getImage = function(self)
             return self.image
         end,
@@ -65,10 +70,7 @@ return {
     scale    = { x =  3, y =  3 },
 
     draw = function(self, x, y)
-        love.graphics.setColor(COLOR_PURE_WHITE)
-        love.graphics.draw(self.animations:getImage(), self.animations:getCurrentFrame(),
-                           self:getImageX(x),          self:getImageY(y),
-                           0, self.scale.x,            self.scale.y)
+        love.graphics.animations:draw(self:getImageX(x), self:getImageY(y), self.scale.x, self.scale.y)
     end,
 
     --------------------------------------------------------------
