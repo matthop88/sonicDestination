@@ -47,10 +47,12 @@ return {
         end,
 
         draw = function(self, x, y, scaleX, scaleY)
-            love.graphics.setColor(COLOR_PURE_WHITE)
-            love.graphics.draw(self:getImage(),           self:getCurrentFrame(), 
-                               self:getImageX(x, scaleX), self:getImageY(y, scaleY),
-                               0, scaleX, scaleY)
+            graphics:setColor(COLOR_PURE_WHITE)
+            graphics:draw(self:getImage(),           
+                          self:getCurrentFrame(), 
+                          self:getImageX(x, scaleX), 
+                          self:getImageY(y, scaleY),
+                          0, scaleX, scaleY)
         end,
 
         getImage = function(self)
