@@ -34,6 +34,10 @@ return ({
             self.sprite.animations:advanceFrame()
         elseif key == "j" then
             self.sprite.animations:regressFrame()
+        elseif key == "w" then
+            self.sprite.animations:setCurrentAnimation("running")
+        elseif key == "s" then
+            self.sprite.animations:setCurrentAnimation("standing")
         end
     end,
 
