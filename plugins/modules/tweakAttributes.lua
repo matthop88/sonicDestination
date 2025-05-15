@@ -12,16 +12,21 @@ return {
         self.decAttributeKey = params.decAttributeKey
         self.attributes      = params.attributes
 
+        self.fontHeight      = self.font:getHeight()
+
         return self
     end,
 
     draw             = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(self.font)
+
+        local yPosition = 600
         
         for attName, attribute in pairs(self.attributes) do
             if attribute.active and attribute.getValueFn then
-                love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, 600, 1024, "center")
+                love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, yPosition, 1024, "center")
+                yPosition = yPosition + self.fontHeight
             end
         end
     end,
