@@ -1,5 +1,5 @@
 return {
-    image    = love.graphics.newImage(relativePath("resources/images/spriteSheets/sonic1Transparent.png")),
+    imageName = "sonic1Transparent",
     data = {
         standing = {
             rects = {
