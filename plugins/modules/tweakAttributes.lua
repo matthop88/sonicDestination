@@ -37,13 +37,20 @@ return {
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(self.font)
 
-        local yPosition = 600
-        
+        local yPosition = { value = 600 }
+        self:mapToAttributes(self.drawAttribute, yPosition)
+    end,
+
+    mapToAttributes = function(self, fn, param)
         for attName, attribute in pairs(self.attributes) do
-            if attribute.active and attribute.getValueFn then
-                love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, yPosition, 1024, "center")
-                yPosition = yPosition + self.fontHeight
-            end
+            fn(self, attribute, attName, param)
+        end
+    end,
+
+    drawAttribute = function(self, attribute, attName, yPosition)
+        if attribute.active and attribute.getValueFn then
+            love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
+            yPosition.value = yPosition.value + self.fontHeight
         end
     end,
     
@@ -54,12 +61,6 @@ return {
         end
     end,
 
-    mapToAttributes = function(self, fn, param)
-        for attName, attribute in pairs(self.attributes) do
-            fn(self, attribute, param)
-        end
-    end,
-    
     incrementActiveAttributes = function(self)      self:mapToAttributes(self.incrementAttribute)          end,
     decrementActiveAttributes = function(self)      self:mapToAttributes(self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self:mapToAttributes(self.toggleAttributeFromKey, key) end,
@@ -72,7 +73,7 @@ return {
         if attribute.active and attribute.decrementFn then attribute:decrementFn()     end
     end,
 
-    toggleAttributeFromKey = function(self, attribute, key)
+    toggleAttributeFromKey = function(self, attribute, attName, key)
         if key == attribute.toggleShowKey then attribute.active = not attribute.active end
     end,
 }
