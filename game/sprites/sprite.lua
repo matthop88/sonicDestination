@@ -1,4 +1,4 @@
-return ({
+return {
     animations = requireRelative("sprites/animations"):init("sonic1"),
     scale      = { x =  3, y =  3 },
 
@@ -13,4 +13,4 @@ return ({
     isXFlipped = function(self)    return self.scale.x < 0                   end,
     flipX      = function(self)    self.scale.x = self.scale.x * -1          end,
           
-}):init()
+}
