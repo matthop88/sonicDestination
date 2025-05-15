@@ -1,5 +1,5 @@
 return {
-    animations = requireRelative("animations"),
+    animations = requireRelative("sprites/animations"),
     scale      = { x =  3, y =  3 },
 
     draw = function(self, x, y)
