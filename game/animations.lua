@@ -28,7 +28,7 @@ return ({
     init = function(self)
         self.image:setFilter("nearest", "nearest")
         self:addQuads()
-        self.currentAnimation  = self.data.running
+        self.currentAnimation  = self.data.standing
         self.currentFrameIndex = 1
 
         return self
@@ -51,6 +51,11 @@ return ({
                       self:getImageX(x, scaleX), 
                       self:getImageY(y, scaleY),
                       0, scaleX, scaleY)
+    end,
+
+    setCurrentAnimation = function(self, animationName)
+        self.currentAnimation = self.data[animationName]
+        self.currentFrameIndex = 1
     end,
 
     getImage = function(self)
