@@ -2,7 +2,23 @@ return {
     object           = nil,
     incAttributeKey  = nil,
     decAttributeKey  = nil,
-    attributes       = { },
+    attributes       = { 
+--[[    
+        attributeName = {
+            incrementFn = function()
+                ... code to increment value of attribute
+            end,
+            decrementFn = function()
+                ... code to decrement value of attribute
+            end,
+            getValueFn() = function()
+                ... code to return value of attribute
+            end,
+            toggleShowKey = "keyToToggleAttribute",
+        },
+        ...     
+--]]
+    },
 
     font             = love.graphics.newFont(32),
 
