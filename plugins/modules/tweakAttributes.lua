@@ -32,36 +32,31 @@ return {
     end,
     
     handleKeypressed = function(self, key)
-        if     key == self.incAttributeKey then
-            self:incrementActiveAttributes()
-        elseif key == self.decAttributeKey then
-            self:decrementActiveAttributes()
-        else
-            self:toggleAttributesFromKey(key)
+        if     key == self.incAttributeKey then self:incrementActiveAttributes()
+        elseif key == self.decAttributeKey then self:decrementActiveAttributes()
+        else                                    self:toggleAttributesFromKey(key)
         end
     end,
 
-    incrementActiveAttributes = function(self)
+    mapToAttributes = function(self, fn, param)
         for attName, attribute in pairs(self.attributes) do
-            if attribute.active and attribute.incrementFn then
-                attribute:incrementFn()
-            end
+            fn(self, attribute, param)
         end
     end,
-
-    decrementActiveAttributes = function(self)
-        for attName, attribute in pairs(self.attributes) do
-            if attribute.active and attribute.decrementFn then
-                attribute:decrementFn()
-            end
-        end
+    
+    incrementActiveAttributes = function(self) self:mapToAttributes(self.incrementAttribute)          end,
+    decrementActiveAttributes = function(self) self:mapToAttributes(self.decrementAttribute)          end,
+    toggleAttributesFromKey   = function(self) self:mapToAttributes(self.toggleAttributeFromKey, key) end,
+    
+    incrementAttribute = function(self, attribute)
+        if attribute.active and attribute.incrementFn then attribute:incrementFn()     end
     end,
 
-    toggleAttributesFromKey = function(self, key)
-        for attName, attribute in pairs(self.attributes) do
-            if key == attribute.toggleShowKey then
-                attribute.active = not attribute.active
-            end
-        end
+    decrementAttribute = function(self, attribute)
+        if attribute.active and attribute.decrementFn then attribute:decrementFn()     end
+    end,
+
+    toggleAttributeFromKey = function(self, attribute, key)
+        if key == attribute.toggleShowKey then attribute.active = not attribute.active end
     end,
 }
