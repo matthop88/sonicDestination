@@ -4,7 +4,8 @@ return {
     decAttributeKey  = nil,
     attributes       = { 
 --[[    
-        attributeName = {
+        <nameOfAttribute> = {
+            name = "Optional Readable Attribute Name",
             incrementFn = function()
                 ... code to increment value of attribute
             end,
@@ -49,7 +50,7 @@ return {
 
     drawAttribute = function(self, attribute, attName, yPosition)
         if attribute.active and attribute.getValueFn then
-            love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
+            love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
             yPosition.value = yPosition.value + self.fontHeight
         end
     end,
