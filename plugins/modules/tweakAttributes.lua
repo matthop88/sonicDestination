@@ -4,6 +4,8 @@ return {
     decAttributeKey  = nil,
     attributes       = { },
 
+    font             = love.graphics.newFont(32),
+
     init             = function(self, params)
         self.object          = params.object
         self.incAttributeKey = params.incAttributeKey
@@ -15,6 +17,8 @@ return {
 
     draw             = function(self)
         love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(self.font)
+        
         for attName, attribute in pairs(self.attributes) do
             if attribute.active and attribute.getValueFn then
                 love.graphics.printf(attName .. " = " .. attribute:getValueFn(), 0, 600, 1024, "center")
