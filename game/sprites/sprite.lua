@@ -25,6 +25,7 @@ return ({
         anim.image:setFilter("nearest", "nearest")
 
         for _, animation in pairs(anim.data) do
+            animation.quads = {}
             for _, rect in ipairs(animation.rects) do
                 table.insert(animation.quads, love.graphics.newQuad(
                     rect.x, rect.y, rect.w, rect.h,
