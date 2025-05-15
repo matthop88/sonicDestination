@@ -44,9 +44,9 @@ return {
         end
     end,
     
-    incrementActiveAttributes = function(self) self:mapToAttributes(self.incrementAttribute)          end,
-    decrementActiveAttributes = function(self) self:mapToAttributes(self.decrementAttribute)          end,
-    toggleAttributesFromKey   = function(self) self:mapToAttributes(self.toggleAttributeFromKey, key) end,
+    incrementActiveAttributes = function(self)      self:mapToAttributes(self.incrementAttribute)          end,
+    decrementActiveAttributes = function(self)      self:mapToAttributes(self.decrementAttribute)          end,
+    toggleAttributesFromKey   = function(self, key) self:mapToAttributes(self.toggleAttributeFromKey, key) end,
     
     incrementAttribute = function(self, attribute)
         if attribute.active and attribute.incrementFn then attribute:incrementFn()     end
