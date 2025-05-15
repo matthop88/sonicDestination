@@ -36,6 +36,12 @@ return {
         for attName, attribute in pairs(self.attributes) do
             if key == attribute.toggleShowKey then
                 attribute.active = not attribute.active
+            elseif attribute.active then
+                if     key == self.incAttributeKey and attribute.incrementFn then
+                    attribute:incrementFn()
+                elseif key == self.decAttributeKey and attribute.decrementFn then
+                    attribute:decrementFn()
+                end
             end
         end
     end,
