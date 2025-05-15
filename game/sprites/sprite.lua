@@ -22,6 +22,7 @@ return ({
         anim.currentFrameIndex = 1
         anim.currentAnimation  = anim.data.standing
 
+        anim.image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. anim.imageName .. ".png"))
         anim.image:setFilter("nearest", "nearest")
 
         for _, animation in pairs(anim.data) do
