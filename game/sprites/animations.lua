@@ -5,14 +5,15 @@ return {
         local spriteData = requireRelative("sprites/data/" .. spriteDataName)
         self.data = spriteData.animations
 
-        self.currentAnimation  = nil
-        self.currentFrameIndex = 1
-        self.currentAnimation  = self.data.standing	-- XXX Make this smarter
-
         self.image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. spriteData.imageName .. ".png"))
         self.image:setFilter("nearest", "nearest")
 
         self:initQuads()
+
+        self.currentAnimation  = nil
+        self.currentFrameIndex = 1
+        
+        self:setUpDefaultAnimation()
 
         return self
     end,
@@ -23,6 +24,14 @@ return {
             for _, rect in ipairs(anim) do
                 table.insert(anim.quads, love.graphics.newQuad(rect.x, rect.y, rect.w, rect.h,
                                                                self.image:getWidth(), self.image:getHeight()))
+            end
+        end
+    end,
+
+    setUpDefaultAnimation = function(self)
+        for _, anim in pairs(self.data) do
+            if anim.isDefault or self.currentAnimation == nil then
+                self.currentAnimation = anim
             end
         end
     end,
