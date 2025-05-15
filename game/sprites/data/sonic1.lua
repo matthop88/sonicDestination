@@ -1,6 +1,6 @@
 return {
-    imageName = "sonic1Transparent",
-    data = {
+    imageName  = "sonic1Transparent",
+    animations = {
         standing = {
             rects = {
                 { x =  43, y = 257, w = 32, h = 40, offset = { x = 12, y = 20 }, },
