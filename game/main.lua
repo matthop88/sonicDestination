@@ -76,12 +76,14 @@ if __DEV_MODE == true then
             decAttributeKey = ",",
             attributes      = {
                 frameIndex = {
+                    name = "Frame Index",
                     getValueFn  = function()
                         return SONIC.sprite.animations.currentFrameIndex
                     end,
                     toggleShowKey = "f",
                 },
                 offsetX = {
+                    name = "X Offset",
                     incrementFn = function()
                         SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x + 1
                     end,
@@ -94,6 +96,7 @@ if __DEV_MODE == true then
                     toggleShowKey = "x"
                 },
                 offsetY = {
+                    name = "Y Offset",
                     incrementFn = function()
                         SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y + 1
                     end,
