@@ -32,16 +32,35 @@ return {
     end,
     
     handleKeypressed = function(self, key)
-        -- Check to see if key matches toggleShowKey on any attribute
+        if     key == self.incAttributeKey then
+            self:incrementActiveAttributes()
+        elseif key == self.decAttributeKey then
+            self:decrementActiveAttributes()
+        else
+            self:toggleAttributesFromKey(key)
+        end
+    end,
+
+    incrementActiveAttributes = function(self)
+        for attName, attribute in pairs(self.attributes) do
+            if attribute.active and attribute.incrementFn then
+                attribute:incrementFn()
+            end
+        end
+    end,
+
+    decrementActiveAttributes = function(self)
+        for attName, attribute in pairs(self.attributes) do
+            if attribute.active and attribute.decrementFn then
+                attribute:decrementFn()
+            end
+        end
+    end,
+
+    toggleAttributesFromKey = function(self, key)
         for attName, attribute in pairs(self.attributes) do
             if key == attribute.toggleShowKey then
                 attribute.active = not attribute.active
-            elseif attribute.active then
-                if     key == self.incAttributeKey and attribute.incrementFn then
-                    attribute:incrementFn()
-                elseif key == self.decAttributeKey and attribute.decrementFn then
-                    attribute:decrementFn()
-                end
             end
         end
     end,
