@@ -20,7 +20,7 @@ return {
     initQuads = function(self)
         for _, anim in pairs(self.data) do
             anim.quads = {}
-            for _, rect in ipairs(anim.rects) do
+            for _, rect in ipairs(anim) do
                 table.insert(anim.quads, love.graphics.newQuad(rect.x, rect.y, rect.w, rect.h,
                                                                self.image:getWidth(), self.image:getHeight()))
             end
@@ -50,7 +50,7 @@ return {
     end,
 
     getCurrentOffset = function(self)
-        return self.currentAnimation.rects[self.currentFrameIndex].offset
+        return self.currentAnimation[self.currentFrameIndex].offset
     end,
 
     getImageX = function(self, x, scaleX)
