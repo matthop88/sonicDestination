@@ -1,7 +1,8 @@
 return {
     imageName  = "sonic1Transparent",
     animations = {
-        standing = {
+        standing = { isDefault = true,
+            -------------------------------------------------------------------
             { x =  43, y = 257, w = 32, h = 40, offset = { x = 12, y = 20 }, },
         },
         running  = {
