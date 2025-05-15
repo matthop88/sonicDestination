@@ -5,6 +5,12 @@ requireRelative = function(path)
 end
 
 --------------------------------------------------------------
+--                     Global Variables                     --
+--------------------------------------------------------------
+
+graphics = requireRelative("graphics")
+
+--------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
 
@@ -61,6 +67,48 @@ if __DEV_MODE == true then
             object  = SONIC,
             originX = 512,
             originY = 514,
+        })
+        :add("scrolling", { imageViewer = graphics })
+        :add("zooming",   { imageViewer = graphics })
+        :add("tweakAttributes", {
+            object          = SONIC,
+            incAttributeKey = ".",
+            decAttributeKey = ",",
+            attributes      = {
+                frameIndex = {
+                    name = "Frame Index",
+                    getValueFn  = function()
+                        return SONIC.sprite.animations.currentFrameIndex
+                    end,
+                    toggleShowKey = "f",
+                },
+                offsetX = {
+                    name = "X Offset",
+                    incrementFn = function()
+                        SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x + 1
+                    end,
+                    decrementFn = function()
+                        SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x - 1
+                    end,
+                    getValueFn  = function()
+                        return SONIC.sprite.animations:getCurrentOffset().x
+                    end,
+                    toggleShowKey = "x"
+                },
+                offsetY = {
+                    name = "Y Offset",
+                    incrementFn = function()
+                        SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y + 1
+                    end,
+                    decrementFn = function()
+                        SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y - 1
+                    end,
+                    getValueFn  = function()
+                        return SONIC.sprite.animations:getCurrentOffset().y
+                    end,
+                    toggleShowKey = "y"
+                },
+            }
         })
 end
 

@@ -54,6 +54,13 @@ return {
                            (y2 + self.y) * self.scale)
     end,
 
+    draw      = function(self, image, quad, x, y, r, sx, sy)
+        love.graphics.draw(image, quad, (x + self.x) * self.scale, 
+                                        (y + self.y) * self.scale,
+                                        0,        sx * self.scale, 
+                                                  sy * self.scale)
+    end,
+
     ------------------------ Text Drawing Functions --------------------
 
     printf    = function(self, text, x, y, w, align)

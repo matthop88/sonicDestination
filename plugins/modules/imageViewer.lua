@@ -83,8 +83,8 @@ return {
     end,
 
     getPixelColorAt = function(self, x, y)
-        local r, g, b = self:getImagePixelAt(x, y)
-        return { r = r, g = g, b = b }
+        local r, g, b, a = self:getImagePixelAt(x, y)
+        return { r = r, g = g, b = b, a = a }
     end,
 
     editPixels = function(self, pixelMapper)

@@ -42,5 +42,6 @@ return {
            and math.abs(c1.r - c2.r) < 0.005
            and math.abs(c1.g - c2.g) < 0.005 
            and math.abs(c1.b - c2.b) < 0.005
+           and math.abs(c1.a - c2.a) < 0.005
     end,
 }

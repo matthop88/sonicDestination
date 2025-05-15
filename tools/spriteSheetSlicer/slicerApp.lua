@@ -61,8 +61,8 @@ ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03 }
-SPRITE_BACKGROUND_COLOR = { r = 0.26, g = 0.60, b = 0.19 }
+MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
+SPRITE_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 }
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 

@@ -1,7 +1,7 @@
 return ({
     x = 0, y = 0,
         
-    sprite = requireRelative("sprite"),
+    sprite = requireRelative("sprites/sprite"),
 
     states = {
         standLeft  = { 
@@ -30,6 +30,15 @@ return ({
 
     keypressed = function(self, key)
         self.currentState.keypressed(self, key)
+        if     key == "k" then
+            self.sprite.animations:advanceFrame()
+        elseif key == "j" then
+            self.sprite.animations:regressFrame()
+        elseif key == "w" then
+            self.sprite.animations:setCurrentAnimation("running")
+        elseif key == "s" then
+            self.sprite.animations:setCurrentAnimation("standing")
+        end
     end,
 
     --------------------------------------------------------------
