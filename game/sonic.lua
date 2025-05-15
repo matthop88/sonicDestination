@@ -1,7 +1,7 @@
 return ({
     x = 0, y = 0,
         
-    sprite = requireRelative("sprite"),
+    sprite = requireRelative("sprites/sprite"),
 
     states = {
         standLeft  = { 
