@@ -9,6 +9,14 @@ return {
     transmit an 'A' keypressed key.
     
     A shift keypress can be either an 'lshift' or an 'rshift'.
+
+    Examples:
+    SHIFT LEFT
+    ----------
+    'lshift' is pressed  -> no event is transmitted.
+    'left'   is pressed  -> if shift is held, 'shiftleft' keypress is transmitted.
+    'left'   is released -> 'shiftleft' keyrelease is transmitted,
+                            regardless of status of shift
     
     --]]
 }
