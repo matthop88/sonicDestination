@@ -1,0 +1,2 @@
+-- Test #1
+-- When shift key is pressed (lshift or rshift), no event is transmitted
