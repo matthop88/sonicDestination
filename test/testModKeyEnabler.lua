@@ -1,6 +1,21 @@
--- Test #1
--- When shift key is pressed (lshift or rshift), no event is transmitted
+function runTests()
+    -- Test #1
+    -- When shift key is pressed (lshift or rshift), no event is transmitted
+    
+    print("Test #1... testing shift key being pressed.")
+    
+    love.event.quit()
+end
 
-print("Test #1... testing shift key being pressed.")
+local textTimer    = 0
+local waitForTests = true
 
-love.event.quit()
+function love.update(dt)
+    if waitForTests then
+        textTimer = textTimer + dt
+        if textTimer > 1 then
+            waitForTests = false
+            runTests()
+        end
+    end
+end
