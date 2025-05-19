@@ -31,17 +31,17 @@ return {
     --                 LOVE2D Delegated Functions               --
     --------------------------------------------------------------
     
-    keypressed  = function(self, key)
+    handleKeypressed  = function(self, key)
         -- code for transmitting keypressed events goes here
         -- return keyToTransmit
 
         -- XXX How do we transmit a null event?
         -- i.e., 'lshift' is pressed, no event is transmitted
-		-- Solution: Can return true, which swallows the event
+        -- Solution: Can return true, which swallows the event
         -- Plugin engine will need to be modified to support this behavior
     end,
     
-    keyreleased = function(self, key)
+    handleKeyreleased = function(self, key)
         -- code for transmitting keyreleased events goes here
         -- return keyToTransmit
     end,
