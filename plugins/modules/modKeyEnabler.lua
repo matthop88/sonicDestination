@@ -32,22 +32,26 @@ return {
     --------------------------------------------------------------
     
     prehandleKeypressed  = function(self, key)
-        -- code for transmitting keypressed events goes here
+        -- code for preprocessing keypressed events goes here
         -- return keyToTransmit
 
         if key == "lshift" or key == "rshift" then
             -- Consume the event
-            return true
+            return nil
+        else
+            return key
         end
     end,
     
     prehandleKeyreleased = function(self, key)
-        -- code for transmitting keyreleased events goes here
+        -- code for preprocessing keyreleased events goes here
         -- return keyToTransmit
 
-        if key == "lshift" or ley == "rshift" then
+        if key == "lshift" or key == "rshift" then
             -- Consume the event
-            return true
+            return nil
+        else
+            return key
         end
     end,
 }
