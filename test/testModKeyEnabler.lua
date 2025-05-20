@@ -62,10 +62,13 @@ TESTS = {
         --      keypressed:  "left"     => keypressed:  "shiftleft"
         --      keyreleased: shiftKey
         --      keyreleased: "left"     => keyreleased: "shiftleft"
-
+        
+        self.modKeyEnabler:handleKeypressed("lshift")
+        self.modKeyEnabler:handleKeypressed("left")
+        self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
-
+        
         if modifiedKeyReleased == "shiftleft" then
             print("PASSED => Test #3: Release shift key + left equals release shiftleft")
         else
