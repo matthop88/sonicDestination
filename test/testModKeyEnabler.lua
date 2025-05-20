@@ -16,6 +16,10 @@ function runTests()
     else
         print("FAILED => Test #1: lshift and rshift keypressed were NOT consumed by modKeyEnabler")
     end
+
+    -- Test #2
+    -- When shift key is pressed followed by "left",
+    --      "shiftleft" keypressed event is transmitted
     
     love.event.quit()
 end
