@@ -10,6 +10,9 @@ TESTS = {
         self:testLeftShiftKeyPressed()
         self:testLeftShiftKeyReleased()
         self:testIndependentLeftAndShiftPressAndRelease()
+        self:testShiftAndLeftDownThenLeftAndShiftUp()
+        self:testLeftAndShiftDownThenLeftAndShiftUp()
+        self:testShiftAndADownThenShiftAndAUp()
 
         love.event.quit()
     end,
@@ -84,6 +87,75 @@ TESTS = {
             print("PASSED => Test #4: Independently pressing and releasing shift and left results in left pressed & released")
         else
             print("FAILED => Test #4: Independently pressing and releasing shift and left does NOT result in left pressed & released")
+        end
+    end,
+
+    testShiftAndLeftDownThenLeftAndShiftUp = function(self)
+        -- Test #5
+        -- When this sequence of events occurs:
+        --      keypressed:  shiftKey
+        --      keypressed:  "left"
+        --      keyreleased: "left"
+        --      keyreleased: shiftKey
+        --
+        -- The first event is a keypressed:  "shiftleft"
+        -- and the second  is a keyreleased: "shiftleft"
+        
+        self.modKeyEnabler:keypressed("lshift")
+        local modifiedKeyPressed  = self.modKeyEnabler:keypressedTransform("left")
+        local modifiedKeyReleased = self.modKeyEnabler:keyreleasedTransform("left")
+        self.modKeyEnabler:keyreleased("lshift")
+        
+        if modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft" then
+            print("PASSED => Test #5: Shift Down, Left Down, Left Up, Shift Up yields shiftLeft for pressed and released")
+        else
+            print("FAILED => Test #5: Shift Down, Left Down, Left Up, Shift Up does NOT yield shiftLeft for pressed and released")
+        end
+    end,
+    
+    testLeftAndShiftDownThenLeftAndShiftUp = function(self)
+        -- Test #6
+        -- When this sequence of events occurs:
+        --      keypressed:  "left"
+        --      keypressed:  shiftKey
+        --      keyreleased: "left"
+        --      keyreleased: shiftKey
+        --
+        -- The first event is a keypressed:  "left"
+        -- and the second  is a keyreleased: "left"
+        
+        local modifiedKeyPressed  = self.modKeyEnabler:keypressedTransform("left")
+        self.modKeyEnabler:keypressed("lshift")
+        local modifiedKeyReleased = self.modKeyEnabler:keyreleasedTransform("left")
+        self.modKeyEnabler:keyreleased("lshift")
+        
+        if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
+            print("PASSED => Test #6: Left Down, Shift Down, Left Up, Shift Up yields left for pressed and released")
+        else
+            print("FAILED => Test #6: Left Down, Shift Down, Left Up, Shift Up does NOT left for pressed and released")
+        end
+    end,
+    
+    testShiftAndADownThenShiftAndAUp = function(self)
+        -- Test #7
+        -- When this sequence of events occurs:
+        --      keypressed:  shiftKey
+        --      keypressed:  "a"
+        --      keyreleased: shiftKey
+        --      keyreleased: "a"
+        --
+        -- The first event is a keypressed:  "A"
+        -- and the second  is a keyreleased: "A"
+        
+        self.modKeyEnabler:keypressed("lshift")
+        local modifiedKeyPressed  = self.modKeyEnabler:keypressedTransform("a")
+        self.modKeyEnabler:keyreleased("lshift")
+        local modifiedKeyReleased = self.modKeyEnabler:keyreleasedTransform("a")
+        
+        if modifiedKeyPressed == "A" and modifiedKeyReleased == "A" then
+            print("PASSED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up yields 'A' for pressed and released")
+        else
+            print("FAILED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up does NOT yield 'A' for pressed and released")
         end
     end,
 }
