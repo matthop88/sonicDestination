@@ -8,8 +8,8 @@ function runTests()
     
     print("\nRunning Tests\n-------------")
     
-    local lshiftResult = modKeyEnabler:handleKeypressed("lshift")
-    local rshiftResult = modKeyEnabler:handleKeypressed("rshift")
+    local lshiftResult = modKeyEnabler:prehandleKeypressed("lshift")
+    local rshiftResult = modKeyEnabler:prehandleKeypressed("rshift")
     
     if lshiftResult == true and rshiftResult == true then
         print("PASSED => Test #1: lshift and rshift keypressed were consumed by modKeyEnabler")
