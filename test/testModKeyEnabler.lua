@@ -9,6 +9,7 @@ TESTS = {
         self:testShiftKeyPressedNoEvent()
         self:testLeftShiftKeyPressed()
         self:testLeftShiftKeyReleased()
+        self:testIndependentLeftAndShiftPressAndRelease()
 
         love.event.quit()
     end,
@@ -57,6 +58,32 @@ TESTS = {
             print("PASSED => Test #3: Release shift key + left equals release shiftleft")
         else
             print("FAILED => Test #3: Release shift key + left does NOT equal release shiftleft. (Result was " .. modifiedKeyReleased .. ")")
+        end
+    end,
+
+    testIndependentLeftAndShiftPressAndRelease = function(self)
+        -- Test #4
+        -- When this sequence of events occurs:
+        --      keypressed:  shiftKey
+        --      keyreleased: shiftKey
+        --      keypressed:  "left"
+        --      keyreleased: "left"
+        --
+        -- The first event is a keypressed:  "left"
+        -- and the second  is a keyreleased: "left"
+
+        self.modKeyEnabler:reset()
+        
+        self.modKeyEnabler:handleKeypressed("lshift")
+        self.modKeyEnabler:handleKeyreleased("lshift")
+        
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+
+        if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
+            print("PASSED => Test #4: Independently pressing and releasing shift and left results in left pressed & released")
+        else
+            print("FAILED => Test #4: Independently pressing and releasing shift and left does NOT result in left pressed & released")
         end
     end,
 }
