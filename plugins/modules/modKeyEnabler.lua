@@ -52,19 +52,22 @@ return {
     --------------------------------------------------------------
     
     prehandleKeypressed  = function(self, key)
-        -- code for preprocessing keypressed events goes here
-        -- return keyToTransmit
-        if self.isDown.shift and key == "left" then
-            key = "shiftleft"
+        if self.isDown.shift then self.isDown[key] = self:applyShift(key)
+        else                      self.isDown[key] = key
         end
         
-        return key
+        return self.isDown[key]
     end,
     
     prehandleKeyreleased = function(self, key)
-        -- code for preprocessing keyreleased events goes here
-        -- return keyToTransmit
-        
+        self.isDown[key] = false
         return key
+    end,
+
+    applyShift = function(self, key)
+        if     key == "left"  then return "shiftleft"
+        elseif key == "right" then return "shiftright"
+        else                       return key
+        end
     end,
 }
