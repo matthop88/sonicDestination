@@ -26,6 +26,24 @@ return {
     -- ...
     -- ...
     -- ...
+
+    --------------------------------------------------------------
+    --                 LOVE2D Delegated Functions               --
+    --------------------------------------------------------------
+
+    handleKeypressed = function(self, key)
+        if key == "lshift" or key == "rshift" then
+            -- Consume the event
+            return true
+        end
+    end,
+
+    handleKeyreleased = function(self, key)
+        if key == "lshift" or key == "rshift" then
+            -- Consume the event
+            return true
+        end
+    end,
     
     --------------------------------------------------------------
     --                  Called by Plugin Engine                 --
@@ -35,23 +53,13 @@ return {
         -- code for preprocessing keypressed events goes here
         -- return keyToTransmit
 
-        if key == "lshift" or key == "rshift" then
-            -- Consume the event
-            return nil
-        else
-            return key
-        end
+        return key
     end,
     
     prehandleKeyreleased = function(self, key)
         -- code for preprocessing keyreleased events goes here
         -- return keyToTransmit
 
-        if key == "lshift" or key == "rshift" then
-            -- Consume the event
-            return nil
-        else
-            return key
-        end
+        return key
     end,
 }
