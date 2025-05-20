@@ -6,7 +6,7 @@ function love.update(dt)
         textTimer = textTimer + dt
         if textTimer > 1 then
             waitForTests = false
-            runTests()
+            TESTS:runAll()
         end
     end
 end
