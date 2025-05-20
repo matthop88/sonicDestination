@@ -28,10 +28,10 @@ return {
     -- ...
     
     --------------------------------------------------------------
-    --                 LOVE2D Delegated Functions               --
+    --                  Called by Plugin Engine                 --
     --------------------------------------------------------------
     
-    handleKeypressed  = function(self, key)
+    prehandleKeypressed  = function(self, key)
         -- code for transmitting keypressed events goes here
         -- return keyToTransmit
 
@@ -41,7 +41,7 @@ return {
         end
     end,
     
-    handleKeyreleased = function(self, key)
+    prehandleKeyreleased = function(self, key)
         -- code for transmitting keyreleased events goes here
         -- return keyToTransmit
 
