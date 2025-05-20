@@ -23,7 +23,7 @@ return {
     --                     Member Variables                     --
     --------------------------------------------------------------
     
-    -- ...
+    isDown = { },
     -- ...
     -- ...
 
@@ -34,6 +34,7 @@ return {
     handleKeypressed = function(self, key)
         if key == "lshift" or key == "rshift" then
             -- Consume the event
+            self.isDown.shift = true
             return true
         end
     end,
@@ -41,6 +42,7 @@ return {
     handleKeyreleased = function(self, key)
         if key == "lshift" or key == "rshift" then
             -- Consume the event
+            self.isDown.shift = false
             return true
         end
     end,
@@ -59,7 +61,10 @@ return {
     prehandleKeyreleased = function(self, key)
         -- code for preprocessing keyreleased events goes here
         -- return keyToTransmit
-
+        if self.isDown.shift and key == "left" then
+            key = "shiftleft"
+        end
+        
         return key
     end,
 }
