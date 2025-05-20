@@ -32,20 +32,19 @@ return {
         shiftUp     = function(self)      self.shiftKeyDown = false       end,
         isShiftDown = function(self)      return self.shiftKeyDown        end,
         isDown      = function(self, key) return self.pressed[key] ~= nil end,
+        getValue    = function(self, key) return self.pressed[key]        end,
         
         press = function(self, key)
             local keyValue = key
-            if self:isShiftDown() then 
-                keyValue = self:applyShift(key)
-            end
-            self.pressed[key] = keyValue
+            if self:isShiftDown() then self.pressed[key] = self:applyShift(key)
+            else                       self.pressed[key] = key             end
             return keyValue
         end,
 
         applyShift = function(self, key)
             if     key == "left"  then return "shiftleft"
             elseif key == "right" then return "shiftright"
-            else                       return key      end
+            else                       return key     end
         end,
 
         release = function(self, key)
@@ -54,14 +53,12 @@ return {
             return keyValue
         end,
 
-        getValue = function(self, key)
-            return self.pressed[key]
+        reset = function(self)
+            self.pressed = { }
+            self.shiftKeyDown = false
         end,
     },
     
-    -- ...
-    -- ...
-
     --------------------------------------------------------------
     --                 LOVE2D Delegated Functions               --
     --------------------------------------------------------------
@@ -94,7 +91,10 @@ return {
         else                       return self.keys:release(key) end
     end,
 
-    isShift = function(self, key)
-        return key == "lshift" or key == "rshift"
-    end,
+    --------------------------------------------------------------
+    --                   Specialized Functions                  --
+    --------------------------------------------------------------
+
+    reset   = function(self)      self.keys:reset()                         end,
+    isShift = function(self, key) return key == "lshift" or key == "rshift" end,
 }
