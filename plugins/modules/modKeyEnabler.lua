@@ -54,16 +54,16 @@ return {
     prehandleKeypressed  = function(self, key)
         -- code for preprocessing keypressed events goes here
         -- return keyToTransmit
-
+        if self.isDown.shift and key == "left" then
+            key = "shiftleft"
+        end
+        
         return key
     end,
     
     prehandleKeyreleased = function(self, key)
         -- code for preprocessing keyreleased events goes here
         -- return keyToTransmit
-        if self.isDown.shift and key == "left" then
-            key = "shiftleft"
-        end
         
         return key
     end,
