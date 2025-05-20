@@ -35,14 +35,19 @@ return {
         -- code for transmitting keypressed events goes here
         -- return keyToTransmit
 
-        -- XXX How do we transmit a null event?
-        -- i.e., 'lshift' is pressed, no event is transmitted
-        -- Solution: Can return true, which swallows the event
-        -- Plugin engine will need to be modified to support this behavior
+        if key == "lshift" or key == "rshift" then
+            -- Consume the event
+            return true
+        end
     end,
     
     handleKeyreleased = function(self, key)
         -- code for transmitting keyreleased events goes here
         -- return keyToTransmit
+
+        if key == "lshift" or ley == "rshift" then
+            -- Consume the event
+            return true
+        end
     end,
 }
