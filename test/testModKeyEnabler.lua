@@ -59,4 +59,4 @@ TESTS = {
             print("FAILED => Test #3: Release shift key + left does NOT equal release shiftleft. (Result was " .. modifiedKeyReleased .. ")")
         end
     end,
-end
+}
