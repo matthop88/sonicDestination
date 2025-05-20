@@ -71,10 +71,9 @@ return ({
 
     keypressed = function(self, key)
         for _, plugin in ipairs(self) do
-            --[[
-            TODO: Add mechanism where plugins using keypressed can modify the key
-                  prior to sending it downstream
-            --]]
+            if plugin.prehandleKeypressed ~= nil then
+                key = plugin:prehandleKeypressed(key)
+            end
             if plugin.handleKeypressed ~= nil then
                 if plugin:handleKeypressed(key) then
                     return true
@@ -85,10 +84,9 @@ return ({
 
     keyreleased = function(self, key)
         for _, plugin in ipairs(self) do
-             --[[
-            TODO: Add mechanism where plugins using keypressed can modify the key
-                  prior to sending it downstream
-            --]]
+            if plugin.prehandleKeyreleased ~= nil then
+                key = plugin:prehandleKeyreleased(key)
+            end
             if plugin.handleKeyreleased ~= nil then
                 if plugin:handleKeyreleased(key) then
                     return true
