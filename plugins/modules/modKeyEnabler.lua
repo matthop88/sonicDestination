@@ -35,10 +35,9 @@ return {
         getValue    = function(self, key) return self.pressed[key]        end,
         
         press = function(self, key)
-            local keyValue = key
             if self:isShiftDown() then self.pressed[key] = self:applyShift(key)
             else                       self.pressed[key] = key             end
-            return keyValue
+            return self.pressed[key]
         end,
 
         applyShift = function(self, key)
