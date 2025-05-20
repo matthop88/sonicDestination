@@ -101,10 +101,10 @@ TESTS = {
         -- The first event is a keypressed:  "shiftleft"
         -- and the second  is a keyreleased: "shiftleft"
         
-        self.modKeyEnabler:keypressed("lshift")
-        local modifiedKeyPressed  = self.modKeyEnabler:keypressedTransform("left")
-        local modifiedKeyReleased = self.modKeyEnabler:keyreleasedTransform("left")
-        self.modKeyEnabler:keyreleased("lshift")
+        self.modKeyEnabler:handleKeypressed("lshift")
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("lshift")
         
         if modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft" then
             print("PASSED => Test #5: Shift Down, Left Down, Left Up, Shift Up yields shiftLeft for pressed and released")
@@ -124,10 +124,10 @@ TESTS = {
         -- The first event is a keypressed:  "left"
         -- and the second  is a keyreleased: "left"
         
-        local modifiedKeyPressed  = self.modKeyEnabler:keypressedTransform("left")
-        self.modKeyEnabler:keypressed("lshift")
-        local modifiedKeyReleased = self.modKeyEnabler:keyreleasedTransform("left")
-        self.modKeyEnabler:keyreleased("lshift")
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("lshift")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("lshift")
         
         if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
             print("PASSED => Test #6: Left Down, Shift Down, Left Up, Shift Up yields left for pressed and released")
@@ -147,10 +147,10 @@ TESTS = {
         -- The first event is a keypressed:  "A"
         -- and the second  is a keyreleased: "A"
         
-        self.modKeyEnabler:keypressed("lshift")
-        local modifiedKeyPressed  = self.modKeyEnabler:keypressedTransform("a")
-        self.modKeyEnabler:keyreleased("lshift")
-        local modifiedKeyReleased = self.modKeyEnabler:keyreleasedTransform("a")
+        self.modKeyEnabler:handleKeypressed("lshift")
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("a")
+        self.modKeyEnabler:handleKeyreleased("lshift")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("a")
         
         if modifiedKeyPressed == "A" and modifiedKeyReleased == "A" then
             print("PASSED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up yields 'A' for pressed and released")
