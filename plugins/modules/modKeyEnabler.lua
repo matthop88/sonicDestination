@@ -32,7 +32,7 @@ return {
     --------------------------------------------------------------
 
     handleKeypressed = function(self, key)
-        if key == "lshift" or key == "rshift" then
+        if self:isShift(key) then
             -- Consume the event
             self.isDown.shift = true
             return true
@@ -40,7 +40,7 @@ return {
     end,
 
     handleKeyreleased = function(self, key)
-        if key == "lshift" or key == "rshift" then
+        if self:isShift(key) then
             -- Consume the event
             self.isDown.shift = false
             return true
@@ -52,18 +52,28 @@ return {
     --------------------------------------------------------------
     
     prehandleKeypressed  = function(self, key)
-        if self.isDown.shift then self.isDown[key] = self:applyShift(key)
-        else                      self.isDown[key] = key
+        if     self:isShift(key) then return key
+        elseif self.isDown.shift then self.isDown[key] = self:applyShift(key)
+        else                          self.isDown[key] = key
         end
         
         return self.isDown[key]
     end,
     
     prehandleKeyreleased = function(self, key)
-        self.isDown[key] = false
-        return key
+        if self:isShift(key) then 
+            return key
+        else
+            key = self.isDown[key]
+            self.isDown[key] = false
+            return key
+        end
     end,
 
+    isShift = function(self, key)
+        return key == "lshift" or key == "rshift"
+    end,
+        
     applyShift = function(self, key)
         if     key == "left"  then return "shiftleft"
         elseif key == "right" then return "shiftright"
