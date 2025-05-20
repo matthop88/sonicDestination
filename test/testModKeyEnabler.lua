@@ -8,10 +8,10 @@ function runTests()
     
     print("\nRunning Tests\n-------------")
     
-    local lshiftResult = modKeyEnabler:prehandleKeypressed("lshift")
-    local rshiftResult = modKeyEnabler:prehandleKeypressed("rshift")
+    local lshiftResult = modKeyEnabler:handleKeypressed("lshift")
+    local rshiftResult = modKeyEnabler:handleKeypressed("rshift")
     
-    if lshiftResult == nil and rshiftResult == nil then
+    if lshiftResult == true and rshiftResult == true then
         print("PASSED => Test #1: lshift and rshift keypressed were consumed by modKeyEnabler")
     else
         print("FAILED => Test #1: lshift and rshift keypressed were NOT consumed by modKeyEnabler")
@@ -20,6 +20,15 @@ function runTests()
     -- Test #2
     -- When shift key is pressed followed by "left",
     --      "shiftleft" keypressed event is transmitted
+
+    modKeyEnabler:handleKeypressed("lshift")
+    local modifiedKey = modKeyEnabler:prehandleKeypressed("left")
+
+    if modifiedKey == "shiftleft" then
+        print("PASSED => Test #2: shift key + left equals shiftleft")
+    else
+        print("FAILED => Test #2: shift key + left does not equal shiftleft. (Result was " .. modifiedKey .. ")")
+    end
     
     love.event.quit()
 end
