@@ -29,6 +29,22 @@ function runTests()
     else
         print("FAILED => Test #2: shift key + left does not equal shiftleft. (Result was " .. modifiedKey .. ")")
     end
+
+    -- Test #3
+    -- When this sequence of events occurs, results should match:
+    --      keypressed:  shiftKey
+    --      keypressed:  "left"     => keypressed:  "shiftleft"
+    --      keyreleased: shiftKey
+    --      keyreleased: "left"     => keyreleased: "shiftleft"
+
+    modKeyEnabler:handleKeyreleased("lshift")
+    local modifiedKeyReleased = modKeyEnabler:prehandleKeyreleased("left")
+
+    if modifiedKeyReleased == "shiftleft" then
+        print("PASSED => Test #3: Release shift key + left equals release shiftleft")
+    else
+        print("FAILED => Test #3: Release shift key + left does NOT equal release shiftleft. (Result was " .. modifiedKeyReleased .. ")")
+    end
     
     love.event.quit()
 end
