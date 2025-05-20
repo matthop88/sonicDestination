@@ -6,15 +6,24 @@ TESTS = {
     runAll = function(self)
         print("\nRunning Tests\n-------------")
     
-        self:testShiftKeyPressedNoEvent()
-        self:testLeftShiftKeyPressed()
-        self:testLeftShiftKeyReleased()
-        self:testIndependentLeftAndShiftPressAndRelease()
-        self:testShiftAndLeftDownThenLeftAndShiftUp()
-        self:testLeftAndShiftDownThenLeftAndShiftUp()
-        self:testShiftAndADownThenShiftAndAUp()
+        self:runTest(self.testShiftKeyPressedNoEvent)
+        self:runTest(self.testLeftShiftKeyPressed)
+        self:runTest(self.testLeftShiftKeyReleased)
+        self:runTest(self.testIndependentLeftAndShiftPressAndRelease)
+        self:runTest(self.testShiftAndLeftDownThenLeftAndShiftUp)
+        self:runTest(self.testLeftAndShiftDownThenLeftAndShiftUp)
+        self:runTest(self.testShiftAndADownThenShiftAndAUp)
 
         love.event.quit()
+    end,
+
+    runTest = function(self, testFn)
+        self:before()
+        testFn(self)
+    end,
+
+    before = function(self)
+        self.modKeyEnabler:reset()
     end,
 
     testShiftKeyPressedNoEvent = function(self)
@@ -75,8 +84,6 @@ TESTS = {
         -- The first event is a keypressed:  "left"
         -- and the second  is a keyreleased: "left"
 
-        self.modKeyEnabler:reset()
-        
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeyreleased("lshift")
         
