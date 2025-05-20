@@ -23,7 +23,42 @@ return {
     --                     Member Variables                     --
     --------------------------------------------------------------
     
-    isDown = { },
+    keys = { 
+        pressed = { },
+    
+        shiftKeyDown = false,
+
+        shiftDown   = function(self)      self.shiftKeyDown = true        end,
+        shiftUp     = function(self)      self.shiftKeyDown = false       end,
+        isShiftDown = function(self)      return self.shiftKeyDown        end,
+        isDown      = function(self, key) return self.pressed[key] ~= nil end,
+        
+        press = function(self, key)
+            local keyValue = key
+            if self:isShiftDown() then 
+                keyValue = self:applyShift(key)
+            end
+            self.pressed[key] = keyValue
+            return keyValue
+        end,
+
+        applyShift = function(self, key)
+            if     key == "left"  then return "shiftleft"
+            elseif key == "right" then return "shiftright"
+            else                       return key      end
+        end,
+
+        release = function(self, key)
+            local keyValue = self:getValue(key)
+            self.pressed[key] = false
+            return keyValue
+        end,
+
+        getValue = function(self, key)
+            return self.pressed[key]
+        end,
+    },
+    
     -- ...
     -- ...
 
@@ -33,16 +68,14 @@ return {
 
     handleKeypressed = function(self, key)
         if self:isShift(key) then
-            -- Consume the event
-            self.isDown.shift = true
+            self.keys:shiftDown()
             return true
         end
     end,
 
     handleKeyreleased = function(self, key)
         if self:isShift(key) then
-            -- Consume the event
-            self.isDown.shift = false
+            self.keys:shiftUp()
             return true
         end
     end,
@@ -52,32 +85,16 @@ return {
     --------------------------------------------------------------
     
     prehandleKeypressed  = function(self, key)
-        if     self:isShift(key) then return key
-        elseif self.isDown.shift then self.isDown[key] = self:applyShift(key)
-        else                          self.isDown[key] = key
-        end
-        
-        return self.isDown[key]
+        if  self:isShift(key) then return key
+        else                       return self.keys:press(key) end
     end,
     
     prehandleKeyreleased = function(self, key)
-        if self:isShift(key) then 
-            return key
-        else
-            key = self.isDown[key]
-            self.isDown[key] = false
-            return key
-        end
+        if  self:isShift(key) then return key
+        else                       return self.keys:release(key) end
     end,
 
     isShift = function(self, key)
         return key == "lshift" or key == "rshift"
-    end,
-        
-    applyShift = function(self, key)
-        if     key == "left"  then return "shiftleft"
-        elseif key == "right" then return "shiftright"
-        else                       return key
-        end
     end,
 }
