@@ -42,7 +42,7 @@ TESTS = {
 
     runTest = function(self, testFn)
         self:before()
-        testFn(self)
+        return testFn(self)
     end,
 
     before = function(self)
