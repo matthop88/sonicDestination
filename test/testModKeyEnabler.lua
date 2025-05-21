@@ -21,10 +21,22 @@ TESTS = {
         print("\nRunning Tests\n-------------")
         self:initTests()
 
+        local testsSucceeded = 0
+
         for _, test in ipairs(self.runnableTests) do
-            self:runTest(test)
+            if self:runTest(test) then
+                testsSucceeded = testsSucceeded + 1
+            end
         end
 
+        local testsFailed = #self.runnableTests - testsSucceeded
+
+        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. #self.runnableTests)
+        if testsFailed > 0 then
+            print("\n" .. testsFailed .. " tests FAILED.")
+        end
+        print("\n")
+        
         love.event.quit()
     end,
 
