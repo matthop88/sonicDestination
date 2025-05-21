@@ -75,7 +75,7 @@ TESTS = {
     end,
 
     testShiftKeyPressedNoEvent = function(self)
-        local name = "Shift Key Down, Left Key Down => 'shiftleft'"
+        local name = "Shift Key Down => (no event)"
         
         local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
         local rshiftResult = self.modKeyEnabler:handleKeypressed("rshift")
