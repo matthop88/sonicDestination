@@ -75,7 +75,8 @@ TESTS = {
     end,
 
     testShiftKeyPressedNoEvent = function(self)
-        local name = "When Shift Key is pressed, no event is transmitted"
+        local name = "Shift Key Down, Left Key Down => 'shiftleft'"
+        
         local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
         local rshiftResult = self.modKeyEnabler:handleKeypressed("rshift")
 
@@ -83,7 +84,7 @@ TESTS = {
     end,
 
     testLeftShiftKeyPressed = function(self)
-        local name = "Shift Key pressed followed by Left Key pressed generates 'shiftleft' event"
+        local name = "Shift Key Down, Left Key Down => 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKey = self.modKeyEnabler:prehandleKeypressed("left")
@@ -92,7 +93,7 @@ TESTS = {
     end,
 
     testLeftShiftKeyReleased = function(self)
-        local name = "Shift Down, Left Down, Shift Up, Left Up => keypressed: 'shiftleft', keyreleased: 'shiftleft'"
+        local name = "Shift Key Down, Left Key Down, Shift Key Up, Left Key Up => 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeypressed("left")
@@ -104,7 +105,7 @@ TESTS = {
     end,
 
     testIndependentLeftAndShiftPressAndRelease = function(self)
-        local name = "Shift Down, Shift Up, Left Down, Left Up => keypressed: 'left', keyreleased: 'left'"
+        local name = "Shift Key Down, Shift Key Up, Left Key Down, Left Key Up => 'left'"
 
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeyreleased("lshift")
@@ -116,7 +117,7 @@ TESTS = {
     end,
 
     testShiftAndLeftDownThenLeftAndShiftUp = function(self)
-        local name = "Shift Down, Left Down, Left Up, Shift Up => keypressed: 'shiftleft', keyreleased: 'shiftleft'"
+        local name = "Shift Key Down, Left Key Down, Left Key Up, Shift Key Up => 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
@@ -127,7 +128,7 @@ TESTS = {
     end,
     
     testLeftAndShiftDownThenLeftAndShiftUp = function(self)
-        local name = "Left Down, Shift Down, Left Up, Shift Up => keypressed: 'left', keyreleased: 'left'"
+        local name = "Left Key Down, Shift Key Down, Left Key Up, Shift Key Up => 'left'"
        
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("lshift")
@@ -138,7 +139,7 @@ TESTS = {
     end,
     
     testShiftAndADownThenShiftAndAUp = function(self)
-        local name = "Shift Down, 'a' Down, Shift Up, 'a' Up => keypressed: 'A', keyreleased: 'A'"
+        local name = "Shift Key Down, 'a' Key Down, Shift Key Up, 'a' Key Up => 'A'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("a")
