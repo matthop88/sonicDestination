@@ -9,8 +9,7 @@ TESTS = {
     initTests = function(self)
         self.runnableTests = {
             self.testShiftKeyPressedNoEvent,
-            self.testLeftShiftKeyPressed,
-            self.testLeftShiftKeyReleased,
+            self.testLeftShiftKeyPressedAndReleased,
             self.testIndependentLeftAndShiftPressAndRelease,
             self.testShiftAndLeftDownThenLeftAndShiftUp,
             self.testLeftAndShiftDownThenLeftAndShiftUp,
@@ -83,25 +82,16 @@ TESTS = {
         return self:assertTrue(name, lshiftResult == true and rshiftResult == true)
     end,
 
-    testLeftShiftKeyPressed = function(self)
-        local name = "Shift Key Down, Left  Key Down                               => 'shiftleft'"
-        
-        self.modKeyEnabler:handleKeypressed("lshift")
-        local modifiedKey = self.modKeyEnabler:prehandleKeypressed("left")
-
-        return self:assertEquals(name, "shiftleft", modifiedKey)
-    end,
-
-    testLeftShiftKeyReleased = function(self)
+    testLeftShiftKeyPressedAndReleased = function(self)
         local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeypressed("left")
-        self.modKeyEnabler:prehandleKeypressed("left")
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         
-        return self:assertEquals(name, "shiftleft", modifiedKeyReleased)
+        return self:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
 
     testIndependentLeftAndShiftPressAndRelease = function(self)
