@@ -112,7 +112,7 @@ TESTS = {
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
 
-        return self.assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "right")
+        return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
     end,
 
     testShiftAndLeftDownThenLeftAndShiftUp = function(self)
