@@ -46,8 +46,10 @@ TESTS = {
     
         if lshiftResult == true and rshiftResult == true then
             print("PASSED => Test #1: lshift and rshift keypressed were consumed by modKeyEnabler")
+            return true
         else
             print("FAILED => Test #1: lshift and rshift keypressed were NOT consumed by modKeyEnabler")
+            return false
         end
     end,
 
@@ -61,8 +63,10 @@ TESTS = {
 
         if modifiedKey == "shiftleft" then
             print("PASSED => Test #2: shift key + left equals shiftleft")
+            return true
         else
             print("FAILED => Test #2: shift key + left does not equal shiftleft. (Result was " .. modifiedKey .. ")")
+            return false
         end
     end,
 
@@ -82,8 +86,10 @@ TESTS = {
         
         if modifiedKeyReleased == "shiftleft" then
             print("PASSED => Test #3: Release shift key + left equals release shiftleft")
+            return true
         else
             print("FAILED => Test #3: Release shift key + left does NOT equal release shiftleft. (Result was " .. modifiedKeyReleased .. ")")
+            return false
         end
     end,
 
@@ -106,8 +112,10 @@ TESTS = {
 
         if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
             print("PASSED => Test #4: Independently pressing and releasing shift and left results in left pressed & released")
+            return true
         else
             print("FAILED => Test #4: Independently pressing and releasing shift and left does NOT result in left pressed & released")
+            return false
         end
     end,
 
@@ -129,8 +137,10 @@ TESTS = {
         
         if modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft" then
             print("PASSED => Test #5: Shift Down, Left Down, Left Up, Shift Up yields shiftLeft for pressed and released")
+            return true
         else
             print("FAILED => Test #5: Shift Down, Left Down, Left Up, Shift Up does NOT yield shiftLeft for pressed and released")
+            return false
         end
     end,
     
@@ -152,8 +162,10 @@ TESTS = {
         
         if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
             print("PASSED => Test #6: Left Down, Shift Down, Left Up, Shift Up yields left for pressed and released")
+            return true
         else
             print("FAILED => Test #6: Left Down, Shift Down, Left Up, Shift Up does NOT left for pressed and released")
+            return false
         end
     end,
     
@@ -175,8 +187,10 @@ TESTS = {
         
         if modifiedKeyPressed == "A" and modifiedKeyReleased == "A" then
             print("PASSED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up yields 'A' for pressed and released")
+            return true
         else
             print("FAILED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up does NOT yield 'A' for pressed and released")
+            return false
         end
     end,
 }
