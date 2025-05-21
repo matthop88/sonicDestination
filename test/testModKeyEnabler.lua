@@ -7,14 +7,13 @@ TESTS = {
     runnableTests = {},
 
     initTests = function(self)
-        self.runnableTests = {
-            self.testShiftKeyPressedNoEvent,
-            self.testLeftShiftKeyPressedAndReleased,
-            self.testIndependentLeftAndShiftPressAndRelease,
-            self.testShiftAndLeftDownThenLeftAndShiftUp,
-            self.testLeftAndShiftDownThenLeftAndShiftUp,
-            self.testShiftAndADownThenShiftAndAUp,
-        }
+        self.runnableTests = {}
+
+        for testName, test in pairs(self) do
+            if testName:sub(1, 4) == "test" then
+                table.insert(self.runnableTests, test)
+            end
+        end
     end,
     
     runAll = function(self)
