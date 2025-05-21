@@ -1,6 +1,7 @@
 require "test/delayTests"
 
 TESTS = {
+    ASTERISKS     = "**********************************************************************************************************\n",
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
 
     runnableTests = {},
@@ -54,7 +55,7 @@ TESTS = {
             print("PASSED => " .. name)
             return true
         else
-            print("FAILED => " .. name)
+            print("\n" .. self.ASTERISKS .. "FAILED => " .. name .. "\n" .. self.ASTERISKS)
             return false
         end
     end,
@@ -64,9 +65,11 @@ TESTS = {
             print("PASSED => " .. name)
             return true
         else
+            print("\n" .. self.ASTERISKS .. "FAILED => " .. name)
             print("FAILED => " .. name)
             print("  Expected: ", expected)
             print("  Actual:   ", actual)
+            print(self.ASTERISKS)
             return false
         end
     end,
