@@ -3,16 +3,27 @@ require "test/delayTests"
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
 
+    runnableTests = {},
+
+    initTests = function(self)
+        self.runnableTests = {
+            self.testShiftKeyPressedNoEvent,
+            self.testLeftShiftKeyPressed,
+            self.testLeftShiftKeyReleased,
+            self.testIndependentLeftAndShiftPressAndRelease,
+            self.testShiftAndLeftDownThenLeftAndShiftUp,
+            self.testLeftAndShiftDownThenLeftAndShiftUp,
+            self.testShiftAndADownThenShiftAndAUp,
+        }
+    end,
+    
     runAll = function(self)
         print("\nRunning Tests\n-------------")
-    
-        self:runTest(self.testShiftKeyPressedNoEvent)
-        self:runTest(self.testLeftShiftKeyPressed)
-        self:runTest(self.testLeftShiftKeyReleased)
-        self:runTest(self.testIndependentLeftAndShiftPressAndRelease)
-        self:runTest(self.testShiftAndLeftDownThenLeftAndShiftUp)
-        self:runTest(self.testLeftAndShiftDownThenLeftAndShiftUp)
-        self:runTest(self.testShiftAndADownThenShiftAndAUp)
+        self:initTests()
+
+        for _, test in ipairs(self.runnableTests) do
+            self:runTest(test)
+        end
 
         love.event.quit()
     end,
