@@ -92,12 +92,7 @@ TESTS = {
     end,
 
     testLeftShiftKeyReleased = function(self)
-        -- Test #3
-        -- When this sequence of events occurs, results should match:
-        --      keypressed:  shiftKey
-        --      keypressed:  "left"     => keypressed:  "shiftleft"
-        --      keyreleased: shiftKey
-        --      keyreleased: "left"     => keyreleased: "shiftleft"
+        local name = "Shift Down, Left Down, Shift Up, Left Up => keypressed: 'shiftleft', keyreleased: 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeypressed("left")
@@ -105,25 +100,11 @@ TESTS = {
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         
-        if modifiedKeyReleased == "shiftleft" then
-            print("PASSED => Test #3: Release shift key + left equals release shiftleft")
-            return true
-        else
-            print("FAILED => Test #3: Release shift key + left does NOT equal release shiftleft. (Result was " .. modifiedKeyReleased .. ")")
-            return false
-        end
+        return self:assertEquals(name, "shiftleft", modifiedKeyReleased)
     end,
 
     testIndependentLeftAndShiftPressAndRelease = function(self)
-        -- Test #4
-        -- When this sequence of events occurs:
-        --      keypressed:  shiftKey
-        --      keyreleased: shiftKey
-        --      keypressed:  "left"
-        --      keyreleased: "left"
-        --
-        -- The first event is a keypressed:  "left"
-        -- and the second  is a keyreleased: "left"
+        local name = "Shift Down, Shift Up, Left Down, Left Up => keypressed: 'left', keyreleased: 'left'"
 
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeyreleased("lshift")
@@ -131,87 +112,39 @@ TESTS = {
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
 
-        if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
-            print("PASSED => Test #4: Independently pressing and releasing shift and left results in left pressed & released")
-            return true
-        else
-            print("FAILED => Test #4: Independently pressing and releasing shift and left does NOT result in left pressed & released")
-            return false
-        end
+        return self.assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "right")
     end,
 
     testShiftAndLeftDownThenLeftAndShiftUp = function(self)
-        -- Test #5
-        -- When this sequence of events occurs:
-        --      keypressed:  shiftKey
-        --      keypressed:  "left"
-        --      keyreleased: "left"
-        --      keyreleased: shiftKey
-        --
-        -- The first event is a keypressed:  "shiftleft"
-        -- and the second  is a keyreleased: "shiftleft"
+        local name = "Shift Down, Left Down, Left Up, Shift Up => keypressed: 'shiftleft', keyreleased: 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         
-        if modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft" then
-            print("PASSED => Test #5: Shift Down, Left Down, Left Up, Shift Up yields shiftLeft for pressed and released")
-            return true
-        else
-            print("FAILED => Test #5: Shift Down, Left Down, Left Up, Shift Up does NOT yield shiftLeft for pressed and released")
-            return false
-        end
+        return self:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
     
     testLeftAndShiftDownThenLeftAndShiftUp = function(self)
-        -- Test #6
-        -- When this sequence of events occurs:
-        --      keypressed:  "left"
-        --      keypressed:  shiftKey
-        --      keyreleased: "left"
-        --      keyreleased: shiftKey
-        --
-        -- The first event is a keypressed:  "left"
-        -- and the second  is a keyreleased: "left"
-        
+        local name = "Left Down, Shift Down, Left Up, Shift Up => keypressed: 'left', keyreleased: 'left'"
+       
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         
-        if modifiedKeyPressed == "left" and modifiedKeyReleased == "left" then
-            print("PASSED => Test #6: Left Down, Shift Down, Left Up, Shift Up yields left for pressed and released")
-            return true
-        else
-            print("FAILED => Test #6: Left Down, Shift Down, Left Up, Shift Up does NOT left for pressed and released")
-            return false
-        end
+        return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
     end,
     
     testShiftAndADownThenShiftAndAUp = function(self)
-        -- Test #7
-        -- When this sequence of events occurs:
-        --      keypressed:  shiftKey
-        --      keypressed:  "a"
-        --      keyreleased: shiftKey
-        --      keyreleased: "a"
-        --
-        -- The first event is a keypressed:  "A"
-        -- and the second  is a keyreleased: "A"
+        local name = "Shift Down, 'a' Down, Shift Up, 'a' Up => keypressed: 'A', keyreleased: 'A'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("a")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("a")
         
-        if modifiedKeyPressed == "A" and modifiedKeyReleased == "A" then
-            print("PASSED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up yields 'A' for pressed and released")
-            return true
-        else
-            print("FAILED => Test #7: Shift Down, 'a' Down, Shift Up, 'a' Up does NOT yield 'A' for pressed and released")
-            return false
-        end
+        return self:assertTrue(name, modifiedKeyPressed == "A" and modifiedKeyReleased == "A")
     end,
 }
