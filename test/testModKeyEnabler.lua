@@ -49,20 +49,22 @@ TESTS = {
         self.modKeyEnabler:reset()
     end,
 
-    testShiftKeyPressedNoEvent = function(self)
-        -- Test #1
-        -- When shift key is pressed (lshift or rshift), no event is transmitted
-    
-        local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
-        local rshiftResult = self.modKeyEnabler:handleKeypressed("rshift")
-    
-        if lshiftResult == true and rshiftResult == true then
-            print("PASSED => Test #1: lshift and rshift keypressed were consumed by modKeyEnabler")
+    assertTrue = function(self, name, expression)
+        if expression == true then
+            print("PASSED => " .. name)
             return true
         else
-            print("FAILED => Test #1: lshift and rshift keypressed were NOT consumed by modKeyEnabler")
+            print("FAILED => " .. name)
             return false
         end
+    end,
+
+    testShiftKeyPressedNoEvent = function(self)
+        local name = "When Shift Key is pressed, no event is transmitted"
+        local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
+        local rshiftResult = self.modKeyEnabler:handleKeypressed("rshift")
+
+        return self:assertTrue(name, lshiftResult == true and rshiftResult == true)
     end,
 
     testLeftShiftKeyPressed = function(self)
