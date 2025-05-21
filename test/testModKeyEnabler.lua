@@ -59,6 +59,18 @@ TESTS = {
         end
     end,
 
+    assertEquals = function(self, name, expected, actual)
+        if expected == actual then
+            print("PASSED => " .. name)
+            return true
+        else
+            print("FAILED => " .. name)
+            print("  Expected: ", expected)
+            print("  Actual:   ", actual)
+            return false
+        end
+    end,
+
     testShiftKeyPressedNoEvent = function(self)
         local name = "When Shift Key is pressed, no event is transmitted"
         local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
@@ -68,20 +80,12 @@ TESTS = {
     end,
 
     testLeftShiftKeyPressed = function(self)
-        -- Test #2
-        -- When shift key is pressed followed by "left",
-        --      "shiftleft" keypressed event is transmitted
+        local name = "Shift Key pressed followed by Left Key pressed generates 'shiftleft' event"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKey = self.modKeyEnabler:prehandleKeypressed("left")
 
-        if modifiedKey == "shiftleft" then
-            print("PASSED => Test #2: shift key + left equals shiftleft")
-            return true
-        else
-            print("FAILED => Test #2: shift key + left does not equal shiftleft. (Result was " .. modifiedKey .. ")")
-            return false
-        end
+        return self:assertEquals(name, "shiftleft", modifiedKey)
     end,
 
     testLeftShiftKeyReleased = function(self)
