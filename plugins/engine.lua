@@ -117,12 +117,12 @@ return ({
 
     add = function(self, pluginPath, params)
         local plugin = require("plugins/modules/" .. pluginPath)
-        self:addPlugin(plugin, params or { })
+        self:addPlugin(plugin, params)
         return self
     end,
         
     addPlugin = function(self, plugin, params)
-        self:initPlugin(plugin, params)
+        self:initPlugin(plugin, params or { })
         table.insert(self, plugin)
     end,
 
