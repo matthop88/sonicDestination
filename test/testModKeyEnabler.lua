@@ -1,5 +1,22 @@
 TESTING = require "test/testFramework"
 
+keyEventReceiver = ({
+        
+        init = function(self)
+            self.events = {
+                keypressed  = {},
+                keyreleased = {},
+            }
+            return self
+        end,
+
+        keypressed  = function(self, key) self.events.keypressed[key]  = true end,
+        keyreleased = function(self, key) self.events.keyreleased[key] = true end,
+        wasPressed  = function(self, key) return self.events.keypressed[key]  end,
+        wasReleased = function(self, key) return self.events.keyreleased[key] end,
+        
+}):init()
+        
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
     pluginEngine  = nil,
