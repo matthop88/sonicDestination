@@ -6,7 +6,7 @@ return {
 
         self.runnableTests = {}
 
-        for testName, test in ipairs(testsClass) do
+        for testName, test in pairs(testsClass) do
             if testName:sub(1, 4) == "test" then
                 table.insert(self.runnableTests, test)
             end
