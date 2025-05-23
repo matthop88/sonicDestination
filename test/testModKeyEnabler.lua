@@ -10,10 +10,10 @@ keyEventReceiver = ({
             return self
         end,
 
-        keypressed  = function(self, key) self.events.keypressed[key]  = true end,
-        keyreleased = function(self, key) self.events.keyreleased[key] = true end,
-        wasPressed  = function(self, key) return self.events.keypressed[key]  end,
-        wasReleased = function(self, key) return self.events.keyreleased[key] end,
+        handleKeypressed  = function(self, key) self.events.keypressed[key]  = true end,
+        handleKeyreleased = function(self, key) self.events.keyreleased[key] = true end,
+        wasPressed  = function(self, key) return self.events.keypressed[key]        end,
+        wasReleased = function(self, key) return self.events.keyreleased[key]       end,
 
 }):clear()
         
