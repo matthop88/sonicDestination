@@ -62,7 +62,7 @@ TESTS = {
         self.pluginEngine:keyreleased("lshift")
         self.pluginEngine:keyreleased("left")
         
-        return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftLeft")
+        return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftleft")
                                     and keyEventReceiver:wasReleased("shiftleft"))
     end,
 
