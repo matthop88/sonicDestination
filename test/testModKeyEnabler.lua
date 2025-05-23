@@ -2,10 +2,10 @@ TESTING = require "test/testFramework"
 
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
-    pluginManager = nil,
+    pluginEngine  = nil,
 
     beforeAll = function(self)
-        self.pluginManager = require("plugins/engine")
+        self.pluginEngine = require("plugins/engine")
             :add("modKeyEnabler")
     end,
 
@@ -13,6 +13,15 @@ TESTS = {
         self.modKeyEnabler:reset()
     end,
 
+    newTestShiftKeyPressedNoEvent = function(self)
+        local name = "Shift Key Down (Using plugin manager)                        => (no event)"
+
+        self.pluginEngine:keypressed("lshift")
+        self.pluginEngine:keypressed("rshift")
+
+        -- Somehow determine that there is no event propagated downstream
+    end,
+    
     testShiftKeyPressedNoEvent = function(self)
         local name = "Shift Key Down                                               => (no event)"
         
