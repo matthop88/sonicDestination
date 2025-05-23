@@ -3,48 +3,7 @@ require "test/delayTests"
 local TESTING = require "test/testFramework"
 
 TESTS = {
-    ASTERISKS     = "**********************************************************************************************************\n",
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
-
-    runnableTests = {},
-
-    initTests = function(self)
-        self.runnableTests = {}
-
-        for testName, test in pairs(self) do
-            if testName:sub(1, 4) == "test" then
-                table.insert(self.runnableTests, test)
-            end
-        end
-    end,
-    
-    runAll = function(self)
-        print("\nRunning Tests\n-------------")
-        self:initTests()
-
-        local testsSucceeded = 0
-
-        for _, test in ipairs(self.runnableTests) do
-            if self:runTest(test) then
-                testsSucceeded = testsSucceeded + 1
-            end
-        end
-
-        local testsFailed = #self.runnableTests - testsSucceeded
-
-        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. #self.runnableTests)
-        if testsFailed > 0 then
-            print("\n" .. testsFailed .. " tests FAILED.")
-        end
-        print("\n")
-        
-        love.event.quit()
-    end,
-
-    runTest = function(self, testFn)
-        self:before()
-        return testFn(self)
-    end,
 
     before = function(self)
         self.modKeyEnabler:reset()
