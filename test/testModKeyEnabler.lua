@@ -1,5 +1,3 @@
-require "test/delayTests"
-
 local TESTING = require "test/testFramework"
 
 TESTS = {
@@ -135,3 +133,7 @@ TESTS = {
         return TESTING:assertTrue(name, modifiedKeyPressed == "A" and modifiedKeyReleased == "A")
     end,
 }
+
+TESTING:initTests(tests)
+
+require "test/delayTests"
