@@ -134,6 +134,6 @@ TESTS = {
     end,
 }
 
-TESTING:initTests(tests)
+TESTING:initTests(TESTS)
 
 require "test/delayTests"
