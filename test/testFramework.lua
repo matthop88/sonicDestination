@@ -17,6 +17,10 @@ return {
         local testsSucceeded = 0
 
         print("\nRunning Tests\n-------------")
+
+        if self.testsClass.beforeAll then
+            self.testsClass:beforeAll()
+        end
         
         for _, test in ipairs(self.runnableTests) do
             if self:runTest(test) then
