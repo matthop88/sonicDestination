@@ -1,7 +1,7 @@
 TESTING = require "test/testFramework"
 
 keyEventReceiver = ({
-        
+ 
         clear = function(self)
             self.events = {
                 keypressed  = {},
@@ -14,7 +14,7 @@ keyEventReceiver = ({
         keyreleased = function(self, key) self.events.keyreleased[key] = true end,
         wasPressed  = function(self, key) return self.events.keypressed[key]  end,
         wasReleased = function(self, key) return self.events.keyreleased[key] end,
-        
+
 }):clear()
         
 TESTS = {
@@ -41,37 +41,29 @@ TESTS = {
         return TESTING:assertTrue(name, not keyEventReceiver:wasPressed("lshift")
                                     and not keyEventReceiver:wasPressed("rshift"))
     end,
-    
-    oldTestShiftKeyPressedNoEvent = function(self)
-        local name = "Shift Key Down                                               => (no event)"
-        
-        local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
-        local rshiftResult = self.modKeyEnabler:handleKeypressed("rshift")
-
-        return TESTING:assertTrue(name, lshiftResult == true and rshiftResult == true)
-    end,
 
     testShiftKeyReleasedNoEvent = function(self)
-        local name = "Shift Key Up                                                 => (no event)"
+        local name = "Shift Key Up   (Using plugin manager)                        => (no event)"
 
-        self.modKeyEnabler:handleKeypressed("lshift")
-        self.modKeyEnabler:handleKeypressed("rshift")
-        local lshiftReleasedResult = self.modKeyEnabler:handleKeyreleased("lshift")
-        local rshiftReleasedResult = self.modKeyEnabler:handleKeyreleased("rshift")
+        self.pluginEngine:keypressed("lshift")
+        self.pluginEngine:keypressed("rshift")
+        self.pluginEngine:keyreleased("lshift")
+        self.pluginEngine:keyreleased("rshift")
 
-        return TESTING:assertTrue(name, lshiftReleasedResult == true and rshiftReleasedResult == true)
+        return TESTING:assertTrue(name, not keyEventReceiver:wasReleased("lshift")
+                                    and not keyEventReceiver:wasReleased("rshift"))
     end,
-    
+
     testLeftShiftKeyPressedAndReleased = function(self)
         local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
-        
+
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("left")
-        
+
         return TESTING:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
 
@@ -80,7 +72,7 @@ TESTS = {
 
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeyreleased("lshift")
-        
+
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
@@ -96,23 +88,23 @@ TESTS = {
         self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("left")
-        
+
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeyreleased("lshift")
-        
+
         return TESTING:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
     end,
 
     testLeftAndShiftDownThenLeftAndShiftUp = function(self)
         local name = "Left  Key Down, Shift Key Down, Left  Key Up,   Shift Key Up => 'left'"
-       
+
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
-        
+
         return TESTING:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
     end,
 
@@ -131,14 +123,14 @@ TESTS = {
 
     testShiftAndLeftDownThenLeftAndShiftUp = function(self)
         local name = "Shift Key Down, Left  Key Down, Left  Key Up,   Shift Key Up => 'shiftleft'"
-        
+
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
         self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
-        
+
         return TESTING:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
     
@@ -157,14 +149,14 @@ TESTS = {
 
     testShiftAndADownThenShiftAndAUp = function(self)
         local name = "Shift Key Down, 'a'   Key Down, Shift Key Up,   'a'   Key Up => 'A'"
-        
+
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("a")
         self.modKeyEnabler:handleKeypressed("a")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("a")
         self.modKeyEnabler:handleKeyreleased("a")
-        
+
         return TESTING:assertTrue(name, modifiedKeyPressed == "A" and modifiedKeyReleased == "A")
     end,
 }
