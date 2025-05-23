@@ -124,6 +124,7 @@ return ({
     addPlugin = function(self, plugin, params)
         self:initPlugin(plugin, params or { })
         table.insert(self, plugin)
+        return self
     end,
 
     initPlugin = function(self, plugin, params)
