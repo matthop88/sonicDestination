@@ -154,7 +154,7 @@ TESTS = {
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("left")
-        self.modKeyEnabler:keyreleased("lshift")
+        self.modKeyEnabler:handleKeyreleased("lshift")
 
         return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
     end,
@@ -180,7 +180,7 @@ TESTS = {
         self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("left")
-        self.modKeyEnabler:keyreleased("lshift")
+        self.modKeyEnabler:handleKeyreleased("lshift")
 
         return self:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
