@@ -38,7 +38,8 @@ TESTS = {
         self.pluginEngine:keypressed("lshift")
         self.pluginEngine:keypressed("rshift")
 
-        -- Somehow determine that there is no event propagated downstream
+        return TESTING:assertTrue(name, not keyEventReceiver:wasPressed("lshift")
+                                    and not keyEventReceiver:wasPressed("rshift")
     end,
     
     testShiftKeyPressedNoEvent = function(self)
