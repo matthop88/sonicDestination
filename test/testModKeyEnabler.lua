@@ -2,6 +2,12 @@ TESTING = require "test/testFramework"
 
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
+    pluginManager = nil,
+
+    beforeAll = function(self)
+        self.pluginManager = require("plugins/engine")
+            :add("modKeyEnabler")
+    end,
 
     before = function(self)
         self.modKeyEnabler:reset()
