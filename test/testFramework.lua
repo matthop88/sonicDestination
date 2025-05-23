@@ -1,3 +1,5 @@
+local ASTERISKS     = "**********************************************************************************************************\n",
+
 return {
     initTests = function(self, testsClass)
         self.testsClass = testsClass
@@ -47,7 +49,7 @@ return {
             print("PASSED => " .. name)
             return true
         else
-            print("FAILED => " .. name)
+            print("\n" .. ASTERISKS .. "FAILED => " .. name .. "\n" .. ASTERISKS)
             return false
         end
     end,
@@ -57,9 +59,10 @@ return {
             print("PASSED => " .. name)
             return true
         else
-            print("FAILED => " .. name)
+            print("\n" .. ASTERISKS .. "FAILED => " .. name)
             print("  Expected: ", expected)
             print("  Actual: ",   actual)
+            print(ASTERISKS)
             return false
         end
     end,
