@@ -14,8 +14,6 @@ return {
     end,
 
     runAll = function(self)
-        self:initTests()
-
         local testsSucceeded = 0
 
         print("\nRunning Tests\n-------------")
