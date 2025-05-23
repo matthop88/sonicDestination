@@ -33,7 +33,7 @@ TESTS = {
     end,
 
     testShiftKeyPressedNoEvent = function(self)
-        local name = "Shift Key Down (Using plugin manager)                        => (no event)"
+        local name = "Shift Key Down                                              => (no event)"
 
         self.pluginEngine:keypressed("lshift")
         self.pluginEngine:keypressed("rshift")
@@ -43,7 +43,7 @@ TESTS = {
     end,
 
     testShiftKeyReleasedNoEvent = function(self)
-        local name = "Shift Key Up   (Using plugin manager)                        => (no event)"
+        local name = "Shift Key Up                                                => (no event)"
 
         self.pluginEngine:keypressed("lshift")
         self.pluginEngine:keypressed("rshift")
@@ -57,14 +57,13 @@ TESTS = {
     testLeftShiftKeyPressedAndReleased = function(self)
         local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
 
-        self.modKeyEnabler:handleKeypressed("lshift")
-        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
-        self.modKeyEnabler:handleKeypressed("left")
-        self.modKeyEnabler:handleKeyreleased("lshift")
-        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
-        self.modKeyEnabler:handleKeyreleased("left")
-
-        return TESTING:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
+        self.pluginEngine:keypressed("lshift")
+        self.pluginEngine:keypressed("left")
+        self.pluginEngine:keyreleased("lshift")
+        self.pluginEngine:keyreleased("left)
+        
+        return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftLeft")
+                                    and keyEventReceiver:wasReleased("shiftleft"))
     end,
 
     testIndependentShiftAndLeftPressAndRelease = function(self)
