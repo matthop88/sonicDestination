@@ -32,7 +32,7 @@ TESTS = {
         keyEventReceiver:clear()
     end,
 
-    newTestShiftKeyPressedNoEvent = function(self)
+    testShiftKeyPressedNoEvent = function(self)
         local name = "Shift Key Down (Using plugin manager)                        => (no event)"
 
         self.pluginEngine:keypressed("lshift")
@@ -42,7 +42,7 @@ TESTS = {
                                     and not keyEventReceiver:wasPressed("rshift"))
     end,
     
-    testShiftKeyPressedNoEvent = function(self)
+    oldTestShiftKeyPressedNoEvent = function(self)
         local name = "Shift Key Down                                               => (no event)"
         
         local lshiftResult = self.modKeyEnabler:handleKeypressed("lshift")
