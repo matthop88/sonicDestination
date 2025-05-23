@@ -23,7 +23,8 @@ TESTS = {
 
     beforeAll = function(self)
         self.pluginEngine = require("plugins/engine")
-            :add("modKeyEnabler")
+            :addPlugin(self.modKeyEnabler)
+            :addPlugin(keyEventReceiver)
     end,
 
     before = function(self)
