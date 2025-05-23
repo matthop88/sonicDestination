@@ -39,7 +39,7 @@ TESTS = {
         self.pluginEngine:keypressed("rshift")
 
         return TESTING:assertTrue(name, not keyEventReceiver:wasPressed("lshift")
-                                    and not keyEventReceiver:wasPressed("rshift")
+                                    and not keyEventReceiver:wasPressed("rshift"))
     end,
     
     testShiftKeyPressedNoEvent = function(self)
