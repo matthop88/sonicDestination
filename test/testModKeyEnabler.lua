@@ -81,26 +81,80 @@ TESTS = {
         return self:assertTrue(name, lshiftResult == true and rshiftResult == true)
     end,
 
+    testShiftKeyReleasedNoEvent = function(self)
+        local name = "Shift Key Up                                                 => (no event)"
+
+        self.modKeyEnabler:handleKeypressed("lshift")
+        self.modKeyEnabler:handleKeypressed("rshift")
+        local lshiftReleasedResult = self.modKeyEnabler:handleKeyreleased("lshift")
+        local rshiftReleasedResult = self.modKeyEnabler:handleKeyreleased("rshift")
+
+        return self:assertTrue(name, lshiftReleasedResult == true and rshiftReleasedResult == true)
+    end,
+    
     testLeftShiftKeyPressedAndReleased = function(self)
         local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
-        self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("left")
         
         return self:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
 
-    testIndependentLeftAndShiftPressAndRelease = function(self)
-        local name = "Shift Key Down, Shift Key Up,   Left  Key Down, Left  Key Up => 'left'"
+    testIndependentShiftAndLeftPressAndRelease = function(self)
+        local name = "Shift Key Down, Shift Key   Up, Left  Key Down, Left  Key Up => 'left'"
 
         self.modKeyEnabler:handleKeypressed("lshift")
         self.modKeyEnabler:handleKeyreleased("lshift")
         
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("left")
+
+        return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
+    end,
+    
+    testIndependentLeftAndShiftPressAndRelease = function(self)
+        local name = "Left  Key Down, Left  Key   Up, Shift Key Down, Left  Key Up => 'left'"
+
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("left")
+        
+        self.modKeyEnabler:handleKeypressed("lshift")
+        self.modKeyEnabler:handleKeyreleased("lshift")
+        
+        return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
+    end,
+
+    testLeftAndShiftDownThenLeftAndShiftUp = function(self)
+        local name = "Left  Key Down, Shift Key Down, Left  Key Up,   Shift Key Up => 'left'"
+       
+        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("lshift")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("lshift")
+        
+        return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
+    end,
+
+    testLeftAndShiftDownThenShiftAndLeftUp = function(self)
+        local name = "Left  Key Down, Shift Key Down, Shift Key Up,   Left  Key Up => 'left'"
+
+        local modifiedKeyPressed = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("lshift")
+        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("left")
+        self.modKeyEnabler:keyreleased("lshift")
 
         return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
     end,
@@ -110,30 +164,36 @@ TESTS = {
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
+        self.modKeyEnabler:handleKeyreleased("left")
         self.modKeyEnabler:handleKeyreleased("lshift")
         
         return self:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
     
-    testLeftAndShiftDownThenLeftAndShiftUp = function(self)
-        local name = "Left  Key Down, Shift Key Down, Left  Key Up,   Shift Key Up => 'left'"
-       
-        local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("left")
+    testShiftAndLeftDownThenShiftAndLeftUp = function(self)
+        local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
+
         self.modKeyEnabler:handleKeypressed("lshift")
+        local modifiedKeyPressed = self.modKeyEnabler:prehandleKeypressed("left")
+        self.modKeyEnabler:handleKeypressed("left")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
-        self.modKeyEnabler:handleKeyreleased("lshift")
-        
-        return self:assertTrue(name, modifiedKeyPressed == "left" and modifiedKeyReleased == "left")
+        self.modKeyEnabler:handleKeyreleased("left")
+        self.modKeyEnabler:keyreleased("lshift")
+
+        return self:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
     end,
-    
+
     testShiftAndADownThenShiftAndAUp = function(self)
         local name = "Shift Key Down, 'a'   Key Down, Shift Key Up,   'a'   Key Up => 'A'"
         
         self.modKeyEnabler:handleKeypressed("lshift")
         local modifiedKeyPressed  = self.modKeyEnabler:prehandleKeypressed("a")
+        self.modKeyEnabler:handleKeypressed("a")
         self.modKeyEnabler:handleKeyreleased("lshift")
         local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("a")
+        self.modKeyEnabler:handleKeyreleased("a")
         
         return self:assertTrue(name, modifiedKeyPressed == "A" and modifiedKeyReleased == "A")
     end,
