@@ -1,4 +1,4 @@
-local TESTING = require "test/testFramework"
+TESTING = require "test/testFramework"
 
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
