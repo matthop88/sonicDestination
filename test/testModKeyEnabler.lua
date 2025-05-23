@@ -2,7 +2,7 @@ TESTING = require "test/testFramework"
 
 keyEventReceiver = ({
         
-        init = function(self)
+        clear = function(self)
             self.events = {
                 keypressed  = {},
                 keyreleased = {},
@@ -15,7 +15,7 @@ keyEventReceiver = ({
         wasPressed  = function(self, key) return self.events.keypressed[key]  end,
         wasReleased = function(self, key) return self.events.keyreleased[key] end,
         
-}):init()
+}):clear()
         
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
@@ -28,6 +28,7 @@ TESTS = {
 
     before = function(self)
         self.modKeyEnabler:reset()
+        keyEventReceiver:clear()
     end,
 
     newTestShiftKeyPressedNoEvent = function(self)
