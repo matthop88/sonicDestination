@@ -79,8 +79,8 @@ if __DEV_MODE == true then
         :add("zooming",   { imageViewer = graphics })
         :add("tweakAttributes", {
             object          = SONIC,
-            incAttributeKey = ".",
-            decAttributeKey = ",",
+            incAttributeKey = ">",
+            decAttributeKey = "<",
             attributes      = {
                 frameIndex = {
                     name = "Frame Index",
