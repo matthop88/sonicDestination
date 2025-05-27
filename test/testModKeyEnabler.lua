@@ -129,14 +129,13 @@ TESTS = {
     testShiftAndLeftDownThenShiftAndLeftUp = function(self)
         local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
 
-        self.modKeyEnabler:handleKeypressed("lshift")
-        local modifiedKeyPressed = self.modKeyEnabler:prehandleKeypressed("left")
-        self.modKeyEnabler:handleKeypressed("left")
-        local modifiedKeyReleased = self.modKeyEnabler:prehandleKeyreleased("left")
-        self.modKeyEnabler:handleKeyreleased("left")
-        self.modKeyEnabler:handleKeyreleased("lshift")
-
-        return TESTING:assertTrue(name, modifiedKeyPressed == "shiftleft" and modifiedKeyReleased == "shiftleft")
+        self.pluginEngine:keypressed("lshift")
+        self.pluginEngine:keypressed("left")
+        self.pluginEngine:keyreleased("lshift")
+        self.pluginEngine:keyreleased("left")
+        
+        return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftleft")
+                                    and keyEventReceiver:wasReleased("shiftleft"))
     end,
 
     testShiftAndADownThenShiftAndAUp = function(self)
