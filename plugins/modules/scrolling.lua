@@ -23,20 +23,20 @@ return {
     handleKeypressed = function(self, key)
         self.dashing = isDoubleTap(key)
         
-        if     key == self.leftKey  then self:startLeft()
-        elseif key == self.rightKey then self:startRight()
-        elseif key == self.upKey    then self:startUp()
-        elseif key == self.downKey  then self:startDown()
+        if     key == self.leftKey  then self:startLeft()  return true
+        elseif key == self.rightKey then self:startRight() return true
+        elseif key == self.upKey    then self:startUp()    return true
+        elseif key == self.downKey  then self:startDown()  return true
         end
     
         setLastKeypressed(key)
     end,
 
     handleKeyreleased = function(self, key)
-        if     key == self.leftKey  then self:stopLeft()
-        elseif key == self.rightKey then self:stopRight()
-        elseif key == self.upKey    then self:stopUp()
-        elseif key == self.downKey  then self:stopDown()
+        if     key == self.leftKey  then self:stopLeft()   return true
+        elseif key == self.rightKey then self:stopRight()  return true
+        elseif key == self.upKey    then self:stopUp()     return true
+        elseif key == self.downKey  then self:stopDown()   return true
         end
     end,
     
