@@ -69,3 +69,5 @@ return {
         end
     end,
 }
+
+love.window.setTitle("Testing Suite... Setting Up Tests")
