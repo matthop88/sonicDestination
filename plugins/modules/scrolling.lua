@@ -3,33 +3,40 @@ require "plugins/libraries/doubleTap"
 local SCROLL_SPEED   = 400
 
 return {
-    xSpeed  = 0,   
-    ySpeed  = 0,
-    dashing = false,
+    xSpeed   = 0,   
+    ySpeed   = 0,
+    dashing  = false,
+    leftKey  = "left",
+    rightKey = "right",
+    upKey    = "up",
+    downKey  = "down",
 
     init = function(self, params)
         self.imageViewer = params.imageViewer
-
+        self.leftKey     = params.leftKey  or self.leftKey
+        self.rightKey    = params.rightKey or self.rightKey
+        self.upKey       = params.upKey    or self.upKey
+        self.downKey     = params.downKey  or self.downKey
         return self
     end,
     
     handleKeypressed = function(self, key)
         self.dashing = isDoubleTap(key)
         
-        if     key == "left"  then self:startLeft()
-        elseif key == "right" then self:startRight()
-        elseif key == "up"    then self:startUp()
-        elseif key == "down"  then self:startDown()
+        if     key == self.leftKey  then self:startLeft()
+        elseif key == self.rightKey then self:startRight()
+        elseif key == self.upKey    then self:startUp()
+        elseif key == self.downKey  then self:startDown()
         end
     
         setLastKeypressed(key)
     end,
 
     handleKeyreleased = function(self, key)
-        if     key == "left"  then self:stopLeft()
-        elseif key == "right" then self:stopRight()
-        elseif key == "up"    then self:stopUp()
-        elseif key == "down"  then self:stopDown()
+        if     key == self.leftKey  then self:stopLeft()
+        elseif key == self.rightKey then self:stopRight()
+        elseif key == self.upKey    then self:stopUp()
+        elseif key == self.downKey  then self:stopDown()
         end
     end,
     
