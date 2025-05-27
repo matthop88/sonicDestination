@@ -84,6 +84,7 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
+    :add("modKeyEnabler")
     :add("imageViewer", 
     { 
         imagePath         = imgPath,
@@ -102,7 +103,13 @@ PLUGINS = require("plugins/engine")
     })
     :add("readout",     { accessorFnName = "getReadout"     })
     :add("zooming",     { imageViewer    = getImageViewer() })
-    :add("scrolling",   { imageViewer    = getImageViewer() })
+    :add("scrolling",   { 
+        imageViewer = getImageViewer(),
+        leftKey     = "shiftleft",
+        rightKey    = "shiftright",
+        upKey       = "shiftup",
+        downKey     = "shiftdown"
+    })
     
 --[[
 
