@@ -1,5 +1,7 @@
 local ASTERISKS     = "**********************************************************************************************************\n"
 
+love.window.setTitle("Testing Suite... Setting Up Tests")
+
 return {
     initTests = function(self, testsClass)
         self.testsClass = testsClass
@@ -69,5 +71,3 @@ return {
         end
     end,
 }
-
-love.window.setTitle("Testing Suite... Setting Up Tests")
