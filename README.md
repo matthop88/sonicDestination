@@ -51,3 +51,7 @@ To execute the State Machine Viewer application, use the command
 
     love . stateMachine
 
+To execute the Test Suite application, use the command
+
+    love . test
+
