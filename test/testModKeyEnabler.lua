@@ -99,7 +99,7 @@ TESTS = {
         self.pluginEngine:keyreleased("lshift")
         
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("left")
-                                    and keyEventReceiever:wasReleased("left"))
+                                    and keyEventReceiver:wasReleased("left"))
     end,
 
     testLeftAndShiftDownThenShiftAndLeftUp = function(self)
