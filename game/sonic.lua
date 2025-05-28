@@ -28,6 +28,10 @@ return ({
         self.sprite:draw(self:getX(), self:getY())
     end,
 
+    update = function(self, dt)
+        self.sprite:update(dt)
+    end,
+
     keypressed = function(self, key)
         self.currentState.keypressed(self, key)
         if     key == "k" then
