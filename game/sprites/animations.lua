@@ -1,6 +1,8 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
 
 return {
+    frameTimer = 0,
+    
     init = function(self, spriteDataName)
         local spriteData = requireRelative("sprites/data/" .. spriteDataName)
         self.data = spriteData.animations
@@ -44,9 +46,18 @@ return {
                       0, scaleX, scaleY)
     end,
 
+    update = function(self, dt)
+        self.frameTimer = self.frameTimer + dt
+        if self.frameTimer >= 1 then
+            self.frameTimer = 0
+            self:advanceFrame()
+        end
+    end,
+
     setCurrentAnimation = function(self, animationName)
         self.currentAnimation = self.data[animationName]
         self.currentFrameIndex = 1
+        self.frameTimer = 0
     end,
 
     getImage = function(self)
