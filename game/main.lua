@@ -41,6 +41,13 @@ function love.draw()
     SONIC:draw()
 end
 
+-- Function Name: love.update(dt)
+-- Called By:     LOVE2D application, every single frame
+--------------------------------------------------------------
+function love.update(dt)
+    SONIC:update(dt)
+end
+
 -- Function Name: love.keypressed(key)
 -- Called By:     LOVE2D application, whenever key is pressed
 --------------------------------------------------------------
