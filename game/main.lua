@@ -62,18 +62,25 @@ end
 
 if __DEV_MODE == true then
     PLUGINS = require("plugins/engine")
+        :add("modKeyEnabler")
         :add("mouseTracking",
         {
             object  = SONIC,
             originX = 512,
             originY = 514,
         })
-        :add("scrolling", { imageViewer = graphics })
+        :add("scrolling", { 
+            imageViewer = graphics,
+            leftKey     = "shiftleft",
+            rightKey    = "shiftright",
+            upKey       = "shiftup",
+            downKey     = "shiftdown"
+        })
         :add("zooming",   { imageViewer = graphics })
         :add("tweakAttributes", {
             object          = SONIC,
-            incAttributeKey = ".",
-            decAttributeKey = ",",
+            incAttributeKey = ">",
+            decAttributeKey = "<",
             attributes      = {
                 frameIndex = {
                     name = "Frame Index",

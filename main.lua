@@ -24,7 +24,9 @@ function love.load(args)
         require "tools/scribbler/scribblerApp"
     elseif args[1] == "stateMachine" then
         __VIEWER_FILE = args[2]
-		require "tools/stateMachine/viewer"
+        require "tools/stateMachine/viewer"
+    elseif args[1] == "test" then
+        require "test/testModKeyEnabler"
     else
         require "game/main"
     end
