@@ -1,7 +1,8 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
 
 return {
-    frameTimer = 0,
+    frameTimer    = 0,
+    frameTimerMax = 1,
     
     init = function(self, spriteDataName)
         local spriteData = requireRelative("sprites/data/" .. spriteDataName)
@@ -48,7 +49,7 @@ return {
 
     update = function(self, dt)
         self.frameTimer = self.frameTimer + dt
-        if self.frameTimer >= 1 then
+        if self.frameTimer >= self.frameTimerMax then
             self.frameTimer = 0
             self:advanceFrame()
         end
