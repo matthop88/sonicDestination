@@ -8,7 +8,7 @@ return {
         self.image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. spriteData.imageName .. ".png"))
         self.image:setFilter("nearest", "nearest")
 
-        self:initQuads()
+        self:initFrames()
 
         self.currentAnimation  = nil
         self.currentFrameIndex = 1
@@ -18,12 +18,11 @@ return {
         return self
     end,
 
-    initQuads = function(self)
+    initFrames = function(self)
         for _, anim in pairs(self.data) do
-            anim.quads = {}
-            for _, rect in ipairs(anim) do
-                table.insert(anim.quads, love.graphics.newQuad(rect.x, rect.y, rect.w, rect.h,
-                                                               self.image:getWidth(), self.image:getHeight()))
+            for _, frame in ipairs(anim) do
+                frame.quad = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h,
+                                                   self.image:getWidth(), self.image:getHeight())
             end
         end
     end,
@@ -39,7 +38,7 @@ return {
     draw = function(self, x, y, scaleX, scaleY)
         graphics:setColor(COLOR_PURE_WHITE)
         graphics:draw(self:getImage(),
-                      self:getCurrentFrame(),
+                      self:getCurrentQuad(),
                       self:getImageX(x, scaleX),
                       self:getImageY(y, scaleY),
                       0, scaleX, scaleY)
@@ -54,12 +53,16 @@ return {
         return self.image
     end,
 
+    getCurrentQuad = function(self)
+        return self:getCurrentFrame().quad
+    end,
+
     getCurrentFrame = function(self)
-        return self.currentAnimation.quads[self.currentFrameIndex]
+        return self.currentAnimation[self.currentFrameIndex]
     end,
 
     getCurrentOffset = function(self)
-        return self.currentAnimation[self.currentFrameIndex].offset
+        return self:getCurrentFrame().offset
     end,
 
     getImageX = function(self, x, scaleX)
@@ -72,7 +75,7 @@ return {
 
     advanceFrame = function(self)
         self.currentFrameIndex = self.currentFrameIndex + 1
-        if self.currentFrameIndex > #self.currentAnimation.quads then
+        if self.currentFrameIndex > #self.currentAnimation then
             self.currentFrameIndex = 1
         end
     end,
@@ -80,7 +83,7 @@ return {
     regressFrame = function(self)
         self.currentFrameIndex = self.currentFrameIndex - 1
         if self.currentFrameIndex < 1 then
-            self.currentFrameIndex = #self.currentAnimation.quads
+            self.currentFrameIndex = #self.currentAnimation
         end
     end,
 }
