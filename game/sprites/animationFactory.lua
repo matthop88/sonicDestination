@@ -51,10 +51,12 @@ return {
             end,
         
             update = function(self, dt)
-                self.frameTimer = self.frameTimer + dt
-                if self.frameTimer >= self.frameTimerMax then
-                    self.frameTimer = 0
-                    self:advanceFrame()
+                if self:getFPS() ~= 0 then
+                    self.frameTimer = self.frameTimer + dt
+                    if self.frameTimer >= self.frameTimerMax then
+                        self.frameTimer = 0
+                        self:advanceFrame()
+                    end
                 end
             end,
         
@@ -66,7 +68,7 @@ return {
             end,
         
             resetFrameRate = function(self)
-                if self.currentAnimation.fps ~= nil then
+                if self.currentAnimation.fps ~= nil and self.currentAnimation.fps ~= 0 then
                     self.frameTimerMax = 1 / self.currentAnimation.fps
                 else
                     self.frameTimerMax = 1
