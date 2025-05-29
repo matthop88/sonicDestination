@@ -73,21 +73,10 @@ return {
                 end
             end,
         
-            getImage = function(self)
-                return self.image
-            end,
-        
-            getCurrentQuad = function(self)
-                return self:getCurrentFrame().quad
-            end,
-        
-            getCurrentFrame = function(self)
-                return self.currentAnimation[self.currentFrameIndex]
-            end,
-        
-            getCurrentOffset = function(self)
-                return self:getCurrentFrame().offset
-            end,
+            getImage         = function(self) return self.image                                    end,
+            getCurrentQuad   = function(self) return self:getCurrentFrame().quad                   end,
+            getCurrentFrame  = function(self) return self.currentAnimation[self.currentFrameIndex] end,
+            getCurrentOffset = function(self) return self:getCurrentFrame().offset                 end,
         
             getImageX = function(self, x, scaleX)
                 return x - (self:getCurrentOffset().x * scaleX)
@@ -101,13 +90,6 @@ return {
                 self.currentFrameIndex = self.currentFrameIndex + 1
                 if self.currentFrameIndex > #self.currentAnimation then
                     self.currentFrameIndex = 1
-                end
-            end,
-        
-            regressFrame = function(self)
-                self.currentFrameIndex = self.currentFrameIndex - 1
-                if self.currentFrameIndex < 1 then
-                    self.currentFrameIndex = #self.currentAnimation
                 end
             end,
         }):init(spriteDataName)
