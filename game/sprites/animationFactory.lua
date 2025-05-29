@@ -82,20 +82,19 @@ return {
             getFPS           = function(self)      return self.currentAnimation.fps                     end,
             setFPS           = function(self, fps) self.currentAnimation.fps = fps                      end,
         
-            getImageX = function(self, x, scaleX)
-                return x - (self:getCurrentOffset().x * scaleX)
-            end,
+            getImageX = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
+            getImageY = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
         
-            getImageY = function(self, y, scaleY)
-                return y - (self:getCurrentOffset().y * scaleY)
+            getCurrentFrameIndex = function(self)  return self.currentFrameIndex                        end,
+
+            setCurrentFrameIndex = function(self, frameIndex)
+                if     frameIndex < 1                      then frameIndex = #self.currentAnimation
+                elseif frameIndex > #self.currentAnimation then frameIndex = 1                  end
+                    
+                self.currentFrameIndex = frameIndex
             end,
-        
-            advanceFrame = function(self)
-                self.currentFrameIndex = self.currentFrameIndex + 1
-                if self.currentFrameIndex > #self.currentAnimation then
-                    self.currentFrameIndex = 1
-                end
-            end,
+
+            advanceFrame = function(self) self:setCurrentFrameIndex(self.currentFrameIndex + 1)        end,     
         }):init(spriteDataName)
     end,
 }
