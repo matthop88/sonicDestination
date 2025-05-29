@@ -56,9 +56,17 @@ return {
             end
             fn(self, attribute, attName, visibleAttributeIndexCount, param)
         end
-        self:normalizeSelectedAttributeIndex(visibleAttributeIndexCount)
-        end,
+        self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
+    end,
 
+    countVisibleAttributes = function(self)
+        local count = 0
+        for _, attribute in pairs(self.attributes) do
+            if attribute.active then count = count + 1 end
+        end
+        return count
+    end,
+    
     normalizeSelectedAttributeIndex = function(self, numberOfVisibleAttributes)
         if     self.selectedAttributeIndex > numberOfVisibleAttributes then 
             self.selectedAttributeIndex = 1
