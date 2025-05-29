@@ -54,11 +54,17 @@ return {
             if attribute.active then index = index + 1 end
             fn(self, attribute, attName, index, param)
         end
-        
-        if     self.selectedAttributeIndex > index then self.selectedAttributeIndex = 1
-        elseif self.selectedAttributeIndex < 1     then self.selectedAttributeIndex = index end
-    end,
+        self:normalizeSelectedAttributeIndex(index)
+        end,
 
+    normalizeSelectedAttributeIndex = function(self, numberOfVisibleAttributes)
+        if     self.selectedAttributeIndex > numberOfVisibleAttributes then 
+            self.selectedAttributeIndex = 1
+        elseif self.selectedAttributeIndex < 1 then 
+            self.selectedAttributeIndex = numberOfVisibleAttributes 
+        end
+    end,
+    
     drawAttribute = function(self, attribute, attName, index, yPosition)
         if index == self.selectedAttributeIndex then love.graphics.setColor(1, 0, 0)
         else                                         love.graphics.setColor(1, 1, 1) end
