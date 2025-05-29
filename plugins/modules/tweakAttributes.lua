@@ -21,6 +21,8 @@ return {
 --]]
     },
 
+    selectedAttributeIndex = 1,
+
     font             = love.graphics.newFont(32),
 
     init             = function(self, params)
