@@ -111,5 +111,6 @@ return {
 
     toggleAttributeFromKey = function(self, attribute, attName, index, key)
         if key == attribute.toggleShowKey then attribute.active = not attribute.active end
+        self:normalizeSelectedAttributeIndex()
     end,
 }
