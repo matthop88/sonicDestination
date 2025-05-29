@@ -1,7 +1,7 @@
 return {
     create = function(self, name)
         return {
-            animations = requireRelative("sprites/animations"):init(name),
+            animations = requireRelative("sprites/animationFactory"):create(name),
             scale      = { x =  3, y =  3 },
         
             draw = function(self, x, y)
