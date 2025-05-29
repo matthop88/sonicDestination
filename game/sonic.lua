@@ -35,9 +35,9 @@ return ({
     keypressed = function(self, key)
         self.currentState.keypressed(self, key)
         if     key == "up"   then
-            self.sprite.animations:setCurrentAnimation("running")
+            self.sprite:setCurrentAnimation("running")
         elseif key == "down" then
-            self.sprite.animations:setCurrentAnimation("standing")
+            self.sprite:setCurrentAnimation("standing")
         end
     end,
 
