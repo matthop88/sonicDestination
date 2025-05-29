@@ -92,10 +92,10 @@ if __DEV_MODE == true then
                 frameIndex = {
                     name = "Frame Index",
                     incrementFn = function()
-                        SONIC.sprite.animations.currentFrameIndex = SONIC.sprite:getCurrentFrameIndex() + 1
+                        SONIC.sprite:setCurrentFrameIndex(SONIC.sprite:getCurrentFrameIndex() + 1)
                     end,
                     decrementFn = function()
-                        SONIC.sprite.animations.currentFrameIndex = SONIC.sprite:getCurrentFrameIndex() - 1
+                        SONIC.sprite:setCurrentFrameIndex(SONIC.sprite:getCurrentFrameIndex() - 1)
                     end,
                     getValueFn  = function()
                         return SONIC.sprite:getCurrentFrameIndex()
