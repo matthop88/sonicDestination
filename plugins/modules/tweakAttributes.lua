@@ -6,22 +6,24 @@ return {
     selectedDownKey  = "tab",
     
     attributes       = { 
---[[    
-        <nameOfAttribute> = {
-            name = "Optional Readable Attribute Name",
-            incrementFn = function()
-                ... code to increment value of attribute
-            end,
-            decrementFn = function()
-                ... code to decrement value of attribute
-            end,
-            getValueFn() = function()
-                ... code to return value of attribute
-            end,
-            toggleShowKey = "keyToToggleAttribute",
+        data = {
+            --[[    
+                <nameOfAttribute> = {
+                    name = "Optional Readable Attribute Name",
+                    incrementFn = function()
+                        ... code to increment value of attribute
+                    end,
+                    decrementFn = function()
+                        ... code to decrement value of attribute
+                    end,
+                    getValueFn() = function()
+                        ... code to return value of attribute
+                    end,
+                    toggleShowKey = "keyToToggleAttribute",
+                },
+                ...     
+            --]]
         },
-        ...     
---]]
     },
 
     selectedAttributeIndex = 1,
@@ -32,7 +34,7 @@ return {
         self.object          = params.object
         self.incAttributeKey = params.incAttributeKey
         self.decAttributeKey = params.decAttributeKey
-        self.attributes      = params.attributes
+        self.attributes.data = params.attributes
         self.selectedUpKey   = params.selectedUpKey   or self.selectedUpKey
         self.selectedDownKey = params.selectedDownKey or self.selectedDownKey
         self.fontHeight      = self.font:getHeight()
@@ -50,7 +52,7 @@ return {
 
     mapToAttributesWithIndex = function(self, fn, param)
         local index = 1
-        for attName, attribute in pairs(self.attributes) do
+        for attName, attribute in pairs(self.attributes.data) do
             fn(self, attribute, attName, index, param)
             if attribute.active then index = index + 1 end
         end
@@ -91,7 +93,7 @@ return {
    
     countVisibleAttributes = function(self)
         local count = 0
-        for _, attribute in pairs(self.attributes) do
+        for _, attribute in pairs(self.attributes.data) do
             if attribute.active then count = count + 1 end
         end
         return count
