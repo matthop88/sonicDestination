@@ -53,6 +53,9 @@ return {
     end,
 
     drawAttribute = function(self, attribute, attName, index, yPosition)
+        if index == 1 then love.graphics.setColor(1, 0, 0)
+        else               love.graphics.setColor(1, 1, 1)   end
+        
         if attribute.active and attribute.getValueFn then
             love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
             yPosition.value = yPosition.value + self.fontHeight
