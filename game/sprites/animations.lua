@@ -17,7 +17,8 @@ return {
         self.currentFrameIndex = 1
         
         self:setUpDefaultAnimation()
-
+        self:resetFrameRate()
+        
         return self
     end,
 
@@ -59,6 +60,15 @@ return {
         self.currentAnimation = self.data[animationName]
         self.currentFrameIndex = 1
         self.frameTimer = 0
+        self:resetFrameRate()
+    end,
+
+    resetFrameRate = function(self)
+        if self.currentAnimation.fps ~= nil then
+            self.frameTimerMax = 1 / self.currentAnimation.fps
+        else
+            self.frameTimerMax = 1
+        end
     end,
 
     getImage = function(self)
