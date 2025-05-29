@@ -23,9 +23,9 @@ return {
 
     selectedAttributeIndex = 1,
 
-    font             = love.graphics.newFont(32),
+    font = love.graphics.newFont(32),
 
-    init             = function(self, params)
+    init = function(self, params)
         self.object          = params.object
         self.incAttributeKey = params.incAttributeKey
         self.decAttributeKey = params.decAttributeKey
@@ -36,15 +36,15 @@ return {
         return self
     end,
 
-    draw             = function(self)
+    draw = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(self.font)
 
         local yPosition = { value = 600 }
-        self:mapToAttributes(self.drawAttribute, yPosition)
+        self:mapToAttributesWithIndex(self.drawAttribute, yPosition)
     end,
 
-    mapToAttributes = function(self, fn, param)
+    mapToAttributesWithIndex = function(self, fn, param)
         for attName, attribute in pairs(self.attributes) do
             fn(self, attribute, attName, param)
         end
@@ -64,9 +64,9 @@ return {
         end
     end,
 
-    incrementActiveAttributes = function(self)      self:mapToAttributes(self.incrementAttribute)          end,
-    decrementActiveAttributes = function(self)      self:mapToAttributes(self.decrementAttribute)          end,
-    toggleAttributesFromKey   = function(self, key) self:mapToAttributes(self.toggleAttributeFromKey, key) end,
+    incrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.incrementAttribute)          end,
+    decrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.decrementAttribute)          end,
+    toggleAttributesFromKey   = function(self, key) self:mapToAttributesWithIndex(self.toggleAttributeFromKey, key) end,
     
     incrementAttribute = function(self, attribute)
         if attribute.active and attribute.incrementFn then attribute:incrementFn()     end
