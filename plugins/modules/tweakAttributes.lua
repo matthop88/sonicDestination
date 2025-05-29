@@ -71,15 +71,24 @@ return {
         elseif key == self.decAttributeKey then self:decrementActiveAttributes()
         elseif key == self.selectedUpKey   then 
             self.selectedAttributeIndex = self.selectedAttributeIndex - 1
-            self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
+            self:normalizeSelectedAttributeIndex()
         elseif key == self.selectedDownKey then 
             self.selectedAttributeIndex = self.selectedAttributeIndex + 1
-            self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
+            self:normalizeSelectedAttributeIndex()
         else                                    
             self:toggleAttributesFromKey(key)                         
         end
     end,
 
+    normalizeSelectedAttributeIndex = function(self)
+        local visibleAttributeCount = self:countVisibleAttributes()
+        if     self.selectedAttributeIndex > visibleAttributeCount then 
+            self.selectedAttributeIndex = 1
+        elseif self.selectedAttributeIndex < 1 then 
+            self.selectedAttributeIndex = visibleAttributeCount 
+        end
+    end,
+   
     countVisibleAttributes = function(self)
         local count = 0
         for _, attribute in pairs(self.attributes) do
@@ -87,15 +96,7 @@ return {
         end
         return count
     end,
-
-    normalizeSelectedAttributeIndex = function(self, numberOfVisibleAttributes)
-        if     self.selectedAttributeIndex > numberOfVisibleAttributes then 
-            self.selectedAttributeIndex = 1
-        elseif self.selectedAttributeIndex < 1 then 
-            self.selectedAttributeIndex = numberOfVisibleAttributes 
-        end
-    end,
-    
+ 
     incrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.incrementAttribute)          end,
     decrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self:mapToAttributesWithIndex(self.toggleAttributeFromKey, key) end,
