@@ -49,11 +49,10 @@ return {
     end,
 
     mapToAttributesWithIndex = function(self, fn, param)
-        local index = 1
+        local index = 0
         for attName, attribute in pairs(self.attributes) do
+            if attribute.active then index = index + 1 end
             fn(self, attribute, attName, index, param)
-            
-            if attribute.active then index = index + 1    end
         end
         
         if     self.selectedAttributeIndex > index then self.selectedAttributeIndex = 1
