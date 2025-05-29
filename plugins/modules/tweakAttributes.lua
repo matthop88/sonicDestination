@@ -2,8 +2,8 @@ return {
     object           = nil,
     incAttributeKey  = nil,
     decAttributeKey  = nil,
-    selectedUpKey    = "up",
-    selectedDownKey  = "down",
+    selectedUpKey    = "shifttab",
+    selectedDownKey  = "tab",
     
     attributes       = { 
 --[[    
