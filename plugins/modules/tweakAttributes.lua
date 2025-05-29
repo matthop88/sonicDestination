@@ -55,6 +55,9 @@ return {
             
             if attribute.active then index = index + 1    end
         end
+        
+        if     self.selectedAttributeIndex > index then self.selectedAttributeIndex = 1
+        elseif self.selectedAttributeIndex < 1     then self.selectedAttributeIndex = index end
     end,
 
     drawAttribute = function(self, attribute, attName, index, yPosition)
