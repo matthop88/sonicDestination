@@ -74,12 +74,12 @@ return {
     decrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self:mapToAttributesWithIndex(self.toggleAttributeFromKey, key) end,
     
-    incrementAttribute = function(self, attribute)
-        if attribute.active and attribute.incrementFn then attribute:incrementFn()     end
+    incrementAttribute = function(self, attribute, attName, index)
+        if attribute.active and attribute.incrementFn and index == self.selectedAttributeIndex then attribute:incrementFn() end
     end,
 
-    decrementAttribute = function(self, attribute)
-        if attribute.active and attribute.decrementFn then attribute:decrementFn()     end
+    decrementAttribute = function(self, attribute, attName, index)
+        if attribute.active and attribute.decrementFn and index == self.selectedAttributeIndex then attribute:decrementFn() end
     end,
 
     toggleAttributeFromKey = function(self, attribute, attName, index, key)
