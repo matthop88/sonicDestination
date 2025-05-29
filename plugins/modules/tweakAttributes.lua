@@ -2,6 +2,9 @@ return {
     object           = nil,
     incAttributeKey  = nil,
     decAttributeKey  = nil,
+    selectedUpKey    = "up",
+    selectedDownKey  = "down",
+    
     attributes       = { 
 --[[    
         <nameOfAttribute> = {
@@ -30,7 +33,8 @@ return {
         self.incAttributeKey = params.incAttributeKey
         self.decAttributeKey = params.decAttributeKey
         self.attributes      = params.attributes
-
+        self.selectedUpKey   = params.selectedUpKey   or self.selectedUpKey
+        self.selectedDownKey = params.selectedDownKey or self.selectedDownKey
         self.fontHeight      = self.font:getHeight()
 
         return self
