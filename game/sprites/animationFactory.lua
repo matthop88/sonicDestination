@@ -19,7 +19,7 @@ return {
                 self.currentFrameIndex = 1
                 
                 self:setUpDefaultAnimation()
-                self:resetFrameRate()
+                self:updateFrameRate()
                 
                 return self
             end,
@@ -43,11 +43,7 @@ return {
         
             draw = function(self, x, y, scaleX, scaleY)
                 graphics:setColor(COLOR_PURE_WHITE)
-                graphics:draw(self:getImage(),
-                              self:getCurrentQuad(),
-                              self:getImageX(x, scaleX),
-                              self:getImageY(y, scaleY),
-                              0, scaleX, scaleY)
+                graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
             end,
         
             update = function(self, dt)
@@ -64,10 +60,10 @@ return {
                 self.currentAnimation = self.data[animationName]
                 self.currentFrameIndex = 1
                 self.frameTimer = 0
-                self:resetFrameRate()
+                self:updateFrameRate()
             end,
         
-            resetFrameRate = function(self)
+            updateFrameRate = function(self)
                 if self.currentAnimation.fps ~= nil and self.currentAnimation.fps ~= 0 then
                     self.frameTimerMax = 1 / self.currentAnimation.fps
                 else
@@ -80,7 +76,11 @@ return {
             getCurrentFrame  = function(self)      return self.currentAnimation[self.currentFrameIndex] end,
             getCurrentOffset = function(self)      return self:getCurrentFrame().offset                 end,
             getFPS           = function(self)      return self.currentAnimation.fps                     end,
-            setFPS           = function(self, fps) self.currentAnimation.fps = fps                      end,
+                
+            setFPS           = function(self, fps) 
+                self.currentAnimation.fps = fps
+                self:updateFrameRate()
+            end,
         
             getImageX = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
             getImageY = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
