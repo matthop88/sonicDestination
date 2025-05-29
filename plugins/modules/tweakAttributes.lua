@@ -54,7 +54,7 @@ return {
             if attribute.active then 
                 visibleAttributeIndexCount = visibleAttributeIndexCount + 1 
             end
-            fn(self, attribute, attName, index, param)
+            fn(self, attribute, attName, visibleAttributeIndexCount, param)
         end
         self:normalizeSelectedAttributeIndex(visibleAttributeIndexCount)
         end,
