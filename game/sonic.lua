@@ -1,7 +1,7 @@
 return ({
     x = 0, y = 0,
         
-    sprite = requireRelative("sprites/sprite"),
+    sprite = requireRelative("sprites/spriteFactory"):create("sonic1"),
 
     states = {
         standLeft  = { 
