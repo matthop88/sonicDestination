@@ -92,33 +92,33 @@ if __DEV_MODE == true then
                 frameIndex = {
                     name = "Frame Index",
                     getValueFn  = function()
-                        return SONIC.sprite.animations.currentFrameIndex
+                        return SONIC.sprite:getCurrentFrameIndex()
                     end,
                     toggleShowKey = "f",
                 },
                 offsetX = {
                     name = "X Offset",
                     incrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x + 1
+                        SONIC.sprite:getCurrentOffset().x = SONIC.sprite:getCurrentOffset().x + 1
                     end,
                     decrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x - 1
+                        SONIC.sprite:getCurrentOffset().x = SONIC.sprite:getCurrentOffset().x - 1
                     end,
                     getValueFn  = function()
-                        return SONIC.sprite.animations:getCurrentOffset().x
+                        return SONIC.sprite:getCurrentOffset().x
                     end,
                     toggleShowKey = "x"
                 },
                 offsetY = {
                     name = "Y Offset",
                     incrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y + 1
+                        SONIC.sprite:getCurrentOffset().y = SONIC.sprite:getCurrentOffset().y + 1
                     end,
                     decrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y - 1
+                        SONIC.sprite:getCurrentOffset().y = SONIC.sprite:getCurrentOffset().y - 1
                     end,
                     getValueFn  = function()
-                        return SONIC.sprite.animations:getCurrentOffset().y
+                        return SONIC.sprite:getCurrentOffset().y
                     end,
                     toggleShowKey = "y"
                 },
