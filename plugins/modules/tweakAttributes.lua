@@ -54,25 +54,8 @@ return {
             fn(self, attribute, attName, index, param)
             if attribute.active then index = index + 1 end
         end
-        self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
     end,
 
-    countVisibleAttributes = function(self)
-        local count = 0
-        for _, attribute in pairs(self.attributes) do
-            if attribute.active then count = count + 1 end
-        end
-        return count
-    end,
-    
-    normalizeSelectedAttributeIndex = function(self, numberOfVisibleAttributes)
-        if     self.selectedAttributeIndex > numberOfVisibleAttributes then 
-            self.selectedAttributeIndex = 1
-        elseif self.selectedAttributeIndex < 1 then 
-            self.selectedAttributeIndex = numberOfVisibleAttributes 
-        end
-    end,
-    
     drawAttribute = function(self, attribute, attName, index, yPosition)
         if index == self.selectedAttributeIndex then love.graphics.setColor(1, 0, 0)
         else                                         love.graphics.setColor(1, 1, 1) end
@@ -86,11 +69,33 @@ return {
     handleKeypressed = function(self, key)
         if     key == self.incAttributeKey then self:incrementActiveAttributes()
         elseif key == self.decAttributeKey then self:decrementActiveAttributes()
-        elseif key == self.selectedUpKey   then self.selectedAttributeIndex = self.selectedAttributeIndex - 1
-        elseif key == self.selectedDownKey then self.selectedAttributeIndex = self.selectedAttributeIndex + 1
-        else                                    self:toggleAttributesFromKey(key)                         end
+        elseif key == self.selectedUpKey   then 
+            self.selectedAttributeIndex = self.selectedAttributeIndex - 1
+            self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
+        elseif key == self.selectedDownKey then 
+            self.selectedAttributeIndex = self.selectedAttributeIndex + 1
+            self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
+        else                                    
+            self:toggleAttributesFromKey(key)                         
+        end
     end,
 
+    countVisibleAttributes = function(self)
+        local count = 0
+        for _, attribute in pairs(self.attributes) do
+            if attribute.active then count = count + 1 end
+        end
+        return count
+    end,
+
+    normalizeSelectedAttributeIndex = function(self, numberOfVisibleAttributes)
+        if     self.selectedAttributeIndex > numberOfVisibleAttributes then 
+            self.selectedAttributeIndex = 1
+        elseif self.selectedAttributeIndex < 1 then 
+            self.selectedAttributeIndex = numberOfVisibleAttributes 
+        end
+    end,
+    
     incrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.incrementAttribute)          end,
     decrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self:mapToAttributesWithIndex(self.toggleAttributeFromKey, key) end,
