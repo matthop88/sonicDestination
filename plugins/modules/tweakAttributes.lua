@@ -48,13 +48,14 @@ return {
         local index = 1
         for attName, attribute in pairs(self.attributes) do
             fn(self, attribute, attName, index, param)
-            index = index + 1
+            
+            if attribute.active then index = index + 1    end
         end
     end,
 
     drawAttribute = function(self, attribute, attName, index, yPosition)
-        if index == 1 then love.graphics.setColor(1, 0, 0)
-        else               love.graphics.setColor(1, 1, 1)   end
+        if index == self.selectedAttributeIndex then love.graphics.setColor(1, 0, 0)
+        else                                         love.graphics.setColor(1, 1, 1) end
         
         if attribute.active and attribute.getValueFn then
             love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
