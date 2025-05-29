@@ -102,6 +102,19 @@ if __DEV_MODE == true then
                     end,
                     toggleShowKey = "f",
                 },
+                fps = {
+                    name = "FPS",
+                    incrementFn = function()
+                        SONIC.sprite.animations:setFPS(SONIC.sprite.animations:getFPS() + 1)
+                    end,
+                    decrementFn = function()
+                        SONIC.sprite.animations:setFPS(SONIC.sprite.animations:getFPS() - 1)
+                    end,
+                    getValueFn  = function()
+                        return SONIC.sprite.animations:getFPS()
+                    end,
+                    toggleShowKey = "/",
+                },
                 offsetX = {
                     name = "X Offset",
                     incrementFn = function()
