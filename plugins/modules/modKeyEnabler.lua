@@ -41,14 +41,10 @@ return {
         end,
 
         applyShift = function(self, key)
-            if     key == "left"        then return "shiftleft"
-            elseif key == "right"       then return "shiftright"
-            elseif key == "up"          then return "shiftup"
-            elseif key == "down"        then return "shiftdown"
-            elseif key == ","           then return "<"
+            if     key == ","           then return "<"
             elseif key == "."           then return ">"
             elseif string.len(key) == 1 then return string.upper(key)
-            else                             return key           end
+            else                             return "shift" .. key  end
         end,
 
         release = function(self, key)
