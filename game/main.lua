@@ -113,7 +113,7 @@ if __DEV_MODE == true then
                     getValueFn  = function()
                         return SONIC.sprite.animations:getFPS()
                     end,
-                    toggleShowKey = "/",
+                    toggleShowKey = "F",
                 },
                 offsetX = {
                     name = "X Offset",
