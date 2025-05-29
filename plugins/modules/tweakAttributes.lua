@@ -51,7 +51,7 @@ return {
     mapToAttributesWithIndex = function(self, fn, param)
         local index = 1
         for attName, attribute in pairs(self.attributes) do
-            fn(self, attribute, attName, visibleAttributeIndexCount, param)
+            fn(self, attribute, attName, index, param)
             if attribute.active then index = index + 1 end
         end
         self:normalizeSelectedAttributeIndex(self:countVisibleAttributes())
