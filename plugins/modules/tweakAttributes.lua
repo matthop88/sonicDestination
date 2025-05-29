@@ -70,8 +70,9 @@ return {
     handleKeypressed = function(self, key)
         if     key == self.incAttributeKey then self:incrementActiveAttributes()
         elseif key == self.decAttributeKey then self:decrementActiveAttributes()
-        else                                    self:toggleAttributesFromKey(key)
-        end
+        elseif key == self.selectedUpKey   then self.selectedAttributeIndex = self.selectedAttributeIndex - 1
+        elseif key == self.selectedDownKey then self.selectedAttributeIndex = self.selectedAttributeIndex + 1
+        else                                    self:toggleAttributesFromKey(key)                         end
     end,
 
     incrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.incrementAttribute)          end,
