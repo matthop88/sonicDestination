@@ -20,5 +20,6 @@ return {
         graphics:setColor(COLOR_PURE_WHITE)
         graphics:setLineWidth(3)
         graphics:line(0, self:getHeight() * 3/4, self:getWidth(), self:getHeight() * 3/4)
+        graphics:line(self:getWidth() / 2, 0, self:getWidth() / 2, self:getHeight())
     end,
 }
