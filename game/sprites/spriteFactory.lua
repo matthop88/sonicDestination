@@ -16,8 +16,12 @@ return {
             --                  Specialized Functions                   --
             --------------------------------------------------------------
 
-            getCurrentOffset     = function(self) return self.animations:getCurrentOffset() end,
-            getCurrentFrameIndex = function(self) return self.animations.currentFrameIndex  end,
+            getCurrentOffset     = function(self) return self.animations:getCurrentOffset()      end,
+            getCurrentFrameIndex = function(self) return self.animations:getCurrentFrameIndex()  end,
+
+            setCurrentFrameIndex = function(self, frameIndex)
+                self.animations:setCurrentFrameIndex(frameIndex)
+            end,
             
             setCurrentAnimation = function(self, animationName)
                 self.animations:setCurrentAnimation(animationName)
