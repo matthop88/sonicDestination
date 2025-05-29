@@ -45,12 +45,14 @@ return {
     end,
 
     mapToAttributesWithIndex = function(self, fn, param)
+        local index = 1
         for attName, attribute in pairs(self.attributes) do
-            fn(self, attribute, attName, param)
+            fn(self, attribute, attName, index, param)
+            index = index + 1
         end
     end,
 
-    drawAttribute = function(self, attribute, attName, yPosition)
+    drawAttribute = function(self, attribute, attName, index, yPosition)
         if attribute.active and attribute.getValueFn then
             love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
             yPosition.value = yPosition.value + self.fontHeight
@@ -76,7 +78,7 @@ return {
         if attribute.active and attribute.decrementFn then attribute:decrementFn()     end
     end,
 
-    toggleAttributeFromKey = function(self, attribute, attName, key)
+    toggleAttributeFromKey = function(self, attribute, attName, index, key)
         if key == attribute.toggleShowKey then attribute.active = not attribute.active end
     end,
 }
