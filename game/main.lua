@@ -1,14 +1,4 @@
-relativePath    = relativePath    or function(path) return path end
-
-requireRelative = function(path)
-    return require(relativePath(path))
-end
-
---------------------------------------------------------------
---                     Global Variables                     --
---------------------------------------------------------------
-
-graphics = requireRelative("graphics")
+require "requireRelative"
 
 --------------------------------------------------------------
 --                      Local Variables                     --
@@ -17,8 +7,9 @@ graphics = requireRelative("graphics")
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local WORKSPACE          = requireRelative("workspace")
-local SONIC              = requireRelative("sonic")
+local GRAPHICS           = requireRelative("graphics")
+local SONIC              = requireRelative("sonic",     { GRAPHICS = GRAPHICS })
+local WORKSPACE          = requireRelative("workspace", { GRAPHICS = GRAPHICS })
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -41,6 +32,13 @@ function love.draw()
     SONIC:draw()
 end
 
+-- Function Name: love.update(dt)
+-- Called By:     LOVE2D application, every single frame
+--------------------------------------------------------------
+function love.update(dt)
+    SONIC:update(dt)
+end
+
 -- Function Name: love.keypressed(key)
 -- Called By:     LOVE2D application, whenever key is pressed
 --------------------------------------------------------------
@@ -49,74 +47,11 @@ function love.keypressed(key)
 end
 
 --------------------------------------------------------------
---                  Specialized Functions                   --
---------------------------------------------------------------
-
--- ...
--- ...
--- ...
-
---------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    PLUGINS = require("plugins/engine")
-        :add("modKeyEnabler")
-        :add("mouseTracking",
-        {
-            object  = SONIC,
-            originX = 512,
-            originY = 514,
-        })
-        :add("scrolling", { 
-            imageViewer = graphics,
-            leftKey     = "shiftleft",
-            rightKey    = "shiftright",
-            upKey       = "shiftup",
-            downKey     = "shiftdown"
-        })
-        :add("zooming",   { imageViewer = graphics })
-        :add("tweakAttributes", {
-            object          = SONIC,
-            incAttributeKey = ">",
-            decAttributeKey = "<",
-            attributes      = {
-                frameIndex = {
-                    name = "Frame Index",
-                    getValueFn  = function()
-                        return SONIC.sprite.animations.currentFrameIndex
-                    end,
-                    toggleShowKey = "f",
-                },
-                offsetX = {
-                    name = "X Offset",
-                    incrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x + 1
-                    end,
-                    decrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().x = SONIC.sprite.animations:getCurrentOffset().x - 1
-                    end,
-                    getValueFn  = function()
-                        return SONIC.sprite.animations:getCurrentOffset().x
-                    end,
-                    toggleShowKey = "x"
-                },
-                offsetY = {
-                    name = "Y Offset",
-                    incrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y + 1
-                    end,
-                    decrementFn = function()
-                        SONIC.sprite.animations:getCurrentOffset().y = SONIC.sprite.animations:getCurrentOffset().y - 1
-                    end,
-                    getValueFn  = function()
-                        return SONIC.sprite.animations:getCurrentOffset().y
-                    end,
-                    toggleShowKey = "y"
-                },
-            }
-        })
+    require("sonicPlugins"):init({ SONIC = SONIC, GRAPHICS = GRAPHICS })
 end
 
 --[[

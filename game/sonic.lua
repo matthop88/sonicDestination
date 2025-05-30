@@ -1,8 +1,6 @@
-return ({
+return {
     x = 0, y = 0,
         
-    sprite = requireRelative("sprites/sprite"),
-
     states = {
         standLeft  = { 
             onEnter    = function(self) self:faceLeft() end, 
@@ -18,9 +16,9 @@ return ({
         },
     },
             
-    init = function(self)
+    init = function(self, params)
         self.currentState = self.states.standRight
-            
+        self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
         return self
     end,
 
@@ -28,16 +26,16 @@ return ({
         self.sprite:draw(self:getX(), self:getY())
     end,
 
+    update = function(self, dt)
+        self.sprite:update(dt)
+    end,
+
     keypressed = function(self, key)
         self.currentState.keypressed(self, key)
-        if     key == "k" then
-            self.sprite.animations:advanceFrame()
-        elseif key == "j" then
-            self.sprite.animations:regressFrame()
-        elseif key == "up" then
-            self.sprite.animations:setCurrentAnimation("running")
+        if     key == "up"   then
+            self.sprite:setCurrentAnimation("running")
         elseif key == "down" then
-            self.sprite.animations:setCurrentAnimation("standing")
+            self.sprite:setCurrentAnimation("standing")
         end
     end,
 
@@ -61,4 +59,4 @@ return ({
         self.currentState.onEnter(self)
     end,
 
-}):init()
+}
