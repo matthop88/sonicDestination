@@ -1,75 +1,87 @@
-return require("plugins/engine")
-    :add("modKeyEnabler")
-    :add("mouseTracking",
-    {
-        object  = SONIC,
-        originX = 512,
-        originY = 514,
-    })
-    :add("scrolling", { 
-        imageViewer = graphics,
-        leftKey     = "shiftleft",
-        rightKey    = "shiftright",
-        upKey       = "shiftup",
-        downKey     = "shiftdown"
-    })
-    :add("zooming",   { imageViewer = graphics })
-    :add("tweakAttributes", {
-        object          = SONIC,
-        incAttributeKey = ">",
-        decAttributeKey = "<",
-        attributes      = {
-            frameIndex = {
-                name = "Frame Index",
-                incrementFn = function()
-                    SONIC.sprite:setCurrentFrameIndex(SONIC.sprite:getCurrentFrameIndex() + 1)
-                end,
-                decrementFn = function()
-                    SONIC.sprite:setCurrentFrameIndex(SONIC.sprite:getCurrentFrameIndex() - 1)
-                end,
-                getValueFn  = function()
-                    return SONIC.sprite:getCurrentFrameIndex()
-                end,
-                toggleShowKey = "f",
-            },
-            fps = {
-                name = "FPS",
-                incrementFn = function()
-                    SONIC.sprite.animations:setFPS(SONIC.sprite.animations:getFPS() + 1)
-                end,
-                decrementFn = function()
-                    SONIC.sprite.animations:setFPS(SONIC.sprite.animations:getFPS() - 1)
-                end,
-                getValueFn  = function()
-                    return SONIC.sprite.animations:getFPS()
-                end,
-                toggleShowKey = "F",
-            },
-            offsetX = {
-                name = "X Offset",
-                incrementFn = function()
-                    SONIC.sprite:getCurrentOffset().x = SONIC.sprite:getCurrentOffset().x + 1
-                end,
-                decrementFn = function()
-                    SONIC.sprite:getCurrentOffset().x = SONIC.sprite:getCurrentOffset().x - 1
-                end,
-                getValueFn  = function()
-                    return SONIC.sprite:getCurrentOffset().x
-                end,
-                toggleShowKey = "x"
-            },
-            offsetY = {
-                name = "Y Offset",
-                incrementFn = function()
-                    SONIC.sprite:getCurrentOffset().y = SONIC.sprite:getCurrentOffset().y + 1
-                end,
-                decrementFn = function()
-                    SONIC.sprite:getCurrentOffset().y = SONIC.sprite:getCurrentOffset().y - 1
-                end,
-                getValueFn  = function()
-                    return SONIC.sprite:getCurrentOffset().y
-                end,
-                toggleShowKey = "y"
-            },
-        }
-    })
+return {
+    init = function(self, params)
+        self.SONIC    = params.SONIC
+        self.GRAPHICS = params.GRAPHICS
+
+        return self:initPlugins()
+    end,
+
+    initPlugins = function(self)
+        return require("plugins/engine")
+            :add("modKeyEnabler")
+            :add("mouseTracking",
+            {
+                object  = self.SONIC,
+                originX = 512,
+                originY = 514,
+            })
+            :add("scrolling", { 
+                imageViewer = self.GRAPHICS,
+                leftKey     = "shiftleft",
+                rightKey    = "shiftright",
+                upKey       = "shiftup",
+                downKey     = "shiftdown"
+            })
+            :add("zooming",   { imageViewer = self.GRAPHICS })
+            :add("tweakAttributes", {
+                object          = self.SONIC,
+                incAttributeKey = ">",
+                decAttributeKey = "<",
+                attributes      = {
+                    frameIndex = {
+                        name = "Frame Index",
+                        incrementFn = function()
+                            self.SONIC.sprite:setCurrentFrameIndex(self.SONIC.sprite:getCurrentFrameIndex() + 1)
+                        end,
+                        decrementFn = function()
+                            self.SONIC.sprite:setCurrentFrameIndex(self.SONIC.sprite:getCurrentFrameIndex() - 1)
+                        end,
+                        getValueFn  = function()
+                            return self.SONIC.sprite:getCurrentFrameIndex()
+                        end,
+                        toggleShowKey = "f",
+                    },
+                    fps = {
+                        name = "FPS",
+                        incrementFn = function()
+                            self.SONIC.sprite.animations:setFPS(self.SONIC.sprite.animations:getFPS() + 1)
+                        end,
+                        decrementFn = function()
+                            self.SONIC.sprite.animations:setFPS(self.SONIC.sprite.animations:getFPS() - 1)
+                        end,
+                        getValueFn  = function()
+                            return self.SONIC.sprite.animations:getFPS()
+                        end,
+                        toggleShowKey = "F",
+                    },
+                    offsetX = {
+                        name = "X Offset",
+                        incrementFn = function()
+                            self.SONIC.sprite:getCurrentOffset().x = self.SONIC.sprite:getCurrentOffset().x + 1
+                        end,
+                        decrementFn = function()
+                            self.SONIC.sprite:getCurrentOffset().x = self.SONIC.sprite:getCurrentOffset().x - 1
+                        end,
+                        getValueFn  = function()
+                            return self.SONIC.sprite:getCurrentOffset().x
+                        end,
+                        toggleShowKey = "x"
+                    },
+                    offsetY = {
+                        name = "Y Offset",
+                        incrementFn = function()
+                            self.SONIC.sprite:getCurrentOffset().y = self.SONIC.sprite:getCurrentOffset().y + 1
+                        end,
+                        decrementFn = function()
+                            self.SONIC.sprite:getCurrentOffset().y = self.SONIC.sprite:getCurrentOffset().y - 1
+                        end,
+                        getValueFn  = function()
+                            return self.SONIC.sprite:getCurrentOffset().y
+                        end,
+                        toggleShowKey = "y"
+                    },
+                }
+            })
+    end,
+}
+
