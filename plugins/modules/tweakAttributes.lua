@@ -47,12 +47,12 @@ return {
             self:normalizeSelectedIndex()
         end,
 
-        incrementAttribute = function(self, attribute, attName, isSelected)
-            if attribute.active and attribute.incrementFn and isSelected then attribute:incrementFn() end
+        incrementAttribute = function(self, attribute, attName, params)
+            if attribute.active and attribute.incrementFn and params.isSelected then attribute:incrementFn() end
         end,
 
-        decrementAttribute = function(self, attribute, attName, isSelected)
-            if attribute.active and attribute.decrementFn and isSelected then attribute:decrementFn() end
+        decrementAttribute = function(self, attribute, attName, params)
+            if attribute.active and attribute.decrementFn and params.isSelected then attribute:decrementFn() end
         end,
 
         getVisibleCount = function(self)
@@ -67,15 +67,17 @@ return {
             local index = 1
             for attName, attribute in pairs(self.data) do
                 if attribute.active then 
-                    callback.fn(callback.caller or self, attribute, attName, (index == self.selectedIndex), callback.params)
+                    callback.params.isSelected = (index == self.selectedIndex)
+                    callback.fn(callback.caller or self, attribute, attName, callback.params)
                     index = index + 1
                 end
             end
         end,
 
         mapAll = function(self, callback)
+            callback.params.isSelected = true
             for attName, attribute in pairs(self.data) do
-                callback.fn(callback.caller or self, attribute, attName, true, callback.params)
+                callback.fn(callback.caller or self, attribute, attName, callback.params)
             end
         end,
 
@@ -84,12 +86,12 @@ return {
 
         toggleByKey = function(self, key) self:mapAll( self:createCallback(self.toggleAttributeFromKey, { key = key })) end,
 
-        toggleAttributeFromKey = function(self, attribute, attName, isSelected, params)
+        toggleAttributeFromKey = function(self, attribute, attName, params)
             if params.key == attribute.toggleShowKey then attribute.active = not attribute.active end
             self:normalizeSelectedIndex()
         end,
 
-        createCallback = function(self, fn, params) return { caller = self, fn = fn, params = params } end,   
+        createCallback = function(self, fn, params) return { caller = self, fn = fn, params = params or { } } end,   
     },
 
     font = love.graphics.newFont(32),
@@ -112,11 +114,11 @@ return {
         self.attributes:mapActive(self:createCallback(self.drawAttribute, { yPosition = 600 }))
     end,
 
-    createCallback = function(self, fn, params) return { caller = self, fn = fn, params = params } end,
+    createCallback = function(self, fn, params) return { caller = self, fn = fn, params = params or { } } end,
 
-    drawAttribute = function(self, attribute, attName, isSelected, params)
-        if isSelected then love.graphics.setColor(1, 0, 0)
-        else               love.graphics.setColor(1, 1, 1) end
+    drawAttribute = function(self, attribute, attName, params)
+        if params.isSelected then love.graphics.setColor(1, 0, 0)
+        else                      love.graphics.setColor(1, 1, 1) end
         
         if attribute.getValueFn then
             love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, params.yPosition, 1024, "center")
