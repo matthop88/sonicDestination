@@ -51,7 +51,7 @@ end
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    requireRelative("plugins", { SONIC = SONIC, GRAPHICS = GRAPHICS })
+    require("sonicPlugins"):init({ SONIC = SONIC, GRAPHICS = GRAPHICS })
 end
 
 --[[
