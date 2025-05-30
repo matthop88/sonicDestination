@@ -7,8 +7,8 @@ require "requireRelative"
 local WINDOW_WIDTH       = 1024
 local WINDOW_HEIGHT      =  768
 
-local SONIC              = requireRelative("sonic")
 local GRAPHICS           = requireRelative("graphics")
+local SONIC              = requireRelative("sonic",     { GRAPHICS = GRAPHICS })
 local WORKSPACE          = requireRelative("workspace", { GRAPHICS = GRAPHICS })
 
 --------------------------------------------------------------
