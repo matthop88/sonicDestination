@@ -27,19 +27,6 @@ return {
             --]]
         },
 
-        mapToSelected = function(self, caller, fn, param)
-            local index = 1
-            for attName, attribute in pairs(self.data) do
-                if attribute.active then
-                    if index == self.selectedIndex then
-                        fn(caller, attribute, attName, param)
-                        return
-                    end
-                    index = index + 1
-                end
-            end
-        end,
-        
         normalizeSelectedIndex = function(self)
             local visibleCount = self:getVisibleCount()
             if     self.selectedIndex > visibleCount then self.selectedIndex = 1
@@ -58,6 +45,30 @@ return {
         decrementSelectedIndex = function(self)
             self.selectedIndex = self.selectedIndex - 1
             self:normalizeSelectedIndex()
+        end,
+
+        incrementAttribute = function(self, attribute)
+            if attribute.active and attribute.incrementFn then attribute:incrementFn() end
+        end,
+
+        decrementAttribute = function(self, attribute)
+            if attribute.active and attribute.decrementFn then attribute:decrementFn() end
+        end,
+
+        incrementSelectedValue = function(self) self:mapToSelected(self.incrementAttribute) end,
+        decrementSelectedValue = function(self) self:mapToSelected(self.decrementAttribute) end,
+
+        mapToSelected = function(self, fn, param)
+            local index = 1
+            for attName, attribute in pairs(self.data) do
+                if attribute.active then
+                    if index == self.selectedIndex then
+                        fn(self, attribute, attName, param)
+                        return
+                    end
+                    index = index + 1
+                end
+            end
         end,
         
         getVisibleCount = function(self)
@@ -110,25 +121,15 @@ return {
     end,
     
     handleKeypressed = function(self, key)
-        if     key == self.incAttributeKey then self:incrementActiveAttributes()
-        elseif key == self.decAttributeKey then self:decrementActiveAttributes()
+        if     key == self.incAttributeKey then self.attributes:incrementSelectedValue()
+        elseif key == self.decAttributeKey then self.attributes:decrementSelectedValue()
         elseif key == self.selectedUpKey   then self.attributes:decrementSelectedIndex()
         elseif key == self.selectedDownKey then self.attributes:incrementSelectedIndex()
         else                                    self:toggleAttributesFromKey(key)    end
     end,
 
-    incrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.incrementAttribute)          end,
-    decrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self.attributes:mapWithIndex(self, self.toggleAttributeFromKey, key) end,
     
-    incrementAttribute = function(self, attribute, attName, index)
-        if attribute.active and attribute.incrementFn and index == self.attributes:getSelectedIndex() then attribute:incrementFn() end
-    end,
-
-    decrementAttribute = function(self, attribute, attName, index)
-        if attribute.active and attribute.decrementFn and index == self.attributes:getSelectedIndex() then attribute:decrementFn() end
-    end,
-
     toggleAttributeFromKey = function(self, attribute, attName, index, key)
         if key == attribute.toggleShowKey then attribute.active = not attribute.active end
         self.attributes:normalizeSelectedIndex()
