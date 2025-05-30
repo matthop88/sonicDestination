@@ -1,12 +1,6 @@
 require "requireRelative"
 
 --------------------------------------------------------------
---                     Global Variables                     --
---------------------------------------------------------------
-
-graphics = requireRelative("graphics")
-
---------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
 
@@ -15,6 +9,7 @@ local WINDOW_HEIGHT      =  768
 
 local WORKSPACE          = requireRelative("workspace")
 local SONIC              = requireRelative("sonic")
+local GRAPHICS           = requireRelative("graphics")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -64,7 +59,7 @@ end
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    requireRelative("plugins", { SONIC = SONIC, GRAPHICS = graphics })
+    requireRelative("plugins", { SONIC = SONIC, GRAPHICS = GRAPHICS })
 end
 
 --[[
