@@ -131,6 +131,6 @@ return {
         elseif key == self.decAttributeKey then self.attributes:decrementSelectedValue()
         elseif key == self.selectedUpKey   then self.attributes:decrementSelectedIndex()
         elseif key == self.selectedDownKey then self.attributes:incrementSelectedIndex()
-        else                                    self:toggleAttributesFromKey(key)    end
+        else                                    self.attributes:toggleByKey(key)     end
     end,
 }
