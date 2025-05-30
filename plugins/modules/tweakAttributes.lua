@@ -47,30 +47,14 @@ return {
             self:normalizeSelectedIndex()
         end,
 
-        incrementAttribute = function(self, attribute)
-            if attribute.active and attribute.incrementFn then attribute:incrementFn() end
+        incrementAttribute = function(self, attribute, attName, isSelected)
+            if attribute.active and attribute.incrementFn and isSelected then attribute:incrementFn() end
         end,
 
-        decrementAttribute = function(self, attribute)
-            if attribute.active and attribute.decrementFn then attribute:decrementFn() end
+        decrementAttribute = function(self, attribute, attName, isSelected)
+            if attribute.active and attribute.decrementFn and isSelected then attribute:decrementFn() end
         end,
 
-        incrementSelectedValue = function(self) self:mapToSelected(self.incrementAttribute) end,
-        decrementSelectedValue = function(self) self:mapToSelected(self.decrementAttribute) end,
-
-        mapToSelected = function(self, fn, param)
-            local index = 1
-            for attName, attribute in pairs(self.data) do
-                if attribute.active then
-                    if index == self.selectedIndex then
-                        fn(self, attribute, attName, param)
-                        return
-                    end
-                    index = index + 1
-                end
-            end
-        end,
-        
         getVisibleCount = function(self)
             local count = 0
             for _, attribute in pairs(self.data) do
@@ -79,11 +63,11 @@ return {
             return count
         end,
 
-        mapActive = function(self, caller, fn, param)
+        mapActive = function(self, callback, param)
             local index = 1
             for attName, attribute in pairs(self.data) do
                 if attribute.active then 
-                    fn(caller, attribute, attName, (index == self.selectedIndex), param)
+                    callback.fn(callback.caller or self, attribute, attName, (index == self.selectedIndex), param)
                     index = index + 1
                 end
             end
@@ -91,16 +75,21 @@ return {
 
         mapAll = function(self, fn, param)
             for attName, attribute in pairs(self.data) do
-                fn(self, attribute, attName, true, param)
+                callback.fn(callback.caller or self, attribute, attName, true, param)
             end
         end,
 
-        toggleByKey = function(self, key) self:mapAll(self.toggleAttributeFromKey, key) end,
+        incrementSelectedValue = function(self) self:mapActive(self:createCallback(self.incrementAttribute)) end,
+        decrementSelectedValue = function(self) self:mapActive(self:createCallback(self.decrementAttribute)) end,
+
+        toggleByKey = function(self, key) self:mapAll( self:createCallback(self.toggleAttributeFromKey), key) end,
 
         toggleAttributeFromKey = function(self, attribute, attName, isSelected, key)
             if key == attribute.toggleShowKey then attribute.active = not attribute.active end
             self:normalizeSelectedIndex()
         end,
+
+        createCallback = function(self, fn) return { caller = self, fn = fn } end,   
     },
 
     font = love.graphics.newFont(32),
@@ -122,8 +111,10 @@ return {
         love.graphics.setFont(self.font)
 
         local yPosition = { value = 600 }
-        self.attributes:mapActive(self, self.drawAttribute, yPosition)
+        self.attributes:mapActive(self:createCallback(self.drawAttribute), yPosition)
     end,
+
+    createCallback = function(self, fn) return { caller = self, fn = fn } end,
 
     drawAttribute = function(self, attribute, attName, isSelected, yPosition)
         if isSelected then love.graphics.setColor(1, 0, 0)
