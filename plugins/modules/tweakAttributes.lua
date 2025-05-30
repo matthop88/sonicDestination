@@ -63,33 +63,33 @@ return {
             return count
         end,
 
-        mapActive = function(self, callback, param)
+        mapActive = function(self, callback)
             local index = 1
             for attName, attribute in pairs(self.data) do
                 if attribute.active then 
-                    callback.fn(callback.caller or self, attribute, attName, (index == self.selectedIndex), param)
+                    callback.fn(callback.caller or self, attribute, attName, (index == self.selectedIndex), callback.params)
                     index = index + 1
                 end
             end
         end,
 
-        mapAll = function(self, callback, param)
+        mapAll = function(self, callback)
             for attName, attribute in pairs(self.data) do
-                callback.fn(callback.caller or self, attribute, attName, true, param)
+                callback.fn(callback.caller or self, attribute, attName, true, callback.params)
             end
         end,
 
         incrementSelectedValue = function(self) self:mapActive(self:createCallback(self.incrementAttribute)) end,
         decrementSelectedValue = function(self) self:mapActive(self:createCallback(self.decrementAttribute)) end,
 
-        toggleByKey = function(self, key) self:mapAll( self:createCallback(self.toggleAttributeFromKey), key) end,
+        toggleByKey = function(self, key) self:mapAll( self:createCallback(self.toggleAttributeFromKey, { key = key })) end,
 
-        toggleAttributeFromKey = function(self, attribute, attName, isSelected, key)
-            if key == attribute.toggleShowKey then attribute.active = not attribute.active end
+        toggleAttributeFromKey = function(self, attribute, attName, isSelected, params)
+            if params.key == attribute.toggleShowKey then attribute.active = not attribute.active end
             self:normalizeSelectedIndex()
         end,
 
-        createCallback = function(self, fn) return { caller = self, fn = fn } end,   
+        createCallback = function(self, fn, params) return { caller = self, fn = fn, params = params } end,   
     },
 
     font = love.graphics.newFont(32),
@@ -109,20 +109,18 @@ return {
     draw = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(self.font)
-
-        local yPosition = { value = 600 }
-        self.attributes:mapActive(self:createCallback(self.drawAttribute), yPosition)
+        self.attributes:mapActive(self:createCallback(self.drawAttribute, { yPosition = 600 }))
     end,
 
-    createCallback = function(self, fn) return { caller = self, fn = fn } end,
+    createCallback = function(self, fn, params) return { caller = self, fn = fn, params = params } end,
 
-    drawAttribute = function(self, attribute, attName, isSelected, yPosition)
+    drawAttribute = function(self, attribute, attName, isSelected, params)
         if isSelected then love.graphics.setColor(1, 0, 0)
         else               love.graphics.setColor(1, 1, 1) end
         
         if attribute.getValueFn then
-            love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
-            yPosition.value = yPosition.value + self.fontHeight
+            love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, params.yPosition, 1024, "center")
+            params.yPosition = params.yPosition + self.fontHeight
         end
     end,
     
