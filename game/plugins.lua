@@ -24,7 +24,6 @@ return {
             })
             :add("zooming",   { imageViewer = self.GRAPHICS })
             :add("tweakAttributes", {
-                object          = self.SONIC,
                 incAttributeKey = ">",
                 decAttributeKey = "<",
                 attributes      = {
