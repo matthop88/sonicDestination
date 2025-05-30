@@ -5,7 +5,9 @@ return {
     selectedUpKey    = "shifttab",
     selectedDownKey  = "tab",
     
-    attributes       = { 
+    attributes       = {
+        selectedIndex = 1,
+        
         data = {
             --[[    
                 <nameOfAttribute> = {
@@ -24,6 +26,12 @@ return {
                 ...     
             --]]
         },
+
+        normalizeSelectedIndex = function(self)
+            local visibleCount = self:getVisibleCount()
+            if     self.selectedIndex > visibleCount then self.selectedIndex = 1
+            elseif self.selectedIndex < 1            then self.selectedIndex = visibleCount end
+        end,
         
         getVisibleCount = function(self)
             local count = 0
@@ -81,24 +89,15 @@ return {
         elseif key == self.decAttributeKey then self:decrementActiveAttributes()
         elseif key == self.selectedUpKey   then 
             self.selectedAttributeIndex = self.selectedAttributeIndex - 1
-            self:normalizeSelectedAttributeIndex()
+            self.attributes:normalizeSelectedIndex()
         elseif key == self.selectedDownKey then 
             self.selectedAttributeIndex = self.selectedAttributeIndex + 1
-            self:normalizeSelectedAttributeIndex()
+            self.attributes:normalizeSelectedIndex()
         else                                    
             self:toggleAttributesFromKey(key)                         
         end
     end,
 
-    normalizeSelectedAttributeIndex = function(self)
-        local visibleAttributeCount = self.attributes:getVisibleCount()
-        if     self.selectedAttributeIndex > visibleAttributeCount then 
-            self.selectedAttributeIndex = 1
-        elseif self.selectedAttributeIndex < 1 then 
-            self.selectedAttributeIndex = visibleAttributeCount 
-        end
-    end,
-   
     incrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.incrementAttribute)          end,
     decrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self.attributes:mapWithIndex(self, self.toggleAttributeFromKey, key) end,
@@ -113,6 +112,6 @@ return {
 
     toggleAttributeFromKey = function(self, attribute, attName, index, key)
         if key == attribute.toggleShowKey then attribute.active = not attribute.active end
-        self:normalizeSelectedAttributeIndex()
+        self.attributes:normalizeSelectedIndex()
     end,
 }
