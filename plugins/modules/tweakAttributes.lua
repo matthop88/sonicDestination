@@ -73,7 +73,7 @@ return {
             end
         end,
 
-        mapAll = function(self, fn, param)
+        mapAll = function(self, callback, param)
             for attName, attribute in pairs(self.data) do
                 callback.fn(callback.caller or self, attribute, attName, true, param)
             end
