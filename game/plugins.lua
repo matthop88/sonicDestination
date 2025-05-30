@@ -5,11 +5,11 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         
-        return self:initPlugins()
+        self:initPlugins()
     end,
 
     initPlugins = function(self)
-        return require("plugins/engine")
+        require("plugins/engine")
             :add("modKeyEnabler")
             :add("mouseTracking",
             {
