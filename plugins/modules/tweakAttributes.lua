@@ -1,5 +1,4 @@
 return {
-    object           = nil,
     incAttributeKey  = nil,
     decAttributeKey  = nil,
     selectedUpKey    = "shifttab",
@@ -90,7 +89,6 @@ return {
     font = love.graphics.newFont(32),
 
     init = function(self, params)
-        self.object          = params.object
         self.incAttributeKey = params.incAttributeKey
         self.decAttributeKey = params.decAttributeKey
         self.attributes.data = params.attributes
