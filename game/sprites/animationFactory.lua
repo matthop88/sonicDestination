@@ -21,12 +21,7 @@ return {
                 self.image:setFilter("nearest", "nearest")
         
                 self:initFrames()
-        
-                self.currentAnimation  = nil
-                self.currentFrameIndex = 1
-                
-                self:setUpDefaultAnimation()
-                self:updateFrameRate()
+                self:initAnimations()
                 
                 return self
             end,
@@ -38,6 +33,14 @@ return {
                                                            self.image:getWidth(), self.image:getHeight())
                     end
                 end
+            end,
+
+            initAnimations = function(self)
+                self.currentAnimation  = nil
+                self.currentFrameIndex = 1
+                
+                self:setUpDefaultAnimation()
+                self:updateFrameRate()
             end,
         
             setUpDefaultAnimation = function(self)
