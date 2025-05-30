@@ -1,8 +1,6 @@
 return ({
     x = 0, y = 0,
         
-    sprite = requireRelative("sprites/spriteFactory"):create("sonic1"),
-
     states = {
         standLeft  = { 
             onEnter    = function(self) self:faceLeft() end, 
@@ -18,9 +16,9 @@ return ({
         },
     },
             
-    init = function(self)
+    init = function(self, params)
         self.currentState = self.states.standRight
-            
+        self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1"),
         return self
     end,
 
