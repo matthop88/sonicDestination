@@ -14,10 +14,6 @@ return {
         return self
     end,
 
-    draw   = function(self)
-        self.object:draw()
-    end,
-
     update = function(self, dt)
         if self.isFollowingMouse then
             self.object:moveTo(love.mouse.getPosition())
