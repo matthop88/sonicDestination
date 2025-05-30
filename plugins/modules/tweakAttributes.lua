@@ -79,11 +79,19 @@ return {
             return count
         end,
 
-        mapWithIndex = function(self, caller, fn, param)
+        mapActive = function(self, caller, fn, param)
             local index = 1
             for attName, attribute in pairs(self.data) do
-                fn(caller, attribute, attName, index, param)
-                if attribute.active then index = index + 1 end
+                if attribute.active then 
+                    fn(caller, attribute, attName, (index == self.selectedIndex), param)
+                    index = index + 1
+                end
+            end
+        end,
+
+        mapAll = function(self, caller, fn, param)
+            for attName, attribute in pairs(self.data) do
+                fn(caller, attribute, attName, true, param)
             end
         end,
     },
@@ -107,14 +115,14 @@ return {
         love.graphics.setFont(self.font)
 
         local yPosition = { value = 600 }
-        self.attributes:mapWithIndex(self, self.drawAttribute, yPosition)
+        self.attributes:mapActive(self, self.drawAttribute, yPosition)
     end,
 
-    drawAttribute = function(self, attribute, attName, index, yPosition)
-        if index == self.attributes:getSelectedIndex() then love.graphics.setColor(1, 0, 0)
-        else                                                love.graphics.setColor(1, 1, 1) end
+    drawAttribute = function(self, attribute, attName, isSelected, yPosition)
+        if isSelected then love.graphics.setColor(1, 0, 0)
+        else               love.graphics.setColor(1, 1, 1) end
         
-        if attribute.active and attribute.getValueFn then
+        if attribute.getValueFn then
             love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
             yPosition.value = yPosition.value + self.fontHeight
         end
@@ -128,9 +136,9 @@ return {
         else                                    self:toggleAttributesFromKey(key)    end
     end,
 
-    toggleAttributesFromKey   = function(self, key) self.attributes:mapWithIndex(self, self.toggleAttributeFromKey, key) end,
+    toggleAttributesFromKey   = function(self, key) self.attributes:mapAll(self, self.toggleAttributeFromKey, key) end,
     
-    toggleAttributeFromKey = function(self, attribute, attName, index, key)
+    toggleAttributeFromKey = function(self, attribute, attName, isSelected, key)
         if key == attribute.toggleShowKey then attribute.active = not attribute.active end
         self.attributes:normalizeSelectedIndex()
     end,
