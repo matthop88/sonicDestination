@@ -1,10 +1,17 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
 
 return {
+    init   = function(self, params)
+        self.GRAPHICS = params.GRAPHICS
+        return self
+    end,
+    
     create = function(self, spriteDataName)
         return ({
             frameTimer    = 0,
             frameTimerMax = 1,
+
+            graphics      = self.GRAPHICS,
             
             init = function(self, spriteDataName)
                 local spriteData = requireRelative("sprites/data/" .. spriteDataName)
@@ -42,8 +49,8 @@ return {
             end,
         
             draw = function(self, x, y, scaleX, scaleY)
-                graphics:setColor(COLOR_PURE_WHITE)
-                graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
+                self.graphics:setColor(COLOR_PURE_WHITE)
+                self.graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
             end,
         
             update = function(self, dt)
