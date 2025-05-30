@@ -1,4 +1,4 @@
-return ({
+return {
     x = 0, y = 0,
         
     states = {
@@ -18,7 +18,7 @@ return ({
             
     init = function(self, params)
         self.currentState = self.states.standRight
-        self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1"),
+        self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
         return self
     end,
 
@@ -59,4 +59,4 @@ return ({
         self.currentState.onEnter(self)
     end,
 
-}):init()
+}
