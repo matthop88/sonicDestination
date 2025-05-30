@@ -27,6 +27,19 @@ return {
             --]]
         },
 
+        mapToSelected = function(self, caller, fn, param)
+            local index = 1
+            for attName, attribute in pairs(self.data) do
+                if attribute.active then
+                    if index == self.selectedIndex then
+                        fn(caller, attribute, attName, param)
+                        return
+                    end
+                    index = index + 1
+                end
+            end
+        end,
+        
         normalizeSelectedIndex = function(self)
             local visibleCount = self:getVisibleCount()
             if     self.selectedIndex > visibleCount then self.selectedIndex = 1
