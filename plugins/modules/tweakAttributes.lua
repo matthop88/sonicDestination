@@ -24,12 +24,21 @@ return {
                 ...     
             --]]
         },
+        
         getVisibleCount = function(self)
             local count = 0
             for _, attribute in pairs(self.data) do
                 if attribute.active then count = count + 1 end
             end
             return count
+        end,
+
+        mapWithIndex = function(self, caller, fn, param)
+            local index = 1
+            for attName, attribute in pairs(self.data) do
+                fn(caller, attribute, attName, index, param)
+                if attribute.active then index = index + 1 end
+            end
         end,
     },
 
@@ -54,15 +63,7 @@ return {
         love.graphics.setFont(self.font)
 
         local yPosition = { value = 600 }
-        self:mapToAttributesWithIndex(self.drawAttribute, yPosition)
-    end,
-
-    mapToAttributesWithIndex = function(self, fn, param)
-        local index = 1
-        for attName, attribute in pairs(self.attributes.data) do
-            fn(self, attribute, attName, index, param)
-            if attribute.active then index = index + 1 end
-        end
+        self.attributes:mapWithIndex(self, self.drawAttribute, yPosition)
     end,
 
     drawAttribute = function(self, attribute, attName, index, yPosition)
@@ -98,9 +99,9 @@ return {
         end
     end,
    
-    incrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.incrementAttribute)          end,
-    decrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.decrementAttribute)          end,
-    toggleAttributesFromKey   = function(self, key) self:mapToAttributesWithIndex(self.toggleAttributeFromKey, key) end,
+    incrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.incrementAttribute)          end,
+    decrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.decrementAttribute)          end,
+    toggleAttributesFromKey   = function(self, key) self.attributes:mapWithIndex(self, self.toggleAttributeFromKey, key) end,
     
     incrementAttribute = function(self, attribute, attName, index)
         if attribute.active and attribute.incrementFn and index == self.selectedAttributeIndex then attribute:incrementFn() end
