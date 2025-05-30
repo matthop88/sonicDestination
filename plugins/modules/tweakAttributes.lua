@@ -32,6 +32,20 @@ return {
             if     self.selectedIndex > visibleCount then self.selectedIndex = 1
             elseif self.selectedIndex < 1            then self.selectedIndex = visibleCount end
         end,
+
+        getSelectedIndex = function(self)
+            return self.selectedIndex
+        end,
+
+        incrementSelectedIndex = function(self)
+            self.selectedIndex = self.selectedIndex + 1
+            self:normalizeSelectedIndex()
+        end,
+
+        decrementSelectedIndex = function(self)
+            self.selectedIndex = self.selectedIndex - 1
+            self:normalizeSelectedIndex()
+        end,
         
         getVisibleCount = function(self)
             local count = 0
@@ -49,8 +63,6 @@ return {
             end
         end,
     },
-
-    selectedAttributeIndex = 1,
 
     font = love.graphics.newFont(32),
 
@@ -75,8 +87,8 @@ return {
     end,
 
     drawAttribute = function(self, attribute, attName, index, yPosition)
-        if index == self.selectedAttributeIndex then love.graphics.setColor(1, 0, 0)
-        else                                         love.graphics.setColor(1, 1, 1) end
+        if index == self.attributes:getSelectedIndex() then love.graphics.setColor(1, 0, 0)
+        else                                                love.graphics.setColor(1, 1, 1) end
         
         if attribute.active and attribute.getValueFn then
             love.graphics.printf((attribute.name or attName) .. " = " .. attribute:getValueFn(), 0, yPosition.value, 1024, "center")
@@ -87,15 +99,9 @@ return {
     handleKeypressed = function(self, key)
         if     key == self.incAttributeKey then self:incrementActiveAttributes()
         elseif key == self.decAttributeKey then self:decrementActiveAttributes()
-        elseif key == self.selectedUpKey   then 
-            self.selectedAttributeIndex = self.selectedAttributeIndex - 1
-            self.attributes:normalizeSelectedIndex()
-        elseif key == self.selectedDownKey then 
-            self.selectedAttributeIndex = self.selectedAttributeIndex + 1
-            self.attributes:normalizeSelectedIndex()
-        else                                    
-            self:toggleAttributesFromKey(key)                         
-        end
+        elseif key == self.selectedUpKey   then self.attributes:decrementSelectedIndex()
+        elseif key == self.selectedDownKey then self.attributes:incrementSelectedIndex()
+        else                                    self:toggleAttributesFromKey(key)    end
     end,
 
     incrementActiveAttributes = function(self)      self.attributes:mapWithIndex(self, self.incrementAttribute)          end,
@@ -103,11 +109,11 @@ return {
     toggleAttributesFromKey   = function(self, key) self.attributes:mapWithIndex(self, self.toggleAttributeFromKey, key) end,
     
     incrementAttribute = function(self, attribute, attName, index)
-        if attribute.active and attribute.incrementFn and index == self.selectedAttributeIndex then attribute:incrementFn() end
+        if attribute.active and attribute.incrementFn and index == self.attributes:getSelectedIndex() then attribute:incrementFn() end
     end,
 
     decrementAttribute = function(self, attribute, attName, index)
-        if attribute.active and attribute.decrementFn and index == self.selectedAttributeIndex then attribute:decrementFn() end
+        if attribute.active and attribute.decrementFn and index == self.attributes:getSelectedIndex() then attribute:decrementFn() end
     end,
 
     toggleAttributeFromKey = function(self, attribute, attName, index, key)
