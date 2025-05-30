@@ -89,10 +89,17 @@ return {
             end
         end,
 
-        mapAll = function(self, caller, fn, param)
+        mapAll = function(self, fn, param)
             for attName, attribute in pairs(self.data) do
-                fn(caller, attribute, attName, true, param)
+                fn(self, attribute, attName, true, param)
             end
+        end,
+
+        toggleByKey = function(self, key) self:mapAll(self.toggleAttributeFromKey, key) end,
+
+        toggleAttributeFromKey = function(self, attribute, attName, isSelected, key)
+            if key == attribute.toggleShowKey then attribute.active = not attribute.active end
+            self:normalizeSelectedIndex()
         end,
     },
 
@@ -134,12 +141,5 @@ return {
         elseif key == self.selectedUpKey   then self.attributes:decrementSelectedIndex()
         elseif key == self.selectedDownKey then self.attributes:incrementSelectedIndex()
         else                                    self:toggleAttributesFromKey(key)    end
-    end,
-
-    toggleAttributesFromKey   = function(self, key) self.attributes:mapAll(self, self.toggleAttributeFromKey, key) end,
-    
-    toggleAttributeFromKey = function(self, attribute, attName, isSelected, key)
-        if key == attribute.toggleShowKey then attribute.active = not attribute.active end
-        self.attributes:normalizeSelectedIndex()
     end,
 }
