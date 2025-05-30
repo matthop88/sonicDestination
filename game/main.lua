@@ -68,7 +68,7 @@ end
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    PLUGINS = requireRelative("plugins"):init({ SONIC = SONIC, GRAPHICS = graphics })
+    requireRelative("plugins"):init({ SONIC = SONIC, GRAPHICS = graphics })
 end
 
 --[[
