@@ -1,7 +1,8 @@
 relativePath    = relativePath    or function(path) return path end
 
-requireRelative = function(path)
-    return require(relativePath(path))
+requireRelative = function(path, params)
+    if params then return require(relativePath(path)):init(params)
+    else           return require(relativePath(path))          end
 end
 
 --------------------------------------------------------------
@@ -68,7 +69,7 @@ end
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    requireRelative("plugins"):init({ SONIC = SONIC, GRAPHICS = graphics })
+    requireRelative("plugins", { SONIC = SONIC, GRAPHICS = graphics })
 end
 
 --[[
