@@ -14,17 +14,16 @@ return {
             graphics      = self.GRAPHICS,
             
             init = function(self, spriteDataName)
-                local spriteData = requireRelative("sprites/data/" .. spriteDataName)
-                self.data = spriteData.animations
-
-                self:initImage()
+                self:initSpriteData()
                 self:initFrames()
                 self:initAnimations()
                 
                 return self
             end,
 
-            initImage  = function(self, spriteData)
+            initSpriteData  = function(self)
+                local spriteData = requireRelative("sprites/data/" .. spriteDataName)
+                self.data = spriteData.animations
                 self.image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. spriteData.imageName .. ".png"))
                 self.image:setFilter("nearest", "nearest")
             end,
