@@ -24,6 +24,13 @@ return {
                 ...     
             --]]
         },
+        getVisibleCount = function(self)
+            local count = 0
+            for _, attribute in pairs(self.data) do
+                if attribute.active then count = count + 1 end
+            end
+            return count
+        end,
     },
 
     selectedAttributeIndex = 1,
@@ -83,7 +90,7 @@ return {
     end,
 
     normalizeSelectedAttributeIndex = function(self)
-        local visibleAttributeCount = self:countVisibleAttributes()
+        local visibleAttributeCount = self.attributes:getVisibleCount()
         if     self.selectedAttributeIndex > visibleAttributeCount then 
             self.selectedAttributeIndex = 1
         elseif self.selectedAttributeIndex < 1 then 
@@ -91,14 +98,6 @@ return {
         end
     end,
    
-    countVisibleAttributes = function(self)
-        local count = 0
-        for _, attribute in pairs(self.attributes.data) do
-            if attribute.active then count = count + 1 end
-        end
-        return count
-    end,
- 
     incrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.incrementAttribute)          end,
     decrementActiveAttributes = function(self)      self:mapToAttributesWithIndex(self.decrementAttribute)          end,
     toggleAttributesFromKey   = function(self, key) self:mapToAttributesWithIndex(self.toggleAttributeFromKey, key) end,
