@@ -36,16 +36,10 @@ local LABEL_FONT_SIZE             = 32
 local GRID_SIZE                   = 32
 local GRAFX                       = require "tools/lib/graphics"
 
-local PEGBOARD    = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
-local BOX         = require("tools/stateMachine/box"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
-local ARROW       = require("tools/stateMachine/arrow"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
+local PEGBOARD       = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
+local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 
-local WIDGETS = {
-    BOX:create("Stand Left",   3,  7,  9,  7),
-    BOX:create("Stand Right", 20,  7,  9,  7),
-    ARROW:create("L On",      20,  9, 12,  9),
-    ARROW:create("R On",      12, 12, 20, 12),
-}
+local WIDGETS        = WIDGET_FACTORY:createWidgets(require("tools/stateMachine/data/standing"))
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
