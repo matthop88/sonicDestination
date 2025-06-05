@@ -2,7 +2,7 @@ local mutableColor      = require("tools/scribbler/mutableColor")
 local mutableMessage    = require("tools/scribbler/mutableMessage")
 local mutableFont       = require("tools/scribbler/mutableFont")
 
-local idle              = false,
+local idle              = false
 
 local DEFAULT_FONT_SIZE = 32
 local defaultFont       = love.graphics.newFont(DEFAULT_FONT_SIZE)
