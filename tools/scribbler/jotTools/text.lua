@@ -2,6 +2,8 @@ local mutableColor      = require("tools/scribbler/mutableColor")
 local mutableMessage    = require("tools/scribbler/mutableMessage")
 local mutableFont       = require("tools/scribbler/mutableFont")
 
+local idle              = false,
+
 local DEFAULT_FONT_SIZE = 32
 local defaultFont       = love.graphics.newFont(DEFAULT_FONT_SIZE)
 
@@ -44,7 +46,9 @@ return {
     
     draw = function(self, mx, my)
         if self.jot.data ~= nil then self.jot:draw() end
-        self:drawCursor(mx, my)
+        if not self.idle then
+            self:drawCursor(mx, my)
+        end
     end,
 
     penUp = function(self, mx, my)
@@ -102,6 +106,10 @@ return {
         elseif key == "up"     then mutableFont:next()
         elseif key == "down"   then mutableFont:prev()
         end
+    end,
+
+    setIdle = function(self, idle)
+        self.idle = idle
     end,
 
 }
