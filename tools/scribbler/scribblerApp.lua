@@ -65,6 +65,11 @@ end
 
 function love.update(dt)
     mousePosition:update(dt)
+
+    if currentTool.setIdle then
+        currentTool:setIdle(mousePosition:isIdle())
+    end
+    
     if mousePosition:isChanged() then
         if love.mouse.isDown(1) then currentTool:penDragged(mousePosition:get())
         else                         currentTool:penMoved(mousePosition:get())
