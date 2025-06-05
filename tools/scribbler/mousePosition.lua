@@ -1,11 +1,14 @@
 return ({
-    x,     y     = nil, nil,
-    prevX, prevY = nil, nil,
+    idleTimer = 120,
         
     init = function(self)
         self.x,     self.y     = love.mouse.getPosition()
         self.prevX, self.prevY = self.x, self.y
         return self
+    end,
+
+    isIdle = function(self)
+        return self.idleTimer <= 0
     end,
         
     isChanged = function(self)
@@ -13,9 +16,12 @@ return ({
         return x ~= self.prevX or y ~= self.prevY
     end,
 
-    update = function(self)
+    update = function(self, dt)
         self.prevX, self.prevY = self:get()
         self.x,     self.y     = love.mouse.getPosition()
+            
+        if self:isChanged() then self.idleTimer = 120
+        else                     self.idleTimer = self.idleTimer - (60 * dt)  end
     end,
 
     get = function(self)
