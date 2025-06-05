@@ -1,7 +1,7 @@
 return ({
     index = 11,
 
-    fontsBySoze = { },
+    fontsBySize = { },
         
     9,
     10,
