@@ -10,6 +10,7 @@ return {
     init = function(self, picture)
         self:initTools(picture)
         self.currentTool = self.scribbleTool
+        return self
     end,
 
     initTools = function(self, picture)
