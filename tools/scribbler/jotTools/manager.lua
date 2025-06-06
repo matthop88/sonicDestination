@@ -1,4 +1,4 @@
-local IDLE_TIMER_MAX = 120
+local IDLE_TIMER_MAX = 180
 
 return {
     mousePosition = require("tools/scribbler/utils/mousePosition"),
@@ -38,7 +38,15 @@ return {
         local mx, my = self.mousePosition:get()
         self.currentTool:draw(mx, my)
         if not self:isIdle() then
-            self.currentTool:drawCursor(mx, my, 1)
+            self.currentTool:drawCursor(mx, my, self:calculateAlpha())
+        end
+    end,
+
+    calculateAlpha = function(self)
+        if self.idleTimer > 60 then
+            return 1
+        else
+            return self.idleTimer / 60
         end
     end,
 
