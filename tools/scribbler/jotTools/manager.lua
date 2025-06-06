@@ -47,11 +47,8 @@ return {
     end,
     
     dragOrMoveCurrentToolPen = function(self, mx, my)
-        if love.mouse.isDown(1) then
-            self.currentTool:penDragged(mx, my)
-        else
-            self.currentTool:penMoved(mx, my)
-        end
+        if love.mouse.isDown(1) then self.currentTool:penDragged(mx, my)
+        else                         self.currentTool:penMoved(mx, my)   end
     end,
 
     mousepressed = function(self, mx, my)
@@ -64,13 +61,18 @@ return {
 
     keypressed = function(self, key)
         self.mousePosition:resetIdle()
-        if self.toolsByKey[key] then
-            self.currentTool = self.toolsByKey[key]
-        elseif key == "x" then
-            local mx, my = love.mouse.getPosition()
-            printMessage("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
-        elseif self.currentTool.keypressed then
-            self.currentTool:keypressed(key)
-        end
+        if self.toolsByKey[key] then self.currentTool = self.toolsByKey[key]
+        else                         self:handleToolKey(key)            end
     end,
+
+    handleToolKey = function(self, key)
+        if     key == "x"                  then self:printMousePositionInGridCoordinates()
+        elseif self.currentTool.keypressed then self.currentTool:keypressed(key)     end
+    end,
+
+    printMousePositionInGridCoordinates = function(self)
+        local mx, my = love.mouse.getPosition()
+        printMessage("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
+    end,
+    
 }
