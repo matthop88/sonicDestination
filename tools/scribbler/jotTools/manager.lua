@@ -25,6 +25,10 @@ return {
     end,
 
     update = function(self, dt)
+        if self.currentTool.setIdle then
+            self.currentTool:setIdle(self.mousePosition:isIdle())
+        end
+            
         self.mousePosition:update(dt)
 
         if self.mousePosition:isChanged() then
