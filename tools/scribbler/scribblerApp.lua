@@ -86,6 +86,7 @@ function love.mousereleased(mx, my)
 end
 
 function love.keypressed(key)
+    mousePosition:resetIdle()
     if     key == "l" then currentTool = lineTool
     elseif key == "r" then currentTool = rectTool
     elseif key == "s" and love.keyboard.isDown("lgui", "rgui") then
