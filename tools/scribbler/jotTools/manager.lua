@@ -35,9 +35,10 @@ return {
     end,
     
     draw = function(self)
-        self.currentTool:draw(self.mousePosition:get())
+        local mx, my = self.mousePosition:get()
+        self.currentTool:draw(mx, my)
         if not self:isIdle() then
-            self.currentTool:drawCursor(self.mousePosition:get())
+            self.currentTool:drawCursor(mx, my, 1)
         end
     end,
 
