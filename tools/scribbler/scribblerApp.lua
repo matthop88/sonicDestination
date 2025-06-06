@@ -42,16 +42,9 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-local mousePosition = require("tools/scribbler/mousePosition")
-local picture       = require("tools/scribbler/picture")
-local scribbleTool  = require("tools/scribbler/jotTools/scribble"):init(picture)
-local lineTool      = require("tools/scribbler/jotTools/line"    ):init(picture)
-local rectTool      = require("tools/scribbler/jotTools/rect"    ):init(picture)
-local textTool      = require("tools/scribbler/jotTools/text"    ):init(picture)
-
-local currentTool   = scribbleTool
-
-local showGrid      = false
+local picture     = require("tools/scribbler/picture")
+local toolManager = require("tools/scribbler/jotTools/manager"):init(picture)
+local showGrid    = false
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -60,46 +53,29 @@ local showGrid      = false
 function love.draw()
     if showGrid then drawGrid() end
     picture:draw()
-    currentTool:draw(mousePosition:get())
+    toolManager:draw()
 end
 
 function love.update(dt)
-    mousePosition:update(dt)
-
-    if currentTool.setIdle then
-        currentTool:setIdle(mousePosition:isIdle())
-    end
-    
-    if mousePosition:isChanged() then
-        if love.mouse.isDown(1) then currentTool:penDragged(mousePosition:get())
-        else                         currentTool:penMoved(mousePosition:get())
-        end
-     end
+   toolManager:update(dt)
 end
 
 function love.mousepressed(mx, my)
-    currentTool:penDown(mousePosition:get())
+   toolManager:mousepressed(mx, my)
 end
 
 function love.mousereleased(mx, my)
-    currentTool:penUp(mousePosition:get())
+    currentTool:penUp(mousePosition:get())]
+    toolManager:maousereleased(mx, my)
 end
 
 function love.keypressed(key)
     mousePosition:resetIdle()
-    if     key == "l" then currentTool = lineTool
-    elseif key == "r" then currentTool = rectTool
-    elseif key == "s" and love.keyboard.isDown("lgui", "rgui") then
+    if key == "s" and love.keyboard.isDown("lgui", "rgui") then
         picture:save()
-    elseif key == "s" then currentTool = scribbleTool
-    elseif key == "t" then currentTool = textTool
     elseif key == "g" then showGrid    = not showGrid
-    elseif key == "x" then
-        local mx, my = love.mouse.getPosition()
-        printToReadout("X = " .. math.floor(mx / 32) + 1 .. ", Y = " .. math.floor(my / 32) + 1)
-    elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
-        implementUndoOrRedo()
-    elseif currentTool.keypressed then currentTool:keypressed(key)
+    else
+        toolManager:keypressed(key)
     end
 end
 
