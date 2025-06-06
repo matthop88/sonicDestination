@@ -87,9 +87,9 @@ return {
         return newTextJot(data)
     end,
 
-    drawCursor = function(self, mx, my)
+    drawCursor = function(self, mx, my, alpha)
         love.mouse.setVisible(false)
-        love.graphics.setColor(mutableColor:getTransparent())
+        love.graphics.setColor(mutableColor:getWithAlpha(alpha / 2))
         love.graphics.setFont(mutableFont:get())
         love.graphics.printf(mutableMessage:get(), mx, my, 1000, "left")
     end,
