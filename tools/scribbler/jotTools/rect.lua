@@ -64,22 +64,22 @@ return {
         end
     end,
 
-    drawCursor = function(self, mx, my)
+    drawCursor = function(self, mx, my, alpha)
         love.graphics.setLineWidth(1)
         love.mouse.setVisible(false)
         if self.filled then
-            love.graphics.setColor(mutableColor:getTransparent())
+            love.graphics.setColor(mutableColor:getWithAlpha(alpha / 2))
             love.graphics.circle("fill", mx, my, 15, 15)
         else
-            love.graphics.setColor(mutableColor:get())
+            love.graphics.setColor(mutableColor:getWithAlpha(alpha))
             love.graphics.circle("line", mx, my, 15, 15)
         end
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(1, 1, 1, alpha)
         love.graphics.line(mx - 24, my,      mx -  8, my)
         love.graphics.line(mx +  8, my,      mx + 24, my)
         love.graphics.line(mx,      my - 24, mx,      my - 8)
         love.graphics.line(mx,      my +  8, mx,      my + 24)
-        love.graphics.setColor(mutableColor:get())
+        love.graphics.setColor(mutableColor:getWithAlpha(alpha))
         love.graphics.rectangle("fill", mx - 2.5, my - 2.5, 5, 5)
     end,
 
