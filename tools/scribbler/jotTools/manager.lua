@@ -33,7 +33,7 @@ return {
     end,
     
     dragOrMoveCurrentToolPen = function(self, mx, my)
-        if love.mouse:isDown(1) then
+        if love.mouse.isDown(1) then
             self.currentTool:penDragged(mx, my)
         else
             self.currentTool:penMoved(mx, my)
