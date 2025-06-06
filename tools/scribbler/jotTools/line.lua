@@ -51,7 +51,6 @@ return {
     draw = function(self, mx, my)
         self.jot:draw(mx, my)
         self:drawWorkingLine(mx, my)
-        self:drawCursor(mx, my) 
     end,
 
     drawWorkingLine = function(self, mx, my)
