@@ -27,11 +27,15 @@ return {
         self.mousePosition:update(dt)
 
         if self.mousePosition:isChanged() then
-            if love.mouse:isDown(1) then
-                self.currentTool:penDragged(self.mousePosition:get())
-            else
-                self.currentTool:penMoved(self.mousePosition:get())
-            end
+            self:dragOrMoveCurrentToolPen(self.mousePosition:get())
+        end
+    end,
+    
+    dragOrMoveCurrentToolPen = function(self, mx, my)
+        if love.mouse:isDown(1) then
+            self.currentTool:penDragged(mx, my)
+        else
+            self.currentTool:penMoved(mx, my)
         end
     end,
 
