@@ -77,7 +77,6 @@ return {
         
     draw = function(self, mx, my)
         self.jot:draw()
-        self:drawCursor(mx, my)
     end,
 
     drawCursor = function(self, mx, my)
