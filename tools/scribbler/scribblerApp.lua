@@ -65,12 +65,10 @@ function love.mousepressed(mx, my)
 end
 
 function love.mousereleased(mx, my)
-    currentTool:penUp(mousePosition:get())]
-    toolManager:maousereleased(mx, my)
+    toolManager:mousereleased(mx, my)
 end
 
 function love.keypressed(key)
-    mousePosition:resetIdle()
     if key == "s" and love.keyboard.isDown("lgui", "rgui") then
         picture:save()
     elseif key == "g" then showGrid    = not showGrid
