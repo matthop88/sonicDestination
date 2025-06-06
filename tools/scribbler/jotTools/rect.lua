@@ -53,7 +53,7 @@ return {
 
     drawWorkingRectangle = function(self, mx, my)
         if self.originX ~= nil and self.originY ~= nil then
-            love.graphics.setColor(mutableColor:getTransparent())
+            love.graphics.setColor(mutableColor:getWithAlpha(0.5))
             love.graphics.setLineWidth(5)
 
             if self.filled then
