@@ -1,5 +1,5 @@
 return {
-    mousePosition = require("tools/scribbler/mousePosition"),
+    mousePosition = require("tools/scribbler/utils/mousePosition"),
     scribbleTool  = nil,
     lineTool      = nil,
     rectTool      = nil,
