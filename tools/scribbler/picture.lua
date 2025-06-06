@@ -1,5 +1,5 @@
 return {
-    jotFactory = require("tools/scribbler/jotFactory"),
+    jotFactory = require("tools/scribbler/utils/jotFactory"),
 
     jots = {
         tailIndex = 0,
