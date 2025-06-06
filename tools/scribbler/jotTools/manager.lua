@@ -1,4 +1,4 @@
-local IDLE_TIMER_MAX = 120,
+local IDLE_TIMER_MAX = 120
 
 return {
     mousePosition = require("tools/scribbler/utils/mousePosition"),
