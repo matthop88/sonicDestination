@@ -62,13 +62,13 @@ return {
         end
     end,
 
-    drawCursor = function(self, mx, my)
-        love.graphics.setColor(1, 1, 1)
+    drawCursor = function(self, mx, my, alpha)
+        love.graphics.setColor(1, 1, 1, alpha)
         love.graphics.setLineWidth(1)
         love.mouse.setVisible(false)
         love.graphics.line(mx - 16, my, mx + 16, my)
         love.graphics.line(mx, my - 16, mx, my + 16)
-        love.graphics.setColor(mutableColor:get())
+        love.graphics.setColor(mutableColor:getWithAlpha(alpha))
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 
