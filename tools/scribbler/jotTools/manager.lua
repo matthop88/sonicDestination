@@ -7,8 +7,11 @@ return {
 
     currentTool   = nil,
 
+    toolsByKey    = { },
+
     init = function(self, picture)
         self:initTools(picture)
+        self:initToolsByKey()
         self.currentTool = self.scribbleTool
         return self
     end,
@@ -18,6 +21,13 @@ return {
         self.lineTool     = require("tools/scribbler/jotTools/line"):init(picture)
         self.rectTool     = require("tools/scribbler/jotTools/rect"):init(picture)
         self.textTool     = require("tools/scribbler/jotTools/text"):init(picture)
+    end,
+
+    initToolsByKey = function(self)
+        self.toolsByKey = {
+            s = self.scribbleTool,    l = self.lineTool,
+            r = self.rectTool,        t = self.textTool,
+        }
     end,
     
     draw = function(self)
@@ -54,14 +64,8 @@ return {
 
     keypressed = function(self, key)
         self.mousePosition:resetIdle()
-        if key == "l" then
-            self.currentTool = self.lineTool
-        elseif key == "s" then
-            self.currentTool = self.scribbleTool
-        elseif key == "r" then
-            self.currentTool = self.rectTool
-        elseif key == "t" then
-            self.currentTool = self.textTool
+        if self.toolsByKey[key] then
+            self.currentTool = self.toolsByKey[key]
         elseif key == "x" then
             local mx, my = love.mouse.getPosition()
             printMessage("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
