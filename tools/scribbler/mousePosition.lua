@@ -1,5 +1,7 @@
+local IDLE_TIMER_MAX = 120
+
 return ({
-    idleTimer = 120,
+    idleTimer = IDLE_TIMER_MAX,
         
     init = function(self)
         self.x,     self.y     = love.mouse.getPosition()
@@ -20,8 +22,12 @@ return ({
         self.prevX, self.prevY = self:get()
         self.x,     self.y     = love.mouse.getPosition()
             
-        if self:isChanged() then self.idleTimer = 120
+        if self:isChanged() then self:resetIdle()
         else                     self.idleTimer = self.idleTimer - (60 * dt)  end
+    end,
+
+    resetIdle = function(self)
+        self.idleTimer = IDLE_TIMER_MAX
     end,
 
     get = function(self)
