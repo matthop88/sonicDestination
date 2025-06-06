@@ -48,6 +48,19 @@ return {
     end,
 
     keypressed = function(self, key)
-        -- ...
+        if key == "l" then
+            self.currentTool = self.lineTool
+        elseif key == "s" then
+            self.currentTool = self.scribbleTool
+        elseif key == "r" then
+            self.currentTool = self.rectTool
+        elseif key == "t" then
+            self.currentTool = self.textTool
+        elseif key == "x" then
+            local mx, my = love.mouse.getPosition()
+            printMessage("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
+        elseif self.currentTool.keypressed then
+            self.currentTool:keypressed(key)
+        end
     end,
 }
