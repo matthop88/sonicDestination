@@ -21,10 +21,6 @@ return {
         return self[self.index]
     end,
 
-    getTransparent = function(self)
-        return self:getWithAlpha(0.5)
-    end,
-
     getWithAlpha = function(self, alpha)
         local color = self:get()
         return { color[1], color[2], color[3], alpha }
