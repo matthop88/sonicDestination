@@ -40,11 +40,11 @@ return {
     end,
 
     mousepressed = function(self, mx, my)
-        -- ...
+        self.currentTool:penDown(self.mousePosition:get())
     end,
 
     mousereleased = function(self, mx, my)
-        -- ...
+        self.currentTool:penUp(self.mousePosition:get())
     end,
 
     keypressed = function(self, key)
