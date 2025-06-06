@@ -49,7 +49,6 @@ return {
     draw = function(self, mx, my)
         self.jot:draw()
         self:drawWorkingRectangle(mx, my)
-        self:drawCursor(mx, my)
     end,
 
     drawWorkingRectangle = function(self, mx, my)
