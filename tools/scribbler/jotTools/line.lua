@@ -1,4 +1,4 @@
-local mutableColor = require("tools/scribbler/utils/mutable/mutableColor")
+local mutableColor = require("tools/scribbler/utils/mutable/color")
 
 local doLineJotDrawing = function(self, mx, my)
     local prevX, prevY = mx, my
