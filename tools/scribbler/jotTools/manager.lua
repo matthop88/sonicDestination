@@ -58,7 +58,7 @@ return {
     end,
 
     resetIdleTimer = function(self)
-        self.idleTImer = IDLE_TIMER_MAX
+        self.idleTimer = IDLE_TIMER_MAX
     end,
 
     isIdle = function(self)
