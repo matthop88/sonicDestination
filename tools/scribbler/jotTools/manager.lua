@@ -61,13 +61,9 @@ return {
 
     keypressed = function(self, key)
         self.mousePosition:resetIdle()
-        if self.toolsByKey[key] then self.currentTool = self.toolsByKey[key]
-        else                         self:handleToolKey(key)            end
-    end,
-
-    handleToolKey = function(self, key)
-        if     key == "x"                  then self:printMousePositionInGridCoordinates()
-        elseif self.currentTool.keypressed then self.currentTool:keypressed(key)     end
+        if     self.toolsByKey[key] then self.currentTool = self.toolsByKey[key]
+        elseif key == "x"           then self:printMousePositionInGridCoordinates()
+        else                             self:handleToolKey(key)              end
     end,
 
     printMousePositionInGridCoordinates = function(self)
@@ -75,4 +71,9 @@ return {
         printToReadout("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
     end,
     
+    handleToolKey = function(self, key)
+        if self.currentTool.keypressed then 
+            self.currentTool:keypressed(key)
+        end
+    end, 
 }
