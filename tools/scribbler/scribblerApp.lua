@@ -72,6 +72,8 @@ function love.keypressed(key)
     if key == "s" and love.keyboard.isDown("lgui", "rgui") then
         picture:save()
     elseif key == "g" then showGrid    = not showGrid
+    elseif key == "z" and love.keyboard.isDown("lgui", "rgui") then
+        implementUndoOrRedo()
     else
         toolManager:keypressed(key)
     end
