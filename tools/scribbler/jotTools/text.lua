@@ -1,6 +1,6 @@
-local mutableColor      = require("tools/scribbler/mutableColor")
-local mutableMessage    = require("tools/scribbler/mutableMessage")
-local mutableFont       = require("tools/scribbler/mutableFont")
+local mutableColor      = require("tools/scribbler/utils/mutable/color")
+local mutableMessage    = require("tools/scribbler/utils/mutable/message")
+local mutableFont       = require("tools/scribbler/utils/mutable/font")
 
 local idle              = false
 
