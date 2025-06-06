@@ -24,7 +24,15 @@ return {
     end,
 
     update = function(self, dt)
-        -- ...
+        self.mousePosition:update(dt)
+
+        if self.mousePosition:isChanged() then
+            if love.mouse:isDown(1) then
+                self.currentTool:penDragged(self.mousePosition:get())
+            else
+                self.currentTool:penMoved(self.mousePosition:get())
+            end
+        end
     end,
 
     mousepressed = function(self, mx, my)
