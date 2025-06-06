@@ -72,7 +72,7 @@ return {
 
     printMousePositionInGridCoordinates = function(self)
         local mx, my = love.mouse.getPosition()
-        printMessage("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
+        printToReadout("X = " .. math.floor(mx / 32) .. ", Y = " .. math.floor(my / 32))
     end,
     
 }
