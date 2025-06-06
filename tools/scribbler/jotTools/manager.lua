@@ -53,6 +53,7 @@ return {
     end,
 
     keypressed = function(self, key)
+        self.mousePosition:resetIdle()
         if key == "l" then
             self.currentTool = self.lineTool
         elseif key == "s" then
