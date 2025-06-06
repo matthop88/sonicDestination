@@ -1,3 +1,5 @@
+local IDLE_TIMER_MAX = 120,
+
 return {
     mousePosition = require("tools/scribbler/utils/mousePosition"),
     scribbleTool  = nil,
@@ -8,6 +10,8 @@ return {
     currentTool   = nil,
 
     toolsByKey    = { },
+
+    idleTimer     = IDLE_TIMER_MAX,
 
     init = function(self, picture)
         self:initTools(picture)
@@ -32,18 +36,33 @@ return {
     
     draw = function(self)
         self.currentTool:draw(self.mousePosition:get())
+        if not self:isIdle() then
+            self.currentTool:drawCursor(self.mousePosition:get())
+        end
     end,
 
     update = function(self, dt)
-        if self.currentTool.setIdle then
-            self.currentTool:setIdle(self.mousePosition:isIdle())
-        end
-            
         self.mousePosition:update(dt)
+        self:updateIdleTimer(dt)
 
         if self.mousePosition:isChanged() then
             self:dragOrMoveCurrentToolPen(self.mousePosition:get())
         end
+    end,
+
+    updateIdleTimer = function(self, dt)
+        self.idleTimer = self.idleTimer - (dt * 60)
+        if self.mousePosition:isChanged() then
+            self:resetIdleTimer()
+        end
+    end,
+
+    resetIdleTimer = function(self)
+        self.idleTImer = IDLE_TIMER_MAX
+    end,
+
+    isIdle = function(self)
+        return self.idleTimer <= 0
     end,
     
     dragOrMoveCurrentToolPen = function(self, mx, my)
@@ -60,7 +79,7 @@ return {
     end,
 
     keypressed = function(self, key)
-        self.mousePosition:resetIdle()
+        self:resetIdleTimer()
         if     self.toolsByKey[key] then self.currentTool = self.toolsByKey[key]
         elseif key == "x"           then self:printMousePositionInGridCoordinates()
         else                             self:handleToolKey(key)              end
