@@ -7,10 +7,9 @@ return {
     rectTool      = nil,
     textTool      = nil,
 
-    currentTool   = nil,
-
     toolsByKey    = { },
-
+    currentTool   = nil,
+    
     idleTimer     = IDLE_TIMER_MAX,
 
     init = function(self, picture)
@@ -28,9 +27,8 @@ return {
     end,
 
     initToolsByKey = function(self)
-        self.toolsByKey = {
-            s = self.scribbleTool,    l = self.lineTool,
-            r = self.rectTool,        t = self.textTool,
+        self.toolsByKey = { 
+            s = self.scribbleTool, l = self.lineTool, r = self.rectTool, t = self.textTool 
         }
     end,
     
@@ -43,11 +41,8 @@ return {
     end,
 
     calculateAlpha = function(self)
-        if self.idleTimer > 60 then
-            return 1
-        else
-            return self.idleTimer / 60
-        end
+        if self.idleTimer > 60 then return 1
+        else                        return self.idleTimer / 60 end
     end,
 
     update = function(self, dt)
@@ -66,13 +61,8 @@ return {
         end
     end,
 
-    resetIdleTimer = function(self)
-        self.idleTimer = IDLE_TIMER_MAX
-    end,
-
-    isIdle = function(self)
-        return self.idleTimer <= 0
-    end,
+    resetIdleTimer = function(self)        self.idleTimer = IDLE_TIMER_MAX end,
+    isIdle         = function(self) return self.idleTimer <= 0             end,
     
     dragOrMoveCurrentToolPen = function(self, mx, my)
         if love.mouse.isDown(1) then self.currentTool:penDragged(mx, my)
