@@ -39,26 +39,28 @@ return {
         return self
     end,
 
-    x       = nil,
-    y       = nil,
+    x = nil, y = nil,
     
     draw = function(self, mx, my)
         if self.jot.data ~= nil then self.jot:draw() end
     end,
 
     penUp = function(self, mx, my)
-        self.jot.data = {
-            color = mutableColor:get(),
-            fontSize = mutableFont:getFontSize(),
-            font = mutableFont:get(),
-            message = mutableMessage:get(),
-            x = self.x,
-            y = self.y,
-        }
-
+        self:initJotData()
         self.picture:addJot(self.jot)
         self.jot = newTextJot()
         self.x, self.y = nil, nil
+    end,
+
+    initJotData = function(self)
+        self.jot.data = {
+            color    = mutableColor:get(),
+            font     = mutableFont:get(),
+            message  = mutableMessage:get(),
+            fontSize = mutableFont:getFontSize(),
+            x        = self.x,
+            y        = self.y,
+        }
     end,
 
     penDown = function(self, mx, my)
