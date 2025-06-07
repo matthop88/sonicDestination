@@ -27,7 +27,7 @@ end
 
 local lineJotToString = function(self)
     local color = self.data.color or { 1, 1, 1 }
-    local lineString = lineJotStringStart()
+    local lineString = lineJotStringStart(color)
 
     for _, pt in ipairs(self.data) do
         lineString = lineString .. "      { x = " .. pt.x .. ", y = " .. pt.y .. " },\n"
