@@ -43,8 +43,8 @@ return {
         saveData = function(self, data)
             local success, message = love.filesystem.write("scribble.lua", data)
 
-            if success then self:showSaveSuccessMessage()
-            else            self:showSaveFailureMessage() end
+            if success then self:showSaveSuccessMessage(data)
+            else            self:showSaveFailureMessage(message) end
         end,
 
         showSaveSuccessMessage = function(self, data)
