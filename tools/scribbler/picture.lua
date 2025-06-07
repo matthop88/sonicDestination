@@ -1,3 +1,5 @@
+local VERSION = "0.2"
+
 return {
     jotFactory = require("tools/scribbler/utils/jotFactory"),
 
@@ -24,24 +26,35 @@ return {
         end,
 
         save = function(self)
-            local version = "0.2"
-            
-            local serializedJots = "return { version = \"" .. version .. "\", \n"
+            local serializedJots = self:serializeJots()
+            self:saveData(serializedJots)
+        end,
+
+        serializeJots = function(self)
+            local serializedJots = "return { version = \"" .. VERSION .. "\", \n"
             for n, jot in ipairs(self) do
                 if n <= self.tailIndex then
                     serializedJots = serializedJots .. jot:toString()
                 end
             end
-            serializedJots = serializedJots .. "\n}"
-            local success, message = love.filesystem.write( "scribble.lua", serializedJots)
+            return serializedJots .. "\n}"
+        end,
 
-            if success then
-                print("File created in " .. love.filesystem.getSaveDirectory())
-                printToReadout("File Saved: " .. string.len(serializedJots) .. " bytes")
-            else
-                print("File not created: " .. message)
-                printToReadout("ERROR when saving!")
-            end
+        saveData = function(self, data)
+            local success, message = love.filesystem.write("scribble.lua", data)
+
+            if success then self:showSaveSuccessMessage()
+            else            self:showSaveFailureMessage() end
+        end,
+
+        showSaveSuccessMessage = function(self, data)
+            print("File created in " .. love.filesystem.getSaveDirectory())
+            printToReadout("File Saved: " .. string.len(data) .. " bytes")
+        end,
+
+        showSaveFailureMessage = function(self, message)
+            print("File not created: " .. message)
+            printToReadout("ERROR when saving!")
         end,
     },
 
