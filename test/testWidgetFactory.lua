@@ -1,6 +1,6 @@
 TESTING = require "test/testFramework"
 
-tests = {
+TESTS = {
     WIDGET_FACTORY = require 'tools/stateMachine/widgetFactory",
     pluginManager  = nil,
 
@@ -20,6 +20,6 @@ tests = {
 
 }
 
-TESTING:initTests(tests)
+TESTING:initTests(TESTS)
 
 require "test/delayTests"
