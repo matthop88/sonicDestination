@@ -60,6 +60,7 @@ local WIDGETS        = ({
         if self.currentIndex > #self then
             self.currentIndex = 1
         end
+        self:refresh()
     end,
 
     prev = function(self)
@@ -67,6 +68,7 @@ local WIDGETS        = ({
         if self.currentIndex < 1 then
             self.currentIndex = #self
         end
+        self:refresh()
     end,
 
     refresh = function(self)
@@ -92,8 +94,12 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == "return" then
+    if     key == "return" then
         WIDGETS:refresh()
+    elseif key == "shiftleft" then
+        WIDGETS:prev()
+    elseif key == "shiftright" then
+        WIDGETS:next()
     end
 end
 
@@ -112,6 +118,7 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
+    :add("modKeyEnabler")
     :add("scrolling", { imageViewer = GRAFX })
     :add("zooming",   { imageViewer = GRAFX })
     
