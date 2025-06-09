@@ -5,7 +5,10 @@ return ({
     currentWidgetList = { },
     currentIndex      = 1,
 
-    init = function(self)
+    WIDGET_FACTORY = nil,
+        
+    init = function(self, widgetFactory)
+        self.WIDGET_FACTORY = widgetFactory
         self:refresh()
         return self
     end,
@@ -31,7 +34,7 @@ return ({
     end,
 
     refresh = function(self)
-        self.currentWidgetList = WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
+        self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
     end,
 
 }):init()
