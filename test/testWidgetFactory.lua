@@ -14,7 +14,23 @@ TESTS = {
 
     --------- Tests ----------
 
-    -- ...
+   testArrowLeftToRight = function(self)
+        local name = "Arrow from Left to Right"
+
+        local data = {
+            { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
+            { type = "BOX",   label = "Run Right",   x = 21, y = 5, w = 9, h = 8 },
+            { type = "ARROW", label = "R On", from = "Stand Right", to = "Run Right", y = 5 },
+        }
+
+        local widgets = self.widgetFactory:createWidgets(data)
+
+        return TESTING:assertTrue(name, widgets[3].x1 == 11
+                                    and widgets[3].x2 == 21
+                                    and widgets[3].y1 ==  5
+                                    and widgets[3].y2 ==  5)
+    end,
+    
     -- ...
     -- ...
 
