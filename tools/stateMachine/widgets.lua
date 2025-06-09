@@ -13,9 +13,15 @@ return {
         return self
     end,
 
-    get         = function(self) return self.currentWidgetList                                     end,
-    getDataName = function(self) return self[self.currentIndex]                                    end,
-    getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,
+    draw = function(self)
+        for _, widget in ipairs(self:get()) do
+            widget:draw()
+        end
+    end,
+    
+    get  = function(self) 
+        return self.currentWidgetList                                     
+    end,
 
     next = function(self)
         self.currentIndex = self.currentIndex + 1
@@ -37,4 +43,7 @@ return {
         self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
     end,
 
+    getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,
+    getDataName = function(self) return self[self.currentIndex]                                    end,
+    
 }
