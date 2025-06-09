@@ -26,7 +26,7 @@ function love.load(args)
         __VIEWER_FILE = args[2]
         require "tools/stateMachine/viewer"
     elseif args[1] == "test" then
-        require "test/testModKeyEnabler"
+        require "test/testWidgetFactory"
     else
         require "game/main"
     end
