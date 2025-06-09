@@ -1,4 +1,4 @@
-return ({
+return {
     "standing",
     "running",
 
@@ -37,4 +37,4 @@ return ({
         self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
     end,
 
-}):init()
+}
