@@ -23,7 +23,7 @@ TESTS = {
             { type = "ARROW", label = "R On", from = "Stand Right", to = "Run Right", y = 5 },
         }
 
-        local widgets = self.widgetFactory:createWidgets(data)
+        local widgets = self.WIDGET_FACTORY:createWidgets(data)
 
         return TESTING:assertTrue(name, widgets[3].x1 == 11
                                     and widgets[3].x2 == 21
