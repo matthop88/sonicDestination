@@ -1,7 +1,7 @@
 TESTING = require "test/testFramework"
 
 TESTS = {
-    WIDGET_FACTORY = require 'tools/stateMachine/widgetFactory",
+    WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"),
     pluginManager  = nil,
 
     beforeAll = function(self)
