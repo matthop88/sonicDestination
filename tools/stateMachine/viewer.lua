@@ -39,7 +39,7 @@ local GRAFX                       = require "tools/lib/graphics"
 local PEGBOARD       = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
 local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 
-local WIDGETS        = WIDGET_FACTORY:createWidgets(require("tools/stateMachine/data/standing"))
+local WIDGETS        = WIDGET_FACTORY:createWidgets(require("tools/stateMachine/data/running"))
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
