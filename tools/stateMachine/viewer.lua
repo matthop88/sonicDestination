@@ -56,14 +56,22 @@ function love.draw()
     end
 end
 
--- ...
+function love.keypressed(key)
+    if key == "return" then
+        refresh()
+    end
+end
+
 -- ...
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function refresh()
+    WIDGETS = WIDGET_FACTORY:createWidgets(dofile("tools/stateMachine/data/running.lua"))
+end
+
 -- ...
 -- ...
 
