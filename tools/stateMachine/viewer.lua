@@ -39,7 +39,42 @@ local GRAFX                       = require "tools/lib/graphics"
 local PEGBOARD       = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
 local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 
-local WIDGETS        = WIDGET_FACTORY:createWidgets(require("tools/stateMachine/data/running"))
+local WIDGETS        = ({
+    "standing",
+    "running",
+
+    currentWidgetList = { },
+    currentIndex      = 1,
+
+    init = function(self)
+        self:refresh()
+        return self
+    end,
+
+    get         = function(self) return self.currentWidgetList                                     end,
+    getDataName = function(self) return self[self.currentIndex]                                    end,
+    getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,
+
+    next = function(self)
+        self.currentIndex = self.currentIndex + 1
+        if self.currentIndex > #self then
+            self.currentIndex = 1
+        end
+    end,
+
+    prev = function(self)
+        self.currentIndex = self.currentIndex - 1
+        if self.currentIndex < 1 then
+            self.currentIndex = #self
+        end
+    end,
+
+    refresh = function(self)
+        self.currentWidgetList = WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
+    end,
+
+}):init()  
+       
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -51,14 +86,14 @@ local WIDGETS        = WIDGET_FACTORY:createWidgets(require("tools/stateMachine/
 function love.draw()
     PEGBOARD:draw()
 
-    for _, widget in ipairs(WIDGETS) do
+    for _, widget in ipairs(WIDGETS:get()) do
         widget:draw()
     end
 end
 
 function love.keypressed(key)
     if key == "return" then
-        refresh()
+        WIDGETS:refresh()
     end
 end
 
@@ -68,10 +103,7 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function refresh()
-    WIDGETS = WIDGET_FACTORY:createWidgets(dofile("tools/stateMachine/data/running.lua"))
-end
-
+-- ...
 -- ...
 -- ...
 
