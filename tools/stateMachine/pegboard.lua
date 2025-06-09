@@ -21,8 +21,12 @@ return {
     end,
 
     drawHoles = function(self)
-        for y = 0, love.graphics.getHeight(), GRID_SIZE do
-            for x = 0, love.graphics.getWidth(), GRID_SIZE do
+        local worldX, worldY = GRAFX:screenToImageCoordinates(0, 0)
+        local startX, startY = worldX - (worldX % GRID_SIZE), worldY - (worldY % GRID_SIZE)
+        local endX,   endY   = GRAFX:screenToImageCoordinates(love.graphics.getWidth(), love.graphics.getHeight())
+        
+        for y = startY, endY, GRID_SIZE do
+            for x = startX, endX, GRID_SIZE do
                 self:drawHole(x, y)
             end
         end
