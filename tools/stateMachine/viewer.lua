@@ -50,10 +50,7 @@ local WIDGETS        = require("tools/stateMachine/widgets"):init(WIDGET_FACTORY
 --------------------------------------------------------------
 function love.draw()
     PEGBOARD:draw()
-
-    for _, widget in ipairs(WIDGETS:get()) do
-        widget:draw()
-    end
+    WIDGETS:draw()
 end
 
 function love.keypressed(key)
