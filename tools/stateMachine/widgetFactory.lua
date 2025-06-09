@@ -10,14 +10,6 @@ return {
         return self
     end,
 
-    createFromDataElement = function(self, element)
-        if     element.type == "BOX"   then
-            return self.BOX:create(element.label, element.x, element.y, element.w, element.h)
-        elseif element.type == "ARROW" then
-            return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
-        end
-    end,
-
     createWidgets = function(self, data)
         local widgets = {}
 
@@ -26,5 +18,17 @@ return {
         end
 
         return widgets
+    end,
+
+    createFromDataElement = function(self, element)
+        if     element.type == "BOX"   then
+            return self.BOX:create(element.label, element.x, element.y, element.w, element.h)
+        elseif element.type == "ARROW" then
+            return self:createArrow(element)
+        end
+    end,
+
+    createArrow = function(self, element)
+        return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
     end,
 }
