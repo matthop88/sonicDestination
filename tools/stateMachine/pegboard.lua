@@ -17,7 +17,7 @@ return {
 
     drawBackground = function(self)
         GRAFX:setColor(COLORS.MOSS_GREEN)
-        GRAFX:rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end,
 
     drawHoles = function(self)
