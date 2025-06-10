@@ -6,11 +6,11 @@ return {
     initTests = function(self, testsClass)
         self.testsClass = testsClass
 
-        self.runnableTests = {}
+        self.runnableTestsByName = {}
 
         for testName, test in pairs(testsClass) do
             if testName:sub(1, 4) == "test" then
-                table.insert(self.runnableTests, test)
+                self.runnableTestsByName[testName] = test
             end
         end
     end,
@@ -24,8 +24,8 @@ return {
             self.testsClass:beforeAll()
         end
         
-        for _, test in ipairs(self.runnableTests) do
-            if self:runTest(test) then
+        for testName, test in pairs(self.runnableTestsByName) do
+            if self:runTest(test, testName) then
                 testsSucceeded = testsSucceeded + 1
             end
         end
@@ -41,7 +41,7 @@ return {
         love.event.quit()
     end,
 
-    runTest = function(self, testFn)
+    runTest = function(self, testFn, testName)
         if self.testsClass.before then
             self.testsClass:before()
         end
@@ -49,7 +49,7 @@ return {
         if status == true then
             return true
         else
-            print("Test FAILED with error: ", err)
+            print("Test " .. testName .. " FAILED with error: ", err)
             return false
         end
     end,
