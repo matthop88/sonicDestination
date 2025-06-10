@@ -45,7 +45,8 @@ return {
         if self.testsClass.before then
             self.testsClass:before()
         end
-        return testFn(self.testsClass)
+        local status, err = pcall(function() testFn(self.testsClass) end)
+        return status
     end,
 
     assertTrue = function(self, name, expression)
