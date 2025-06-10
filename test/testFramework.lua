@@ -46,7 +46,12 @@ return {
             self.testsClass:before()
         end
         local status, err = pcall(function() testFn(self.testsClass) end)
-        return status
+        if status == true then
+            return true
+        else
+            print("Test FAILED with error: ", err)
+            return false
+        end
     end,
 
     assertTrue = function(self, name, expression)
