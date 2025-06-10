@@ -31,7 +31,10 @@ TESTS = {
                                     and widgets[3].y2 ==  5)
     end,
     
-    -- ...
+    testWhichAlwaysPasses = function(self)
+        return TESTING:assertTrue("Test which always passes", 2 + 2 == 4)
+    end,
+    
     -- ...
 
 }
