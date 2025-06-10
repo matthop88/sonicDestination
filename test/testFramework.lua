@@ -52,7 +52,7 @@ return {
             return true
         else
             print("FAILED => " .. testName)
-            print("          WITH ERROR: ", err)
+            print("          WITH ERROR: ", err, "\n")
             return false
         end
     end,
