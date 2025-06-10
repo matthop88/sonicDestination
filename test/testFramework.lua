@@ -51,7 +51,8 @@ return {
         if status == true then
             return true
         else
-            print("Test " .. testName .. " FAILED with error: ", err)
+            print("FAILED => " .. testName)
+            print("          WITH ERROR: ", err)
             return false
         end
     end,
