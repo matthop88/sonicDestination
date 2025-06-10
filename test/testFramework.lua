@@ -7,10 +7,12 @@ return {
         self.testsClass = testsClass
 
         self.runnableTestsByName = {}
+        self.testCount           = 0
 
         for testName, test in pairs(testsClass) do
             if testName:sub(1, 4) == "test" then
                 self.runnableTestsByName[testName] = test
+                self.testCount = self.testCount + 1
             end
         end
     end,
@@ -30,9 +32,9 @@ return {
             end
         end
 
-        local testsFailed = #self.runnableTests - testsSucceeded
+        local testsFailed = self.testCount - testsSucceeded
 
-        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. #self.runnableTests)
+        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. self.testCount)
         if testsFailed > 0 then
             print("\n" .. testsFailed .. " tests FAILED.")
         end
