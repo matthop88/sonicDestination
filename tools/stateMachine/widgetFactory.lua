@@ -48,6 +48,8 @@ return {
         local dstBox = self.boxesByName[element.to]
         if dstBox.x > srcBox.x then
             return self.ARROW:create(element.label, srcBox.x + srcBox.w, element.y, dstBox.x, element.y)
+        else
+            return self.ARROW:create(element.label, srcBox.x, element.y, dstBox.x + dstBox.w, element.y)
         end
     end,
 }
