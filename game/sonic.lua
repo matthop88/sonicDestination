@@ -1,24 +1,29 @@
+local SONIC
+
+local STAND_LEFT, STAND_RIGHT
+
+STAND_LEFT = {
+    onEnter    = function(self) SONIC:faceLeft() end,
+    keypressed = function(self, key)
+        if key == "right" then SONIC:setState(STAND_RIGHT) end
+    end,
+}
+
+STAND_RIGHT = {
+    onEnter    = function(self) SONIC:faceRight() end,
+    keypressed = function(self, key)
+        if key == "left" then SONIC:setState(STAND_LEFT) end
+    end,
+}
+
 return {
     x = 0, y = 0,
         
-    states = {
-        standLeft  = { 
-            onEnter    = function(self) self:faceLeft() end, 
-            keypressed = function(self, key)
-                if key == "right" then self:setState("standRight") end
-             end,
-        },
-        standRight = { 
-            onEnter = function(self) self:faceRight() end, 
-            keypressed = function(self, key)
-                if key == "left" then self:setState("standLeft") end
-            end,
-        },
-    },
+    state = STAND_RIGHT,
             
     init = function(self, params)
-        self.currentState = self.states.standRight
         self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        SONIC = self
         return self
     end,
 
@@ -31,7 +36,7 @@ return {
     end,
 
     keypressed = function(self, key)
-        self.currentState.keypressed(self, key)
+        self.state:keypressed(key)
         if     key == "up"   then
             self.sprite:setCurrentAnimation("running")
         elseif key == "down" then
@@ -54,9 +59,9 @@ return {
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
-    setState      = function(self, newStateName)
-        self.currentState = self.states[newStateName]
-        self.currentState.onEnter(self)
+    setState      = function(self, state)
+        self.state = state
+        self.state:onEnter()
     end,
 
 }
