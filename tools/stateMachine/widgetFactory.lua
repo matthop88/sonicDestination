@@ -47,9 +47,9 @@ return {
         local srcBox = self.boxesByName[element.from]
         local dstBox = self.boxesByName[element.to]
         if dstBox.x > srcBox.x then
-            return self.ARROW:create(element.label, srcBox.x + srcBox.w, element.y, dstBox.x, element.y)
+            return self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y)
         else
-            return self.ARROW:create(element.label, srcBox.x, element.y, dstBox.x + dstBox.w, element.y)
+            return self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y)
         end
     end,
 }
