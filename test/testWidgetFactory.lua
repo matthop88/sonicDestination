@@ -5,7 +5,7 @@ TESTS = {
     pluginManager  = nil,
 
     beforeAll = function(self)
-        self.WIDGET_FACTORY:init(32, 32, nil)
+        self.WIDGET_FACTORY:init(1, 1, nil)
     end,
 
     before    = function(self)
