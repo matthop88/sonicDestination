@@ -15,7 +15,7 @@ TESTS = {
     --------- Tests ----------
 
    testArrowLeftToRight = function(self)
-        local name = "Arrow from Left to Right"
+        local name = "Test Arrow from Left to Right"
 
         local data = {
             { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
@@ -25,16 +25,27 @@ TESTS = {
 
         local widgets = self.WIDGET_FACTORY:createWidgets(data)
 
-        return TESTING:assertTrue(name, widgets[3].x1 == 11
-                                    and widgets[3].x2 == 21
-                                    and widgets[3].y1 ==  5
-                                    and widgets[3].y2 ==  5)
+        local resultString = "X1 = " .. widgets[3].x1 .. ", X2 = " .. widgets[3].x2 .. ", Y1 = " .. widgets[3].y1 .. ", Y2 = " .. widgets[3].y2
+        
+        return TESTING:assertEquals(name, "X1 = 11, X2 = 21, Y1 = 5, Y2 = 5", resultString)
     end,
     
-    testWhichAlwaysPasses = function(self)
-        return TESTING:assertTrue("Test which always passes", 2 + 2 == 4)
+    testArrowRightToLeft = function(self)
+        local name = "Test Arrow from Right to Left"
+
+        local data = {
+            { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
+            { type = "BOX",   label = "Run Right",   x = 21, y = 5, w = 9, h = 8 },
+            { type = "ARROW", label = "R Off", from = "Run Right", to = "Stand Right", y = 8 },
+        }
+
+        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+
+        local resultString = "X1 = " .. widgets[3].x1 .. ", X2 = " .. widgets[3].x2 .. ", Y1 = " .. widgets[3].y1 .. ", Y2 = " .. widgets[3].y2
+        
+        return TESTING:assertEquals(name, "X1 = 21, X2 = 11, Y1 = 8, Y2 = 8", resultString)
     end,
-    
+        
     -- ...
 
 }
