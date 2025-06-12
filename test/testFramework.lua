@@ -22,6 +22,8 @@ return {
                 self.testsSucceeded, self.testsFailed = 0, 0
                 self.errors = {}
 
+                if self.testsClass.beforeAll then self.testsClass:beforeAll() end
+                
                 for testName, testFn in pairs(self.tests) do
                     self:runTest(testFn, testName)
                 end
