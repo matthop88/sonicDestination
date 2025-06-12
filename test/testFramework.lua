@@ -4,14 +4,13 @@ love.window.setTitle("Testing Suite... Setting Up Tests")
 
 return {
     initTests = function(self, testsClass)
-        self.testsClass = testsClass
-
-        self.runnableTestsByName = {}
-        self.testCount           = 0
+        self.testsClass    = testsClass
+        self.runnableTests = {}
+        self.testCount     = 0
 
         for testName, test in pairs(testsClass) do
             if testName:sub(1, 4) == "test" then
-                self.runnableTestsByName[testName] = test
+                self.runnableTests[testName] = test
                 self.testCount = self.testCount + 1
             end
         end
@@ -25,7 +24,6 @@ return {
         end
         
         local testsSucceeded = self:runTests()
-        
         self:showTestingSummary(testsSucceeded)
         
         love.event.quit()
@@ -34,7 +32,7 @@ return {
     runTests = function(self)
         local testsSucceeded = 0
         
-        for testName, test in pairs(self.runnableTestsByName) do
+        for testName, test in pairs(self.runnableTests) do
             if self:runTest(test, testName) then
                 testsSucceeded = testsSucceeded + 1
             end
