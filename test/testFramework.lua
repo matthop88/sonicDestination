@@ -29,10 +29,13 @@ return {
 
             runTest = function(self, testFn, testName)
                 self:runPretest()
-                local status, err = pcall(function() testFn(self.testsClass) end)
+                local testResult = false
+                local status, err = pcall(function() testResult = testFn(self.testsClass) end)
                 if status == true then
-                    self.testsSucceeded = self.testsSucceeded + 1
+                    if testResult == true then self.testsSucceeded = self.testsSucceeded + 1
+                    else                       self.testsFailed    = self.testsFailed    + 1 end
                 else
+                    print("Test failed: " .. testName .. " with error: " .. err)
                     table.insert(self.errors, { testName = testName, err = err })
                     self.testsFailed = self.testsFailed + 1
                 end
