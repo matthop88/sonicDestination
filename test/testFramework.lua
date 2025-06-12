@@ -5,64 +5,66 @@ love.window.setTitle("Testing Suite... Setting Up Tests")
 return {
     initTests = function(self, testsClass)
         self.testsClass    = testsClass
-        self.runnableTests = {}
-        self.testCount     = 0
+        self.runnableTests = {
+            tests  = { },
+            errors = { },
 
-        for testName, test in pairs(testsClass) do
-            if testName:sub(1, 4) == "test" then
-                self.runnableTests[testName] = test
+            testCount      = 0,
+            testsSucceeded = 0,
+            testsFailed    = 0,
+
+            add = function(self, testName, testFn)
+                self.tests[testName] = testFn
                 self.testCount = self.testCount + 1
+            end,
+
+            run = function(self)
+                self.testsSucceeded, self.testsFailed = 0, 0
+                self.errors = {}
+
+                for testName, testFn in pairs(self.tests) do
+                    self:runTest(testFn, testName)
+                end
+            end,
+
+            runTest = function(self, testFn, testName)
+                self:runPretest()
+                local status, err = pcall(function() testFn(self.testsClass) end)
+                if status == true then
+                    self.testsSucceeded = self.testsSucceeded + 1
+                else
+                    table.insert(self.errors, { testName = testName, err = err })
+                    self.testsFailed = self.testsFailed + 1
+                end
+            end,
+
+            runPretest = function(self)
+                if testsClass.before then
+                    testsClass:before()
+                end
+            end,
+        }
+        
+        for testName, fn in pairs(testsClass) do
+            if testName:sub(1, 4) == "test" then
+                self.runnableTests:add(testName, fn)
             end
         end
     end,
 
     runAll = function(self)
         print("\nRunning Tests\n-------------")
-
-        if self.testsClass.beforeAll then
-            self.testsClass:beforeAll()
-        end
-        
-        local testsSucceeded = self:runTests()
-        self:showTestingSummary(testsSucceeded)
+        self.runnableTests:run()
+        self:showTestingSummary()
         
         love.event.quit()
     end,
 
-    runTests = function(self)
-        local testsSucceeded = 0
-        
-        for testName, test in pairs(self.runnableTests) do
-            if self:runTest(test, testName) then
-                testsSucceeded = testsSucceeded + 1
-            end
-        end
-
-        return testsSucceeded
-    end,
-
-    runTest = function(self, testFn, testName)
-        self:runPretest()
-        local status, err = pcall(function() testFn(self.testsClass) end)
-        if not status then
-            print("FAILED => " .. testName)
-            print("          WITH ERROR: ", err, "\n")
-        end
-        return status
-    end,
-
-    runPretest = function(self)
-        if self.testsClass.before then
-            self.testsClass:before()
-        end
-    end,
-
     showTestingSummary = function(self, testsSucceeded)
-        local testsFailed = self.testCount - testsSucceeded
-
-        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. self.testCount)
-        if testsFailed > 0 then
-            print("\n" .. testsFailed .. " tests FAILED.")
+        
+        print("\nTests succeeded: " .. self.runnableTests.testsSucceeded .. " out of " .. self.runnableTests.testCount)
+        if self.runnableTests.testsFailed > 0 then
+            print("\n" .. self.runnableTests.testsFailed .. " tests FAILED.")
         end
         print("\n")
     end,
