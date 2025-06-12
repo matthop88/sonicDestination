@@ -32,13 +32,7 @@ return {
             end
         end
 
-        local testsFailed = self.testCount - testsSucceeded
-
-        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. self.testCount)
-        if testsFailed > 0 then
-            print("\n" .. testsFailed .. " tests FAILED.")
-        end
-        print("\n")
+        self:showTestingSummary(testsSucceeded)
         
         love.event.quit()
     end,
@@ -55,6 +49,16 @@ return {
             print("          WITH ERROR: ", err, "\n")
             return false
         end
+    end,
+
+    showTestingSummary = function(self, testsSucceeded)
+        local testsFailed = self.testCount - testsSucceeded
+
+        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. self.testCount)
+        if testsFailed > 0 then
+            print("\n" .. testsFailed .. " tests FAILED.")
+        end
+        print("\n")
     end,
 
     assertTrue = function(self, name, expression)
