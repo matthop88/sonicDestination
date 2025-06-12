@@ -4,8 +4,8 @@ love.window.setTitle("Testing Suite... Setting Up Tests")
 
 return {
     initTests = function(self, testsClass)
-        self.testsClass    = testsClass
         self.runnableTests = {
+            testsClass = testsClass,
             tests  = { },
             errors = { },
 
