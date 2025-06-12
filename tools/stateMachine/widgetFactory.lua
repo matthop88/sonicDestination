@@ -36,6 +36,18 @@ return {
     end,
     
     createArrow = function(self, element)
-        return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
+        if element.x1 then
+            return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
+        else
+            return self:createSmartArrow(element)
+        end
+    end,
+
+    createSmartArrow = function(self, element)
+        local srcBox = self.boxesByName[element.from]
+        local dstBox = self.boxesByName[element.to]
+        if dstBox.x > srcBox.x then
+            return self.ARROW:create(element.label, srcBox.x + srcBox.w, element.y, dstBox.x, element.y)
+        end
     end,
 }
