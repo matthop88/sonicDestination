@@ -37,7 +37,6 @@ return {
                     if testResult == true then self.testsSucceeded = self.testsSucceeded + 1
                     else                       self.testsFailed    = self.testsFailed    + 1 end
                 else
-                    print("Test failed: " .. testName .. " with error: " .. err)
                     table.insert(self.errors, { testName = testName, err = err })
                     self.testsFailed = self.testsFailed + 1
                 end
@@ -66,12 +65,21 @@ return {
     end,
 
     showTestingSummary = function(self, testsSucceeded)
-        
         print("\nTests succeeded: " .. self.runnableTests.testsSucceeded .. " out of " .. self.runnableTests.testCount)
         if self.runnableTests.testsFailed > 0 then
             print("\n" .. self.runnableTests.testsFailed .. " tests FAILED.")
         end
+        self:showFailedTestingDetails()
         print("\n")
+    end,
+
+    showFailedTestingDetails = function(self)
+        if #self.runnableTests.errors > 0 then
+            for _, error in ipairs(self.runnableTests.errors) do
+                print("FAILED => " .. error.testName)
+                print("          WITH ERROR: " .. error.err)
+            end
+        end
     end,
 
     assertTrue = function(self, name, expression)
