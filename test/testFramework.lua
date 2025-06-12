@@ -18,13 +18,21 @@ return {
     end,
 
     runAll = function(self)
-        local testsSucceeded = 0
-
         print("\nRunning Tests\n-------------")
 
         if self.testsClass.beforeAll then
             self.testsClass:beforeAll()
         end
+        
+        local testsSucceeded = self:runTests()
+        
+        self:showTestingSummary(testsSucceeded)
+        
+        love.event.quit()
+    end,
+
+    runTests = function(self)
+        local testsSucceeded = 0
         
         for testName, test in pairs(self.runnableTestsByName) do
             if self:runTest(test, testName) then
@@ -32,22 +40,22 @@ return {
             end
         end
 
-        self:showTestingSummary(testsSucceeded)
-        
-        love.event.quit()
+        return testsSucceeded
     end,
 
     runTest = function(self, testFn, testName)
-        if self.testsClass.before then
-            self.testsClass:before()
-        end
+        self:runPretest()
         local status, err = pcall(function() testFn(self.testsClass) end)
-        if status == true then
-            return true
-        else
+        if not status then
             print("FAILED => " .. testName)
             print("          WITH ERROR: ", err, "\n")
-            return false
+        end
+        return status
+    end,
+
+    runPretest = function(self)
+        if self.testsClass.before then
+            self.testsClass:before()
         end
     end,
 
