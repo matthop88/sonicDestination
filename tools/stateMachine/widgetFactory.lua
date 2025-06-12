@@ -12,6 +12,7 @@ return {
 
     createWidgets = function(self, data)
         local widgets = {}
+        self.boxesByName = {}
 
         for _, dataElement in ipairs(data) do
             table.insert(widgets, self:createFromDataElement(dataElement))
@@ -22,12 +23,18 @@ return {
 
     createFromDataElement = function(self, element)
         if     element.type == "BOX"   then
-            return self.BOX:create(element.label, element.x, element.y, element.w, element.h)
+            return self:createBox(element)
         elseif element.type == "ARROW" then
             return self:createArrow(element)
         end
     end,
 
+    createBox   = function(self, element)
+        local box = self.BOX:create(element.label, element.x, element.y, element.w, element.h)
+        self.boxesByName[element.label] = box
+        return box
+    end,
+    
     createArrow = function(self, element)
         return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
     end,
