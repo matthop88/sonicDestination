@@ -27,7 +27,7 @@ TESTS = {
         local name    = "Test Arrow from Right to Left"
         local widgets = self:generateTestWidgets()
 
-        local resultString = "X1 = " .. widgets[3].x1 .. ", X2 = " .. widgets[3].x2 .. ", Y1 = " .. widgets[3].y1 .. ", Y2 = " .. widgets[3].y2
+        local resultString = "X1 = " .. widgets[4].x1 .. ", X2 = " .. widgets[4].x2 .. ", Y1 = " .. widgets[4].y1 .. ", Y2 = " .. widgets[4].y2
         
         return TESTING:assertEquals(name, "X1 = 21, X2 = 11, Y1 = 8, Y2 = 8", resultString)
     end,
@@ -36,14 +36,14 @@ TESTS = {
         local name    = "Test Left Arrow 'To' Field"
         local widgets = self:generateTestWidgets()
 
-        return TESTING:assertTrue(name, widgets[3].to == widgets[1])
+        return TESTING:assertTrue(name, widgets[4].to == widgets[1])
     end,
 
     testLeftArrowFromField = function(self)
         local name    = "Test Left Arrow 'From' Field"
         local widgets = self:generateTestWidgets()
 
-        return TESTING:assertTrue(name, widgets[3].from == widgets[2])
+        return TESTING:assertTrue(name, widgets[4].from == widgets[2])
     end,
 
     testLeftArrowKeyreleasedField = function(self)
