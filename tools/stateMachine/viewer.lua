@@ -76,9 +76,9 @@ function processKeypressedEvent(key)
     WIDGETS:deselectAll()
     for _, widget in ipairs(WIDGETS:get()) do
         --[[
-        if widget.keypressed == key and widget.from == selectedBox then
-            selectedBox = widget.to
-            selectedBox:select()
+        if widget.keypressed == key and widget.from == targetBox then
+            targetBox = widget.to
+            targetBox:select()
         end
         --]]
     end
