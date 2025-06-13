@@ -55,6 +55,7 @@ return {
         local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y)
         smartRightArrow.from = srcBox
         smartRightArrow.to   = dstBox
+        self:createKeyEvent(smartRightArrow)
         return smartRightArrow
     end,
 
@@ -62,6 +63,7 @@ return {
         local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y)
         smartLeftArrow.from = srcBox
         smartLeftArrow.to   = dstBox
+        self:createKeyEvent(smartLeftArrow)
         return smartLeftArrow
     end,
 
