@@ -41,7 +41,7 @@ local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZ
 
 local WIDGETS        = require("tools/stateMachine/widgets"):init(WIDGET_FACTORY)
 
-local targetBox      = WIDGETS:getFirstBox()
+local targetBox      = nil
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -56,10 +56,18 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if     key == "return" then WIDGETS:refresh()
-    elseif key == "TAB"    then WIDGETS:prev()
-    elseif key == "tab"    then WIDGETS:next()
-    else                        processKeypressedEvent(key) end
+    if     key == "return" then 
+        WIDGETS:refresh()
+        refreshTargetBox()
+    elseif key == "TAB"    then 
+        WIDGETS:prev()
+        refreshTargetBox()
+    elseif key == "tab"    then 
+        WIDGETS:next()
+        refreshTargetBox()
+    else
+        processKeypressedEvent(key) 
+    end
 end
 
 function love.mousepressed(mx, my)
@@ -81,7 +89,11 @@ function processKeypressedEvent(key)
     end
 end
 
--- ...
+function refreshTargetBox()
+    targetBox = WIDGETS:getFirstBox()
+    targetBox:select()
+end
+
 -- ...
 
 --------------------------------------------------------------
@@ -109,3 +121,4 @@ PLUGINS = require("plugins/engine")
 love.window.setTitle("State Machine Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+refreshTargetBox()
