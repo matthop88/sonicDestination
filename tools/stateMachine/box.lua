@@ -20,14 +20,27 @@ return {
             w               = w * self.GRID_SIZE,
             h               = h * self.GRID_SIZE,
 
+            selected        = false,
+
             draw = function(self)
-                if self:isMouseInside() then
-                    self:drawHighlightedBox()
-                    self:drawHighlightedLabel()
-                else
-                    self:drawBox()
-                    self:drawLabel()
-                end
+                if     self.selected        then self:drawSelected()
+                elseif self:isMouseInside() then self:drawHighlighted()
+                else                             self:drawNormal()   end
+            end,
+
+            drawNormal = function(self)
+                self:drawBox()
+                self:drawLabel()
+            end,
+
+            drawHighlighted = function(self)
+                self:drawHighlightedBox()
+                self:drawHighlightedLabel()
+            end,
+
+            drawSelected = function(self)
+                self:drawSelectedBox()
+                self:drawSelectedLabel()
             end,
             
             drawBox = function(self)
@@ -45,6 +58,14 @@ return {
                 self.graphics:setLineWidth(5)
                 self.graphics:rectangle("line", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
             end,
+
+            drawSelectedBox = function(self)
+                self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
+                self.graphics:setColor(COLORS.RED)
+                self.graphics:setLineWidth(5)
+                self.graphics:rectangle("line", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
+            end,
         
             drawLabel = function(self)
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE)
@@ -55,6 +76,12 @@ return {
             drawHighlightedLabel = function(self)
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE + 3) 
                 self.graphics:setColor(COLORS.JET_BLACK)
+                self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
+            end,
+
+            drawSelectedLabel = function(self)
+                self.graphics:setFontSize(self.LABEL_FONT_SIZE + 3) 
+                self.graphics:setColor(COLORS.RED)
                 self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
             end,
 
