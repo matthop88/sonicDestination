@@ -56,13 +56,10 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if     key == "return" then
-        WIDGETS:refresh()
-    elseif key == "shiftleft" then
-        WIDGETS:prev()
-    elseif key == "shiftright" then
-        WIDGETS:next()
-    end
+    if     key == "return"     then WIDGETS:refresh()
+    elseif key == "shiftleft"  then WIDGETS:prev()
+    elseif key == "shiftright" then WIDGETS:next()
+    else                            processKeypressedEvent(key) end
 end
 
 function love.mousepressed(mx, my)
@@ -77,12 +74,10 @@ end
 function processKeypressedEvent(key)
     WIDGETS:deselectAll()
     for _, widget in ipairs(WIDGETS:get()) do
-        --[[
         if widget.keypressed == key and widget.from == targetBox then
             targetBox = widget.to
             targetBox:select()
         end
-        --]]
     end
 end
 
