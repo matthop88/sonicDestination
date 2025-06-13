@@ -66,7 +66,7 @@ return {
             end,
 
             drawSelectedBox = function(self)
-                self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                self.graphics:setColor(COLORS.LIGHT_PINK)
                 self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
                 self.graphics:setColor(COLORS.RED)
                 self.graphics:setLineWidth(5)
