@@ -63,6 +63,10 @@ return {
                 self.x, self.y, self.w, self.h = lineToRect(self.x1, self.y1, self.x2, self.y2)
                 return self
             end,
+
+            getType = function(self)
+                return "ARROW"
+            end,
             
             draw = function(self)
                 self.highlighted = self:isMouseInside()
