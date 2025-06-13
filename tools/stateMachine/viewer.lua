@@ -41,6 +41,8 @@ local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZ
 
 local WIDGETS        = require("tools/stateMachine/widgets"):init(WIDGET_FACTORY)
 
+local targetBox      = WIDGETS:getFirstBox()
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
