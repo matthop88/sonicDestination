@@ -17,9 +17,9 @@ TESTS = {
 
    testGetFirstBox = function(self)
         local name    = "Test Get First Box"
-        local widgets = self:generateTestWidgets()
+        self.WIDGETS.currentWidgetList = self:generateTestWidgets()
 
-        return TESTING:assertTrue(name, self.WIDGETS:getFirstBox() == widgets[1])
+        return TESTING:assertTrue(name, self.WIDGETS:getFirstBox() == self.WIDGETS.currentWidgetList[1])
     end,
 
     generateTestWidgets = function(self)
