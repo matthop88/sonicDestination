@@ -64,4 +64,13 @@ return {
         smartLeftArrow.to   = dstBox
         return smartLeftArrow
     end,
+
+    createKeyEvent = function(self, element)
+        if     element.label == "L On"  then element.keypressed  = "left"
+        elseif element.label == "R On"  then element.keypressed  = "right"
+        elseif element.label == "L Off" then element.keyreleased = "left"
+        elseif element.label == "R Off" then element.keyreleased = "right"
+        end
+    end,
+    
 }
