@@ -57,5 +57,10 @@ return {
 
     getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,
     getDataName = function(self) return self[self.currentIndex]                                    end,
-    
+
+    getFirstBox = function(self)
+        for _, widget in ipairs(self:get()) do
+            if widget.drawBox then return widget end
+        end
+    end,
 }
