@@ -21,8 +21,13 @@ return {
 
     mousepressed = function(self, mx, my)
         for _, widget in ipairs(self:get()) do
-            widget:deselect()
             if widget.mousepressed then widget:mousepressed(mx, my) end
+        end
+    end,
+
+    deselectAll = function(self)
+        for _, widget in ipairs(self:get()) do
+            widget:deselect()
         end
     end,
     
