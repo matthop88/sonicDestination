@@ -63,7 +63,9 @@ function love.keypressed(key)
     end
 end
 
--- ...
+function love.mousepressed(mx, my)
+    WIDGETS:mousepressed(mx, my)
+end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
