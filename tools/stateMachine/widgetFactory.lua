@@ -52,10 +52,16 @@ return {
     end,
 
     createSmartRightArrow = function(self, element, srcBox, dstBox)
-        return self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y)
+        local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y)
+        smartRightArrow.from = srcBox
+        smartRightArrow.to   = dstBox
+        return smartRightArrow
     end,
 
     createSmartLeftArrow = function(self, element, srcBox, dstBox)
-        return self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y)
+        local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y)
+        smartLeftArrow.from = srcBox
+        smartLeftArrow.to   = dstBox
+        return smartLeftArrow
     end,
 }
