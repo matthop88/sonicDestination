@@ -60,7 +60,7 @@ return {
 
     getFirstBox = function(self)
         for _, widget in ipairs(self:get()) do
-            if widget.drawBox then return widget end
+            if widget:getType() == "BOX" then return widget end
         end
     end,
 }
