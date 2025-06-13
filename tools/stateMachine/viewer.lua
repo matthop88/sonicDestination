@@ -53,6 +53,19 @@ function love.draw()
     WIDGETS:draw()
 end
 
+--[[
+TEST MODE:
+One of the boxes is initially selected.
+
+When a key is pressed, search through arrows to find matching label.
+keypressed  left  => L On
+keypressed  right => R On
+keyreleased left  => L Off
+keyreleased right => R Off
+
+If arrow FROM is the selected box, then select the box referenced by TO.
+--]]
+
 function love.keypressed(key)
     if     key == "return" then
         WIDGETS:refresh()
