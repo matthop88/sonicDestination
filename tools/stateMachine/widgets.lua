@@ -18,6 +18,12 @@ return {
             widget:draw()
         end
     end,
+
+    mousepressed = function(self, mx, my)
+        for _, widget in ipairs(self:get()) do
+            if widget.mousepressed then widget:mousepressed(mx, my) end
+        end
+    end,
     
     get  = function(self) 
         return self.currentWidgetList                                     
