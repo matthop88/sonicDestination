@@ -46,7 +46,47 @@ TESTS = {
         return TESTING:assertEquals(name, "X1 = 21, X2 = 11, Y1 = 8, Y2 = 8", resultString)
     end,
         
-    -- ...
+    testLeftArrowToField = function(self)
+        local name = "Test Left Arrow 'To' Field"
+
+        local data = {
+            { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
+            { type = "BOX",   label = "Run Right",   x = 21, y = 5, w = 9, h = 8 },
+            { type = "ARROW", label = "R Off", from = "Run Right", to = "Stand Right", y = 8 },
+        }
+
+        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+
+        return TESTING:assertTrue(name, widgets[3].to == widgets[1])
+    end,
+
+    testLeftArrowFromField = function(self)
+        local name = "Test Left Arrow 'From' Field"
+
+        local data = {
+            { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
+            { type = "BOX",   label = "Run Right",   x = 21, y = 5, w = 9, h = 8 },
+            { type = "ARROW", label = "R Off", from = "Run Right", to = "Stand Right", y = 8 },
+        }
+
+        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+
+        return TESTING:assertTrue(name, widgets[3].from == widgets[2])
+    end,
+
+    testLeftArrowKeyreleasedField = function(self)
+        local name = "Test Left Arrow Key Released Field"
+
+        local data = {
+            { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
+            { type = "BOX",   label = "Run Right",   x = 21, y = 5, w = 9, h = 8 },
+            { type = "ARROW", label = "R Off", from = "Run Right", to = "Stand Right", y = 8 },
+        }
+
+        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+
+        return TESTING:assertTrue(name, widgets[3].keyreleased == "right")
+    end,
 
 }
 
