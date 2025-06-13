@@ -56,10 +56,10 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if     key == "return"     then WIDGETS:refresh()
-    elseif key == "shiftleft"  then WIDGETS:prev()
-    elseif key == "shiftright" then WIDGETS:next()
-    else                            processKeypressedEvent(key) end
+    if     key == "return" then WIDGETS:refresh()
+    elseif key == "TAB"    then WIDGETS:prev()
+    elseif key == "tab"    then WIDGETS:next()
+    else                        processKeypressedEvent(key) end
 end
 
 function love.mousepressed(mx, my)
@@ -90,7 +90,13 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("scrolling", { imageViewer = GRAFX })
+    :add("scrolling", { 
+        imageViewer = GRAFX,
+        leftKey     = "shiftleft",
+        rightKey    = "shiftright",
+        upKey       = "shiftup",
+        downKey     = "shiftdown",
+    })
     :add("zooming",   { imageViewer = GRAFX })
     
 -- ...
