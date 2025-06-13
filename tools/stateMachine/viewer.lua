@@ -64,6 +64,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(mx, my)
+    WIDGETS:deselectAll()
     WIDGETS:mousepressed(mx, my)
 end
 
@@ -72,7 +73,7 @@ end
 --------------------------------------------------------------
 
 function processKeypressedEvent(key)
-    -- WIDGETS:deselectAll()
+    WIDGETS:deselectAll()
     for _, widget in ipairs(WIDGETS:get()) do
         --[[
         if widget.keypressed == key and widget.from == selectedBox then
