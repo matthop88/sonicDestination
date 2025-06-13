@@ -16,8 +16,7 @@ TESTS = {
 
    testArrowLeftToRight = function(self)
         local name    = "Test Arrow from Left to Right"
-        local data    = self:generateTestData()
-        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+        local widgets = self:generateTestWidgets()
 
         local resultString = "X1 = " .. widgets[3].x1 .. ", X2 = " .. widgets[3].x2 .. ", Y1 = " .. widgets[3].y1 .. ", Y2 = " .. widgets[3].y2
         
@@ -26,8 +25,7 @@ TESTS = {
     
     testArrowRightToLeft = function(self)
         local name    = "Test Arrow from Right to Left"
-        local data    = self:generateTestData()
-        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+        local widgets = self:generateTestWidgets()
 
         local resultString = "X1 = " .. widgets[3].x1 .. ", X2 = " .. widgets[3].x2 .. ", Y1 = " .. widgets[3].y1 .. ", Y2 = " .. widgets[3].y2
         
@@ -36,28 +34,29 @@ TESTS = {
         
     testLeftArrowToField = function(self)
         local name    = "Test Left Arrow 'To' Field"
-        local data    = self:generateTestData()
-        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+        local widgets = self:generateTestWidgets()
 
         return TESTING:assertTrue(name, widgets[3].to == widgets[1])
     end,
 
     testLeftArrowFromField = function(self)
         local name    = "Test Left Arrow 'From' Field"
-        local data    = self:generateTestData()
-        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+        local widgets = self:generateTestWidgets()
 
         return TESTING:assertTrue(name, widgets[3].from == widgets[2])
     end,
 
     testLeftArrowKeyreleasedField = function(self)
         local name    = "Test Left Arrow Key Released Field"
-        local data    = self:generateTestData()
-        local widgets = self.WIDGET_FACTORY:createWidgets(data)
+        local widgets = self:generateTestWidgets()
 
         return TESTING:assertTrue(name, widgets[3].keyreleased == "right")
     end,
 
+    generateTestWidgets = function(self)
+        return self.WIDGET_FACTORY:createWidgets(self:generateTestData())
+    end,
+    
     generateTestData = function(self)
         return {
             { type = "BOX",   label = "Stand Right", x =  2, y = 5, w = 9, h = 4 },
