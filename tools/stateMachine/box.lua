@@ -22,6 +22,10 @@ return {
 
             selected        = false,
 
+            getType = function(self)
+                return "BOX"
+            end,
+            
             draw = function(self)
                 if     self:isSelected()    then self:drawSelected()
                 elseif self:isMouseInside() then self:drawHighlighted()
