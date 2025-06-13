@@ -123,4 +123,8 @@ return {
         local px, py = self.graphics:screenToImageCoordinates(sx, sy)
         return px >= x and px <= x + w and py >= y and py <= y + h
     end,
+
+    deselect = function(self)
+        -- do nothing
+    end,
 }
