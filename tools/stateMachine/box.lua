@@ -20,18 +20,16 @@ return {
             w               = w * self.GRID_SIZE,
             h               = h * self.GRID_SIZE,
 
-            isSelected      = false,
+            selected        = false,
 
             draw = function(self)
-                if     self.isSelected      then self:drawSelected()
+                if     self:isSelected()    then self:drawSelected()
                 elseif self:isMouseInside() then self:drawHighlighted()
                 else                             self:drawNormal()   end
             end,
 
             mousepressed = function(self, mx, my)
-                if self:isMouseInside() then
-                    self:select(true)
-                end
+                if self:isMouseInside() then self:select() end
             end,
 
             drawNormal = function(self)
@@ -96,9 +94,9 @@ return {
                 return px >= self.x and px <= self.x + self.w and py >= self.y and py <= self.y + self.h
             end,
 
-            select = function(self, isSelected)
-                self.isSelected = isSelected
-            end,
+            select     = function(self) self.selected = true  end,
+            deselect   = function(self) self.selected = false end,
+            isSelected = function(self) return self.selected  end,
         }
     end,
 
