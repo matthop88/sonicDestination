@@ -53,6 +53,13 @@ TESTS = {
         return TESTING:assertTrue(name, widgets[4].keyreleased == "right")
     end,
 
+    testRightArrowKeypressedField = function(self)
+        local name = "Test Right Arrow Key Pressed Field"
+        local widgets = self:generateTestWidgets()
+
+        return TESTING:assertTrue(name, widgets[3].keypressed == "right")
+    end,
+
     generateTestWidgets = function(self)
         return self.WIDGET_FACTORY:createWidgets(self:generateTestData())
     end,
