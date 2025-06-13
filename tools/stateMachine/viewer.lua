@@ -53,19 +53,6 @@ function love.draw()
     WIDGETS:draw()
 end
 
---[[
-TEST MODE:
-One of the boxes is initially selected.
-
-When a key is pressed, search through arrows to find matching label.
-keypressed  left  => L On
-keypressed  right => R On
-keyreleased left  => L Off
-keyreleased right => R Off
-
-If arrow FROM is the selected box, then select the box referenced by TO.
---]]
-
 function love.keypressed(key)
     if     key == "return" then
         WIDGETS:refresh()
@@ -84,7 +71,18 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
--- ...
+function processKeypressedEvent(key)
+    -- WIDGETS:deselectAll()
+    for _, widget in ipairs(WIDGETS:get()) do
+        --[[
+        if widget.keypressed == key and widget.from == selectedBox then
+            selectedBox = widget.to
+            selectedBox:select()
+        end
+        --]]
+    end
+end
+
 -- ...
 -- ...
 
