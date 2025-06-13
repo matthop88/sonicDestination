@@ -50,7 +50,7 @@ TESTS = {
         local name    = "Test Left Arrow Key Released Field"
         local widgets = self:generateTestWidgets()
 
-        return TESTING:assertTrue(name, widgets[3].keyreleased == "right")
+        return TESTING:assertTrue(name, widgets[4].keyreleased == "right")
     end,
 
     generateTestWidgets = function(self)
