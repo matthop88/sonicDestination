@@ -102,7 +102,7 @@ end
 function processKeyreleasedEvent(key)
     WIDGETS:deselectAll()
     for _, widget in ipairs(WIDGETS:get()) do
-        if widget.keyreleased == key and widsget.from == targetBox then
+        if widget.keyreleased == key and widget.from == targetBox then
             targetBox = widget.to
             targetBox:select()
         end
