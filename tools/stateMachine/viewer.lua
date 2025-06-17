@@ -56,15 +56,8 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if     key == "return" then 
-        WIDGETS:refresh()
-        refreshTargetBox()
-    elseif key == "TAB"    then 
-        WIDGETS:prev()
-        refreshTargetBox()
-    elseif key == "tab"    then 
-        WIDGETS:next()
-        refreshTargetBox()
+    if key == "return" or key == "TAB" or key == "tab" then
+        processRefreshKeyEvent(key)
     else
         processKeypressedEvent(key) 
     end
@@ -78,6 +71,14 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function processRefreshKeyEvent(key)
+    if     key == "return" then WIDGETS:refresh()
+    elseif key == "TAB"    then WIDGETS:prev()
+    elseif key == "tab"    then WIDGETS:next()  end
+    
+    refreshTargetBox()
+end
 
 function processKeypressedEvent(key)
     WIDGETS:deselectAll()
