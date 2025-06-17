@@ -85,9 +85,9 @@ function processRefreshKeyEvent(key)
 end
 
 function processKeypressedEvent(key)
-    WIDGETS:deselectAll()
     for _, widget in ipairs(WIDGETS:get()) do
         if widget.keypressed == key and widget.from == targetBox then
+            WIDGETS:deselectAll()
             targetBox = widget.to
             targetBox:select()
         end
@@ -100,9 +100,9 @@ function refreshTargetBox()
 end
 
 function processKeyreleasedEvent(key)
-    WIDGETS:deselectAll()
     for _, widget in ipairs(WIDGETS:get()) do
         if widget.keyreleased == key and widget.from == targetBox then
+            WIDGETS:deselectAll()
             targetBox = widget.to
             targetBox:select()
         end
