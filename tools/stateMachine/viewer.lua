@@ -63,6 +63,10 @@ function love.keypressed(key)
     end
 end
 
+function love.keyreleased(key)
+    processKeyreleasedEvent(key)
+end
+
 function love.mousepressed(mx, my)
     WIDGETS:deselectAll()
     WIDGETS:mousepressed(mx, my)
@@ -95,7 +99,15 @@ function refreshTargetBox()
     targetBox:select()
 end
 
--- ...
+function processKeyreleasedEvent(key)
+    WIDGETS:deselectAll()
+    for _, widget in ipairs(WIDGETS:get()) do
+        if widget.keyreleased == key and widsget.from == targetBox then
+            targetBox = widget.to
+            targetBox:select()
+        end
+    end
+end
 
 --------------------------------------------------------------
 --                        Plugins                           --
