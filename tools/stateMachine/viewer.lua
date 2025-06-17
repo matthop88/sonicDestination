@@ -56,7 +56,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == "return" or key == "TAB" or key == "tab" then
+    if key == "return" or key == "shifttab" or key == "tab" then
         processRefreshKeyEvent(key)
     else
         processKeypressedEvent(key) 
