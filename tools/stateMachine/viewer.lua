@@ -90,6 +90,7 @@ function processKeypressedEvent(key)
             WIDGETS:deselectAll()
             targetBox = widget.to
             targetBox:select()
+            printMessage(widget.label)
         end
     end
 end
@@ -105,6 +106,7 @@ function processKeyreleasedEvent(key)
             WIDGETS:deselectAll()
             targetBox = widget.to
             targetBox:select()
+            printMessage(widget.label)
         end
     end
 end
@@ -112,6 +114,11 @@ end
 --------------------------------------------------------------
 --                        Plugins                           --
 --------------------------------------------------------------
+
+-- Overridden by readout plugin
+function printMessage(msg)
+    print(msg)
+end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
@@ -123,6 +130,7 @@ PLUGINS = require("plugins/engine")
         downKey     = "shiftdown",
     })
     :add("zooming",   { imageViewer = GRAFX })
+    :add("readout",   { printFnName = "printMessage" })
     
 -- ...
 -- ...
