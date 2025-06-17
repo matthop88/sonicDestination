@@ -73,9 +73,9 @@ end
 --------------------------------------------------------------
 
 function processRefreshKeyEvent(key)
-    if     key == "return" then WIDGETS:refresh()
-    elseif key == "TAB"    then WIDGETS:prev()
-    elseif key == "tab"    then WIDGETS:next()  end
+    if     key == "return"   then WIDGETS:refresh()
+    elseif key == "shifttab" then WIDGETS:prev()
+    elseif key == "tab"      then WIDGETS:next()  end
     
     refreshTargetBox()
 end
