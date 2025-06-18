@@ -58,6 +58,7 @@ return {
             y2                = y2 * self.GRID_SIZE,
 
             highlighted       = false,
+            selected          = false,
 
             init = function(self)
                 self.x, self.y, self.w, self.h = lineToRect(self.x1, self.y1, self.x2, self.y2)
@@ -87,9 +88,9 @@ return {
             end,
             
             setArrowColor = function(self)
-                if   self.highlighted then self.graphics:setColor(COLORS.RED)
-                else                       self.graphics:setColor(COLORS.MEDIUM_YELLOW)
-                end
+                if     self.highlighted then self.graphics:setColor(COLORS.RED)
+                elseif self.selected    then self.graphics:setColor(COLORS.RED)
+                else                         self.graphics:setColor(COLORS.MEDIUM_YELLOW) end
             end,
         
             drawHead = function(self)
@@ -103,21 +104,26 @@ return {
         
             drawLabel = function(self)
                 self:setLabelFont()
-                
-                self.graphics:setColor(COLORS.PURE_WHITE)
+                self:setFontColor()
                 self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
                                                  math.abs(self.x2 - self.x1), "center")
             end,
 
             setLabelFont = function(self)
-                if   self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
-                else                       self.graphics:setFontSize(self.LABEL_FONT_SIZE)
-                end
+                if     self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
+                elseif self.selected    then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
+                else                         self.graphics:setFontSize(self.LABEL_FONT_SIZE)   end
             end,
 
-            deselect = function(self)
-                -- do nothing
+            setFontColor = function(self)
+                if     self.highlighted then self.graphics:setColor(COLORS.PURE_WHITE)
+                elseif self.selected    then self.graphics:setColor(COLORS.LIGHT_PINK)
+                else                         self.graphics:setColor(COLORS.PURE_WHITE) end
             end,
+
+            select     = function(self) self.selected = true  end,
+            deselect   = function(self) self.selected = false end,
+            isSelected = function(self) return self.selected  end,
                 
         }):init()
     end,
