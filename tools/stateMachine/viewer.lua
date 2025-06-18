@@ -70,6 +70,7 @@ end
 function love.mousepressed(mx, my)
     WIDGETS:deselectAll()
     WIDGETS:mousepressed(mx, my)
+    updateTargetBox()
 end
 
 --------------------------------------------------------------
@@ -99,6 +100,14 @@ end
 function refreshTargetBox()
     targetBox = WIDGETS:getFirstBox()
     targetBox:select()
+end
+
+function updateTargetBox()
+    for _, widget in ipairs(WIDGETS:get()) do
+        if widget:getType() == "BOX" and widget:isSelected() then
+            targetBox = widget
+        end
+    end
 end
 
 function processKeyreleasedEvent(key)
