@@ -7,10 +7,11 @@ STAND_LEFT = {
         SONIC:faceLeft() 
         SONIC.sprite:setCurrentAnimation("standing")
     end,
+    
     keypressed = function(self, key)
         if     key == "right" then SONIC:setState(RUN_RIGHT)
         elseif key == "left"  then SONIC:setState(RUN_LEFT)  end
-    end,
+    end, 
 }
 
 STAND_RIGHT = {
@@ -18,6 +19,7 @@ STAND_RIGHT = {
         SONIC:faceRight()
         SONIC.sprite:setCurrentAnimation("standing")
     end,
+    
     keypressed = function(self, key)
         if     key == "right" then SONIC:setState(RUN_RIGHT)
         elseif key == "left"  then SONIC:setState(RUN_LEFT)  end
@@ -29,9 +31,11 @@ RUN_LEFT = {
         SONIC:faceLeft()
         SONIC.sprite:setCurrentAnimation("running")
     end,
+    
     keypressed = function(self, key)
         if key == "right" then SONIC:setState(RUN_RIGHT) end
     end,
+    
     keyreleased = function(self, key)
         if key == "left" then SONIC:setState(STAND_LEFT) end
     end,
@@ -42,9 +46,11 @@ RUN_RIGHT = {
         SONIC:faceRight()
         SONIC.sprite:setCurrentAnimation("running")
     end,
+    
     keypressed = function(self, key)
        if key == "left" then SONIC:setState(RUN_LEFT) end
     end,
+    
     keyreleased = function(self, key)
         if key == "right" then SONIC:setState(STAND_RIGHT) end
     end,
@@ -56,7 +62,7 @@ return {
     state = STAND_RIGHT,
             
     init = function(self, params)
-        self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        self.sprite = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
         SONIC = self
         return self
     end,
@@ -71,11 +77,6 @@ return {
 
     keypressed = function(self, key)
         self.state:keypressed(key)
-        if     key == "up"   then
-            self.sprite:setCurrentAnimation("running")
-        elseif key == "down" then
-            self.sprite:setCurrentAnimation("standing")
-        end
     end,
 
     keyreleased = function(self, key)
