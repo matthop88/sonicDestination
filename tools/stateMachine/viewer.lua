@@ -90,6 +90,7 @@ function processKeypressedEvent(key)
             WIDGETS:deselectAll()
             targetBox = widget.to
             targetBox:select()
+            widget:select()
             printMessage(widget.label)
         end
     end
@@ -106,6 +107,7 @@ function processKeyreleasedEvent(key)
             WIDGETS:deselectAll()
             targetBox = widget.to
             targetBox:select()
+            widget:select()
             printMessage(widget.label)
         end
     end
