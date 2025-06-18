@@ -117,7 +117,7 @@ return {
 
             setFontColor = function(self)
                 if     self.highlighted then self.graphics:setColor(COLORS.PURE_WHITE)
-                elseif self.selected    then self.graphics:setColor(COLORS.LIGHT_PINK)
+                elseif self.selected    then self.graphics:setColor(COLORS.RED)
                 else                         self.graphics:setColor(COLORS.PURE_WHITE) end
             end,
 
