@@ -46,6 +46,13 @@ function love.keypressed(key)
     SONIC:keypressed(key)
 end
 
+-- Function Name: love.keyreleased(key)
+-- Called By:     LOVE2D application, whenever key is released
+--------------------------------------------------------------
+function love.keyreleased(key)
+    SONIC:keyreleased(key)
+end
+
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
