@@ -112,6 +112,15 @@ function processKeyreleasedEvent(key)
 end
 
 --------------------------------------------------------------
+--               Static code - is executed last             --
+--------------------------------------------------------------
+
+love.window.setTitle("State Machine Viewer")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+refreshTargetBox()
+
+--------------------------------------------------------------
 --                        Plugins                           --
 --------------------------------------------------------------
 
@@ -134,12 +143,3 @@ PLUGINS = require("plugins/engine")
     
 -- ...
 -- ...
-
---------------------------------------------------------------
---               Static code - is executed last             --
---------------------------------------------------------------
-
-love.window.setTitle("State Machine Viewer")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-refreshTargetBox()
