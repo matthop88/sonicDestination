@@ -1,24 +1,12 @@
+local STATES
+
 return {
     x = 0, y = 0,
         
-    states = {
-        standLeft  = { 
-            onEnter    = function(self) self:faceLeft() end, 
-            keypressed = function(self, key)
-                if key == "right" then self:setState("standRight") end
-             end,
-        },
-        standRight = { 
-            onEnter = function(self) self:faceRight() end, 
-            keypressed = function(self, key)
-                if key == "left" then self:setState("standLeft") end
-            end,
-        },
-    },
-            
     init = function(self, params)
-        self.currentState = self.states.standRight
-        self.sprite       = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        self.sprite = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        STATES      = requireRelative("states/sonic",          { SONIC = self })
+        self.state  = STATES.STAND_RIGHT
         return self
     end,
 
@@ -31,12 +19,11 @@ return {
     end,
 
     keypressed = function(self, key)
-        self.currentState.keypressed(self, key)
-        if     key == "up"   then
-            self.sprite:setCurrentAnimation("running")
-        elseif key == "down" then
-            self.sprite:setCurrentAnimation("standing")
-        end
+        self.state:keypressed(key)
+    end,
+
+    keyreleased = function(self, key)
+        if self.state.keyreleased then self.state:keyreleased(key) end
     end,
 
     --------------------------------------------------------------
@@ -54,9 +41,9 @@ return {
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
-    setState      = function(self, newStateName)
-        self.currentState = self.states[newStateName]
-        self.currentState.onEnter(self)
+    setState      = function(self, state)
+        self.state = state
+        self.state:onEnter()
     end,
 
 }

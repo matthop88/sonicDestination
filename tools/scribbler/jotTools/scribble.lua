@@ -1,4 +1,4 @@
-local mutableColor = require("tools/scribbler/mutableColor")
+local mutableColor = require("tools/scribbler/utils/mutable/color")
 
 local doScribbleJotDrawing = function(self)
     local prevX, prevY = nil, nil
@@ -77,11 +77,10 @@ return {
         
     draw = function(self, mx, my)
         self.jot:draw()
-        self:drawCursor(mx, my)
     end,
 
-    drawCursor = function(self, mx, my)
-        love.graphics.setColor(mutableColor:get())
+    drawCursor = function(self, mx, my, alpha)
+        love.graphics.setColor(mutableColor:getWithAlpha(alpha))
         love.mouse.setVisible(false)
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
         love.graphics.setColor(1, 1, 1, 0.5)
