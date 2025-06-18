@@ -3,7 +3,10 @@ local SONIC
 local STAND_LEFT, STAND_RIGHT, RUN_LEFT, RUN_RIGHT
 
 STAND_LEFT = {
-    onEnter    = function(self) SONIC:faceLeft() end,
+    onEnter    = function(self) 
+        SONIC:faceLeft() 
+        SONIC.sprite:setCurrentAnimation("standing")
+    end,
     keypressed = function(self, key)
         if     key == "right" then SONIC:setState(RUN_RIGHT)
         elseif key == "left"  then SONIC:setState(RUN_LEFT)  end
@@ -11,7 +14,10 @@ STAND_LEFT = {
 }
 
 STAND_RIGHT = {
-    onEnter    = function(self) SONIC:faceRight() end,
+    onEnter    = function(self) 
+        SONIC:faceRight()
+        SONIC.sprite:setCurrentAnimation("standing")
+    end,
     keypressed = function(self, key)
         if     key == "right" then SONIC:setState(RUN_RIGHT)
         elseif key == "left"  then SONIC:setState(RUN_LEFT)  end
