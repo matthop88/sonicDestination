@@ -16,6 +16,24 @@ STAND_RIGHT = {
     end,
 }
 
+RUN_LEFT = {
+    onEnter    = function(self)
+        -- ...
+    end,
+    keypressed = function(self, key)
+        -- ...
+    end,
+}
+
+RUN_RIGHT = {
+    onEnter    = function(self)
+        -- ...
+    end,
+    keypressed = function(self, key)
+        -- ...
+    end,
+}
+
 return {
     x = 0, y = 0,
         
