@@ -18,7 +18,8 @@ STAND_RIGHT = {
 
 RUN_LEFT = {
     onEnter    = function(self)
-        -- ...
+        SONIC:faceLeft()
+        SONIC.sprite:setCurrentAnimation("running")
     end,
     keypressed = function(self, key)
         -- ...
@@ -27,7 +28,8 @@ RUN_LEFT = {
 
 RUN_RIGHT = {
     onEnter    = function(self)
-        -- ...
+        SONIC:faceRight()
+        SONIC.sprite:setCurrentAnimation("running")
     end,
     keypressed = function(self, key)
         -- ...
