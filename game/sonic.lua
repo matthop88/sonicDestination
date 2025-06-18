@@ -24,7 +24,7 @@ RUN_LEFT = {
         SONIC.sprite:setCurrentAnimation("running")
     end,
     keypressed = function(self, key)
-        -- ...
+        if key == "right" then SONIC:setState(RUN_RIGHT) end
     end,
 }
 
@@ -34,7 +34,7 @@ RUN_RIGHT = {
         SONIC.sprite:setCurrentAnimation("running")
     end,
     keypressed = function(self, key)
-        -- ...
+       if key == "left" then SONIC:setState(RUN_LEFT) end
     end,
 }
 
