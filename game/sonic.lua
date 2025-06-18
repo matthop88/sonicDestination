@@ -1,18 +1,20 @@
 local SONIC
 
-local STAND_LEFT, STAND_RIGHT
+local STAND_LEFT, STAND_RIGHT, RUN_LEFT, RUN_RIGHT
 
 STAND_LEFT = {
     onEnter    = function(self) SONIC:faceLeft() end,
     keypressed = function(self, key)
-        if key == "right" then SONIC:setState(STAND_RIGHT) end
+        if     key == "right" then SONIC:setState(RUN_RIGHT)
+        elseif key == "left"  then SONIC:setState(RUN_LEFT)  end
     end,
 }
 
 STAND_RIGHT = {
     onEnter    = function(self) SONIC:faceRight() end,
     keypressed = function(self, key)
-        if key == "left" then SONIC:setState(STAND_LEFT) end
+        if     key == "right" then SONIC:setState(RUN_RIGHT)
+        elseif key == "left"  then SONIC:setState(RUN_LEFT)  end
     end,
 }
 
