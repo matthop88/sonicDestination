@@ -88,8 +88,8 @@ return {
             end,
             
             setArrowColor = function(self)
-                if     self.highlighted then self.graphics:setColor(COLORS.RED)
-                elseif self.selected    then self.graphics:setColor(COLORS.RED)
+                if     self.selected    then self.graphics:setColor(COLORS.RED)
+                elseif self.highlighted then self.graphics:setColor(COLORS.RED)
                 else                         self.graphics:setColor(COLORS.MEDIUM_YELLOW) end
             end,
         
@@ -110,14 +110,14 @@ return {
             end,
 
             setLabelFont = function(self)
-                if     self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
-                elseif self.selected    then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
+                if     self.selected    then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
+                elseif self.highlighted then self.graphics:setFontSize(self.LABEL_FONT_SIZE + 4)
                 else                         self.graphics:setFontSize(self.LABEL_FONT_SIZE)   end
             end,
 
             setFontColor = function(self)
-                if     self.highlighted then self.graphics:setColor(COLORS.PURE_WHITE)
-                elseif self.selected    then self.graphics:setColor(COLORS.RED)
+                if     self.selected    then self.graphics:setColor(COLORS.RED)
+                elseif self.highlighted then self.graphics:setColor(COLORS.PURE_WHITE)
                 else                         self.graphics:setColor(COLORS.PURE_WHITE) end
             end,
 
