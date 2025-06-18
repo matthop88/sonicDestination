@@ -26,6 +26,9 @@ RUN_LEFT = {
     keypressed = function(self, key)
         if key == "right" then SONIC:setState(RUN_RIGHT) end
     end,
+    keyreleased = function(self, key)
+        if key == "left" then SONIC:setState(STAND_LEFT) end
+    end,
 }
 
 RUN_RIGHT = {
@@ -35,6 +38,9 @@ RUN_RIGHT = {
     end,
     keypressed = function(self, key)
        if key == "left" then SONIC:setState(RUN_LEFT) end
+    end,
+    keyreleased = function(self, key)
+        if key == "right" then SONIC:setState(STAND_RIGHT) end
     end,
 }
 
@@ -64,6 +70,10 @@ return {
         elseif key == "down" then
             self.sprite:setCurrentAnimation("standing")
         end
+    end,
+
+    keyreleased = function(self, key)
+        if self.state.keyreleased then self.state:keyreleased(key) end
     end,
 
     --------------------------------------------------------------
