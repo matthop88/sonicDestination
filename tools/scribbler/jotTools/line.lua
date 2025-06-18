@@ -1,4 +1,11 @@
-local mutableColor = require("tools/scribbler/mutableColor")
+local mutableColor = require("tools/scribbler/utils/mutable/color")
+
+local lineJotStringStart = function(color)
+    return "  {\n"
+        .. "    name = \"line\",\n"
+        .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
+        .. "    data = {\n"
+end
 
 local doLineJotDrawing = function(self, mx, my)
     local prevX, prevY = mx, my
@@ -20,10 +27,7 @@ end
 
 local lineJotToString = function(self)
     local color = self.data.color or { 1, 1, 1 }
-    local lineString = "  {\n"
-        .. "    name = \"line\",\n"
-        .. "    color = { " .. color[1] .. ", " .. color[2] .. ", " .. color[3] .. " },\n"
-        .. "    data = {\n"
+    local lineString = lineJotStringStart(color)
 
     for _, pt in ipairs(self.data) do
         lineString = lineString .. "      { x = " .. pt.x .. ", y = " .. pt.y .. " },\n"
@@ -51,25 +55,24 @@ return {
     draw = function(self, mx, my)
         self.jot:draw(mx, my)
         self:drawWorkingLine(mx, my)
-        self:drawCursor(mx, my) 
     end,
 
     drawWorkingLine = function(self, mx, my)
         if #self.jot.data > 0 then 
-            love.graphics.setColor(mutableColor:getTransparent())
+            love.graphics.setColor(mutableColor:getWithAlpha(0.5))
             local prevX = self.jot.data[#self.jot.data].x
             local prevY = self.jot.data[#self.jot.data].y
             love.graphics.line(prevX, prevY, mx, my)
         end
     end,
 
-    drawCursor = function(self, mx, my)
-        love.graphics.setColor(1, 1, 1)
+    drawCursor = function(self, mx, my, alpha)
+        love.graphics.setColor(1, 1, 1, alpha)
         love.graphics.setLineWidth(1)
         love.mouse.setVisible(false)
         love.graphics.line(mx - 16, my, mx + 16, my)
         love.graphics.line(mx, my - 16, mx, my + 16)
-        love.graphics.setColor(mutableColor:get())
+        love.graphics.setColor(mutableColor:getWithAlpha(alpha))
         love.graphics.rectangle("fill", mx - 2, my - 2, 5, 5)
     end,
 

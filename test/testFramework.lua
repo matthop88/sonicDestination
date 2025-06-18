@@ -4,48 +4,82 @@ love.window.setTitle("Testing Suite... Setting Up Tests")
 
 return {
     initTests = function(self, testsClass)
-        self.testsClass = testsClass
+        self.runnableTests = {
+            testsClass = testsClass,
+            tests  = { },
+            errors = { },
 
-        self.runnableTests = {}
+            testCount      = 0,
+            testsSucceeded = 0,
+            testsFailed    = 0,
 
-        for testName, test in pairs(testsClass) do
+            add = function(self, testName, testFn)
+                self.tests[testName] = testFn
+                self.testCount = self.testCount + 1
+            end,
+
+            run = function(self)
+                self.testsSucceeded, self.testsFailed = 0, 0
+                self.errors = {}
+
+                if self.testsClass.beforeAll then self.testsClass:beforeAll() end
+                
+                for testName, testFn in pairs(self.tests) do
+                    self:runTest(testFn, testName)
+                end
+            end,
+
+            runTest = function(self, testFn, testName)
+                self:runPretest()
+                local testResult = false
+                local status, err = pcall(function() testResult = testFn(self.testsClass) end)
+                if status == true then
+                    if testResult == true then self.testsSucceeded = self.testsSucceeded + 1
+                    else                       self.testsFailed    = self.testsFailed    + 1 end
+                else
+                    table.insert(self.errors, { testName = testName, err = err })
+                    self.testsFailed = self.testsFailed + 1
+                end
+            end,
+
+            runPretest = function(self)
+                if testsClass.before then
+                    testsClass:before()
+                end
+            end,
+        }
+        
+        for testName, fn in pairs(testsClass) do
             if testName:sub(1, 4) == "test" then
-                table.insert(self.runnableTests, test)
+                self.runnableTests:add(testName, fn)
             end
         end
     end,
 
     runAll = function(self)
-        local testsSucceeded = 0
-
         print("\nRunning Tests\n-------------")
-
-        if self.testsClass.beforeAll then
-            self.testsClass:beforeAll()
-        end
-        
-        for _, test in ipairs(self.runnableTests) do
-            if self:runTest(test) then
-                testsSucceeded = testsSucceeded + 1
-            end
-        end
-
-        local testsFailed = #self.runnableTests - testsSucceeded
-
-        print("\nTests succeeded: " .. testsSucceeded .. " out of " .. #self.runnableTests)
-        if testsFailed > 0 then
-            print("\n" .. testsFailed .. " tests FAILED.")
-        end
-        print("\n")
+        self.runnableTests:run()
+        self:showTestingSummary()
         
         love.event.quit()
     end,
 
-    runTest = function(self, testFn)
-        if self.testsClass.before then
-            self.testsClass:before()
+    showTestingSummary = function(self, testsSucceeded)
+        print("\nTests succeeded: " .. self.runnableTests.testsSucceeded .. " out of " .. self.runnableTests.testCount)
+        if self.runnableTests.testsFailed > 0 then
+            print("\n" .. self.runnableTests.testsFailed .. " tests FAILED.")
         end
-        return testFn(self.testsClass)
+        self:showFailedTestingDetails()
+        print("\n")
+    end,
+
+    showFailedTestingDetails = function(self)
+        if #self.runnableTests.errors > 0 then
+            for _, error in ipairs(self.runnableTests.errors) do
+                print("FAILED => " .. error.testName)
+                print("          WITH ERROR: " .. error.err)
+            end
+        end
     end,
 
     assertTrue = function(self, name, expression)

@@ -1,10 +1,14 @@
 return {
     index = 1,
 
-    "Standing Left",
-    "Standing Right",
+    "Stand Left",
+    "Stand Right",
+    "Run Left",
+    "Run Right",
     "L On",
+    "L Off",
     "R On",
+    "R Off",
 
     next = function(self)
         self.index = math.min(#self, self.index + 1)

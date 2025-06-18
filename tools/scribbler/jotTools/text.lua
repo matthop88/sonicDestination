@@ -1,6 +1,6 @@
-local mutableColor      = require("tools/scribbler/mutableColor")
-local mutableMessage    = require("tools/scribbler/mutableMessage")
-local mutableFont       = require("tools/scribbler/mutableFont")
+local mutableColor      = require("tools/scribbler/utils/mutable/color")
+local mutableMessage    = require("tools/scribbler/utils/mutable/message")
+local mutableFont       = require("tools/scribbler/utils/mutable/font")
 
 local DEFAULT_FONT_SIZE = 32
 local defaultFont       = love.graphics.newFont(DEFAULT_FONT_SIZE)
@@ -39,27 +39,28 @@ return {
         return self
     end,
 
-    x       = nil,
-    y       = nil,
+    x = nil, y = nil,
     
     draw = function(self, mx, my)
         if self.jot.data ~= nil then self.jot:draw() end
-        self:drawCursor(mx, my)
     end,
 
     penUp = function(self, mx, my)
-        self.jot.data = {
-            color = mutableColor:get(),
-            fontSize = mutableFont:getFontSize(),
-            font = mutableFont:get(),
-            message = mutableMessage:get(),
-            x = self.x,
-            y = self.y,
-        }
-
+        self:initJotData()
         self.picture:addJot(self.jot)
         self.jot = newTextJot()
         self.x, self.y = nil, nil
+    end,
+
+    initJotData = function(self)
+        self.jot.data = {
+            color    = mutableColor:get(),
+            font     = mutableFont:get(),
+            message  = mutableMessage:get(),
+            fontSize = mutableFont:getFontSize(),
+            x        = self.x,
+            y        = self.y,
+        }
     end,
 
     penDown = function(self, mx, my)
@@ -88,9 +89,9 @@ return {
         return newTextJot(data)
     end,
 
-    drawCursor = function(self, mx, my)
+    drawCursor = function(self, mx, my, alpha)
         love.mouse.setVisible(false)
-        love.graphics.setColor(mutableColor:getTransparent())
+        love.graphics.setColor(mutableColor:getWithAlpha(alpha / 2))
         love.graphics.setFont(mutableFont:get())
         love.graphics.printf(mutableMessage:get(), mx, my, 1000, "left")
     end,
@@ -103,5 +104,4 @@ return {
         elseif key == "down"   then mutableFont:prev()
         end
     end,
-
 }
