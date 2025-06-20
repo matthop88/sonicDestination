@@ -16,6 +16,7 @@ return {
     end,
 
     update = function(self, dt)
+        self:updateState()
         self.sprite:update(dt)
         self:updatePosition(dt)
     end,
