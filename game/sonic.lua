@@ -1,7 +1,7 @@
 local STATES
 
 return {
-    RUNNING_SPEED = 60,
+    RUNNING_SPEED = 360,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
