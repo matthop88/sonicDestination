@@ -1,7 +1,8 @@
 local STATES
 
 return {
-    x = 0, y = 0,
+    position = { x = 0, y = 0 },
+    velocity = { x = 0, y = 0 },
         
     init = function(self, params)
         self.sprite = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
@@ -16,6 +17,7 @@ return {
 
     update = function(self, dt)
         self.sprite:update(dt)
+        self:updatePosition(dt)
     end,
 
     keypressed = function(self, key)
@@ -30,10 +32,10 @@ return {
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    getX          = function(self) return self.x                       end,
-    getY          = function(self) return self.y                       end,
+    getX          = function(self) return self.position.x                               end,
+    getY          = function(self) return self.position.y                               end,
 
-    moveTo        = function(self, x, y)  self.x, self.y = x, y        end,
+    moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
     isFacingLeft  = function(self) return     self.sprite:isXFlipped()                  end,
     isFacingRight = function(self) return not self.sprite:isXFlipped()                  end,
@@ -44,6 +46,11 @@ return {
     setState      = function(self, state)
         self.state = state
         self.state:onEnter()
+    end,
+
+    updatePosition = function(self, dt)
+        self.position.x = self.position.x + (self.velocity.x * dt)
+        self.position.y = self.position.y + (self.velocity.y * dt)
     end,
 
 }
