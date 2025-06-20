@@ -2,9 +2,9 @@ return {
     init = function(self, parameters)
         self.graphics    = parameters.graphics
         self.gridSize    = parameters.gridSize or 64
-        self.topLineY    = parameters.topLineY or 512
-        self.midLineY    = parameters.midLineY or 534
-        self.bottomLineY = self.graphics:getScreenHeight() * 3/4
+        self.topLineY    = graphics:getScreenHeight() * 3/4
+        self.midLineY    = self.topLineY + 24
+        self.bottomLineY = self.midLineY + 42
         return self
     end,
     
@@ -15,22 +15,22 @@ return {
         local viewportRect = self.graphics:calculateViewportRect()
         
         self.graphics:setColor(1, 1, 1)
-        self:drawTopLine(viewportRect)
         self:drawMidLine(viewportRect)
+        self:drawBottomLine(viewportRect)
         self:drawGridLines(viewportRect)
     end,
 
     -----------------------------------------------
     --        Specialized Methods Go Here        --
     -----------------------------------------------
-    drawTopLine = function(self, viewportRect)
+    drawMidLine = function(self, viewportRect)
         self.graphics:setLineWidth(4)
-        self.graphics:line(viewportRect.x, self.topLineY, viewportRect.x + viewportRect.w, self.topLineY)
+        self.graphics:line(viewportRect.x, self.midLineY, viewportRect.x + viewportRect.w, self.midLineY)
     end,
     
-    drawMidLine = function(self, viewportRect)
+    drawBottomLine = function(self, viewportRect)
         self.graphics:setLineWidth(2)
-        self.graphics:line(viewportRect.x, self.midLineY, viewportRect.x + viewportRect.w, self.midLineY)
+        self.graphics:line(viewportRect.x, self.bottomLineY, viewportRect.x + viewportRect.w, self.bottomLineY)
     end,
     
     drawGridLines = function(self, viewportRect)
