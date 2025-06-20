@@ -21,5 +21,9 @@ else
         draw = function(self, image, quad, x, y, r, sx, sy)
             love.graphics.draw(image, quad, x, y, r, sx, sy)
         end,
+
+        screenToImageCoordinates = function(self, x, y)
+            return x, y
+        end,
     }
 end
