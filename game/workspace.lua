@@ -17,8 +17,11 @@ return {
     end,
 
     drawBackground = function(self)
+        local leftX,  topY    = self.graphics:screenToImageCoordinates(0, 0)
+        local rightX, bottomY = self.graphics:screenToImageCoordinates(self:getWidth(), self:getHeight())
+
         self.graphics:setColor(COLOR_GREEN)
-        love.graphics.rectangle("fill", 0, 0, self:getWidth(), self:getHeight())
+        self.graphics:rectangle("fill", leftX, topY, rightX - leftX, bottomY - topY)
     end,
 
     drawHorizontalLine = function(self)
