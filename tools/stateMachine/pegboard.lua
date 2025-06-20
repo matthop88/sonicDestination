@@ -31,10 +31,11 @@ return {
     end,
     
     calculateHolePositions = function(self)
-        local worldX, worldY, endX, endY = GRAFX:calculateViewport()
-        local startX, startY = worldX - (worldX % GRID_SIZE), worldY - (worldY % GRID_SIZE)
+        local startX, startY, width, height = GRAFX:calculateViewport()
+        startX = startX - (startX % GRID_SIZE)
+        startY = startY - (startY % GRID_SIZE)
          
-        return startX, endX, startY, endY
+        return startX, startX + width, startY, startY + height
     end,
 
     drawHole = function(self, x, y)
