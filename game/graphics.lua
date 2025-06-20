@@ -25,5 +25,12 @@ else
         screenToImageCoordinates = function(self, x, y)
             return x, y
         end,
+
+        getScreenWidth  = function(self) return love.graphics.getWidth()  end,
+        getScreenHeight = function(self) return love.graphics.getHeight() end,
+
+        calculateViewportRect = function(self)
+            return { x = 0, y = 0, w = self:getScreenWidth(), h = self:getScreenHeight() }
+        end,
     }
 end
