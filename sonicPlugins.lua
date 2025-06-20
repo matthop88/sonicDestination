@@ -17,6 +17,7 @@ return {
                 originX = 512,
                 originY = 514,
             })
+            :add("grid3D")
             :add("scrolling", { 
                 imageViewer = self.GRAPHICS,
                 leftKey     = "shiftleft",
