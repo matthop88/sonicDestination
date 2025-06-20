@@ -4,7 +4,7 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
-        self.DRAWING_FN = love.draw
+        self.DRAWING_FN = function() self.SONIC:draw() end
         
         self:initPlugins()
     end,
