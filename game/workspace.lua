@@ -18,7 +18,7 @@ return {
 
     drawBackground = function(self)
         self.graphics:setColor(COLOR_GREEN)
-        self.graphics:rectangle("fill", 0, 0, self:getWidth(), self:getHeight())
+        love.graphics:rectangle("fill", 0, 0, self:getWidth(), self:getHeight())
     end,
 
     drawHorizontalLine = function(self)
