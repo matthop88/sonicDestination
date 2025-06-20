@@ -11,8 +11,8 @@ return {
         local viewPortRect = self.graphics:calculateViewportRect()
         
         self.graphics:setColor(1, 1, 1)
-        self:drawTopLine(viewportRect)
-        self:drawMidLine(viewportRect)
+        self:drawTopLine(viewPortRect)
+        self:drawMidLine(viewPortRect)
     end,
 
     -----------------------------------------------
