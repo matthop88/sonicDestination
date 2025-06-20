@@ -18,8 +18,9 @@ return {
     end,
 
     update = function(self, dt)
-        self:updateState()
         self.sprite:update(dt)
+        self:updateState()
+        self:updateVelocity(dt)
         self:updatePosition(dt)
     end,
 
@@ -50,16 +51,21 @@ return {
         self.nextState = state
     end,
 
-    updatePosition = function(self, dt)
-        self.position.x = self.position.x + (self.velocity.x * dt)
-        self.position.y = self.position.y + (self.velocity.y * dt)
-    end,
-
     updateState = function(self)
         if self.nextState ~= self.state then
             self.state = self.nextState
             self.state:onEnter()
         end
+    end,
+
+    updateVelocity = function(self, dt)
+        if     self.velocity.x > 0 then self.velocity.x =  self.RUNNING_SPEED
+        elseif self.velocity.x < 0 then self.velocity.x = -self.RUNNING_SPEED end
+    end,
+
+    updatePosition = function(self, dt)
+        self.position.x = self.position.x + (self.velocity.x * dt)
+        self.position.y = self.position.y + (self.velocity.y * dt)
     end,
 
 }
