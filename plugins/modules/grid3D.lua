@@ -2,6 +2,8 @@ return {
     init = function(self, parameters)
         self.graphics = parameters.graphics
         self.gridSize = parameters.gridSize or 64
+        self.topLineY = parameters.topLineY or 512
+        self.midLineY = parameters.midLineY or 534
         return self
     end,
     
@@ -21,15 +23,13 @@ return {
     --        Specialized Methods Go Here        --
     -----------------------------------------------
     drawTopLine = function(self, viewportRect)
-        local topLineY = 512
         self.graphics:setLineWidth(4)
-        self.graphics:line(viewportRect.x, topLineY, viewportRect.x + viewportRect.w, topLineY)
+        self.graphics:line(viewportRect.x, self.topLineY, viewportRect.x + viewportRect.w, self.topLineY)
     end,
     
     drawMidLine = function(self, viewportRect)
-        local midLineY = 534
         self.graphics:setLineWidth(2)
-        self.graphics:line(viewportRect.x, midLineY, viewportRect.x + viewportRect.w, midLineY)
+        self.graphics:line(viewportRect.x, self.midLineY, viewportRect.x + viewportRect.w, self.midLineY)
     end,
     
     drawGridTopMarkings = function(self, viewportRect)
@@ -37,7 +37,7 @@ return {
 
         self.graphics:setColor(1, 0, 0)
         for x = startX, endX, self.gridSize do
-            self.graphics:rectangle("fill", x - 1, 511, 3, 3)
+            self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
         end
     end,
 
