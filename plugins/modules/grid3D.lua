@@ -25,7 +25,7 @@ return {
     end,
     
     drawMidLine = function(self, viewPortRect)
-        local midLine = 534
+        local midLineY = 534
         self.graphics:setLineWidth(2)
         self.graphics:line(viewPortRect.x, midLineY, viewPortRect.x + viewPortRect.w, midLineY)
     end,
