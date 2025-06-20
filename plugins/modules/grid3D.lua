@@ -18,13 +18,13 @@ return {
     -----------------------------------------------
     --        Specialized Methods Go Here        --
     -----------------------------------------------
-    drawTopLine = function(self, viewportRect)
+    drawTopLine = function(self, viewPortRect)
         local topLineY = 512
         self.graphics:setLineWidth(4)
         self.graphics:line(viewPortRect.x, topLineY, viewPortRect.x + viewPortRect.w, topLineY)
     end,
     
-    drawMidLine = function(self, viewportRect)
+    drawMidLine = function(self, viewPortRect)
         local midLine = 534
         self.graphics:setLineWidth(2)
         self.graphics:line(viewPortRect.x, midLineY, viewPortRect.x + viewPortRect.w, midLineY)
