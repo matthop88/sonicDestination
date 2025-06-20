@@ -1,9 +1,10 @@
 return {
     init = function(self, params)
-        self.GRAPHICS   = params.GRAPHICS
         self.SONIC      = params.SONIC
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
+        self.GRAPHICS   = params.GRAPHICS
+        self.DRAWING_FN = love.draw
         
         self:initPlugins()
     end,
@@ -25,7 +26,8 @@ return {
                 upKey       = "shiftup",
                 downKey     = "shiftdown"
             })
-            :add("zooming",   { imageViewer = self.GRAPHICS })
+            :add("zooming",      { imageViewer = self.GRAPHICS })
+            :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("pause")
             :add("tweakAttributes", {
                 incAttributeKey = ">",
