@@ -5,9 +5,9 @@ return {
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        self.sprite = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
-        STATES      = requireRelative("states/sonic",          { SONIC = self })
-        self.state  = STATES.STAND_RIGHT
+        self.sprite     = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        STATES          = requireRelative("states/sonic",          { SONIC = self })
+        self.nextState  = STATES.STAND_RIGHT
         return self
     end,
 
@@ -44,13 +44,19 @@ return {
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
     setState      = function(self, state)
-        self.state = state
-        self.state:onEnter()
+        self.nextState = state
     end,
 
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
         self.position.y = self.position.y + (self.velocity.y * dt)
+    end,
+
+    updateState = function(self)
+        if self.nextState ~= self.state then
+            self.state = self.nextState
+            self.state:onEnter()
+        end
     end,
 
 }
