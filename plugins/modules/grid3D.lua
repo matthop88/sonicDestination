@@ -35,7 +35,7 @@ return {
     
     drawGridLines = function(self, viewportRect)
         local startX, endX = self:calculateGridTopStartXAndEndX()
-        local startBottomX = startX - self.topLineY
+        local startBottomX = startX - (self.graphics:getScreenWidth() / 2)
         
         self.graphics:setColor(1, 0, 0)
         for x = startX, endX, self.gridSize do
