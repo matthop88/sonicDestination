@@ -31,10 +31,9 @@ return {
     end,
     
     calculateHolePositions = function(self)
-        local worldX, worldY = GRAFX:screenToImageCoordinates(0, 0)
+        local worldX, worldY, endX, endY = GRAFX:calculateViewport()
         local startX, startY = worldX - (worldX % GRID_SIZE), worldY - (worldY % GRID_SIZE)
-        local endX,   endY   = GRAFX:screenToImageCoordinates(love.graphics.getWidth(), love.graphics.getHeight())
-        
+         
         return startX, endX, startY, endY
     end,
 
