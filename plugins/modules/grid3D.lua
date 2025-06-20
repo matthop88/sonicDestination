@@ -8,7 +8,7 @@ return {
     --   Methods called by LOVE events go here   --
     -----------------------------------------------
     draw = function(self)
-        local viewPortRect = selfgraphics:calculateViewportRect()
+        local viewPortRect = self.graphics:calculateViewportRect()
         
         local topLineY, midLineY = 512, 534
 
