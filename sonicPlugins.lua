@@ -82,6 +82,19 @@ return {
                         end,
                         toggleShowKey = "y"
                     },
+                    velocityX = {
+                        name = "X Velocity",
+                        incrementFn = function()
+                            self.SONIC.velocity.x = self.SONIC.velocity.x + 30
+                        end,
+                        decrementFn = function()
+                            self.SONIC.velocity.x = self.SONIC.velocity.x - 30
+                        end,
+                        getValueFn = function()
+                            return self.SONIC.velocity.x
+                        end,
+                        toggleShowKey = "v",
+                    },
                 }
             })
     end,
