@@ -36,7 +36,7 @@ STATES = {
         onEnter    = function(self)
             SONIC:faceLeft()
             SONIC.sprite:setCurrentAnimation("running")
-            SONIC.velocity.x = -60
+            SONIC.velocity.x = -SONIC.RUNNING_SPEED
         end,
         
         keypressed = function(self, key)
@@ -52,7 +52,7 @@ STATES = {
         onEnter    = function(self)
             SONIC:faceRight()
             SONIC.sprite:setCurrentAnimation("running")
-            SONIC.velocity.x = 60
+            SONIC.velocity.x = SONIC.RUNNING_SPEED
         end,
         
         keypressed = function(self, key)
