@@ -23,7 +23,10 @@ return {
     
     ---------------------- Property Setter Functions -------------------
     
-    setColor     = function(self, color)     love.graphics.setColor(color) end,
+    setColor     = function(self, arg1, arg2, arg3, arg4)
+        love.graphics.setColor(arg1, arg2, arg3, arg4)
+    end,
+    
     setLineWidth = function(self, lineWidth) self.lineWidth = lineWidth    end,
 
     setFont  = function(self, font)
