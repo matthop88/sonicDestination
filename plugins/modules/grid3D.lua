@@ -34,21 +34,22 @@ return {
     end,
     
     drawGridLines = function(self, viewportRect)
-        local startX, endX = self:calculateGridTopStartXAndEndX()
-        local startBottomX = startX - (self.graphics:getScreenWidth() / 2)
+        local startX, endX, offsetX = self:calculateGridTopAttributes()
+        local bottomX               = startX - offsetX - (viewportRect.w / 2)
         
         self.graphics:setColor(1, 0, 0)
         for x = startX, endX, self.gridSize do
             self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
-            self.graphics:line(x, self.topLineY, startBottomX, self.bottomLineY)
-            startBottomX = startBottomX + (self.gridSize * 2)
+            self.graphics:line(x, self.topLineY, bottomX, self.bottomLineY)
+            bottomX = bottomX + (self.gridSize * 2)
         end
     end,
 
-    calculateGridTopStartXAndEndX = function(self)
+    calculateGridTopAttributes = function(self)
         local startX, startY, width, height = self.graphics:calculateViewport()
-        startX = startX - (startX % self.gridSize)
+        local offsetX = startX % self.gridSize
+        startX = startX - offsetX
 
-        return startX, startX + width
+        return startX, startX + width, offsetX
     end,
 }
