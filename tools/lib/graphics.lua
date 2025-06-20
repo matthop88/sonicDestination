@@ -104,8 +104,8 @@ return {
     getScreenHeight = function(self) return love.graphics.getHeight() end,
 
     calculateViewportRect = function(self)
-        local leftX,  topY    = self.graphics:screenToImageCoordinates(0, 0)
-        local rightX, bottomY = self.graphics:screenToImageCoordinates(self:getScreenWidth(), self:getScreenHeight())
+        local leftX,  topY    = self:screenToImageCoordinates(0, 0)
+        local rightX, bottomY = self:screenToImageCoordinates(self:getScreenWidth(), self:getScreenHeight())
 
         return { x = leftX, y = topY, w = rightX - leftX, h = bottomY - topY }
     end,
