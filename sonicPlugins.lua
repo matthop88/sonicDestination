@@ -25,6 +25,7 @@ return {
                 downKey     = "shiftdown"
             })
             :add("zooming",   { imageViewer = self.GRAPHICS })
+            :add("pause")
             :add("tweakAttributes", {
                 incAttributeKey = ">",
                 decAttributeKey = "<",
