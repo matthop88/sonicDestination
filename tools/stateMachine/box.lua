@@ -89,7 +89,7 @@ return {
 
             drawSelectedLabel = function(self)
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE + 3) 
-                self.graphics:setColor(COLORS.RED)
+                self.graphics:setColor(COLORS.LIGHT_YELLOW)
                 self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
             end,
 
