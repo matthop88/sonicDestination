@@ -10,21 +10,26 @@ return {
     draw = function(self)
         local viewPortRect = self.graphics:calculateViewportRect()
         
-        local topLineY, midLineY = 512, 534
-
         self.graphics:setColor(1, 1, 1)
-        self.graphics:setLineWidth(4)
-        self.graphics:line(viewPortRect.x, topLineY, viewPortRect.x + viewPortRect.w, topLineY)
-
-        self.graphics:setLineWidth(2)
-        self.graphics:line(viewPortRect.x, midLineY, viewPortRect.x + viewPortRect.w, midLineY)
+        self:drawTopLine(viewportRect)
+        self:drawMidLine(viewportRect)
     end,
 
     -----------------------------------------------
     --        Specialized Methods Go Here        --
     -----------------------------------------------
-    -- ...
-    -- ...
+    drawTopLine = function(self, viewportRect)
+        local topLineY = 512
+        self.graphics:setLineWidth(4)
+        self.graphics:line(viewPortRect.x, topLineY, viewPortRect.x + viewPortRect.w, topLineY)
+    end,
+    
+    drawMidLine = function(self, viewportRect)
+        local midLine = 534
+        self.graphics:setLineWidth(2)
+        self.graphics:line(viewPortRect.x, midLineY, viewPortRect.x + viewPortRect.w, midLineY)
+    end,
+    
     -- ...
 
 }
