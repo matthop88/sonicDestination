@@ -14,7 +14,7 @@ return {
         return self
     end,
 
-    keypressed = function(self, key)
+    handleKeypressed = function(self, key)
         if key == self.toggleCameraKey then
             self.active = not self.active
         end
