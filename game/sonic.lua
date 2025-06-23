@@ -2,6 +2,15 @@ local STATES
 
 return {
     RUNNING_SPEED = 360,
+
+    -------------------------------------------------------
+    RUNNING_ACCELERATION = 0.046875,
+    -------------------------------------------------------
+    -- 12 subpixels per frame
+
+    -- From Sonic Physics Guide
+    -- https://info.sonicretro.org/SPG:Running#Acceleration
+    -------------------------------------------------------
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
