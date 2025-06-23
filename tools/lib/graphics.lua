@@ -96,7 +96,15 @@ return {
     end,
     
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        self:syncImageXWithScreen(imageX, screenX)
+        self:syncImageYWithScreen(imageY, screenY)
+    end,
+
+    syncImageXWithScreen = function(self, imageX, screenX)
         self.x = screenX / self.scale - imageX
+    end,
+
+    syncImageYWithScreen = function(self, imageY, screenY)
         self.y = screenY / self.scale - imageY
     end,
 
