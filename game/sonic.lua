@@ -79,6 +79,9 @@ return {
 
         self.sprite:setFps(60 / ((math.max(0, 480 - math.abs(self.velocity.x))) + 1))
 
+        Source:
+        https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
+
         --]]
 
         self.sprite:setFPS(math.abs(self.velocity.x / 36))
