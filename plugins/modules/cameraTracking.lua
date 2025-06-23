@@ -10,10 +10,9 @@ return {
 
     update = function(self, dt)
         local centerX = self.graphics:getScreenWidth()  / 2
-        local centerY = self.graphics:getScreenHeight() / 2
+        
+        local objectX, _ = self.positionFn()
 
-        local objectX, objectY = self.positionFn()
-
-        self.graphics:syncImageCoordinatesWithScreen(objectX, objectY, centerX, centerY)
+        self.graphics:syncImageXWithScreen(objectX, centerX)
     end,
 }
