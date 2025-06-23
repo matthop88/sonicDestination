@@ -66,38 +66,9 @@ return {
 
     updateFrameRate = function(self, dt)
         --[[
-        For walking and running:
+        XXX We are NOT following Sonic Team's formula here, which would be:
 
-        duration = floor(max(0, 8-abs(GroundSpeed)))
-
-        FPS is the reciprocal of duration.
-
-        DURATION            FPS
-        --------            ---
-        0                   60
-        1                   30
-        2                   20
-        3                   15
-        4                   12
-        5                   10
-        6                    8.5
-        7                    7.5
-        8                    6.75
-
-        GROUND SPEED        FPS
-        ------------        ---
-        480                 60
-        420                 30
-        360                 20
-        300                 15
-        240                 12
-        180                 10
-        120                  8.5
-         60                  7.5
-          0                  6.75
-
-        Q: Is this accurate?
-           Shouldn't FPS be proportional to ground speed?
+        self.sprite:setFps(60 / ((math.max(0, 480 - math.abs(self.velocity.x))) + 1))
 
         --]]
 
