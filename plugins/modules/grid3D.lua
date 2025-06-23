@@ -40,7 +40,7 @@ return {
         self.graphics:setColor(1, 0, 0)
         for x = startX, endX, self.gridSize do
             self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
-            self.graphics:line(x, self.topLineY, bottomX, self.bottomLineY)
+            self.graphics:line(x, self.midLineY, bottomX, self.bottomLineY)
             bottomX = bottomX + (self.gridSize * 2)
         end
     end,
