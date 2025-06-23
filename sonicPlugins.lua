@@ -4,13 +4,19 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
-        self.DRAWING_FN = function() self.SONIC:draw() end
+        self.DRAWING_FN = function()   self.SONIC:draw()     end
+        self.UPDATE_FN  = function(dt) self.SONIC:update(dt) end
+
+        love.update = function(dt)
+            -- Do nothing
+        end
         
         self:initPlugins()
     end,
 
     initPlugins = function(self)
         require("plugins/engine")
+            :add("updateLayer", { updateFn = self.UPDATE_FN })
             :add("modKeyEnabler")
             :add("mouseTracking",
             {
