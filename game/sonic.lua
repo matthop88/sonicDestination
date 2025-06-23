@@ -61,6 +61,7 @@ return {
     updateVelocity = function(self, dt)
         if     self.velocity.x > 0 then self.velocity.x =  self.RUNNING_SPEED
         elseif self.velocity.x < 0 then self.velocity.x = -self.RUNNING_SPEED end
+        self:updateFrameRate(dt)
     end,
 
     updateFrameRate = function(self, dt)
