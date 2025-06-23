@@ -18,8 +18,11 @@ return {
                 originX = 512,
                 originY = 514,
             })
-            :add("grid3D",    { graphics = self.GRAPHICS })
-            :add("scrolling", { 
+            :add("grid3D",         { graphics = self.GRAPHICS })
+            :add("cameraTracking", {
+                graphics   = self.GRAPHICS,
+                positionFn = function() return self.SONIC:getX(), self.SONIC:getY() end,
+            :add("scrolling",      { 
                 imageViewer = self.GRAPHICS,
                 leftKey     = "shiftleft",
                 rightKey    = "shiftright",
