@@ -46,7 +46,6 @@ return {
         
         self.graphics:setColor(1, 1, 1)
         for x = startX, endX, self.gridSize do
-            self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
             self.graphics:line(x, self.standingLine, bottomX, self.bottomLineY)
             local delta = (bottomX - x) / 6
             self.graphics:line(x - delta, self.topLineY, x, self.standingLine)
