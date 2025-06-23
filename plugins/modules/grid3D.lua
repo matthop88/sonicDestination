@@ -6,6 +6,14 @@ return {
         self.midLineY     = self.standingLine + 48
         self.topLineY     = self.standingLine - 24
         self.bottomLineY  = self.standingLine + 144
+
+        if parameters.toggleGridKey then
+            self.toggleGridKey = parameters.toggleGridKey
+            self.showGrid      = false
+        else
+            self.showGrid = true
+        end
+        
         return self
     end,
     
@@ -13,13 +21,21 @@ return {
     --   Methods called by LOVE events go here   --
     -----------------------------------------------
     draw = function(self)
-        local viewportRect = self.graphics:calculateViewportRect()
+        if self.showGrid then
+            local viewportRect = self.graphics:calculateViewportRect()
         
-        self.graphics:setColor(1, 1, 1)
-        self:drawTopLine(viewportRect)
-        self:drawMidLine(viewportRect)
-        self:drawBottomLine(viewportRect)
-        self:drawGridLines(viewportRect)
+            self.graphics:setColor(1, 1, 1)
+            self:drawTopLine(viewportRect)
+            self:drawMidLine(viewportRect)
+            self:drawBottomLine(viewportRect)
+            self:drawGridLines(viewportRect)
+        end
+    end,
+
+    handleKeypressed = function(self, key)
+        if key == self.toggleGridKey then
+            self.showGrid = not self.showGrid
+        end
     end,
 
     -----------------------------------------------
