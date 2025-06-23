@@ -94,7 +94,10 @@ return {
         120                  8.5
          60                  7.5
           0                  6.75
-        
+
+        Q: Is this accurate?
+           Shouldn't FPS be proportional to ground speed?
+
         --]]
     end,
     
