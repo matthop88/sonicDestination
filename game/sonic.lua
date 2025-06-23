@@ -63,6 +63,14 @@ return {
         elseif self.velocity.x < 0 then self.velocity.x = -self.RUNNING_SPEED end
     end,
 
+    updateFrameRate = function(self, dt)
+        --[[
+        For walking and running:
+
+        duration = floor(max(0, 8-abs(GroundSpeed)))
+        --]]
+    end,
+    
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
         self.position.y = self.position.y + (self.velocity.y * dt)
