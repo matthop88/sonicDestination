@@ -4,7 +4,7 @@ return {
         self.gridSize    = parameters.gridSize or 64
         self.midLineY    = self.graphics:getScreenHeight() * 3/4
         self.topLineY    = self.midLineY - 24
-        self.bottomLineY = self.midLineY + 42
+        self.bottomLineY = self.midLineY + 144
         return self
     end,
     
@@ -41,6 +41,8 @@ return {
         for x = startX, endX, self.gridSize do
             self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
             self.graphics:line(x, self.midLineY, bottomX, self.bottomLineY)
+            local delta = (bottomX - x) / 6
+            self.graphics:line(x - delta, self.topLineY, x, self.midLineY)
             bottomX = bottomX + (self.gridSize * 2)
         end
     end,
