@@ -100,6 +100,8 @@ return {
            Shouldn't FPS be proportional to ground speed?
 
         --]]
+
+        self.sprite:setFps(self.velocity.x / 36)
     end,
     
     updatePosition = function(self, dt)
