@@ -22,6 +22,7 @@ return {
             :add("cameraTracking", {
                 graphics   = self.GRAPHICS,
                 positionFn = function() return self.SONIC:getX(), self.SONIC:getY() end,
+            })
             :add("scrolling",      { 
                 imageViewer = self.GRAPHICS,
                 leftKey     = "shiftleft",
