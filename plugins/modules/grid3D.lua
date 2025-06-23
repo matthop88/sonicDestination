@@ -37,7 +37,7 @@ return {
         local startX, endX, offsetX = self:calculateGridTopAttributes()
         local bottomX               = startX - offsetX - (viewportRect.w / 2)
         
-        self.graphics:setColor(1, 0, 0)
+        self.graphics:setColor(1, 1, 1)
         for x = startX, endX, self.gridSize do
             self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
             self.graphics:line(x, self.midLineY, bottomX, self.bottomLineY)
@@ -52,6 +52,6 @@ return {
         local offsetX = startX % self.gridSize
         startX = startX - offsetX
 
-        return startX, startX + width, offsetX
+        return startX, startX + (width * 1.5), offsetX
     end,
 }
