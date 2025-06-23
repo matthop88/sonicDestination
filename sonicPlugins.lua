@@ -18,7 +18,10 @@ return {
                 originX = 512,
                 originY = 514,
             })
-            :add("grid3D",         { graphics = self.GRAPHICS })
+            :add("grid3D",         { 
+                graphics      = self.GRAPHICS,
+                toggleGridKey = "g",
+            })
             :add("cameraTracking", {
                 graphics   = self.GRAPHICS,
                 positionFn = function() return self.SONIC:getX(), self.SONIC:getY() end,
