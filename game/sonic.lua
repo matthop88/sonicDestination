@@ -68,6 +68,21 @@ return {
         For walking and running:
 
         duration = floor(max(0, 8-abs(GroundSpeed)))
+
+        FPS is the reciprocal of duration.
+
+        DURATION            FPS
+        --------            ---
+        0                   60
+        1                   30
+        2                   20
+        3                   15
+        4                   12
+        5                   10
+        6                    8.5
+        7                    7.5
+        8                    6.75
+        
         --]]
     end,
     
