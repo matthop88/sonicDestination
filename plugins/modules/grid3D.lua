@@ -1,10 +1,11 @@
 return {
     init = function(self, parameters)
-        self.graphics    = parameters.graphics
-        self.gridSize    = parameters.gridSize or 64
-        self.midLineY    = self.graphics:getScreenHeight() * 3/4
-        self.topLineY    = self.midLineY - 24
-        self.bottomLineY = self.midLineY + 144
+        self.graphics     = parameters.graphics
+        self.gridSize     = parameters.gridSize or 64
+        self.standingLine = self.graphics:getScreenHeight() * 3/4
+        self.midLineY     = self.standingLine + 48
+        self.topLineY     = self.standingLine - 24
+        self.bottomLineY  = self.standingLine + 144
         return self
     end,
     
@@ -16,6 +17,7 @@ return {
         
         self.graphics:setColor(1, 1, 1)
         self:drawTopLine(viewportRect)
+        self:drawMidLine(viewportRect)
         self:drawBottomLine(viewportRect)
         self:drawGridLines(viewportRect)
     end,
@@ -26,6 +28,11 @@ return {
     drawTopLine = function(self, viewportRect)
         self.graphics:setLineWidth(4)
         self.graphics:line(viewportRect.x, self.topLineY, viewportRect.x + viewportRect.w, self.topLineY)
+    end,
+
+    drawMidLine = function(self, viewportRect)
+        self.graphics:setLineWidth(3)
+        self.graphics:line(viewportRect.x, self.midLineY, viewportRect.x + viewportRect.w, self.midLineY)
     end,
     
     drawBottomLine = function(self, viewportRect)
@@ -40,9 +47,9 @@ return {
         self.graphics:setColor(1, 1, 1)
         for x = startX, endX, self.gridSize do
             self.graphics:rectangle("fill", x - 1, self.topLineY - 1, 3, 3)
-            self.graphics:line(x, self.midLineY, bottomX, self.bottomLineY)
+            self.graphics:line(x, self.standingLine, bottomX, self.bottomLineY)
             local delta = (bottomX - x) / 6
-            self.graphics:line(x - delta, self.topLineY, x, self.midLineY)
+            self.graphics:line(x - delta, self.topLineY, x, self.standingLine)
             bottomX = bottomX + (self.gridSize * 2)
         end
     end,
