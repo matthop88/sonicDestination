@@ -23,8 +23,9 @@ return {
                 toggleGridKey = "g",
             })
             :add("cameraTracking", {
-                graphics   = self.GRAPHICS,
-                positionFn = function() return self.SONIC:getX(), self.SONIC:getY() end,
+                graphics        = self.GRAPHICS,
+                toggleCameraKey = "g",
+                positionFn      = function() return self.SONIC:getX(), self.SONIC:getY() end,
             })
             :add("scrolling",      { 
                 imageViewer = self.GRAPHICS,
