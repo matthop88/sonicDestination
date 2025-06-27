@@ -71,17 +71,12 @@ return {
     end,
 
     updateFrameRate = function(self, dt)
+        self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
+
         --[[
-        XXX We are NOT following Sonic Team's formula here, which would be:
-
-        self.sprite:setFps(60 / ((math.max(0, 480 - math.abs(self.velocity.x))) + 1))
-
         Source:
         https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
-
         --]]
-
-        self.sprite:setFPS(math.max(6, math.abs(self.velocity.x / 36)))
     end,
     
     updatePosition = function(self, dt)
