@@ -31,8 +31,8 @@ return {
 
     update = function(self, dt)
         self.sprite:update(dt)
-        self:updateState()
-        self:updateVelocity(dt)
+        self:updateState(dt)
+        self:updateFrameRate(dt)
         self:updatePosition(dt)
     end,
 
@@ -63,10 +63,12 @@ return {
         self.nextState = state
     end,
 
-    updateState = function(self)
+    updateState = function(self, dt)
         if self.nextState ~= self.state then
             self.state = self.nextState
             self.state:onEnter()
+        elseif self.state.update then
+            self.state:update(dt)
         end
     end,
 
