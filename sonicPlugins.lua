@@ -63,7 +63,7 @@ return {
                             self.ANIMATIONS:setFPS(self.ANIMATIONS:getFPS() - 1)
                         end,
                         getValueFn  = function()
-                            return math.abs(self.ANIMATIONS:getFPS())
+                            return math.floor(self.ANIMATIONS:getFPS())
                         end,
                         toggleShowKey = "F",
                     },
