@@ -42,17 +42,17 @@ return {
     --        Specialized Methods Go Here        --
     -----------------------------------------------
     drawTopLine = function(self, viewportRect)
-        self.graphics:setLineWidth(4)
+        self.graphics:setLineWidth(1)
         self.graphics:line(viewportRect.x, self.topLineY, viewportRect.x + viewportRect.w, self.topLineY)
     end,
 
     drawMidLine = function(self, viewportRect)
-        self.graphics:setLineWidth(3)
+        self.graphics:setLineWidth(2)
         self.graphics:line(viewportRect.x, self.midLineY, viewportRect.x + viewportRect.w, self.midLineY)
     end,
     
     drawBottomLine = function(self, viewportRect)
-        self.graphics:setLineWidth(2)
+        self.graphics:setLineWidth(3)
         self.graphics:line(viewportRect.x, self.bottomLineY, viewportRect.x + viewportRect.w, self.bottomLineY)
     end,
     
@@ -61,6 +61,8 @@ return {
         local bottomX               = startX - offsetX - (viewportRect.w / 2)
         
         self.graphics:setColor(1, 1, 1)
+        self.graphics:setLineWidth(1)
+        
         for x = startX, endX, self.gridSize do
             self.graphics:line(x, self.standingLine, bottomX, self.bottomLineY)
             local delta = (bottomX - x) / 6
