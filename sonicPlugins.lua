@@ -22,7 +22,7 @@ return {
             {
                 object  = self.SONIC,
                 originX = 512,
-                originY = 514,
+                originY = 556,
             })
             :add("grid3D",         { 
                 graphics      = self.GRAPHICS,
