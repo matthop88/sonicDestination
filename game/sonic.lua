@@ -1,8 +1,6 @@
 local STATES
 
 return {
-    RUNNING_SPEED = 360,
-
     -------------------------------------------------------
     RUNNING_ACCELERATION = 168.75,
     -------------------------------------------------------
@@ -70,12 +68,6 @@ return {
         elseif self.state.update then
             self.state:update(dt)
         end
-    end,
-
-    updateVelocity = function(self, dt)
-        if     self.velocity.x > 0 then self.velocity.x =  self.RUNNING_SPEED
-        elseif self.velocity.x < 0 then self.velocity.x = -self.RUNNING_SPEED end
-        self:updateFrameRate(dt)
     end,
 
     updateFrameRate = function(self, dt)
