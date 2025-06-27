@@ -106,6 +106,12 @@ return {
                         end,
                         toggleShowKey = "v",
                     },
+                    mphMode = {
+                        special = {
+                            key = "M",
+                            fn  = function() self.SONIC.mphMode = not self.SONIC.mphMode end,
+                        }
+                    },
                 }
             })
     end,
