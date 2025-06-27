@@ -110,7 +110,14 @@ return {
                         special = {
                             key = "M",
                             fn  = function() self.SONIC.mphMode = not self.SONIC.mphMode end,
-                        }
+                        },
+                        toggleShowKey = "M",
+                        name = "MPH Mode",
+                        getValueFn = function()
+                            if self.SONIC.mphMode then return "ON"
+                            else                       return "OFF"
+                            end
+                        end,
                     },
                 }
             })
