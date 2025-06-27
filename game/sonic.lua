@@ -81,7 +81,7 @@ return {
 
         --]]
 
-        self.sprite:setFPS(math.abs(self.velocity.x / 36))
+        self.sprite:setFps(math.min(6, math.abs(self.velocity.x / 36)))
     end,
     
     updatePosition = function(self, dt)
