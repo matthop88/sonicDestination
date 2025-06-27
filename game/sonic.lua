@@ -48,7 +48,7 @@ return {
     end,
 
     keyreleased = function(self, key)
-        if self.state.keyreleased then self.state:keyreleased(key) end
+        if self.nextState.keyreleased then self.nextState:keyreleased(key) end
     end,
 
     --------------------------------------------------------------
