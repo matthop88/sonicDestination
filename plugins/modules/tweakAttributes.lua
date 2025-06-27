@@ -78,9 +78,19 @@ return {
             end
         end,
 
+        activateSpecialByKey = function(self, key)
+            self:mapAll( { fn = self.triggerSpecialFnFromKey, params = { key = key } } )
+        end,
+        
         toggleAttributeFromKey = function(self, attribute, attName, params)
             if params.key == attribute.toggleShowKey then attribute.active = not attribute.active end
             self:updateSelectedIndex()
+        end,
+
+        triggerSpecialFnFromKey = function(self, attribute, attName, params)
+            if attribute.special and params.key == attribute.special.key then
+                attribute.special.fn()
+            end
         end,
 
         updateSelectedIndex = function(self) self:setSelectedIndex(self.selectedIndex) end,
