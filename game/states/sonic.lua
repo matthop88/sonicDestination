@@ -36,7 +36,7 @@ STATES = {
         onEnter    = function(self)
             SONIC:faceLeft()
             SONIC.sprite:setCurrentAnimation("running")
-            SONIC.velocity.x = -SONIC.RUNNING_SPEED
+            SONIC.velocity.x = 0
         end,
         
         keypressed = function(self, key)
@@ -48,7 +48,7 @@ STATES = {
         end,
 
         update = function(self, dt)
-            -- Accelerate Left
+            SONIC.velocity.x = SONIC.velocity.x + (SONIC.RUNNING_ACCELERATION * dt)
         end,
     },
 
@@ -56,7 +56,7 @@ STATES = {
         onEnter    = function(self)
             SONIC:faceRight()
             SONIC.sprite:setCurrentAnimation("running")
-            SONIC.velocity.x = SONIC.RUNNING_SPEED
+            SONIC.velocity.x = 0
         end,
         
         keypressed = function(self, key)
@@ -68,7 +68,7 @@ STATES = {
         end,
 
         update = function(self, dt)
-            -- Accelerate Right
+            SONIC.velocity.x = SONIC.velocity.x - (SONIC.RUNNING_ACCELERATION * dt)
         end,
     }
 }
