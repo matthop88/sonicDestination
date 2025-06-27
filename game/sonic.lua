@@ -12,6 +12,15 @@ return {
     -- Multiply by 60 to calculate acceleration per second
     -- Multiply by 60 again because velocity is 60x higher
     -------------------------------------------------------
+    MAX_SPEED = 360,
+    -----------------------------------------------------------
+    -- 6 pixels per frame
+
+    -- From Sonic Physics Guide
+    -- https://info.sonicretro.org/SPG:Running#Constants
+
+    -- Multiply by 60 to calculate pixels per second (@ 60 fps)
+    -----------------------------------------------------------
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
