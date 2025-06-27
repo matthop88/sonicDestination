@@ -31,7 +31,7 @@ return {
 
     drawHorizontalLine = function(self)
         self.graphics:setColor(COLOR_PURE_WHITE)
-        self.graphics:setLineWidth(3)
+        self.graphics:setLineWidth(1.5)
         self.graphics:line(leftX, self:getHeight() * 3/4, rightX, self:getHeight() * 3/4)
     end,
 }
