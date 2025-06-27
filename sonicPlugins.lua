@@ -101,12 +101,6 @@ return {
                     },
                     velocityX = {
                         name = "X Velocity",
-                        incrementFn = function()
-                            self.SONIC.RUNNING_SPEED = self.SONIC.RUNNING_SPEED + 30
-                        end,
-                        decrementFn = function()
-                            self.SONIC.RUNNING_SPEED = self.SONIC.RUNNING_SPEED - 30
-                        end,
                         getValueFn = function()
                             return math.abs(self.SONIC.velocity.x)
                         end,
