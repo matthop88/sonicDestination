@@ -63,7 +63,7 @@ return {
                             self.ANIMATIONS:setFPS(self.ANIMATIONS:getFPS() - 1)
                         end,
                         getValueFn  = function()
-                            return self.ANIMATIONS:getFPS()
+                            return math.abs(self.ANIMATIONS:getFPS())
                         end,
                         toggleShowKey = "F",
                     },
@@ -98,7 +98,7 @@ return {
                         getValueFn = function()
                             if self.SONIC.mphMode then
                                 local mph = self.SONIC.velocity.x * 0.0568
-                                return "" .. math.floor(math.abs(mph) + 0.5) .. " MPH"
+                                return string.format("%.1f MPH", math.abs(mph) + 0.5)
                             else
                                 return "" .. math.floor(math.abs(self.SONIC.velocity.x) + 0.5) .. " Pixels / Second"
                             end
