@@ -18,12 +18,6 @@ return {
         require("plugins/engine")
             :add("updateLayer", { updateFn = self.UPDATE_FN })
             :add("modKeyEnabler")
-            :add("mouseTracking",
-            {
-                object  = self.SONIC,
-                originX = 512,
-                originY = 556,
-            })
             :add("grid3D",         { 
                 graphics      = self.GRAPHICS,
                 toggleGridKey = "g",
@@ -113,7 +107,7 @@ return {
                     },
                     mphMode = {
                         special = {
-                            key = "M",
+                            key = "m",
                             fn  = function() self.SONIC.mphMode = not self.SONIC.mphMode end,
                         },
                     },
