@@ -48,7 +48,7 @@ STATES = {
         end,
 
         update = function(self, dt)
-            SONIC.velocity.x = SONIC.velocity.x - (SONIC.RUNNING_ACCELERATION * dt)
+            SONIC.velocity.x = math.max(-SONIC.MAX_RUNNING_SPEED, SONIC.velocity.x - (SONIC.RUNNING_ACCELERATION * dt))
         end,
     },
 
@@ -68,7 +68,7 @@ STATES = {
         end,
 
         update = function(self, dt)
-            SONIC.velocity.x = SONIC.velocity.x + (SONIC.RUNNING_ACCELERATION * dt)
+            SONIC.velocity.x = math.min(SONIC.MAX_RUNNING_SPEED, SONIC.velocity.x + (SONIC.RUNNING_ACCELERATION * dt))
         end,
     }
 }
