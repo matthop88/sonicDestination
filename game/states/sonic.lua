@@ -46,6 +46,10 @@ STATES = {
         keyreleased = function(self, key)
             if key == "left" then SONIC:setState(STATES.STAND_LEFT) end
         end,
+
+        update = function(self, dt)
+            -- Accelerate Left
+        end,
     },
 
     RUN_RIGHT = {
@@ -61,6 +65,10 @@ STATES = {
         
         keyreleased = function(self, key)
             if key == "right" then SONIC:setState(STATES.STAND_RIGHT) end
+        end,
+
+        update = function(self, dt)
+            -- Accelerate Right
         end,
     }
 }
