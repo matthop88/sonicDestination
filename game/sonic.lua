@@ -4,12 +4,15 @@ return {
     RUNNING_SPEED = 360,
 
     -------------------------------------------------------
-    RUNNING_ACCELERATION = 0.046875,
+    RUNNING_ACCELERATION = 168.75,
     -------------------------------------------------------
     -- 12 subpixels per frame
 
     -- From Sonic Physics Guide
     -- https://info.sonicretro.org/SPG:Running#Acceleration
+
+    -- Multiply by 60 to calculate acceleration per second
+    -- Multiply by 60 again because velocity is 60x higher
     -------------------------------------------------------
     
     position = { x = 0, y = 0 },
