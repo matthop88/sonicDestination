@@ -102,7 +102,12 @@ return {
                     velocityX = {
                         name = "X Velocity",
                         getValueFn = function()
-                            return math.abs(self.SONIC.velocity.x)
+                            if self.SONIC.mphMode then
+                                local mph = self.SONIC.velocity.x * 0.0568
+                                return "" .. math.floor(math.abs(mph) + 0.5) .. " MPH"
+                            else
+                                return "" .. math.floor(math.abs(self.SONIC.velocity.x) + 0.5) .. " Pixels / Second"
+                            end
                         end,
                         toggleShowKey = "v",
                     },
@@ -111,13 +116,6 @@ return {
                             key = "M",
                             fn  = function() self.SONIC.mphMode = not self.SONIC.mphMode end,
                         },
-                        toggleShowKey = "M",
-                        name = "MPH Mode",
-                        getValueFn = function()
-                            if self.SONIC.mphMode then return "ON"
-                            else                       return "OFF"
-                            end
-                        end,
                     },
                 }
             })
