@@ -116,7 +116,7 @@ return {
     end,
 
     drawAttribute = function(self, attribute, attName, params)
-        if params.isSelected then love.graphics.setColor(1, 0, 0)
+        if params.isSelected then love.graphics.setColor(1, 1, 0)
         else                      love.graphics.setColor(1, 1, 1) end
         
         if attribute.getValueFn then
