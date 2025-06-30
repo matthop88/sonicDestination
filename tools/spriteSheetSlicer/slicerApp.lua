@@ -61,8 +61,8 @@ local ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-local MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
-local SPRITE_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 }
+local MARGIN_BACKGROUND_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 }
+local SPRITE_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
@@ -85,7 +85,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
-    
+
 function love.update(dt)
     slicer:update(dt)
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
