@@ -21,15 +21,21 @@ return {
     end,
 
     drawHoles = function(self)
-        local worldX, worldY = GRAFX:screenToImageCoordinates(0, 0)
-        local startX, startY = worldX - (worldX % GRID_SIZE), worldY - (worldY % GRID_SIZE)
-        local endX,   endY   = GRAFX:screenToImageCoordinates(love.graphics.getWidth(), love.graphics.getHeight())
-        
+        local startX, endX, startY, endY = self:calculateHolePositions()
+
         for y = startY, endY, GRID_SIZE do
             for x = startX, endX, GRID_SIZE do
                 self:drawHole(x, y)
             end
         end
+    end,
+    
+    calculateHolePositions = function(self)
+        local startX, startY, width, height = GRAFX:calculateViewport()
+        startX = startX - (startX % GRID_SIZE)
+        startY = startY - (startY % GRID_SIZE)
+         
+        return startX, startX + width, startY, startY + height
     end,
 
     drawHole = function(self, x, y)

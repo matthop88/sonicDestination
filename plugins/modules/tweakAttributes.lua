@@ -78,9 +78,19 @@ return {
             end
         end,
 
+        activateSpecialByKey = function(self, key)
+            self:mapAll( { fn = self.triggerSpecialFnFromKey, params = { key = key } } )
+        end,
+        
         toggleAttributeFromKey = function(self, attribute, attName, params)
             if params.key == attribute.toggleShowKey then attribute.active = not attribute.active end
             self:updateSelectedIndex()
+        end,
+
+        triggerSpecialFnFromKey = function(self, attribute, attName, params)
+            if attribute.special and params.key == attribute.special.key then
+                attribute.special.fn()
+            end
         end,
 
         updateSelectedIndex = function(self) self:setSelectedIndex(self.selectedIndex) end,
@@ -106,7 +116,7 @@ return {
     end,
 
     drawAttribute = function(self, attribute, attName, params)
-        if params.isSelected then love.graphics.setColor(1, 0, 0)
+        if params.isSelected then love.graphics.setColor(1, 1, 0)
         else                      love.graphics.setColor(1, 1, 1) end
         
         if attribute.getValueFn then
@@ -122,6 +132,9 @@ return {
         elseif key == self.decAttributeKey then self.attributes:decrementSelectedValue()
         elseif key == self.selectedUpKey   then self.attributes:decrementSelectedIndex()
         elseif key == self.selectedDownKey then self.attributes:incrementSelectedIndex()
-        else                                    self.attributes:toggleByKey(key)     end
+        else                                   
+            self.attributes:toggleByKey(key)
+            self.attributes:activateSpecialByKey(key)
+        end
     end,
 }

@@ -37,10 +37,10 @@ return ({
     end,
 
     update = function(self, dt)
-        self.oldUpdate(dt)
         for _, plugin in ipairs(self) do
             if plugin.update ~= nil and plugin:update(dt) then return true end
         end
+        self.oldUpdate(dt)
     end,
 
     keypressed = function(self, key)

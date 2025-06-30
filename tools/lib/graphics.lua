@@ -23,7 +23,10 @@ return {
     
     ---------------------- Property Setter Functions -------------------
     
-    setColor     = function(self, color)     love.graphics.setColor(color) end,
+    setColor     = function(self, arg1, arg2, arg3, arg4)
+        love.graphics.setColor(arg1, arg2, arg3, arg4)
+    end,
+    
     setLineWidth = function(self, lineWidth) self.lineWidth = lineWidth    end,
 
     setFont  = function(self, font)
@@ -93,7 +96,31 @@ return {
     end,
     
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        self:syncImageXWithScreen(imageX, screenX)
+        self:syncImageYWithScreen(imageY, screenY)
+    end,
+
+    syncImageXWithScreen = function(self, imageX, screenX)
         self.x = screenX / self.scale - imageX
+    end,
+
+    syncImageYWithScreen = function(self, imageY, screenY)
         self.y = screenY / self.scale - imageY
+    end,
+
+    getScreenWidth  = function(self) return love.graphics.getWidth()  end,
+    getScreenHeight = function(self) return love.graphics.getHeight() end,
+
+    calculateViewportRect = function(self)
+        local x, y, w, h = self:calculateViewport()
+
+        return { x = x, y = y, w = w, h = h }
+    end,
+
+    calculateViewport = function(self)
+        local leftX,  topY    = self:screenToImageCoordinates(0, 0)
+        local rightX, bottomY = self:screenToImageCoordinates(self:getScreenWidth(), self:getScreenHeight())
+
+        return leftX, topY, rightX - leftX, bottomY - topY
     end,
 }

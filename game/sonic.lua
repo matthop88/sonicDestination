@@ -1,12 +1,34 @@
 local STATES
 
 return {
-    x = 0, y = 0,
+    -----------------------------------------------------------
+    RUNNING_ACCELERATION = 168.75,
+    -----------------------------------------------------------
+    -- 12 subpixels per frame
+
+    -- From Sonic Physics Guide
+    -- https://info.sonicretro.org/SPG:Running#Acceleration
+
+    -- Multiply by 60 to calculate acceleration per second
+    -- Multiply by 60 again because velocity is 60x higher
+    -----------------------------------------------------------
+    MAX_RUNNING_SPEED = 360,
+    -----------------------------------------------------------
+    -- 6 pixels per frame
+
+    -- From Sonic Physics Guide
+    -- https://info.sonicretro.org/SPG:Running#Constants
+
+    -- Multiply by 60 to calculate pixels per second (@ 60 fps)
+    -----------------------------------------------------------
+    
+    position = { x = 0, y = 0 },
+    velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        self.sprite = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
-        STATES      = requireRelative("states/sonic",          { SONIC = self })
-        self.state  = STATES.STAND_RIGHT
+        self.sprite     = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        STATES          = requireRelative("states/sonic",          { SONIC = self })
+        self.nextState  = STATES.STAND_RIGHT
         return self
     end,
 
@@ -16,6 +38,9 @@ return {
 
     update = function(self, dt)
         self.sprite:update(dt)
+        self:updateState(dt)
+        self:updateFrameRate(dt)
+        self:updatePosition(dt)
     end,
 
     keypressed = function(self, key)
@@ -23,17 +48,17 @@ return {
     end,
 
     keyreleased = function(self, key)
-        if self.state.keyreleased then self.state:keyreleased(key) end
+        if self.nextState.keyreleased then self.nextState:keyreleased(key) end
     end,
 
     --------------------------------------------------------------
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
-    getX          = function(self) return self.x                       end,
-    getY          = function(self) return self.y                       end,
+    getX          = function(self) return self.position.x                               end,
+    getY          = function(self) return self.position.y                               end,
 
-    moveTo        = function(self, x, y)  self.x, self.y = x, y        end,
+    moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
     isFacingLeft  = function(self) return     self.sprite:isXFlipped()                  end,
     isFacingRight = function(self) return not self.sprite:isXFlipped()                  end,
@@ -42,8 +67,30 @@ return {
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
     setState      = function(self, state)
-        self.state = state
-        self.state:onEnter()
+        self.nextState = state
+    end,
+
+    updateState = function(self, dt)
+        if self.nextState ~= self.state then
+            self.state = self.nextState
+            self.state:onEnter()
+        elseif self.state.update then
+            self.state:update(dt)
+        end
+    end,
+
+    updateFrameRate = function(self, dt)
+        self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
+
+        --[[
+        Source:
+        https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
+        --]]
+    end,
+    
+    updatePosition = function(self, dt)
+        self.position.x = self.position.x + (self.velocity.x * dt)
+        self.position.y = self.position.y + (self.velocity.y * dt)
     end,
 
 }
