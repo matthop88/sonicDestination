@@ -12,10 +12,10 @@
 --]]
 
 --------------------------------------------------------------
---                      Global Variables                    --
+--                       Local Variables                    --
 --------------------------------------------------------------
 
-ASCII_ART = [[
+local ASCII_ART = [[
                eeeeeeeeeeee                                     
        ZeeeeeeeeZeeeee2222eeeeeeZ                               
    ÕëëëëëëëëZeeeeeeeeZZZZZ222222eeeeZ      ÕëëÕ                 
@@ -61,14 +61,10 @@ ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
-SPRITE_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 }
+local MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
+local SPRITE_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 }
 
-WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
-
---------------------------------------------------------------
---                      Local Variables                     --
---------------------------------------------------------------
+local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require "tools/spriteSheetSlicer/smartRect"
