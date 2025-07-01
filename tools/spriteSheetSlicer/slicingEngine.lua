@@ -104,7 +104,12 @@ return {
 
     stop = function(self)
         self.running = false
+        self:cropSpriteRects()
         self:callbackWhenComplete()
+    end,
+
+    cropSpriteRects = function(self)
+        SPRITE_CROPPER:crop(SPRITE_RECTS)
     end,
 
     findEnclosingRect = function(self, imageX, imageY)
