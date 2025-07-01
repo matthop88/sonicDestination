@@ -1,4 +1,4 @@
-local MARGIN_BG_COLOR, SPRITE_BG_COLOR
+local SPRITE_BG_COLOR
 local IMAGE_VIEWER
 
 local thisColor, prevColor
@@ -13,9 +13,8 @@ local isCloseEnoughMatch = function(c1, c2)
 end
 
 return {
-    init = function(self, imageViewer, marginBGColor, spriteBGColor)
+    init = function(self, imageViewer, spriteBGColor)
         IMAGE_VIEWER    = imageViewer
-        MARGIN_BG_COLOR = marginBGColor
         SPRITE_BG_COLOR = spriteBGColor
 
         return self
