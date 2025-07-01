@@ -27,21 +27,24 @@ return {
     end,
 
     cropSpriteRect = function(self, spriteRect)
-        -- Scan all lines, determine where each begins and each ends
-        local minX, maxX, minY, maxY
+        local bounds = { minX = nil, maxX = nil, minY = nil, maxY = nil }
         for y = spriteRect.y, spriteRect.y + spriteRect.h - 1 do
             for x = spriteRect.x, spriteRect.x + spriteRect.w - 1 do
-                local pixelColor = IMAGE_VIEWER:getPixelColorAt(x, y)
-                if not isCloseEnoughMatch(pixelColor, SPRITE_BG_COLOR) then
-                    if minX == nil then minX = x else minX = math.min(x, minX) end
-                    if minY == nil then minY = y else minY = math.min(y, minY) end
-                    if maxX == nil then maxX = x else maxX = math.max(x, maxX) end
-                    if maxY == nil then maxY = y else maxY = math.max(y, maxY) end
-                end
+                self:adjustBounds(bounds, x, y)
             end
         end
 
-        if minX ~= nil then spriteRect.x, spriteRect.w = minX, maxX - minX + 1 end
-        if minY ~= nil then spriteRect.y, spriteRect.h = minY, maxY - minY + 1 end
+        if bounds.minX ~= nil then spriteRect.x, spriteRect.w = bounds.minX, bounds.maxX - bounds.minX + 1 end
+        if bounds.minY ~= nil then spriteRect.y, spriteRect.h = bounds.minY, bounds.maxY - bounds.minY + 1 end
+    end,
+
+    adjustBounds = function(self, bounds, x, y)
+        local pixelColor = IMAGE_VIEWER:getPixelColorAt(x, y)
+        if not isCloseEnoughMatch(pixelColor, SPRITE_BG_COLOR) then
+            if bounds.minX == nil then bounds.minX = x else bounds.minX = math.min(x, bounds.minX) end
+            if bounds.minY == nil then bounds.minY = y else bounds.minY = math.min(y, bounds.minY) end
+            if bounds.maxX == nil then bounds.maxX = x else bounds.maxX = math.max(x, bounds.maxX) end
+            if bounds.maxY == nil then bounds.maxY = y else bounds.maxY = math.max(y, bounds.maxY) end
+        end
     end,
 }
