@@ -34,7 +34,10 @@ return {
             for x = spriteRect.x, spriteRect.x + spriteRect.w - 1 do
                 local pixelColor = IMAGE_VIEWER:getPixelColorAt(x, y)
                 if not isCloseEnoughMatch(pixelColor, SPRITE_BG_COLOR) then
-                    -- Update minX, maxX, minY, maxY
+                    if minX == nil then minX = x else minX = math.min(x, minX) end
+                    if minY == nil then minY = y else minY = math.min(y, minY) end
+                    if maxX == nil then maxX = x else maxX = math.max(x, maxX) end
+                    if maxY == nil then maxY = y else maxY = math.max(y, maxY) end
                 end
             end
         end
