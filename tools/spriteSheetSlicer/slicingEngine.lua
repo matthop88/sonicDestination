@@ -21,7 +21,7 @@ return {
         PIXEL_ANALYZER            = require("tools/spriteSheetSlicer/pixelAnalyzer")
                                         :init(IMAGE_VIEWER, params.marginBGColor, params.spriteBGColor)
         SPRITE_CROPPER            = require("tools/spriteSheetSlicer/spriteCropper")
-                                        :init(IMAGE_VIEWER, params.marginBGColor, params.spriteBGColor)
+                                        :init(IMAGE_VIEWER, params.spriteBGColor)
         
         self.callbackWhenComplete = params.callbackWhenComplete or function() end
 
