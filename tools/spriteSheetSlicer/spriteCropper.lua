@@ -28,17 +28,22 @@ return {
 
     cropSpriteRect = function(self, spriteRect)
         local bounds = { minX = nil, maxX = nil, minY = nil, maxY = nil }
-        for y = spriteRect.y, spriteRect.y + spriteRect.h - 1 do
-            for x = spriteRect.x, spriteRect.x + spriteRect.w - 1 do
-                self:adjustBounds(bounds, x, y)
-            end
-        end
+
+        self:adjustBounds(bounds, spriteRect)
 
         if bounds.minX ~= nil then spriteRect.x, spriteRect.w = bounds.minX, bounds.maxX - bounds.minX + 1 end
         if bounds.minY ~= nil then spriteRect.y, spriteRect.h = bounds.minY, bounds.maxY - bounds.minY + 1 end
     end,
 
-    adjustBounds = function(self, bounds, x, y)
+    adjustBounds = function(self, bounds, spriteRect)
+        for y = spriteRect.y, spriteRect.y + spriteRect.h - 1 do
+            for x = spriteRect.x, spriteRect.x + spriteRect.w - 1 do
+                self:adjustBoundsBasedOnPixel(bounds, x, y)
+            end
+        end
+    end,
+
+    adjustBoundsBasedOnPixel = function(self, bounds, x, y)
         local pixelColor = IMAGE_VIEWER:getPixelColorAt(x, y)
         if not isCloseEnoughMatch(pixelColor, SPRITE_BG_COLOR) then
             if bounds.minX == nil then bounds.minX = x else bounds.minX = math.min(x, bounds.minX) end
