@@ -20,5 +20,11 @@ return {
 
     cropSpriteRect = function(self, spriteRect)
         -- Scan all lines, determine where each begins and each ends
+        local minX, maxX, minY, maxY
+        for y = spriteRect.y, spriteRect.y + spriteRect.h - 1 do
+            for x = spriteRect.x, spriteRect.x + spriteRect.w - 1 do
+                -- Determine where each line begins and ends
+            end
+        end
     end,
 }
