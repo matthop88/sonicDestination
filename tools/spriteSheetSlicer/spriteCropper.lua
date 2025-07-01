@@ -13,7 +13,7 @@ return {
     end,
 
     crop = function(self, spriteRects)
-        for _, spriteRect in ipairs(spriteRects:elements()) do
+        for _, spriteRect in spriteRects:elements() do
             self:cropSpriteRect(spriteRect)
         end
     end,
