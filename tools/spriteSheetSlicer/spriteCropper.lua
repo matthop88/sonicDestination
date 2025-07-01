@@ -13,7 +13,12 @@ return {
     end,
 
     crop = function(self, spriteRects)
-        -- For each rect in list:
+        for _, spriteRect in ipairs(spriteRects:elements()) do
+            self:cropSpriteRect(spriteRect)
+        end
+    end,
+
+    cropSpriteRect = function(self, spriteRect)
         -- Scan all lines, determine where each begins and each ends
     end,
 }
