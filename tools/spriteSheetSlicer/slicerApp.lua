@@ -134,7 +134,7 @@ end
 
 function drawGallery()
     love.graphics.setColor(0.5, 0.5, 0.5)
-    love.graphics.rectangle("fill", 0, 532, 800, 68)
+    love.graphics.rectangle("fill", 0, 700, 1024, 68)
     love.graphics.setColor(1, 1, 1)
 end
 
