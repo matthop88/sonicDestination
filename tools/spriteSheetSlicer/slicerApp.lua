@@ -4,9 +4,9 @@
 --                  Functional Specifications               --
 --------------------------------------------------------------
 
-[X] 1. Program "automagically" finds borders of all sprites in image
-[X] 2. Border is drawn when mouse moves over a sprite
-[X] 3. When a sprite is clicked on, x, y, width and height are
+     * Program "automagically" finds borders of all sprites in image
+     * Border is drawn when mouse moves over a sprite
+     * When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
 --]]
