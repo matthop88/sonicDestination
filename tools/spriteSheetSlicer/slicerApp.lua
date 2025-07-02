@@ -126,9 +126,16 @@ function onSlicingCompletion()
     love.window.setTitle("Sprite Sheet Slicer")
 end
 
-function drawSlices()
+function drawOverlays()
     slicer:draw()
     currentRect:draw()
+    drawGallery()
+end
+
+function drawGallery()
+    love.graphics.setColor(0.5, 0.5, 0.5)
+    love.graphics.rectangle("fill", 0, 532, 800, 68)
+    love.graphics.setColor(1, 1, 1)
 end
 
 --------------------------------------------------------------
@@ -143,7 +150,7 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",      { imageViewer = getImageViewer() })
     :add("scrolling",    { imageViewer = getImageViewer() })
-    :add("drawingLayer", { drawingFn   = drawSlices       })
+    :add("drawingLayer", { drawingFn   = drawOverlays     })
     :add("readout",
     {
         printFnName    = "printToReadout",
