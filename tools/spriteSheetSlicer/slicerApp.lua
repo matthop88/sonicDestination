@@ -80,13 +80,24 @@ local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
 local imgPath     = "resources/images/sadSlicer.png"
 
-if __SLICER_FILE ~= nil then
-    imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
-end
+local gallerySpriteRects = {
+    { x =  41, y = 347, w = 26, h = 39 },
+    { x = 102, y = 346, w = 29, h = 40 },
+    { x = 162, y = 345, w = 39, h = 40 },
+    { x = 224, y = 346, w = 39, h = 39 },
+    { x = 293, y = 347, w = 26, h = 39 },
+    { x = 355, y = 346, w = 28, h = 40 },
+    { x = 412, y = 345, w = 40, h = 38 },
+    { x = 476, y = 346, w = 39, h = 39 },
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
+
+if __SLICER_FILE ~= nil then
+    imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
+end
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
@@ -141,6 +152,15 @@ function drawGallery()
     for x = 8, 1024, 73 do
         love.graphics.rectangle("line", x, 696, 60, 60)
     end
+
+    for n, spriteRect in ipairs(gallerySpriteRects) do
+        love.graphics.draw(getImageViewer():getImage(),
+                love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
+                getImageViewer():getImage():getWidth(), getImageViewer():getImage():getHeight()),
+                (n * 73) - 50, 706, 0, 1, 1)
+    end
+                    
+                
 end
 
 --------------------------------------------------------------
