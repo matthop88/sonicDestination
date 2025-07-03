@@ -103,6 +103,7 @@ function love.update(dt)
     if not currentRect:containsPt(imageX, imageY) then
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
+    gallery:update(dt)
 end
 
 function love.mousepressed(mx, my)
