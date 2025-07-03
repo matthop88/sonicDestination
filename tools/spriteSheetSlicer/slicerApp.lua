@@ -126,10 +126,12 @@ local gallery = {
     
     drawSprites = function(self)
         for n, spriteRect in ipairs(self.spriteRects) do
-            love.graphics.draw(self.image, spriteRect.quad,
-                               (n * 73) - 35 - (spriteRect.w / 2),
-                               726           - (spriteRect.h / 2),    0, 1, 1)
+            self:drawSpriteCentered(spriteRect, (n * 73) - 35, 726)
         end
+    end,
+
+    drawSpriteCentered = function(self, spriteRect, x, y)
+        love.graphics.draw(self.image, spriteRect.quad, x - (spriteRect.w / 2), y - (spriteRect.h / 2), 0, 1, 1)
     end,
 }
 
