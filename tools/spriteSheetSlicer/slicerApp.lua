@@ -9,7 +9,7 @@
      * When a sprite is clicked on, x, y, width and height are
        displayed on screen.
 
-   [ ] Program displays "gallery" of images at bottom of screen.
+   [X] Program displays "gallery" of images at bottom of screen.
    [ ] Images in gallery are thumbnails that scale a bit when mouseover occurs.
    [ ] Images belong to an animation sequence and are specified in an external data file.
    [ ] When gallery image is pressed, an editor "window" pops up, with blown-up image
