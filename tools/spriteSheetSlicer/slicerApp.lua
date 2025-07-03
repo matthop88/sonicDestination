@@ -156,7 +156,7 @@ function drawGallery()
     for n, spriteRect in ipairs(gallerySpriteRects) do
         love.graphics.draw(getImageViewer():getImage(),
                 love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
-                getImageViewer():getImage():getWidth(), getImageViewer():getImage():getHeight()),
+                getImageViewer():getImageWidth(), getImageViewer():getImageHeight()),
                 (n * 73) - 50, 706, 0, 1, 1)
     end
                     
