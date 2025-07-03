@@ -1,11 +1,6 @@
 local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
         return {
-            x = x,   y = y,   w = w,   h = h,
-
-            image      = image,
-            spriteRect = spriteRect,
-
             draw = function(self)
                 self:drawBorder()
                 self:drawSprite()
@@ -14,18 +9,17 @@ local GallerySlot = {
             drawBorder = function(self)
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.setLineWidth(2)
-                love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+                love.graphics.rectangle("line", x, y, w, h)
             end,
 
             drawSprite = function(self)
-                love.graphics.draw(self.image, self.spriteRect.quad,
-                    self.x + (self.w / 2) - (self.spriteRect.w / 2),
-                    self.y + (self.h / 2) - (self.spriteRect.h / 2),
-                    0, 1, 1)
+                love.graphics.draw(image, spriteRect.quad, 
+                           x + (w / 2) - (spriteRect.w / 2), 
+                           y + (h / 2) - (spriteRect.h / 2), 0, 1, 1)
             end,
 
             isInsideRect = function(self, px, py)
-                return px >= self.x and px <= self.x + self.w and py >= self.y and py <= self.y + self.h
+                return px >= x and px <= x + w and py >= y and py <= y + h
             end,
         }
     end,
