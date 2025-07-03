@@ -10,8 +10,8 @@ local GallerySlot = {
             end,
 
             update = function(self, dt)
-                if self:isInsideRect(love.mouse.getPosition()) then scale = 2
-                else                                                scale = 1   end
+                if self:isInsideRect(love.mouse.getPosition()) then scale = math.min(2, scale + dt)
+                else                                                scale = math.max(1, scale - dt)   end
             end,
             
             drawBorder = function(self)
