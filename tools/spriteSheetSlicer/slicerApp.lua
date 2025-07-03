@@ -157,7 +157,7 @@ function drawGallery()
         love.graphics.draw(getImageViewer():getImage(),
                 love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
                 getImageViewer():getImageWidth(), getImageViewer():getImageHeight()),
-                (n * 73) - 50, 706, 0, 1, 1)
+                (n * 73) - 65 + ((60 - spriteRect.w) / 2), 706, 0, 1, 1)
     end
                     
                 
