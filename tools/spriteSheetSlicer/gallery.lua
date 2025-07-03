@@ -2,7 +2,7 @@ local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
         local scale     = 1
         local maxScale  = 5
-        local zoomSpeed = 10
+        local zoomSpeed = 20
         
         return {
             
@@ -65,7 +65,8 @@ return {
     
     draw = function(self)
         self:drawBackground()
-        self:drawSlots()
+        self:drawSlotBorders()
+        self:drawSprites()
     end,
 
     update = function(self, dt)
@@ -80,9 +81,15 @@ return {
         love.graphics.setColor(1, 1, 1)
     end,
 
-    drawSlots = function(self)
+    drawSlotBorders = function(self)
         for _, gallerySlot in ipairs(self.slots) do
-            gallerySlot:draw()
+            gallerySlot:drawBorder()
+        end
+    end,
+
+    drawSprites = function(self)
+        for _, gallerySlot in ipairs(self.slots) do
+            gallerySlot:drawSprite()
         end
     end,
 }
