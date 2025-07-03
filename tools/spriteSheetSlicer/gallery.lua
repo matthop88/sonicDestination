@@ -7,13 +7,25 @@ local GallerySlot = {
             spriteRect = spriteRect,
 
             draw = function(self)
+                self:drawBorder()
+                self:drawSprite()
+            end,
+
+            drawBorder = function(self)
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.setLineWidth(2)
                 love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+            end,
+
+            drawSprite = function(self)
                 love.graphics.draw(self.image, self.spriteRect.quad,
                     self.x + (self.w / 2) - (self.spriteRect.w / 2),
                     self.y + (self.h / 2) - (self.spriteRect.h / 2),
                     0, 1, 1)
+            end,
+
+            isInsideRect = function(self, px, py)
+                return px >= self.x and px <= self.x + self.w and py >= self.y and py <= self.y + self.h
             end,
         }
     end,
