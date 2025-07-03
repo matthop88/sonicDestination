@@ -1,6 +1,8 @@
 local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
-        local scale = 1
+        local scale     = 1
+        local maxScale  = 2
+        local zoomSpeed = 3
         
         return {
             
@@ -10,8 +12,8 @@ local GallerySlot = {
             end,
 
             update = function(self, dt)
-                if self:isInsideRect(love.mouse.getPosition()) then scale = math.min(2, scale + dt)
-                else                                                scale = math.max(1, scale - dt)   end
+                if self:isInsideRect(love.mouse.getPosition()) then scale = math.min(maxScale, scale + (dt * zoomSpeed))
+                else                                                scale = math.max(1,        scale - (dt * zoomSpeed))   end
             end,
             
             drawBorder = function(self)
