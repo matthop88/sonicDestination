@@ -143,6 +143,7 @@ PLUGINS = require("plugins/engine")
     :add("imageViewer",
     {
         imagePath      = imgPath,
+        pixelated      = true,
         accessorFnName = "getImageViewer"
     })
     :add("zooming",      { imageViewer = getImageViewer() })
