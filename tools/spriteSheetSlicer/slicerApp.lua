@@ -71,7 +71,7 @@ local ASCII_ART = [[
 ]]
 
 local MARGIN_BACKGROUND_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 }
-local SPRITE_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
+local SPRITE_BACKGROUND_COLOR = { r = 0.00, g = 0.00, b = 0.00, a = 0 }
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
