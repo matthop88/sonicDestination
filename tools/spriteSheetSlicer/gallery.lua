@@ -1,4 +1,4 @@
-local gallerySlot = {
+local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
         return {
             x = x,   y = y,   w = w,   h = h,
@@ -31,23 +31,26 @@ return {
         { x = 476, y = 346, w = 39, h = 39 },
     },
 
+    slots = { },
+
     init = function(self)
-        self.image = getImageViewer():getImage()
         self:initQuads()
         return self
     end,
 
     initQuads = function(self)
+        local image = getImageViewer():getImage()
         for _, spriteRect in ipairs(self.spriteRects) do
             spriteRect.quad = love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
-                                                    self.image:getWidth(), self.image:getHeight())
+                                                    image:getWidth(), image:getHeight())
+
+            table.insert(self.slots, GallerySlot:create((n * 73) - 65, 696, 60, 60, image, spriteRect))
         end
     end,
     
     draw = function(self)
         self:drawBackground()
         self:drawSlots()
-        self:drawSprites()
     end,
 
     drawBackground = function(self)
@@ -57,19 +60,8 @@ return {
     end,
 
     drawSlots = function(self)
-        love.graphics.setLineWidth(2)
-        for x = 8, 1024, 73 do
-            love.graphics.rectangle("line", x, 696, 60, 60)
+        for _, gallerySlot in ipairs(self.slots) do
+            gallerySlot:draw()
         end
-    end,
-    
-    drawSprites = function(self)
-        for n, spriteRect in ipairs(self.spriteRects) do
-            self:drawSpriteCentered(spriteRect, (n * 73) - 35, 726)
-        end
-    end,
-
-    drawSpriteCentered = function(self, spriteRect, x, y)
-        love.graphics.draw(self.image, spriteRect.quad, x - (spriteRect.w / 2), y - (spriteRect.h / 2), 0, 1, 1)
     end,
 }
