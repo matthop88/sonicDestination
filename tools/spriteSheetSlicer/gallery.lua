@@ -13,6 +13,17 @@ local GallerySlot = {
             end,
 
             drawSprite = function(self)
+                if self:isInsideRect(love.mouse.getPosition()) then self:drawSpriteWithZoom()
+                else                                                self:drawSpriteNoZoom()   end
+            end,
+
+            drawSpriteWithZoom = function(self)
+                love.graphics.draw(image, spriteRect.quad, 
+                           x + (w / 2) - spriteRect.w, 
+                           y + (h / 2) - spriteRect.h,       0, 2, 2)
+            end,
+
+            drawSpriteNoZoom = function(self)
                 love.graphics.draw(image, spriteRect.quad, 
                            x + (w / 2) - (spriteRect.w / 2), 
                            y + (h / 2) - (spriteRect.h / 2), 0, 1, 1)
