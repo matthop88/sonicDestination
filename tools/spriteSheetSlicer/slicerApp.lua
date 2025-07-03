@@ -93,15 +93,25 @@ local gallery = {
     },
 
     draw = function(self)
+        self:drawBackground()
+        self:drawSlots()
+        self:drawSprites()
+    end,
+
+    drawBackground = function(self)
         love.graphics.setColor(0.5, 0.5, 0.5)
         love.graphics.rectangle("fill", 0, 684, 1024, 86)
         love.graphics.setColor(1, 1, 1)
+    end,
 
+    drawSlots = function(self)
         love.graphics.setLineWidth(2)
         for x = 8, 1024, 73 do
             love.graphics.rectangle("line", x, 696, 60, 60)
         end
+    end,
     
+    drawSprites = function(self)
         for n, spriteRect in ipairs(self.spriteRects) do
             love.graphics.draw(getImageViewer():getImage(),
                                love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
