@@ -34,18 +34,17 @@ return {
     slots = { },
 
     init = function(self)
-        self:initQuads()
+        local image = getImageViewer():getImage()
+        for n, spriteRect in ipairs(self.spriteRects) do
+            spriteRect.quad = self:createQuad(spriteRect, image)
+            table.insert(self.slots, GallerySlot:create((n * 73) - 65, 696, 60, 60, image, spriteRect))
+        end
         return self
     end,
 
-    initQuads = function(self)
-        local image = getImageViewer():getImage()
-        for n, spriteRect in ipairs(self.spriteRects) do
-            spriteRect.quad = love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
-                                                    image:getWidth(), image:getHeight())
-
-            table.insert(self.slots, GallerySlot:create((n * 73) - 65, 696, 60, 60, image, spriteRect))
-        end
+    createQuad = function(self, spriteRect, image)
+        return love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
+                                     image:getWidth(), image:getHeight())
     end,
     
     draw = function(self)
