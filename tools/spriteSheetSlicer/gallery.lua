@@ -23,7 +23,7 @@ local GallerySlot = {
             drawSprite = function(self)
                 love.graphics.draw(image, spriteRect.quad, 
                            x + (w / 2) - (spriteRect.w * scale / 2), 
-                           y + (h / 2) - (spriteRect.h * scale / 2), 0, 1, 1)
+                           y + (h / 2) - (spriteRect.h * scale / 2), 0, scale, scale)
             end,
 
             isInsideRect = function(self, px, py)
