@@ -1,3 +1,24 @@
+local gallerySlot = {
+    create = function(self, x, y, w, h, image, spriteRect)
+        return {
+            x = x,   y = y,   w = w,   h = h,
+
+            image      = image,
+            spriteRect = spriteRect,
+
+            draw = function(self)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.setLineWidth(2)
+                love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+                love.graphics.draw(self.image, self.spriteRect.quad,
+                    self.x + (self.w / 2) - (self.spriteRect.w / 2),
+                    self.y + (self.h / 2) - (self.spriteRect.h / 2),
+                    0, 1, 1)
+            end,
+        }
+    end,
+}
+
 return {
     spriteRects = {
         { x =  41, y = 347, w = 26, h = 39 },
