@@ -1,11 +1,19 @@
 local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
+        local scale = 1
+        
         return {
+            
             draw = function(self)
                 self:drawBorder()
                 self:drawSprite()
             end,
 
+            update = function(self, dt)
+                if self:isInsideRect(love.mouse.getPosition()) then scale = 2
+                else                                                scale = 1   end
+            end,
+            
             drawBorder = function(self)
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.setLineWidth(2)
@@ -13,20 +21,9 @@ local GallerySlot = {
             end,
 
             drawSprite = function(self)
-                if self:isInsideRect(love.mouse.getPosition()) then self:drawSpriteWithZoom()
-                else                                                self:drawSpriteNoZoom()   end
-            end,
-
-            drawSpriteWithZoom = function(self)
                 love.graphics.draw(image, spriteRect.quad, 
-                           x + (w / 2) - spriteRect.w, 
-                           y + (h / 2) - spriteRect.h,       0, 2, 2)
-            end,
-
-            drawSpriteNoZoom = function(self)
-                love.graphics.draw(image, spriteRect.quad, 
-                           x + (w / 2) - (spriteRect.w / 2), 
-                           y + (h / 2) - (spriteRect.h / 2), 0, 1, 1)
+                           x + (w / 2) - (spriteRect.w * scale / 2), 
+                           y + (h / 2) - (spriteRect.h * scale / 2), 0, 1, 1)
             end,
 
             isInsideRect = function(self, px, py)
