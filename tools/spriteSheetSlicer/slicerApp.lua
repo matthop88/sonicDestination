@@ -92,6 +92,11 @@ local gallery = {
         { x = 476, y = 346, w = 39, h = 39 },
     },
 
+    init = function(self)
+        self.image = getImageViewer():getImage()
+        return self
+    end,
+
     draw = function(self)
         self:drawBackground()
         self:drawSlots()
@@ -113,9 +118,9 @@ local gallery = {
     
     drawSprites = function(self)
         for n, spriteRect in ipairs(self.spriteRects) do
-            love.graphics.draw(getImageViewer():getImage(),
+            love.graphics.draw(self.image,
                                love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
-                               getImageViewer():getImageWidth(), getImageViewer():getImageHeight()),
+                               self.image:getWidth(), self.image:getHeight()),
                                (n * 73) - 65 + ((60 - spriteRect.w) / 2), 706, 0, 1, 1)
         end
     end,
@@ -195,6 +200,8 @@ PLUGINS = require("plugins/engine")
 --------------------------------------------------------------
 --             Static code - is executed last               --
 --------------------------------------------------------------
+
+gallery:init()
 
 slicer:start({
     imageViewer          = getImageViewer(),
