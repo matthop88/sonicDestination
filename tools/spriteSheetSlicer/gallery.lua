@@ -66,6 +66,12 @@ return {
         self:drawSlots()
     end,
 
+    update = function(self, dt)
+        for _, gallerySlot in ipairs(self.slots) do
+            gallerySlot:update(dt)
+        end
+    end,
+
     drawBackground = function(self)
         love.graphics.setColor(0.5, 0.5, 0.5)
         love.graphics.rectangle("fill", 0, 684, 1024, 86)
