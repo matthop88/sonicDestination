@@ -94,15 +94,17 @@ local gallery = {
 
     init = function(self)
         self.image = getImageViewer():getImage()
-        for _, spriteRect in ipairs(self.spriteRects) do
-            spriteRect.quad = love.graphics.newQuad(
-                spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
-                self.image:getWidth(), self.image:getHeight())
-        end
-        
+        self:initQuads()
         return self
     end,
 
+    initQuads = function(self)
+        for _, spriteRect in ipairs(self.spriteRects) do
+            spriteRect.quad = love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
+                                                    self.image:getWidth(), self.image:getHeight())
+        end
+    end,
+    
     draw = function(self)
         self:drawBackground()
         self:drawSlots()
