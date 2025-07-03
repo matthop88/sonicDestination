@@ -65,6 +65,10 @@ return {
         self.x = (screenX / self.scale) - imageX
         self.y = (screenY / self.scale) - imageY
     end,
+
+    getImage = function(self)
+        return self.image
+    end,
     
     getImageWidth = function(self)
         return self.image:getWidth()
