@@ -134,8 +134,13 @@ end
 
 function drawGallery()
     love.graphics.setColor(0.5, 0.5, 0.5)
-    love.graphics.rectangle("fill", 0, 700, 1024, 68)
+    love.graphics.rectangle("fill", 0, 684, 1024, 86)
     love.graphics.setColor(1, 1, 1)
+
+    love.graphics.setLineWidth(2)
+    for x = 10, 1024, 72 do
+        love.graphics.rectangle("line", x, 696, 60, 60)
+    end
 end
 
 --------------------------------------------------------------
