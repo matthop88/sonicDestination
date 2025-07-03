@@ -40,7 +40,7 @@ return {
 
     initQuads = function(self)
         local image = getImageViewer():getImage()
-        for _, spriteRect in ipairs(self.spriteRects) do
+        for n, spriteRect in ipairs(self.spriteRects) do
             spriteRect.quad = love.graphics.newQuad(spriteRect.x, spriteRect.y, spriteRect.w, spriteRect.h,
                                                     image:getWidth(), image:getHeight())
 
