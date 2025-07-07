@@ -3,6 +3,10 @@ local Editor = {
         local x, y, w, h = 228, 50, 568, 568
         
         local isActive = false
+
+        local scale      = 10
+        local image      = nil
+        local spriteRect = nil
         
         return {
             draw = function(self)
@@ -15,6 +19,8 @@ local Editor = {
                     love.graphics.rectangle("line", x + 83, y + 33, 402, 402)
                     love.graphics.setColor(1, 1, 1)
                     love.graphics.rectangle("line", x,      y,        w,   h)
+
+                    self:drawSprite()
                 end
             end,
 
@@ -24,6 +30,18 @@ local Editor = {
             
             setActive = function(self, active) 
                 isActive = active 
+            end,
+
+            setSprite = function(self, img, sprRect)
+                image      = img
+                spriteRect = sprRect
+            end,
+
+            drawSprite = function(self)
+                if image ~= nil then
+                    love.graphics.draw(image, spriteRect.quad, 512 - ((spriteRect.w / 2) * scale),
+                                                               284 - ((spriteRect.h / 2) * scale), 0, scale, scale)
+                end
             end,
 
             isInsideRect = function(self, px, py)
@@ -40,6 +58,13 @@ local GallerySlot = {
         local zoomSpeed = 18
         
         return {
+            getImage = function(self)
+                return image
+            end,
+
+            getSpriteRect = function(self)
+                return spriteRect
+            end,
             
             draw = function(self)
                 self:drawBorder()
@@ -112,6 +137,7 @@ return {
         for _, gallerySlot in ipairs(self.slots) do
             if gallerySlot:mousepressed(mx, my) then
                 self.editor:setActive(true)
+                self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
                 return true
             end
         end
