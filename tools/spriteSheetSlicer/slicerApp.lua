@@ -88,7 +88,7 @@ local gallery
 --------------------------------------------------------------
 
 if __SLICER_FILE ~= nil then
-    sheetInfo = require("tools/slicer/data/" .. __SLICER_FILE)
+    sheetInfo = require("tools/spriteSheetSlicer/data/" .. __SLICER_FILE)
     imgPath = sheetInfo.imagePath
 end
 
