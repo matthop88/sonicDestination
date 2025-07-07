@@ -15,6 +15,10 @@ local GallerySlot = {
                 if self:isInsideRect(love.mouse.getPosition()) then scale = math.min(maxScale, scale + (dt * zoomSpeed))
                 else                                                scale = math.max(1,        scale - (dt * zoomSpeed))   end
             end,
+
+            mousepressed = function(self, mx, my)
+                return self:isInsideRect(mx, my)
+            end,
             
             drawBorder = function(self)
                 love.graphics.setColor(1, 1, 1)
@@ -64,6 +68,14 @@ return {
         end
     end,
 
+    mousepressed = function(self, mx, my)
+        for _, gallerySlot in ipairs(self.slots) do
+            if gallerySlot:mousepressed(mx, my) then
+                return true
+            end
+        end
+    end,
+    
     drawBackground = function(self)
         love.graphics.setColor(0.5, 0.5, 0.5)
         love.graphics.rectangle("fill", 0, 684, 1024, 86)
