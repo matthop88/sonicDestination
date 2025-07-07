@@ -1,3 +1,20 @@
+local Editor = {
+    create = function(self)
+        return {
+            draw = function(self)
+                love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
+                love.graphics.rectangle("fill", 228, 50,  568, 568)
+                love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
+                love.graphics.rectangle("fill", 312, 84,  400, 400)
+                love.graphics.setColor(0.5, 0.5, 0.5)
+                love.graphics.rectangle("line", 311, 83,  402, 402)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", 228, 50,  568, 568)
+            end,
+        }
+    end,
+}
+
 local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
         local scale     = 1
@@ -40,7 +57,8 @@ local GallerySlot = {
 }
 
 return {
-    slots = { },
+    slots  = { },
+    editor = Editor:create(),
 
     init = function(self, spriteRects)
         local image = getImageViewer():getImage()
@@ -60,6 +78,7 @@ return {
         self:drawBackground()
         self:drawSlotBorders()
         self:drawSprites()
+        self.editor:draw()
     end,
 
     update = function(self, dt)
