@@ -1,16 +1,22 @@
 local Editor = {
     create = function(self)
+        local isActive = false
+        
         return {
             draw = function(self)
-                love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
-                love.graphics.rectangle("fill", 228, 50,  568, 568)
-                love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
-                love.graphics.rectangle("fill", 312, 84,  400, 400)
-                love.graphics.setColor(0.5, 0.5, 0.5)
-                love.graphics.rectangle("line", 311, 83,  402, 402)
-                love.graphics.setColor(1, 1, 1)
-                love.graphics.rectangle("line", 228, 50,  568, 568)
+                if isActive then
+                    love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
+                    love.graphics.rectangle("fill", 228, 50,  568, 568)
+                    love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
+                    love.graphics.rectangle("fill", 312, 84,  400, 400)
+                    love.graphics.setColor(0.5, 0.5, 0.5)
+                    love.graphics.rectangle("line", 311, 83,  402, 402)
+                    love.graphics.setColor(1, 1, 1)
+                    love.graphics.rectangle("line", 228, 50,  568, 568)
+                end
             end,
+
+            setActive = function(self, active) isActive = active end,
         }
     end,
 }
@@ -90,6 +96,7 @@ return {
     mousepressed = function(self, mx, my)
         for _, gallerySlot in ipairs(self.slots) do
             if gallerySlot:mousepressed(mx, my) then
+                self.editor:setActive(true)
                 return true
             end
         end
