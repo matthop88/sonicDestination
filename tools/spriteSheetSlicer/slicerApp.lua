@@ -80,7 +80,7 @@ local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
 local imgPath     = "resources/images/sadSlicer.png"
 
-local sheetInfo
+local sheetInfo   = { spriteRects = {} }
 local gallery
 
 --------------------------------------------------------------
