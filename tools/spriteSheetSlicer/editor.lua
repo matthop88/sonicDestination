@@ -1,4 +1,4 @@
-local Editor = {
+return {
     create = function(self)
         local x, y, w, h = 228, 50, 568, 568
         
