@@ -162,8 +162,8 @@ gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
 
 slicer:start({
     imageViewer          = getImageViewer(),
-    marginBGColor        = spriteInfo.MARGIN_BG_COLOR,
-    spriteBGColor        = spriteInfo.SPRITE_BG_COLOR,
+    marginBGColor        = sheetInfo.MARGIN_BG_COLOR,
+    spriteBGColor        = sheetInfo.SPRITE_BG_COLOR,
     callbackWhenComplete = onSlicingCompletion
 })
 
