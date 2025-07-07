@@ -18,6 +18,10 @@ local Editor = {
                 end
             end,
 
+            mousepressed = function(self, mx, my)
+                return self:isInsideRect(mx, my) and isActive
+            end,
+            
             setActive = function(self, active) 
                 isActive = active 
             end,
@@ -102,12 +106,16 @@ return {
     end,
 
     mousepressed = function(self, mx, my)
+        if self.editor:mousepressed(mx, my) then
+            return true
+        end
         for _, gallerySlot in ipairs(self.slots) do
             if gallerySlot:mousepressed(mx, my) then
                 self.editor:setActive(true)
                 return true
             end
         end
+        self.editor:setActive(false)
     end,
     
     drawBackground = function(self)
