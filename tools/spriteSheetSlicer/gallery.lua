@@ -1,22 +1,30 @@
 local Editor = {
     create = function(self)
+        local x, y, w, h = 228, 50, 568, 568
+        
         local isActive = false
         
         return {
             draw = function(self)
                 if isActive then
                     love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
-                    love.graphics.rectangle("fill", 228, 50,  568, 568)
+                    love.graphics.rectangle("fill", x,      y,        w,   h)
                     love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
-                    love.graphics.rectangle("fill", 312, 84,  400, 400)
+                    love.graphics.rectangle("fill", x + 84, y + 34, 400, 400)
                     love.graphics.setColor(0.5, 0.5, 0.5)
-                    love.graphics.rectangle("line", 311, 83,  402, 402)
+                    love.graphics.rectangle("line", x + 83, y + 33, 402, 402)
                     love.graphics.setColor(1, 1, 1)
-                    love.graphics.rectangle("line", 228, 50,  568, 568)
+                    love.graphics.rectangle("line", x,      y,        w,   h)
                 end
             end,
 
-            setActive = function(self, active) isActive = active end,
+            setActive = function(self, active) 
+                isActive = active 
+            end,
+
+            isInsideRect = function(self, px, py)
+                return px >= x and px <= x + w and py >= y and py <= y + h
+            end,
         }
     end,
 }
