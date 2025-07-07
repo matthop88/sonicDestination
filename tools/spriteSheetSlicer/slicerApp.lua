@@ -106,7 +106,7 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    if currentRect:isValid() then
+    if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
         printToReadout(currentRect:toString())
     end
