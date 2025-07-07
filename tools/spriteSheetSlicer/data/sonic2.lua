@@ -1,5 +1,8 @@
 return {
     imagePath = "resources/images/spriteSheets/sonic2Transparent.png",
+
+    MARGIN_BG_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 },
+    SPRITE_BG_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 },
     
     spriteRects = {
         { x =  41, y = 347, w = 26, h = 39 },
