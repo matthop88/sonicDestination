@@ -1,8 +1,8 @@
 local GallerySlot = {
     create = function(self, x, y, w, h, image, spriteRect)
         local scale     = 1
-        local maxScale  = 5
-        local zoomSpeed = 20
+        local maxScale  = 2.5
+        local zoomSpeed = 18
         
         return {
             
