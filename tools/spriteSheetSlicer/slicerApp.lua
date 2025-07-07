@@ -70,9 +70,6 @@ local ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-local MARGIN_BACKGROUND_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 }
-local SPRITE_BACKGROUND_COLOR = { r = 0.00, g = 0.00, b = 0.00, a = 0 }
-
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
@@ -80,7 +77,7 @@ local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
 local imgPath     = "resources/images/sadSlicer.png"
 
-local sheetInfo   = { spriteRects = {} }
+local sheetInfo   = { spriteRects = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
 
 --------------------------------------------------------------
@@ -165,8 +162,8 @@ gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
 
 slicer:start({
     imageViewer          = getImageViewer(),
-    marginBGColor        = MARGIN_BACKGROUND_COLOR,
-    spriteBGColor        = SPRITE_BACKGROUND_COLOR,
+    marginBGColor        = spriteInfo.MARGIN_BG_COLOR,
+    spriteBGColor        = spriteInfo.SPRITE_BG_COLOR,
     callbackWhenComplete = onSlicingCompletion
 })
 
