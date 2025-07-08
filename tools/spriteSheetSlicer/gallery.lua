@@ -73,6 +73,10 @@ return {
         local image = getImageViewer():getImage()
         for n, spriteRect in ipairs(spriteRects) do
             spriteRect.quad = self:createQuad(spriteRect, image)
+
+            spriteRect.offsetX = math.floor(spriteRect.w / 2)
+            spriteRect.offsetY = math.floor(spriteRect.h / 2)
+            
             table.insert(self.slots, GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
         end
         return self
