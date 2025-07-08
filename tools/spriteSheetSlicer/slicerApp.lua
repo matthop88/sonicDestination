@@ -12,7 +12,7 @@
    [X] Program displays "gallery" of images at bottom of screen.
    [X] Images in gallery are thumbnails that scale a bit when mouseover occurs.
    [X] Images belong to an animation sequence and are specified in an external data file.
-   [ ] When gallery image is pressed, an editor "window" pops up, with blown-up image
+   [X] When gallery image is pressed, an editor "window" pops up, with blown-up image
    [ ] Images can be cycled through to test out animation
    [ ] X and Y offsets are displayed in text fields
    [ ] When mouse is inside a text field, up and down arrows increment and decrement values
