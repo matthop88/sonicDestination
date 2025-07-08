@@ -49,7 +49,24 @@ local GallerySlot = {
 }
 
 return {
-    slots  = { },
+    slots  = {
+        index = 1,
+
+        next = function(self)
+            self.index = self.index + 1
+            if self.index > #self then self.index = 1 end
+
+            return self[self.index]
+        end,
+
+        prev = function(self)
+            self.index = self.index - 1
+            if self.index < 1 then self.index = #self end
+
+            return self[self.index]
+        end,
+    },
+    
     editor = Editor:create(),
 
     init = function(self, spriteRects)
@@ -91,6 +108,21 @@ return {
             end
         end
         self.editor:setActive(false)
+    end,
+
+    keypressed = function(self, key)
+        if self.editor:keypressed(key) then
+            local gallerySlot
+            if     key == "left"  then gallerySlot = self.slots:prev()
+            elseif key == "right" then gallerySlot = self.slots:next()
+            end
+
+            if gallerySlot ~= nil then
+                self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+            end
+
+            return true
+        end
     end,
     
     drawBackground = function(self)
