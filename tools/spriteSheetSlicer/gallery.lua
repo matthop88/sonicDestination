@@ -104,7 +104,7 @@ return {
             if gallerySlot:mousepressed(mx, my) then
                 self.editor:setActive(true)
                 self:updateEditor(gallerySlot)
-                self.gallerySlots:setIndex(gallerySlot:getIndex())
+                self.slots:setIndex(gallerySlot:getIndex())
                 return true
             end
         end
