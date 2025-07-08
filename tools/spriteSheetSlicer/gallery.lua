@@ -123,7 +123,7 @@ return {
         end
     end,
 
-    updateEditor = function(self)
+    updateEditor = function(self, gallerySlot)
         self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
     end,
         
