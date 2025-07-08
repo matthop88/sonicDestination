@@ -21,8 +21,8 @@ return {
         local image      = nil
         local spriteRect = nil
 
-        local offsetXField = TextField:create(311, 499, 402, 42)
-        local offsetYField = TextField:create(311, 554, 402, 42)
+        local offsetXField = TextField:create(x + 83, y + 449, 402, 42)
+        local offsetYField = TextField:create(x + 83, y + 504, 402, 42)
         
         return {
             draw = function(self)
@@ -63,8 +63,8 @@ return {
             drawSprite = function(self)
                 if image ~= nil then
                     love.graphics.setColor(1, 1, 1)
-                    love.graphics.draw(image, spriteRect.quad, 512 - ((spriteRect.w / 2) * scale),
-                                                               284 - ((spriteRect.h / 2) * scale), 0, scale, scale)
+                    love.graphics.draw(image, spriteRect.quad, x + 284 - ((spriteRect.w / 2) * scale),
+                                                               y + 234 - ((spriteRect.h / 2) * scale), 0, scale, scale)
                 end
             end,
 
