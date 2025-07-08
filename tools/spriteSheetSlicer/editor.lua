@@ -25,7 +25,11 @@ return {
             end,
 
             mousepressed = function(self, mx, my)
-                return self:isInsideRect(mx, my) and isActive
+                return isActive and self:isInsideRect(mx, my)
+            end,
+
+            keypressed = function(self, key)
+                return isActive and self:isInsideRect(love.mouse.getPosition())
             end,
             
             setActive = function(self, active) 
