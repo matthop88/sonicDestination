@@ -1,7 +1,9 @@
 local LabelFont = love.graphics.newFont(36)
 
 local TextField = {
-    create = function(self, x, y, w, h, textValue)
+    create = function(self, x, y, w, h, textLabel)
+        local textValue = nil
+        
         return {
             draw = function(self)
                 love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
@@ -11,7 +13,8 @@ local TextField = {
 
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.setFont(LabelFont)
-                love.graphics.printf((textValue or "{UNLABELED}"), x + 20, y, w - 30, "left")
+                love.graphics.printf((textLabel or "{UNLABELED}"), x + 20, y, w - 30, "left")
+                love.graphics.printf((textValue or "{N/A}"),       x + 20, y, w - 30, "right")
             end,
         }
     end,
