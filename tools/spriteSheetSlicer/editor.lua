@@ -1,3 +1,16 @@
+local TextField = {
+    create = function(self, x, y, w, h)
+        return {
+            draw = function(self)
+                love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
+                love.graphics.rectangle("fill", x, y, w, h)
+                love.graphics.setColor(0.5, 0.5, 0.5)
+                love.graphics.rectangle("line", x, y, w, h)
+            end,
+        }
+    end,
+}
+
 return {
     create = function(self)
         local x, y, w, h = 228, 50, 568, 568
@@ -7,6 +20,9 @@ return {
         local scale      = 10
         local image      = nil
         local spriteRect = nil
+
+        local offsetXField = TextField:create(311, 499, 402, 42)
+        local offsetYField = TextField:create(311, 554, 402, 42)
         
         return {
             draw = function(self)
@@ -20,16 +36,8 @@ return {
                     love.graphics.setColor(1, 1, 1)
                     love.graphics.rectangle("line", x,      y,        w,   h)
 
-                    -- Draw Text Fields
-                    love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
-                    love.graphics.rectangle("fill", 311, 499, 402, 42)
-                    love.graphics.setColor(0.5, 0.5, 0.5)
-                    love.graphics.rectangle("line", 311, 499, 402, 42)
-
-                    love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
-                    love.graphics.rectangle("fill", 311, 554, 402, 42)
-                    love.graphics.setColor(0.5, 0.5, 0.5)
-                    love.graphics.rectangle("line", 311, 554, 402, 42)
+                    offsetXField:draw()
+                    offsetYField:draw()
                     
                     self:drawSprite()
                 end
