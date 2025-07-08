@@ -1,19 +1,15 @@
 local Editor = require "tools/spriteSheetSlicer/editor"
 
 local GallerySlot = {
-    create = function(self, x, y, w, h, image, spriteRect)
+    create = function(self, index, x, y, w, h, image, spriteRect)
         local scale     = 1
         local maxScale  = 2.5
         local zoomSpeed = 18
         
         return {
-            getImage = function(self)
-                return image
-            end,
-
-            getSpriteRect = function(self)
-                return spriteRect
-            end,
+            getImage      = function(self) return image      end,
+            getSpriteRect = function(self) return spriteRect end,
+            getIndex      = function(self) return index      end,
             
             draw = function(self)
                 self:drawBorder()
@@ -52,6 +48,10 @@ return {
     slots  = {
         index = 1,
 
+        setIndex = function(self, index)
+            self.index = index
+        end,
+        
         next = function(self)
             self.index = self.index + 1
             if self.index > #self then self.index = 1 end
@@ -73,7 +73,7 @@ return {
         local image = getImageViewer():getImage()
         for n, spriteRect in ipairs(spriteRects) do
             spriteRect.quad = self:createQuad(spriteRect, image)
-            table.insert(self.slots, GallerySlot:create((n * 73) - 65, 696, 60, 60, image, spriteRect))
+            table.insert(self.slots, GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
         end
         return self
     end,
@@ -103,7 +103,8 @@ return {
         for _, gallerySlot in ipairs(self.slots) do
             if gallerySlot:mousepressed(mx, my) then
                 self.editor:setActive(true)
-                self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+                self:updateEditor(gallerySlot)
+                self.gallerySlots:setIndex(gallerySlot:getIndex())
                 return true
             end
         end
@@ -114,17 +115,18 @@ return {
         if self.editor:keypressed(key) then
             local gallerySlot
             if     key == "left"  then gallerySlot = self.slots:prev()
-            elseif key == "right" then gallerySlot = self.slots:next()
-            end
+            elseif key == "right" then gallerySlot = self.slots:next() end
 
-            if gallerySlot ~= nil then
-                self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
-            end
-
+            if gallerySlot ~= nil then self:updateEditor(gallerySlot)  end
+            
             return true
         end
     end,
-    
+
+    updateEditor = function(self)
+        self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+    end,
+        
     drawBackground = function(self)
         love.graphics.setColor(0.5, 0.5, 0.5)
         love.graphics.rectangle("fill", 0, 684, 1024, 86)
