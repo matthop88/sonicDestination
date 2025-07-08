@@ -26,7 +26,7 @@ return {
                     love.graphics.setColor(0.5, 0.5, 0.5)
                     love.graphics.rectangle("line", 311, 499, 402, 42)
 
-                    love.graphics.setColor(0.2, 0.2, 0.9)
+                    love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
                     love.graphics.rectangle("fill", 311, 554, 402, 42)
                     love.graphics.setColor(0.5, 0.5, 0.5)
                     love.graphics.rectangle("line", 311, 554, 402, 42)
