@@ -145,8 +145,15 @@ PLUGINS = require("plugins/engine")
         pixelated      = true,
         accessorFnName = "getImageViewer"
     })
+    :add("modKeyEnabler")
+    :add("scrolling",    { 
+        imageViewer = getImageViewer(),
+        leftKey     = "shiftleft",
+        rightKey    = "shiftright",
+        upKey       = "shiftup",
+        downKey     = "shiftdown",
+    })
     :add("zooming",      { imageViewer = getImageViewer() })
-    :add("scrolling",    { imageViewer = getImageViewer() })
     :add("drawingLayer", { drawingFn   = drawOverlays     })
     :add("readout",
     {
