@@ -105,6 +105,10 @@ function love.update(dt)
     gallery:update(dt)
 end
 
+function love.keypressed(key)
+    gallery:keypressed(key)
+end
+
 function love.mousepressed(mx, my)
     if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
