@@ -20,6 +20,17 @@ return {
                     love.graphics.setColor(1, 1, 1)
                     love.graphics.rectangle("line", x,      y,        w,   h)
 
+                    -- Draw Text Fields
+                    love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
+                    love.graphics.rectangle("fill", 311, 499, 402, 42)
+                    love.graphics.setColor(0.5, 0.5, 0.5)
+                    love.graphics.rectangle("line", 311, 499, 402, 42)
+
+                    love.graphics.setColor(0.2, 0.2, 0.9)
+                    love.graphics.rectangle("fill", 311, 554, 402, 42)
+                    love.graphics.setColor(0.5, 0.5, 0.5)
+                    love.graphics.rectangle("line", 311, 554, 402, 42)
+                    
                     self:drawSprite()
                 end
             end,
@@ -43,6 +54,7 @@ return {
 
             drawSprite = function(self)
                 if image ~= nil then
+                    love.graphics.setColor(1, 1, 1)
                     love.graphics.draw(image, spriteRect.quad, 512 - ((spriteRect.w / 2) * scale),
                                                                284 - ((spriteRect.h / 2) * scale), 0, scale, scale)
                 end
