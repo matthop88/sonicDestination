@@ -1,11 +1,17 @@
+local LabelFont = love.graphics.newFont(36)
+
 local TextField = {
-    create = function(self, x, y, w, h)
+    create = function(self, x, y, w, h, textValue)
         return {
             draw = function(self)
                 love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
                 love.graphics.rectangle("fill", x, y, w, h)
                 love.graphics.setColor(0.5, 0.5, 0.5)
                 love.graphics.rectangle("line", x, y, w, h)
+
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.setFont(LabelFont)
+                love.graphics.printf((textValue or "{UNLABELED}"), x + 20, y, w - 30, "left")
             end,
         }
     end,
@@ -21,8 +27,8 @@ return {
         local image      = nil
         local spriteRect = nil
 
-        local offsetXField = TextField:create(x + 83, y + 449, 402, 42)
-        local offsetYField = TextField:create(x + 83, y + 504, 402, 42)
+        local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:")
+        local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:")
         
         return {
             draw = function(self)
