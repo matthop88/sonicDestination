@@ -16,6 +16,10 @@ local TextField = {
                 love.graphics.printf((textLabel or "{UNLABELED}"), x + 20, y, w - 30, "left")
                 love.graphics.printf((textValue or "{N/A}"),       x + 20, y, w - 30, "right")
             end,
+
+            setValue = function(self, value)
+                textValue = value
+            end,
         }
     end,
 }
@@ -67,6 +71,8 @@ return {
             setSprite = function(self, img, sprRect)
                 image      = img
                 spriteRect = sprRect
+                offsetXField:setValue(spriteRect.offsetX)
+                offsetYField:setValue(spriteRect.offsetY)
             end,
 
             drawSprite = function(self)
