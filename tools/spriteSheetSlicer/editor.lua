@@ -20,6 +20,20 @@ local TextField = {
             setValue = function(self, value)
                 textValue = value
             end,
+
+            incValue = function(self)
+                if textValue ~= nil then textValue = textValue + 1 end
+                return textValue
+            end,
+
+            decValue = function(self)
+                if textValue ~= nil then textValue = textValue - 1 end
+                return textValue
+            end,
+
+            isInsideRect = function(self, px, py)
+                return px >= x and px <= x + w and py >= y and py <= y + h
+            end,
         }
     end,
 }
