@@ -11,9 +11,19 @@ local TextField = {
             end,
             
             drawField = function(self)
+                self:drawFieldBody()
+                self:drawFieldOutline()
+            end,
+
+            drawFieldBody = function(self)
                 love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
                 love.graphics.rectangle("fill", x, y, w, h)
-                love.graphics.setColor(0.5, 0.5, 0.5)
+            end,
+
+            drawFieldOutline = function(self)
+                if self:isInsideRect(love.mouse.getPosition()) then love.graphics.setColor(1, 1, 0)
+                else                                                love.graphics.setColor(0.5, 0.5, 0.5) end
+                
                 love.graphics.rectangle("line", x, y, w, h)
             end,
 
