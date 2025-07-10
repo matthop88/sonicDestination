@@ -1,7 +1,7 @@
 local LabelFont = love.graphics.newFont(36)
 
 local TextField = {
-    create = function(self, x, y, w, h, textLabel)
+    create = function(self, x, y, w, h, textLabel, updateModelFn)
         local textValue = nil
         
         return {
@@ -17,18 +17,22 @@ local TextField = {
                 love.graphics.printf((textValue or "{N/A}"),       x + 20, y, w - 30, "right")
             end,
 
+            getValue = function(self)
+                return textValue
+            end,
+
             setValue = function(self, value)
                 textValue = value
             end,
 
             incValue = function(self)
                 if textValue ~= nil then textValue = textValue + 1 end
-                return textValue
+                updateModelFn(textValue)
             end,
 
             decValue = function(self)
                 if textValue ~= nil then textValue = textValue - 1 end
-                return textValue
+                updateModelFn(textValue)
             end,
 
             isInsideRect = function(self, px, py)
@@ -48,8 +52,8 @@ return {
         local image      = nil
         local spriteRect = nil
 
-        local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:")
-        local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:")
+        local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:", function(value) spriteRect.offsetX = value end)
+        local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:", function(value) spriteRect.offsetY = value end)
         
         return {
             draw = function(self)
@@ -78,11 +82,11 @@ return {
                 local mx, my = love.mouse.getPosition()
                 if isActive and self:isInsideRect(mx, my) then
                     if     offsetXField:isInsideRect(mx, my) then
-                        if     key == "up"   then spriteRect.offsetX = offsetXField:incValue()
-                        elseif key == "down" then spriteRect.offsetX = offsetXField:decValue() end
+                        if     key == "up"   then offsetXField:incValue()
+                        elseif key == "down" then offsetXField:decValue() end
                     elseif offsetYField:isInsideRect(mx, my) then
-                        if     key == "up"   then spriteRect.offsetY = offsetYField:incValue()
-                        elseif key == "down" then spriteRect.offsetY = offsetYField:decValue() end
+                        if     key == "up"   then offsetYField:incValue()
+                        elseif key == "down" then offsetYField:decValue() end
                     end
 
                     return true
