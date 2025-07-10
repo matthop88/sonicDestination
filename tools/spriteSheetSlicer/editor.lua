@@ -75,7 +75,18 @@ return {
             end,
 
             keypressed = function(self, key)
-                return isActive and self:isInsideRect(love.mouse.getPosition())
+                local mx, my = love.mouse.getPosition()
+                if isActive and self:isInsideRect(mx, my) then
+                    if     offsetXField:isInsideRect(mx, my) then
+                        if     key == "up"   then spriteRect.offsetX = offsetXField:incValue()
+                        elseif key == "down" then spriteRect.offsetX = offsetXField:decValue() end
+                    elseif offsetYField:isInsideRect(mx, my) then
+                        if     key == "up"   then spriteRect.offsetY = offsetYField:incValue()
+                        elseif key == "down" then spriteRect.offsetY = offsetYField:decValue() end
+                    end
+
+                    return true
+                end
             end,
             
             setActive = function(self, active) 
