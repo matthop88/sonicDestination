@@ -72,22 +72,32 @@ return {
         return {
             draw = function(self)
                 if isActive then
-                    love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
-                    love.graphics.rectangle("fill", x,      y,        w,   h)
-                    love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
-                    love.graphics.rectangle("fill", x + 84, y + 34, 400, 400)
-                    love.graphics.setColor(0.5, 0.5, 0.5)
-                    love.graphics.rectangle("line", x + 83, y + 33, 402, 402)
-                    love.graphics.setColor(1, 1, 1)
-                    love.graphics.rectangle("line", x,      y,        w,   h)
-
-                    offsetXField:draw()
-                    offsetYField:draw()
-                    
+                    self:drawOuterPane()
+                    self:drawInnerPane()
+                    self:drawTextFields()
                     self:drawSprite()
                 end
             end,
 
+            drawOuterPane = function(self)
+                love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
+                love.graphics.rectangle("fill", x,      y,        w,   h)
+                love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
+                love.graphics.rectangle("fill", x + 84, y + 34, 400, 400)
+            end,
+
+            drawInnerPane = function(self)
+                love.graphics.setColor(0.5, 0.5, 0.5)
+                love.graphics.rectangle("line", x + 83, y + 33, 402, 402)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", x,      y,        w,   h)
+            end,
+
+            drawTextFields = function(self)
+                offsetXField:draw()
+                offsetYField:draw()
+            end,
+            
             mousepressed = function(self, mx, my)
                 return isActive and self:isInsideRect(mx, my)
             end,
