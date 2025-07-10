@@ -103,8 +103,8 @@ return {
             drawSprite = function(self)
                 if image ~= nil then
                     love.graphics.setColor(1, 1, 1)
-                    love.graphics.draw(image, spriteRect.quad, x + 284 - ((spriteRect.w / 2) * scale),
-                                                               y + 234 - ((spriteRect.h / 2) * scale), 0, scale, scale)
+                    love.graphics.draw(image, spriteRect.quad, x + 284 - (spriteRect.offsetX * scale),
+                                                               y + 234 - (spriteRect.offsetY * scale), 0, scale, scale)
                 end
             end,
 
