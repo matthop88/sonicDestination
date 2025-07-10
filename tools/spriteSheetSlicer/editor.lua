@@ -6,11 +6,18 @@ local TextField = {
         
         return {
             draw = function(self)
+                self:drawField()
+                self:drawText()
+            end,
+            
+            drawField = function(self)
                 love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
                 love.graphics.rectangle("fill", x, y, w, h)
                 love.graphics.setColor(0.5, 0.5, 0.5)
                 love.graphics.rectangle("line", x, y, w, h)
+            end,
 
+            drawText = function(self)
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.setFont(LabelFont)
                 love.graphics.printf((textLabel or "{UNLABELED}"), x + 20, y, w - 30, "left")
