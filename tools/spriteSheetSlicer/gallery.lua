@@ -95,15 +95,11 @@ return {
     end,
 
     update = function(self, dt)
-        for _, gallerySlot in ipairs(self.slots) do
-            gallerySlot:update(dt)
-        end
+        for _, gallerySlot in ipairs(self.slots) do gallerySlot:update(dt) end
     end,
 
     mousepressed = function(self, mx, my)
-        if self.editor:mousepressed(mx, my) then
-            return true
-        end
+        if self.editor:mousepressed(mx, my) then return true end
         for _, gallerySlot in ipairs(self.slots) do
             if gallerySlot:mousepressed(mx, my) then
                 self.editor:setActive(true)
@@ -117,14 +113,16 @@ return {
 
     keypressed = function(self, key)
         if self.editor:keypressed(key) then
-            local gallerySlot
-            if     key == "left"  then gallerySlot = self.slots:prev()
-            elseif key == "right" then gallerySlot = self.slots:next() end
-
+            local gallerySlot = self:navigateGallery(key)
             if gallerySlot ~= nil then self:updateEditor(gallerySlot)  end
-            
+
             return true
         end
+    end,
+
+    navigateGallery = function(self, key)
+        if     key == "left"  then return self.slots:prev()
+        elseif key == "right" then return self.slots:next() end
     end,
 
     updateEditor = function(self, gallerySlot)
@@ -138,14 +136,10 @@ return {
     end,
 
     drawSlotBorders = function(self)
-        for _, gallerySlot in ipairs(self.slots) do
-            gallerySlot:drawBorder()
-        end
+        for _, gallerySlot in ipairs(self.slots) do gallerySlot:drawBorder() end
     end,
 
     drawSprites = function(self)
-        for _, gallerySlot in ipairs(self.slots) do
-            gallerySlot:drawSprite()
-        end
+        for _, gallerySlot in ipairs(self.slots) do gallerySlot:drawSprite() end
     end,
 }
