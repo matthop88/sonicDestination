@@ -17,6 +17,13 @@ local TextField = {
                 love.graphics.printf((textValue or "{N/A}"),       x + 20, y, w - 30, "right")
             end,
 
+            handleKeypressed = function(self, key)
+                if self:isInsideRect(love.mouse.getPosition()) then
+                    if key == "up" then self:incValue()
+                    elseif key == "down" then self:decValue() end
+                end
+            end,
+
             getValue = function(self)
                 return textValue
             end,
@@ -81,14 +88,8 @@ return {
             keypressed = function(self, key)
                 local mx, my = love.mouse.getPosition()
                 if isActive and self:isInsideRect(mx, my) then
-                    if     offsetXField:isInsideRect(mx, my) then
-                        if     key == "up"   then offsetXField:incValue()
-                        elseif key == "down" then offsetXField:decValue() end
-                    elseif offsetYField:isInsideRect(mx, my) then
-                        if     key == "up"   then offsetYField:incValue()
-                        elseif key == "down" then offsetYField:decValue() end
-                    end
-
+                    offsetXField:handleKeypressed(key)
+                    offsetYField:handleKeypressed(key)
                     return true
                 end
             end,
