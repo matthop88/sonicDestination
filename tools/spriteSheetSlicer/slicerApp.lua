@@ -14,8 +14,8 @@
    [X] Images belong to an animation sequence and are specified in an external data file.
    [X] When gallery image is pressed, an editor "window" pops up, with blown-up image
    [X] Images can be cycled through to test out animation
-   [ ] X and Y offsets are displayed in text fields
-   [ ] When mouse is inside a text field, up and down arrows increment and decrement values
+   [X] X and Y offsets are displayed in text fields
+   [X] When mouse is inside a text field, up and down arrows increment and decrement values
    [ ] Full stats of rects can be printed to console.
 
 --]]
