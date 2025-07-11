@@ -42,8 +42,8 @@ local GallerySlot = {
             end,
 
             printStats = function(self)
-                print("{ x = " .. x .. ", y = " .. y .. ", w = " .. w .. ", h = " .. h .. ", offset = { x = "
-                        .. spriteRect.offsetX .. ", y = " .. spriteRect.offsetY .. " }, },")
+                print("{ x = " .. spriteRect.x .. ", y = " .. spriteRect.y .. ", w = " .. spriteRect.w .. ", h = " .. spriteRect.h 
+                        .. ", offset = { x = " .. spriteRect.offsetX .. ", y = " .. spriteRect.offsetY .. " }, },")
             end,
         }
     end,
