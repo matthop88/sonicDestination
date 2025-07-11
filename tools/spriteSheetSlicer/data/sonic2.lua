@@ -5,6 +5,7 @@ return {
     SPRITE_BG_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 },
     
     spriteRects = {
+        { x =  39, y = 263, w = 27, h = 39 },
         { x =  41, y = 347, w = 26, h = 39 },
         { x = 102, y = 346, w = 29, h = 40 },
         { x = 162, y = 345, w = 39, h = 40 },
