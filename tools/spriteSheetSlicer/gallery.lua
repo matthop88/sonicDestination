@@ -43,7 +43,7 @@ local GallerySlot = {
 
             printStats = function(self)
                 print("{ x = " .. spriteRect.x .. ", y = " .. spriteRect.y .. ", w = " .. spriteRect.w .. ", h = " .. spriteRect.h 
-                        .. ", offset = { x = " .. spriteRect.offsetX .. ", y = " .. spriteRect.offsetY .. " }, },")
+                        .. ", offset = { x = " .. spriteRect.offset.x .. ", y = " .. spriteRect.offset.y .. " }, },")
             end,
         }
     end,
@@ -79,8 +79,9 @@ return {
         for n, spriteRect in ipairs(spriteRects) do
             spriteRect.quad = self:createQuad(spriteRect, image)
 
-            spriteRect.offsetX = math.floor(spriteRect.w / 2)
-            spriteRect.offsetY = math.floor(spriteRect.h / 2)
+            if not spriteRect.offset then
+                spriteRect.offset = { x = math.floor(spriteRect.w / 2), y = math.floor(spriteRect.h / 2) }
+            end
             
             table.insert(self.slots, GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
         end
