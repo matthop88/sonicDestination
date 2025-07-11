@@ -17,6 +17,7 @@ return {
         self:updateImageCoordinates()
         self:drawBackground()
         self:drawHorizontalLine()
+        self:drawVerticalLine()
     end,
 
     updateImageCoordinates = function(self)
