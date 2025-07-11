@@ -16,7 +16,7 @@
    [X] Images can be cycled through to test out animation
    [X] X and Y offsets are displayed in text fields
    [X] When mouse is inside a text field, up and down arrows increment and decrement values
-   [ ] Full stats of rects can be printed to console.
+   [X] Full stats of rects can be printed to console.
 
 --]]
 
