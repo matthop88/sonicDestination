@@ -51,11 +51,11 @@ return {
 
     keypressed = function(self, key)
         if     key == "1" then
-            local currentAnimationName = self.sprite:getCurrentAnimName()
+            local currentAnimationName = self.sprite:getCurrentAnimationName()
             self.sprite = sonic1Sprite
             self.sprite:setCurrentAnimation(currentAnimationName)
         elseif key == "2" then 
-            local currentAnimationName = self.sprite:getCurrentAnimName()
+            local currentAnimationName = self.sprite:getCurrentAnimationName()
             self.sprite = sonic2Sprite
             self.sprite:setCurrentAnimation(currentAnimationName)
         else                   self.state:keypressed(key)  end
