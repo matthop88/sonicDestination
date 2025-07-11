@@ -32,6 +32,10 @@ return {
                 self.animations:setCurrentAnimation(animationName)
             end,
 
+            getCurrentAnimationName = function(self)
+                return self.animations:getCurrentAnimName()
+            end,
+
             setFPS = function(self, fps)
                 self.animations:setFPS(fps)
             end,
