@@ -26,7 +26,7 @@ return {
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        self.sprite     = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
+        self.sprite     = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic2")
         STATES          = requireRelative("states/sonic",          { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
         return self
