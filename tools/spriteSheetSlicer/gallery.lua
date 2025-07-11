@@ -40,6 +40,11 @@ local GallerySlot = {
             isInsideRect = function(self, px, py)
                 return px >= x and px <= x + w and py >= y and py <= y + h
             end,
+
+            printStats = function(self)
+                print("{ x = " .. x .. ", y = " .. y .. ", w = " .. w .. ", h = " .. h .. ", offset = { x = "
+                        .. spriteRect.offsetX .. ", y = " .. spriteRect.offsetY .. " }, },")
+            end,
         }
     end,
 }
@@ -117,6 +122,8 @@ return {
             if gallerySlot ~= nil then self:updateEditor(gallerySlot)  end
 
             return true
+        elseif key == "x" then
+            self:printOutGalleryStats()
         end
     end,
 
@@ -141,5 +148,9 @@ return {
 
     drawSprites = function(self)
         for _, gallerySlot in ipairs(self.slots) do gallerySlot:drawSprite() end
+    end,
+
+    printOutGalleryStats = function(self)
+        for _, gallerySlot in ipairs(self.slots) do gallerySlot:printStats() end
     end,
 }
