@@ -39,6 +39,6 @@ return {
     drawVerticalLine = function(self)
         self.graphics:setColor(COLOR_PURE_WHITE)
         self.graphics:setLineWidth(1.5)
-        self.graphics:line(leftX + (self:getWidth() / 2), topY, leftX + (self:getWidth() / 2), bottomY)
+        self.graphics:line(leftX + (rightX - leftX) / 2, topY, leftX + (rightX - leftX) / 2, bottomY)
     end,
 }
