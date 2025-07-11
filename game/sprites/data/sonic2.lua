@@ -3,7 +3,7 @@ return {
     animations = {
         standing = { fps = 1, isDefault = true,
             -------------------------------------------------------------------
-            { x =  39, y = 263, w = 27, h = 39, offset = { x = 13, y = 19 }, },
+            { x =  39, y = 263, w = 27, h = 39, offset = { x = 16, y = 19 }, },
         },
         running  = { fps = 8,
             { x =  41, y = 347, w = 26, h = 39, offset = { x = 13, y = 19 }, },
