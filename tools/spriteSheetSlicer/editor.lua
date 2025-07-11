@@ -104,6 +104,11 @@ return {
                 love.graphics.rectangle("line", x, y, w, h)
             end,
 
+            drawInnerPane = function(self)
+                self:drawInnerPaneBody()
+                self:drawInnerPaneOutline()
+            end,
+
             drawInnerPaneBody = function(self)
                 love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
                 love.graphics.rectangle("fill", x + 84, y + 34, 400, 400)
