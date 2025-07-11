@@ -90,17 +90,33 @@ return {
             end,
 
             drawOuterPane = function(self)
+                self:drawOuterPaneBody()
+                self:drawOuterPaneOutline()
+            end,
+
+            drawOuterPaneBody = function(self)
                 love.graphics.setColor(0.3, 0.3, 0.3, 0.7)
-                love.graphics.rectangle("fill", x,      y,        w,   h)
+                love.graphics.rectangle("fill", x, y, w, h)
+            end,
+
+            drawOuterPaneOutline = function(self)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", x, y, w, h)
+            end,
+
+            drawInnerPaneBody = function(self)
                 love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
                 love.graphics.rectangle("fill", x + 84, y + 34, 400, 400)
             end,
 
-            drawInnerPane = function(self)
-                love.graphics.setColor(0.5, 0.5, 0.5)
+            drawInnerPaneOutline = function(self)
+                if self:isInsideInnerRect(love.mouse.getPosition()) then
+                    love.graphics.setColor(1, 1, 0)
+                else
+                    love.graphics.setColor(0.5, 0.5, 0.5)
+                end
+                
                 love.graphics.rectangle("line", x + 83, y + 33, 402, 402)
-                love.graphics.setColor(1, 1, 1)
-                love.graphics.rectangle("line", x,      y,        w,   h)
             end,
 
             drawTextFields = function(self)
@@ -114,10 +130,12 @@ return {
 
             keypressed = function(self, key)
                 local mx, my = love.mouse.getPosition()
-                if isActive and self:isInsideRect(mx, my) then
+                if isActive then
                     offsetXField:handleKeypressed(key)
                     offsetYField:handleKeypressed(key)
-                    return true
+                    if self:isInsideInnerRect(mx, my) then
+                        return true
+                    end
                 end
             end,
             
@@ -142,6 +160,10 @@ return {
 
             isInsideRect = function(self, px, py)
                 return px >= x and px <= x + w and py >= y and py <= y + h
+            end,
+
+            isInsideInnerRect = function(self, px, py)
+                return px >= x + 83 and px <= x + 83 + 402 and py >= y + 33 and py <= y + 33 + 402
             end,
         }
     end,
