@@ -117,7 +117,9 @@ return {
     end,
 
     keypressed = function(self, key)
-        if self.editor:keypressed(key) then
+        if     key == "escape" then
+            self.editor:setActive(false)
+        elseif self.editor:keypressed(key) then
             local gallerySlot = self:navigateGallery(key)
             if gallerySlot ~= nil then self:updateEditor(gallerySlot)  end
 
