@@ -1,5 +1,7 @@
 local STATES
 
+local sonic1Sprite, sonic2Sprite
+
 return {
     -----------------------------------------------------------
     RUNNING_ACCELERATION = 168.75,
@@ -26,8 +28,12 @@ return {
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        self.sprite     = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic2")
-        STATES          = requireRelative("states/sonic",          { SONIC = self })
+        local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
+        sonic1Sprite = spriteFactory:create("sonic1")
+        sonic2Sprite = spriteFactory:create("sonic2")
+        
+        self.sprite     = sonic1Sprite
+        STATES          = requireRelative("states/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
         return self
     end,
@@ -44,7 +50,9 @@ return {
     end,
 
     keypressed = function(self, key)
-        self.state:keypressed(key)
+        if     key == "1" then self.sprite = sonic1Sprite
+        elseif key == "2" then self.sprite = sonic2Sprite
+        else                   self.state:keypressed(key)  end
     end,
 
     keyreleased = function(self, key)
