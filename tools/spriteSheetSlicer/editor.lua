@@ -76,8 +76,8 @@ return {
         local image      = nil
         local spriteRect = nil
 
-        local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:", function(value) spriteRect.offsetX = value end)
-        local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:", function(value) spriteRect.offsetY = value end)
+        local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:", function(value) spriteRect.offset.x = value end)
+        local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:", function(value) spriteRect.offset.y = value end)
         
         return {
             draw = function(self)
@@ -151,15 +151,15 @@ return {
             setSprite = function(self, img, sprRect)
                 image      = img
                 spriteRect = sprRect
-                offsetXField:setValue(spriteRect.offsetX)
-                offsetYField:setValue(spriteRect.offsetY)
+                offsetXField:setValue(spriteRect.offset.x)
+                offsetYField:setValue(spriteRect.offset.y)
             end,
 
             drawSprite = function(self)
                 if image ~= nil then
                     love.graphics.setColor(1, 1, 1)
-                    love.graphics.draw(image, spriteRect.quad, x + 284 - (spriteRect.offsetX * scale),
-                                                               y + 234 - (spriteRect.offsetY * scale), 0, scale, scale)
+                    love.graphics.draw(image, spriteRect.quad, x + 284 - (spriteRect.offset.x * scale),
+                                                               y + 234 - (spriteRect.offset.y * scale), 0, scale, scale)
                 end
             end,
 
