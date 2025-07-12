@@ -50,14 +50,13 @@ return {
     end,
 
     keypressed = function(self, key)
-        if     key == "1" then
+        if key == "1" or key == "2" then
             local currentAnimationName = self.sprite:getCurrentAnimationName()
-            self.sprite = sonic1Sprite
+            local xFlipped = self.sprite:isXFlipped()
+            if key == "1" then self.sprite = sonic1Sprite
+            else               self.sprite = sonic2Sprite  end
             self.sprite:setCurrentAnimation(currentAnimationName)
-        elseif key == "2" then 
-            local currentAnimationName = self.sprite:getCurrentAnimationName()
-            self.sprite = sonic2Sprite
-            self.sprite:setCurrentAnimation(currentAnimationName)
+            self.sprite:setXFlipped(xFlipped)
         else                   self.state:keypressed(key)  end
     end,
 
