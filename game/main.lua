@@ -4,8 +4,9 @@ require "requireRelative"
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local WINDOW_WIDTH       = 1024
-local WINDOW_HEIGHT      =  768
+local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
+
+local PROP_LOADER        = requireRelative("properties/loader")
 
 local GRAPHICS           = requireRelative("graphics")
 local SONIC              = requireRelative("sonic",     { GRAPHICS = GRAPHICS })
@@ -19,6 +20,8 @@ love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 SONIC:moveTo(512, 556)
+
+PROP_LOADER:notifyOnChange(SONIC)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -36,6 +39,7 @@ end
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.update(dt)
+    PROP_LOADER:update(dt)
     SONIC:update(dt)
 end
 
