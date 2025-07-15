@@ -59,6 +59,7 @@ return {
         elseif key == "2" then self:changeSonicSprite(sonic2Sprite)
         elseif key == "l" then
             print("Properties Need Refresh: ", propLoader:needsRefresh())
+        elseif key == "r" then propLoader:refresh()
         else                   self.state:keypressed(key)       end
     end,
 
