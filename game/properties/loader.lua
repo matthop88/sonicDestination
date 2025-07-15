@@ -42,6 +42,10 @@ return {
     notifyOnChange = function(self, listener)
         propertyChangeNotifier:addListener(listener)
     end,
+
+    getNotifier = function(self)
+        return propertyChangeNotifier
+    end,
     
     needsRefresh = function(self)
         local fileInfo = love.filesystem.getInfo(relativePath("properties/game.lua"))
