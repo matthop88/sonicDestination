@@ -34,6 +34,8 @@ return {
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
         
+        self.sprite = sonic1Sprite
+        
         propLoader:notifyOnChange(self)
         
         STATES          = requireRelative("states/sonic", { SONIC = self })
