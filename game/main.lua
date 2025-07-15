@@ -62,7 +62,7 @@ end
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    require("sonicPlugins"):init({ SONIC = SONIC, GRAPHICS = GRAPHICS })
+    require("sonicPlugins"):init({ SONIC = SONIC, GRAPHICS = GRAPHICS, PROP_LOADER = PROP_LOADER })
 end
 
 --[[
