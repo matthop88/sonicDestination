@@ -24,7 +24,9 @@ return {
     update = function(self, dt)
         timer = timer - (60 * dt)
         if timer < 0 then
-            timer = self.CHECK_INTERVAL
+            timer = CHECK_INTERVAL
+            print("Needs Refreshing: ", self:needsRefresh())
+            
             if self:needsRefresh() then
                 self:refresh()
             end
