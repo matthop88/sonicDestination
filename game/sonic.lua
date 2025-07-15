@@ -2,6 +2,8 @@ local STATES
 
 local sonic1Sprite, sonic2Sprite
 
+local properties = requireRelative("properties/game")
+
 return {
     -----------------------------------------------------------
     RUNNING_ACCELERATION = 168.75,
@@ -32,7 +34,9 @@ return {
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
         
-        self.sprite     = sonic1Sprite
+        if properties.player1 == "sonic2" then self.sprite = sonic2Sprite
+        else                                   self.sprite = sonic1Sprite end
+        
         STATES          = requireRelative("states/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
         return self
