@@ -6,12 +6,20 @@ local propertyChangeNotifier = {
         return self
     end,
 
+    getListeners = function(self)
+        return self.listeners
+    end,
+    
     notifyListeners = function(self)
         local gameProperties = dofile(relativePath("properties/game.lua"))
 
         for _, listener in ipairs(self.listeners) do
             listener:onPropertyChange(gameProperties)
         end
+    end,
+
+    clearListeners = function(self)
+        self.listeners = {}
     end,
 }
     
