@@ -2,7 +2,6 @@ local STATES
 
 local sonic1Sprite, sonic2Sprite
 
-local properties = requireRelative("properties/game")
 local propLoader = requireRelative("properties/loader")
 
 return {
@@ -35,8 +34,7 @@ return {
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
         
-        if properties.player1 == "sonic2" then self.sprite = sonic2Sprite
-        else                                   self.sprite = sonic1Sprite end
+        propLoader:notifyOnChange(self)
         
         STATES          = requireRelative("states/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
@@ -117,4 +115,11 @@ return {
         self.position.y = self.position.y + (self.velocity.y * dt)
     end,
 
+    onPropertyChange = function(self, propData)
+        if     propData.player1 == "sonic2" and self.sprite == sonic1Sprite then
+            self:changeSonicSprite(sonic2Sprite)
+        elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
+            self:changeSonicSprite(sonic1Sprite)
+        end
+    end,
 }
