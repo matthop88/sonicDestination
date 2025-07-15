@@ -25,8 +25,6 @@ return {
         timer = timer - (60 * dt)
         if timer < 0 then
             timer = CHECK_INTERVAL
-            print("Needs Refreshing: ", self:needsRefresh())
-            
             if self:needsRefresh() then
                 self:refresh()
             end
