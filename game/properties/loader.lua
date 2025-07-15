@@ -7,7 +7,7 @@ local propertyChangeNotifier = {
     end,
 
     notifyListeners = function(self)
-        local gameProperties = doFile(relativePath("properties/data/game.lua"))
+        local gameProperties = doFile(relativePath("properties/game.lua"))
 
         for _, listener in ipairs(self.listeners) do
             listener:onPropertyChange(gameProperties)
@@ -15,20 +15,29 @@ local propertyChangeNotifier = {
     end,
 }
     
-local lastModificationTime = nil
+local lastModificationTimestamp = nil
 
 return {
+    notifyOnChange = function(self, listener)
+        propertyChangeNotifier:addListener(listener)
+    end,
+    
     needsRefresh = function(self)
         local fileInfo = love.filesystem.getInfo(relativePath("properties/game.lua"))
         if fileInfo then
-            return lastModificationTime ~= fileInfo.modtime
+            return lastModificationTimestamp ~= fileInfo.modtime
         end
     end,
 
     refresh = function(self)
+        propertyChangeNotifier:notifyListeners()
+        self:refreshTimestamp()
+    end,
+
+    refreshTimestamp = function(self)
         local fileInfo = love.filesystem.getInfo(relativePath("properties/game.lua"))
         if fileInfo then
-            lastModificationTime = fileInfo.modtime
+            lastModificationTimestamp = fileInfo.modtime
         end
     end,
 }
