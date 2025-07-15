@@ -2,8 +2,6 @@ local STATES
 
 local sonic1Sprite, sonic2Sprite
 
-local propLoader = requireRelative("properties/loader")
-
 return {
     -----------------------------------------------------------
     RUNNING_ACCELERATION = 168.75,
@@ -36,8 +34,6 @@ return {
         
         self.sprite = sonic1Sprite
         
-        propLoader:notifyOnChange(self)
-        
         STATES          = requireRelative("states/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
         return self
@@ -55,12 +51,7 @@ return {
     end,
 
     keypressed = function(self, key)
-        if key == "r" and propLoader:needsRefresh() then
-            print("Refreshing...")
-            propLoader:refresh()
-        else 
-            self.state:keypressed(key)                
-        end
+       self.state:keypressed(key)                
     end,
 
     keyreleased = function(self, key)
