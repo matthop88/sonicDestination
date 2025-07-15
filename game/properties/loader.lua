@@ -7,7 +7,7 @@ local propertyChangeNotifier = {
     end,
 
     notifyListeners = function(self)
-        local gameProperties = doFile(relativePath("properties/game.lua"))
+        local gameProperties = dofile(relativePath("properties/game.lua"))
 
         for _, listener in ipairs(self.listeners) do
             listener:onPropertyChange(gameProperties)
