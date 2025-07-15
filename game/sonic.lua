@@ -50,14 +50,9 @@ return {
     end,
 
     keypressed = function(self, key)
-        if key == "1" or key == "2" then
-            local currentAnimationName = self.sprite:getCurrentAnimationName()
-            local xFlipped = self.sprite:isXFlipped()
-            if key == "1" then self.sprite = sonic1Sprite
-            else               self.sprite = sonic2Sprite  end
-            self.sprite:setCurrentAnimation(currentAnimationName)
-            self.sprite:setXFlipped(xFlipped)
-        else                   self.state:keypressed(key)  end
+        if     key == "1" then self:changeSonicSprite(sonic1Sprite)
+        elseif key == "2" then self:changeSonicSprite(sonic2Sprite)
+        else                   self.state:keypressed(key)       end
     end,
 
     keyreleased = function(self, key)
@@ -68,6 +63,14 @@ return {
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
+    changeSonicSprite = function(self, sonicSprite)
+        local currentAnimationName = self.sprite:getCurrentAnimationName()
+        local xFlipped = self.sprite:isXFlipped()
+        self.sprite = sonicSprite
+        self.sprite:setCurrentAnimation(currentAnimationName)
+        self.sprite:setXFlipped(xFlipped)
+    end,
+    
     getX          = function(self) return self.position.x                               end,
     getY          = function(self) return self.position.y                               end,
 
