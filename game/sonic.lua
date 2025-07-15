@@ -3,6 +3,7 @@ local STATES
 local sonic1Sprite, sonic2Sprite
 
 local properties = requireRelative("properties/game")
+local propLoader = requireRelative("properties/loader")
 
 return {
     -----------------------------------------------------------
@@ -56,6 +57,8 @@ return {
     keypressed = function(self, key)
         if     key == "1" then self:changeSonicSprite(sonic1Sprite)
         elseif key == "2" then self:changeSonicSprite(sonic2Sprite)
+        elseif key == "l" then
+            print("Properties Need Refresh: ", propLoader:needsRefresh())
         else                   self.state:keypressed(key)       end
     end,
 
