@@ -2,8 +2,17 @@ local propertyChangeNotifier = {
     listeners = {},
     
     addListener = function(self, listener)
-        table.insert(self.listeners, listener)
+        if not self:contains(listener) then
+            table.insert(self.listeners, listener)
+        end
         return self
+    end,
+
+    contains = function(self, listener)
+        for _, l in ipairs(self.listeners) do
+            if l == listener then return true end
+        end
+        return false
     end,
 
     getListeners = function(self)
