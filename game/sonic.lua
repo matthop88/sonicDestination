@@ -55,12 +55,12 @@ return {
     end,
 
     keypressed = function(self, key)
-        if     key == "1" then self:changeSonicSprite(sonic1Sprite)
-        elseif key == "2" then self:changeSonicSprite(sonic2Sprite)
-        elseif key == "l" then
-            print("Properties Need Refresh: ", propLoader:needsRefresh())
-        elseif key == "r" then propLoader:refresh()
-        else                   self.state:keypressed(key)       end
+        if key == "r" and propLoader:needsRefresh() then
+            print("Refreshing...")
+            propLoader:refresh()
+        else 
+            self.state:keypressed(key)                
+        end
     end,
 
     keyreleased = function(self, key)
