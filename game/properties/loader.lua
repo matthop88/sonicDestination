@@ -16,8 +16,21 @@ local propertyChangeNotifier = {
 }
     
 local lastModificationTimestamp = nil
+local timer                     = 0
+local CHECK_INTERVAL            = 100
 
 return {
+
+    update = function(self, dt)
+        timer = timer - (60 * dt)
+        if timer < 0 then
+            timer = self.CHECK_INTERVAL
+            if self:needsRefresh() then
+                self:refresh()
+            end
+        end
+    end,
+    
     notifyOnChange = function(self, listener)
         propertyChangeNotifier:addListener(listener)
     end,
