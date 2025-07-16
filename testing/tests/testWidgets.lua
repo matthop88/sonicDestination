@@ -1,6 +1,4 @@
-TESTING = require "testing/testFramework"
-
-TESTS = {
+return {
     WIDGET_FACTORY = nil,
     WIDGETS        = nil,
     
@@ -35,7 +33,3 @@ TESTS = {
         }
     end,
 }
-
-TESTING:initTests(TESTS)
-
-require "testing/delayTests"
