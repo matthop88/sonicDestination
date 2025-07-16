@@ -106,6 +106,6 @@ TESTING = {
     end,
 }
 
-TESTING:initTests(require("testing/tests/testModKeyEnabler"))
+TESTING:initTests(require("testing/tests/testWidgetFactory"))
 
 require("testing/delayTests")
