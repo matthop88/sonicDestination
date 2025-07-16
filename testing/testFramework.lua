@@ -57,7 +57,7 @@ TESTING = {
     end,
 
     queueTestClasses = function(self, testClasses)
-        self.queueTestClasses = testClasses
+        self.queuedTestClasses = testClasses
     end,
     
     runAll = function(self)
