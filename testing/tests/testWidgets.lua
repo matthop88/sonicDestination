@@ -1,6 +1,10 @@
 return {
     WIDGET_FACTORY = nil,
     WIDGETS        = nil,
+
+    getName = function(self)
+        return "State Machine Widget Test - Finding Default Box Widget Tests"
+    end,
     
     beforeAll = function(self)
         self.WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(1, 32, nil)
