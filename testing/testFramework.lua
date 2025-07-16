@@ -2,7 +2,7 @@ local ASTERISKS     = "*********************************************************
 
 love.window.setTitle("Testing Suite... Setting Up Tests")
 
-return {
+TESTING = {
     initTests = function(self, testsClass)
         self.runnableTests = {
             testsClass = testsClass,
@@ -105,3 +105,7 @@ return {
         end
     end,
 }
+
+TESTING:initTests(require("testing/tests/testPropertyNotifier"))
+
+require("testing/delayTests")
