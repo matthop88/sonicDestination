@@ -81,7 +81,7 @@ TESTING = {
     end,
 
     printTestName = function(self, testsClass)
-        print(testsClass:getName() .. "\n" .. string.rep("-", string.len(testClass:getName())))
+        print(testsClass:getName() .. "\n" .. string.rep("-", string.len(testsClass:getName())))
     end,
 
     showTestingSummary = function(self, testsSucceeded)
