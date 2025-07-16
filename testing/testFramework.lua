@@ -117,7 +117,7 @@ TESTING = {
     end,
 
     showFinalResults = function(self)
-        print("\n\nTotal Tests Succeeded: " .. totals.testsSucceeded .. " out of " .. totals.testCount)
+        print("Total Tests Succeeded: " .. totals.testsSucceeded .. " out of " .. totals.testCount .. "\n\n")
     end,
 
     assertTrue = function(self, name, expression)
