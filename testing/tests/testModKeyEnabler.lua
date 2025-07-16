@@ -1,7 +1,5 @@
-TESTING = require "testing/testFramework"
+local keyEventReceiver = ({
 
-keyEventReceiver = ({
- 
         clear = function(self)
             self.events = {
                 keypressed  = {},
@@ -17,7 +15,7 @@ keyEventReceiver = ({
 
 }):clear()
 
-TESTS = {
+return {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
     pluginEngine  = nil,
 
@@ -150,7 +148,3 @@ TESTS = {
                                     and keyEventReceiver:wasReleased("A"))
     end,
 }
-
-TESTING:initTests(TESTS)
-
-require "testing/delayTests"
