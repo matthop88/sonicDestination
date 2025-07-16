@@ -8,6 +8,10 @@ local totals = {
     testsFailed    = 0,
 }
 
+local printCaption = function(str)
+    print(str .. "\n" .. string.rep("-", string.len(str)))
+end
+    
 TESTING = {
     initTests = function(self, testsClass)
         self.runnableTests = {
@@ -67,7 +71,8 @@ TESTING = {
     end,
     
     runAll = function(self)
-        print("\nRunning Tests\n-------------")
+        print("\n")
+        printCaption("Running Tests")
     
         for _, testsClass in ipairs(self.queuedTestClasses) do
             self:initTests(testsClass)
@@ -89,7 +94,7 @@ TESTING = {
     end,
 
     printTestName = function(self, testsClass)
-        print(testsClass:getName() .. "\n" .. string.rep("-", string.len(testsClass:getName())))
+        printCaption(testsClass:getName())
     end,
 
     showTestingSummary = function(self, testsSucceeded)
