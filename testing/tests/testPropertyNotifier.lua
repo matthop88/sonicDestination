@@ -1,4 +1,4 @@
-TESTING = require "test/testFramework"
+TESTING = require "testing/testFramework"
 
 local PROP_LOADER = require("game/properties/loader")
 
@@ -51,4 +51,4 @@ TESTS = {
 
 TESTING:initTests(TESTS)
 
-require "test/delayTests"
+require "testing/delayTests"
