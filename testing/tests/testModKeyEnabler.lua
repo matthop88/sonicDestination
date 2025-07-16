@@ -1,4 +1,4 @@
-TESTING = require "test/testFramework"
+TESTING = require "testing/testFramework"
 
 keyEventReceiver = ({
  
@@ -16,7 +16,7 @@ keyEventReceiver = ({
         wasReleased = function(self, key) return self.events.keyreleased[key]       end,
 
 }):clear()
-        
+
 TESTS = {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
     pluginEngine  = nil,
@@ -61,7 +61,7 @@ TESTS = {
         self.pluginEngine:keypressed("left")
         self.pluginEngine:keyreleased("lshift")
         self.pluginEngine:keyreleased("left")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftleft")
                                     and keyEventReceiver:wasReleased("shiftleft"))
     end,
@@ -73,11 +73,11 @@ TESTS = {
         self.pluginEngine:keyreleased("lshift")
         self.pluginEngine:keypressed("left")
         self.pluginEngine:keyreleased("left")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("left")
                                     and keyEventReceiver:wasReleased("left"))
     end,
-    
+
     testIndependentLeftAndShiftPressAndRelease = function(self)
         local name = "Left  Key Down, Left  Key   Up, Shift Key Down, Shift Key Up => 'left'"
 
@@ -85,7 +85,7 @@ TESTS = {
         self.pluginEngine:keyreleased("left")
         self.pluginEngine:keypressed("lshift")
         self.pluginEngine:keyreleased("lshift")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("left")
                                     and keyEventReceiver:wasReleased("left"))
     end,
@@ -97,7 +97,7 @@ TESTS = {
         self.pluginEngine:keypressed("lshift")
         self.pluginEngine:keyreleased("left")
         self.pluginEngine:keyreleased("lshift")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("left")
                                     and keyEventReceiver:wasReleased("left"))
     end,
@@ -109,7 +109,7 @@ TESTS = {
         self.pluginEngine:keypressed("lshift")
         self.pluginEngine:keyreleased("lshift")
         self.pluginEngine:keyreleased("left")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("left")
                                     and keyEventReceiver:wasReleased("left"))
     end,
@@ -121,11 +121,11 @@ TESTS = {
         self.pluginEngine:keypressed("left")
         self.pluginEngine:keyreleased("left")
         self.pluginEngine:keyreleased("lshift")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftleft")
                                     and keyEventReceiver:wasReleased("shiftleft"))
     end,
-    
+
     testShiftAndLeftDownThenShiftAndLeftUp = function(self)
         local name = "Shift Key Down, Left  Key Down, Shift Key Up,   Left  Key Up => 'shiftleft'"
 
@@ -133,7 +133,7 @@ TESTS = {
         self.pluginEngine:keypressed("left")
         self.pluginEngine:keyreleased("lshift")
         self.pluginEngine:keyreleased("left")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("shiftleft")
                                     and keyEventReceiver:wasReleased("shiftleft"))
     end,
@@ -145,7 +145,7 @@ TESTS = {
         self.pluginEngine:keypressed("a")
         self.pluginEngine:keyreleased("lshift")
         self.pluginEngine:keyreleased("a")
-        
+
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("A")
                                     and keyEventReceiver:wasReleased("A"))
     end,
@@ -153,4 +153,4 @@ TESTS = {
 
 TESTING:initTests(TESTS)
 
-require "test/delayTests"
+require "testing/delayTests"
