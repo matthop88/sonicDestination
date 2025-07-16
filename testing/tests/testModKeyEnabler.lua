@@ -19,6 +19,10 @@ return {
     modKeyEnabler = require "plugins/modules/modKeyEnabler",
     pluginEngine  = nil,
 
+    getName = function(self)
+        return "Mod Key Enabler Plugin Tests"
+    end,
+    
     beforeAll = function(self)
         self.pluginEngine = require("plugins/engine")
             :addPlugin(self.modKeyEnabler)
