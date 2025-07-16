@@ -13,6 +13,10 @@ local LISTENER_B = {
 }
 
 return {
+    getName = function(self)
+        return "Property Notifier Tests"
+    end,
+    
     beforeAll = function(self)
         self.propertyNotifier = PROP_LOADER:getNotifier()
     end,
