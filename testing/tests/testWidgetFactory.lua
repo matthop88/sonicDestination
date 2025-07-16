@@ -1,4 +1,4 @@
-TESTING = require "test/testFramework"
+TESTING = require "testing/testFramework"
 
 TESTS = {
     WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"),
@@ -76,4 +76,4 @@ TESTS = {
 
 TESTING:initTests(TESTS)
 
-require "test/delayTests"
+require "testing/delayTests"
