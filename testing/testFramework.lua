@@ -73,9 +73,15 @@ TESTING = {
     end,
 
     initiateTests = function(self, testsClass)
+        self:printTestName(testsClass)
+        
         if testsClass.beforeAll then
             testsClass:beforeAll()
         end
+    end,
+
+    printTestName = function(self, testsClass)
+        print(testsClass:getName() .. "\n" .. string.rep("-", string.len(testClass:getName())))
     end,
 
     showTestingSummary = function(self, testsSucceeded)
