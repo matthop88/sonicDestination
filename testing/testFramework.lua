@@ -2,6 +2,12 @@ local ASTERISKS     = "*********************************************************
 
 love.window.setTitle("Testing Suite... Setting Up Tests")
 
+local totals = {
+    testCount      = 0,
+    testsSucceeded = 0,
+    testsFailed    = 0,
+}
+
 TESTING = {
     initTests = function(self, testsClass)
         self.runnableTests = {
@@ -68,7 +74,9 @@ TESTING = {
             self:initiateTests(testsClass)
             self.runnableTests:run()
             self:showTestingSummary()
+            self:addTestResultsToTotals()
         end
+        self:showFinalResults()
         love.event.quit()
     end,
 
@@ -100,6 +108,16 @@ TESTING = {
                 print("          WITH ERROR: " .. error.err)
             end
         end
+    end,
+
+    addTestResultsToTotals = function(self)
+        totals.testCount      = totals.testCount      + self.runnableTests.testCount
+        totals.testsSucceeded = totals.testsSucceeded + self.runnableTests.testsSucceeded
+        totals.testsFailed    = totals.testsFailed    + self.runnableTests.testsFailed
+    end,
+
+    showFinalResults = function(self)
+        print("\n\nTotal Tests Succeeded: " .. totals.testsSucceeded .. " out of " .. totals.testCount)
     end,
 
     assertTrue = function(self, name, expression)
