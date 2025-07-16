@@ -1,4 +1,4 @@
-TESTING = require "test/testFramework"
+TESTING = require "testing/testFramework"
 
 TESTS = {
     WIDGET_FACTORY = nil,
@@ -38,4 +38,4 @@ TESTS = {
 
 TESTING:initTests(TESTS)
 
-require "test/delayTests"
+require "testing/delayTests"
