@@ -11,6 +11,13 @@ local totals = {
 local printCaption = function(str)
     print(str .. "\n" .. string.rep("-", string.len(str)))
 end
+
+local printBanner = function(str)
+    local asteriskStr = string.rep("*", string.len(str) + 12)
+    print(asteriskStr)
+    print("***   " .. str .. "   ***")
+    print(asteriskStr)
+end
     
 TESTING = {
     initTests = function(self, testsClass)
@@ -122,7 +129,8 @@ TESTING = {
     end,
 
     showFinalResults = function(self)
-        print("Total Tests Succeeded: " .. totals.testsSucceeded .. " out of " .. totals.testCount .. "\n\n")
+        printBanner("Total Tests Succeeded: " .. totals.testsSucceeded .. " out of " .. totals.testCount)
+        print("\n")
     end,
 
     assertTrue = function(self, name, expression)
