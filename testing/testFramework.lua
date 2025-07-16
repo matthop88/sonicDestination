@@ -106,6 +106,6 @@ TESTING = {
     end,
 }
 
-TESTING:initTests(require("testing/tests/testWidgetFactory"))
+TESTING:initTests(require("testing/tests/testWidgets"))
 
 require("testing/delayTests")
