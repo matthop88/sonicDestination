@@ -1,5 +1,3 @@
-TESTING = require "testing/testFramework"
-
 local PROP_LOADER = require("game/properties/loader")
 
 local LISTENER_A = {
@@ -14,7 +12,7 @@ local LISTENER_B = {
     end,
 }
 
-TESTS = {
+return {
     beforeAll = function(self)
         self.propertyNotifier = PROP_LOADER:getNotifier()
     end,
@@ -48,7 +46,3 @@ TESTS = {
         return TESTING:assertTrue(name, #listeners == 2 and listeners[1] == LISTENER_A and listeners[2] == LISTENER_B)
     end,
 }
-
-TESTING:initTests(TESTS)
-
-require "testing/delayTests"
