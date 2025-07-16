@@ -56,12 +56,26 @@ TESTING = {
         end
     end,
 
+    queueTestClasses = function(self, testClasses)
+        self.queueTestClasses = testClasses
+    end,
+    
     runAll = function(self)
         print("\nRunning Tests\n-------------")
-        self.runnableTests:run()
-        self:showTestingSummary()
-        
+    
+        for _, testsClass in ipairs(self.queuedTestClasses) do
+            self:initTests(testsClass)
+            self:initiateTests(testsClass)
+            self.runnableTests:run()
+            self:showTestingSummary()
+        end
         love.event.quit()
+    end,
+
+    initiateTests = function(self, testsClass)
+        if testsClass.beforeAll then
+            testsClass:beforeAll()
+        end
     end,
 
     showTestingSummary = function(self, testsSucceeded)
@@ -106,6 +120,11 @@ TESTING = {
     end,
 }
 
-TESTING:initTests(require("testing/tests/testWidgets"))
+TESTING:queueTestClasses {
+    require("testing/tests/testModKeyEnabler"),
+    require("testing/tests/testPropertyNotifier"),
+    require("testing/tests/testWidgetFactory"),
+    require("testing/tests/testWidgets"),
+}
 
 require("testing/delayTests")
