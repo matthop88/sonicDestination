@@ -1,5 +1,7 @@
 local STATES
 
+local sonic1Sprite, sonic2Sprite
+
 return {
     -----------------------------------------------------------
     RUNNING_ACCELERATION = 168.75,
@@ -26,8 +28,13 @@ return {
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        self.sprite     = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS }):create("sonic1")
-        STATES          = requireRelative("states/sonic",          { SONIC = self })
+        local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
+        sonic1Sprite = spriteFactory:create("sonic1")
+        sonic2Sprite = spriteFactory:create("sonic2")
+        
+        self.sprite = sonic1Sprite
+        
+        STATES          = requireRelative("states/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
         return self
     end,
@@ -44,7 +51,7 @@ return {
     end,
 
     keypressed = function(self, key)
-        self.state:keypressed(key)
+       self.state:keypressed(key)                
     end,
 
     keyreleased = function(self, key)
@@ -55,6 +62,14 @@ return {
     --                  Specialized Functions                   --
     --------------------------------------------------------------
 
+    changeSonicSprite = function(self, sonicSprite)
+        local currentAnimationName = self.sprite:getCurrentAnimationName()
+        local xFlipped = self.sprite:isXFlipped()
+        self.sprite = sonicSprite
+        self.sprite:setCurrentAnimation(currentAnimationName)
+        self.sprite:setXFlipped(xFlipped)
+    end,
+    
     getX          = function(self) return self.position.x                               end,
     getY          = function(self) return self.position.y                               end,
 
@@ -93,4 +108,11 @@ return {
         self.position.y = self.position.y + (self.velocity.y * dt)
     end,
 
+    onPropertyChange = function(self, propData)
+        if     propData.player1 == "sonic2" and self.sprite == sonic1Sprite then
+            self:changeSonicSprite(sonic2Sprite)
+        elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
+            self:changeSonicSprite(sonic1Sprite)
+        end
+    end,
 }

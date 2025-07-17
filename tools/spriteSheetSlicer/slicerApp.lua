@@ -4,18 +4,27 @@
 --                  Functional Specifications               --
 --------------------------------------------------------------
 
-[X] 1. Program "automagically" finds borders of all sprites in image
-[X] 2. Border is drawn when mouse moves over a sprite
-[X] 3. When a sprite is clicked on, x, y, width and height are
+     * Program "automagically" finds borders of all sprites in image
+     * Border is drawn when mouse moves over a sprite
+     * When a sprite is clicked on, x, y, width and height are
        displayed on screen.
+
+   [X] Program displays "gallery" of images at bottom of screen.
+   [X] Images in gallery are thumbnails that scale a bit when mouseover occurs.
+   [X] Images belong to an animation sequence and are specified in an external data file.
+   [X] When gallery image is pressed, an editor "window" pops up, with blown-up image
+   [X] Images can be cycled through to test out animation
+   [X] X and Y offsets are displayed in text fields
+   [X] When mouse is inside a text field, up and down arrows increment and decrement values
+   [X] Full stats of rects can be printed to console.
 
 --]]
 
 --------------------------------------------------------------
---                      Global Variables                    --
+--                       Local Variables                    --
 --------------------------------------------------------------
 
-ASCII_ART = [[
+local ASCII_ART = [[
                eeeeeeeeeeee                                     
        ZeeeeeeeeZeeeee2222eeeeeeZ                               
    ÕëëëëëëëëZeeeeeeeeZZZZZ222222eeeeZ      ÕëëÕ                 
@@ -61,27 +70,24 @@ ASCII_ART = [[
                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   
 ]]
 
-MARGIN_BACKGROUND_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 }
-SPRITE_BACKGROUND_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 }
-
-WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
-
---------------------------------------------------------------
---                      Local Variables                     --
---------------------------------------------------------------
+local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require "tools/spriteSheetSlicer/smartRect"
 
 local imgPath     = "resources/images/sadSlicer.png"
 
-if __SLICER_FILE ~= nil then
-    imgPath = "resources/images/spriteSheets/" .. __SLICER_FILE .. ".png"
-end
+local sheetInfo   = { spriteRects = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
+local gallery
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
+
+if __SLICER_FILE ~= nil then
+    sheetInfo = require("tools/spriteSheetSlicer/data/" .. __SLICER_FILE)
+    imgPath = sheetInfo.imagePath
+end
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
@@ -89,17 +95,22 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
-    
+
 function love.update(dt)
     slicer:update(dt)
     local imageX, imageY = getImageViewer():screenToImageCoordinates(love.mouse.getPosition())
     if not currentRect:containsPt(imageX, imageY) then
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
+    gallery:update(dt)
+end
+
+function love.keypressed(key)
+    gallery:keypressed(key)
 end
 
 function love.mousepressed(mx, my)
-    if currentRect:isValid() then
+    if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
         printToReadout(currentRect:toString())
     end
@@ -121,9 +132,10 @@ function onSlicingCompletion()
     love.window.setTitle("Sprite Sheet Slicer")
 end
 
-function drawSlices()
+function drawOverlays()
     slicer:draw()
     currentRect:draw()
+    gallery:draw()
 end
 
 --------------------------------------------------------------
@@ -134,11 +146,19 @@ PLUGINS = require("plugins/engine")
     :add("imageViewer",
     {
         imagePath      = imgPath,
+        pixelated      = true,
         accessorFnName = "getImageViewer"
     })
+    :add("modKeyEnabler")
+    :add("scrolling",    { 
+        imageViewer = getImageViewer(),
+        leftKey     = "shiftleft",
+        rightKey    = "shiftright",
+        upKey       = "shiftup",
+        downKey     = "shiftdown",
+    })
     :add("zooming",      { imageViewer = getImageViewer() })
-    :add("scrolling",    { imageViewer = getImageViewer() })
-    :add("drawingLayer", { drawingFn   = drawSlices       })
+    :add("drawingLayer", { drawingFn   = drawOverlays     })
     :add("readout",
     {
         printFnName    = "printToReadout",
@@ -149,10 +169,12 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
+gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
+
 slicer:start({
     imageViewer          = getImageViewer(),
-    marginBGColor        = MARGIN_BACKGROUND_COLOR,
-    spriteBGColor        = SPRITE_BACKGROUND_COLOR,
+    marginBGColor        = sheetInfo.MARGIN_BG_COLOR,
+    spriteBGColor        = sheetInfo.SPRITE_BG_COLOR,
     callbackWhenComplete = onSlicingCompletion
 })
 

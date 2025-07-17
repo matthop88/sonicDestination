@@ -65,6 +65,10 @@ return {
         self.x = (screenX / self.scale) - imageX
         self.y = (screenY / self.scale) - imageY
     end,
+
+    getImage = function(self)
+        return self.image
+    end,
     
     getImageWidth = function(self)
         return self.image:getWidth()
@@ -82,9 +86,15 @@ return {
         return self.imageData:getPixel(math.floor(x), math.floor(y))
     end,
 
+    isPixelInRange = function(self, x, y)
+        return x >= 0 and x < self.imageData:getWidth() and y >= 0 and y < self.imageData:getHeight()
+    end,
+
     getPixelColorAt = function(self, x, y)
-        local r, g, b, a = self:getImagePixelAt(x, y)
-        return { r = r, g = g, b = b, a = a }
+        if self:isPixelInRange(x, y) then
+            local r, g, b, a = self:getImagePixelAt(x, y)
+            return { r = r, g = g, b = b, a = a }
+        end
     end,
 
     editPixels = function(self, pixelMapper)

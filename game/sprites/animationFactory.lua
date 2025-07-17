@@ -46,8 +46,9 @@ return {
             end,
         
             setUpDefaultAnimation = function(self)
-                for _, anim in pairs(self.data) do
+                for name, anim in pairs(self.data) do
                     if anim.isDefault or self.currentAnimation == nil then
+                        anim.name = name
                         self.currentAnimation = anim
                     end
                 end
@@ -70,6 +71,7 @@ return {
         
             setCurrentAnimation = function(self, animationName)
                 self.currentAnimation = self.data[animationName]
+                self.currentAnimation.name = animationName
                 self.currentFrameIndex = 1
                 self.frameTimer = 0
                 self:updateFrameRate()
@@ -83,11 +85,12 @@ return {
                 end
             end,
         
-            getImage         = function(self)      return self.image                                    end,
-            getCurrentQuad   = function(self)      return self:getCurrentFrame().quad                   end,
-            getCurrentFrame  = function(self)      return self.currentAnimation[self.currentFrameIndex] end,
-            getCurrentOffset = function(self)      return self:getCurrentFrame().offset                 end,
-            getFPS           = function(self)      return self.currentAnimation.fps                     end,
+            getImage           = function(self)      return self.image                                    end,
+            getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                   end,
+            getCurrentFrame    = function(self)      return self.currentAnimation[self.currentFrameIndex] end,
+            getCurrentAnimName = function(self)      return self.currentAnimation.name                    end,
+            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                 end,
+            getFPS             = function(self)      return self.currentAnimation.fps                     end,
                 
             setFPS           = function(self, fps) 
                 self.currentAnimation.fps = fps

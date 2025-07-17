@@ -2,7 +2,24 @@ local ASTERISKS     = "*********************************************************
 
 love.window.setTitle("Testing Suite... Setting Up Tests")
 
-return {
+local totals = {
+    testCount      = 0,
+    testsSucceeded = 0,
+    testsFailed    = 0,
+}
+
+local printCaption = function(str)
+    print(str .. "\n" .. string.rep("-", string.len(str)))
+end
+
+local printBanner = function(str)
+    local asteriskStr = string.rep("*", string.len(str) + 12)
+    print(asteriskStr)
+    print("***   " .. str .. "   ***")
+    print(asteriskStr)
+end
+    
+TESTING = {
     initTests = function(self, testsClass)
         self.runnableTests = {
             testsClass = testsClass,
@@ -56,12 +73,35 @@ return {
         end
     end,
 
+    queueTestClasses = function(self, testClasses)
+        self.queuedTestClasses = testClasses
+    end,
+    
     runAll = function(self)
-        print("\nRunning Tests\n-------------")
-        self.runnableTests:run()
-        self:showTestingSummary()
-        
+        print("\n")
+        printCaption("Running Tests")
+    
+        for _, testsClass in ipairs(self.queuedTestClasses) do
+            self:initTests(testsClass)
+            self:initiateTests(testsClass)
+            self.runnableTests:run()
+            self:showTestingSummary()
+            self:addTestResultsToTotals()
+        end
+        self:showFinalResults()
         love.event.quit()
+    end,
+
+    initiateTests = function(self, testsClass)
+        self:printTestName(testsClass)
+        
+        if testsClass.beforeAll then
+            testsClass:beforeAll()
+        end
+    end,
+
+    printTestName = function(self, testsClass)
+        printCaption(testsClass:getName())
     end,
 
     showTestingSummary = function(self, testsSucceeded)
@@ -80,6 +120,17 @@ return {
                 print("          WITH ERROR: " .. error.err)
             end
         end
+    end,
+
+    addTestResultsToTotals = function(self)
+        totals.testCount      = totals.testCount      + self.runnableTests.testCount
+        totals.testsSucceeded = totals.testsSucceeded + self.runnableTests.testsSucceeded
+        totals.testsFailed    = totals.testsFailed    + self.runnableTests.testsFailed
+    end,
+
+    showFinalResults = function(self)
+        printBanner("Total Tests Succeeded: " .. totals.testsSucceeded .. " out of " .. totals.testCount)
+        print("\n")
     end,
 
     assertTrue = function(self, name, expression)
@@ -105,3 +156,12 @@ return {
         end
     end,
 }
+
+TESTING:queueTestClasses {
+    require("testing/tests/testModKeyEnabler"),
+    require("testing/tests/testPropertyNotifier"),
+    require("testing/tests/testWidgetFactory"),
+    require("testing/tests/testWidgets"),
+}
+
+require("testing/delayTests")

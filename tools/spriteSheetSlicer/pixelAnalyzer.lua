@@ -9,15 +9,14 @@ return {
         self.imageViewer   = imageViewer
         self.marginBGColor = marginBGColor
         self.spriteBGColor = spriteBGColor
+        
         return self
     end,
 
     processPixelAt = function(self, x, y)
-        if x == 0 then 
-            self.prevColor = nil 
-        else
-            self.prevColor = self.thisColor
-        end
+        if x == 0 then self.prevColor = nil 
+        else           self.prevColor = self.thisColor end
+        
         self.thisColor = self.imageViewer:getPixelColorAt(x, y) 
     end,
     

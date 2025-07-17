@@ -5,7 +5,10 @@ return {
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
         self.DRAWING_FN = function()   self.SONIC:draw()     end
-        self.UPDATE_FN  = function(dt) self.SONIC:update(dt) end
+        self.UPDATE_FN  = function(dt) 
+            params.PROP_LOADER:update(dt)
+            self.SONIC:update(dt) 
+        end
 
         love.update = function(dt)
             -- Do nothing

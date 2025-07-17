@@ -1,9 +1,11 @@
-TESTING = require "test/testFramework"
-
-TESTS = {
+return {
     WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"),
     pluginManager  = nil,
 
+    getName = function(self)
+        return "State Machine Widget Factory Smart Arrow Tests"
+    end,
+    
     beforeAll = function(self)
         self.WIDGET_FACTORY:init(1, 1, nil)
     end,
@@ -73,7 +75,3 @@ TESTS = {
         }
     end,
 }
-
-TESTING:initTests(TESTS)
-
-require "test/delayTests"
