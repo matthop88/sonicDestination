@@ -1,6 +1,7 @@
 return {
     "standing",
     "running",
+    "decelerating",
 
     currentWidgetList = { },
     currentIndex      = 1,
