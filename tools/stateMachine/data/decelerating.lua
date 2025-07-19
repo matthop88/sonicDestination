@@ -1,6 +1,6 @@
 return {
-    { type = "BOX",   label = "Stand Right",      x  = 12.5, y  =  3,   w  =  7, h =  4   },
-    { type = "BOX",   label = "Stand Left",       x  = 23,   y  = 14,   w  =  7, h =  4   },
+    { type = "BOX",   label = "Stand Right",      x  = 11.5, y  =  3,   w  =  7, h =  4   },
+    { type = "BOX",   label = "Stand Left",       x  = 24,   y  = 14,   w  =  7, h =  4   },
     { type = "BOX",   label = "Accelerate Right", x  = 35,   y  =  3,   w  =  6, h = 21   },
     { type = "BOX",   label = "Accelerate Left",  x  =  1,   y  =  3,   w  =  6, h = 21   },
     { type = "BOX",   label = "Decelerate Left",  x  = 12.5, y  = 15.5, w  =  7, h =  5   },
