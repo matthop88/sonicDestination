@@ -14,5 +14,6 @@ return {
     { type = "ARROW", label = "L On",  from = "Stand Left",       to = "Accelerate Left",  y = 15   },
     { type = "ARROW", label = "L Off", from = "Accelerate Left",  to = "Decelerate Left",  y = 17   },
     { type = "ARROW", label = "L On",  from = "Decelerate Left",  to = "Accelerate Left",  y = 19   },
+    { type = "ARROW", label = "R On",  from = "Decelerate Left",  to = "Accelerate Right", y = 17   },
     { type = "ARROW", label = "R On",  from = "Stand Left",       to = "Accelerate Right", y = 15   },
 }
