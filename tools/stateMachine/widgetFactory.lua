@@ -72,7 +72,7 @@ return {
         elseif element.label == "R On"      then element.keypressed  = "right"
         elseif element.label == "L Off"     then element.keyreleased = "left"
         elseif element.label == "R Off"     then element.keyreleased = "right"
-        elseif element.label == "Speed = 0" then element.keypressed  = "return"
+        elseif element.label == "Speed = 0" then element.keypressed  = "0"
         end
     end,
     
