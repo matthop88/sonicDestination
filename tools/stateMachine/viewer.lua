@@ -85,6 +85,8 @@ function processRefreshKeyEvent(key)
     elseif key == "tab"      then WIDGETS:next()  end
     
     refreshTargetBox()
+
+    GRAFX.x, GRAFX.y, GRAFX.scale = WIDGETS.x, WIDGETS.y, WIDGETS.scale
 end
 
 function processKeypressedEvent(key)
