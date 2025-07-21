@@ -1,4 +1,5 @@
 return {
+    x = 0, y = 0, scale = 1,
     { type = "BOX",   label = "Stand Right", x  = 12.5, y  =  5,   w  =  7,      h =  4   },
     { type = "BOX",   label = "Stand Left",  x  = 12.5, y  = 14,   w  =  7,      h =  4   },
     { type = "BOX",   label = "Run Right",   x  = 25,   y  =  5,   w  =  6,      h = 13   },
