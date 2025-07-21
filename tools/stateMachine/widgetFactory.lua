@@ -68,10 +68,11 @@ return {
     end,
 
     createKeyEvent = function(self, element)
-        if     element.label == "L On"  then element.keypressed  = "left"
-        elseif element.label == "R On"  then element.keypressed  = "right"
-        elseif element.label == "L Off" then element.keyreleased = "left"
-        elseif element.label == "R Off" then element.keyreleased = "right"
+        if     element.label == "L On"      then element.keypressed  = "left"
+        elseif element.label == "R On"      then element.keypressed  = "right"
+        elseif element.label == "L Off"     then element.keyreleased = "left"
+        elseif element.label == "R Off"     then element.keyreleased = "right"
+        elseif element.label == "Speed = 0" then element.keypressed  = "return"
         end
     end,
     
