@@ -58,6 +58,8 @@ end
 function love.keypressed(key)
     if key == "return" or key == "shifttab" or key == "tab" then
         processRefreshKeyEvent(key)
+    elseif key == "X" then
+        print("x = " .. GRAFX.x .. ", y = " .. GRAFX.y .. ", scale = " .. GRAFX.scale)
     else
         processKeypressedEvent(key) 
     end
