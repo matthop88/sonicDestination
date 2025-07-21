@@ -58,8 +58,6 @@ end
 function love.keypressed(key)
     if key == "return" or key == "shifttab" or key == "tab" then
         processRefreshKeyEvent(key)
-    elseif key == "X" then
-        print("x = " .. GRAFX.x .. ", y = " .. GRAFX.y .. ", scale = " .. GRAFX.scale)
     else
         processKeypressedEvent(key) 
     end
@@ -87,8 +85,6 @@ function processRefreshKeyEvent(key)
     refreshTargetBox()
 
     GRAFX.x, GRAFX.y, GRAFX.scale = WIDGETS.x, WIDGETS.y, WIDGETS.scale
-    print("WIDGETS x, y, scale = ", WIDGETS.x, WIDGETS.y, WIDGETS.scale)
-    print("GRAFX x, y, scale = ", GRAFX.x, GRAFX.y, GRAFX.scale)
 end
 
 function processKeypressedEvent(key)
