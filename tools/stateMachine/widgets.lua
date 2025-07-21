@@ -54,6 +54,7 @@ return {
 
     refresh = function(self)
         self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
+        self.x, self.y, self.scale = self.currentWidgetList.x, self.currentWidgetList.y, self.currentWidgetList.scale
     end,
 
     getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,
