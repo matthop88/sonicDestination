@@ -19,7 +19,6 @@ return {
         end
 
         widgets.x, widgets.y, widgets.scale = data.x, data.y, data.scale
-        print("WIDGETS x, y, scale = ", widgets.x, widgets.y, widgets.scale)
         return widgets
     end,
 
