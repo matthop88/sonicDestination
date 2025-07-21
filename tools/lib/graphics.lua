@@ -20,6 +20,10 @@ return {
     getFontHeight = function(self)
         return self.FONTS:get(self.fontSize):getHeight()
     end,
+
+    getFontWidth = function(self, label)
+        return self.FONTS:get(self.fontSize):getWidth(label)
+    end,
     
     ---------------------- Property Setter Functions -------------------
     
