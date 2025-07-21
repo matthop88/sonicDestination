@@ -18,6 +18,7 @@ return {
             table.insert(widgets, self:createFromDataElement(dataElement))
         end
 
+        widgets.x, widgets.y, widgets.scale = data.x, data.y, data.scale
         return widgets
     end,
 
