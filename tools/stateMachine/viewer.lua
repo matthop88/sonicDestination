@@ -87,6 +87,8 @@ function processRefreshKeyEvent(key)
     refreshTargetBox()
 
     GRAFX.x, GRAFX.y, GRAFX.scale = WIDGETS.x, WIDGETS.y, WIDGETS.scale
+    print("WIDGETS x, y, scale = ", WIDGETS.x, WIDGETS.y, WIDGETS.scale)
+    print("GRAFX x, y, scale = ", GRAFX.x, GRAFX.y, GRAFX.scale)
 end
 
 function processKeypressedEvent(key)
