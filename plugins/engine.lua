@@ -74,7 +74,11 @@ return ({
     end,
 
     add = function(self, pluginPath, params)
-        local plugin = require("plugins/modules/" .. pluginPath)
+        local plugin
+        local status, err = pcall(function() plugin = require("plugins/modules/" .. pluginPath) end)
+        if status == false then
+            plugin = require("plugin/modules/" .. pluginPath .. "/" .. pluginPath)
+        end
         self:addPlugin(plugin, params)
         return self
     end,
