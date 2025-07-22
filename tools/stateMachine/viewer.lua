@@ -36,10 +36,10 @@ local LABEL_FONT_SIZE             = 32
 local GRID_SIZE                   = 32
 local GRAFX                       = require "tools/lib/graphics"
 
-local PEGBOARD       = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
-local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
+local PEGBOARD       = require("plugins/modules/stateMachineViewer/pegboard"):init(GRID_SIZE, GRAFX)
+local WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
 
-local WIDGETS        = require("tools/stateMachine/widgets"):init(WIDGET_FACTORY)
+local WIDGETS        = require("plugins/modules/stateMachineViewer/widgets"):init(WIDGET_FACTORY)
 
 local targetBox      = nil
 
