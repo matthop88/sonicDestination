@@ -4,8 +4,8 @@ return {
         self.LABEL_FONT_SIZE = labelFontSize
         self.graphics        = graphics
 
-        self.BOX   = require("tools/stateMachine/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE,        graphics)
-        self.ARROW = require("tools/stateMachine/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE * 0.75, graphics)
+        self.BOX   = require("plugins/modules/stateMachineViewer/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE,        graphics)
+        self.ARROW = require("plugins/modules/stateMachineViewer/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE * 0.75, graphics)
 
         return self
     end,
