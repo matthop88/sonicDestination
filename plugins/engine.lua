@@ -77,7 +77,7 @@ return ({
         local plugin
         local status, err = pcall(function() plugin = require("plugins/modules/" .. pluginPath) end)
         if status == false then
-            plugin = require("plugin/modules/" .. pluginPath .. "/" .. pluginPath)
+            plugin = require("plugins/modules/" .. pluginPath .. "/" .. pluginPath)
         end
         self:addPlugin(plugin, params)
         return self
