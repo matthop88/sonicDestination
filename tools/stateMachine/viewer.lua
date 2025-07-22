@@ -157,6 +157,7 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",   { imageViewer = GRAFX })
     :add("readout",   { printFnName = "printMessage" })
+    :add("stateMachineViewer")
     
 -- ...
 -- ...
