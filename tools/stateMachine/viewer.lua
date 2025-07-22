@@ -43,6 +43,10 @@ local WIDGETS        = require("tools/stateMachine/widgets"):init(WIDGET_FACTORY
 
 local targetBox      = nil
 
+local REFRESH_KEY    = "return"
+local NEXT_KEY       = "tab"
+local PREV_KEY       = "shifttab"
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -56,7 +60,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == "return" or key == "shifttab" or key == "tab" then
+    if key == REFRESH_KEY or key == NEXT_KEY or key == PREV_KEY then
         processRefreshKeyEvent(key)
     else
         processKeypressedEvent(key) 
@@ -78,9 +82,9 @@ end
 --------------------------------------------------------------
 
 function processRefreshKeyEvent(key)
-    if     key == "return"   then WIDGETS:refresh()
-    elseif key == "shifttab" then WIDGETS:prev()
-    elseif key == "tab"      then WIDGETS:next()  end
+    if     key == REFRESH_KEY then WIDGETS:refresh()
+    elseif key == PREV_KEY    then WIDGETS:prev()
+    elseif key == NEXT_KEY    then WIDGETS:next()  end
     
     refreshTargetBox()
 
