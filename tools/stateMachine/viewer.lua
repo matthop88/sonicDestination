@@ -31,6 +31,7 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
+local GRAFX                       = require "tools/lib/graphics"
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
