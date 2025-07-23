@@ -74,6 +74,7 @@ PLUGINS = require("plugins/engine")
     :add("readout",   { printFnName = "printMessage" })
     :add("stateMachineViewer", {
         graphics = GRAFX,
+        states   = { "standing", "running", "decelerating" },
     })
     
 -- ...
