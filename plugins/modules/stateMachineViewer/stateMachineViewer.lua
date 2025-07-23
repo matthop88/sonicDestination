@@ -9,7 +9,7 @@ return {
         self.refreshKey   = params.refreshKey or "return"
         self.nextKey      = params.nextKey    or "="
         self.prevKey      = params.prevKey    or "-"
-        self.graphics     = params.graphics
+        self.graphics     = require("tools/lib/bufferedGraphics"):create(params.graphics, 1024, 768)
         
         PEGBOARD       = require("plugins/modules/stateMachineViewer/pegboard"):init(GRID_SIZE, self.graphics)
         WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, self.graphics)
@@ -24,6 +24,7 @@ return {
     draw = function(self)
         PEGBOARD:draw()
         WIDGETS:draw()
+        self.graphics:blitToScreen()
     end,
 
     handleKeypressed = function(self, key)
@@ -41,7 +42,9 @@ return {
 
         self:refreshTargetBox()
 
-        self.graphics.x, self.graphics.y, self.graphics.scale = WIDGETS.x, WIDGETS.y, WIDGETS.scale
+        self.graphics:setX(WIDGETS.x)
+        self.graphics:setY(WIDGETS.y)
+        self.graphics:setScale(WIDGETS.scale)
     end,
 
     refreshTargetBox = function(self)
