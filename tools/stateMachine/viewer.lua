@@ -71,11 +71,13 @@ PLUGINS = require("plugins/engine")
         downKey     = "shiftdown",
     })
     :add("zooming",   { imageViewer = GRAFX })
-    :add("readout",   { printFnName = "printMessage" })
     :add("stateMachineViewer", {
         graphics = GRAFX,
         states   = { "standing", "running", "decelerating" },
+        nextKey  = "tab",
+        prevKey  = "shifttab",
     })
+    :add("readout",   { printFnName = "printMessage" })
     
 -- ...
 -- ...
