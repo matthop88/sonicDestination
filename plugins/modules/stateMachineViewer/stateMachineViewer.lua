@@ -33,6 +33,33 @@ return {
         end
     end,
 
+    processViewKeypressedEvent = function(self, key)
+        if     key == self.refreshKey then WIDGETS:refresh()
+        elseif key == self.nextKey    then WIDGETS:next()
+        elseif key == self.prevKey    then WIDGETS:prev()   end
+
+        self:refreshTargetBox()
+
+        self.graphics.x, self.graphics.y, self.graphics.scale = WIDGETS.x, WIDGETS.y, WIDGETS.scale
+    end,
+
+    refreshTargetBox = function(self)
+        self.targetBox = WIDGETS:getFirstBox()
+        self.targetBox:select()
+    end,
+
+    processWidgetKeypressedEvent = function(self, key)
+        for _, widget in ipairs(WIDGETS:get()) do
+            if widget.keypressed == key and widget.from == self.targetBox then
+                WIDGETS:deselectAll()
+                self.targetBox = widget.to
+                self.targetBox:select()
+                widget:select()
+                printMessage(widget.label)
+            end
+        end
+    end,
+
     handleKeyreleased = function(self, key)
         self:processWidgetKeyreleasedEvent(key)
     end,
@@ -41,23 +68,6 @@ return {
         WIDGETS:deselectAll()
         WIDGETS:mousepressed(mx, my)
         self:updateTargetBox()
-    end,
-
-    processViewKeypressedEvent = function(self, key)
-        for _, widget in ipairs(WIDGETS:get()) do
-            if widget.keypressed == key and widget.from == self.targetBox then
-                WIDGETS:deselectAll()
-                self.targetBox = widget.to
-                self.targetBox:select()
-                widget:select()
-                printMessage(widget.label())
-            end
-        end
-    end,
-
-    refreshTargetBox = function(self)
-        self.targetBox = WIDGETS:getFirstBox()
-        self.targetBox:select()
     end,
 
     updateTargetBox = function(self)
