@@ -13,7 +13,7 @@ return {
 
         PEGBOARD       = require("plugins/modules/stateMachineViewer/pegboard"):init(GRID_SIZE, self.graphics)
         WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, self.graphics)
-        WIDGETS        = require("plugins/modules/stateMachineViewer/widgets"):init(WIDGET_FACTORY)
+        WIDGETS        = require("plugins/modules/stateMachineViewer/widgets"):init(WIDGET_FACTORY, params.states)
 
         self:refreshTargetBox()
         
