@@ -88,6 +88,8 @@ return {
 
     ----------------------- Zooming Functions ----------------------
 
+    setScale = function(self, scale) self.scale = scale end,
+    
     screenToImageCoordinates = function(self, mx, my)
         local x = mx / self.scale - self.x
         local y = my / self.scale - self.y
