@@ -5,16 +5,17 @@ local PEGBOARD, WIDGET_FACTORY, WIDGETS
 
 return {
     init = function(self, params)
-        self.targetBox = nil
-        self.refreshKey = params.refreshKey or "return"
-        self.nextKey    = params.nextKey    or "tab"
-        self.prevKey    = params.prevKey    or "shifttab"
-        self.graphics   = params.graphics
-
+        self.targetBox    = nil
+        self.refreshKey   = params.refreshKey or "return"
+        self.nextKey      = params.nextKey    or "="
+        self.prevKey      = params.prevKey    or "-"
+        self.graphics     = params.graphics
+        
         PEGBOARD       = require("plugins/modules/stateMachineViewer/pegboard"):init(GRID_SIZE, self.graphics)
         WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, self.graphics)
         WIDGETS        = require("plugins/modules/stateMachineViewer/widgets"):init(WIDGET_FACTORY, params.states)
 
+        printMessage   = printMessage or function(msg) print(msg) end
         self:refreshTargetBox()
         
         return self
