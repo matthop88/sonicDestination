@@ -1,15 +1,12 @@
 return {
-    "standing",
-    "running",
-    "decelerating",
-
     currentWidgetList = { },
     currentIndex      = 1,
 
     WIDGET_FACTORY = nil,
         
-    init = function(self, widgetFactory)
+    init = function(self, widgetFactory, states)
         self.WIDGET_FACTORY = widgetFactory
+        for _, e in ipairs(states) do table.insert(self, e) end
         self:refresh()
         return self
     end,
