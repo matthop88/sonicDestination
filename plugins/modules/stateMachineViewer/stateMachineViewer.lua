@@ -60,6 +60,18 @@ return {
         end
     end,
 
+    processWidgetKeyreleasedEvent = function(self, key)
+        for _, widget in ipairs(WIDGETS:get()) do
+            if widget.keyreleased == key and widget.from == self.targetBox then
+                WIDGETS:deselectAll()
+                self.targetBox = widget.to
+                self.targetBox:select()
+                widget:select()
+                printMessage(widget.label)
+            end
+        end
+    end,
+
     handleKeyreleased = function(self, key)
         self:processWidgetKeyreleasedEvent(key)
     end,
@@ -74,18 +86,6 @@ return {
         for _, widget in ipairs(WIDGETS:get()) do
             if widget:getType() == "BOX" and widget:isSelected() then
                 self.targetBox = widget
-            end
-        end
-    end,
-
-    processKeyreleasedEvent = function(self, key)
-        for _, widget in ipairs(WIDGETS:get()) do
-            if widget.keyreleased == key and widget.from == self.targetBox then
-                WIDGETS:deselectAll()
-                self.targetBox = widget.to
-                self.targetBox:select()
-                widget:select()
-                printMessage(widget.label)
             end
         end
     end,
