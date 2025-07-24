@@ -24,7 +24,7 @@ return {
     draw = function(self)
         PEGBOARD:draw()
         WIDGETS:draw()
-        self.graphics:blitToScreen()
+        self.graphics:blitToScreen(0, 0, { 1, 1, 1, 0.3 })
     end,
 
     handleKeypressed = function(self, key)
