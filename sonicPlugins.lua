@@ -116,5 +116,11 @@ return {
                     },
                 }
             })
+            :add("stateMachineViewer", {
+                graphics = self.GRAPHICS,
+                states   = { "standing", "running", "decelerating" },
+                nextKey  = "tab",
+                prevKey  = "shifttab",
+            })
     end,
 }
