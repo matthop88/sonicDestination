@@ -1,12 +1,17 @@
 local SONIC, STATES
 
 STATES = {
+    STAND_LEFT = "standLeft",
+    
     init = function(self, params)
         SONIC = params.SONIC
+        for k, v in pairs(self) do
+            if type(v) == "string" then
+                self[k] = requireRelative("states/sonic/" .. v, { SONIC = SONIC, STATES = STATES })
+            end
+        end
         return self
     end,
-    
-    STAND_LEFT = requireRelative("states/sonic/standLeft", { SONIC = SONIC }),
     
     STAND_RIGHT = {
         onEnter    = function(self) 
