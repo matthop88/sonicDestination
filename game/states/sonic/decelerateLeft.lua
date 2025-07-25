@@ -22,5 +22,6 @@ return {
 
     update = function(self, dt)
         SONIC.velocity.x = math.min(0, SONIC.velocity.x + (SONIC.RUNNING_ACCELERATION * dt))
+        if SONIC.velocity.x == 0 then SONIC:setState(STATES.STAND_LEFT) end
     end,
 }
