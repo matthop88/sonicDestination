@@ -1,4 +1,11 @@
+local SONIC
+
 return {
+    init = function(self, params)
+        SONIC = params.SONIC
+        return self
+    end,
+    
     onEnter    = function(self) 
         SONIC:faceLeft()
         SONIC.sprite:setCurrentAnimation("standing")
