@@ -10,7 +10,6 @@ return {
     onEnter    = function(self)
         SONIC:faceRight()
         SONIC.sprite:setCurrentAnimation("running")
-        SONIC.velocity.x = 0
     end,
     
     keypressed = function(self, key)
