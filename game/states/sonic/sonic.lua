@@ -6,19 +6,8 @@ STATES = {
         return self
     end,
     
-    STAND_LEFT = {
-        onEnter    = function(self) 
-            SONIC:faceLeft()
-            SONIC.sprite:setCurrentAnimation("standing")
-            SONIC.velocity.x = 0
-        end,
-        
-        keypressed = function(self, key)
-            if     key == "right" then SONIC:setState(STATES.RUN_RIGHT)
-            elseif key == "left"  then SONIC:setState(STATES.RUN_LEFT)  end
-        end, 
-    },
-
+    STAND_LEFT = require("game/states/sonic/standLeft"),
+    
     STAND_RIGHT = {
         onEnter    = function(self) 
             SONIC:faceRight()
