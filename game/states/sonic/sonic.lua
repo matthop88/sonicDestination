@@ -6,7 +6,7 @@ STATES = {
         return self
     end,
     
-    STAND_LEFT = require("game/states/sonic/standLeft"),
+    STAND_LEFT = requireRelative("game/states/sonic/standLeft", { SONIC = SONIC }),
     
     STAND_RIGHT = {
         onEnter    = function(self) 
