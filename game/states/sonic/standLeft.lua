@@ -1,8 +1,9 @@
-local SONIC
+local SONIC, STATES
 
 return {
     init = function(self, params)
-        SONIC = params.SONIC
+        SONIC  = params.SONIC
+        STATES = params.STATES
         return self
     end,
     
