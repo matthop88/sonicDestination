@@ -121,6 +121,12 @@ return {
                 states   = { "standing", "running", "decelerating" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",
+                arrowFunctions = {
+                    {
+                        key = "Speed = 0",
+                        fn  = function() return self.SONIC.velocity.x == 0 end,
+                    }
+                },
             })
             :add("readout", { printFnName = "printMessage" })
     end,
