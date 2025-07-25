@@ -117,10 +117,11 @@ return {
                 }
             })
             :add("stateMachineViewer", {
-                graphics = self.GRAPHICS,
+                graphics = dofile("tools/lib/graphics.lua"),
                 states   = { "standing", "running", "decelerating" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",
             })
+            :add("readout", { printFnName = "printMessage" })
     end,
 }
