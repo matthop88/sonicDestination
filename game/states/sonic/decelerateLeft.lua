@@ -17,7 +17,7 @@ return {
     end,
     
     keyreleased = function(self, key)
-        if key == "right" then SONIC:setState(STATES.STAND_RIGHT) end
+        -- do nothing
     end,
 
     update = function(self, dt)
