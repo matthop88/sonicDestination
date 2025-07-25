@@ -1,7 +1,8 @@
 local SONIC, STATES
 
 STATES = {
-    STAND_LEFT = "standLeft",
+    STAND_LEFT  = "standLeft",
+    STAND_RIGHT = "standRight",
     
     init = function(self, params)
         SONIC = params.SONIC
@@ -12,19 +13,6 @@ STATES = {
         end
         return self
     end,
-    
-    STAND_RIGHT = {
-        onEnter    = function(self) 
-            SONIC:faceRight()
-            SONIC.sprite:setCurrentAnimation("standing")
-            SONIC.velocity.x = 0
-        end,
-        
-        keypressed = function(self, key)
-            if     key == "right" then SONIC:setState(STATES.RUN_RIGHT)
-            elseif key == "left"  then SONIC:setState(STATES.RUN_LEFT)  end
-        end,
-    },
 
     RUN_LEFT = {
         onEnter    = function(self)
