@@ -1,0 +1,26 @@
+local SONIC, STATES
+
+return {
+    init = function(self, params)
+        SONIC  = params.SONIC
+        STATES = params.STATES
+        return self
+    end,
+    
+    onEnter    = function(self)
+        -- do nothing
+    end,
+    
+    keypressed = function(self, key)
+        if     key == "left"  then SONIC:setState(STATES.ACCELERATE_LEFT) 
+        elseif key == "right" then SONIC:setState(STATES.ACCELERATE_RIGHT)  end
+    end,
+    
+    keyreleased = function(self, key)
+        if key == "right" then SONIC:setState(STATES.STAND_RIGHT) end
+    end,
+
+    update = function(self, dt)
+        SONIC.velocity.x = math.min(0, SONIC.velocity.x + (SONIC.RUNNING_ACCELERATION * dt))
+    end,
+}
