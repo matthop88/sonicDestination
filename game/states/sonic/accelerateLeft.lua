@@ -18,7 +18,7 @@ return {
     end,
     
     keyreleased = function(self, key)
-        if key == "left" then SONIC:setState(STATES.STAND_LEFT) end
+        if key == "left" then SONIC:setState(STATES.DECELERATE_LEFT) end
     end,
 
     update = function(self, dt)
