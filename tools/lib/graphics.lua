@@ -20,6 +20,10 @@ return {
     getFontHeight = function(self)
         return self.FONTS:get(self.fontSize):getHeight()
     end,
+
+    getFontWidth = function(self, label)
+        return self.FONTS:get(self.fontSize):getWidth(label)
+    end,
     
     ---------------------- Property Setter Functions -------------------
     
@@ -84,6 +88,8 @@ return {
 
     ----------------------- Zooming Functions ----------------------
 
+    setScale = function(self, scale) self.scale = scale end,
+    
     screenToImageCoordinates = function(self, mx, my)
         local x = mx / self.scale - self.x
         local y = my / self.scale - self.y

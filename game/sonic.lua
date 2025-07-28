@@ -34,7 +34,7 @@ return {
         
         self.sprite = sonic1Sprite
         
-        STATES          = requireRelative("states/sonic", { SONIC = self })
+        STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
         return self
     end,

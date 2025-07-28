@@ -4,8 +4,8 @@ return {
         self.LABEL_FONT_SIZE = labelFontSize
         self.graphics        = graphics
 
-        self.BOX   = require("tools/stateMachine/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE, graphics)
-        self.ARROW = require("tools/stateMachine/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE, graphics)
+        self.BOX   = require("plugins/modules/stateMachineViewer/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE,        graphics)
+        self.ARROW = require("plugins/modules/stateMachineViewer/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE * 0.75, graphics)
 
         return self
     end,
@@ -18,6 +18,7 @@ return {
             table.insert(widgets, self:createFromDataElement(dataElement))
         end
 
+        widgets.x, widgets.y, widgets.scale = data.x, data.y, data.scale
         return widgets
     end,
 
@@ -68,10 +69,11 @@ return {
     end,
 
     createKeyEvent = function(self, element)
-        if     element.label == "L On"  then element.keypressed  = "left"
-        elseif element.label == "R On"  then element.keypressed  = "right"
-        elseif element.label == "L Off" then element.keyreleased = "left"
-        elseif element.label == "R Off" then element.keyreleased = "right"
+        if     element.label == "L On"      then element.keypressed  = "left"
+        elseif element.label == "R On"      then element.keypressed  = "right"
+        elseif element.label == "L Off"     then element.keyreleased = "left"
+        elseif element.label == "R Off"     then element.keyreleased = "right"
+        elseif element.label == "Speed = 0" then element.keypressed  = "0"
         end
     end,
     

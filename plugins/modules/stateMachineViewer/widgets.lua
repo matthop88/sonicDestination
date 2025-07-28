@@ -1,14 +1,12 @@
 return {
-    "standing",
-    "running",
-
     currentWidgetList = { },
     currentIndex      = 1,
 
     WIDGET_FACTORY = nil,
         
-    init = function(self, widgetFactory)
+    init = function(self, widgetFactory, states)
         self.WIDGET_FACTORY = widgetFactory
+        for _, e in ipairs(states) do table.insert(self, e) end
         self:refresh()
         return self
     end,
@@ -53,6 +51,7 @@ return {
 
     refresh = function(self)
         self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
+        self.x, self.y, self.scale = self.currentWidgetList.x, self.currentWidgetList.y, self.currentWidgetList.scale
     end,
 
     getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,

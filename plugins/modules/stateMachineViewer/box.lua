@@ -78,19 +78,25 @@ return {
             drawLabel = function(self)
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE)
                 self.graphics:setColor(COLORS.JET_BLACK)
-                self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
+                self.graphics:printf(self.label, self.x, self.y + (self.h - self:calculateFontHeight()) / 2, self.w, "center")
             end,
         
             drawHighlightedLabel = function(self)
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE + 3) 
                 self.graphics:setColor(COLORS.JET_BLACK)
-                self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
+                self.graphics:printf(self.label, self.x, self.y + (self.h - self:calculateFontHeight()) / 2, self.w, "center")
             end,
 
             drawSelectedLabel = function(self)
                 self.graphics:setFontSize(self.LABEL_FONT_SIZE + 3) 
                 self.graphics:setColor(COLORS.LIGHT_YELLOW)
-                self.graphics:printf(self.label, self.x, self.y + (self.h - self.graphics:getFontHeight()) / 2, self.w, "center")
+                self.graphics:printf(self.label, self.x, self.y + (self.h - self:calculateFontHeight()) / 2, self.w, "center")
+            end,
+
+            calculateFontHeight = function(self)
+                local fontWidth = self.graphics:getFontWidth(self.label)
+                local numLinesHeight = math.ceil(fontWidth / self.w)
+                return numLinesHeight * self.graphics:getFontHeight()
             end,
 
             isMouseInside = function(self)

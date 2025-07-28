@@ -31,96 +31,19 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
-
-local LABEL_FONT_SIZE             = 32
-local GRID_SIZE                   = 32
 local GRAFX                       = require "tools/lib/graphics"
-
-local PEGBOARD       = require("tools/stateMachine/pegboard"):init(GRID_SIZE, GRAFX)
-local WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, GRAFX)
-
-local WIDGETS        = require("tools/stateMachine/widgets"):init(WIDGET_FACTORY)
-
-local targetBox      = nil
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- Function Name: love.draw()
--- Called By:     LOVE2D application, every single frame
---------------------------------------------------------------
-function love.draw()
-    PEGBOARD:draw()
-    WIDGETS:draw()
-end
-
-function love.keypressed(key)
-    if key == "return" or key == "shifttab" or key == "tab" then
-        processRefreshKeyEvent(key)
-    else
-        processKeypressedEvent(key) 
-    end
-end
-
-function love.keyreleased(key)
-    processKeyreleasedEvent(key)
-end
-
-function love.mousepressed(mx, my)
-    WIDGETS:deselectAll()
-    WIDGETS:mousepressed(mx, my)
-    updateTargetBox()
-end
+-- ...
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function processRefreshKeyEvent(key)
-    if     key == "return"   then WIDGETS:refresh()
-    elseif key == "shifttab" then WIDGETS:prev()
-    elseif key == "tab"      then WIDGETS:next()  end
-    
-    refreshTargetBox()
-end
-
-function processKeypressedEvent(key)
-    for _, widget in ipairs(WIDGETS:get()) do
-        if widget.keypressed == key and widget.from == targetBox then
-            WIDGETS:deselectAll()
-            targetBox = widget.to
-            targetBox:select()
-            widget:select()
-            printMessage(widget.label)
-        end
-    end
-end
-
-function refreshTargetBox()
-    targetBox = WIDGETS:getFirstBox()
-    targetBox:select()
-end
-
-function updateTargetBox()
-    for _, widget in ipairs(WIDGETS:get()) do
-        if widget:getType() == "BOX" and widget:isSelected() then
-            targetBox = widget
-        end
-    end
-end
-
-function processKeyreleasedEvent(key)
-    for _, widget in ipairs(WIDGETS:get()) do
-        if widget.keyreleased == key and widget.from == targetBox then
-            WIDGETS:deselectAll()
-            targetBox = widget.to
-            targetBox:select()
-            widget:select()
-            printMessage(widget.label)
-        end
-    end
-end
+-- ...
 
 --------------------------------------------------------------
 --               Static code - is executed last             --
@@ -128,8 +51,6 @@ end
 
 love.window.setTitle("State Machine Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-refreshTargetBox()
 
 --------------------------------------------------------------
 --                        Plugins                           --
@@ -150,6 +71,12 @@ PLUGINS = require("plugins/engine")
         downKey     = "shiftdown",
     })
     :add("zooming",   { imageViewer = GRAFX })
+    :add("stateMachineViewer", {
+        graphics = GRAFX,
+        states   = { "standing", "running", "decelerating" },
+        nextKey  = "tab",
+        prevKey  = "shifttab",
+    })
     :add("readout",   { printFnName = "printMessage" })
     
 -- ...

@@ -4,7 +4,9 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
-        self.DRAWING_FN = function()   self.SONIC:draw()     end
+        self.DRAWING_FN = function()   
+            self.SONIC:draw()  
+        end
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
             self.SONIC:update(dt) 
@@ -40,6 +42,23 @@ return {
             :add("zooming",      { imageViewer = self.GRAPHICS })
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("pause")
+            :add("stateMachineViewer", {
+                graphics = dofile("tools/lib/graphics.lua"),
+                states   = { "decelerating" },
+                nextKey  = "tab",
+                prevKey  = "shifttab",
+                arrowFunctions = {
+                    {
+                        key = "Speed = 0",
+                        fn  = function() return self.SONIC.velocity.x == 0 end,
+                    }
+                },
+                accessorFnName = "getStateMachineViewer",
+            })
+            :add("splitScreen", {
+                GFX1 = self.GRAPHICS,
+                GFX2 = getStateMachineViewer():getGraphics(),
+            })
             :add("tweakAttributes", {
                 incAttributeKey = ">",
                 decAttributeKey = "<",
@@ -116,5 +135,6 @@ return {
                     },
                 }
             })
+            :add("readout", { printFnName = "printMessage" })
     end,
 }
