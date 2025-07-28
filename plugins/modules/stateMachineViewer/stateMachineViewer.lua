@@ -27,7 +27,7 @@ return {
     draw = function(self)
         PEGBOARD:draw()
         WIDGETS:draw()
-        self.graphics:blitToScreen(0, 0, { 1, 1, 1 }, 0, 1, 0.5)
+        self.graphics:blitToScreen(0, 0, { 1, 1, 1, 0.3 })
     end,
 
     update = function(self, dt)
