@@ -42,6 +42,23 @@ return {
             :add("zooming",      { imageViewer = self.GRAPHICS })
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("pause")
+            :add("stateMachineViewer", {
+                graphics = dofile("tools/lib/graphics.lua"),
+                states   = { "decelerating" },
+                nextKey  = "tab",
+                prevKey  = "shifttab",
+                arrowFunctions = {
+                    {
+                        key = "Speed = 0",
+                        fn  = function() return self.SONIC.velocity.x == 0 end,
+                    }
+                },
+                accessorFnName = "getStateMachineViewer",
+            })
+            :add("splitScreen", {
+                GFX1 = self.GRAPHICS,
+                GFX2 = getStateMachineViewer():getGraphics(),
+            })
             :add("tweakAttributes", {
                 incAttributeKey = ">",
                 decAttributeKey = "<",
@@ -117,23 +134,6 @@ return {
                         },
                     },
                 }
-            })
-            :add("stateMachineViewer", {
-                graphics = dofile("tools/lib/graphics.lua"),
-                states   = { "decelerating" },
-                nextKey  = "tab",
-                prevKey  = "shifttab",
-                arrowFunctions = {
-                    {
-                        key = "Speed = 0",
-                        fn  = function() return self.SONIC.velocity.x == 0 end,
-                    }
-                },
-                accessorFnName = "getStateMachineViewer",
-            })
-            :add("splitScreen", {
-                GFX1 = self.GRAPHICS,
-                GFX2 = getStateMachineViewer():getGraphics(),
             })
             :add("readout", { printFnName = "printMessage" })
     end,
