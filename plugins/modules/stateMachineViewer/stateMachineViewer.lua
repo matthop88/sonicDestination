@@ -19,7 +19,7 @@ return {
         WIDGETS        = require("plugins/modules/stateMachineViewer/widgets"):init(WIDGET_FACTORY, params.states)
 
         printMessage   = printMessage or function(msg) print(msg) end
-        self:refreshTargetBox()
+        self:refreshView()
         
         return self
     end,
@@ -47,6 +47,10 @@ return {
         elseif key == self.nextKey    then WIDGETS:next()
         elseif key == self.prevKey    then WIDGETS:prev()   end
 
+        self:refreshView()
+    end,
+
+    refreshView = function(self)
         self:refreshTargetBox()
 
         self.graphics:setX(WIDGETS.x)
