@@ -9,6 +9,11 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local PROP_LOADER        = requireRelative("properties/loader")
 
 local GRAPHICS           = requireRelative("graphics")
+
+if __DEV_MODE == true then
+    GRAPHICS = require("tools/lib/bufferedGraphics"):create(GRAPHICS, 1024, 768)
+end
+
 local SONIC              = requireRelative("sonic",     { GRAPHICS = GRAPHICS })
 local WORKSPACE          = requireRelative("workspace", { GRAPHICS = GRAPHICS })
 
