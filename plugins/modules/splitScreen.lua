@@ -8,6 +8,6 @@ return {
 
     draw = function(self)
         self.GFX1:blitToScreen(0, 384, { 1, 1, 1 }, 0, 1, 0.5)
-        self:GFX2:blitToScreen(0, 0,   { 1, 1, 1 }, 0, 1, 0.5)
+        self.GFX2:blitToScreen(0, 0,   { 1, 1, 1 }, 0, 1, 0.5)
     end,
 }
