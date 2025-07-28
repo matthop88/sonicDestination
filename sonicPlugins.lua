@@ -4,7 +4,10 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
-        self.DRAWING_FN = function()   self.SONIC:draw()     end
+        self.DRAWING_FN = function()   
+            self.SONIC:draw()  
+            self.GRAPHICS:blitToScreen(0, 384, { 1, 1, 1 }, 0, 1, 0.5)
+        end
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
             self.SONIC:update(dt) 
