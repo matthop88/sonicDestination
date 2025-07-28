@@ -110,5 +110,9 @@ return {
             end
         end
     end,
+
+    getGraphics = function(self)
+        return self.graphics
+    end,
     
 }
