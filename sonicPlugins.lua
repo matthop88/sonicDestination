@@ -120,7 +120,7 @@ return {
             })
             :add("stateMachineViewer", {
                 graphics = dofile("tools/lib/graphics.lua"),
-                states   = { "standing", "running", "decelerating" },
+                states   = { "decelerating" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",
                 arrowFunctions = {
