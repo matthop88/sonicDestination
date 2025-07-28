@@ -6,7 +6,6 @@ return {
         self.GRAPHICS   = params.GRAPHICS
         self.DRAWING_FN = function()   
             self.SONIC:draw()  
-            self.GRAPHICS:blitToScreen(0, 384, { 1, 1, 1 }, 0, 1, 0.5)
         end
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
@@ -130,6 +129,11 @@ return {
                         fn  = function() return self.SONIC.velocity.x == 0 end,
                     }
                 },
+                accessorFnName = "getStateMachineViewer",
+            })
+            :add("splitScreen", {
+                GFX1 = self.GRAPHICS,
+                GFX2 = getStateMachineViewer():getGraphics(),
             })
             :add("readout", { printFnName = "printMessage" })
     end,
