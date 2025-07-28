@@ -1,6 +1,8 @@
+local SCREEN_HEIGHT = 768
+
 return {
-    degrees     = 0,
-    destDegrees = 0,
+    degrees     = 90,
+    destDegrees = 90,
     
     init = function(self, params)
         self.GFX1 = params.GFX1
@@ -10,25 +12,27 @@ return {
     end,
 
     draw = function(self)
-        local height = math.sin((degrees / 180) * math.PI) * 768
-        local yScale = height / 768
-        self.GFX1:blitToScreen(0, 768 - height, { 1, 1, 1 }, 0, 1,     yScale)
-        self.GFX2:blitToScreen(0, 0,            { 1, 1, 1 }, 0, 1, 1 - yScale)
+        local height = SCREEN_HEIGHT - (math.cos((self.degrees / 180) * math.pi) * SCREEN_HEIGHT)
+        local yScale = height / SCREEN_HEIGHT
+        self.GFX1:blitToScreen(0, SCREEN_HEIGHT - height, { 1, 1, 1 }, 0, 1,     yScale)
+        self.GFX2:blitToScreen(0, 0,                      { 1, 1, 1 }, 0, 1, 1 - yScale)
     end,
 
     update = function(self, dt)
         if self.destDegrees > self.degrees then
-            self.degrees = math.min(self.destDegrees, self.degrees + (360 * dt))
+            self.degrees = math.min(self.destDegrees, self.degrees + (180 * dt))
         else
-            self.degrees = math.max(self.destDegrees, self.degrees - (360 * dt))
+            self.degrees = math.max(self.destDegrees, self.degrees - (180 * dt))
         end
     end,
 
     handleKeypressed = function(self, key)
         if key == "1" then
-            self.destDegrees = math.min(180, self.destDegrees + 90)
+            if self.destDegrees == 60 then self.destDegrees = 90
+            else                           self.destDegrees = 60  end
         elseif key == "2" then
-            self.destDegrees = math.max(0,   self.destDegrees - 90)
+            if self.destDegrees == 90 then self.destDegrees = 60
+            else                           self.destDegrees = 0   end
         end
     end,
 }
