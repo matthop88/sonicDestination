@@ -77,7 +77,7 @@ local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
 
 local imgPath     = "resources/images/sadSlicer.png"
 
-local sheetInfo   = { spriteRects = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
+local sheetInfo   = { spriteRects = {}, animations = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
 local animations
 
@@ -88,8 +88,9 @@ local animations
 if __SLICER_FILE ~= nil then
     sheetInfo = require("tools/spriteSheetSlicer/data/" .. __SLICER_FILE)
     imgPath = sheetInfo.imagePath
-    initAnimationInfo()
 end
+
+initAnimationInfo()
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
