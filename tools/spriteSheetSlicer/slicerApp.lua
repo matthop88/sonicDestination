@@ -90,8 +90,6 @@ if __SLICER_FILE ~= nil then
     imgPath = sheetInfo.imagePath
 end
 
-initAnimationInfo()
-
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
@@ -176,6 +174,7 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
+initAnimationInfo()
 gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
 
 slicer:start({
