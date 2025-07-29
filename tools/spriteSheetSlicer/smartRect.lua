@@ -15,6 +15,7 @@ return {
                     else                self.rect = { x = rect.x, y = rect.y, w = rect.w, h = rect.h, toString = rectToString }
                     end
                 end
+                return self
             end,
         
             toString = function(self)
