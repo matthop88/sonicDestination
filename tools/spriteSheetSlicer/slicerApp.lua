@@ -104,7 +104,7 @@ function love.update(dt)
     if not currentRect:containsPt(imageX, imageY) then
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
-    
+    animRect:setVisible(animRect:containsPt(imageX, imageY))
     gallery:update(dt)
 end
 
@@ -113,14 +113,9 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(mx, my)
-    if not gallery:mousepressed(mx, my) then
-        if animRect:isValid() then
-            animRect:select(true)
-        end
-        if currentRect:isValid() then
-            currentRect:select(true)
-            printToReadout(currentRect:toString())
-        end
+    if not gallery:mousepressed(mx, my) and currentRect:isValid() then
+        currentRect:select(true)
+        printToReadout(currentRect:toString())
     end
 end
 
@@ -151,6 +146,7 @@ end
 
 function drawOverlays()
     slicer:draw()
+    animRect:draw()
     currentRect:draw()
     gallery:draw()
 end
