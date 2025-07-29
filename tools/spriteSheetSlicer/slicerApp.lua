@@ -173,6 +173,7 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
+initAnimationInfo()
 gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
 
 slicer:start({
