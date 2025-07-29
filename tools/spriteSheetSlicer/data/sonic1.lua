@@ -6,6 +6,7 @@ return {
 
     animations  = {
         running = {
+            rect    = { x = 24, y = 334, w = 416, h = 66 },
             sprites = {
                 { x =  46, y = 349, w = 24, h = 40, offset = { x = 12, y = 20 }, },
                 { x = 109, y = 347, w = 40, h = 40, offset = { x = 20, y = 20 }, },
