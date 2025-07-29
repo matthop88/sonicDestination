@@ -74,13 +74,30 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
-local animRect    = require("tools/spriteSheetSlicer/smartRect"):create()
+local animRects   = {
+    initFromAnimations = function(self, animations)
+        for k, v in pairs(animations) do
+            if v.rect then
+                table:insert(self, require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect))
+            end
+        end
+    end,
+    
+    draw = function(self)
+        for _, animRect in ipairs(self) do animRect:draw() end
+    end,
 
+    updateBasedOnPt = function(self, px, py)
+        for _, animRect in ipairs(self) do
+            animRect:setVisible(animRect:containsPt(px, py))
+        end
+    end,
+}
+            
 local imgPath     = "resources/images/sadSlicer.png"
 
 local sheetInfo   = { spriteRects = {}, animations = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
-local animations
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -104,6 +121,7 @@ function love.update(dt)
     if not currentRect:containsPt(imageX, imageY) then
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
+    animRects:updateBasedOnPt(imageX, imageY)
     animRect:setVisible(animRect:containsPt(imageX, imageY))
     gallery:update(dt)
 end
@@ -132,12 +150,7 @@ function getImageViewer()
 end
 
 function initAnimationInfo()
-    animations = sheetInfo.animations
-    for k, v in pairs(animations) do
-        if v.rect then
-            animRect:initFromRect(v.rect)
-        end
-    end
+    animRects:initFromAnimations(sheetInfo.animations)
 end
 
 function onSlicingCompletion()
@@ -146,7 +159,7 @@ end
 
 function drawOverlays()
     slicer:draw()
-    animRect:draw()
+    animRects:draw()
     currentRect:draw()
     gallery:draw()
 end
