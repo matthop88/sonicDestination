@@ -79,6 +79,7 @@ local imgPath     = "resources/images/sadSlicer.png"
 
 local sheetInfo   = { spriteRects = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
+local animations
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -87,6 +88,7 @@ local gallery
 if __SLICER_FILE ~= nil then
     sheetInfo = require("tools/spriteSheetSlicer/data/" .. __SLICER_FILE)
     imgPath = sheetInfo.imagePath
+    initAnimationInfo()
 end
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
@@ -129,7 +131,7 @@ function getImageViewer()
 end
 
 function initAnimationInfo()
-    -- Do nothing at this juncture
+    animations = sheetInfo.animations
 end
 
 function onSlicingCompletion()
@@ -173,7 +175,6 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
-initAnimationInfo()
 gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
 
 slicer:start({
