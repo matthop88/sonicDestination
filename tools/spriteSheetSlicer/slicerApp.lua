@@ -73,7 +73,7 @@ local ASCII_ART = [[
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
-local currentRect = require "tools/spriteSheetSlicer/smartRect"
+local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
 
 local imgPath     = "resources/images/sadSlicer.png"
 
