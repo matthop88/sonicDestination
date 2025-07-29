@@ -128,6 +128,10 @@ function getImageViewer()
     -- Overridden by imageViewer plugin
 end
 
+function initAnimationInfo()
+    -- Do nothing at this juncture
+end
+
 function onSlicingCompletion()
     love.window.setTitle("Sprite Sheet Slicer")
 end
