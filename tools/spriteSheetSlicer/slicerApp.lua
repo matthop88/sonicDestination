@@ -74,6 +74,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
+local animRect    = require("tools/spriteSheetSlicer/smartRect"):create()
 
 local imgPath     = "resources/images/sadSlicer.png"
 
@@ -103,6 +104,7 @@ function love.update(dt)
     if not currentRect:containsPt(imageX, imageY) then
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
+    
     gallery:update(dt)
 end
 
@@ -111,9 +113,14 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(mx, my)
-    if not gallery:mousepressed(mx, my) and currentRect:isValid() then
-        currentRect:select(true)
-        printToReadout(currentRect:toString())
+    if not gallery:mousepressed(mx, my) then
+        if animRect:isValid() then
+            animRect:select(true)
+        end
+        if currentRect:isValid() then
+            currentRect:select(true)
+            printToReadout(currentRect:toString())
+        end
     end
 end
 
@@ -131,6 +138,11 @@ end
 
 function initAnimationInfo()
     animations = sheetInfo.animations
+    for k, v in pairs(animations) do
+        if v.rect then
+            animRect:initFromRect(v.rect)
+        end
+    end
 end
 
 function onSlicingCompletion()
