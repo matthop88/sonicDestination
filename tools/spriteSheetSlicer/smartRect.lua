@@ -7,6 +7,7 @@ return {
         return {
             rect     = nil,
             selected = false,
+            visible  = true,
             
             initFromRect = function(self, rect)
                 if not self.selected then
@@ -23,7 +24,7 @@ return {
             end,
             
             draw = function(self)
-                if self:isValid() then
+                if self:isValid() and self:isVisible() then
                     if self.selected then self:drawSelected()
                     else                  self:drawUnselected()
                     end
@@ -61,6 +62,14 @@ return {
                 return self:isValid()
                    and x >= self.rect.x and x <= self.rect.x + self.rect.w - 1
                    and y >= self.rect.y and y <= self.rect.y + self.rect.h - 1
+            end,
+
+            isVisible = function(self)
+                return self.visible
+            end,
+            
+            setVisible = function(self, visibility)
+                self.visible = visibility
             end,
         }
     end,
