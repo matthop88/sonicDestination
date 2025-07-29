@@ -78,7 +78,7 @@ local animRects   = {
     initFromAnimations = function(self, animations)
         for k, v in pairs(animations) do
             if v.rect then
-                table:insert(self, require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect))
+                table.insert(self, require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect))
             end
         end
     end,
@@ -122,7 +122,6 @@ function love.update(dt)
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
     animRects:updateBasedOnPt(imageX, imageY)
-    animRect:setVisible(animRect:containsPt(imageX, imageY))
     gallery:update(dt)
 end
 
