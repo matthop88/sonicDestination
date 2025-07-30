@@ -76,6 +76,14 @@ return {
 
             return self.contents[self.index]
         end,
+
+        add = function(self, element)
+            table.insert(self.contents, element)
+        end,
+
+        get = function(self)
+            return self.contents
+        end,
     },
     
     editor = Editor:create(),
@@ -96,7 +104,7 @@ return {
                     spriteRect.offset = { x = math.floor(spriteRect.w / 2), y = math.floor(spriteRect.h / 2) }
                 end
                 
-                table.insert(self.slots, GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
+                self.slots:add(GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
             end
         end
     end,
@@ -114,12 +122,12 @@ return {
     end,
 
     update = function(self, dt)
-        for _, gallerySlot in ipairs(self.slots) do gallerySlot:update(dt) end
+        for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:update(dt) end
     end,
 
     mousepressed = function(self, mx, my)
         if self.editor:mousepressed(mx, my) then return true end
-        for _, gallerySlot in ipairs(self.slots) do
+        for _, gallerySlot in ipairs(self.slots:get()) do
             if gallerySlot:mousepressed(mx, my) then
                 self.editor:setActive(true)
                 self:updateEditor(gallerySlot)
@@ -159,14 +167,14 @@ return {
     end,
 
     drawSlotBorders = function(self)
-        for _, gallerySlot in ipairs(self.slots) do gallerySlot:drawBorder() end
+        for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:drawBorder() end
     end,
 
     drawSprites = function(self)
-        for _, gallerySlot in ipairs(self.slots) do gallerySlot:drawSprite() end
+        for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:drawSprite() end
     end,
 
     printOutGalleryStats = function(self)
-        for _, gallerySlot in ipairs(self.slots) do gallerySlot:printStats() end
+        for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:printStats() end
     end,
 }
