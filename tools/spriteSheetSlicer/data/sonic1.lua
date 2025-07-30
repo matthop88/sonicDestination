@@ -16,6 +16,13 @@ return {
                 { x = 390, y = 348, w = 40, h = 40, offset = { x = 20, y = 20 }, },
             },
         },
+        braking = {
+            rect    = { x = 460, y = 334, w = 136, h = 66 },
+            sprites = {
+                { x = 481, y = 352, w = 30, h = 36, offset = { x = 15, y = 18 }, },
+                { x = 547, y = 352, w = 34, h = 36, offset = { x = 17, y = 18 }, },
+            },
+        },
     },
     spriteRects = {
         { x =  46, y = 349, w = 24, h = 40, offset = { x = 12, y = 20 }, },
