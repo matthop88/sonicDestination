@@ -53,28 +53,40 @@ return {
     slots  = {
         index = 1,
 
+        contents = {},
+
+        clear = function(self)
+            self.contents = { }
+        end,
+        
         setIndex = function(self, index)
             self.index = index
         end,
         
         next = function(self)
             self.index = self.index + 1
-            if self.index > #self then self.index = 1 end
+            if self.index > #self.contents then self.index = 1 end
 
-            return self[self.index]
+            return self.contents[self.index]
         end,
 
         prev = function(self)
             self.index = self.index - 1
-            if self.index < 1 then self.index = #self end
+            if self.index < 1 then self.index = #self.contents end
 
-            return self[self.index]
+            return self.contents[self.index]
         end,
     },
     
     editor = Editor:create(),
 
     init = function(self, spriteRects)
+        self:refresh(spriteRects)
+        return self
+    end,
+
+    refresh = function(self, spriteRects)
+        self.slots:clear()
         local image = getImageViewer():getImage()
         for n, spriteRect in ipairs(spriteRects) do
             spriteRect.quad = self:createQuad(spriteRect, image)
@@ -85,7 +97,6 @@ return {
             
             table.insert(self.slots, GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
         end
-        return self
     end,
 
     createQuad = function(self, spriteRect, image)
