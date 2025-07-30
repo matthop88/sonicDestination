@@ -75,6 +75,8 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
 local animRects   = {
+    selectedAnimation = nil,
+    
     initFromAnimations = function(self, animations)
         for k, v in pairs(animations) do
             if v.rect then
@@ -90,6 +92,16 @@ local animRects   = {
     updateBasedOnPt = function(self, px, py)
         for _, animRect in ipairs(self) do
             animRect:setVisible(animRect:containsPt(px, py))
+        end
+    end,
+
+    select = function(self, px, py)
+        self.selectedAnimation = nil
+        
+        for _, animRect in ipairs(self) do
+            if animRect:containsPt(px, py) then
+                self.selectedAnimation = animRect
+            end
         end
     end,
 }
@@ -132,6 +144,7 @@ end
 function love.mousepressed(mx, my)
     if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
+        animRects:select(mx, my)
         printToReadout(currentRect:toString())
     end
 end
@@ -195,7 +208,7 @@ PLUGINS = require("plugins/engine")
 --------------------------------------------------------------
 
 initAnimationInfo()
-gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
+gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.animations)
 
 slicer:start({
     imageViewer          = getImageViewer(),
