@@ -75,12 +75,14 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
 local animRects   = {
-    selectedAnimation = nil,
+    selectedAnimRect = nil,
     
     initFromAnimations = function(self, animations)
         for k, v in pairs(animations) do
             if v.rect then
-                table.insert(self, require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect))
+                local smartRect = require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect)
+                smartRect.sprites = v.sprites
+                table.insert(self, smartRect)
             end
         end
     end,
@@ -96,12 +98,18 @@ local animRects   = {
     end,
 
     select = function(self, px, py)
-        self.selectedAnimation = nil
+        self.selectedAnimRect = nil
         
         for _, animRect in ipairs(self) do
             if animRect:containsPt(px, py) then
-                self.selectedAnimation = animRect
+                self.selectedAnimRect = animRect
             end
+        end
+    end,
+
+    getSelectedSprites = function(self)
+        if self.selectedAnimRect then
+            return self.selectedAnimRect.sprites
         end
     end,
 }
@@ -145,6 +153,7 @@ function love.mousepressed(mx, my)
     if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
         animRects:select(mx, my)
+        gallery:refresh(animRects:getSelectedSprites())
         printToReadout(currentRect:toString())
     end
 end
