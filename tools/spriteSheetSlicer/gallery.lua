@@ -26,13 +26,18 @@ local GallerySlot = {
             end,
             
             drawBorder = function(self, selectedIndex)
-                if selectedIndex == index then love.graphics.setColor(1, 1, 0)
-                else                           love.graphics.setColor(1, 1, 1) end
-                love.graphics.setLineWidth(2)
+                if selectedIndex == index then 
+                    love.graphics.setColor(1, 1, 0)
+                    love.graphics.setLineWidth(4)
+                else                           
+                    love.graphics.setColor(1, 1, 1)
+                    love.graphics.setLineWidth(2)
+                end
                 love.graphics.rectangle("line", x, y, w, h)
             end,
 
             drawSprite = function(self)
+                love.graphics.setColor(1, 1, 1)
                 love.graphics.draw(image, spriteRect.quad, 
                            x + (w / 2) - (spriteRect.w * scale / 2), 
                            y + (h / 2) - (spriteRect.h * scale / 2), 0, scale, scale)
