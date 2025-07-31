@@ -25,8 +25,9 @@ local GallerySlot = {
                 return self:isInsideRect(mx, my)
             end,
             
-            drawBorder = function(self)
-                love.graphics.setColor(1, 1, 1)
+            drawBorder = function(self, selectedIndex)
+                if selectedIndex == index then love.graphics.setColor(1, 1, 0)
+                else                           love.graphics.setColor(1, 1, 1) end
                 love.graphics.setLineWidth(2)
                 love.graphics.rectangle("line", x, y, w, h)
             end,
@@ -58,10 +59,9 @@ return {
         clear = function(self)
             self.contents = { }
         end,
-        
-        setIndex = function(self, index)
-            self.index = index
-        end,
+
+        getIndex = function(self)        return self.index  end,
+        setIndex = function(self, index) self.index = index end,
         
         next = function(self)
             self.index = self.index + 1
@@ -167,7 +167,7 @@ return {
     end,
 
     drawSlotBorders = function(self)
-        for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:drawBorder() end
+        for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:drawBorder(self.slots:getIndex()) end
     end,
 
     drawSprites = function(self)
