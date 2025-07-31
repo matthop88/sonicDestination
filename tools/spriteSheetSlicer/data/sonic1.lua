@@ -19,7 +19,7 @@ return {
         braking = {
             rect    = { x = 460, y = 334, w = 136, h = 66 },
             sprites = {
-                { x = 481, y = 352, w = 30, h = 36, offset = { x = 15, y = 18 }, },
+                { x = 481, y = 352, w = 30, h = 36, offset = { x = 13, y = 18 }, },
                 { x = 547, y = 352, w = 34, h = 36, offset = { x = 17, y = 18 }, },
             },
         },
