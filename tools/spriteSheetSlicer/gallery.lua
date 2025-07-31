@@ -84,7 +84,7 @@ return {
 
         this = function(self)
             self.index = math.min(#self.contents, self.index)
-            return self.contents(self.index)
+            return self.contents[self.index]
         end,
 
         add = function(self, element)
@@ -152,9 +152,14 @@ return {
         if     key == "escape" then
             self.editor:setActive(false)
         elseif self.editor:keypressed(key) then
-            local gallerySlot = self:navigateGallery(key)
-            self:updateEditor(gallerySlot)  end
-            return key ~= "up" and key ~= "down"
+            local mx, my = love.mouse.getPosition()
+            if self.editor:isInsideInnerRect(mx, my) then
+                local gallerySlot = self:navigateGallery(key)
+                self:updateEditor(gallerySlot)
+                return false
+            else
+                return true
+            end
         elseif key == "x" then
             self:printOutGalleryStats()
         end
