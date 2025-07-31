@@ -36,8 +36,13 @@ local TextField = {
 
             handleKeypressed = function(self, key)
                 if self:isInsideRect(love.mouse.getPosition()) then
-                    if key == "up" then self:incValue()
-                    elseif key == "down" then self:decValue() end
+                    if     key == "up"   then 
+                        self:incValue()
+                        return true
+                    elseif key == "down" then 
+                        self:decValue()
+                        return true
+                    end
                 end
             end,
 
@@ -136,9 +141,10 @@ return {
             keypressed = function(self, key)
                 local mx, my = love.mouse.getPosition()
                 if isActive then
-                    offsetXField:handleKeypressed(key)
-                    offsetYField:handleKeypressed(key)
-                    if self:isInsideInnerRect(mx, my) then
+                    if   offsetXField:handleKeypressed(key)
+                      or offsetYField:handleKeypressed(key)
+                      or self:isInsideInnerRect(mx, my)     
+                    then
                         return true
                     end
                 end
