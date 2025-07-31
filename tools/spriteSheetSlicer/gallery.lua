@@ -82,6 +82,11 @@ return {
             return self.contents[self.index]
         end,
 
+        this = function(self)
+            self.index = math.min(#self.contents, self.index)
+            return self.contents(self.index)
+        end,
+
         add = function(self, element)
             table.insert(self.contents, element)
         end,
@@ -148,9 +153,8 @@ return {
             self.editor:setActive(false)
         elseif self.editor:keypressed(key) then
             local gallerySlot = self:navigateGallery(key)
-            if gallerySlot ~= nil then self:updateEditor(gallerySlot)  end
-
-            return true
+            self:updateEditor(gallerySlot)  end
+            return key ~= "up" and key ~= "down"
         elseif key == "x" then
             self:printOutGalleryStats()
         end
@@ -162,6 +166,7 @@ return {
     end,
 
     updateEditor = function(self, gallerySlot)
+        gallerySlot = gallerySlot or self.slots:this()
         self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
     end,
         
