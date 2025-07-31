@@ -75,7 +75,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
 local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
 local animRects   = {
-    selectedAnimRect = nil,
+    selectedIndex = 0,
     
     initFromAnimations = function(self, animations)
         for k, v in pairs(animations) do
@@ -98,18 +98,32 @@ local animRects   = {
     end,
 
     select = function(self, px, py)
-        self.selectedAnimRect = nil
+        self.selectedIndex = 0
         
-        for _, animRect in ipairs(self) do
+        for n, animRect in ipairs(self) do
             if animRect:containsPt(px, py) then
-                self.selectedAnimRect = animRect
+                self.selectedIndex = n
             end
         end
     end,
 
     getSelectedSprites = function(self)
-        if self.selectedAnimRect then
-            return self.selectedAnimRect.sprites
+        if self.selectedIndex ~= 0 then
+            return self[self.selectedIndex].sprites
+        end
+    end,
+
+    next = function(self)
+        self.selectedIndex = self.selectedIndex + 1
+        if self.selectedIndex > #self then
+            self.selectedIndex = 1
+        end
+    end,
+
+    prev = function(self)
+        self.selectedIndex = self.selectedIndex - 1
+        if self.selectedIndex < 1 then
+            self.selectedIndex = #self
         end
     end,
 }
@@ -146,7 +160,15 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    gallery:keypressed(key)
+    if not gallery:keypressed(key) then
+        if     key == "up"   then
+            animRects:next()
+            refreshGallery()
+        elseif key == "down" then
+            animRects:prev()
+            refreshGallery()
+        end
+    end
 end
 
 function love.mousepressed(mx, my)
@@ -165,6 +187,11 @@ end
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
+
+function refreshGallery()
+    gallery:refresh(animRects:getSelectedSprites())
+    gallery:updateEditor()
+end
 
 function getImageViewer()
     -- Overridden by imageViewer plugin
