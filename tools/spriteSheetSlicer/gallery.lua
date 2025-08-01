@@ -108,15 +108,19 @@ return {
             self.slots:clear()
             local image = getImageViewer():getImage()
             for n, spriteRect in ipairs(spriteRects) do
-                spriteRect.quad = self:createQuad(spriteRect, image)
-    
-                if not spriteRect.offset then
-                    spriteRect.offset = { x = math.floor(spriteRect.w / 2), y = math.floor(spriteRect.h / 2) }
-                end
-                
-                self.slots:add(GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
+                self:rebuildSpriteRect(spriteRect, image)
             end
         end
+    end,
+
+    rebuildSpriteRect = function(self, spriteRect, image)
+        spriteRect.quad = self:createQuad(spriteRect, image)
+    
+        if not spriteRect.offset then
+            spriteRect.offset = { x = math.floor(spriteRect.w / 2), y = math.floor(spriteRect.h / 2) }
+        end
+                
+        self.slots:add(GallerySlot:create(n, (n * 73) - 65, 696, 60, 60, image, spriteRect))
     end,
 
     createQuad = function(self, spriteRect, image)
