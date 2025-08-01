@@ -5,6 +5,7 @@ local PEGBOARD, WIDGET_FACTORY, WIDGETS
 
 return {
     arrowFunctions = { },
+    alpha          = 1,
     
     init = function(self, params)
         self.targetBox      = nil
@@ -13,6 +14,7 @@ return {
         self.prevKey        = params.prevKey    or "-"
         self.graphics       = require("tools/lib/bufferedGraphics"):create(params.graphics, 1024, 768)
         self.arrowFunctions = params.arrowFunctions or self.arrowFunctions
+        self.alpha          = params.alpha      or self.alpha
         
         PEGBOARD       = require("plugins/modules/stateMachineViewer/pegboard"):init(GRID_SIZE, self.graphics)
         WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, self.graphics)
@@ -27,7 +29,7 @@ return {
     draw = function(self)
         PEGBOARD:draw()
         WIDGETS:draw()
-        self.graphics:blitToScreen(0, 0, { 1, 1, 1, 0.3 })
+        self.graphics:blitToScreen(0, 0, { 1, 1, 1, self.alpha })
     end,
 
     update = function(self, dt)
