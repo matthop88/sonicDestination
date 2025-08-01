@@ -143,13 +143,17 @@ return {
         if self.editor:mousepressed(mx, my) then return true end
         for _, gallerySlot in ipairs(self.slots:get()) do
             if gallerySlot:mousepressed(mx, my) then
-                self.editor:setActive(true)
-                self:updateEditor(gallerySlot)
-                self.slots:setIndex(gallerySlot:getIndex())
+                self:mousepressedInGallerySlot(gallerySlot)
                 return true
             end
         end
         self.editor:setActive(false)
+    end,
+
+    mousepressedInGallerySlot = function(self, gallerySlot)
+        self.editor:setActive(true)
+        self:updateEditor(gallerySlot)
+        self.slots:setIndex(gallerySlot:getIndex())
     end,
 
     keypressed = function(self, key)
