@@ -5,6 +5,7 @@ return {
     { type = "BOX",   label = "Accelerate Right", x  = 35,   y  =  3,   w  =  6, h = 21   },
     { type = "BOX",   label = "Accelerate Left",  x  =  1,   y  =  3,   w  =  6, h = 21   },
     { type = "BOX",   label = "Decelerate Left",  x  = 12.5, y  = 15.5, w  =  7, h =  5   },
+    { type = "BOX",   label = "Brake Left",       x  = 13.5, y  = -3,   w  =  6, h =  4   },
     { type = "BOX",   label = "Decelerate Right", x  = 23,   y  =  4.5, w  =  7, h =  5   },
     { type = "ARROW", label = "R On",      from = "Stand Right",      to = "Accelerate Right", y =  4   },
     { type = "ARROW", label = "R Off",     from = "Accelerate Right", to = "Decelerate Right", y =  6   },
