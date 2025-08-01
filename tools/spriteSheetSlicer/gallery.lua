@@ -149,19 +149,20 @@ return {
     end,
 
     keypressed = function(self, key)
-        if     key == "escape" then
-            self.editor:setActive(false)
-        elseif self.editor:keypressed(key) then
-            local mx, my = love.mouse.getPosition()
-            if self.editor:isInsideInnerRect(mx, my) then
-                local gallerySlot = self:navigateGallery(key)
-                self:updateEditor(gallerySlot)
-                return false
-            else
-                return true
-            end
-        elseif key == "x" then
-            self:printOutGalleryStats()
+        if     key == "escape"             then self.editor:setActive(false)
+        elseif self.editor:keypressed(key) then return self:handleKeypressedInEditor(key)
+        elseif key == "x"                  then self:printOutGalleryStats()
+        end
+    end,
+
+    handleKeypressedInEditor = function(self, key)
+        local mx, my = love.mouse.getPosition()
+        if self.editor:isInsideInnerRect(mx, my) then
+            local gallerySlot = self:navigateGallery(key)
+            self:updateEditor(gallerySlot)
+            return false
+        else
+            return true
         end
     end,
 
