@@ -5,7 +5,7 @@ return {
     { type = "BOX",   label = "Accelerate Right", x  = 35,   y  =  3,   w  =  6, h = 21   },
     { type = "BOX",   label = "Accelerate Left",  x  =  1,   y  =  3,   w  =  6, h = 21   },
     { type = "BOX",   label = "Decelerate Left",  x  = 12.5, y  = 15.5, w  =  7, h =  5   },
-    { type = "BOX",   label = "Brake Left",       x  = 13.5, y  = 23.5, w  =  6, h =  4   },
+    { type = "BOX",   label = "Brake Left",       x  = 13,   y  = 23.5, w  =  6, h =  4   },
     { type = "BOX",   label = "Decelerate Right", x  = 23,   y  =  4.5, w  =  7, h =  5   },
     { type = "ARROW", label = "R On",      from = "Stand Right",      to = "Accelerate Right", y =  4   },
     { type = "ARROW", label = "R Off",     from = "Accelerate Right", to = "Decelerate Right", y =  6   },
@@ -21,4 +21,6 @@ return {
     { type = "ARROW", label = "R On",      from = "Decelerate Left",  to = "Accelerate Right", y = 19.5 },
     { type = "ARROW", label = "Speed = 0", from = "Decelerate Left",  to = "Stand Left",       y = 17.5 },
     { type = "ARROW", label = "R On",      from = "Stand Left",       to = "Accelerate Right", y = 15   },
+    { type = "ARROW", label = "R On",      from = "Decelerate Left",  to = "Brake Left",       x = 13.5 },
+    { type = "ARROW", label = "R Off",     from = "Brake Left",       to = "Decelerate Left",  x = 15.5 }, 
 }
