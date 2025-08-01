@@ -48,26 +48,42 @@ return {
         local srcBox = self.boxesByName[element.from]
         local dstBox = self.boxesByName[element.to]
         
-        if dstBox.x > srcBox.x then return self:createSmartRightArrow(element, srcBox, dstBox)
-        else                        return self:createSmartLeftArrow(element, srcBox, dstBox)  end
+        if element.y then
+            if dstBox.x > srcBox.x then return self:createSmartRightArrow(element, srcBox, dstBox)
+            else                        return self:createSmartLeftArrow(element, srcBox, dstBox)  end
+        else
+            if dstBox.y > srcBox.y then return self:createSmartDownArrow(element, srcBox, dstBox)
+            else                        return self:createSmartUpArrow(element, srcBox, dstBox)    end
+        end
     end,
 
     createSmartRightArrow = function(self, element, srcBox, dstBox)
         local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y)
-        smartRightArrow.from = srcBox
-        smartRightArrow.to   = dstBox
-        self:createKeyEvent(smartRightArrow)
-        return smartRightArrow
+        return self:setupSmartArrow(smartRightArrow)
     end,
 
+    setupSmartArrow = function(self, arrow, srcBox, dstBox)
+        arrow.from = srcBox
+        arrow.to   = dstBox
+        self:createKeyEvent(arrow)
+        return arrow
+    end,
+    
     createSmartLeftArrow = function(self, element, srcBox, dstBox)
         local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y)
-        smartLeftArrow.from = srcBox
-        smartLeftArrow.to   = dstBox
-        self:createKeyEvent(smartLeftArrow)
-        return smartLeftArrow
+        return self:setupSmartArrow(smartLeftArrow)
     end,
 
+    createSmartUpArrow = function(self, element, srcBox, dstBox)
+        local smartUpArrow = self.ARROW:create(element.label, element.x, srcBox.y / self.GRID_SIZE, element.x, (dstBox.y + dstBox.h) / self.GRID_SIZE)
+        return self:setupSmartArrow(smartUpArrow)
+    end,
+
+    createSmartDownArrow = function(self, element, srcBox, dstBox)
+        local smartDownArrow = self.ARROW:create(element.label, element.x, (srcBox.y + srcBox.h) / self.GRID_SIZE, element.x, dstBox.y / self.GRID_SIZE)
+        return self:setupSmartArrow(smartDownArrow)
+    end,
+    
     createKeyEvent = function(self, element)
         if     element.label == "L On"      then element.keypressed  = "left"
         elseif element.label == "R On"      then element.keypressed  = "right"
