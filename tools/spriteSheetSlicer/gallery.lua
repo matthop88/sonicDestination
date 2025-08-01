@@ -108,12 +108,12 @@ return {
             self.slots:clear()
             local image = getImageViewer():getImage()
             for n, spriteRect in ipairs(spriteRects) do
-                self:rebuildSpriteRect(spriteRect, image)
+                self:rebuildSpriteRect(n, spriteRect, image)
             end
         end
     end,
 
-    rebuildSpriteRect = function(self, spriteRect, image)
+    rebuildSpriteRect = function(self, n, spriteRect, image)
         spriteRect.quad = self:createQuad(spriteRect, image)
     
         if not spriteRect.offset then
