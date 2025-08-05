@@ -4,6 +4,13 @@ local sonic1Sprite, sonic2Sprite
 
 return {
     -----------------------------------------------------------
+    BRAKING_ACCELERATION = 1800,
+    -----------------------------------------------------------
+    -- 128 subpixels per frame
+
+    -- From Sonic Physics Guide
+    -- https://info.sonicretro.org/SPG:Running#Acceleration
+    -----------------------------------------------------------
     RUNNING_ACCELERATION = 168.75,
     -----------------------------------------------------------
     -- 12 subpixels per frame
