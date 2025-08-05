@@ -7,6 +7,8 @@ STATES = {
     ACCELERATE_RIGHT = "accelerateRight",
     DECELERATE_LEFT  = "decelerateLeft",
     DECELERATE_RIGHT = "decelerateRight",
+    BRAKE_LEFT       = "brakeLeft",
+    BRAKE_RIGHT      = "brakeRight",
     
     init = function(self, params)
         SONIC = params.SONIC
