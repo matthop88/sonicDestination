@@ -8,7 +8,9 @@ return {
     end,
     
     onEnter    = function(self)
-        SONIC.sprite:setCurrentAnimation("braking")
+        if SONIC.velocity.x >= SONIC.MIN_SPEED_TO_BRAKE then
+            SONIC.sprite:setCurrentAnimation("braking")
+        end
     end,
     
     keypressed = function(self, key)
