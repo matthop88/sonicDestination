@@ -4,7 +4,7 @@ local sonic1Sprite, sonic2Sprite
 
 return {
     -----------------------------------------------------------
-    BRAKING_ACCELERATION = 1800,
+    BRAKING_ACCELERATION = 1800,       MIN_SPEED_TO_BRAKE = 60,
     -----------------------------------------------------------
     -- 128 subpixels per frame
 
