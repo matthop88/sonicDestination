@@ -4,6 +4,13 @@ return ({
     end,
 
     data = {
-        sonicBraking = { },
+        sonicBraking = { 
+            filename = "brake.ogg",
+            sound    = nil,
+
+            load     = function(self)
+                -- Load sound from file
+            end,
+        },
     },
 }):init()
