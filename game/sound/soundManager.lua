@@ -3,6 +3,10 @@ return ({
         return self
     end,
 
+    play = function(self, soundName)
+        self.data[soundName]:play()
+    end,
+
     data = {
         sonicBraking = { 
             filename = "brake.ogg",
