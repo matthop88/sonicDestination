@@ -9,7 +9,9 @@ return ({
             sound    = nil,
 
             load     = function(self)
-                -- Load sound from file
+                if self.sound == nil then
+                    self.sound = love.audio.newSource("game/resources/sounds/" .. self.filename, "static")
+                end
             end,
         },
     },
