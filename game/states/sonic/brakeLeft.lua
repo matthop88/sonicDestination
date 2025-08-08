@@ -1,5 +1,7 @@
 local SONIC, STATES
 
+local SOUND_MANAGER = smartRequire("sound/soundManager")
+
 return {
     init = function(self, params)
         SONIC  = params.SONIC
@@ -10,6 +12,7 @@ return {
     onEnter    = function(self)
         if SONIC.velocity.x <= -SONIC.MIN_SPEED_TO_BRAKE then
             SONIC.sprite:setCurrentAnimation("braking")
+            SOUND_MANAGER:play("sonicBraking")
         end
     end,
     
