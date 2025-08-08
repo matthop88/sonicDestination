@@ -1,6 +1,6 @@
 local SONIC, STATES
 
-local SOUND_MANAGER = smartRequire("sound/soundManager")
+local SOUND_MANAGER = requireRelative("sound/soundManager")
 
 return {
     init = function(self, params)
