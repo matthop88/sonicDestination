@@ -68,15 +68,23 @@ return {
                     end
                 end
             end,
-        
+
             setCurrentAnimation = function(self, animationName)
+                if self.data[animationName] == nil then
+                    print("ERROR: Cannot switch to animation \"" .. animationName .. "\"")
+                else
+                    self:setCurrentAnimationIntern(animationName)
+                end
+            end,
+
+            setCurrentAnimationIntern = function(self, animationName)
                 self.currentAnimation = self.data[animationName]
                 self.currentAnimation.name = animationName
                 self.currentFrameIndex = 1
                 self.frameTimer = 0
                 self:updateFrameRate()
             end,
-        
+                
             updateFrameRate = function(self)
                 if self.currentAnimation.fps ~= nil and self.currentAnimation.fps ~= 0 then
                     self.frameTimerMax = 1 / self.currentAnimation.fps
