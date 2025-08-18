@@ -30,6 +30,11 @@ return {
     setColor     = function(self, arg1, arg2, arg3, arg4)
         love.graphics.setColor(arg1, arg2, arg3, arg4)
     end,
+
+    setAlpha     = function(self, alpha)
+        local r, g, b = love.graphics.getColor()
+        love.graphics.setColor(r, g, b, alpha or 1)
+    end,
     
     setLineWidth = function(self, lineWidth) self.lineWidth = lineWidth    end,
 
