@@ -53,6 +53,7 @@ return {
             
             drawBox = function(self)
                 self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                -- TODO: Modify color if alpha is set
                 self.graphics:rectangle("fill", self.x, self.y, self.w, self.h)
                 self.graphics:setColor(COLORS.JET_BLACK)
                 self.graphics:setLineWidth(5)
@@ -61,6 +62,7 @@ return {
 
             drawHighlightedBox = function(self)
                 self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                -- TODO: Modify color if alpha is set
                 self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
                 self.graphics:setColor(COLORS.RED)
                 self.graphics:setLineWidth(5)
@@ -69,6 +71,7 @@ return {
 
             drawSelectedBox = function(self)
                 self.graphics:setColor(COLORS.LIGHT_PINK)
+                -- TODO: Modify color if alpha is set
                 self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
                 self.graphics:setColor(COLORS.RED)
                 self.graphics:setLineWidth(5)
