@@ -10,6 +10,10 @@ return {
                 graphics:setColor(arg1, arg2, arg3, arg4)
             end,
 
+            setAlpha     = function(self, alpha)
+                graphics:setAlpha(alpha)
+            end,
+
             setLineWidth = function(self, lineWidth)
                 graphics:setLineWidth(lineWidth)
             end,
