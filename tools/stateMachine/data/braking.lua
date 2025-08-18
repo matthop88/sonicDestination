@@ -8,7 +8,6 @@ return {
     { type = "BOX",   label = "Brake Left",       x  = 13,   y  = 23.5, w  =  6, h =  4   },
     { type = "BOX",   label = "Decelerate Right", x  = 23,   y  =  5.5, w  =  7, h =  5   },
     { type = "BOX",   label = "Brake Right",      x  = 23,   y  = -1.5, w  =  7, h =  4   },
-    { type = "BOX",   label = "Grounded",         x  = -1,   y  = -3.5, w  = 45, h = 33   },
     { type = "ARROW", label = "R On",      from = "Stand Right",      to = "Accelerate Right", y =  12  },
     { type = "ARROW", label = "R Off",     from = "Accelerate Right", to = "Decelerate Right", y =  7   },
     { type = "ARROW", label = "R On",      from = "Decelerate Right", to = "Accelerate Right", y =  9.5 },
