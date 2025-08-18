@@ -44,7 +44,7 @@ return {
             :add("pause")
             :add("stateMachineViewer", {
                 graphics = dofile("tools/lib/graphics.lua"),
-                states   = { "decelerating" },
+                states   = { "braking" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",
                 arrowFunctions = {

@@ -73,7 +73,7 @@ PLUGINS = require("plugins/engine")
     :add("zooming",   { imageViewer = GRAFX })
     :add("stateMachineViewer", {
         graphics = GRAFX,
-        states   = { "standing", "running", "decelerating" },
+        states   = { "standing", "running", "decelerating", "braking" },
         nextKey  = "tab",
         prevKey  = "shifttab",
     })

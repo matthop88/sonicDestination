@@ -73,11 +73,64 @@ local ASCII_ART = [[
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local slicer      = require "tools/spriteSheetSlicer/slicingEngine"
-local currentRect = require "tools/spriteSheetSlicer/smartRect"
+local currentRect = require("tools/spriteSheetSlicer/smartRect"):create()
+local animRects   = {
+    selectedIndex = 0,
+    
+    initFromAnimations = function(self, animations)
+        for k, v in pairs(animations) do
+            if v.rect then
+                local smartRect = require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect)
+                smartRect.sprites = v.sprites
+                table.insert(self, smartRect)
+            end
+        end
+    end,
+    
+    draw = function(self)
+        for _, animRect in ipairs(self) do animRect:draw() end
+    end,
 
+    updateBasedOnPt = function(self, px, py)
+        for _, animRect in ipairs(self) do
+            animRect:setVisible(animRect:containsPt(px, py))
+        end
+    end,
+
+    select = function(self, px, py)
+        self.selectedIndex = 0
+        
+        for n, animRect in ipairs(self) do
+            if animRect:containsPt(px, py) then
+                self.selectedIndex = n
+            end
+        end
+    end,
+
+    getSelectedSprites = function(self)
+        if self.selectedIndex ~= 0 then
+            return self[self.selectedIndex].sprites
+        end
+    end,
+
+    next = function(self)
+        self.selectedIndex = self.selectedIndex + 1
+        if self.selectedIndex > #self then
+            self.selectedIndex = 1
+        end
+    end,
+
+    prev = function(self)
+        self.selectedIndex = self.selectedIndex - 1
+        if self.selectedIndex < 1 then
+            self.selectedIndex = #self
+        end
+    end,
+}
+            
 local imgPath     = "resources/images/sadSlicer.png"
 
-local sheetInfo   = { spriteRects = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
+local sheetInfo   = { spriteRects = {}, animations = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
 
 --------------------------------------------------------------
@@ -102,16 +155,27 @@ function love.update(dt)
     if not currentRect:containsPt(imageX, imageY) then
         currentRect:initFromRect(slicer:findEnclosingRect(imageX, imageY))
     end
+    animRects:updateBasedOnPt(imageX, imageY)
     gallery:update(dt)
 end
 
 function love.keypressed(key)
-    gallery:keypressed(key)
+    if not gallery:keypressed(key) then
+        if     key == "up"   then
+            animRects:next()
+            refreshGallery()
+        elseif key == "down" then
+            animRects:prev()
+            refreshGallery()
+        end
+    end
 end
 
 function love.mousepressed(mx, my)
     if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
+        animRects:select(mx, my)
+        gallery:refresh(animRects:getSelectedSprites())
         printToReadout(currentRect:toString())
     end
 end
@@ -124,8 +188,17 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+function refreshGallery()
+    gallery:refresh(animRects:getSelectedSprites())
+    gallery:updateEditor()
+end
+
 function getImageViewer()
     -- Overridden by imageViewer plugin
+end
+
+function initAnimationInfo()
+    animRects:initFromAnimations(sheetInfo.animations)
 end
 
 function onSlicingCompletion()
@@ -134,6 +207,7 @@ end
 
 function drawOverlays()
     slicer:draw()
+    animRects:draw()
     currentRect:draw()
     gallery:draw()
 end
@@ -169,7 +243,8 @@ PLUGINS = require("plugins/engine")
 --             Static code - is executed last               --
 --------------------------------------------------------------
 
-gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.spriteRects)
+initAnimationInfo()
+gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.animations)
 
 slicer:start({
     imageViewer          = getImageViewer(),

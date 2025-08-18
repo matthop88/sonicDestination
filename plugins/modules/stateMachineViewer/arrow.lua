@@ -94,6 +94,11 @@ return {
             end,
         
             drawHead = function(self)
+                if self.y1 == self.y2 then self:drawHorizontalHead()
+                else                       self:drawVerticalHead()  end
+            end,
+                
+            drawHorizontalHead = function(self)
                 local arrowBackPt = ternary { IF = self.x2 > self.x1, THEN = -24, ELSE = 24 }
                 
                 self:setArrowColor()
@@ -101,12 +106,39 @@ return {
                 self.graphics:line(self.x2, self.y2, self.x2 + arrowBackPt, self.y2 - 16)
                 self.graphics:line(self.x2, self.y2, self.x2 + arrowBackPt, self.y2 + 16)
             end,
+
+            drawVerticalHead = function(self)
+                local arrowBackPt = ternary { IF = self.y2 > self.y1, THEN = -24, ELSE = 24 }
+                
+                self:setArrowColor()
+                self.graphics:setLineWidth(4)
+                self.graphics:line(self.x2, self.y2, self.x2 - 16, self.y2 + arrowBackPt)
+                self.graphics:line(self.x2, self.y2, self.x2 + 16, self.y2 + arrowBackPt)
+            end,
         
             drawLabel = function(self)
+                if self.y1 == self.y2 then self:drawHorizontalLabel()
+                else                       self:drawVerticalLabel()   end
+            end,
+
+            drawHorizontalLabel = function(self)
                 self:setLabelFont()
                 self:setFontColor()
                 self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
                                                  math.abs(self.x2 - self.x1), "center")
+            end,
+
+            drawVerticalLabel = function(self)
+                self:setLabelFont()
+                self:setFontColor()
+                local width = self.graphics:getFontWidth(self.label)
+                local xOffset
+
+                if self.y1 < self.y2 then xOffset = -width - 15
+                else                      xOffset =          15  end
+
+                self.graphics:printf(self.label, self.x1 + xOffset, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - self.graphics:getFontHeight()) / 2, 
+                                     width,      "center")
             end,
 
             setLabelFont = function(self)
