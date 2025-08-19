@@ -1,5 +1,6 @@
 return {
     x = 302, y = 546, scale = 0.51,
+    { type = "BOX",   label = "Grounded",          alpha = 0.3, x  = -9,  y  = -3.5, w  = 57,  h =  33  },
     { type = "BOX",   label = "Stand Right",                   x  =  3.5, y  =  9,   w  =  7,  h =   4  },
     { type = "BOX",   label = "Stand Left",                    x  = 31,   y  = 14,   w  =  7,  h =   4  },
     { type = "BOX",   label = "Accelerate Right",              x  = 41,   y  = -1.5, w  =  6,  h =  29  },
@@ -37,5 +38,5 @@ return {
     { type = "ARROW", label = "Speed = 0", from = "Brake Right",      to = "Accelerate Left",  y =  0.5 },
     { type = "ARROW", label = "L On",      from = "Accelerate Right", to = "Brake Right",      y = -0.5 },
     { type = "ARROW", label = "R On",      from = "Brake Right",      to = "Accelerate Right", y =  1.5 },
-    { type = "BOX",   label = "Grounded",          alpha = 0.3, x  = -9,  y  = -3.5, w  = 57,  h =  33  },
+    
 }
