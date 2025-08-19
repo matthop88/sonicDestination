@@ -137,8 +137,8 @@ return {
                 if self.y1 < self.y2 then xOffset = -width - 15
                 else                      xOffset =          15  end
 
-                self.graphics:printf(self.label, self.x1 + xOffset, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - self.graphics:getFontHeight()) / 2, 
-                                     width,      "center")
+                self.graphics:printf(self.label,  self.x1 + xOffset, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - self.graphics:getFontHeight()) / 2, 
+                                     width * 1.1, "center")
             end,
 
             setLabelFont = function(self)
@@ -149,7 +149,7 @@ return {
 
             setFontColor = function(self)
                 if     self.selected    then self.graphics:setColor(COLORS.RED)
-                elseif self.highlighted then self.graphics:setColor(COLORS.PURE_WHITE)
+                elseif self.highlighted then self.graphics:setColor(COLORS.MEDIUM_YELLOW)
                 else                         self.graphics:setColor(COLORS.PURE_WHITE) end
             end,
 
