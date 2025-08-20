@@ -1,6 +1,5 @@
 return {
     x = 302, y = 546, scale = 0.51,
-    { type = "BOX",   label = "Grounded",          alpha = 0.3, x  = -9,  y  = -3.5, w  = 57,  h =  33  },
     { type = "BOX",   label = "Stand Right",                   x  =  3.5, y  =  9,   w  =  7,  h =   4  },
     { type = "BOX",   label = "Stand Left",                    x  = 31,   y  = 14,   w  =  7,  h =   4  },
     { type = "BOX",   label = "Accelerate Right",              x  = 41,   y  = -1.5, w  =  6,  h =  29  },
@@ -10,13 +9,23 @@ return {
     { type = "BOX",   label = "Decelerate Right",              x  = 17,   y  =  5.5, w  =  7,  h =   5  },
     { type = "BOX",   label = "Brake Right",                   x  = 17,   y  = -1.5, w  =  7,  h =   4  },
     
-    { type = "BOX",   label = "Jump Right",                    x  =  3.5, y  = -9,   w  =  7,  h =  4   },
+    { type = "BOX",   label = "Jump Left",                     x  = 31,   y  = -9,   w  =  7,  h =  4   },
+    { type = "BOX",   label = "Jump Right",                    x  =  3.5, y  = -14,  w  =  7,  h =  4   },
+    { type = "BOX",   label = "Jump Acc Left",                 x  = -7,   y  = -9,   w  =  6,  h =  4   },
+    { type = "BOX",   label = "Jump Acc Right",                x  = 41,   y  = -14,  w  =  6,  h =  4   },
+    
+    { type = "BOX",   label = "Grounded",          alpha = 0.3, x  = -9,  y  = -3.5, w  = 57,  h =  33  },
     { type = "ARROW", label = "Jump",      from = "Stand Right",      to = "Jump Right",       x =  8.5 },
     { type = "ARROW", label = "Land",      from = "Jump Right",       to = "Stand Right",      x =  5.5 },
 
-    { type = "BOX",   label = "Jump Left",                     x  = 31,   y  = -9,   w  =  7,  h =  4   },
-    { type = "ARROW", label = "Jump",      from = "Stand Left",      to = "Jump Left",         x = 35   },
-    { type = "ARROW", label = "Land",      from = "Jump Left",       to = "Stand Left",        x = 34   },
+    { type = "ARROW", label = "Jump",      from = "Stand Left",       to = "Jump Left",        x = 35   },
+    { type = "ARROW", label = "Land",      from = "Jump Left",        to = "Stand Left",       x = 34   },
+
+    { type = "ARROW", label = "Jump",      from = "Accelerate Left",  to = "Jump Acc Left",    x = -3   },
+    { type = "ARROW", label = "Land",      from = "Jump Acc Left",    to = "Accelerate Left",  x = -5   },
+
+    { type = "ARROW", label = "Jump",      from = "Accelerate Right", to = "Jump Acc Right",   x = 45   },
+    { type = "ARROW", label = "Land",      from = "Jump Acc Right",   to = "Accelerate Right", x = 43   },
 
     { type = "ARROW", label = "R On",      from = "Stand Right",      to = "Accelerate Right", y =  12  },
     { type = "ARROW", label = "R Off",     from = "Accelerate Right", to = "Decelerate Right", y =  7   },
@@ -38,5 +47,8 @@ return {
     { type = "ARROW", label = "Speed = 0", from = "Brake Right",      to = "Accelerate Left",  y =  0.5 },
     { type = "ARROW", label = "L On",      from = "Accelerate Right", to = "Brake Right",      y = -0.5 },
     { type = "ARROW", label = "R On",      from = "Brake Right",      to = "Accelerate Right", y =  1.5 },
+    
+    { type = "ARROW", label = "L On",      from = "Jump Left",        to = "Jump Acc Left",    y = -7   },
+    { type = "ARROW", label = "R On",      from = "Jump Right",       to = "Jump Acc Right",   y = -12  },
     
 }
