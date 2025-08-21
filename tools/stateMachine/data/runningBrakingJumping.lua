@@ -58,4 +58,9 @@ return {
     { type = "ARROW", label = "Jump",      from = "Accelerate Right",     to = "Air Accelerate Right", x = 45 },
     { type = "ARROW", label = "Land",      from = "Air Accelerate Right", to = "Accelerate Right",     x = 43 },
 
+    { type = "ARROW", label = "Jump",      from = "Stand Left",           to = "Air Stationary Left",  x = 8.5 },
+    { type = "ARROW", label = "Land",      from = "Air Stationary Left",  to = "Stand Left",           x = 5.5 },
+    { type = "ARROW", label = "Jump",      from = "Stand Right",          to = "Air Stationary Right", x = 34 },
+    { type = "ARROW", label = "Land",      from = "Air Stationary Right", to = "Stand Right",          x = 31 },
+    
 }
