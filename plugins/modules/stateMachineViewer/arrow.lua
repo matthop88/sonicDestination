@@ -142,7 +142,7 @@ return {
                 if self.y1 < self.y2 then xOffset = -width - 15
                 else                      xOffset =          15  end
 
-                self.graphics:printf(self.label,  self.x1 + xOffset + self.xLabel, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - (self.graphics:getFontHeight()) / 2) + self.yLabel, 
+                self.graphics:printf(self.label,  self.x1 + xOffset + self.xLabel, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - self.graphics:getFontHeight() + self.yLabel) / 2,
                                      width * 1.1, "center")
             end,
 
