@@ -72,9 +72,9 @@ return {
     { type = "ARROW", label = "Jump",      from = "Decelerate Right",     to = "Air Decelerate Right", x = 24    },
     { type = "ARROW", label = "Land",      from = "Air Decelerate Right", to = "Decelerate Right",     x = 23    },
  
-    { type = "ARROW", label = "Jump",      from = "Brake Left",           to = "1",                    x = 12.5  },
+    { type = "ARROW", label = "Jump",      from = "Brake Left",           to = "1",                    x = 12.5, headless = true  },
     { type = "ARROW", label = "",          from = "1",                    to = "Air Accelerate Right", y = -10.5 },
-    { type = "ARROW", label = "Jump",      from = "Brake Right",          to = "2",                    x = 19.5  },
+    { type = "ARROW", label = "Jump",      from = "Brake Right",          to = "2",                    x = 19.5, headless = true  },
     { type = "ARROW", label = "",          from = "2",                    to = "Air Accelerate Left",  y = -21.5 },
     
     { type = "BOX",   label = "Airborne",alpha = 0.5,         x  = -8,    y  = -33.5,   w  = 56,       h = 29    },
