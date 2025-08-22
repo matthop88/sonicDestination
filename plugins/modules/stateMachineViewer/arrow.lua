@@ -43,7 +43,7 @@ return {
         return self
     end,
 
-    create = function(self, label, x1, y1, x2, y2, headless)
+    create = function(self, label, x1, y1, x2, y2, params)
         return ({
             LABEL_FONT_SIZE   = self.LABEL_FONT_SIZE,
             graphics          = self.GRAFX,
@@ -59,7 +59,9 @@ return {
 
             highlighted       = false,
             selected          = false,
-            headless          = headless,
+            headless          = params.headless,
+            xLabel            = (params.xLabel or 0) * self.GRID_SIZE,
+            yLabel            = (params.yLabel or 0) * self.GRID_SIZE,
 
             init = function(self)
                 self.x, self.y, self.w, self.h = lineToRect(self.x1, self.y1, self.x2, self.y2)
@@ -127,7 +129,7 @@ return {
             drawHorizontalLabel = function(self)
                 self:setLabelFont()
                 self:setFontColor()
-                self.graphics:printf(self.label, math.min(self.x1,  self.x2), self.y1 - self.graphics:getFontHeight(), 
+                self.graphics:printf(self.label, math.min(self.x1,  self.x2) + self.xLabel, self.y1 - self.graphics:getFontHeight() + self.yLabel, 
                                                  math.abs(self.x2 - self.x1), "center")
             end,
 
@@ -140,7 +142,7 @@ return {
                 if self.y1 < self.y2 then xOffset = -width - 15
                 else                      xOffset =          15  end
 
-                self.graphics:printf(self.label,  self.x1 + xOffset, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - self.graphics:getFontHeight()) / 2, 
+                self.graphics:printf(self.label,  self.x1 + xOffset + self.xLabel, math.min(self.y1, self.y2) + (math.abs(self.y1 - self.y2) - (self.graphics:getFontHeight()) / 2) + self.yLabel, 
                                      width * 1.1, "center")
             end,
 
