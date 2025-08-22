@@ -95,7 +95,7 @@ return {
         elseif element.label == "R Off"     then element.keyreleased = "right"
         elseif element.label == "Speed = 0" then element.keypressed  = "0"
         elseif element.label == "Jump"
-            or element.label == "Land"
+            or element.label == "Land"      then element.keypressed  = "space"
         elseif element.label == ""          then element.NOP         = true
         end
     end,
