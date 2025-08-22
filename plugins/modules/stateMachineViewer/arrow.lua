@@ -43,7 +43,7 @@ return {
         return self
     end,
 
-    create = function(self, label, x1, y1, x2, y2)
+    create = function(self, label, x1, y1, x2, y2, headless)
         return ({
             LABEL_FONT_SIZE   = self.LABEL_FONT_SIZE,
             graphics          = self.GRAFX,
@@ -59,6 +59,7 @@ return {
 
             highlighted       = false,
             selected          = false,
+            headless          = headless,
 
             init = function(self)
                 self.x, self.y, self.w, self.h = lineToRect(self.x1, self.y1, self.x2, self.y2)
@@ -94,8 +95,10 @@ return {
             end,
         
             drawHead = function(self)
-                if self.y1 == self.y2 then self:drawHorizontalHead()
-                else                       self:drawVerticalHead()  end
+                if not self.headless then
+                    if self.y1 == self.y2 then self:drawHorizontalHead()
+                    else                       self:drawVerticalHead()  end
+                end
             end,
                 
             drawHorizontalHead = function(self)
