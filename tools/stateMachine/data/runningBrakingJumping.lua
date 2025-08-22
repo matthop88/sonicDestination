@@ -26,8 +26,8 @@ return {
     { type = "ARROW", label = "R On",      from = "Accelerate Left",  to = "Brake Left",       y = 27.5 },
     { type = "ARROW", label = "L On",      from = "Brake Left",       to = "Accelerate Left",  y = 29.5 },
     { type = "ARROW", label = "Speed = 0", from = "Brake Left",       to = "Accelerate Right", y = 28.5 },
-    { type = "ARROW", label = "L On",      from = "Decelerate Right", to = "Brake Right",      x = 20.5 },
-    { type = "ARROW", label = "L Off",     from = "Brake Right",      to = "Decelerate Right", x = 19.5 }, 
+    { type = "ARROW", label = "L On",      from = "Decelerate Right", to = "Brake Right",      x = 19.5 },
+    { type = "ARROW", label = "L Off",     from = "Brake Right",      to = "Decelerate Right", x = 18.5 }, 
     { type = "ARROW", label = "Speed = 0", from = "Brake Right",      to = "Accelerate Left",  y =  3.5, xLabel = 1   },
     { type = "ARROW", label = "L On",      from = "Accelerate Right", to = "Brake Right",      y =  2.5, xLabel = -1, },
     { type = "ARROW", label = "R On",      from = "Brake Right",      to = "Accelerate Right", y =  4.5, xLabel = -1, },
@@ -74,7 +74,7 @@ return {
  
     { type = "ARROW", label = "Jump",      from = "Brake Left",           to = "1",                    x = 12.5, headless = true, xLabel = -2.75  },
     { type = "ARROW", label = "",          from = "1",                    to = "Air Accelerate Right", y = -10.5 },
-    { type = "ARROW", label = "Jump",      from = "Brake Right",          to = "2",                    x = 19.5, headless = true, yLabel = -7, xLabel = -1.3  },
+    { type = "ARROW", label = "Jump",      from = "Brake Right",          to = "2",                    x = 19.5, headless = true, yLabel = -10, xLabel = -1.3  },
     { type = "ARROW", label = "",          from = "2",                    to = "Air Accelerate Left",  y = -21.5 },
     
     { type = "BOX",   label = "Airborne",alpha = 0.5,         x  = -8,    y  = -33.5,   w  = 56,       h = 29    },
