@@ -38,7 +38,7 @@ return {
     
     createArrow = function(self, element)
         if element.x1 then
-            return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
+            return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2, {})
         else
             return self:createSmartArrow(element)
         end
@@ -58,7 +58,7 @@ return {
     end,
 
     createSmartRightArrow = function(self, element, srcBox, dstBox)
-        local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y, element.headless)
+        local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y, self:getElementParams(element))
         return self:setupSmartArrow(smartRightArrow, srcBox, dstBox)
     end,
 
@@ -70,18 +70,22 @@ return {
     end,
     
     createSmartLeftArrow = function(self, element, srcBox, dstBox)
-        local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y, element.headless)
+        local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y, self:getElementParams(element))
         return self:setupSmartArrow(smartLeftArrow, srcBox, dstBox)
     end,
 
     createSmartUpArrow = function(self, element, srcBox, dstBox)
-        local smartUpArrow = self.ARROW:create(element.label, element.x, srcBox.y / self.GRID_SIZE, element.x, (dstBox.y + dstBox.h) / self.GRID_SIZE, element.headless)
+        local smartUpArrow = self.ARROW:create(element.label, element.x, srcBox.y / self.GRID_SIZE, element.x, (dstBox.y + dstBox.h) / self.GRID_SIZE, self:getElementParams(element))
         return self:setupSmartArrow(smartUpArrow, srcBox, dstBox)
     end,
 
     createSmartDownArrow = function(self, element, srcBox, dstBox)
-        local smartDownArrow = self.ARROW:create(element.label, element.x, (srcBox.y + srcBox.h) / self.GRID_SIZE, element.x, dstBox.y / self.GRID_SIZE, element.headless)
+        local smartDownArrow = self.ARROW:create(element.label, element.x, (srcBox.y + srcBox.h) / self.GRID_SIZE, element.x, dstBox.y / self.GRID_SIZE, self:getElementParams(element))
         return self:setupSmartArrow(smartDownArrow, srcBox, dstBox)
+    end,
+
+    getElementParams = function(self, element)
+        return { headless = element.headless, xLabel = element.xLabel, yLabel = element.yLabel }
     end,
     
     createKeyEvent = function(self, element)
