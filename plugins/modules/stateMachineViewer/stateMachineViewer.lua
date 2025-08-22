@@ -69,16 +69,28 @@ return {
         for _, widget in ipairs(WIDGETS:get()) do
             if widget.keypressed == key and widget.from == self.targetBox then
                 self:selectWidget(widget)
-                return
+                break
             end
         end
+        self:processNOPEvents()
     end,
 
     processWidgetKeyreleasedEvent = function(self, key)
         for _, widget in ipairs(WIDGETS:get()) do
             if widget.keyreleased == key and widget.from == self.targetBox then
                 self:selectWidget(widget)
-                return
+                break
+            end
+        end
+        self:processNOPEvents()
+    end,
+
+    processNOPEvents = function(self)
+        for _, widget in ipairs(WIDGETS:get()) do
+            if widget.NOP and widget.from == self.targetBox then
+                self.targetBox = widget.to
+                self.targetBox:select()
+                widget:select()
             end
         end
     end,
