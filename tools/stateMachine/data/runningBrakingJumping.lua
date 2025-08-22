@@ -45,7 +45,7 @@ return {
     { type = "ARROW", label = "R On",      from = "Air Stationary Right", to = "Air Accelerate Right", y = -17.5 },
     { type = "ARROW", label = "R Off",     from = "Air Accelerate Right", to = "Air Decelerate Right", y = -24.5 },
     { type = "ARROW", label = "R On",      from = "Air Decelerate Right", to = "Air Accelerate Right", y = -26.5 },
-    { type = "ARROW", label = "L On",      from = "Air Decelerate Right", to = "Air Accelerate Left",  y = -23.5, xLabel = 6, },
+    { type = "ARROW", label = "L On",      from = "Air Decelerate Right", to = "Air Accelerate Left",  y = -23.5, xLabel = 9, },
     { type = "ARROW", label = "Speed = 0", from = "Air Decelerate Right", to = "Air Stationary Right", x =  31.5 },
     { type = "ARROW", label = "L On",      from = "Air Stationary Right", to = "Air Accelerate Left",  y = -17.5 },
     { type = "ARROW", label = "R On",      from = "Air Accelerate Left",  to = "Air Accelerate Right", y = -31.5 },
@@ -62,10 +62,10 @@ return {
     { type = "ARROW", label = "Jump",      from = "Accelerate Right",     to = "Air Accelerate Right", x = 45    },
     { type = "ARROW", label = "Land",      from = "Air Accelerate Right", to = "Accelerate Right",     x = 43    },
 
-    { type = "ARROW", label = "Jump",      from = "Stand Left",           to = "Air Stationary Left",  x = 7,  yLabel = -8.5, },
-    { type = "ARROW", label = "Land",      from = "Air Stationary Left",  to = "Stand Left",           x = 5,  yLabel = -8.5, },
-    { type = "ARROW", label = "Jump",      from = "Stand Right",          to = "Air Stationary Right", x = 34, yLabel = -1.5, },
-    { type = "ARROW", label = "Land",      from = "Air Stationary Right", to = "Stand Right",          x = 32, yLabel = -1.5, },
+    { type = "ARROW", label = "Jump",      from = "Stand Left",           to = "Air Stationary Left",  x = 5.5,  yLabel = -8.5, },
+    { type = "ARROW", label = "Land",      from = "Air Stationary Left",  to = "Stand Left",           x = 3.5,  yLabel = -8.5, },
+    { type = "ARROW", label = "Jump",      from = "Stand Right",          to = "Air Stationary Right", x = 34,   yLabel = -1.5, },
+    { type = "ARROW", label = "Land",      from = "Air Stationary Right", to = "Stand Right",          x = 32,   yLabel = -1.5, },
     
     { type = "ARROW", label = "Jump",      from = "Decelerate Left",      to = "Air Decelerate Left",  x = 16, yLabel = 2,    },
     { type = "ARROW", label = "Land",      from = "Air Decelerate Left",  to = "Decelerate Left",      x = 15, yLabel = 2,    },
