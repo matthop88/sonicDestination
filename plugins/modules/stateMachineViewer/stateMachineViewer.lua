@@ -69,6 +69,7 @@ return {
         for _, widget in ipairs(WIDGETS:get()) do
             if widget.keypressed == key and widget.from == self.targetBox then
                 self:selectWidget(widget)
+                return
             end
         end
     end,
@@ -77,6 +78,7 @@ return {
         for _, widget in ipairs(WIDGETS:get()) do
             if widget.keyreleased == key and widget.from == self.targetBox then
                 self:selectWidget(widget)
+                return
             end
         end
     end,
