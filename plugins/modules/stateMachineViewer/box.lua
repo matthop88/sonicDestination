@@ -8,7 +8,7 @@ return {
         return self
     end,
 
-    create = function(self, label, x, y, w, h, alpha)
+    create = function(self, label, x, y, w, h, alpha, scrollY)
         return {
             GRID_SIZE       = self.GRID_SIZE,
             LABEL_FONT_SIZE = self.LABEL_FONT_SIZE,
@@ -21,6 +21,7 @@ return {
             h               = h * self.GRID_SIZE,
 
             selected        = false,
+            scrollY         = scrollY,
 
             getType = function(self)
                 return "BOX"
