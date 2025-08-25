@@ -50,6 +50,9 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            getX = function(self) return graphics:getX() end,
+            getY = function(self) return graphics:getY() end,
+            
             setX = function(self, x) graphics:setX(x) end,
             setY = function(self, y) graphics:setY(y) end,
 
