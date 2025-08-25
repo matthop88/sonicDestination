@@ -83,6 +83,9 @@ return {
 
     ------------------------- Scrolling Functions ----------------------
     
+    getX = function(self) return self.x end,
+    getY = function(self) return self.y end,
+    
     setX = function(self, x) self.x = x end,
     setY = function(self, y) self.y = y end,
 
