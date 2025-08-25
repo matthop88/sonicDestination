@@ -6,6 +6,7 @@ local PEGBOARD, WIDGET_FACTORY, WIDGETS
 return {
     arrowFunctions = { },
     alpha          = 1,
+    targetScrollY  = 0,
     
     init = function(self, params)
         self.targetBox      = nil
@@ -34,6 +35,7 @@ return {
 
     update = function(self, dt)
         self:updateFromArrowFunctions()
+        self:updateScrolling(dt)
     end,
 
     handleKeypressed = function(self, key)
@@ -58,6 +60,7 @@ return {
         self.graphics:setX(WIDGETS.x)
         self.graphics:setY(WIDGETS.y)
         self.graphics:setScale(WIDGETS.scale)
+        self.targetScrollY = WIDGETS.y
     end,
 
     refreshTargetBox = function(self)
@@ -100,6 +103,9 @@ return {
         self.targetBox = widget.to
         self.targetBox:select()
         widget:select()
+        if self.targetBox.scrollY then
+            self.targetScrollY = self.targetBox.scrollY
+        end
         printMessage(widget.label)
     end,
 
@@ -128,6 +134,14 @@ return {
                     self:selectWidget(widget)
                 end
             end
+        end
+    end,
+
+    updateScrolling = function(self, dt)
+        if     self.targetScrollY > self.graphics:getY() then
+            self.graphics:setY(math.min(self.targetScrollY, self.graphics:getY() + (2880 * dt)))
+        elseif self.targetScrollY < self.graphics:getY() then
+            self.graphics:setY(math.max(self.targetScrollY, self.graphics:getY() - (2880 * dt)))
         end
     end,
 
