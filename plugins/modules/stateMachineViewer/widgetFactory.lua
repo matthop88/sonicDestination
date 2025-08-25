@@ -31,7 +31,7 @@ return {
     end,
 
     createBox   = function(self, element)
-        local box = self.BOX:create(element.label, element.x, element.y, element.w, element.h, element.alpha)
+        local box = self.BOX:create(element.label, element.x, element.y, element.w, element.h, element.alpha, element.scrollY)
         self.boxesByName[element.label] = box
         return box
     end,
