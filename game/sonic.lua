@@ -19,6 +19,10 @@ return {
     ---------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ---------------------------------------------------------------
+    AIR_ACCELERATION     = 5.625,          -- 0.09375  pixels/frame
+    ---------------------------------------------------------------
+    -- Source: https://info.sonicretro.org/SPG:Air_State#Constants
+    ---------------------------------------------------------------
     GROUND_LEVEL         = 556,
     
     position = { x = 0, y = 0 },
