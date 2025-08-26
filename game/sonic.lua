@@ -6,7 +6,7 @@ return {
     -----------------------------------------------------------
     BRAKING_ACCELERATION = 1800,       MIN_SPEED_TO_BRAKE = 60,
     -----------------------------------------------------------
-    -- 128 subpixels per frame
+    -- 0.5 pixel per frame (multiplied by 60 x 60)
 
     -- From Sonic Physics Guide
     -- https://info.sonicretro.org/SPG:Running#Acceleration
@@ -21,14 +21,21 @@ return {
     -- Multiply by 60 to calculate acceleration per second
     -- Multiply by 60 again because velocity is 60x higher
     -----------------------------------------------------------
-    MAX_RUNNING_SPEED = 360,
+    MAX_RUNNING_SPEED    = 360,
     -----------------------------------------------------------
-    -- 6 pixels per frame
+    -- 6 pixels per frame, multiplied by 60 for pixels/sec
+    --                                          (@ 60 fps)
 
     -- From Sonic Physics Guide
     -- https://info.sonicretro.org/SPG:Running#Constants
-
-    -- Multiply by 60 to calculate pixels per second (@ 60 fps)
+    -----------------------------------------------------------
+    JUMP_VELOCITY        = 390,
+    -----------------------------------------------------------
+    -- 6.5 pixels per frame, multiplied by 60 for pixels/sec
+    --                                            (@ 60 fps)
+    
+    -- From Sonic Physics Guide
+    -- https://info.sonicretro.org/SPG:Jumping#Constants
     -----------------------------------------------------------
     
     position = { x = 0, y = 0 },
