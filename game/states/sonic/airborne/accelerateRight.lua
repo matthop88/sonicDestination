@@ -9,7 +9,6 @@ return {
     
     onEnter    = function(self)
         SONIC:faceRight()
-        SONIC:startJump()
     end,
     
     keypressed = function(self, key)
