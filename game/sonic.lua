@@ -95,6 +95,10 @@ return {
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
+    startJump     = function(self)
+        self.velocity.y = -self.JUMP_VELOCITY
+    end,
+    
     setState      = function(self, state)
         self.nextState = state
     end,
