@@ -19,6 +19,7 @@ return {
     ---------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ---------------------------------------------------------------
+    GROUND_LEVEL         = 556,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -33,7 +34,7 @@ return {
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
 
-        self:moveTo(512, 556)
+        self:moveTo(512, self.GROUND_LEVEL)
         return self
     end,
 
