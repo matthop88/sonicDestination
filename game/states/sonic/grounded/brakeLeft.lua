@@ -17,9 +17,8 @@ return {
     end,
     
     keypressed = function(self, key)
-        if key == "left" then 
-            SONIC:setState(STATES.ACCELERATE_LEFT) 
-        end
+        if     key == "left"  then SONIC:setState(STATES.ACCELERATE_LEFT)
+        elseif key == "space" then SONIC:setState(STATES.AIR_ACCELERATE_RIGHT) end
     end,
     
     keyreleased = function(self, key)
