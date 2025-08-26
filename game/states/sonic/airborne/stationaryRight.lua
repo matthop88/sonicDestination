@@ -8,7 +8,6 @@ return {
     end,
     
     onEnter    = function(self)
-        SONIC:startJump()
         SONIC.velocity.x = 0
     end,
     
