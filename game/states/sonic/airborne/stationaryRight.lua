@@ -8,7 +8,7 @@ return {
     end,
     
     onEnter    = function(self)
-        -- Do nothing
+        SONIC:startJump()
     end,
     
     keypressed = function(self, key)
