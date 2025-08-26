@@ -24,8 +24,6 @@ local WORKSPACE          = requireRelative("workspace", { GRAPHICS = GRAPHICS })
 love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-SONIC:moveTo(512, 556)
-
 PROP_LOADER:notifyOnChange(SONIC)
 
 --------------------------------------------------------------
