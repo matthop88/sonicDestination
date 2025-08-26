@@ -86,7 +86,7 @@ return {
     end,
 
     isGrounded    = function(self)
-        return self.position.y == self.GROUND_LEVEL
+        return self.position.y == self.GROUND_LEVEL and self.velocity.y >= 0
     end,
     
     setState      = function(self, state)
@@ -114,7 +114,7 @@ return {
     end,
 
     applyGravity = function(self, dt)
-        if not self:isGrounded() or self.velocity.y < 0 then
+        if not self:isGrounded() then
             self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
         else
             self.velocity.y = 0
