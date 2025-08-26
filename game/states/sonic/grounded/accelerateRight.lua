@@ -17,7 +17,8 @@ return {
     end,
     
     keyreleased = function(self, key)
-        if key == "right" then SONIC:setState(STATES.DECELERATE_RIGHT) end
+        if     key == "right" then SONIC:setState(STATES.DECELERATE_RIGHT) 
+        elseif key == "space" then SONIC:setState(STATES.AIR_ACCELERATE_RIGHT) end
     end,
 
     update = function(self, dt)
