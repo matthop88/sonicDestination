@@ -79,6 +79,7 @@ return {
 
     startJump     = function(self)
         self.velocity.y = -self.JUMP_VELOCITY
+        print("Ground Y: ", self.position.y)
     end,
     
     setState      = function(self, state)
