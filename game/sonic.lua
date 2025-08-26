@@ -3,40 +3,23 @@ local STATES
 local sonic1Sprite, sonic2Sprite
 
 return {
-    -----------------------------------------------------------
-    BRAKING_ACCELERATION = 1800,       MIN_SPEED_TO_BRAKE = 60,
-    -----------------------------------------------------------
-    -- 0.5 pixel per frame (multiplied by 60 x 60)
-
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Running#Acceleration
-    -----------------------------------------------------------
-    RUNNING_ACCELERATION = 168.75,
-    -----------------------------------------------------------
-    -- 12 subpixels per frame
-
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Running#Acceleration
-
-    -- Multiply by 60 to calculate acceleration per second
-    -- Multiply by 60 again because velocity is 60x higher
-    -----------------------------------------------------------
-    MAX_RUNNING_SPEED    = 360,
-    -----------------------------------------------------------
-    -- 6 pixels per frame, multiplied by 60 for pixels/sec
-    --                                          (@ 60 fps)
-
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Running#Constants
-    -----------------------------------------------------------
-    JUMP_VELOCITY        = 390,
-    -----------------------------------------------------------
-    -- 6.5 pixels per frame, multiplied by 60 for pixels/sec
-    --                                            (@ 60 fps)
+    --------------------------------------------------------------------------------
+    BRAKING_ACCELERATION = 1800,             -- 0.5      pixels/frame      
+    MIN_SPEED_TO_BRAKE   = 60,               -- 1        pixel /frame
+    RUNNING_ACCELERATION = 168.75,           -- 0.046875 pixels/frame
+    --------------------------------------------------------------------------------
+    -- From Sonic Physics Guide https://info.sonicretro.org/SPG:Running#Acceleration
+    --------------------------------------------------------------------------------
+    MAX_RUNNING_SPEED    = 360,              -- 6        pixels/frame
+    --------------------------------------------------------------------------------
+    -- From Sonic Physics Guide https://info.sonicretro.org/SPG:Running#Constants
+    --------------------------------------------------------------------------------
+    JUMP_VELOCITY        = 390,              -- 6.5      pixels/frame
+    GRAVITY_FORCE        = 787.5             -- 0.21875  pixels/frame
+    --------------------------------------------------------------------------------
+    -- From Sonic Physics Guide https://info.sonicretro.org/SPG:Jumping#Constants
+    --------------------------------------------------------------------------------
     
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Jumping#Constants
-    -----------------------------------------------------------
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
