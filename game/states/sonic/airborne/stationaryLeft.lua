@@ -9,6 +9,7 @@ return {
     
     onEnter    = function(self)
         SONIC:startJump()
+        SONIC.velocity.x = 0
     end,
     
     keypressed = function(self, key)
