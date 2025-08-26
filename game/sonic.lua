@@ -83,7 +83,6 @@ return {
 
     startJump     = function(self)
         self.velocity.y = -self.JUMP_VELOCITY
-        print("Ground Y: ", self.position.y)
     end,
     
     setState      = function(self, state)
@@ -101,11 +100,8 @@ return {
 
     updateFrameRate = function(self, dt)
         self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
-
-        --[[
-        Source:
-        https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
-        --]]
+        --------------------------------------------------------------------------------------
+        -- Source: https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
     end,
     
     updatePosition = function(self, dt)
