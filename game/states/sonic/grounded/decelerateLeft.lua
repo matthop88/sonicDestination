@@ -13,7 +13,8 @@ return {
     
     keypressed = function(self, key)
         if     key == "left"  then SONIC:setState(STATES.ACCELERATE_LEFT) 
-        elseif key == "right" then SONIC:setState(STATES.BRAKE_LEFT)  end
+        elseif key == "right" then SONIC:setState(STATES.BRAKE_LEFT)  
+        elseif key == "space" then SONIC:setState(STATES.AIR_DECELERATE_LEFT) end
     end,
     
     keyreleased = function(self, key)
