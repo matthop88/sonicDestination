@@ -32,6 +32,8 @@ return {
         
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
+
+        self:moveTo(512, 556)
         return self
     end,
 
