@@ -14,4 +14,8 @@ return {
     keypressed = function(self, key)
         -- Do nothing
     end,
+
+    update     = function(self, dt)
+        if SONIC:isGrounded() then SONIC:setState(STATES.STAND_RIGHT) end
+    end,
 }
