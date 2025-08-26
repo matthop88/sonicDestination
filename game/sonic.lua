@@ -19,7 +19,7 @@ return {
     ---------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ---------------------------------------------------------------
-    AIR_ACCELERATION     = 5.625,          -- 0.09375  pixels/frame
+    AIR_ACCELERATION     = 337.5,          -- 0.09375  pixels/frame
     ---------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Constants
     ---------------------------------------------------------------
