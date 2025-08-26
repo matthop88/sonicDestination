@@ -46,6 +46,7 @@ return {
         self.sprite:update(dt)
         self:updateState(dt)
         self:updateFrameRate(dt)
+        self:applyGravity(dt)
         self:updatePosition(dt)
     end,
 
@@ -109,7 +110,15 @@ return {
     
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
-        self.position.y = self.position.y + (self.velocity.y * dt)
+        self.position.y = math.min(self.GROUND_LEVEL, self.position.y + (self.velocity.y * dt))
+    end,
+
+    applyGravity = function(self, dt)
+        if self.position.y ~= self.GROUND_LEVEL or self.velocity.y < 0 then
+            self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
+        else
+            self.velocity.y = 0
+        end
     end,
 
     onPropertyChange = function(self, propData)
