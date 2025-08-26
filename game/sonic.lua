@@ -84,6 +84,10 @@ return {
     startJump     = function(self)
         self.velocity.y = -self.JUMP_VELOCITY
     end,
+
+    isGrounded    = function(self)
+        return self.position.y == self.GROUND_LEVEL
+    end,
     
     setState      = function(self, state)
         self.nextState = state
@@ -110,7 +114,7 @@ return {
     end,
 
     applyGravity = function(self, dt)
-        if self.position.y ~= self.GROUND_LEVEL or self.velocity.y < 0 then
+        if not self:isGrounded() or self.velocity.y < 0 then
             self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
         else
             self.velocity.y = 0
