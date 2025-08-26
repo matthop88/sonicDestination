@@ -13,7 +13,7 @@ return {
     
     keypressed = function(self, key)
         if     key == "left"  then SONIC:setState(STATES.AIR_ACCELERATE_LEFT)
-        elseif key == "right" then SONIC:setState(STATES.AIR_ACCELERATE_RIGHT)
+        elseif key == "right" then SONIC:setState(STATES.AIR_ACCELERATE_RIGHT) end
     end,
 
     update     = function(self, dt)
