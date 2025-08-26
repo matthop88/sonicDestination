@@ -82,7 +82,7 @@ return {
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
     startJump     = function(self)
-        self.velocity.y = -self.JUMP_VELOCITY
+        if self:isGrounded() then self.velocity.y = -self.JUMP_VELOCITY end
     end,
 
     isGrounded    = function(self)
