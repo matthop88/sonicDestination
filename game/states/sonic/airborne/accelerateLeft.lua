@@ -8,11 +8,16 @@ return {
     end,
     
     onEnter    = function(self)
+        SONIC:faceLeft()
         SONIC:startJump()
     end,
     
     keypressed = function(self, key)
-        -- Do nothing
+        if key == "right" then SONIC:setState(STATES.AIR_ACCELERATE_RIGHT) end
+    end,
+
+    keyreleased = function(self, key)
+        if key == "left" then SONIC:setState(STATES.AIR_DECELERATE_LEFT) end
     end,
 
     update     = function(self, dt)
