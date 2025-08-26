@@ -15,7 +15,7 @@ return {
     -- Source: https://info.sonicretro.org/SPG:Running#Constants
     ---------------------------------------------------------------
     JUMP_VELOCITY        = 390,            -- 6.5      pixels/frame
-    GRAVITY_FORCE        = 787.5           -- 0.21875  pixels/frame
+    GRAVITY_FORCE        = 787.5,          -- 0.21875  pixels/frame
     ---------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ---------------------------------------------------------------
