@@ -17,6 +17,11 @@ return {
     end,
 
     update     = function(self, dt)
-        if SONIC:isGrounded() then SONIC:setState(STATES.DECELERATE_RIGHT) end
+        if SONIC:isGrounded() then 
+            SONIC:setState(STATES.DECELERATE_RIGHT) 
+        else
+            SONIC.velocity.x = math.max(0, SONIC.velocity.x - (SONIC.AIR_ACCELERATION * dt))
+            if SONIC.velocity.x == 0 then SONIC:setState(STATES.AIR_STATIONARY_RIGHT) end
+        end
     end,
 }
