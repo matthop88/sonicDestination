@@ -8,10 +8,14 @@ return {
     end,
     
     onEnter    = function(self)
-        -- Do nothing
+        SONIC:startJump()
     end,
     
     keypressed = function(self, key)
         -- Do nothing
+    end,
+
+    update     = function(self, dt)
+        if SONIC:isGrounded() then SONIC:setState(STATES.DECELERATE_LEFT) end
     end,
 }
