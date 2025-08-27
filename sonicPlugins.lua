@@ -55,6 +55,10 @@ return {
                         fn  = function() return self.SONIC:isGrounded() end,
                     },
                 },
+                customKeys = {
+                    landKey      = nil,
+                    zeroSpeedKey = nil,
+                },
                 accessorFnName = "getStateMachineViewer",
             })
             :add("splitScreen", {
