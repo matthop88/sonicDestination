@@ -1,9 +1,9 @@
 return {
-    init = function(self, gridSize, labelFontSize, graphics)
+    init = function(self, gridSize, labelFontSize, graphics, customKeys)
         self.GRID_SIZE       = gridSize
         self.LABEL_FONT_SIZE = labelFontSize
         self.graphics        = graphics
-
+        self.customKeys      = customKeys or { landKey = "space", zeroSpeedKey = "0", }    
         self.BOX   = require("plugins/modules/stateMachineViewer/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE,        graphics)
         self.ARROW = require("plugins/modules/stateMachineViewer/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE * 0.75, graphics)
 
@@ -93,9 +93,9 @@ return {
         elseif element.label == "R On"      then element.keypressed  = "right"
         elseif element.label == "L Off"     then element.keyreleased = "left"
         elseif element.label == "R Off"     then element.keyreleased = "right"
-        elseif element.label == "Speed = 0" then element.keypressed  = "0"
-        elseif element.label == "Jump"
-            or element.label == "Land"      then element.keypressed  = "space"
+        elseif element.label == "Speed = 0" then element.keypressed  = self.customKeys.zeroSpeedKey
+        elseif element.label == "Jump"      then element.keypressed  = "space"
+        elseif element.label == "Land"      then element.keypressed  = self.customKeys.landKey
         elseif element.label == ""          then element.NOP         = true
         end
     end,
