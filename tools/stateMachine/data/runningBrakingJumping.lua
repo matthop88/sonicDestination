@@ -5,11 +5,11 @@ return {
     { type = "BOX",   label = "Accelerate Right",              x  = 41,   y  = 1.5,  w  =  6,  h =  29, scrollY = 346  },
     { type = "BOX",   label = "Accelerate Left",               x  = -7,   y  = 1.5,  w  =  6,  h =  29, scrollY = 346  },
     { type = "BOX",   label = "Decelerate Left",               x  = 14,   y  = 19,   w  =  7,  h =   5, scrollY = 346  },
-    { type = "BOX",   label = "Brake Left",                    x  = 12,   y  = 26.5, w  =  5,  h =   4, scrollY = 346  },
+    { type = "BOX",   label = "Brake Left",                    x  = 11.75,y  = 26.5, w  =  5.5,h =   4, scrollY = 346  },
     { type = "BOX",   label = "Decelerate Right",              x  = 18,   y  =  8.5, w  =  7,  h =   5, scrollY = 346  },
     { type = "BOX",   label = "Brake Right",                   x  = 17,   y  =  1.5, w  =  5,  h =   4, scrollY = 346  },
     
-    { type = "BOX",   label = "Grounded",        alpha = 0.5,  x  = -8,   y  =  0.5, w  = 56,  h =  31  },
+    { type = "BOX",   label = "Grounded",        alpha = 0.3,  x  = -8,   y  =  0.5, w  = 56,  h =  31  },
     
     { type = "ARROW", label = "R On",      from = "Stand Right",      to = "Accelerate Right", y = 15   },
     { type = "ARROW", label = "R Off",     from = "Accelerate Right", to = "Decelerate Right", y = 11.5, xLabel = 3    },
@@ -77,5 +77,5 @@ return {
     { type = "ARROW", label = "Jump",      from = "Brake Right",          to = "2",                    x = 19.5, headless = true, yLabel = -10, xLabel = -1.3  },
     { type = "ARROW", label = "",          from = "2",                    to = "Air Accelerate Left",  y = -21.5 },
     
-    { type = "BOX",   label = "Airborne",alpha = 0.5,         x  = -8,    y  = -33.5,   w  = 56,       h = 29    },
+    { type = "BOX",   label = "Airborne",alpha = 0.3,         x  = -8,    y  = -33.5,   w  = 56,       h = 29    },
 }
