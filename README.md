@@ -51,6 +51,20 @@ To execute the State Machine Viewer application, use the command
 
     love . stateMachine
 
+To execute the Sound Graph application, use the command
+
+    love . soundGraph
+
+with an argument (optional; defaults to "sonicCDJump.mp3") specifying the sound you wish to analyze.
+Only specify the filename (WITH the extension.)
+Sound is expected to be an mp3 or ogg sound file located in the game/resources/sounds directory.
+
+EX: 
+
+    love . soundGraph jump.ogg
+
+runs the Sound Graph application on the sound file `sonicDestination/game/resources/sounds/jump.ogg`.
+
 To execute the Test Suite application, use the command
 
     love . test
