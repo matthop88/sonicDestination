@@ -1,5 +1,6 @@
 -- Properties specific to game
 
 return {
-    player1 = "sonic1",
+    player1   = "sonic1",
+    jumpSound = "sonicJumping",
 }

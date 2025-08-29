@@ -1,9 +1,9 @@
 return {
-    init = function(self, gridSize, labelFontSize, graphics)
+    init = function(self, gridSize, labelFontSize, graphics, customKeys)
         self.GRID_SIZE       = gridSize
         self.LABEL_FONT_SIZE = labelFontSize
         self.graphics        = graphics
-
+        self.customKeys      = customKeys or { landKey = "space", zeroSpeedKey = "0", }    
         self.BOX   = require("plugins/modules/stateMachineViewer/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE,        graphics)
         self.ARROW = require("plugins/modules/stateMachineViewer/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE * 0.75, graphics)
 
@@ -31,14 +31,14 @@ return {
     end,
 
     createBox   = function(self, element)
-        local box = self.BOX:create(element.label, element.x, element.y, element.w, element.h)
+        local box = self.BOX:create(element.label, element.x, element.y, element.w, element.h, element.alpha, element.scrollY)
         self.boxesByName[element.label] = box
         return box
     end,
     
     createArrow = function(self, element)
         if element.x1 then
-            return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2)
+            return self.ARROW:create(element.label, element.x1, element.y1, element.x2, element.y2, {})
         else
             return self:createSmartArrow(element)
         end
@@ -58,7 +58,7 @@ return {
     end,
 
     createSmartRightArrow = function(self, element, srcBox, dstBox)
-        local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y)
+        local smartRightArrow = self.ARROW:create(element.label, (srcBox.x + srcBox.w) / self.GRID_SIZE, element.y, dstBox.x / self.GRID_SIZE, element.y, self:getElementParams(element))
         return self:setupSmartArrow(smartRightArrow, srcBox, dstBox)
     end,
 
@@ -70,18 +70,22 @@ return {
     end,
     
     createSmartLeftArrow = function(self, element, srcBox, dstBox)
-        local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y)
+        local smartLeftArrow = self.ARROW:create(element.label, srcBox.x / self.GRID_SIZE, element.y, (dstBox.x + dstBox.w) / self.GRID_SIZE, element.y, self:getElementParams(element))
         return self:setupSmartArrow(smartLeftArrow, srcBox, dstBox)
     end,
 
     createSmartUpArrow = function(self, element, srcBox, dstBox)
-        local smartUpArrow = self.ARROW:create(element.label, element.x, srcBox.y / self.GRID_SIZE, element.x, (dstBox.y + dstBox.h) / self.GRID_SIZE)
+        local smartUpArrow = self.ARROW:create(element.label, element.x, srcBox.y / self.GRID_SIZE, element.x, (dstBox.y + dstBox.h) / self.GRID_SIZE, self:getElementParams(element))
         return self:setupSmartArrow(smartUpArrow, srcBox, dstBox)
     end,
 
     createSmartDownArrow = function(self, element, srcBox, dstBox)
-        local smartDownArrow = self.ARROW:create(element.label, element.x, (srcBox.y + srcBox.h) / self.GRID_SIZE, element.x, dstBox.y / self.GRID_SIZE)
+        local smartDownArrow = self.ARROW:create(element.label, element.x, (srcBox.y + srcBox.h) / self.GRID_SIZE, element.x, dstBox.y / self.GRID_SIZE, self:getElementParams(element))
         return self:setupSmartArrow(smartDownArrow, srcBox, dstBox)
+    end,
+
+    getElementParams = function(self, element)
+        return { headless = element.headless, xLabel = element.xLabel, yLabel = element.yLabel }
     end,
     
     createKeyEvent = function(self, element)
@@ -89,7 +93,10 @@ return {
         elseif element.label == "R On"      then element.keypressed  = "right"
         elseif element.label == "L Off"     then element.keyreleased = "left"
         elseif element.label == "R Off"     then element.keyreleased = "right"
-        elseif element.label == "Speed = 0" then element.keypressed  = "0"
+        elseif element.label == "Speed = 0" then element.keypressed  = self.customKeys.zeroSpeedKey
+        elseif element.label == "Jump"      then element.keypressed  = "space"
+        elseif element.label == "Land"      then element.keypressed  = self.customKeys.landKey
+        elseif element.label == ""          then element.NOP         = true
         end
     end,
     

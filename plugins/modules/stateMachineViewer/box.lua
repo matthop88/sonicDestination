@@ -8,7 +8,7 @@ return {
         return self
     end,
 
-    create = function(self, label, x, y, w, h)
+    create = function(self, label, x, y, w, h, alpha, scrollY)
         return {
             GRID_SIZE       = self.GRID_SIZE,
             LABEL_FONT_SIZE = self.LABEL_FONT_SIZE,
@@ -21,6 +21,7 @@ return {
             h               = h * self.GRID_SIZE,
 
             selected        = false,
+            scrollY         = scrollY,
 
             getType = function(self)
                 return "BOX"
@@ -53,6 +54,7 @@ return {
             
             drawBox = function(self)
                 self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                self.graphics:setAlpha(alpha)
                 self.graphics:rectangle("fill", self.x, self.y, self.w, self.h)
                 self.graphics:setColor(COLORS.JET_BLACK)
                 self.graphics:setLineWidth(5)
@@ -61,6 +63,7 @@ return {
 
             drawHighlightedBox = function(self)
                 self.graphics:setColor(COLORS.LIGHT_YELLOW)
+                self.graphics:setAlpha(alpha)
                 self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
                 self.graphics:setColor(COLORS.RED)
                 self.graphics:setLineWidth(5)
@@ -69,6 +72,7 @@ return {
 
             drawSelectedBox = function(self)
                 self.graphics:setColor(COLORS.LIGHT_PINK)
+                self.graphics:setAlpha(alpha)
                 self.graphics:rectangle("fill", self.x - 5, self.y - 5, self.w + 10, self.h + 10)
                 self.graphics:setColor(COLORS.RED)
                 self.graphics:setLineWidth(5)

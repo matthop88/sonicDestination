@@ -2,34 +2,32 @@ local STATES
 
 local sonic1Sprite, sonic2Sprite
 
+local SOUND_MANAGER = requireRelative("sound/soundManager")
+
+local JUMP_SOUND = "sonicJumping"
+
 return {
-    -----------------------------------------------------------
-    BRAKING_ACCELERATION = 1800,       MIN_SPEED_TO_BRAKE = 60,
-    -----------------------------------------------------------
-    -- 128 subpixels per frame
-
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Running#Acceleration
-    -----------------------------------------------------------
-    RUNNING_ACCELERATION = 168.75,
-    -----------------------------------------------------------
-    -- 12 subpixels per frame
-
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Running#Acceleration
-
-    -- Multiply by 60 to calculate acceleration per second
-    -- Multiply by 60 again because velocity is 60x higher
-    -----------------------------------------------------------
-    MAX_RUNNING_SPEED = 360,
-    -----------------------------------------------------------
-    -- 6 pixels per frame
-
-    -- From Sonic Physics Guide
-    -- https://info.sonicretro.org/SPG:Running#Constants
-
-    -- Multiply by 60 to calculate pixels per second (@ 60 fps)
-    -----------------------------------------------------------
+    --------------------------------------------------------------
+    BRAKING_ACCELERATION = 1800,           -- 0.5      pixels/frame      
+    MIN_SPEED_TO_BRAKE   = 60,             -- 1        pixel /frame
+    RUNNING_ACCELERATION = 168.75,         -- 0.046875 pixels/frame
+    ---------------------------------------------------------------
+    -- Source: https://info.sonicretro.org/SPG:Running#Acceleration
+    ---------------------------------------------------------------
+    MAX_RUNNING_SPEED    = 360,            -- 6        pixels/frame
+    ---------------------------------------------------------------
+    -- Source: https://info.sonicretro.org/SPG:Running#Constants
+    ---------------------------------------------------------------
+    JUMP_VELOCITY        = 390,            -- 6.5      pixels/frame
+    GRAVITY_FORCE        = 787.5,          -- 0.21875  pixels/frame
+    ---------------------------------------------------------------
+    -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
+    ---------------------------------------------------------------
+    AIR_ACCELERATION     = 337.5,          -- 0.09375  pixels/frame
+    ---------------------------------------------------------------
+    -- Source: https://info.sonicretro.org/SPG:Air_State#Constants
+    ---------------------------------------------------------------
+    GROUND_LEVEL         = 556,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -43,6 +41,8 @@ return {
         
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
+
+        self:moveTo(512, self.GROUND_LEVEL)
         return self
     end,
 
@@ -54,6 +54,7 @@ return {
         self.sprite:update(dt)
         self:updateState(dt)
         self:updateFrameRate(dt)
+        self:applyGravity(dt)
         self:updatePosition(dt)
     end,
 
@@ -88,6 +89,17 @@ return {
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
+    startJump     = function(self)
+        if self:isGrounded() then 
+            self.velocity.y = -self.JUMP_VELOCITY
+            SOUND_MANAGER:play(JUMP_SOUND)
+        end
+    end,
+
+    isGrounded    = function(self)
+        return self.position.y == self.GROUND_LEVEL and self.velocity.y >= 0
+    end,
+    
     setState      = function(self, state)
         self.nextState = state
     end,
@@ -103,16 +115,21 @@ return {
 
     updateFrameRate = function(self, dt)
         self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
-
-        --[[
-        Source:
-        https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
-        --]]
+        --------------------------------------------------------------------------------------
+        -- Source: https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
     end,
     
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
-        self.position.y = self.position.y + (self.velocity.y * dt)
+        self.position.y = math.min(self.GROUND_LEVEL, self.position.y + (self.velocity.y * dt))
+    end,
+
+    applyGravity = function(self, dt)
+        if not self:isGrounded() then
+            self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
+        else
+            self.velocity.y = 0
+        end
     end,
 
     onPropertyChange = function(self, propData)
@@ -120,6 +137,9 @@ return {
             self:changeSonicSprite(sonic2Sprite)
         elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
             self:changeSonicSprite(sonic1Sprite)
+        end
+        if propData.jumpSound then
+            JUMP_SOUND = propData.jumpSound
         end
     end,
 }

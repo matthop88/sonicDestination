@@ -44,14 +44,20 @@ return {
             :add("pause")
             :add("stateMachineViewer", {
                 graphics = dofile("tools/lib/graphics.lua"),
-                states   = { "braking" },
+                states   = { "runningBrakingJumping" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",
                 arrowFunctions = {
-                    {
-                        key = "Speed = 0",
+                    {   key = "Speed = 0",
                         fn  = function() return self.SONIC.velocity.x == 0 end,
-                    }
+                    },
+                    {   key = "Land",
+                        fn  = function() return self.SONIC:isGrounded() end,
+                    },
+                },
+                customKeys = {
+                    landKey      = nil,
+                    zeroSpeedKey = nil,
                 },
                 accessorFnName = "getStateMachineViewer",
             })

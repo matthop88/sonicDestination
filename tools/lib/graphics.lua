@@ -30,6 +30,11 @@ return {
     setColor     = function(self, arg1, arg2, arg3, arg4)
         love.graphics.setColor(arg1, arg2, arg3, arg4)
     end,
+
+    setAlpha     = function(self, alpha)
+        local r, g, b = love.graphics.getColor()
+        love.graphics.setColor(r, g, b, alpha or 1)
+    end,
     
     setLineWidth = function(self, lineWidth) self.lineWidth = lineWidth    end,
 
@@ -77,6 +82,9 @@ return {
     end,
 
     ------------------------- Scrolling Functions ----------------------
+    
+    getX = function(self) return self.x end,
+    getY = function(self) return self.y end,
     
     setX = function(self, x) self.x = x end,
     setY = function(self, y) self.y = y end,

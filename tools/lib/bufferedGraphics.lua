@@ -10,6 +10,10 @@ return {
                 graphics:setColor(arg1, arg2, arg3, arg4)
             end,
 
+            setAlpha     = function(self, alpha)
+                graphics:setAlpha(alpha)
+            end,
+
             setLineWidth = function(self, lineWidth)
                 graphics:setLineWidth(lineWidth)
             end,
@@ -46,6 +50,9 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            getX = function(self) return graphics:getX() end,
+            getY = function(self) return graphics:getY() end,
+            
             setX = function(self, x) graphics:setX(x) end,
             setY = function(self, y) graphics:setY(y) end,
 

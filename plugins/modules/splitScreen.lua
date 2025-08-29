@@ -28,11 +28,13 @@ return {
 
     handleKeypressed = function(self, key)
         if key == "1" then
-            if self.destDegrees == 60 then self.destDegrees = 90
-            else                           self.destDegrees = 60  end
+            if     self.destDegrees == 60 then self.destDegrees = 90
+            elseif self.destDegrees == 42 then self.destDegrees = 60
+            else                               self.destDegrees = 42  end
         elseif key == "2" then
-            if self.destDegrees == 90 then self.destDegrees = 60
-            else                           self.destDegrees = 0   end
+            if     self.destDegrees == 90 then self.destDegrees = 60
+            elseif self.destDegrees == 60 then self.destDegrees = 42
+            else                               self.destDegrees = 0   end
         end
     end,
 }
