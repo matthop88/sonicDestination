@@ -2,5 +2,5 @@
 
 return {
     player1   = "sonic1",
-    jumpSound = "sonicCDJumping",
+    jumpSound = "sonicJumping",
 }
