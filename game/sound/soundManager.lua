@@ -1,5 +1,6 @@
 return ({
     init = function(self)
+        self:initSoundData()
         return self
     end,
 
@@ -7,21 +8,31 @@ return ({
         self.data[soundName]:play()
     end,
 
-    data = {
-        sonicBraking = { 
-            filename = "brake.ogg",
-            sound    = nil,
-
-            load = function(self)
-                if self.sound == nil then
-                    self.sound = love.audio.newSource("game/resources/sounds/" .. self.filename, "static")
-                end
-            end,
-
-            play = function(self)
-                self:load()
-                self.sound:play()
-            end,
-        },
+    soundFiles = {
+        sonicBraking = "brake.ogg",
     },
+        
+    data       = nil,
+
+    initSoundData = function(self)
+        self.data = {}
+        for k, v in pairs(self.soundFiles) do
+            self.data[k] = {
+                filename = v,
+                sound    = nil,
+
+                load = function(self)
+                    if self.sound == nil then
+                        self.sound = love.audio.newSource("game/resources/sounds/" .. self.filename, "static")
+                    end
+                end,
+
+                play = function(self)
+                    self:load()
+                    self.sound:play()
+                end,
+            }
+        end
+    end,
+        
 }):init()
