@@ -4,6 +4,8 @@ local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
+local JUMP_SOUND = "sonicJumping",
+
 return {
     --------------------------------------------------------------
     BRAKING_ACCELERATION = 1800,           -- 0.5      pixels/frame      
@@ -90,7 +92,7 @@ return {
     startJump     = function(self)
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
-            SOUND_MANAGER:play("sonicJumping")
+            SOUND_MANAGER:play(JUMP_SOUND)
         end
     end,
 
@@ -135,6 +137,9 @@ return {
             self:changeSonicSprite(sonic2Sprite)
         elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
             self:changeSonicSprite(sonic1Sprite)
+        end
+        if propData.jumpSound then
+            JUMP_SOUND = propData.jumpSound
         end
     end,
 }
