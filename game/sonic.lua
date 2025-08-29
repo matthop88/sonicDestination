@@ -4,7 +4,7 @@ local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
-local JUMP_SOUND = "sonicJumping",
+local JUMP_SOUND = "sonicJumping"
 
 return {
     --------------------------------------------------------------
