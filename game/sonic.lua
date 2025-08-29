@@ -2,6 +2,8 @@ local STATES
 
 local sonic1Sprite, sonic2Sprite
 
+local SOUND_MANAGER = requireRelative("sound/soundManager")
+
 return {
     --------------------------------------------------------------
     BRAKING_ACCELERATION = 1800,           -- 0.5      pixels/frame      
@@ -86,7 +88,10 @@ return {
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
     startJump     = function(self)
-        if self:isGrounded() then self.velocity.y = -self.JUMP_VELOCITY end
+        if self:isGrounded() then 
+            self.velocity.y = -self.JUMP_VELOCITY
+            SOUND_MANAGER:play("sonicJumping")
+        end
     end,
 
     isGrounded    = function(self)
