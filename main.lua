@@ -25,6 +25,9 @@ function love.load(args)
     elseif args[1] == "stateMachine" then
         __VIEWER_FILE = args[2]
         require "tools/stateMachine/viewer"
+    elseif args[1] == "soundGraph" then
+        __SOUND_FILE = args[2]
+        require "tools/soundGraph/soundGraphApp"
     elseif args[1] == "test" then
         require "testing/testFramework"
     else
