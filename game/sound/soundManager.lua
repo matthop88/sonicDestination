@@ -9,8 +9,9 @@ return ({
     end,
 
     soundFiles = {
-        sonicBraking = "brake.ogg",
-        sonicJumping = "jump.ogg",
+        sonicBraking   = "brake.ogg",
+        sonicJumping   = "jump.ogg",
+        sonicCDJumping = "sonicCDJump.mp3",
     },
         
     data       = nil,
