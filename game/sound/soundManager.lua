@@ -9,9 +9,9 @@ return ({
     end,
 
     data = {
-        sonicBraking   = { filename = "brake.ogg", },
-        sonicJumping   = { filename = "jump.ogg",  },
-        sonicCDJumping = { filename = "sonicCDJump.mp3", startPoint = 19520, },
+        sonicBraking   = { filename = "brake.ogg",       volume     = 0.2, },
+        sonicJumping   = { filename = "jump.ogg",        volume     = 0.2, },
+        sonicCDJumping = { filename = "sonicCDJump.mp3", volume     = 0.9,  startPoint = 19520, },
     },
 
     initSoundData = function(self)
@@ -23,6 +23,7 @@ return ({
             end
             element.play = function(self)
                 self:load()
+                self.sound:setVolume(self.volume or 1)
                 self.sound:play()
                 if self.startPoint then self.sound:seek(self.startPoint, "samples") end
             end
