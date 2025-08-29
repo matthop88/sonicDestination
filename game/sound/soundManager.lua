@@ -10,6 +10,7 @@ return ({
 
     soundFiles = {
         sonicBraking = "brake.ogg",
+        sonicJumping = "jump.ogg",
     },
         
     data       = nil,
