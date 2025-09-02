@@ -83,6 +83,8 @@ return {
 
         local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:", function(value) spriteRect.offset.x = value end)
         local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:", function(value) spriteRect.offset.y = value end)
+
+        local animationPane = require("tools/spriteSheetSlicer/animationPane"):create()
         
         return {
             draw = function(self)
@@ -91,6 +93,7 @@ return {
                     self:drawInnerPane()
                     self:drawTextFields()
                     self:drawSprite()
+                    animationPane:draw()
                 end
             end,
 
@@ -141,12 +144,22 @@ return {
             keypressed = function(self, key)
                 local mx, my = love.mouse.getPosition()
                 if isActive then
-                    if   offsetXField:handleKeypressed(key)
-                      or offsetYField:handleKeypressed(key)
-                      or self:isInsideInnerRect(mx, my)     
-                    then
-                        return true
+                    if key == "lalt" or key == "ralt" then
+                        animationPane:enable()
+                    else
+                        if   offsetXField:handleKeypressed(key)
+                          or offsetYField:handleKeypressed(key)
+                          or self:isInsideInnerRect(mx, my)     
+                        then
+                            return true
+                        end
                     end
+                end
+            end,
+
+            keyreleased = function(self, key)
+                if key == "lalt" or key == "ralt" then
+                    animationPane:disable()
                 end
             end,
             
