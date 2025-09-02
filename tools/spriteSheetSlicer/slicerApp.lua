@@ -171,6 +171,10 @@ function love.keypressed(key)
     end
 end
 
+function love.keyreleased(key)
+    gallery:keyreleased(key)
+end
+
 function love.mousepressed(mx, my)
     if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
