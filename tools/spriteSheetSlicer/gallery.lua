@@ -163,6 +163,10 @@ return {
         end
     end,
 
+    keyreleased = function(self, key)
+        self.editor:keyreleased(key)
+    end,
+
     handleKeypressedInEditor = function(self, key)
         local mx, my = love.mouse.getPosition()
         if self.editor:isInsideInnerRect(mx, my) then
