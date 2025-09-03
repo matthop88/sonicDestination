@@ -1,4 +1,5 @@
-local Editor = require "tools/spriteSheetSlicer/editor"
+local Editor        = require "tools/spriteSheetSlicer/editor"
+local AnimationPane = require "tools/spriteSheetSlicer/animationPane"
 
 local GallerySlot = {
     create = function(self, index, x, y, w, h, image, spriteRect)
@@ -96,7 +97,8 @@ return {
         end,
     },
     
-    editor = Editor:create(),
+    editor        = Editor:create(),
+    animationPane = AnimationPane:create(),
 
     init = function(self, spriteRects)
         self:refresh(spriteRects)
@@ -133,6 +135,7 @@ return {
         self:drawSlotBorders()
         self:drawSprites()
         self.editor:draw()
+        self.animationPane:draw()
     end,
 
     update = function(self, dt)
@@ -157,14 +160,14 @@ return {
     end,
 
     keypressed = function(self, key)
-        if     key == "escape"             then self.editor:setActive(false)
-        elseif self.editor:keypressed(key) then return self:handleKeypressedInEditor(key)
-        elseif key == "x"                  then self:printOutGalleryStats()
-        end
+        if     key == "escape"                then self.editor:setActive(false)
+        elseif key == "lalt" or key == "ralt" then self.animationPane:enable()
+        elseif self.editor:keypressed(key)    then return self:handleKeypressedInEditor(key)
+        elseif key == "x"                     then self:printOutGalleryStats()          end
     end,
 
     keyreleased = function(self, key)
-        self.editor:keyreleased(key)
+        if key == "lalt" or key == "ralt" then self.animationPane:disable() end
     end,
 
     handleKeypressedInEditor = function(self, key)
