@@ -95,6 +95,14 @@ return {
         get = function(self)
             return self.contents
         end,
+
+        getSpriteData = function(self)
+            local spriteData = {}
+            for _, slot in ipairs(self.contents) do
+                table.insert(spriteData, { image = slot:getImage(), rect = slot:getSpriteRect() })
+            end
+            return spriteData
+        end,
     },
     
     editor        = Editor:create(),
@@ -140,6 +148,7 @@ return {
 
     update = function(self, dt)
         for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:update(dt) end
+        self.animationPane:update(dt)
     end,
 
     mousepressed = function(self, mx, my)
@@ -161,7 +170,9 @@ return {
 
     keypressed = function(self, key)
         if     key == "escape"                then self.editor:setActive(false)
-        elseif key == "lalt" or key == "ralt" then self.animationPane:enable()
+        elseif key == "lalt" or key == "ralt" then 
+            self.animationPane:enable()
+            self.animationPane:setSpriteData(self.slots:getSpriteData())
         elseif self.editor:keypressed(key)    then return self:handleKeypressedInEditor(key)
         elseif key == "x"                     then self:printOutGalleryStats()          end
     end,
