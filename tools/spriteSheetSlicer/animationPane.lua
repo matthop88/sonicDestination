@@ -35,7 +35,7 @@ return {
 
 			update = function(self, dt)
 				if enabled then
-					self.index = self.index + (60 / self.fps * dt)
+					self.index = self.index + (self.fps * dt)
 					if math.floor(self.index) > #self.spriteData then
 						self.index = self.index - #self.spriteData
 					end
