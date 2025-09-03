@@ -113,13 +113,14 @@ return {
         return self
     end,
 
-    refresh = function(self, spriteRects)
+    refresh = function(self, spriteRects, fps)
         if spriteRects then
             self.slots:clear()
             local image = getImageViewer():getImage()
             for n, spriteRect in ipairs(spriteRects) do
                 self:rebuildSpriteRect(n, spriteRect, image)
             end
+            self.animationPane.fps = fps
         end
     end,
 
