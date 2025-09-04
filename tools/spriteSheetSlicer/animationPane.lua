@@ -61,6 +61,11 @@ return {
 				enabled = false
 			end,
 
+			setFPS = function(self, fps)
+				self.fps = fps
+				fpsField:setValue(fps)
+			end,
+			
 			setSpriteData = function(self, spriteData)
 				self.spriteData = spriteData
 			end,
