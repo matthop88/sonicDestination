@@ -120,6 +120,7 @@ return {
             for n, spriteRect in ipairs(spriteRects) do
                 self:rebuildSpriteRect(n, spriteRect, image)
             end
+            self.animationPane:setSpriteData(self.slots:getSpriteData())
             self.animationPane:setFPS(fps)
         end
     end,
