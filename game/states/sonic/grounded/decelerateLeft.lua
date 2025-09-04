@@ -8,7 +8,7 @@ return {
     end,
     
     onEnter    = function(self)
-        -- do nothing
+        SONIC.sprite:setCurrentAnimation("running")
     end,
     
     keypressed = function(self, key)
