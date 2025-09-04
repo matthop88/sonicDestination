@@ -120,7 +120,7 @@ return {
             for n, spriteRect in ipairs(spriteRects) do
                 self:rebuildSpriteRect(n, spriteRect, image)
             end
-            self.animationPane.fps = fps
+            self.animationPane:setFPS(fps)
         end
     end,
 
@@ -174,6 +174,8 @@ return {
         elseif key == "lalt" or key == "ralt" then 
             self.animationPane:enable()
             self.animationPane:setSpriteData(self.slots:getSpriteData())
+        elseif self.animationPane:keypressed(key) then
+            return true
         elseif self.editor:keypressed(key)    then return self:handleKeypressedInEditor(key)
         elseif key == "x"                     then self:printOutGalleryStats()          end
     end,
