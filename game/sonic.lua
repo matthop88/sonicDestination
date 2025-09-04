@@ -93,6 +93,7 @@ return {
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
             SOUND_MANAGER:play(JUMP_SOUND)
+            self.sprite:setCurrentAnimation("jumping")
         end
     end,
 
