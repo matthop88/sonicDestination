@@ -62,18 +62,20 @@ return {
                 end
             end,
 
+            setCurrentAnimation = function(self, animationName)
+                if self.data[animationName] == nil then
+                    print("ERROR: Cannot switch to animation \"" .. animationName .. "\"")
+                else
+                    self:setCurrentAnimationIntern(animationName)
+                end
+            end,
+
             setCurrentAnimationIntern = function(self, animationName)
                 if self.currentAnimation.name ~= animationName then
                     self.currentAnimation      = self.data[animationName]
                     self.currentAnimation.name = animationName
                     self.currentFrameIndex     = 1
                 end
-            end,
-
-            setCurrentAnimationIntern = function(self, animationName)
-                self.currentAnimation      = self.data[animationName]
-                self.currentAnimation.name = animationName
-                self.currentFrameIndex     = 1
             end,
         
             getImage           = function(self)      return self.image                                         end,
