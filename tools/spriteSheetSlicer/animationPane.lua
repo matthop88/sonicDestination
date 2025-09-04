@@ -1,8 +1,14 @@
+local TextField = require("tools/lib/components/textField")
+
 return {
 	create = function(self)
 		local enabled = false
 
-		return {
+        local ANIMATION_PANE
+
+        local fpsField = TextField:create(600, 118, 168, 48, "FPS: ", function(value) ANIMATION_PANE.fps = value end)
+        
+		ANIMATION_PANE = {
 			spriteData = {},
 
 			index = 1,
@@ -12,6 +18,7 @@ return {
 				if enabled then
 					self:drawTranslucentPane()
 					self:drawAnimationFrame()
+                    fpsField:draw()
 				end
 			end,
 
@@ -42,6 +49,10 @@ return {
 				end
 			end,
 
+            keypressed = function(self, key)
+                return enabled and fpsField:handleKeypressed(key)
+            end,
+
 			enable = function(self)
 				enabled = true
 			end,
@@ -55,5 +66,7 @@ return {
 			end,
 
 		}
+
+        return ANIMATION_PANE
 	end,
 }
