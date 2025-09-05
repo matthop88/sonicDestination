@@ -2,7 +2,7 @@ return {
     toggleShowKey = nil,
     showTracker   = false,
     graphics      = nil,
-    positionFn    = nil,
+    posAndWidthFn = nil,
 
     leftX         = 0,
     topY          = 0,
@@ -11,7 +11,7 @@ return {
     init = function(self, params)
         self.toggleShowKey = params.toggleShowKey
         self.graphics      = params.graphics
-        self.positionFn    = params.positionFn
+        self.posAndWidthFn = params.posAndWidthFn
         return self
     end,
     
@@ -35,9 +35,9 @@ return {
     end,
 
     drawHorizontalLineAboveSprite = function(self)
-        if self.positionFn then
-            local x, y = self.positionFn()
-            self.graphics:line(x, y, x + 48, y)
+        if self.posAndWidthFn then
+            local x, y, w = self.posAndWidthFn()
+            self.graphics:line(x, y, x + w, y)
         end
     end,
      
