@@ -115,9 +115,11 @@ return {
     end,
 
     updateFrameRate = function(self, dt)
-        self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
-        --------------------------------------------------------------------------------------
-        -- Source: https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
+        if self:isGrounded() then self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
+        else                      self.sprite:setFPS(60 / ((math.max(0, 4 - math.abs(self.velocity.x / 60))) + 1))  end
+        ---------------------------------------------------------------------------------------------------------------
+        --           Source: https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings             --
+        ---------------------------------------------------------------------------------------------------------------
     end,
     
     updatePosition = function(self, dt)
