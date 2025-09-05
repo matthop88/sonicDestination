@@ -85,6 +85,13 @@ return {
                 },
                 accessorFnName = "getStateMachineViewer",
             })
+            :add("heightTracker", {
+                toggleShowKey = "h",
+                spriteFn      = function() 
+                    return self.SONIC.sprite 
+                end,
+                mode          = "MOBIUS",
+            })
             :add("splitScreen", {
                 GFX1 = self.GRAPHICS,
                 GFX2 = getStateMachineViewer():getGraphics(),
@@ -179,13 +186,6 @@ return {
                         toggleShowKey = "G",
                     },
                 }
-            })
-            :add("heightTracker", {
-                toggleShowKey = "h",
-                spriteFn      = function() 
-                    return self.SONIC.sprite 
-                end,
-                mode          = "MOBIUS",
             })
             :add("readout", { printFnName = "printMessage" })
     end,
