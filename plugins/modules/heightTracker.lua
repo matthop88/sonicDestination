@@ -16,9 +16,8 @@ return {
     draw = function(self)
         if self.showTracker then
             self:updateWorldCoordinates()
-            self.graphics:setColor(1, 1, 1)
-            self.graphics:setLineWidth(2)
-            self.graphics:line(self.rightX, self.topY, self.rightX, love.graphics.getHeight() * 3/4)
+            self:drawVerticalLine()
+            self:drawHorizontalLineAboveSprite()
         end
     end,
 
@@ -26,7 +25,20 @@ return {
         self.leftX,  self.topY    = self.graphics:screenToImageCoordinates(0, 0)
         self.rightX, _            = self.graphics:screenToImageCoordinates(love.graphics.getWidth() - 24, love.graphics.getHeight())
     end,
-    
+
+    drawVerticalLine = function(self)
+        self.graphics:setColor(1, 1, 1)
+        self.graphics:setLineWidth(2)
+        self.graphics:line(self.rightX, self.topY, self.rightX, love.graphics.getHeight() * 3/4)
+    end,
+
+    drawHorizontalLineAboveSprite = function(self)
+        if self.positionFn then
+            local x, y = self.positionFn()
+            self.graphics:line(x, y, x + 48, y)
+        end
+    end,
+     
     handleKeypressed = function(self, key)
         if key == self.toggleShowKey then
             self.showTracker = not self.showTracker
