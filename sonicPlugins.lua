@@ -180,6 +180,13 @@ return {
                     },
                 }
             })
+            :add("heightTracker", {
+                toggleShowKey = "h",
+                spriteFn      = function() 
+                    return self.SONIC.sprite 
+                end,
+                mode          = "MOBIUS",
+            })
             :add("readout", { printFnName = "printMessage" })
     end,
 }
