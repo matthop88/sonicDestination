@@ -88,7 +88,9 @@ return {
         
             getImageX          = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)    end,
             getImageY          = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)    end,
-        
+            getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX           end,
+            getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY           end,
+                
             getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                   end,
 
             setCurrentFrameIndex = function(self, frameIndex)
