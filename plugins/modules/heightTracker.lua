@@ -5,8 +5,7 @@ return {
 
     leftX         = 0,
     topY          = 0,
-    rightX        = 1024,
-    bottomY       = 576,
+    rightX        = 1000,
         
     init = function(self, params)
         self.toggleShowKey = params.toggleShowKey
@@ -19,13 +18,13 @@ return {
             self:updateWorldCoordinates()
             self.graphics:setColor(1, 1, 1)
             self.graphics:setLineWidth(2)
-            self.graphics:line(self.rightX, self.topY, self.rightX, self.bottomY)
+            self.graphics:line(self.rightX, self.topY, self.rightX, love.graphics.getHeight() * 3/4)
         end
     end,
 
     updateWorldCoordinates = function(self)
         self.leftX,  self.topY    = self.graphics:screenToImageCoordinates(0, 0)
-        self.rightX, self.bottomY = self.graphics:screenToImageCoordinates(love.graphics.getWidth() - 24, love.graphics.getHeight())
+        self.rightX, _            = self.graphics:screenToImageCoordinates(love.graphics.getWidth() - 24, love.graphics.getHeight())
     end,
     
     handleKeypressed = function(self, key)
