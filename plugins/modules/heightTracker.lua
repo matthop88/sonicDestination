@@ -2,6 +2,7 @@ return {
     toggleShowKey = nil,
     showTracker   = false,
     graphics      = nil,
+    positionFn    = nil,
 
     leftX         = 0,
     topY          = 0,
@@ -10,6 +11,7 @@ return {
     init = function(self, params)
         self.toggleShowKey = params.toggleShowKey
         self.graphics      = params.graphics
+        self.positionFn    = params.positionFn
         return self
     end,
     
