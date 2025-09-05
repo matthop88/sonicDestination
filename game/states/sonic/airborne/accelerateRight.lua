@@ -24,6 +24,11 @@ return {
             SONIC:setState(STATES.ACCELERATE_RIGHT) 
         else
             SONIC.velocity.x = math.min(SONIC.MAX_RUNNING_SPEED, SONIC.velocity.x + (SONIC.AIR_ACCELERATION * dt))
+            if SONIC.sprite:getFPS() >= 60 then
+                SONIC.sprite:setCurrentAnimation("fastJumping")
+            else
+                SONIC.sprite:setCurrentAnimation("jumping")
+            end
         end
     end,
 }
