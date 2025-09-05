@@ -81,6 +81,9 @@ return {
     getX          = function(self) return self.position.x                               end,
     getY          = function(self) return self.position.y                               end,
 
+    getImageX     = function(self) return self.sprite:getImageX(self:getX())            end,
+    getImageY     = function(self) return self.sprite:getImageY(self:getY())            end,
+    
     moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
     isFacingLeft  = function(self) return     self.sprite:isXFlipped()                  end,
