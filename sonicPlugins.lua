@@ -87,6 +87,7 @@ return {
             })
             :add("heightTracker", {
                 toggleShowKey = "h",
+                graphics      = self.GRAPHICS,
                 spriteFn      = function() 
                     return self.SONIC.sprite 
                 end,
