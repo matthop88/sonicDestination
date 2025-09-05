@@ -36,9 +36,8 @@ return {
                 return self.animations:getCurrentAnimName()
             end,
 
-            setFPS = function(self, fps)
-                self.animations:setFPS(fps)
-            end,
+            getFPS = function(self)      return self.animations:getFPS() end,
+            setFPS = function(self, fps) self.animations:setFPS(fps)     end,
             
             flipX       = function(self)           self.scale.x = self.scale.x * -1          end,
             isXFlipped  = function(self)           return self.scale.x < 0                   end,
