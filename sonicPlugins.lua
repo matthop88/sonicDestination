@@ -1,3 +1,27 @@
+local GRAVITY = {
+    {   name = "MOBIUS  (19.50 m/s2)", value = 787.5, },
+    {   name = "EARTH    (9.8  m/s2)", value = 386,   },
+    {   name = "MARS     (3.71 m/s2)", value = 146,   },
+    {   name = "JUPITER (24.79 m/s2)", value = 976,   },
+    {   name = "THE MOON (1.62 m/s2)", value =  64,   },
+
+    index = 1,
+
+    next = function(self)
+        self.index = self.index + 1
+        if self.index > #self then self.index = 1 end
+    end,
+
+    prev = function(self)
+        self.index = self.index - 1
+        if self.index < 1 then self.index = #self end
+    end,
+
+    get = function(self)
+        return self[self.index]
+    end,
+}
+
 return {
     init = function(self, params)
         self.SONIC      = params.SONIC
@@ -138,6 +162,21 @@ return {
                             key = "m",
                             fn  = function() self.SONIC.mphMode = not self.SONIC.mphMode end,
                         },
+                    },
+                    gravity = {
+                        name = "Gravity Of",
+                        incrementFn = function()
+                            GRAVITY:next()
+                            self.SONIC.GRAVITY_FORCE = GRAVITY:get().value
+                        end,
+                        decrementFn = function()
+                            GRAVITY:prev()
+                            self.SONIC.GRAVITY_FORCE = GRAVITY:get().value
+                        end,
+                        getValueFn  = function()
+                            return GRAVITY:get().name
+                        end,
+                        toggleShowKey = "G",
                     },
                 }
             })
