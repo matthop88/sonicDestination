@@ -1,9 +1,9 @@
 local GRAVITY = {
-    {   name = "MOBIUS  (19.50 m/s2)", value = 787.5, },
-    {   name = "EARTH    (9.8  m/s2)", value = 386,   },
-    {   name = "MARS     (3.71 m/s2)", value = 146,   },
-    {   name = "JUPITER (24.79 m/s2)", value = 976,   },
-    {   name = "THE MOON (1.62 m/s2)", value =  64,   },
+    {   name = "19.50 m/s2 (MOBIUS)",   value = 787.5, },
+    {   name = " 9.80 m/s2 (EARTH)",    value = 386,   },
+    {   name = " 3.71 m/s2 (MARS)",     value = 146,   },
+    {   name = "24.79 m/s2 (JUPITER)",  value = 976,   },
+    {   name = " 1.62 m/s2 (THE MOON)", value =  64,   },
 
     index = 1,
 
@@ -164,7 +164,7 @@ return {
                         },
                     },
                     gravity = {
-                        name = "Gravity Of",
+                        name = "Gravity Force",
                         incrementFn = function()
                             GRAVITY:next()
                             self.SONIC.GRAVITY_FORCE = GRAVITY:get().value
