@@ -33,6 +33,17 @@ return {
                 {   x = 324, y = 626, w = 30, h = 30, offset = { x = 13, y = 14 }, },
             },
         },
+        fastJumping = { fps = 60,
+            rect    = { x = 310,  y = 605, w = 60, h = 70 },
+            sprites = {
+                {   x =  44, y = 626, w = 29, h = 30, offset = { x = 14, y = 14 }, },
+                {   x = 114, y = 626, w = 30, h = 29, offset = { x = 14, y = 15 }, },
+                {   x = 324, y = 626, w = 30, h = 30, offset = { x = 13, y = 14 }, },
+                {   x = 185, y = 626, w = 29, h = 30, offset = { x = 13, y = 15 }, },
+                {   x = 254, y = 627, w = 30, h = 29, offset = { x = 14, y = 14 }, },
+                {   x = 324, y = 626, w = 30, h = 30, offset = { x = 13, y = 14 }, },
+            },
+        },
     },
     spriteRects = {
         { x =  46, y = 349, w = 24, h = 40, offset = { x = 12, y = 20 }, },
