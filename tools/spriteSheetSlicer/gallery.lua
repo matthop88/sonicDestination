@@ -203,7 +203,9 @@ return {
 
     updateEditor = function(self, gallerySlot)
         gallerySlot = gallerySlot or self.slots:this()
-        self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+        if gallerySlot then
+            self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+        end
     end,
         
     drawBackground = function(self)
