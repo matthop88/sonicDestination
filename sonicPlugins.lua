@@ -88,8 +88,8 @@ return {
             :add("heightTracker", {
                 toggleShowKey = "h",
                 graphics      = self.GRAPHICS,
-                positionFn    = function() 
-                    return self.SONIC:getImageX(), self.SONIC:getImageY() 
+                posAndWidthFn = function() 
+                    return self.SONIC:getImageX(), self.SONIC:getImageY(), self.sonic:getImageW() 
                 end,
                 mode          = "MOBIUS",
             })
