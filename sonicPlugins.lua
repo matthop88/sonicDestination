@@ -21,16 +21,10 @@ return {
 
     initPlugins = function(self)
         require("plugins/engine")
-            :add("updateLayer", { updateFn = self.UPDATE_FN })
             :add("modKeyEnabler")
             :add("grid3D",         { 
                 graphics      = self.GRAPHICS,
                 toggleGridKey = "g",
-            })
-            :add("cameraTracking", {
-                graphics        = self.GRAPHICS,
-                toggleCameraKey = "g",
-                positionFn      = function() return self.SONIC:getX(), self.SONIC:getY() end,
             })
             :add("scrolling",      { 
                 imageViewer = self.GRAPHICS,
@@ -40,8 +34,14 @@ return {
                 downKey     = "shiftdown"
             })
             :add("zooming",      { imageViewer = self.GRAPHICS })
-            :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("pause")
+            :add("updateLayer", { updateFn = self.UPDATE_FN })
+            :add("cameraTracking", {
+                graphics        = self.GRAPHICS,
+                toggleCameraKey = "g",
+                positionFn      = function() return self.SONIC:getX(), self.SONIC:getY() end,
+            })
+            :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("stateMachineViewer", {
                 graphics = dofile("tools/lib/graphics.lua"),
                 states   = { "runningBrakingJumping" },
