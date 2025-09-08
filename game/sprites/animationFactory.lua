@@ -91,8 +91,8 @@ return {
             getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX             end,
             getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY             end,
 
-            getGeneralX        = function(self, x, scaleX)  return x - (self.currentAnimation.offset.x * scaleX) end,
-            getGeneralY        = function(self, y, scaleY)  return y - (self.currentAnimation.offset.y * scaleY) end,
+            getGeneralX        = function(self, x, scaleX)  return x - (self.currentAnimation.offset.x * math.abs(scaleX)) end,
+            getGeneralY        = function(self, y, scaleY)  return y - (self.currentAnimation.offset.y * math.abs(scaleY)) end,
                 
             getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                     end,
 
