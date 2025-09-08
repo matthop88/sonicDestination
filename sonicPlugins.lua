@@ -91,7 +91,8 @@ return {
                 posAndWidthFn = function() 
                     local generalX = self.SONIC:getGeneralX()
                     local generalY = self.SONIC:getGeneralY()
-                    return generalX, generalY, generalX * 2 
+                    local generalW = math.abs(self.SONIC:getX() - self.SONIC:getGeneralX())
+                    return generalX, generalY, generalW
                 end,
                 mode          = "MOBIUS",
             })
