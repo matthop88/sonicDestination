@@ -1,11 +1,11 @@
 return {
     imageName  = "sonic2Transparent",
     animations = {
-        standing = { fps = 1, isDefault = true,
+        standing = { fps = 1,  offset = { x = 16, y = 19 }, isDefault = true,
             -------------------------------------------------------------------
             { x =  39, y = 263, w = 27, h = 39, offset = { x = 16, y = 19 }, },
         },
-        running  = { fps = 8,
+        running  = { fps = 10, offset = { x = 16, y = 19 },
             { x =  41, y = 347, w = 26, h = 39, offset = { x = 16, y = 19 }, },
             { x = 102, y = 346, w = 29, h = 40, offset = { x = 18, y = 20 }, },
             { x = 162, y = 345, w = 39, h = 40, offset = { x = 21, y = 21 }, },
@@ -15,7 +15,7 @@ return {
             { x = 412, y = 345, w = 40, h = 38, offset = { x = 23, y = 21 }, },
             { x = 476, y = 346, w = 39, h = 39, offset = { x = 22, y = 20 }, },
         },
-        jumping  = { fps = 12,
+        jumping  = { fps = 15, offset = { x = 16, y = 14 },
             { x =  828, y = 435, w = 29, h = 30, offset = { x = 16, y = 14 }, },
             { x = 1080, y = 435, w = 30, h = 30, offset = { x = 15, y = 14 }, },
             { x =  891, y = 435, w = 30, h = 29, offset = { x = 16, y = 15 }, },
