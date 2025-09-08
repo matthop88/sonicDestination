@@ -78,20 +78,23 @@ return {
                 end
             end,
         
-            getImage           = function(self)      return self.image                                         end,
-            getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                        end,
-            getCurrentFrame    = function(self)      return self.currentAnimation[self:getCurrentFrameIndex()] end,
-            getCurrentAnimName = function(self)      return self.currentAnimation.name                         end,
-            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                      end,
-            getFPS             = function(self)      return self.currentAnimation.fps                          end,   
-            setFPS             = function(self, fps) self.currentAnimation.fps = fps                           end,
+            getImage           = function(self)      return self.image                                           end,
+            getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
+            getCurrentFrame    = function(self)      return self.currentAnimation[self:getCurrentFrameIndex()]   end,
+            getCurrentAnimName = function(self)      return self.currentAnimation.name                           end,
+            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                        end,
+            getFPS             = function(self)      return self.currentAnimation.fps                            end,   
+            setFPS             = function(self, fps) self.currentAnimation.fps = fps                             end,
         
-            getImageX          = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)    end,
-            getImageY          = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)    end,
-            getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX           end,
-            getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY           end,
+            getImageX          = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
+            getImageY          = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
+            getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX             end,
+            getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY             end,
+
+            getGeneralX        = function(self,    scaleX)  return x - (self.currentAnimation.offset.x * scaleX) end,
+            getGeneralY        = function(self,    scaleY)  return y - (self.currentAnimation.offset.y * scaleY) end,
                 
-            getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                   end,
+            getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                     end,
 
             setCurrentFrameIndex = function(self, frameIndex)
                 if     frameIndex < 1                      then frameIndex = #self.currentAnimation
