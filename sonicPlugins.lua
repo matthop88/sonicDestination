@@ -89,7 +89,9 @@ return {
                 toggleShowKey = "h",
                 graphics      = self.GRAPHICS,
                 posAndWidthFn = function() 
-                    return self.SONIC:getImageX(), self.SONIC:getImageY(), self.SONIC:getImageW() 
+                    local generalX = self.SONIC:getGeneralX()
+                    local generalY = self.SONIC:getGeneralY()
+                    return generalX, generalY, generalX * 2 
                 end,
                 mode          = "MOBIUS",
             })
