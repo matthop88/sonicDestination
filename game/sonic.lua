@@ -85,6 +85,9 @@ return {
     getImageY     = function(self) return self.sprite:getImageY(self:getY())            end,
     getImageW     = function(self) return self.sprite:getImageW()                       end,
     getImageH     = function(self) return self.sprite:getImageH()                       end,
+
+    getGeneralX   = function(self) return self.sprite:getGeneralX(self:getX())          end,
+    getGeneralY   = function(self) return self.sprite:getGeneralY(self:getY())          end,
     
     moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
