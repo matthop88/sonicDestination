@@ -16,7 +16,8 @@ return {
     end,
 
     keyreleased = function(self, key)
-        if key == "right" then SONIC:setState(STATES.AIR_DECELERATE_RIGHT) end
+        if     key == "right" then SONIC:setState(STATES.AIR_DECELERATE_RIGHT)
+        elseif key == "space" then SONIC:throttleJump()                    end
     end,
 
     update     = function(self, dt)
