@@ -8,7 +8,7 @@ return {
     FONTS = {
         get = function(self, size)
             local fontSize = math.floor(size)
-            if self[fontSize] == nil then
+            if self[fontSize] == nil and fontSize >= 1 then
                 self[fontSize] = love.graphics.newFont(fontSize)
             end
             return self[fontSize]
@@ -40,7 +40,9 @@ return {
 
     setFont  = function(self, font)
         self.font = font
-        love.graphics.setFont(font)
+        if self.font ~= nil then
+            love.graphics.setFont(font)
+        end
     end,
 
     setFontSize = function(self, fontSize)
