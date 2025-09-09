@@ -31,7 +31,7 @@ return {
         if self.showTracker then
             self:drawVerticalLine()
             self:drawHorizontalLineAboveSprite()
-            self:drawHorizontalLineOnRuler()
+            self:drawHeights()
         end
     end,
 
@@ -53,12 +53,14 @@ return {
         end
     end,
 
-	drawHorizontalLineOnRuler = function(self)
-        if self.posAndWidthFn then
-            local x, y, w = self.posAndWidthFn()
-            self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
-        end
-    end,
+	drawHeights = function(self)
+		for n, v in ipairs(self.heights) do
+			local colorIndex = (n % self.heights) + 1
+			self.graphics:setColor(self.colors[colorIndex])
+			local y = 576 - (v.value * 12)
+			self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
+		end
+	end,
 
 	update = function(self, dt)
 		if self.showTracker then
