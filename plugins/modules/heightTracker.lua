@@ -16,6 +16,8 @@ return {
         { 0, 1, 0 }, 
         { 0, 0, 1 } 
     },
+
+	heights       = { },
 	
     init = function(self, params)
         self.toggleShowKey = params.toggleShowKey
@@ -57,10 +59,29 @@ return {
             self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
         end
     end,
+
+	recordHeight = function(self)
+		if self.posAndWidthFn and self.mode then
+			local x, y, w = self.posAndWidthFn()
+			local heightInFeet = (576 - y) / 12
+			local previouslyRecordedHeight = self:getHeight(self.mode)
+			if not previouslyRecordedHeight or heightInFeet > previouslyRecordedHeight then
+				self.heights[self.mode] = heightInFeet
+			end
+		end
+	end,
+
+	getHeight = function(self, mode)
+		if mode then return self.heights[mode] end
+	end,
      
     handleKeypressed = function(self, key)
         if key == self.toggleShowKey then
             self.showTracker = not self.showTracker
         end
     end,
+
+	setMode = function(self, mode)
+		self.mode = mode
+	end,
 }
