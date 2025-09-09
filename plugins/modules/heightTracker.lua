@@ -23,19 +23,19 @@ return {
         self.toggleShowKey = params.toggleShowKey
         self.graphics      = params.graphics
         self.posAndWidthFn = params.posAndWidthFn
+		self.mode          = params.mode
         return self
     end,
     
     draw = function(self)
         if self.showTracker then
-            self:updateWorldCoordinates()
             self:drawVerticalLine()
             self:drawHorizontalLineAboveSprite()
             self:drawHorizontalLineOnRuler()
         end
     end,
 
-    updateWorldCoordinates = function(self)
+	updateWorldCoordinates = function(self)
         self.leftX,  self.topY    = self.graphics:screenToImageCoordinates(0, 0)
         self.rightX, _            = self.graphics:screenToImageCoordinates(love.graphics.getWidth() - 24, love.graphics.getHeight())
     end,
@@ -53,29 +53,44 @@ return {
         end
     end,
 
-    drawHorizontalLineOnRuler = function(self)
+	drawHorizontalLineOnRuler = function(self)
         if self.posAndWidthFn then
             local x, y, w = self.posAndWidthFn()
             self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
         end
     end,
 
+	update = function(self, dt)
+		if self.showTracker then
+			self:updateWorldCoordinates()
+			self:recordHeight()
+		end
+	end,
+            
 	recordHeight = function(self)
 		if self.posAndWidthFn and self.mode then
 			local x, y, w = self.posAndWidthFn()
 			local heightInFeet = (576 - y) / 12
-			local previouslyRecordedHeight = self:getHeight(self.mode)
-			if not previouslyRecordedHeight or heightInFeet > previouslyRecordedHeight then
-				self.heights[self.mode] = heightInFeet
-			end
+			self:setHeight(self.mode, heightInFeet)
+		end
+	end,
+
+	setHeight = function(self, mode, height)
+		local recordedHeight = self:getHeight(self.mode)
+		if not recordedHeight then
+			table.insert(self.heights, { mode = mode, value = height })
+		elseif height > recordedHeight.value then
+			recordedHeight.value = height
 		end
 	end,
 
 	getHeight = function(self, mode)
-		if mode then return self.heights[mode] end
+		for _, v in ipairs(self.heights) do
+			if v.mode == mode then return v end
+		end
 	end,
-     
-    handleKeypressed = function(self, key)
+
+	handleKeypressed = function(self, key)
         if key == self.toggleShowKey then
             self.showTracker = not self.showTracker
         end
