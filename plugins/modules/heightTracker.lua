@@ -55,7 +55,7 @@ return {
 			self.graphics:setColor(self.colors[colorIndex])
 			local y = 576 - (v.value * 12)
 			self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
-			if v > 4 then
+			if v.value > 4 then
 				self.graphics:setFontSize(24)
 				self.graphics:printf(v.mode, self.rightX - 500, y - 12, 300, "right")
 			end
