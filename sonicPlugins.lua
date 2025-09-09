@@ -50,6 +50,18 @@ return {
                 graphics      = self.GRAPHICS,
                 toggleGridKey = "g",
             })
+            :add("heightTracker", {
+                toggleShowKey  = "h",
+                graphics       = self.GRAPHICS,
+                posAndWidthFn  = function() 
+                    local generalX = self.SONIC:getGeneralX()
+                    local generalY = self.SONIC:getGeneralY()
+                    local generalW = math.abs(self.SONIC:getX() - self.SONIC:getGeneralX()) * 2
+                    return generalX, generalY, generalW
+                end,
+                mode           = GRAVITY:get().label,
+                accessorFnName = "getHeightTracker",
+            })
             :add("scrolling",      { 
                 imageViewer = self.GRAPHICS,
                 leftKey     = "shiftleft",
@@ -84,18 +96,6 @@ return {
                     zeroSpeedKey = nil,
                 },
                 accessorFnName = "getStateMachineViewer",
-            })
-            :add("heightTracker", {
-                toggleShowKey  = "h",
-                graphics       = self.GRAPHICS,
-                posAndWidthFn  = function() 
-                    local generalX = self.SONIC:getGeneralX()
-                    local generalY = self.SONIC:getGeneralY()
-                    local generalW = math.abs(self.SONIC:getX() - self.SONIC:getGeneralX()) * 2
-                    return generalX, generalY, generalW
-                end,
-                mode           = GRAVITY:get().label,
-                accessorFnName = "getHeightTracker",
             })
             :add("splitScreen", {
                 GFX1 = self.GRAPHICS,
