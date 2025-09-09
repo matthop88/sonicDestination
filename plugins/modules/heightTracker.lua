@@ -32,6 +32,7 @@ return {
             self:drawVerticalLine()
             self:drawHorizontalLineAboveSprite()
             self:drawHeights()
+			self:drawNumbers()
         end
     end,
 
@@ -56,6 +57,30 @@ return {
 			self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
 		end
 	end,
+
+	drawNumbers = function(self)
+        local height = 1
+        for i = 564, self.topY, -12 do
+            self.graphics:setColor(1, 1, 1)
+            if height % 50 == 0 then
+                self.graphics:setLineWidth(2)
+                self.graphics:line(self.rightX - 20, i, self.rightX + 20, i)
+                self.graphics:setFontSize(24)
+                self.graphics:printf("" .. height, self.rightX - 125, i - 12, 100, "right")
+            elseif height % 5 == 0 then
+                self.graphics:setLineWidth(1)
+                self.graphics:line(self.rightX - 10, i, self.rightX + 10, i)
+                self.graphics:setFontSize(12)
+                self.graphics:printf("" .. height, self.rightX - 112, i - 6, 100, "right")
+            else
+                self.graphics:setLineWidth(0.5)
+                self.graphics:line(self.rightX - 5, i, self.rightX + 5, i)
+                self.graphics:setFontSize(6)
+                self.graphics:printf("" .. height, self.rightX - 56, i - 3, 50, "right")
+            end
+            height = height + 1
+        end
+    end,
 
 	update = function(self, dt)
 		if self.showTracker then
