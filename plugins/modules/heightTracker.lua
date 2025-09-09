@@ -44,7 +44,7 @@ return {
 
     drawHorizontalLineOnRuler = function(self)
         if self.posAndWidthFn then
-            local x, y, w = self.posAndWidtthFn()
+            local x, y, w = self.posAndWidthFn()
             self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
         end
     end,
