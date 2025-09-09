@@ -7,27 +7,28 @@ local SOUND_MANAGER = requireRelative("sound/soundManager")
 local JUMP_SOUND = "sonicJumping"
 
 return {
-    --------------------------------------------------------------
-    BRAKING_ACCELERATION = 1800,           -- 0.5      pixels/frame      
-    MIN_SPEED_TO_BRAKE   = 60,             -- 1        pixel /frame
-    RUNNING_ACCELERATION = 168.75,         -- 0.046875 pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    BRAKING_ACCELERATION    = 1800,           -- 0.5      pixels/frame      
+    MIN_SPEED_TO_BRAKE      = 60,             -- 1        pixel /frame
+    RUNNING_ACCELERATION    = 168.75,         -- 0.046875 pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Running#Acceleration
-    ---------------------------------------------------------------
-    MAX_RUNNING_SPEED    = 360,            -- 6        pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    MAX_RUNNING_SPEED       = 360,            -- 6        pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Running#Constants
-    ---------------------------------------------------------------
-    JUMP_VELOCITY        = 390,            -- 6.5      pixels/frame
-    GRAVITY_FORCE        = 787.5,          -- 0.21875  pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    JUMP_VELOCITY           = 390,            -- 6.5      pixels/frame
+    THROTTLED_JUMP_VELOCITY = 240,            -- 4        pixels/frame
+    GRAVITY_FORCE           = 787.5,          -- 0.21875  pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
-    ---------------------------------------------------------------
-    AIR_ACCELERATION     = 337.5,          -- 0.09375  pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    AIR_ACCELERATION        = 337.5,          -- 0.09375  pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Constants
-    ---------------------------------------------------------------
-    GROUND_LEVEL         = 556,
+    ------------------------------------------------------------------
+    GROUND_LEVEL            = 556,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -103,6 +104,10 @@ return {
             SOUND_MANAGER:play(JUMP_SOUND)
             self.sprite:setCurrentAnimation("jumping")
         end
+    end,
+
+    throttleJump  = function(self)
+        self.velocity.y = math.max(self.velocity.y, -self.THROTTLED_JUMP_VELOCITY)
     end,
 
     isGrounded    = function(self)
