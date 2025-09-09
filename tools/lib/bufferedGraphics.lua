@@ -60,7 +60,8 @@ return {
                 graphics:moveImage(deltaX, deltaY)
             end,
 
-            setScale = function(self, scale) graphics:setScale(scale) end,
+            getScale = function(self)        return graphics:getScale() end,
+            setScale = function(self, scale) graphics:setScale(scale)   end,
 
             screenToImageCoordinates = function(self, mx, my)
                 return graphics:screenToImageCoordinates(mx, my)
