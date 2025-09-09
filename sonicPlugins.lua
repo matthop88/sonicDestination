@@ -1,9 +1,9 @@
 local GRAVITY = {
-    {   name = "19.50 m/s2 (MOBIUS)",   value = 787.5, },
-    {   name = " 9.80 m/s2 (EARTH)",    value = 386,   },
-    {   name = " 3.71 m/s2 (MARS)",     value = 146,   },
-    {   name = "24.79 m/s2 (JUPITER)",  value = 976,   },
-    {   name = " 1.62 m/s2 (THE MOON)", value =  64,   },
+    {   name = "19.50 m/s2 (MOBIUS)",   value = 787.5, label = "MOBIUS",   },
+    {   name = " 9.80 m/s2 (EARTH)",    value = 386,   label = "EARTH",    },
+    {   name = " 3.71 m/s2 (MARS)",     value = 146,   label = "MARS",     },
+    {   name = "24.79 m/s2 (JUPITER)",  value = 976,   label = "JUPITER",  },
+    {   name = " 1.62 m/s2 (THE MOON)", value =  64,   label = "THE MOON", },
 
     index = 1,
 
@@ -86,15 +86,16 @@ return {
                 accessorFnName = "getStateMachineViewer",
             })
             :add("heightTracker", {
-                toggleShowKey = "h",
-                graphics      = self.GRAPHICS,
-                posAndWidthFn = function() 
+                toggleShowKey  = "h",
+                graphics       = self.GRAPHICS,
+                posAndWidthFn  = function() 
                     local generalX = self.SONIC:getGeneralX()
                     local generalY = self.SONIC:getGeneralY()
                     local generalW = math.abs(self.SONIC:getX() - self.SONIC:getGeneralX()) * 2
                     return generalX, generalY, generalW
                 end,
-                mode          = "MOBIUS",
+                mode           = GRAVITY:get().label,
+                accessorFnName = "getHeightTracker",
             })
             :add("splitScreen", {
                 GFX1 = self.GRAPHICS,
@@ -179,10 +180,12 @@ return {
                         incrementFn = function()
                             GRAVITY:next()
                             self.SONIC.GRAVITY_FORCE = GRAVITY:get().value
+                            getHeightTracker():setMode(GRAVITY:get().label)
                         end,
                         decrementFn = function()
                             GRAVITY:prev()
                             self.SONIC.GRAVITY_FORCE = GRAVITY:get().value
+                            getHeightTracker():setMode(GRAVITY:get().label)
                         end,
                         getValueFn  = function()
                             return GRAVITY:get().name
