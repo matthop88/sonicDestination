@@ -126,6 +126,9 @@ return {
 	handleKeypressed = function(self, key)
         if key == self.toggleShowKey then
             self.showTracker = not self.showTracker
+			if not self.showTracker then
+				self.heights = {}
+			end
         end
     end,
 
