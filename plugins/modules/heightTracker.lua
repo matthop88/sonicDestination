@@ -55,7 +55,7 @@ return {
 
 	drawHeights = function(self)
 		for n, v in ipairs(self.heights) do
-			local colorIndex = (n % #self.heights) + 1
+			local colorIndex = ((n - 1) % #self.heights) + 1
 			self.graphics:setColor(self.colors[colorIndex])
 			local y = 576 - (v.value * 12)
 			self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
