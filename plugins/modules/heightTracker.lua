@@ -20,6 +20,7 @@ return {
             self:updateWorldCoordinates()
             self:drawVerticalLine()
             self:drawHorizontalLineAboveSprite()
+            self:drawHorizontalLineOnRuler()
         end
     end,
 
@@ -38,6 +39,13 @@ return {
         if self.posAndWidthFn then
             local x, y, w = self.posAndWidthFn()
             self.graphics:line(x, y, x + w, y)
+        end
+    end,
+
+    drawHorizontalLineOnRuler = function(self)
+        if self.posAndWidthFn then
+            local x, y, w = self.posAndWidtthFn()
+            self.graphics:line(self.rightX - 115, y, self.rightX + 15, y)
         end
     end,
      
