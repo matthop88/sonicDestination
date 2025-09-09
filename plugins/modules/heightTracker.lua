@@ -76,6 +76,8 @@ return {
                 self.graphics:setLineWidth(0.5)
                 self.graphics:line(self.rightX - 5, i, self.rightX + 5, i)
                 self.graphics:setFontSize(6)
+				local alpha = (self.graphics:getScale() / 2) - 0.5
+				self.graphics:setColor(1, 1, 1, alpha)
                 self.graphics:printf("" .. height, self.rightX - 56, i - 3, 50, "right")
             end
             height = height + 1
