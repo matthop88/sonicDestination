@@ -7,7 +7,16 @@ return {
     leftX         = 0,
     topY          = 0,
     rightX        = 1000,
-        
+
+    colors        = { 
+        { 1, 1, 0 }, 
+        { 0, 1, 1 }, 
+        { 1, 0, 1 }, 
+        { 1, 0, 0 }, 
+        { 0, 1, 0 }, 
+        { 0, 0, 1 } 
+    },
+	
     init = function(self, params)
         self.toggleShowKey = params.toggleShowKey
         self.graphics      = params.graphics
