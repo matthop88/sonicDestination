@@ -98,6 +98,7 @@ return {
 
     ----------------------- Zooming Functions ----------------------
 
+    getScale = function(self)        return self.scale  end,
     setScale = function(self, scale) self.scale = scale end,
     
     screenToImageCoordinates = function(self, mx, my)
