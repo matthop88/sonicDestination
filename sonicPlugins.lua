@@ -50,6 +50,10 @@ return {
                 graphics      = self.GRAPHICS,
                 toggleGridKey = "g",
             })
+            :add("tracer", {
+                toggleShowKey  = "t",
+                graphics       = self.GRAPHICS,
+            })
             :add("heightTracker", {
                 toggleShowKey  = "h",
                 graphics       = self.GRAPHICS,
