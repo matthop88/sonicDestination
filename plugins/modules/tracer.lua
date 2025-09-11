@@ -3,6 +3,7 @@ return {
     showTracer     = false,
     graphics       = nil,
     posAndRadiusFn = nil,
+    maxRadius      = 0,
 
     init = function(self, params)
         self.toggleShowKey  = params.toggleShowKey
@@ -15,7 +16,8 @@ return {
         if self.showTracer and self.graphics ~= nil and self.posAndRadiusFn ~= nil then
             local x, y, r = self.posAndRadiusFn()
             self.graphics:setColor(1, 1, 0)
-            self.graphics:circle("fill", x, y, r)
+            self.maxRadius = math.max(r, self.maxRadius)
+            self.graphics:circle("fill", x, y, self.maxRadius)
         end
     end,
 
