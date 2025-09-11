@@ -53,6 +53,12 @@ return {
             :add("tracer", {
                 toggleShowKey  = "t",
                 graphics       = self.GRAPHICS,
+                posAndRadiusFn = function()
+                    local x = self.SONIC:getX()
+                    local y = self.SONIC:getY()
+                    local r = math.abs(x - self.SONIC:getGeneralX()) * 2
+                    return x, y, r
+                end,
             })
             :add("heightTracker", {
                 toggleShowKey  = "h",
