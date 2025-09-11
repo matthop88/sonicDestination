@@ -9,17 +9,14 @@ return {
 
         records = {},
 
-        clear = function(self)
-            self.records = {}
-        end,
-
-        each = function(self)
-            return ipairs(self.records)
-        end,
+        clear = function(self)        self.records = {}           end,
+        each  = function(self)        return ipairs(self.records) end,
+        size  = function(self)        return #self.records        end,
+        get   = function(self, index) return self.records[index]  end,
         
         add = function(self, x, y, r)
             local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
-            if #self.records < self.EVENT_LIMIT then
+            if self:size() < self.EVENT_LIMIT then
                 table.insert(self.records, newEvent)
             else
                 self.records[self.headIndex] = newEvent
@@ -29,7 +26,7 @@ return {
 
         canAdd = function(self, x, y, r)
             local tailEvent = self:getTail()
-            return #self == 0 
+            return self:size() == 0 
                 or tailEvent.x ~= math.floor(x) 
                 or tailEvent.y ~= math.floor(y) 
                 or tailEvent.r ~= math.floor(r)
@@ -38,14 +35,14 @@ return {
         getTail = function(self)
             local tailIndex = self.headIndex - 1
             if tailIndex < 1 then
-                tailIndex = #self.records
+                tailIndex = self:size()
             end
-            return self.records[tailIndex]
+            return self:get(tailIndex)
         end,
 
         incrementHeadIndex = function(self)
             self.headIndex = self.headIndex + 1
-            if self.headIndex > #self.record then
+            if self.headIndex > self:size() then
                 self.headIndex = 1
             end
         end,
