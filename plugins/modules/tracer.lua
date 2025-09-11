@@ -7,12 +7,22 @@ return {
         EVENT_LIMIT = 256,
         headIndex   = 1,
 
+        records = {},
+
+        clear = function(self)
+            self.records = {}
+        end,
+
+        each = function(self)
+            return ipairs(self.records)
+        end,
+        
         add = function(self, x, y, r)
             local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
-            if #self < self.EVENT_LIMIT then
-                table.insert(self, newEvent)
+            if #self.records < self.EVENT_LIMIT then
+                table.insert(self.records, newEvent)
             else
-                self[self.headIndex] = newEvent
+                self.records[self.headIndex] = newEvent
                 self:incrementHeadIndex()
             end
         end,
@@ -28,14 +38,14 @@ return {
         getTail = function(self)
             local tailIndex = self.headIndex - 1
             if tailIndex < 1 then
-                tailIndex = #self
+                tailIndex = #self.records
             end
-            return self[tailIndex]
+            return self.records[tailIndex]
         end,
 
         incrementHeadIndex = function(self)
             self.headIndex = self.headIndex + 1
-            if self.headIndex > #self then
+            if self.headIndex > #self.record then
                 self.headIndex = 1
             end
         end,
@@ -51,7 +61,7 @@ return {
     draw = function(self)
         if self.showTracer and self.graphics ~= nil then
             self.graphics:setColor(1, 1, 0)
-            for _, record in ipairs(self.tracerRecord) do
+            for _, record in self.tracerRecord:each() do
                 self.graphics:circle("fill", record.x, record.y, record.r)
             end
         end
