@@ -69,7 +69,7 @@ return {
 				end
             end
 
-			for n, v in self.tracerRecord:each() do
+			for n, record in self.tracerRecord:each() do
 				if n < self.tracerRecord.headIndex then
 					local alpha = (n + 256 - self.tracerRecord.headIndex) / 256
 					self.graphics:setColor(1, 1, 0, alpha)
