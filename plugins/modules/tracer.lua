@@ -3,6 +3,38 @@ return {
     showTracer     = false,
     graphics       = nil,
     posAndRadiusFn = nil,
+    tracerRecord   = {
+        EVENT_LIMIT = 256,
+        headIndex   = 1,
+
+        add = function(self, x, y, r)
+            local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
+            local tailEvent   = self:getTail()
+            if #self == 0 or tailEvent.x ~= newEvent.x or tailEvent.y ~= newEvent.y or tailEvent.r ~= newEvent.r then
+                if #self < self.EVENT_LIMIT then
+                    table.insert(self, newEvent)
+                else
+                    self[self.headIndex] = newEvent
+                    self:incrementHeadIndex()
+                end
+            end
+        end,
+
+        getTail = function(self)
+            local tailIndex = self.headIndex - 1
+            if tailIndex < 1 then
+                tailIndex = #self
+            end
+            return self[tailIndex]
+        end,
+
+        incrementHeadIndex = function(self)
+            self.headIndex = self.headIndex + 1
+            if self.headIndex > #self then
+                self.headIndex = 1
+            end
+        end,
+    },
     
     init = function(self, params)
         self.toggleShowKey  = params.toggleShowKey
