@@ -1,17 +1,21 @@
 return {
-    toggleShowKey = nil,
-    showTracer    = false,
-    graphics      = nil,
+    toggleShowKey  = nil,
+    showTracer     = false,
+    graphics       = nil,
+    posAndRadiusFn = nil,
 
     init = function(self, params)
-        self.toggleShowKey = params.toggleShowKey
-        self.graphics      = params.graphics
+        self.toggleShowKey  = params.toggleShowKey
+        self.graphics       = params.graphics
+        self.posAndRadiusFn = params.posAndRadiusFn
         return self
     end,
 
     draw = function(self)
-        if self.showTracer then
-            -- Drawing happens here
+        if self.showTracer and self.graphics ~= nil and self.posAndRadiusFn ~= nil then
+            local x, y, r = self.posAndRadiusFn()
+            self.graphics:setColor(1, 1, 0)
+            self.graphics:circle("fill", x, y, r)
         end
     end,
 
