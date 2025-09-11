@@ -15,7 +15,7 @@ return {
 
         clear = function(self)        
             self.records = {}           
-            headIndex = 1
+            self.headIndex = 1
         end,
         
         add = function(self, x, y, r)
