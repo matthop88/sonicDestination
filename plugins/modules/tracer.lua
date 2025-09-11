@@ -63,7 +63,7 @@ return {
         if self.showTracer and self.graphics ~= nil then
             for n, record in self.tracerRecord:each() do
 				if n >= self.tracerRecord.headIndex then
-					local alpha = (n - self.tracerRecord.headIndex)/ 256
+					local alpha = (n - self.tracerRecord.headIndex)/ 1024
 					self.graphics:setColor(1, 1, 0, alpha)
                     self.graphics:circle("fill", record.x, record.y, record.r)
 				end
@@ -71,7 +71,7 @@ return {
 
 			for n, record in self.tracerRecord:each() do
 				if n < self.tracerRecord.headIndex then
-					local alpha = (n + 256 - self.tracerRecord.headIndex) / 256
+					local alpha = (n + 256 - self.tracerRecord.headIndex) / 1024
 					self.graphics:setColor(1, 1, 0, alpha)
                     self.graphics:circle("fill", record.x, record.y, record.r)
                 end
