@@ -9,22 +9,43 @@ return {
 
         records = {},
 
-        each  = function(self)        return ipairs(self.records) end,
-        size  = function(self)        return #self.records        end,
-        get   = function(self, index) return self.records[index]  end,
+        size   = function(self)        return #self.records        end,
+        get    = function(self, index) return self.records[index]  end,
 
-        clear = function(self)        
+		getNth = function(self, n)
+            local i = n + self.headIndex - 1
+            
+			if i > self:size() then i = i - self:size() end
+            
+			return self:get(i)
+        end,
+
+        each   = function(self)
+            local n = 0
+            
+            return function()
+                n = n + 1
+                if n <= self:size() then
+                    local v = self:getNth(n)
+                    if v then
+                        return n, v
+                    end
+                end
+            end
+        end,
+		
+        clear  = function(self)        
             self.records = {}           
             self.headIndex = 1
         end,
         
-        add = function(self, x, y, r)
+        add    = function(self, x, y, r)
             local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
             if self:size() < self.EVENT_LIMIT then
                 table.insert(self.records, newEvent)
             else
+				self:incrementHeadIndex()
                 self.records[self.headIndex] = newEvent
-                self:incrementHeadIndex()
             end
         end,
 
@@ -37,17 +58,21 @@ return {
         end,
 
         getTail = function(self)
-            local tailIndex = self.headIndex - 1
-            if tailIndex < 1 then
-                tailIndex = self:size()
-            end
-            return self:get(tailIndex)
+            return self:get(self:getTailIndex())
         end,
+
+		getTailIndex = function(self)
+			local tailIndex = self.headIndex - 1
+			if tailIndex < 1 then
+				tailIndex = self:size()
+			end
+			return tailIndex
+		end,
 
         incrementHeadIndex = function(self)
             self.headIndex = self.headIndex + 1
             if self.headIndex > self:size() then
-                self.headIndex = 1
+                self.headIndex = 0
             end
         end,
     },
@@ -62,25 +87,9 @@ return {
     draw = function(self)
         if self.showTracer and self.graphics ~= nil then
             for n, record in self.tracerRecord:each() do
-				if self.tracerRecord:size() < 256 then
-					n = n + (256 - self.tracerRecord:size())
-				end
-				if n >= self.tracerRecord.headIndex then
-					local alpha = (n - self.tracerRecord.headIndex)/ 1024
-					self.graphics:setColor(1, 1, 0, alpha)
-                    self.graphics:circle("fill", record.x, record.y, record.r)
-				end
-            end
-
-			for n, record in self.tracerRecord:each() do
-				if self.tracerRecord:size() < 256 then
-					n = n + (256 - self.tracerRecord:size())
-				end
-				if n < self.tracerRecord.headIndex then
-					local alpha = (n + 256 - self.tracerRecord.headIndex) / 1024
-					self.graphics:setColor(1, 1, 0, alpha)
-                    self.graphics:circle("fill", record.x, record.y, record.r)
-                end
+				n = n + (256 - self.tracerRecord:size())
+				self.graphics:setColor(1, 1, 0, n / 1024)
+				self.graphics:circle("fill", record.x, record.y, record.r)
             end
         end
     end,
