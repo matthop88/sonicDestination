@@ -76,7 +76,9 @@ return {
     handleKeypressed = function(self, key)
         if key == self.toggleShowKey then
             self.showTracer = not self.showTracer
-            print("Show Tracer set to:", self.showTracer)
+            if not self.showTracer then
+                self.tracerRecord:clear()
+            end
         end
     end,
 }
