@@ -56,7 +56,7 @@ return {
                 posAndRadiusFn = function()
                     local x = self.SONIC:getX()
                     local y = self.SONIC:getY()
-                    local r = math.abs(x - self.SONIC:getGeneralX()) * 2
+                    local r = math.max(math.abs(x - self.SONIC:getGeneralX()), math.abs(y - self.SONIC:getGeneralY()))
                     return x, y, r
                 end,
             })
