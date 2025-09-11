@@ -9,10 +9,14 @@ return {
 
         records = {},
 
-        clear = function(self)        self.records = {}           end,
         each  = function(self)        return ipairs(self.records) end,
         size  = function(self)        return #self.records        end,
         get   = function(self, index) return self.records[index]  end,
+
+        clear = function(self)        
+            self.records = {}           
+            headIndex = 1
+        end,
         
         add = function(self, x, y, r)
             local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
