@@ -62,9 +62,19 @@ return {
     draw = function(self)
         if self.showTracer and self.graphics ~= nil then
             for n, record in self.tracerRecord:each() do
-                local alpha = (257 - n) / 256
-                self.graphics:setColor(1, 1, 0, alpha)
-                self.graphics:circle("fill", record.x, record.y, record.r)
+				if n >= self.tracerRecord.headIndex then
+					local alpha = (n - self.tracerRecord.headIndex)/ 256
+					self.graphics:setColor(1, 1, 0, alpha)
+                    self.graphics:circle("fill", record.x, record.y, record.r)
+				end
+            end
+
+			for n, v in self.tracerRecord:each() do
+				if n < self.tracerRecord.headIndex then
+					local alpha = (n + 256 - self.tracerRecord.headIndex) / 256
+					self.graphics:setColor(1, 1, 0, alpha)
+                    self.graphics:circle("fill", record.x, record.y, record.r)
+                end
             end
         end
     end,
