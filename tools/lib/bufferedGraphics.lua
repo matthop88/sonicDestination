@@ -38,6 +38,12 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            circle    = function(self, mode, x, y, radius)
+                love.graphics.setCanvas(self.buffer)
+                graphics:circle(mode, x, y, radius)
+                love.graphics.setCanvas()
+            end,
+
             draw      = function(self, image, quad, x, y, r, sx, sy)
                 love.graphics.setCanvas(self.buffer)
                 graphics:draw(image, quad, x, y, r, sx, sy)
