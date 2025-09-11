@@ -9,15 +9,20 @@ return {
 
         add = function(self, x, y, r)
             local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
-            local tailEvent   = self:getTail()
-            if #self == 0 or tailEvent.x ~= newEvent.x or tailEvent.y ~= newEvent.y or tailEvent.r ~= newEvent.r then
-                if #self < self.EVENT_LIMIT then
-                    table.insert(self, newEvent)
-                else
-                    self[self.headIndex] = newEvent
-                    self:incrementHeadIndex()
-                end
+            if #self < self.EVENT_LIMIT then
+                table.insert(self, newEvent)
+            else
+                self[self.headIndex] = newEvent
+                self:incrementHeadIndex()
             end
+        end,
+
+        canAdd = function(self, x, y, r)
+            local tailEvent = self:getTail()
+            return #self == 0 
+                or tailEvent.x ~= math.floor(x) 
+                or tailEvent.y ~= math.floor(y) 
+                or tailEvent.r ~= math.floor(r)
         end,
 
         getTail = function(self)
@@ -44,15 +49,21 @@ return {
     end,
 
     draw = function(self)
-        if self.showTracer and self.graphics ~= nil and self.posAndRadiusFn ~= nil then
-            local x, y, r = self.posAndRadiusFn()
+        if self.showTracer and self.graphics ~= nil then
             self.graphics:setColor(1, 1, 0)
-            self.graphics:circle("fill", x, y, r)
+            for _, record in ipairs(self.tracerRecord) do
+                self.graphics:circle("fill", record.x, record.y, record.r)
+            end
         end
     end,
 
     update = function(self, dt)
-        -- Do nothing
+        if self.showTracer and self.posAndRadiusFn ~= nil then
+            local x, y, r = self.posAndRadiusFn()
+            if self.tracerRecord:canAdd(x, y, r) then
+                self.tracerRecord:add(x, y, r)
+            end
+        end
     end,
 
     handleKeypressed = function(self, key)
