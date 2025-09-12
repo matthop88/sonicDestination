@@ -1,114 +1,88 @@
+local TRACER_RECORD = require("plugins/modules/tracer/tracerRecord")
+
 return {
-    toggleShowKey  = nil,
-    showTracer     = false,
-    graphics       = nil,
-    posAndRadiusFn = nil,
-    tracerRecord   = {
-        EVENT_LIMIT = 256,
-        headIndex   = 1,
+    toggleShowKey      = nil,
+    toggleRecordingKey = nil,
+    showTracer         = false,
+    isRecording        = false,
+    graphics           = nil,
+    posAndRadiusFn     = nil,
+    switchModeKey      = nil,
 
-        records = {},
+    tracerRecords  = {
+        index = 1,
 
-        size   = function(self)        return #self.records        end,
-        get    = function(self, index) return self.records[index]  end,
-
-		getNth = function(self, n)
-            local i = n + self.headIndex - 1
-            
-			if i > self:size() then i = i - self:size() end
-            
-			return self:get(i)
+        get = function(self)
+            return self[self.index]
         end,
 
-        each   = function(self)
-            local n = 0
-            
-            return function()
-                n = n + 1
-                if n <= self:size() then
-                    local v = self:getNth(n)
-                    if v then
-                        return n, v
-                    end
-                end
-            end
-        end,
-		
-        clear  = function(self)        
-            self.records = {}           
-            self.headIndex = 1
-        end,
-        
-        add    = function(self, x, y, r)
-            local newEvent    = { x = math.floor(x), y = math.floor(y), r = math.floor(r) }
-            if self:size() < self.EVENT_LIMIT then
-                table.insert(self.records, newEvent)
-            else
-				self:incrementHeadIndex()
-                self.records[self.headIndex] = newEvent
+        clear = function(self)
+            for _, v in ipairs(self) do
+                v:clear()
             end
         end,
 
-        canAdd = function(self, x, y, r)
-            local tailEvent = self:getTail()
-            return self:size() == 0 
-                or tailEvent.x ~= math.floor(x) 
-                or tailEvent.y ~= math.floor(y) 
-                or tailEvent.r ~= math.floor(r)
+        next = function(self)
+            self.index = self.index + 1
+            if self.index > #self then self.index = 1 end
         end,
 
-        getTail = function(self)
-            return self:get(self:getTailIndex())
-        end,
-
-		getTailIndex = function(self)
-			local tailIndex = self.headIndex - 1
-			if tailIndex < 1 then
-				tailIndex = self:size()
-			end
-			return tailIndex
-		end,
-
-        incrementHeadIndex = function(self)
-            self.headIndex = self.headIndex + 1
-            if self.headIndex > self:size() then
-                self.headIndex = 0
-            end
+        add = function(self, color)
+            table.insert(self, TRACER_RECORD:create(color))
         end,
     },
     
     init = function(self, params)
-        self.toggleShowKey  = params.toggleShowKey
-        self.graphics       = params.graphics
-        self.posAndRadiusFn = params.posAndRadiusFn
+        self.toggleShowKey      = params.toggleShowKey
+        self.graphics           = params.graphics
+        self.posAndRadiusFn     = params.posAndRadiusFn
+        self.switchModeKey      = params.switchModeKey
+        self.toggleRecordingKey = params.toggleRecordingKey
+
+        for _, color in ipairs(params.colors) do
+            self.tracerRecords:add(color)
+        end
         return self
     end,
 
     draw = function(self)
         if self.showTracer and self.graphics ~= nil then
-            for n, record in self.tracerRecord:each() do
-				n = n + (256 - self.tracerRecord:size())
-				self.graphics:setColor(1, 1, 0, n / 1024)
-				self.graphics:circle("fill", record.x, record.y, record.r)
+            for _, tracerRecord in ipairs(self.tracerRecords) do
+                for n, record in tracerRecord:each() do
+    				n = n + (TRACER_RECORD.EVENT_LIMIT - tracerRecord:size())
+    				self.graphics:setColor(tracerRecord:getColor())
+                    self.graphics:setAlpha(n / 1024)
+    				self.graphics:circle("fill", record.x, record.y, record.r)
+                end
             end
         end
     end,
 
     update = function(self, dt)
-        if self.showTracer and self.posAndRadiusFn ~= nil then
+        if self.isRecording and self.posAndRadiusFn ~= nil then
             local x, y, r = self.posAndRadiusFn()
-            if self.tracerRecord:canAdd(x, y, r) then
-                self.tracerRecord:add(x, y, r)
+            if self:getTracerRecord():canAdd(x, y, r) then
+                self:getTracerRecord():add(x, y, r)
             end
         end
     end,
 
     handleKeypressed = function(self, key)
-        if key == self.toggleShowKey then
-            self.showTracer = not self.showTracer
+        if     key == self.toggleShowKey      then
+            self.showTracer  = not self.showTracer
+            self.isRecording = self.showTracer
+
             if not self.showTracer then
-                self.tracerRecord:clear()
+                self.tracerRecords:clear()
             end
+        elseif key == self.switchModeKey      then
+            self.tracerRecords:next()
+        elseif key == self.toggleRecordingKey then
+            self.isRecording = not self.isRecording
         end
+    end,
+
+    getTracerRecord = function(self)
+        return self.tracerRecords:get()
     end,
 }
