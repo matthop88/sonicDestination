@@ -51,14 +51,20 @@ return {
                 toggleGridKey = "g",
             })
             :add("tracer", {
-                toggleShowKey  = "t",
-                graphics       = self.GRAPHICS,
-                posAndRadiusFn = function()
+                toggleShowKey      = "t",
+                switchModeKey      = "y",
+                toggleRecordingKey = "r",
+                graphics           = self.GRAPHICS,
+                posAndRadiusFn     = function()
                     local x = self.SONIC:getX()
                     local y = self.SONIC:getY()
                     local r = math.max(math.abs(x - self.SONIC:getGeneralX()), math.abs(y - self.SONIC:getGeneralY()))
                     return x, y, r
                 end,
+                colors             = {
+                    { 1, 1, 0 },
+                    { 0, 1, 1 },
+                },
             })
             :add("heightTracker", {
                 toggleShowKey  = "h",
