@@ -52,7 +52,7 @@ return {
             })
             :add("tracer", {
                 toggleShowKey      = "t",
-                switchModeKey      = "y",
+                switchModeKey      = "Y",
                 toggleRecordingKey = "r",
                 graphics           = self.GRAPHICS,
                 posAndRadiusFn     = function()
