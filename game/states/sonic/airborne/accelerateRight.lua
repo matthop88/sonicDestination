@@ -22,8 +22,8 @@ return {
 
     update     = function(self, dt)
         if SONIC:isGrounded() then 
-            if SONIC.velocity.x < 0 then SONIC:setState(STATES.BRAKE_LEFT)
-            else                         SONIC:setState(STATES.ACCELERATE_RIGHT) end
+            if SONIC.velocity.x < 0 then SONIC.velocity.x = SONIC.velocity.x / 16 end
+            SONIC:setState(STATES.ACCELERATE_RIGHT)
         else
             SONIC.velocity.x = math.min(SONIC.MAX_RUNNING_SPEED, SONIC.velocity.x + (SONIC.AIR_ACCELERATION * dt))
             if SONIC.sprite:getFPS() >= 60 then
