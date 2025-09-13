@@ -36,6 +36,8 @@ return {
             self.SONIC:update(dt) 
         end
 
+        self.AIR_DRAG   = self.SONIC.AIR_DRAG_VALUE
+
         love.update = function(dt)
             -- Do nothing
         end
@@ -207,6 +209,19 @@ return {
                             return GRAVITY:get().name
                         end,
                         toggleShowKey = "G",
+                    },
+                    airDrag = {
+                        name = "Air Drag",
+                        toggleShowKey = "d",
+                        incrementFn = function()
+                            self.SONIC.AIR_DRAG_VALUE = self.AIR_DRAG - self.SONIC.AIR_DRAG_VALUE
+                        end,
+                        decrementFn = function()
+                            self.SONIC.AIR_DRAG_VALUE = self.AIR_DRAG - self.SONIC.AIR_DRAG_VALUE
+                        end,
+                        getValueFn  = function()
+                            return self.SONIC.AIR_DRAG_VALUE
+                        end,
                     },
                 }
             })
