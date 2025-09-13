@@ -60,6 +60,7 @@ return {
         self:updateState(dt)
         self:updateFrameRate(dt)
         self:applyGravity(dt)
+        self:applyAirDrag(dt)
         self:updatePosition(dt)
     end,
 
@@ -149,6 +150,12 @@ return {
             self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
         else
             self.velocity.y = 0
+        end
+    end,
+
+    applyAirDrag = function(self, dt)
+        if self.velocity.y < 0 and self.velocity.y > -240 then
+            self.velocity.x = self.velocity.x - (self.velocity.x * self.AIR_DRAG_VALUE * dt)
         end
     end,
 
