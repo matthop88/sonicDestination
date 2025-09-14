@@ -28,6 +28,9 @@ function love.load(args)
     elseif args[1] == "soundGraph" then
         __SOUND_FILE = args[2]
         require "tools/soundGraph/soundGraphApp"
+    elseif args[1] == "chunkalyzer" then
+        __WORLD_MAP_FILE = args[2]
+        require "tools/chunkalyzer/chunkalyzerApp"
     elseif args[1] == "test" then
         require "testing/testFramework"
     else
