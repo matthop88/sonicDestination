@@ -1,17 +1,23 @@
 return {
-    paused = false,
+    paused   = false,
+    stepping = false,
+
+    init = function(self, params)
+        self.pauseKey = params.pauseKey or "p"
+        self.stepKey  = params.stepKey  or "s"
+        return self
+    end,
 
     handleKeypressed = function(self, key)
-        if key == "p" then
-            self.paused = not self.paused
-        end
+        if     key == self.pauseKey then self.paused = not self.paused
+        elseif key == self.stepKey  then self.stepping = true         end
     end,
 
     update = function(self, dt)
-        if self.paused then
+        if self.paused and not self.stepping then
             return true
         else
-            -- do nothing
+            self.stepping = false
         end
     end,
 }

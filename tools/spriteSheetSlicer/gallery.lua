@@ -1,4 +1,5 @@
-local Editor = require "tools/spriteSheetSlicer/editor"
+local Editor        = require "tools/spriteSheetSlicer/editor"
+local AnimationPane = require "tools/spriteSheetSlicer/animationPane"
 
 local GallerySlot = {
     create = function(self, index, x, y, w, h, image, spriteRect)
@@ -94,22 +95,33 @@ return {
         get = function(self)
             return self.contents
         end,
+
+        getSpriteData = function(self)
+            local spriteData = {}
+            for _, slot in ipairs(self.contents) do
+                table.insert(spriteData, { image = slot:getImage(), rect = slot:getSpriteRect() })
+            end
+            return spriteData
+        end,
     },
     
-    editor = Editor:create(),
+    editor        = Editor:create(),
+    animationPane = AnimationPane:create(),
 
     init = function(self, spriteRects)
         self:refresh(spriteRects)
         return self
     end,
 
-    refresh = function(self, spriteRects)
+    refresh = function(self, spriteRects, fps)
         if spriteRects then
             self.slots:clear()
             local image = getImageViewer():getImage()
             for n, spriteRect in ipairs(spriteRects) do
                 self:rebuildSpriteRect(n, spriteRect, image)
             end
+            self.animationPane:setSpriteData(self.slots:getSpriteData())
+            self.animationPane:setFPS(fps)
         end
     end,
 
@@ -133,10 +145,12 @@ return {
         self:drawSlotBorders()
         self:drawSprites()
         self.editor:draw()
+        self.animationPane:draw()
     end,
 
     update = function(self, dt)
         for _, gallerySlot in ipairs(self.slots:get()) do gallerySlot:update(dt) end
+        self.animationPane:update(dt)
     end,
 
     mousepressed = function(self, mx, my)
@@ -157,10 +171,18 @@ return {
     end,
 
     keypressed = function(self, key)
-        if     key == "escape"             then self.editor:setActive(false)
-        elseif self.editor:keypressed(key) then return self:handleKeypressedInEditor(key)
-        elseif key == "x"                  then self:printOutGalleryStats()
-        end
+        if     key == "escape"                then self.editor:setActive(false)
+        elseif key == "lalt" or key == "ralt" then 
+            self.animationPane:enable()
+            self.animationPane:setSpriteData(self.slots:getSpriteData())
+        elseif self.animationPane:keypressed(key) then
+            return true
+        elseif self.editor:keypressed(key)    then return self:handleKeypressedInEditor(key)
+        elseif key == "x"                     then self:printOutGalleryStats()          end
+    end,
+
+    keyreleased = function(self, key)
+        if key == "lalt" or key == "ralt" then self.animationPane:disable() end
     end,
 
     handleKeypressedInEditor = function(self, key)
@@ -181,7 +203,9 @@ return {
 
     updateEditor = function(self, gallerySlot)
         gallerySlot = gallerySlot or self.slots:this()
-        self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+        if gallerySlot then
+            self.editor:setSprite(gallerySlot:getImage(), gallerySlot:getSpriteRect())
+        end
     end,
         
     drawBackground = function(self)

@@ -8,7 +8,7 @@ return {
     FONTS = {
         get = function(self, size)
             local fontSize = math.floor(size)
-            if self[fontSize] == nil then
+            if self[fontSize] == nil and fontSize >= 1 then
                 self[fontSize] = love.graphics.newFont(fontSize)
             end
             return self[fontSize]
@@ -40,7 +40,9 @@ return {
 
     setFont  = function(self, font)
         self.font = font
-        love.graphics.setFont(font)
+        if self.font ~= nil then
+            love.graphics.setFont(font)
+        end
     end,
 
     setFontSize = function(self, fontSize)
@@ -64,6 +66,13 @@ return {
                            (y1 + self.y) * self.scale,
                            (x2 + self.x) * self.scale, 
                            (y2 + self.y) * self.scale)
+    end,
+
+    circle    = function(self, mode, x, y, radius)
+        love.graphics.setLineWidth(self.lineWidth * self.scale)
+        love.graphics.circle(mode, (x + self.x) * self.scale,
+                                   (y + self.y) * self.scale,
+                                        radius  * self.scale)
     end,
 
     draw      = function(self, image, quad, x, y, r, sx, sy)
@@ -96,6 +105,7 @@ return {
 
     ----------------------- Zooming Functions ----------------------
 
+    getScale = function(self)        return self.scale  end,
     setScale = function(self, scale) self.scale = scale end,
     
     screenToImageCoordinates = function(self, mx, my)

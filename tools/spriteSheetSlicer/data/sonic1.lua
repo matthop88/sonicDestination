@@ -5,7 +5,7 @@ return {
     SPRITE_BG_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 },
 
     animations  = {
-        running = {
+        running = { fps = 8,
             rect    = { x = 24, y = 334, w = 416, h = 66 },
             sprites = {
                 { x =  46, y = 349, w = 24, h = 40, offset = { x = 12, y = 20 }, },
@@ -16,11 +16,32 @@ return {
                 { x = 390, y = 348, w = 40, h = 40, offset = { x = 20, y = 20 }, },
             },
         },
-        braking = {
+        braking = { fps = 6,
             rect    = { x = 460, y = 334, w = 136, h = 66 },
             sprites = {
                 { x = 481, y = 352, w = 30, h = 36, offset = { x = 13, y = 18 }, },
                 { x = 547, y = 352, w = 34, h = 36, offset = { x = 17, y = 18 }, },
+            },
+        },
+        jumping = { fps = 12,
+            rect    = { x = 24, y = 607, w = 346, h = 66 },
+            sprites = {
+                {   x =  44, y = 626, w = 29, h = 30, offset = { x = 14, y = 14 }, },
+                {   x = 114, y = 626, w = 30, h = 29, offset = { x = 14, y = 15 }, },
+                {   x = 185, y = 626, w = 29, h = 30, offset = { x = 13, y = 15 }, },
+                {   x = 254, y = 627, w = 30, h = 29, offset = { x = 14, y = 14 }, },
+                {   x = 324, y = 626, w = 30, h = 30, offset = { x = 13, y = 14 }, },
+            },
+        },
+        fastJumping = { fps = 60,
+            rect    = { x = 310,  y = 605, w = 60, h = 70 },
+            sprites = {
+                {   x =  44, y = 626, w = 29, h = 30, offset = { x = 14, y = 14 }, },
+                {   x = 114, y = 626, w = 30, h = 29, offset = { x = 14, y = 15 }, },
+                {   x = 324, y = 626, w = 30, h = 30, offset = { x = 13, y = 14 }, },
+                {   x = 185, y = 626, w = 29, h = 30, offset = { x = 13, y = 15 }, },
+                {   x = 254, y = 627, w = 30, h = 29, offset = { x = 14, y = 14 }, },
+                {   x = 324, y = 626, w = 30, h = 30, offset = { x = 13, y = 14 }, },
             },
         },
     },

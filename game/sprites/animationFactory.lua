@@ -8,10 +8,7 @@ return {
     
     create = function(self, spriteDataName)
         return ({
-            frameTimer    = 0,
-            frameTimerMax = 1,
-
-            graphics      = self.GRAPHICS,
+            graphics = self.GRAPHICS,
             
             init = function(self, spriteDataName)
                 self:initSpriteData()
@@ -42,13 +39,12 @@ return {
                 self.currentFrameIndex = 1
                 
                 self:setUpDefaultAnimation()
-                self:updateFrameRate()
             end,
         
             setUpDefaultAnimation = function(self)
                 for name, anim in pairs(self.data) do
                     if anim.isDefault or self.currentAnimation == nil then
-                        anim.name = name
+                        anim.name             = name
                         self.currentAnimation = anim
                     end
                 end
@@ -60,12 +56,9 @@ return {
             end,
         
             update = function(self, dt)
-                if self:getFPS() ~= 0 then
-                    self.frameTimer = self.frameTimer + dt
-                    if self.frameTimer >= self.frameTimerMax then
-                        self.frameTimer = 0
-                        self:advanceFrame()
-                    end
+                self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
+                if math.floor(self.currentFrameIndex) > #self.currentAnimation then
+                    self.currentFrameIndex = self.currentFrameIndex - #self.currentAnimation
                 end
             end,
 
@@ -78,37 +71,30 @@ return {
             end,
 
             setCurrentAnimationIntern = function(self, animationName)
-                self.currentAnimation = self.data[animationName]
-                self.currentAnimation.name = animationName
-                self.currentFrameIndex = 1
-                self.frameTimer = 0
-                self:updateFrameRate()
-            end,
-                
-            updateFrameRate = function(self)
-                if self.currentAnimation.fps ~= nil and self.currentAnimation.fps ~= 0 then
-                    self.frameTimerMax = 1 / self.currentAnimation.fps
-                else
-                    self.frameTimerMax = 1
+                if self.currentAnimation.name ~= animationName then
+                    self.currentAnimation      = self.data[animationName]
+                    self.currentAnimation.name = animationName
+                    self.currentFrameIndex     = 1
                 end
             end,
         
-            getImage           = function(self)      return self.image                                    end,
-            getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                   end,
-            getCurrentFrame    = function(self)      return self.currentAnimation[self.currentFrameIndex] end,
-            getCurrentAnimName = function(self)      return self.currentAnimation.name                    end,
-            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                 end,
-            getFPS             = function(self)      return self.currentAnimation.fps                     end,
+            getImage           = function(self)      return self.image                                           end,
+            getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
+            getCurrentFrame    = function(self)      return self.currentAnimation[self:getCurrentFrameIndex()]   end,
+            getCurrentAnimName = function(self)      return self.currentAnimation.name                           end,
+            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                        end,
+            getFPS             = function(self)      return self.currentAnimation.fps                            end,   
+            setFPS             = function(self, fps) self.currentAnimation.fps = fps                             end,
+        
+            getImageX          = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
+            getImageY          = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
+            getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX             end,
+            getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY             end,
+
+            getGeneralX        = function(self, x, scaleX)  return x - (self.currentAnimation.offset.x * math.abs(scaleX)) end,
+            getGeneralY        = function(self, y, scaleY)  return y - (self.currentAnimation.offset.y * math.abs(scaleY)) end,
                 
-            setFPS           = function(self, fps) 
-                self.currentAnimation.fps = fps
-                self:updateFrameRate()
-            end,
-        
-            getImageX = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
-            getImageY = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
-        
-            getCurrentFrameIndex = function(self)  return self.currentFrameIndex                        end,
+            getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                     end,
 
             setCurrentFrameIndex = function(self, frameIndex)
                 if     frameIndex < 1                      then frameIndex = #self.currentAnimation
@@ -116,8 +102,6 @@ return {
                     
                 self.currentFrameIndex = frameIndex
             end,
-
-            advanceFrame = function(self) self:setCurrentFrameIndex(self.currentFrameIndex + 1)        end,     
         }):init(spriteDataName)
     end,
 }

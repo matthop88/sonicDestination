@@ -7,27 +7,32 @@ local SOUND_MANAGER = requireRelative("sound/soundManager")
 local JUMP_SOUND = "sonicJumping"
 
 return {
-    --------------------------------------------------------------
-    BRAKING_ACCELERATION = 1800,           -- 0.5      pixels/frame      
-    MIN_SPEED_TO_BRAKE   = 60,             -- 1        pixel /frame
-    RUNNING_ACCELERATION = 168.75,         -- 0.046875 pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    BRAKING_ACCELERATION    = 1800,           -- 0.5      pixels/frame      
+    MIN_SPEED_TO_BRAKE      = 60,             -- 1        pixel /frame
+    RUNNING_ACCELERATION    = 168.75,         -- 0.046875 pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Running#Acceleration
-    ---------------------------------------------------------------
-    MAX_RUNNING_SPEED    = 360,            -- 6        pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    MAX_RUNNING_SPEED       = 360,            -- 6        pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Running#Constants
-    ---------------------------------------------------------------
-    JUMP_VELOCITY        = 390,            -- 6.5      pixels/frame
-    GRAVITY_FORCE        = 787.5,          -- 0.21875  pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    JUMP_VELOCITY           = 390,            -- 6.5      pixels/frame
+    THROTTLED_JUMP_VELOCITY = 240,            -- 4        pixels/frame
+    GRAVITY_FORCE           = 787.5,          -- 0.21875  pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
-    ---------------------------------------------------------------
-    AIR_ACCELERATION     = 337.5,          -- 0.09375  pixels/frame
-    ---------------------------------------------------------------
+    ------------------------------------------------------------------
+    AIR_ACCELERATION        = 337.5,          -- 0.09375  pixels/frame
+    ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Constants
-    ---------------------------------------------------------------
-    GROUND_LEVEL         = 556,
+    ------------------------------------------------------------------
+    AIR_DRAG_VALUE          =   1.875,        -- 0.03125 per     frame
+    ------------------------------------------------------------------
+    -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
+    ------------------------------------------------------------------
+    GROUND_LEVEL            = 556,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -55,6 +60,7 @@ return {
         self:updateState(dt)
         self:updateFrameRate(dt)
         self:applyGravity(dt)
+        self:applyAirDrag(dt)
         self:updatePosition(dt)
     end,
 
@@ -81,6 +87,14 @@ return {
     getX          = function(self) return self.position.x                               end,
     getY          = function(self) return self.position.y                               end,
 
+    getImageX     = function(self) return self.sprite:getImageX(self:getX())            end,
+    getImageY     = function(self) return self.sprite:getImageY(self:getY())            end,
+    getImageW     = function(self) return self.sprite:getImageW()                       end,
+    getImageH     = function(self) return self.sprite:getImageH()                       end,
+
+    getGeneralX   = function(self) return self.sprite:getGeneralX(self:getX())          end,
+    getGeneralY   = function(self) return self.sprite:getGeneralY(self:getY())          end,
+    
     moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
     isFacingLeft  = function(self) return     self.sprite:isXFlipped()                  end,
@@ -93,7 +107,12 @@ return {
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
             SOUND_MANAGER:play(JUMP_SOUND)
+            self.sprite:setCurrentAnimation("jumping")
         end
+    end,
+
+    throttleJump  = function(self)
+        self.velocity.y = math.max(self.velocity.y, -self.THROTTLED_JUMP_VELOCITY)
     end,
 
     isGrounded    = function(self)
@@ -114,9 +133,11 @@ return {
     end,
 
     updateFrameRate = function(self, dt)
-        self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
-        --------------------------------------------------------------------------------------
-        -- Source: https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings
+        if self:isGrounded() then self.sprite:setFPS(60 / ((math.max(0, 8 - math.abs(self.velocity.x / 60))) + 1))
+        else                      self.sprite:setFPS(60 / ((math.max(0, 4 - math.abs(self.velocity.x / 60))) + 1))  end
+        ---------------------------------------------------------------------------------------------------------------
+        --           Source: https://info.sonicretro.org/SPG:Animations#Variable_Speed_Animation_Timings             --
+        ---------------------------------------------------------------------------------------------------------------
     end,
     
     updatePosition = function(self, dt)
@@ -129,6 +150,12 @@ return {
             self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
         else
             self.velocity.y = 0
+        end
+    end,
+
+    applyAirDrag = function(self, dt)
+        if self.velocity.y < 0 and self.velocity.y > -240 then
+            self.velocity.x = self.velocity.x - (self.velocity.x * self.AIR_DRAG_VALUE * dt)
         end
     end,
 

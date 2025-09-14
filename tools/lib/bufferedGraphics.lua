@@ -38,6 +38,12 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            circle    = function(self, mode, x, y, radius)
+                love.graphics.setCanvas(self.buffer)
+                graphics:circle(mode, x, y, radius)
+                love.graphics.setCanvas()
+            end,
+
             draw      = function(self, image, quad, x, y, r, sx, sy)
                 love.graphics.setCanvas(self.buffer)
                 graphics:draw(image, quad, x, y, r, sx, sy)
@@ -60,7 +66,8 @@ return {
                 graphics:moveImage(deltaX, deltaY)
             end,
 
-            setScale = function(self, scale) graphics:setScale(scale) end,
+            getScale = function(self)        return graphics:getScale() end,
+            setScale = function(self, scale) graphics:setScale(scale)   end,
 
             screenToImageCoordinates = function(self, mx, my)
                 return graphics:screenToImageCoordinates(mx, my)

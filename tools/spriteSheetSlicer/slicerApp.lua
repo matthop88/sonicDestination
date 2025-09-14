@@ -82,6 +82,7 @@ local animRects   = {
             if v.rect then
                 local smartRect = require("tools/spriteSheetSlicer/smartRect"):create():initFromRect(v.rect)
                 smartRect.sprites = v.sprites
+                smartRect.fps     = v.fps or 1
                 table.insert(self, smartRect)
             end
         end
@@ -110,6 +111,12 @@ local animRects   = {
     getSelectedSprites = function(self)
         if self.selectedIndex ~= 0 then
             return self[self.selectedIndex].sprites
+        end
+    end,
+
+    getSelectedFPS = function(self)
+        if self.selectedIndex ~= 0 then
+            return self[self.selectedIndex].fps
         end
     end,
 
@@ -171,11 +178,15 @@ function love.keypressed(key)
     end
 end
 
+function love.keyreleased(key)
+    gallery:keyreleased(key)
+end
+
 function love.mousepressed(mx, my)
     if not gallery:mousepressed(mx, my) and currentRect:isValid() then
         currentRect:select(true)
         animRects:select(mx, my)
-        gallery:refresh(animRects:getSelectedSprites())
+        refreshGallery()
         printToReadout(currentRect:toString())
     end
 end
@@ -189,7 +200,7 @@ end
 --------------------------------------------------------------
 
 function refreshGallery()
-    gallery:refresh(animRects:getSelectedSprites())
+    gallery:refresh(animRects:getSelectedSprites(), animRects:getSelectedFPS())
     gallery:updateEditor()
 end
 
@@ -244,7 +255,7 @@ PLUGINS = require("plugins/engine")
 --------------------------------------------------------------
 
 initAnimationInfo()
-gallery = require("tools/spriteSheetSlicer/gallery"):init(sheetInfo.animations)
+gallery = require("tools/spriteSheetSlicer/gallery")
 
 slicer:start({
     imageViewer          = getImageViewer(),

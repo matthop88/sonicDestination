@@ -36,12 +36,19 @@ return {
                 return self.animations:getCurrentAnimName()
             end,
 
-            setFPS = function(self, fps)
-                self.animations:setFPS(fps)
-            end,
+            getFPS = function(self)      return self.animations:getFPS() end,
+            setFPS = function(self, fps) self.animations:setFPS(fps)     end,
+
+            getImageX   = function(self, x) return self.animations:getImageX(x, self.scale.x)   end,
+            getImageY   = function(self, y) return self.animations:getImageY(y, self.scale.y)   end,
+            getImageW   = function(self)    return self.animations:getImageW(self.scale.x)      end,
+            getImageH   = function(self)    return self.animations:getImageH(self.scale.y)      end,
+
+            getGeneralX = function(self, x) return self.animations:getGeneralX(x, self.scale.x) end,
+            getGeneralY = function(self, y) return self.animations:getGeneralY(y, self.scale.y) end,
             
-            flipX       = function(self)           self.scale.x = self.scale.x * -1          end,
-            isXFlipped  = function(self)           return self.scale.x < 0                   end,
+            flipX       = function(self)    self.scale.x = self.scale.x * -1                    end,
+            isXFlipped  = function(self)    return self.scale.x < 0                             end,
             setXFlipped = function(self, xFlipped)
                 if xFlipped then self.scale.x = -math.abs(self.scale.x)
                 else             self.scale.x =  math.abs(self.scale.x) end

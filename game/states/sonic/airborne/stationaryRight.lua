@@ -16,6 +16,10 @@ return {
         elseif key == "left"  then SONIC:setState(STATES.AIR_ACCELERATE_LEFT) end
     end,
 
+    keyreleased = function(self, key)
+        if key == "space" then SONIC:throttleJump() end
+    end,
+
     update     = function(self, dt)
         if SONIC:isGrounded() then SONIC:setState(STATES.STAND_RIGHT) end
     end,

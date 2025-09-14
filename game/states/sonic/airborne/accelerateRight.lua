@@ -16,14 +16,21 @@ return {
     end,
 
     keyreleased = function(self, key)
-        if key == "right" then SONIC:setState(STATES.AIR_DECELERATE_RIGHT) end
+        if     key == "right" then SONIC:setState(STATES.AIR_DECELERATE_RIGHT)
+        elseif key == "space" then SONIC:throttleJump()                    end
     end,
 
     update     = function(self, dt)
         if SONIC:isGrounded() then 
-            SONIC:setState(STATES.ACCELERATE_RIGHT) 
+            if SONIC.velocity.x < 0 then SONIC.velocity.x = SONIC.velocity.x / 16 end
+            SONIC:setState(STATES.ACCELERATE_RIGHT)
         else
             SONIC.velocity.x = math.min(SONIC.MAX_RUNNING_SPEED, SONIC.velocity.x + (SONIC.AIR_ACCELERATION * dt))
+            if SONIC.sprite:getFPS() >= 60 then
+                SONIC.sprite:setCurrentAnimation("fastJumping")
+            else
+                SONIC.sprite:setCurrentAnimation("jumping")
+            end
         end
     end,
 }
