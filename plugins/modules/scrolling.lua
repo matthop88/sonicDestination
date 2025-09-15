@@ -13,10 +13,11 @@ return {
 
     init = function(self, params)
         self.imageViewer = params.imageViewer
-        self.leftKey     = params.leftKey  or self.leftKey
-        self.rightKey    = params.rightKey or self.rightKey
-        self.upKey       = params.upKey    or self.upKey
-        self.downKey     = params.downKey  or self.downKey
+        self.leftKey     = params.leftKey     or self.leftKey
+        self.rightKey    = params.rightKey    or self.rightKey
+        self.upKey       = params.upKey       or self.upKey
+        self.downKey     = params.downKey     or self.downKey
+        self.scrollSpeed = params.scrollSpeed or SCROLL_SPEED
         return self
     end,
     
@@ -59,8 +60,8 @@ return {
     stopDown   = function(self) self.ySpeed = math.max(0, self.ySpeed) end,
     
     calculateSpeed = function(self)
-        if self.dashing then return SCROLL_SPEED * 2
-        else                 return SCROLL_SPEED
+        if self.dashing then return self.scrollSpeed * 2
+        else                 return self.scrollSpeed
         end
     end,
     
