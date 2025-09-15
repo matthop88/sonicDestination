@@ -56,7 +56,7 @@ return {
             end,
         
             toScreenRect = function(self)
-                return getImageViewer():imageToScreenRect(self.rect.x - 2, self.rect.y - 2, self.rect.w + 4, self.rect.h + 4)
+                return getImageViewer():pageToScreenRect(self.rect.x - 2, self.rect.y - 2, self.rect.w + 4, self.rect.h + 4)
             end,
         
             containsPt = function(self, x, y)
