@@ -29,7 +29,7 @@ return {
 
     identifyImageColor = function(self, mx, my)
         local imageX, imageY = self.imageViewer:screenToImageCoordinates(mx, my)
-        local r, g, b        = self.imageViewer:getImagePixelAt(imageX, imageY)
+        local r, g, b        = self.imageViewer:getPagePixelAt(imageX, imageY)
     
         return { r, g, b, r = r, g = g, b = b }
     end,
