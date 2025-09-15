@@ -46,6 +46,10 @@ PLUGINS = require("plugins/engine")
         accessorFnName = "getImageViewer",
     })
     :add("zooming",      { imageViewer = getImageViewer() })
-    :add("scrolling",    { imageViewer = getImageViewer() })
+    :add("scrolling",    
+    { 
+        imageViewer = getImageViewer(),
+        scrollSpeed = 3200,
+    })
 
         
