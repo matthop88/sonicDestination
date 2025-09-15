@@ -22,6 +22,8 @@ return {
     
     handleKeypressed = function(self, key)
         self.dashing = isDoubleTap(key)
+
+        setLastKeypressed(key)
         
         if     key == self.leftKey  then self:startLeft()  return true
         elseif key == self.rightKey then self:startRight() return true
@@ -29,7 +31,6 @@ return {
         elseif key == self.downKey  then self:startDown()  return true
         end
     
-        setLastKeypressed(key)
     end,
 
     handleKeyreleased = function(self, key)
