@@ -34,7 +34,7 @@ return {
         
         for _, rect in SPRITE_RECTS:elements() do
             love.graphics.setColor(1, 1, 1, rect.alpha or 1)
-            love.graphics.rectangle("line", IMAGE_VIEWER:imageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+            love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(rect.x, rect.y, rect.w, rect.h))
         end
     end,
     
