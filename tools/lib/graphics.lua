@@ -76,10 +76,18 @@ return {
     end,
 
     draw      = function(self, image, quad, x, y, r, sx, sy)
-        love.graphics.draw(image, quad, (x + self.x) * self.scale, 
-                                        (y + self.y) * self.scale,
-                                        0,        sx * self.scale, 
-                                                  sy * self.scale)
+        if type(quad) == "number" then
+            self:drawImage(image, quad, x)
+        else
+            love.graphics.draw(image, quad, (x + self.x) * self.scale, 
+                                            (y + self.y) * self.scale,
+                                            0,        sx * self.scale, 
+                                                      sy * self.scale)
+        end
+    end,
+
+    drawImage = function(self, image, x, y)
+        love.graphics.draw(image, (x + self.x) * self.scale, (y + self.y) * self.scale, 0, self.scale, self.scale)
     end,
 
     ------------------------ Text Drawing Functions --------------------
