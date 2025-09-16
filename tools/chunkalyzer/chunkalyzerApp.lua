@@ -47,6 +47,11 @@ function love.keypressed(key)
     end
 end
 
+function love.mousepressed(mx, my)
+    local cX, cY = getChunkXY(mx, my)
+    printToReadout("Clicked on Chunk { x = " .. cX .. ", y = " .. cY .. "})
+end
+
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
@@ -101,8 +106,13 @@ PLUGINS = require("plugins/engine")
     :add("zooming",      { imageViewer = GRAFX })
     :add("scrolling",    
     { 
-        imageViewer = GRAFX,
-        scrollSpeed = 3200,
+        imageViewer   = GRAFX,
+        scrollSpeed   = 3200,
+    })
+    :add("readout",
+    {
+        printFnName   = "printToReadout",
+        echoToConsole = true,
     })
 
         
