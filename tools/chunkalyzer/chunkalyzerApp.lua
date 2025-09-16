@@ -31,15 +31,12 @@ img:setFilter("nearest", "nearest")
 function love.draw()
     GRAFX:draw(img, INSET, INSET)
 
-    local mx, my = love.mouse.getPosition()
-    local x, y   = GRAFX:screenToImageCoordinates(mx, my)
-    x = (math.floor(x / 256) * 256) + INSET
-    y = (math.floor(y / 256) * 256) + INSET
-
+    local cX, cY = getChunkXY(love.mouse.getPosition()
+    
     GRAFX:setColor(1, 1, 1)
     GRAFX:setLineWidth(3)
 
-    GRAFX:rectangle("line", x - 2, y - 2, 260, 260)
+    GRAFX:rectangle("line", (cX * 256) + INSET - 2, (cY * 256) + INSET - 2, 260, 260)
 end
 
 function love.update(dt)
@@ -51,6 +48,11 @@ end
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
+
+function getChunkXY(x, y)
+    local imgX, imgY = GRAFX:screenToImageCoordinates(x, y)
+    return math.floor(imgX / 256), math.floor(imgY / 256)
+end
 
 function keepImageInBounds()
     GRAFX.x = math.min(0, math.max(GRAFX.x, (love.graphics:getWidth()  / GRAFX.scale) - getPageWidth()))
