@@ -17,6 +17,29 @@ local img     = love.graphics.newImage(imgData)
 
 local OFFSET  = { x = 0, y = 0 }
 
+local chunkAttributes = {
+	leftMost   = nil,
+	topMost    = nil,
+	rightMost  = nil,
+	bottomMost = nil,
+}
+
+local modes = {
+	{	message = "Select the leftmost Chunk on the Map.",   fn = function(x, y) chunkAttributes.leftMost   = x end	},
+	{	message = "Select the topMost Chunk on the Map.",    fn = function(x, y) chunkAttributes.topMost    = y end },
+	{	message = "Select the rightmost Chunk on the Map.",  fn = function(x, y) chunkAttributes.rightMost  = x end	},
+	{	message = "Select the bottomMost Chunk on the Map.", fn = function(x, y) chunkAttributes.bottomMost = y end },
+	{   message = "Click anywhere to begin Chunkalyzing.",   fn = nil												},
+	{	message = nil,                                       fn = nil												},
+
+	index = 1,
+
+	get   = function(self) return self[self.index]                      end,
+	next  = function(self) self.index = math.min(self.index + 1, #self) end,
+	prev  = function(self) self.index = math.max(self.index - 1, 1)     end,
+	reset = function(self) self.index = 1                               end,
+}
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -44,12 +67,18 @@ function love.keypressed(key)
     elseif key == "optionright" then OFFSET.x = math.min(128, OFFSET.x + 1)
     elseif key == "optionup"    then OFFSET.y = math.max(0,   OFFSET.y - 1)
     elseif key == "optiondown"  then OFFSET.y = math.min(128, OFFSET.y + 1)
-    end
+    elseif key == "shifttab"    then prevMode()
+ 	elseif key == "escape"      then resetMode()
+	end
 end
 
 function love.mousepressed(mx, my)
     local cX, cY = getChunkXY(mx, my)
-    printToReadout("Clicked on Chunk { x = " .. cX .. ", y = " .. cY .. "}")
+    local currentMode = modes:get()
+
+    if currentMode.fn then currentMode.fn(cX, cY) end
+    
+    nextMode()
 end
 
 --------------------------------------------------------------
@@ -97,6 +126,26 @@ end
 function getPageWidth()  return img:getWidth()  + (INSET * 2) end
 function getPageHeight() return img:getHeight() + (INSET * 2) end
 
+function nextMode()
+	modes:next()
+    refreshMode()
+end
+
+function prevMode()
+	modes:prev()
+	refreshMode()
+end
+
+function resetMode()
+	modes:reset()
+	refreshMode()
+end
+
+function refreshMode()
+	currentMode = modes:get()
+	if currentMode.message then printToReadout(currentMode.message) end
+end
+
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
@@ -115,4 +164,4 @@ PLUGINS = require("plugins/engine")
         echoToConsole = true,
     })
 
-        
+printToReadout(modes:get().message)        
