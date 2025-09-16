@@ -49,7 +49,7 @@ end
 
 function love.mousepressed(mx, my)
     local cX, cY = getChunkXY(mx, my)
-    printToReadout("Clicked on Chunk { x = " .. cX .. ", y = " .. cY .. "})
+    printToReadout("Clicked on Chunk { x = " .. cX .. ", y = " .. cY .. "}")
 end
 
 --------------------------------------------------------------
