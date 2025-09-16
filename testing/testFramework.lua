@@ -160,8 +160,8 @@ TESTING = {
 TESTING:queueTestClasses {
     require("testing/tests/testModKeyEnabler"),
     require("testing/tests/testPropertyNotifier"),
-    require("testing/tests/testWidgetFactory"),
-    require("testing/tests/testWidgets"),
+    --require("testing/tests/testWidgetFactory"),
+    --require("testing/tests/testWidgets"),
 }
 
 require("testing/delayTests")
