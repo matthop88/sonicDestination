@@ -15,6 +15,8 @@ end
 local imgData = love.image.newImageData(imgPath)
 local img     = love.graphics.newImage(imgData)
 
+local OFFSET  = { x = 0, y = 0 }
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -37,7 +39,13 @@ function love.update(dt)
     keepImageInBounds()
 end
 
--- ...
+function love.keypressed(key)
+    if     key == "optionleft"  then OFFSET.x = OFFSET.x - 1
+    elseif key == "optionright" then OFFSET.x = OFFSET.x + 1
+    elseif key == "optionup"    then OFFSET.y = OFFSET.y - 1
+    elseif key == "optiondown"  then OFFSET.y = OFFSET.y + 1
+    end
+end
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
@@ -62,7 +70,7 @@ function getChunkXY(x, y)
 end
 
 function getWorldCoordinatesOfChunk(cX, cY)
-    return (cX * 256) + INSET, (cY * 256) + INSET
+    return (cX * 256) + INSET + OFFSET.x, (cY * 256) + INSET + OFFSET.y
 end
 
 function drawChunkSelection(x, y)
@@ -89,6 +97,7 @@ function getPageHeight() return img:getHeight() + (INSET * 2) end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
+    :add("modKeyEnabler")
     :add("zooming",      { imageViewer = GRAFX })
     :add("scrolling",    
     { 
