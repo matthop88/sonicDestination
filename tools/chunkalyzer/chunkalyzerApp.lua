@@ -40,10 +40,10 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    if     key == "optionleft"  then OFFSET.x = OFFSET.x - 1
-    elseif key == "optionright" then OFFSET.x = OFFSET.x + 1
-    elseif key == "optionup"    then OFFSET.y = OFFSET.y - 1
-    elseif key == "optiondown"  then OFFSET.y = OFFSET.y + 1
+    if     key == "optionleft"  then OFFSET.x = math.max(0,   OFFSET.x - 1)
+    elseif key == "optionright" then OFFSET.x = math.min(128, OFFSET.x + 1)
+    elseif key == "optionup"    then OFFSET.y = math.max(0,   OFFSET.y - 1)
+    elseif key == "optiondown"  then OFFSET.y = math.min(128, OFFSET.y + 1)
     end
 end
 
