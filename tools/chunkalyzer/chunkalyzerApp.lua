@@ -32,11 +32,12 @@ function love.draw()
     GRAFX:draw(img, INSET, INSET)
 
     local cX, cY = getChunkXY(love.mouse.getPosition()
-    
+    local x,  y  = getWorldCoordinatesOfChunk(cX, cY)
+        
     GRAFX:setColor(1, 1, 1)
     GRAFX:setLineWidth(3)
 
-    GRAFX:rectangle("line", (cX * 256) + INSET - 2, (cY * 256) + INSET - 2, 260, 260)
+    GRAFX:rectangle("line", x - 2, y - 2, 260, 260)
 end
 
 function love.update(dt)
@@ -52,6 +53,10 @@ end
 function getChunkXY(x, y)
     local imgX, imgY = GRAFX:screenToImageCoordinates(x, y)
     return math.floor(imgX / 256), math.floor(imgY / 256)
+end
+
+function getWorldCoordinatesOfChunk(cX, cY)
+    return (cX * 256) + INSET, (cY * 256) + INSET
 end
 
 function keepImageInBounds()
