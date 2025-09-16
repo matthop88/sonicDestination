@@ -31,7 +31,7 @@ img:setFilter("nearest", "nearest")
 function love.draw()
     GRAFX:draw(img, INSET, INSET)
 
-    local cX, cY = getChunkXY(love.mouse.getPosition()
+    local cX, cY = getChunkXY(love.mouse.getPosition())
     local x,  y  = getWorldCoordinatesOfChunk(cX, cY)
         
     GRAFX:setColor(1, 1, 1)
