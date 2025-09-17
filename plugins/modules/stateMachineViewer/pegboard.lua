@@ -1,7 +1,7 @@
 local COLORS = require("tools/lib/colors")
 local GRID_SIZE, GRAFX
 
-local GRAFX = require("tools/lib/graphics")
+local GRAFX
 
 return {
     init = function(self, gridSize, graphics)
