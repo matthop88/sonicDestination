@@ -5,8 +5,7 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 local WORLD_PANE                  = require("tools/chunkalyzer/worldPane")
 
-local GRAFX                       = require "tools/lib/graphics"
-
+local GRAFX                       = require("tools/lib/graphics"):create()
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
