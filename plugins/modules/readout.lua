@@ -5,7 +5,9 @@ local FONT           = love.graphics.newFont(FONT_SIZE)
 local SUSTAIN        = 180
 local ATTACK         = 8
 local DECAY          = 24
-local TOTAL_DURATION = SUSTAIN + ATTACK + DECAY
+
+local function getTotalDuration() return SUSTAIN + ATTACK + DECAY end
+
 local AMPLITUDE      = 90
 local BOX_HEIGHT     = 70
 local HORIZ_MARGINS  = 30
@@ -36,7 +38,7 @@ return {
 
         BOX_HEIGHT    = params.boxHeight    or BOX_HEIGHT
         HORIZ_MARGINS = params.horizMargins or HORIZ_MARGINS
-        
+        SUSTAIN       = params.sustain      or SUSTAIN
         return self
     end,
     
@@ -96,7 +98,7 @@ return {
         end,
     },
 
-    timer      = TOTAL_DURATION,
+    timer      = getTotalDuration(),
     yOffset    = 0,
 
     getTimeElapsed = function(self)     
@@ -104,7 +106,7 @@ return {
     end,
     
     getTimeRemaining = function(self)  
-        return TOTAL_DURATION - self.timer 
+        return getTotalDuration() - self.timer 
     end,
 
     draw = function(self)
@@ -133,7 +135,7 @@ return {
     end,
 
     isActive = function(self)     
-        return self:getTimeElapsed() < TOTAL_DURATION 
+        return self:getTimeElapsed() < getTotalDuration() 
     end,
 
     updateTimer = function(self, dt) 
@@ -150,6 +152,8 @@ return {
         else                           return self:calculateSustainingYOffset()  
         end
     end,
+
+    setSustain  = function(self, sustain) SUSTAIN = sustain end,
 
     isAttacking = function(self)
         return self:getTimeElapsed() <= ATTACK   
