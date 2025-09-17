@@ -1,5 +1,5 @@
 if __DEV_MODE then
-    return require("tools/lib/graphics")
+    return require("tools/lib/graphics"):create()
 else
     return {
         setColor	= function(self, color)
