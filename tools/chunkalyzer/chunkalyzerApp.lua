@@ -138,7 +138,7 @@ end
 
 function resetMode()
 	modes:reset()
-	getReadout():setSustain(180)
+	getReadout():setSustain(1800)
 	refreshMode()
 end
 
