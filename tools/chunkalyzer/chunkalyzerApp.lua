@@ -29,7 +29,7 @@ local modes = {
 	{	message = "Select the topMost Chunk on the Map.",    fn = function(x, y) chunkAttributes.topMost    = y end },
 	{	message = "Select the rightmost Chunk on the Map.",  fn = function(x, y) chunkAttributes.rightMost  = x end	},
 	{	message = "Select the bottomMost Chunk on the Map.", fn = function(x, y) chunkAttributes.bottomMost = y end },
-	{   message = "Click anywhere to begin Chunkalyzing.",   fn = nil												},
+	{   message = "Click anywhere to begin Chunkalyzing.",   fn = function(x, y) getReadout():setSustain(180)   end },
 	{	message = nil,                                       fn = nil												},
 
 	index = 1,
@@ -67,7 +67,7 @@ function love.keypressed(key)
     elseif key == "optionright" then OFFSET.x = math.min(128, OFFSET.x + 1)
     elseif key == "optionup"    then OFFSET.y = math.max(0,   OFFSET.y - 1)
     elseif key == "optiondown"  then OFFSET.y = math.min(128, OFFSET.y + 1)
-    elseif key == "shifttab"    then prevMode()
+    elseif key == "backspace"   then prevMode()
  	elseif key == "escape"      then resetMode()
 	end
 end
@@ -138,6 +138,7 @@ end
 
 function resetMode()
 	modes:reset()
+	getReadout():setSustain(180)
 	refreshMode()
 end
 
@@ -160,8 +161,12 @@ PLUGINS = require("plugins/engine")
     })
     :add("readout",
     {
-        printFnName   = "printToReadout",
-        echoToConsole = true,
+        printFnName    = "printToReadout",
+		accessorFnName = "getReadout",
+        echoToConsole  = true,
     })
-
-printToReadout(modes:get().message)        
+	:add("timedFunctions",
+	{
+		{	secondsWait = 1, callback = function() resetMode() end },
+	})
+       
