@@ -148,6 +148,18 @@ return {
 		GRAFX:moveImage(deltaX, deltaY)
 	end,
 
+	screenToImageCoordinates = function(self, screenX, screenY)
+        return GRAFX:screenToImageCoordinates(screenX, screenY)
+    end,
+
+    adjustScaleGeometrically = function(self, deltaScale)
+        GRAFX:adjustScaleGeometrically(deltaScale)
+    end,
+
+    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    end,
+
     --------------------------------------------------------------
     --          Specialized Event Response Functions            --
     --------------------------------------------------------------
