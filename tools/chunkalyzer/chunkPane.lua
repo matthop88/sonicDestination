@@ -6,7 +6,7 @@ local GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/gr
 
 return {
 	draw = function(self)
-        GRAFX:setColor(0, 0, 0)
+        GRAFX:setColor(0.2, 0.2, 0.2)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
         GRAFX:setColor(1, 1, 0)
         GRAFX:rectangle("fill", 200, 100, 300, 200)
