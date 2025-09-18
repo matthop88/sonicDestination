@@ -3,7 +3,7 @@
 --------------------------------------------------------------
 
 local INSET = 16
-local GRAFX = require("tools/lib/graphics"):create()
+local GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 1200, 800)
 
 local imgPath
 
@@ -53,6 +53,9 @@ return {
     isChunkVisible = true,
 
 	draw = function(self)
+        GRAFX:setColor(0, 0, 0)
+        GRAFX:rectangle("fill", GRAFX:calculateViewport())
+
         self:drawWorldMap()
         
         if self.isChunkVisible then self:drawCurrentChunk() end
@@ -118,6 +121,10 @@ return {
         GRAFX:rectangle("line", x - 2, y - 2, 260, 260)
     end,
 
+    blitToScreen = function(self, x, y)
+        GRAFX:blitToScreen(x, y, { 1, 1, 1 }, 0, 1, 1)
+    end,
+
     --------------------------------------------------------------
     --              Specialized Update Functions                --
     --------------------------------------------------------------
@@ -129,16 +136,16 @@ return {
     end,
 
     isScreenInMotion = function(self)
-        return GRAFX.x ~= prevGraphics.x or GRAFX.y ~= prevGraphics.y
+        return GRAFX:getX() ~= prevGraphics.x or GRAFX:getY() ~= prevGraphics.y
     end,
 
     updateScreenMotionDetection = function(self, dt)
-        prevGraphics.x, prevGraphics.y = GRAFX.x, GRAFX.y
+        prevGraphics.x, prevGraphics.y = GRAFX:getX(), GRAFX:getY()
     end,
 
     keepImageInBounds = function(self)
-        GRAFX.x = math.min(0, math.max(GRAFX.x, (love.graphics:getWidth()  / GRAFX.scale) - self:getPageWidth()))
-        GRAFX.y = math.min(0, math.max(GRAFX.y, (love.graphics:getHeight() / GRAFX.scale) - self:getPageHeight()))
+        GRAFX:setX(math.min(0, math.max(GRAFX:getX(), (love.graphics:getWidth()  / GRAFX:getScale()) - self:getPageWidth())))
+        GRAFX:setY(math.min(0, math.max(GRAFX:getY(), (love.graphics:getHeight() / GRAFX:getScale()) - self:getPageHeight())))
     end,
 
     getPageWidth  = function(self) return img:getWidth()  + (INSET * 2) end,
