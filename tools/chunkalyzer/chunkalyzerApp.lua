@@ -4,8 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local GRAFX                       = require("tools/lib/graphics"):create()
-local WORLD_PANE                  = require("tools/chunkalyzer/worldPane"):init(GRAFX)
+local WORLD_PANE                  = require("tools/chunkalyzer/worldPane")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -48,10 +47,10 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = GRAFX })
+    :add("zooming",      { imageViewer = WORLD_PANE:getGraphics()})
     :add("scrolling",    
     { 
-        imageViewer   = GRAFX,
+        imageViewer   = WORLD_PANE:getGraphics(),
         scrollSpeed   = 3200,
     })
     :add("readout",
