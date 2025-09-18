@@ -90,7 +90,7 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = WORLD_PANE:getGraphics()})
+    :add("zooming",      { imageViewer = CHUNKALYZER, })
     :add("scrolling",    
     { 
         imageViewer   = CHUNKALYZER,
