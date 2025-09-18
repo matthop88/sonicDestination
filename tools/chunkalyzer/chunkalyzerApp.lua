@@ -55,7 +55,7 @@ PLUGINS = require("plugins/engine")
     :add("zooming",      { imageViewer = WORLD_PANE:getGraphics()})
     :add("scrolling",    
     { 
-        imageViewer   = WORLD_PANE:getGraphics(),
+        imageViewer   = WORLD_PANE,
         scrollSpeed   = 3200,
     })
     :add("readout",
