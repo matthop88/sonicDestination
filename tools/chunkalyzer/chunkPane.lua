@@ -2,12 +2,12 @@
 --                     Local Variables                      --
 --------------------------------------------------------------
 
-local GRAFX = require("tools/lib/graphics"):create()
+local GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 1200, 800)
 
 return {
 	draw = function(self)
         GRAFX:setColor(0, 0, 0)
-        GRAFX:rectangle("fill", 0, 0, GRAFX:calculateViewport())
+        GRAFX:rectangle("fill", GRAFX:calculateViewport())
         GRAFX:setColor(1, 1, 0)
         GRAFX:rectangle("fill", 200, 100, 300, 200)
     end,
@@ -22,6 +22,14 @@ return {
 
     handleMousepressed = function(self, mx, my)
         -- Do nothing
+    end,
+
+    --------------------------------------------------------------
+    --               Specialized Draw Functions                 --
+    --------------------------------------------------------------
+
+    blitToScreen = function(self, x, y)
+        GRAFX:blitToScreen(x, y, { 1, 1, 1 }, 0, 1, 1)
     end,
 
     --------------------------------------------------------------
