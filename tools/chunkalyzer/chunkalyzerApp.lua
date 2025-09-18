@@ -5,6 +5,9 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local WORLD_PANE                  = require("tools/chunkalyzer/worldPane")
+local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane")
+
+local CURRENT_PANE                = WORLD_PANE
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -18,19 +21,21 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.draw()
-    WORLD_PANE:draw()
+    CURRENT_PANE:draw()
 end
 
 function love.update(dt)
-    WORLD_PANE:update(dt)
+    CURRENT_PANE:update(dt)
 end
 
 function love.keypressed(key)
-    WORLD_PANE:handleKeypressed(key)
+    if     key == "1" then CURRENT_PANE = WORLD_PANE
+	elseif key == "2" then CURRENT_PANE = CHUNK_PANE
+	else                   CURRENT_PANE:handleKeypressed(key) end
 end
 
 function love.mousepressed(mx, my)
-    WORLD_PANE:handleMousepressed(mx, my)
+    CURRENT_PANE:handleMousepressed(mx, my)
 end
 
 --------------------------------------------------------------
