@@ -11,10 +11,16 @@ local CHUNKALYZER = {
 	CURRENT_PANE = WORLD_PANE,
 
 	draw = function(self)
+		love.graphics.setColor(0.5, 0.5, 0.5)
+		love.graphics.rectangle("fill", 0, 0, 1200, 800)
 		WORLD_PANE:draw()
 		CHUNK_PANE:draw()
 		WORLD_PANE:blitToScreen(0, -408)
 		CHUNK_PANE:blitToScreen(0,  408)
+		love.graphics.setColor(0, 0, 0)
+		love.graphics.setLineWidth(1)
+		love.graphics.line(0, 384, 1200, 384)
+		love.graphics.line(0, 416, 1200, 416)
 	end,
 
 	update = function(self, dt)
