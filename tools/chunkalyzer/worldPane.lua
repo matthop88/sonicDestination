@@ -39,6 +39,10 @@ local modes = {
 	reset = function(self) self.index = 1                               end,
 }
 
+local prevChunk = {}
+
+local prevMouse = { x = 0, y = 0 }
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -82,14 +86,23 @@ return {
     end,
 
     drawCurrentChunk = function(self)
-        local cX, cY = self:getChunkXY(love.mouse.getPosition())
+        local cX, cY = self:getChunkXYFromMouse()
         local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
 
         if love.mouse.isDown(1) then self:drawChunkSelection(x, y)
         else                         self:drawChunkOutline(  x, y) end
     end,
 
-    getChunkXY = function(self, x, y)
+    getChunkXYFromMouse = function(self)
+		local mx, my = love.mouse.getPosition()
+		if mx ~= prevMouse.x or my ~= prevMouse.y or prevChunk.x == nil then
+			prevMouse.x, prevMouse.y = mx, my
+			prevChunk.x, prevChunk.y = self:getChunkXY(mx, my)
+		end
+		return prevChunk.x, prevChunk.y
+	end,
+
+	getChunkXY = function(self, x, y)
         local imgX, imgY = GRAFX:screenToImageCoordinates(x, y)
         return math.floor(imgX / 256), math.floor(imgY / 256)
     end,
