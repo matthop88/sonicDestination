@@ -35,6 +35,18 @@ local CHUNKALYZER = {
     moveImage = function(self, deltaX, deltaY)
 		self.CURRENT_PANE:moveImage(deltaX, deltaY)
 	end,
+
+	screenToImageCoordinates = function(self, screenX, screenY)
+        return self.CURRENT_PANE:screenToImageCoordinates(screenX, screenY)
+    end,
+
+    adjustScaleGeometrically = function(self, deltaScale)
+        self.CURRENT_PANE:adjustScaleGeometrically(deltaScale)
+    end,
+
+    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        self.CURRENT_PANE:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    end,
 }
 
 --------------------------------------------------------------
