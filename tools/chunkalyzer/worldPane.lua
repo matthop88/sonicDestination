@@ -146,6 +146,10 @@ return {
     getPageWidth  = function(self) return img:getWidth()  + (INSET * 2) end,
     getPageHeight = function(self) return img:getHeight() + (INSET * 2) end,
 
+	moveImage = function(self, deltaX, deltaY)
+		GRAFX:moveImage(deltaX, deltaY)
+	end,
+
     --------------------------------------------------------------
     --          Specialized Event Response Functions            --
     --------------------------------------------------------------
