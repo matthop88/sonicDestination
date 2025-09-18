@@ -59,8 +59,6 @@ return {
     end,
 
     update = function(self, dt)
-        self:keepImageInBounds()
-
         self:updateChunkVisibility(dt)
     end,
 
