@@ -3,7 +3,7 @@
 --------------------------------------------------------------
 
 local INSET = 16
-local GRAFX
+local GRAFX = require("tools/lib/graphics"):create()
 
 local imgPath
 
@@ -46,12 +46,9 @@ local modes = {
 img:setFilter("nearest", "nearest")
 
 return {
-	init = function(self, graphics)
-		GRAFX = graphics
-		return self
-	end,
+	getGraphics = function(self) return GRAFX end,
 	
-    draw = function(self)
+	draw = function(self)
         self:drawWorldMap()
         self:drawCurrentChunk()
     end,
