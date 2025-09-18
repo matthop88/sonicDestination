@@ -7,7 +7,35 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 local WORLD_PANE                  = require("tools/chunkalyzer/worldPane")
 local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane")
 
-local CURRENT_PANE                = WORLD_PANE
+local CHUNKALYZER = {
+	CURRENT_PANE = WORLD_PANE,
+
+	draw = function(self)
+		self.CURRENT_PANE:draw()
+	end,
+
+	update = function(self, dt)
+		self.CURRENT_PANE:update(dt)
+	end,
+
+	handleKeypressed = function(self, key)
+    	if     key == "1" then self.CURRENT_PANE = WORLD_PANE
+		elseif key == "2" then self.CURRENT_PANE = CHUNK_PANE
+		else                   self.CURRENT_PANE:handleKeypressed(key) end
+	end,
+
+	handleMousepressed = function(self, mx, my)
+    	self.CURRENT_PANE:handleMousepressed(mx, my)
+	end,
+
+	keepImageInBounds = function(self)
+        self.CURRENT_PANE:keepImageInBounds()
+    end,
+
+    moveImage = function(self, deltaX, deltaY)
+		self.CURRENT_PANE:moveImage(deltaX, deltaY)
+	end,
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -21,21 +49,19 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.draw()
-    CURRENT_PANE:draw()
+    CHUNKALYZER:draw()
 end
 
 function love.update(dt)
-    CURRENT_PANE:update(dt)
+    CHUNKALYZER:update(dt)
 end
 
 function love.keypressed(key)
-    if     key == "1" then CURRENT_PANE = WORLD_PANE
-	elseif key == "2" then CURRENT_PANE = CHUNK_PANE
-	else                   CURRENT_PANE:handleKeypressed(key) end
+    CHUNKALYZER:handleKeypressed(key)
 end
 
 function love.mousepressed(mx, my)
-    CURRENT_PANE:handleMousepressed(mx, my)
+    CHUNKALYZER:handleMousepressed(mx, my)
 end
 
 --------------------------------------------------------------
@@ -55,7 +81,7 @@ PLUGINS = require("plugins/engine")
     :add("zooming",      { imageViewer = WORLD_PANE:getGraphics()})
     :add("scrolling",    
     { 
-        imageViewer   = WORLD_PANE,
+        imageViewer   = CHUNKALYZER,
         scrollSpeed   = 3200,
     })
     :add("readout",
