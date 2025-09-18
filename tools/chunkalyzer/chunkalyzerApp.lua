@@ -11,7 +11,10 @@ local CHUNKALYZER = {
 	CURRENT_PANE = WORLD_PANE,
 
 	draw = function(self)
-		self.CURRENT_PANE:draw()
+		WORLD_PANE:draw()
+		CHUNK_PANE:draw()
+		WORLD_PANE:blitToScreen(0, -408)
+		CHUNK_PANE:blitToScreen(0,  408)
 	end,
 
 	update = function(self, dt)
