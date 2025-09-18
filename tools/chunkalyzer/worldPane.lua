@@ -39,9 +39,7 @@ local modes = {
 	reset = function(self) self.index = 1                               end,
 }
 
-local prevChunk = {}
-
-local prevMouse = { x = 0, y = 0 }
+local prevGraphics = { x = GRAFX.x, y = GRAFX.y }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -52,13 +50,18 @@ img:setFilter("nearest", "nearest")
 return {
 	getGraphics = function(self) return GRAFX end,
 	
+    isChunkVisible = true,
+
 	draw = function(self)
         self:drawWorldMap()
-        self:drawCurrentChunk()
+        
+        if self.isChunkVisible then self:drawCurrentChunk() end
     end,
 
     update = function(self, dt)
         self:keepImageInBounds()
+
+        self:updateChunkVisibility(dt)
     end,
 
     handleKeypressed = function(self, key)
@@ -80,29 +83,24 @@ return {
         self:nextMode()
     end,
 
+    --------------------------------------------------------------
+    --               Specialized Draw Functions                 --
+    --------------------------------------------------------------
+
     drawWorldMap = function(self)
         GRAFX:setColor(1, 1, 1)
         GRAFX:draw(img, INSET, INSET)
     end,
 
     drawCurrentChunk = function(self)
-        local cX, cY = self:getChunkXYFromMouse()
+        local cX, cY = self:getChunkXY(love.mouse.getPosition())
         local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
 
         if love.mouse.isDown(1) then self:drawChunkSelection(x, y)
         else                         self:drawChunkOutline(  x, y) end
     end,
 
-    getChunkXYFromMouse = function(self)
-		local mx, my = love.mouse.getPosition()
-		if mx ~= prevMouse.x or my ~= prevMouse.y or prevChunk.x == nil then
-			prevMouse.x, prevMouse.y = mx, my
-			prevChunk.x, prevChunk.y = self:getChunkXY(mx, my)
-		end
-		return prevChunk.x, prevChunk.y
-	end,
-
-	getChunkXY = function(self, x, y)
+    getChunkXY = function(self, x, y)
         local imgX, imgY = GRAFX:screenToImageCoordinates(x, y)
         return math.floor(imgX / 256), math.floor(imgY / 256)
     end,
@@ -122,6 +120,24 @@ return {
         GRAFX:rectangle("line", x - 2, y - 2, 260, 260)
     end,
 
+    --------------------------------------------------------------
+    --              Specialized Update Functions                --
+    --------------------------------------------------------------
+
+    updateChunkVisibility = function(self, dt)
+        self.isChunkVisible = not self:isScreenInMotion()
+
+        self:updateScreenMotionDetection(dt)
+    end,
+
+    isScreenInMotion = function(self)
+        return GRAFX.x ~= prevGraphics.x or GRAFX.y ~= prevGraphics.y
+    end,
+
+    updateScreenMotionDetection = function(self, dt)
+        prevGraphics.x, prevGraphics.y = GRAFX.x, GRAFX.y
+    end,
+
     keepImageInBounds = function(self)
         GRAFX.x = math.min(0, math.max(GRAFX.x, (love.graphics:getWidth()  / GRAFX.scale) - self:getPageWidth()))
         GRAFX.y = math.min(0, math.max(GRAFX.y, (love.graphics:getHeight() / GRAFX.scale) - self:getPageHeight()))
@@ -130,7 +146,11 @@ return {
     getPageWidth  = function(self) return img:getWidth()  + (INSET * 2) end,
     getPageHeight = function(self) return img:getHeight() + (INSET * 2) end,
 
-    nextMode       = function(self)
+    --------------------------------------------------------------
+    --          Specialized Event Response Functions            --
+    --------------------------------------------------------------
+
+    nextMode = function(self)
     	modes:next()
         self:refreshMode()
     end,
@@ -151,4 +171,3 @@ return {
     	if currentMode.message then printToReadout(currentMode.message) end
     end,
 }
-
