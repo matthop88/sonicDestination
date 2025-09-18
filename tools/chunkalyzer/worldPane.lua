@@ -63,6 +63,7 @@ return {
 
     update = function(self, dt)
         self:updateChunkVisibility(dt)
+		self:keepImageInBounds()
     end,
 
     handleKeypressed = function(self, key)
