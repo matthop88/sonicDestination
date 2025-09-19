@@ -48,9 +48,7 @@ local prevGraphics = { x = GRAFX.x, y = GRAFX.y }
 img:setFilter("nearest", "nearest")
 
 return {
-	getGraphics = function(self) return GRAFX end,
-	
-    isChunkVisible = true,
+	isChunkVisible = true,
 
 	yBlit = 0,
 
