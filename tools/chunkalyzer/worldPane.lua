@@ -58,7 +58,7 @@ return {
 
         self:drawWorldMap()
         
-        if self.isChunkVisible then self:drawCurrentChunk() end
+        if self.isChunkVisible and self.inFocus then self:drawCurrentChunk() end
     end,
 
     update = function(self, dt)
@@ -131,6 +131,10 @@ return {
     --              Specialized Update Functions                --
     --------------------------------------------------------------
 
+	gainFocus = function(self) self.inFocus = true  end,
+	loseFocus = function(self) self.inFocus = false end,
+	hasFocus  = function(self) return self.inFocus  end,
+	
     updateChunkVisibility = function(self, dt)
         self.isChunkVisible = not self:isScreenInMotion()
 
