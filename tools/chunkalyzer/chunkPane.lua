@@ -55,4 +55,8 @@ return {
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
+
+	getMousePositionFn = function(self)
+        return love.mouse.getPosition()
+    end,
 }
