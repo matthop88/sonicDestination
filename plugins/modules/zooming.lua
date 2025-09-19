@@ -2,10 +2,12 @@ local ZOOM_SPEED = 2
 
 return {
     scaleDelta = 0,
+    getMousePositionFn = love.mouse.getPosition,
 
     init = function(self, params)
-        self.imageViewer = params.imageViewer
-
+        self.imageViewer        = params.imageViewer
+        self.getMousePositionFn = params.getMousePositionFn or self.getMousePositionFn
+        
         return self
     end,
     
@@ -23,7 +25,7 @@ return {
     
     update = function(self, dt)
         if self.scaleDelta ~= 0 then
-            self:zoomFromCoordinates(dt, love.mouse.getPosition())
+            self:zoomFromCoordinates(dt, self.getMousePositionFn())
             self:adjustImagePositionIfZoomingOut()
             return true
         end
