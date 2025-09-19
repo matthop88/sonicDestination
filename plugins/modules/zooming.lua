@@ -27,7 +27,6 @@ return {
         if self.scaleDelta ~= 0 then
             self:zoomFromCoordinates(dt, self.getMousePositionFn())
             self:adjustImagePositionIfZoomingOut()
-            return true
         end
     end,
 
