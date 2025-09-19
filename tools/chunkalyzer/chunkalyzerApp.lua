@@ -25,14 +25,21 @@ local CHUNKALYZER = {
 
 	update = function(self, dt)
 		local _, my = love.mouse.getPosition()
-		if     my >= 416 then self.CURRENT_PANE = CHUNK_PANE
-		elseif my <= 384 then self.CURRENT_PANE = WORLD_PANE end
+		if     my >= 416 then 
+			self.CURRENT_PANE = CHUNK_PANE
+			CHUNK_PANE:gainFocus()
+			WORLD_PANE:loseFocus()
+		elseif my <= 384 then 
+			self.CURRENT_PANE = WORLD_PANE
+			WORLD_PANE:gainFocus()
+			CHUNK_PANE:loseFocus()
+		end
 		
 		self.CURRENT_PANE:update(dt)
 	end,
 
 	handleKeypressed = function(self, key)
-    	-- Do Nothing
+    	self.CURRENT_PANE:handleKeypressed(key)
 	end,
 
 	handleMousepressed = function(self, mx, my)
