@@ -140,11 +140,11 @@ return {
     end,
 
     isScreenInMotion = function(self)
-        return GRAFX:getX() ~= prevGraphics.x or GRAFX:getY() ~= prevGraphics.y
+        return GRAFX:getX() ~= prevGraphics.x or GRAFX:getY() ~= prevGraphics.y or GRAFX:getScale() ~= prevGraphics.scale
     end,
 
     updateScreenMotionDetection = function(self, dt)
-        prevGraphics.x, prevGraphics.y = GRAFX:getX(), GRAFX:getY()
+        prevGraphics.x, prevGraphics.y, prevGraphics.scale = GRAFX:getX(), GRAFX:getY(), GRAFX:getScale()
     end,
 
     keepImageInBounds = function(self)
