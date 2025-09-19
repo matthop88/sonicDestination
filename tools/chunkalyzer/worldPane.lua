@@ -52,6 +52,8 @@ return {
 	
     isChunkVisible = true,
 
+	yBlit = 0,
+
 	draw = function(self)
         GRAFX:setColor(0, 0, 0)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
@@ -95,7 +97,7 @@ return {
     end,
 
     drawCurrentChunk = function(self)
-        local cX, cY = self:getChunkXY(love.mouse.getPosition())
+        local cX, cY = self:getChunkXY(self:getChunkXY(self:getMousePositionFn()))
         local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
 
         if love.mouse.isDown(1) then self:drawChunkSelection(x, y)
@@ -123,6 +125,7 @@ return {
     end,
 
     blitToScreen = function(self, x, y)
+		self.yBlit = y
         GRAFX:blitToScreen(x, y, { 1, 1, 1 }, 0, 1, 1)
     end,
 
@@ -192,4 +195,9 @@ return {
     	currentMode = modes:get()
     	if currentMode.message then printToReadout(currentMode.message) end
     end,
+
+	getMousePositionFn = function(self)
+		local mx, my = love.mouse.getPosition()
+		return mx, my - self.yBlit
+	end,
 }
