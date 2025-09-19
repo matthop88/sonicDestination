@@ -56,6 +56,10 @@ local CHUNKALYZER = {
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         self.CURRENT_PANE:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
+
+	getMousePositionFn = function(self)
+		return self.CURRENT_PANE:getMousePositionFn()
+	end,
 }
 
 --------------------------------------------------------------
@@ -99,7 +103,11 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = CHUNKALYZER, })
+    :add("zooming",      
+	{ 
+		imageViewer        = CHUNKALYZER, 
+		getMousePositionFn = function() return CHUNKALYZER:getMousePositionFn() end,
+	})
     :add("scrolling",    
     { 
         imageViewer   = CHUNKALYZER,
