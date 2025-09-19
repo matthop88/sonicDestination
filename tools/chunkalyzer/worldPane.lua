@@ -97,7 +97,7 @@ return {
     end,
 
     drawCurrentChunk = function(self)
-        local cX, cY = self:getChunkXY(self:getChunkXY(self:getMousePositionFn()))
+        local cX, cY = self:getChunkXY(self:getMousePositionFn())
         local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
 
         if love.mouse.isDown(1) then self:drawChunkSelection(x, y)
@@ -149,8 +149,8 @@ return {
 
     keepImageInBounds = function(self)
         GRAFX:setX(math.min(0, math.max(GRAFX:getX(), (love.graphics:getWidth()  / GRAFX:getScale()) - self:getPageWidth())))
-        GRAFX:setY(math.min(0, math.max(GRAFX:getY(), (love.graphics:getHeight() / GRAFX:getScale()) - self:getPageHeight())))
-    end,
+        GRAFX:setY(math.max(math.min(-self.yBlit / GRAFX:getScale(), GRAFX:getY()), (love.graphics.getHeight() / GRAFX:getScale()) - self:getPageHeight()))
+	end,
 
     getPageWidth  = function(self) return img:getWidth()  + (INSET * 2) end,
     getPageHeight = function(self) return img:getHeight() + (INSET * 2) end,
