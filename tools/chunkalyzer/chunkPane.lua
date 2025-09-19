@@ -15,6 +15,15 @@ return {
         GRAFX:setColor(0.2, 0.2, 0.2)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
 
+        GRAFX:setColor(1, 1, 0)
+        GRAFX:rectangle("fill", 260, 260, 248, 248)
+
+        GRAFX:setColor(1, 0.7, 0.7)
+        GRAFX:rectangle("fill", 516, 260, 248, 248)
+
+        GRAFX:setColor(1, 1, 0)
+        GRAFX:rectangle("fill", 772, 260, 248, 248)
+
         if self.isChunkVisible then self:drawCurrentChunk() end
     end,
 
