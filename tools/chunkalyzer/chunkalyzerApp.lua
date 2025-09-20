@@ -8,34 +8,47 @@ local WORLD_PANE                  = require("tools/chunkalyzer/worldPane")
 local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane")
 
 local CHUNKALYZER = {
-	CURRENT_PANE = WORLD_PANE,
+	CURRENT_PANE    = WORLD_PANE,
+	dividerSelected = false,
+	dividerPosition = 400,
 
 	draw = function(self)
 		love.graphics.setColor(0.5, 0.5, 0.5)
 		love.graphics.rectangle("fill", 0, 0, 1200, 800)
 		WORLD_PANE:draw()
 		CHUNK_PANE:draw()
-		WORLD_PANE:blitToScreen(0, -416)
-		CHUNK_PANE:blitToScreen(0,  416)
+		WORLD_PANE:blitToScreen(0, self.dividerPosition - 16 - 800)
+		CHUNK_PANE:blitToScreen(0,  self.dividerPosition + 16)
 		love.graphics.setColor(0, 0, 0)
 		love.graphics.setLineWidth(1)
-		love.graphics.line(0, 384, 1200, 384)
-		love.graphics.line(0, 416, 1200, 416)
+		love.graphics.line(0, self.dividerPosition - 16, 1200, self.dividerPosition - 16)
+		love.graphics.line(0, self.dividerPosition + 16, 1200, self.dividerPosition + 16)
+		if self.dividerSelected then
+			love.graphics.setColor(1, 1, 0)
+			love.graphics.setLineWidth(3)
+			love.graphics.rectangle("line", 0, self.dividerPosition - 16, 1200, 32)
+		end
 	end,
 
 	update = function(self, dt)
 		local _, my = love.mouse.getPosition()
-		if     my >= 416 then 
-			self.CURRENT_PANE = CHUNK_PANE
-			CHUNK_PANE:gainFocus()
+		if self.dividerSelected then
 			WORLD_PANE:loseFocus()
-		elseif my <= 384 then 
-			self.CURRENT_PANE = WORLD_PANE
-			WORLD_PANE:gainFocus()
 			CHUNK_PANE:loseFocus()
-		end
+			self.dividerPosition = my
+		else
+			if     my >= self.dividerPosition + 16 then 
+				self.CURRENT_PANE = CHUNK_PANE
+				CHUNK_PANE:gainFocus()
+				WORLD_PANE:loseFocus()
+			elseif my <= self.dividerPosition - 16 then 
+				self.CURRENT_PANE = WORLD_PANE
+				WORLD_PANE:gainFocus()
+				CHUNK_PANE:loseFocus()
+			end
 		
-		self.CURRENT_PANE:update(dt)
+			self.CURRENT_PANE:update(dt)
+		end
 	end,
 
 	handleKeypressed = function(self, key)
@@ -43,7 +56,15 @@ local CHUNKALYZER = {
 	end,
 
 	handleMousepressed = function(self, mx, my)
-    	self.CURRENT_PANE:handleMousepressed(mx, my)
+		if (my > self.dividerPosition - 16 and my < self.dividerPosition + 16) then
+			self.dividerSelected = true
+		else
+    		self.CURRENT_PANE:handleMousepressed(mx, my)
+    	end
+	end,
+
+	handleMousereleased = function(self, mx, my)
+		self.dividerSelected = false
 	end,
 
 	keepImageInBounds = function(self)
@@ -96,6 +117,10 @@ end
 
 function love.mousepressed(mx, my)
     CHUNKALYZER:handleMousepressed(mx, my)
+end
+
+function love.mousereleased(mx, my)
+	CHUNKALYZER:handleMousereleased(mx, my)
 end
 
 --------------------------------------------------------------
