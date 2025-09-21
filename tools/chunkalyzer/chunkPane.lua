@@ -11,6 +11,13 @@ return {
 
     yBlit = 0,
 
+	image = nil,
+
+	init = function(self, image)
+		self.image = image
+		return self
+	end,
+
 	draw = function(self)
         GRAFX:setColor(0.2, 0.2, 0.2)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
