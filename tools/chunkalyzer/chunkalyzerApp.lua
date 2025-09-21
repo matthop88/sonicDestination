@@ -4,8 +4,19 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local WORLD_PANE                  = require("tools/chunkalyzer/worldPane")
-local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane")
+local imgPath
+
+if __WORLD_MAP_FILE ~= nil then
+    imgPath = "tools/chunkalyzer/data/" .. __WORLD_MAP_FILE .. ".png"
+end
+
+local imgData = love.image.newImageData(imgPath)
+local img     = love.graphics.newImage(imgData)
+
+img:setFilter("nearest", "nearest")
+
+local WORLD_PANE                  = require("tools/chunkalyzer/worldPane"):init(img)
+local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane"):init(img)
 
 local CHUNKALYZER = {
 	CURRENT_PANE    = WORLD_PANE,
