@@ -15,13 +15,15 @@ local chunkAttributes = {
 }
 
 local modes = {
+	--[[
 	{	message = "Select the leftmost Chunk on the Map.",   fn = function(x, y) chunkAttributes.leftMost   = x end	},
 	{	message = "Select the topMost Chunk on the Map.",    fn = function(x, y) chunkAttributes.topMost    = y end },
 	{	message = "Select the rightmost Chunk on the Map.",  fn = function(x, y) chunkAttributes.rightMost  = x end	},
 	{	message = "Select the bottomMost Chunk on the Map.", fn = function(x, y) chunkAttributes.bottomMost = y end },
+	--]]
+	
 	{   message = "Click anywhere to begin Chunkalyzing.",   fn = function(x, y) getReadout():setSustain(180)   end },
-	{	message = nil,                                       fn = nil												},
-
+	
 	index = 1,
 
 	get   = function(self) return self[self.index]                      end,
