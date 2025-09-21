@@ -5,15 +5,6 @@
 local INSET = 16
 local GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 1200, 800)
 
-local imgPath
-
-if __WORLD_MAP_FILE ~= nil then
-    imgPath = "tools/chunkalyzer/data/" .. __WORLD_MAP_FILE .. ".png"
-end
-
-local imgData = love.image.newImageData(imgPath)
-local img     = love.graphics.newImage(imgData)
-
 local OFFSET  = { x = 0, y = 0 }
 
 local chunkAttributes = {
@@ -45,14 +36,12 @@ local prevGraphics = { x = GRAFX.x, y = GRAFX.y }
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
-img:setFilter("nearest", "nearest")
-
 return {
 	isChunkVisible = true,
 
 	yBlit = 0,
 
-	image = img,
+	image = nil,
 
 	init = function(self, image)
 		self.image = image
