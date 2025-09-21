@@ -52,6 +52,13 @@ return {
 
 	yBlit = 0,
 
+	image = img,
+
+	init = function(self, image)
+		self.image = image
+		return self
+	end,
+
 	draw = function(self)
         GRAFX:setColor(0, 0, 0)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
@@ -91,7 +98,7 @@ return {
 
     drawWorldMap = function(self)
         GRAFX:setColor(1, 1, 1)
-        GRAFX:draw(img, INSET, INSET)
+        GRAFX:draw(self.image, INSET, INSET)
     end,
 
     drawCurrentChunk = function(self)
@@ -154,8 +161,8 @@ return {
         GRAFX:setY(math.max(math.min(-self.yBlit / GRAFX:getScale(), GRAFX:getY()), (love.graphics.getHeight() / GRAFX:getScale()) - self:getPageHeight()))
 	end,
 
-    getPageWidth  = function(self) return img:getWidth()  + (INSET * 2) end,
-    getPageHeight = function(self) return img:getHeight() + (INSET * 2) end,
+    getPageWidth  = function(self) return self.image:getWidth()  + (INSET * 2) end,
+    getPageHeight = function(self) return self.image:getHeight() + (INSET * 2) end,
 
 	moveImage = function(self, deltaX, deltaY)
 		GRAFX:moveImage(deltaX, deltaY)
