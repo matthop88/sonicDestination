@@ -22,6 +22,16 @@ return {
 
 	image = nil,
 
+    chunkTags = {
+        isUnique = function(self, x, y)
+            for _, c in ipairs(self) do
+                if c.x == x and c.y == y then return false end
+            end
+
+            return true
+        end,
+    },
+
 	init = function(self, image)
 		self.image = image
 		return self
@@ -32,7 +42,8 @@ return {
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
 
         self:drawWorldMap()
-        
+        self:drawTags()
+
         if self.isChunkVisible and self.inFocus then self:drawCurrentChunk() end
     end,
 
@@ -175,5 +186,32 @@ return {
 
     resetMode = function(self)
         modes:reset()
+    end,
+
+    --------------------------------------------------------------
+    --          Specialized Chunk Tagging Functions             --
+    --------------------------------------------------------------
+
+    tagChunk = function(self, chunkID, x, y)
+        if self.chunkTags:isUnique(x, y) then
+            table.insert(self.chunkTags, { x = x, y = y, chunkID = chunkID })
+        end
+    end,
+
+    drawTags = function(self)
+        GRAFX:setFontSize(64)
+        
+        for _, t in ipairs(self.chunkTags) do
+            GRAFX:setColor(1, 1, 1, 0.6)
+            GRAFX:rectangle("fill", t.x + INSET, t.y + INSET, 256, 256)
+            GRAFX:setColor(0, 0, 0, 0.4)
+            local numberWidth = GRAFX:getFontWidth("" .. t.chunkID) + 8
+            GRAFX:rectangle("fill", t.x + 144 - (numberWidth / 2), t.y + 96, numberWidth, 64)
+            GRAFX:setColor(1, 1, 1)
+            GRAFX:printf("" .. t.chunkID, t.x + 16, t.y + 94, 256, "center")
+            GRAFX:setColor(0, 0, 0)
+            GRAFX:setLineWidth(3)
+            GRAFX:rectangle("line", t.x + INSET, t.y + INSET, 256, 256)
+        end
     end,
 }
