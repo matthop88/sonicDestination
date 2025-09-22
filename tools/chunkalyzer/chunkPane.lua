@@ -28,21 +28,25 @@ return {
 	
 	init = function(self, image)
 		self.image = image
+		self:initChunks()
+		
 		return self
+	end,
+
+	initChunks = function(self)
+		for _, c in ipairs(self.curatedChunks) do
+			c.quad = love.graphics.newQuad(c.x, c.y, 256, 256, self.image:getWidth(), self.image:getHeight())
+		end
 	end,
 
 	draw = function(self)
         GRAFX:setColor(0.2, 0.2, 0.2)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
 
-        GRAFX:setColor(1, 1, 0)
-        GRAFX:rectangle("fill", 260, 260, 248, 248)
-
-        GRAFX:setColor(1, 0.7, 0.7)
-        GRAFX:rectangle("fill", 516, 260, 248, 248)
-
-        GRAFX:setColor(1, 1, 0)
-        GRAFX:rectangle("fill", 772, 260, 248, 248)
+        GRAFX:setColor(1, 1, 1)
+		for n, c in ipairs(self.curatedChunks) do
+			GRAFX:draw(self.image, c.quad, (n * 272) + 16, 16, 0, 1, 1)
+		end
 
         if self.isChunkVisible and self.inFocus then self:drawCurrentChunk() end
     end,
@@ -79,11 +83,11 @@ return {
 
     getChunkXY = function(self, x, y)
         local imgX, imgY = GRAFX:screenToImageCoordinates(x, y)
-        return math.floor(imgX / 256), math.floor(imgY / 256)
+        return math.floor(imgX / 272), math.floor(imgY / 272)
     end,
 
     getWorldCoordinatesOfChunk = function(self, cX, cY)
-        return cX * 256, cY * 256
+        return (cX * 272) + 16, (cY * 272) + 16
     end,
 
     --------------------------------------------------------------
