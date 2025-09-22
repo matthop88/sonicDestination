@@ -15,21 +15,39 @@ local chunkAttributes = {
 }
 
 local modes = {
-	--[[
+	
 	{	message = "Select the leftmost Chunk on the Map.",   fn = function(x, y) chunkAttributes.leftMost   = x end	},
 	{	message = "Select the topMost Chunk on the Map.",    fn = function(x, y) chunkAttributes.topMost    = y end },
 	{	message = "Select the rightmost Chunk on the Map.",  fn = function(x, y) chunkAttributes.rightMost  = x end	},
 	{	message = "Select the bottomMost Chunk on the Map.", fn = function(x, y) chunkAttributes.bottomMost = y end },
-	--]]
+
 	
 	{   message = "Click anywhere to begin Chunkalyzing.",   fn = function(x, y) getReadout():setSustain(180)   end },
 	
 	index = 1,
 
 	get   = function(self) return self[self.index]                      end,
-	next  = function(self) self.index = math.min(self.index + 1, #self) end,
-	prev  = function(self) self.index = math.max(self.index - 1, 1)     end,
-	reset = function(self) self.index = 1                               end,
+	
+    next  = function(self) 
+        self.index = math.min(self.index + 1, #self) 
+        self:refresh()
+    end,
+
+	prev  = function(self) 
+        self.index = math.max(self.index - 1, 1)  
+        self:refresh()   
+    end,
+	
+    reset = function(self) 
+        self.index = 1                               
+        getReadout():setSustain(1800)
+        self:refresh()
+    end,
+
+    refresh = function(self)
+        local currentMode = self:get()
+        if currentMode.message then printToReadout(currentMode.message) end
+    end,
 }
 
 local prevGraphics = { x = GRAFX.x, y = GRAFX.y }
@@ -69,8 +87,8 @@ return {
         elseif key == "optionright" then OFFSET.x = math.min(128, OFFSET.x + 1)
         elseif key == "optionup"    then OFFSET.y = math.max(0,   OFFSET.y - 1)
         elseif key == "optiondown"  then OFFSET.y = math.min(128, OFFSET.y + 1)
-        elseif key == "backspace"   then self:prevMode()
-     	elseif key == "escape"      then self:resetMode()
+        elseif key == "backspace"   then modes:next()
+     	elseif key == "escape"      then modes:reset()
     	end
     end,
 
@@ -80,7 +98,7 @@ return {
 
         if currentMode.fn then currentMode.fn(cX, cY) end
         
-        self:nextMode()
+        modes:next()
     end,
 
     --------------------------------------------------------------
@@ -175,29 +193,12 @@ return {
     --          Specialized Event Response Functions            --
     --------------------------------------------------------------
 
-    nextMode = function(self)
-    	modes:next()
-        self:refreshMode()
-    end,
-
-    prevMode = function(self)
-    	modes:prev()
-    	self:refreshMode()
-    end,
-
-    resetMode = function(self)
-    	modes:reset()
-    	getReadout():setSustain(1800)
-    	self:refreshMode()
-    end,
-
-    refreshMode = function(self)
-    	currentMode = modes:get()
-    	if currentMode.message then printToReadout(currentMode.message) end
-    end,
-
-	getMousePositionFn = function(self)
+    getMousePositionFn = function(self)
 		local mx, my = love.mouse.getPosition()
 		return mx, my - self.yBlit
 	end,
+
+    resetMode = function(self)
+        modes:reset()
+    end,
 }
