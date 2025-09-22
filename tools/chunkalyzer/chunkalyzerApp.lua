@@ -71,8 +71,7 @@ local CHUNKALYZER = {
 			self.dividerSelected = true
 		else
     		self.CURRENT_PANE:handleMousepressed(mx, my)
-			local qX, qY = WORLD_PANE:getImageCoordinatesOfChunk(WORLD_PANE:getChunkXY(WORLD_PANE:getMousePositionFn()))
-			CHUNK_PANE:addChunk(qX, qY)
+			CHUNK_PANE:addChunk(WORLD_PANE:getQuadFromMouseCoordinates())
     	end
 	end,
 
