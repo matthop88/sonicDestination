@@ -23,8 +23,9 @@ return {
 		end,
 	},
 	
-	init = function(self, image)
+	init = function(self, image, imageData)
 		self.image = image
+        self.imageData = imageData
 		
 		return self
 	end,
@@ -107,7 +108,7 @@ return {
     --------------------------------------------------------------
 
 	addChunk  = function(self, x, y)
-        if      self.curatedChunks:isUnique(x, y) and self:isInImageBounds(x, y) then
+        if      self.curatedChunks:isUnique(x, y) and self:isInImageBounds(x, y) and self:isChunkSubstanceUnique(x, y) then
             local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
         	table.insert(self.curatedChunks, newChunk)
 		end
@@ -164,4 +165,51 @@ return {
         local mx, my = love.mouse.getPosition()
         return mx, my - self.yBlit
     end,
+
+    --------------------------------------------------------------
+    --         Specialized Chunk Comparison Functions           --
+    --------------------------------------------------------------
+
+    isChunkSubstanceUnique = function(self, x, y)
+        for _, c in ipairs(self.curatedChunks) do
+            if self:compareChunks(x, y, c.x, c.y) then return false end
+        end
+
+        return true
+    end,
+
+    getPixelColorAt = function(self, x, y)
+        local r, g, b, a = self.imageData:getPixel(math.floor(x), math.floor(y))
+        return { r = r, g = g, b = b, a = a }
+    end,
+
+    colorsMatch = function(self, c1, c2)
+        return c1 ~= nil 
+           and c2 ~= nil
+           and math.abs(c1.r - c2.r) < 0.005
+           and math.abs(c1.g - c2.g) < 0.005 
+           and math.abs(c1.b - c2.b) < 0.005
+           and math.abs(c1.a - c2.a) < 0.005
+    end,
+
+    compareChunks = function(self, c1X, c1Y, c2X, c2Y)
+        local x1, y1, x2, y2 = c1X, c1Y, c2X, c2Y
+
+        for i = 0, 255 do
+            x1 = c1X
+            x2 = c2X
+            for j = 0, 255 do
+                if not self:colorsMatch(self:getPixelColorAt(x1, y1), self:getPixelColorAt(x2, y2)) then
+                    return false
+                end
+                x1 = x1 + 1
+                x2 = x2 + 1
+            end
+            y1 = y1 + 1
+            y2 = y2 + 1
+        end
+
+        return true
+    end,
+
 }
