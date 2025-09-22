@@ -24,6 +24,14 @@ return {
         {   x = 1792, y = 768, },
         {   x = 2048, y = 768, },
         {   x = 2304, y = 768, },
+		{   x = 2460, y = 768, },
+        {   x = 2816, y = 768, },
+        {   x = 3072, y = 768, },
+        {   x = 3328, y = 768, },
+        {   x = 3584, y = 768, },
+        {   x = 3840, y = 768, },
+        {   x = 4096, y = 768, },
+        {   x = 4352, y = 768, },
     },
 	
 	init = function(self, image)
@@ -46,12 +54,14 @@ return {
         GRAFX:setFontSize(32)
 		for n, c in ipairs(self.curatedChunks) do
 			GRAFX:setColor(1, 1, 1)
-			GRAFX:draw(self.image, c.quad, (n * 272) + 16, 16, 0, 1, 1)
+            local x = ((n - 1) % 16) * 272
+            local y = math.floor((n - 1) / 16) * 272
+			GRAFX:draw(self.image, c.quad, x + 16, y + 16, 0, 1, 1)
 			GRAFX:setColor(0, 0, 0, 0.4)
 			local numberWidth = GRAFX:getFontWidth("" .. n) + 8
-			GRAFX:rectangle("fill", (n * 272) + 144 - (numberWidth / 2), 128, numberWidth, 32)
+			GRAFX:rectangle("fill", x + 144 - (numberWidth / 2), y + 128, numberWidth, 32)
 			GRAFX:setColor(1, 1, 1)
-			GRAFX:printf("" .. n, (n * 272) + 16, 126, 256, "center")
+			GRAFX:printf("" .. n, x + 16, y + 126, 256, "center")
 		end
 
         if self.isChunkVisible and self.inFocus then self:drawCurrentChunk() end
