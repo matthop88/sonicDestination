@@ -54,8 +54,7 @@ return {
         GRAFX:setFontSize(32)
 		for n, c in ipairs(self.curatedChunks) do
 			GRAFX:setColor(1, 1, 1)
-            local x = ((n - 1) % 16) * 272
-            local y = math.floor((n - 1) / 16) * 272
+            local x, y = self:getChunkXYByNumber(n)
 			GRAFX:draw(self.image, c.quad, x + 16, y + 16, 0, 1, 1)
 			GRAFX:setColor(0, 0, 0, 0.4)
 			local numberWidth = GRAFX:getFontWidth("" .. n) + 8
@@ -90,17 +89,31 @@ return {
 
     drawCurrentChunk = function(self)
         local cX, cY = self:getChunkXY(self:getMousePositionFn())
-        local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
+		local chunkNum = self:getChunkN(cX, cY)
+		if chunkNum > 0 and chunkNum <= #self.curatedChunks then
+        	local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
 
-        GRAFX:setColor(1, 1, 1)
-        GRAFX:setLineWidth(3)
-        GRAFX:rectangle("line", x - 2, y - 2, 260, 260)
+        	GRAFX:setColor(1, 1, 1)
+        	GRAFX:setLineWidth(3)
+        	GRAFX:rectangle("line", x - 2, y - 2, 260, 260)
+		end
     end,
 
+	getChunkXYByNumber = function(self, n)
+		local x = ((n - 1) % 16) * 272
+		local y = math.floor((n - 1) / 16) * 272
+		return x, y
+	end,
+	
     getChunkXY = function(self, x, y)
         local imgX, imgY = GRAFX:screenToImageCoordinates(x, y)
         return math.floor(imgX / 272), math.floor(imgY / 272)
     end,
+
+	getChunkN = function(self, cX, cY)
+		if cX < 0 or cX > 15 then return - 1
+		else                      return (cY * 16) + cX + 1   end
+	end,
 
     getWorldCoordinatesOfChunk = function(self, cX, cY)
         return (cX * 272) + 16, (cY * 272) + 16
