@@ -13,6 +13,8 @@ return {
 
 	image = nil,
 
+	curatedChunks = {},
+	
 	init = function(self, image)
 		self.image = image
 		return self
