@@ -13,7 +13,18 @@ return {
 
 	image = nil,
 
-	curatedChunks = {},
+	curatedChunks = {
+        {   x = 0,    y = 768, },
+        {   x = 256,  y = 768, },
+        {   x = 512,  y = 768, },
+        {   x = 768,  y = 768, },
+        {   x = 1024, y = 768, },
+        {   x = 1280, y = 768, },
+        {   x = 1536, y = 768, },
+        {   x = 1792, y = 768, },
+        {   x = 2048, y = 768, },
+        {   x = 2304, y = 768, },
+    },
 	
 	init = function(self, image)
 		self.image = image
