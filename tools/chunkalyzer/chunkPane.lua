@@ -123,7 +123,7 @@ return {
     end,
 
     moveImage = function(self, deltaX, deltaY)
-        GRAFX:moveImage(deltaX, deltaY)
+        GRAFX:moveImage(deltaX / 3, deltaY / 3)
     end,
 
 	screenToImageCoordinates = function(self, screenX, screenY)
