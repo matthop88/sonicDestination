@@ -70,11 +70,13 @@ return {
     end,
 
     drawCurrentChunk = function(self)
-        local cX, cY = self:getChunkXY(self:getMousePositionFn())
-        local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
+        if self:isInImageBounds(self:getQuadFromMouseCoordinates()) then
+            local cX, cY = self:getChunkXY(self:getMousePositionFn())
+            local x,  y  = self:getWorldCoordinatesOfChunk(cX, cY)
 
-        if love.mouse.isDown(1) then self:drawChunkSelection(x, y)
-        else                         self:drawChunkOutline(  x, y) end
+            if love.mouse.isDown(1) then self:drawChunkSelection(x, y)
+            else                         self:drawChunkOutline(  x, y) end
+        end
     end,
 
     getChunkXY = function(self, x, y)
@@ -116,6 +118,10 @@ return {
     --              Specialized Update Functions                --
     --------------------------------------------------------------
 
+    isInImageBounds = function(self, x, y)
+        return x >= 0 and y >= 0 and x < self.image:getWidth() and y < self.image:getHeight()
+    end,
+    
 	gainFocus = function(self) self.inFocus = true  end,
 	loseFocus = function(self) self.inFocus = false end,
 	hasFocus  = function(self) return self.inFocus  end,
