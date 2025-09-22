@@ -15,6 +15,8 @@ local img     = love.graphics.newImage(imgData)
 
 img:setFilter("nearest", "nearest")
 
+local modes = require("tools/chunkalyzer/modes")
+
 local WORLD_PANE                  = require("tools/chunkalyzer/worldPane"):init(img)
 local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane"):init(img, imgData)
 
@@ -71,7 +73,7 @@ local CHUNKALYZER = {
 			self.dividerSelected = true
 		else
     		self.CURRENT_PANE:handleMousepressed(mx, my)
-			if self.CURRENT_PANE == WORLD_PANE then
+			if modes:isReadyToChunkalyze() and self.CURRENT_PANE == WORLD_PANE then
 				local chunkID = CHUNK_PANE:addChunk(WORLD_PANE:getQuadFromMouseCoordinates())
 				WORLD_PANE:tagChunk(chunkID, WORLD_PANE:getQuadFromMouseCoordinates())
 			end
