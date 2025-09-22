@@ -68,6 +68,7 @@ return {
 
     update = function(self, dt)
         self:updateChunkVisibility(dt)
+		self:keepImageInBounds()
     end,
 
     handleKeypressed = function(self, key)
@@ -142,7 +143,10 @@ return {
     end,
 
     keepImageInBounds = function(self)
-        -- not sure what to do yet
+        local width  = 16 * 272
+        local height = (math.floor((#self.curatedChunks - 1) / 16) + 1) * 272
+        GRAFX:setX(math.min(0, math.max(GRAFX:getX(), ((love.graphics:getWidth()  - 16)              / GRAFX:getScale()) - width)))
+        GRAFX:setY(math.min(0, math.max(GRAFX:getY(), ((love.graphics:getHeight() - self.yBlit - 16) / GRAFX:getScale()) - height)))
     end,
 
     moveImage = function(self, deltaX, deltaY)
