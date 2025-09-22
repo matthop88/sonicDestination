@@ -131,7 +131,9 @@ return {
     end,
 
     adjustScaleGeometrically = function(self, deltaScale)
-        GRAFX:adjustScaleGeometrically(deltaScale)
+		if (deltaScale < 0 and GRAFX:getScale() >= 0.25) or (deltaScale > 0 and GRAFX:getScale() <= 5.0) then
+			GRAFX:adjustScaleGeometrically(deltaScale)
+		end
     end,
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
