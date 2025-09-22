@@ -91,6 +91,11 @@ return {
         return iX + INSET, iY + INSET
     end,
 
+	getQuadFromMouseCoordinates = function(self)
+		local mX, mY = self:getMousePositionFn()
+		return self:getImageCoordinatesOfChunk(self:getChunkXY(mX, mY))
+	end,
+
     drawChunkSelection = function(self, x, y)
         GRAFX:setColor(1, 1, 0, 0.7)
         GRAFX:rectangle("fill", x, y, 256, 256)
