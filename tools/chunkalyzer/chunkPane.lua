@@ -43,9 +43,15 @@ return {
         GRAFX:setColor(0.2, 0.2, 0.2)
         GRAFX:rectangle("fill", GRAFX:calculateViewport())
 
-        GRAFX:setColor(1, 1, 1)
+        GRAFX:setFontSize(32)
 		for n, c in ipairs(self.curatedChunks) do
+			GRAFX:setColor(1, 1, 1)
 			GRAFX:draw(self.image, c.quad, (n * 272) + 16, 16, 0, 1, 1)
+			GRAFX:setColor(0, 0, 0, 0.4)
+			local numberWidth = GRAFX:getFontWidth("" .. n) + 8
+			GRAFX:rectangle("fill", (n * 272) + 144 - (numberWidth / 2), 128, numberWidth, 32)
+			GRAFX:setColor(1, 1, 1)
+			GRAFX:printf("" .. n, (n * 272) + 16, 126, 256, "center")
 		end
 
         if self.isChunkVisible and self.inFocus then self:drawCurrentChunk() end
