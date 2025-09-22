@@ -14,37 +14,12 @@ return {
 	image = nil,
 
 	curatedChunks = {
-        {   x = 0,    y = 768, },
-        {   x = 256,  y = 768, },
-        {   x = 512,  y = 768, },
-        {   x = 768,  y = 768, },
-        {   x = 1024, y = 768, },
-        {   x = 1280, y = 768, },
-        {   x = 1536, y = 768, },
-        {   x = 1792, y = 768, },
-        {   x = 2048, y = 768, },
-        {   x = 2304, y = 768, },
-		{   x = 2460, y = 768, },
-        {   x = 2816, y = 768, },
-        {   x = 3072, y = 768, },
-        {   x = 3328, y = 768, },
-        {   x = 3584, y = 768, },
-        {   x = 3840, y = 768, },
-        {   x = 4096, y = 768, },
-        {   x = 4352, y = 768, },
-    },
+	},
 	
 	init = function(self, image)
 		self.image = image
-		self:initChunks()
 		
 		return self
-	end,
-
-	initChunks = function(self)
-		for _, c in ipairs(self.curatedChunks) do
-			c.quad = love.graphics.newQuad(c.x, c.y, 256, 256, self.image:getWidth(), self.image:getHeight())
-		end
 	end,
 
 	draw = function(self)
