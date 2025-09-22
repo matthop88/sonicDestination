@@ -16,7 +16,7 @@ local img     = love.graphics.newImage(imgData)
 img:setFilter("nearest", "nearest")
 
 local WORLD_PANE                  = require("tools/chunkalyzer/worldPane"):init(img)
-local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane"):init(img)
+local CHUNK_PANE                  = require("tools/chunkalyzer/chunkPane"):init(img, imgData)
 
 local CHUNKALYZER = {
 	CURRENT_PANE    = WORLD_PANE,
