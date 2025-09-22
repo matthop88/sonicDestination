@@ -82,8 +82,13 @@ return {
         return math.floor(imgX / 256), math.floor(imgY / 256)
     end,
 
+	getImageCoordinatesOfChunk = function(self, cX, cY)
+		return (cX * 256) + OFFSET.x, (cY * 256) + OFFSET.y
+	end,
+	
     getWorldCoordinatesOfChunk = function(self, cX, cY)
-        return (cX * 256) + INSET + OFFSET.x, (cY * 256) + INSET + OFFSET.y
+		local iX, iY = self:getImageCoordinatesOfChunk(cX, cY)
+        return iX + INSET, iY + INSET
     end,
 
     drawChunkSelection = function(self, x, y)
