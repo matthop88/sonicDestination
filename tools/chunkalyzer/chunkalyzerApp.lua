@@ -72,7 +72,8 @@ local CHUNKALYZER = {
 		else
     		self.CURRENT_PANE:handleMousepressed(mx, my)
 			if self.CURRENT_PANE == WORLD_PANE then
-				CHUNK_PANE:addChunk(WORLD_PANE:getQuadFromMouseCoordinates())
+				local chunkID = CHUNK_PANE:addChunk(WORLD_PANE:getQuadFromMouseCoordinates())
+				print("Chunk ID: ", chunkID)
 			end
     	end
 	end,
