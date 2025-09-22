@@ -1,4 +1,4 @@
---------------------------------------------------------------
+:--------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
 
@@ -63,7 +63,7 @@ return {
     end,
 
     handleMousepressed = function(self, mx, my)
-        local cX, cY = self:getChunkXY(mx, my)
+        local cX, cY = self:getChunkXY(self:getMousePositionFn())
         local currentMode = modes:get()
 
         if currentMode.fn then currentMode.fn(cX, cY) end
