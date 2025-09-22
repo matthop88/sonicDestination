@@ -74,6 +74,8 @@ local CHUNKALYZER = {
 		else
     		self.CURRENT_PANE:handleMousepressed(mx, my)
 			if modes:isReadyToChunkalyze() and self.CURRENT_PANE == WORLD_PANE then
+				local attr = modes:getData().chunkAttributes
+				print("Chunk Attributes: LeftMost = " .. attr.leftMost .. ", TopMost = " .. attr.topMost .. ", RightMost = " .. attr.rightMost .. ", BottomMost = " .. attr.bottomMost)
 				local chunkID = CHUNK_PANE:addChunk(WORLD_PANE:getQuadFromMouseCoordinates())
 				WORLD_PANE:tagChunk(chunkID, WORLD_PANE:getQuadFromMouseCoordinates())
 			end
