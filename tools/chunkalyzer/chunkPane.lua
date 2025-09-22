@@ -124,6 +124,11 @@ return {
     --              Specialized Update Functions                --
     --------------------------------------------------------------
 
+	addChunk  = function(self, x, y)
+        local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
+        table.insert(self.curatedChunks, newChunk)
+    end,
+
 	gainFocus = function(self) self.inFocus = true  end,
 	loseFocus = function(self) self.inFocus = false end,
 	hasFocus  = function(self) return self.inFocus  end,
