@@ -14,6 +14,13 @@ return {
 	image = nil,
 
 	curatedChunks = {
+		isUnique = function(self, x, y)
+			for _, c in ipairs(self) do
+				if c.x == x and c.y == y then return false end
+			end
+
+			return true
+		end,
 	},
 	
 	init = function(self, image)
@@ -100,8 +107,10 @@ return {
     --------------------------------------------------------------
 
 	addChunk  = function(self, x, y)
-        local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
-        table.insert(self.curatedChunks, newChunk)
+        if self.curatedChunks:isUnique(x, y) then
+			local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
+        	table.insert(self.curatedChunks, newChunk)
+		end
     end,
 
 	gainFocus = function(self) self.inFocus = true  end,
