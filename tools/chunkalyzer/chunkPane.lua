@@ -107,12 +107,16 @@ return {
     --------------------------------------------------------------
 
 	addChunk  = function(self, x, y)
-        if self.curatedChunks:isUnique(x, y) then
-			local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
+        if      self.curatedChunks:isUnique(x, y) and self:isInImageBounds(x, y) then
+            local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
         	table.insert(self.curatedChunks, newChunk)
 		end
     end,
 
+    isInImageBounds = function(self, x, y)
+        return x >= 0 and y >= 0 and x < self.image:getWidth() and y < self.image:getHeight()
+    end,
+       
 	gainFocus = function(self) self.inFocus = true  end,
 	loseFocus = function(self) self.inFocus = false end,
 	hasFocus  = function(self) return self.inFocus  end,
