@@ -108,10 +108,18 @@ return {
     --------------------------------------------------------------
 
 	addChunk  = function(self, x, y)
-        if      self.curatedChunks:isUnique(x, y) and self:isInImageBounds(x, y) and self:isChunkSubstanceUnique(x, y) then
-            local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
-        	table.insert(self.curatedChunks, newChunk)
+        if      self.curatedChunks:isUnique(x, y) and self:isInImageBounds(x, y) then
+            local matchingChunkNumber = self:getMatchingChunkNumber(x, y)
+            if matchingChunkNumber then
+                return matchingChunkNumber
+            else
+                local newChunk = { x = x, y = y, quad = love.graphics.newQuad(x, y, 256, 256, self.image:getWidth(), self.image:getHeight()) }
+        	    table.insert(self.curatedChunks, newChunk)
+                return #self.curatedChunks
+            end
 		end
+
+        return nil
     end,
 
     isInImageBounds = function(self, x, y)
@@ -170,12 +178,12 @@ return {
     --         Specialized Chunk Comparison Functions           --
     --------------------------------------------------------------
 
-    isChunkSubstanceUnique = function(self, x, y)
-        for _, c in ipairs(self.curatedChunks) do
-            if self:compareChunks(x, y, c.x, c.y) then return false end
+    getMatchingChunkNumber = function(self, x, y)
+        for n, c in ipairs(self.curatedChunks) do
+            if self:compareChunks(x, y, c.x, c.y) then return n end
         end
 
-        return true
+        return nil
     end,
 
     getPixelColorAt = function(self, x, y)
