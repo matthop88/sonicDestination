@@ -28,7 +28,11 @@ img:setFilter("nearest", "nearest")
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+function love.draw()
+    GRAFX:setColor(1, 1, 1)
+    GRAFX:draw(img, 0, 0)
+end
+
 -- ...
 -- ...
 
