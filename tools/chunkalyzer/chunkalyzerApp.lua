@@ -10,7 +10,11 @@ if __WORLD_MAP_FILE ~= nil then
     imgPath = "tools/chunkalyzer/data/" .. __WORLD_MAP_FILE .. ".png"
 end
 
-local CHUNKALYZER_VIEW = require("tools/chunkalyzer/view"):init(imgPath)
+local imgData = love.image.newImageData(imgPath)
+local img     = love.graphics.newImage(imgData)
+		
+local CHUNKALYZER_MODEL = require("tools/chunkalyzer/model"):init(img)
+local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZER_MODEL)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -18,6 +22,8 @@ local CHUNKALYZER_VIEW = require("tools/chunkalyzer/view"):init(imgPath)
 
 love.window.setTitle("Chunkalyzer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+img:setFilter("nearest", "nearest")
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
