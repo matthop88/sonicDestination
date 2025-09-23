@@ -108,7 +108,6 @@ return {
     --------------------------------------------------------------
 
 	addChunk  = function(self, x, y)
-        print("Adding chunk at x, y = ", x, y)
         if      self.curatedChunks:isUnique(x, y) and self:isInImageBounds(x, y) then
             local matchingChunkNumber = self:getMatchingChunkNumber(x, y)
             if matchingChunkNumber then
