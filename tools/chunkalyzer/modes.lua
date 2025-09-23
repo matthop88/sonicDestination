@@ -51,6 +51,7 @@ modes = {
         self.index = 1                               
         getReadout():setSustain(1800)
         self:refresh()
+        self.readyToChunkalyze = false
     end,
 
     refresh = function(self)
