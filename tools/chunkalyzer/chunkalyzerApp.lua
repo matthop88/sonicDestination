@@ -18,12 +18,26 @@ local CHUNKALYZER_VIEW = ({
 		
 		self.GRAFX = require("tools/lib/graphics"):create()
 
+		self:initQuads()
+
 		return self
+	end,
+
+	initQuads = function(self)
+		self.chunks = {}
+
+		for y = 0, math.floor(self.img:getHeight() / 256) - 1 do
+			for x = 0, math.floor(self.img:getWidth() / 256) - 1 do
+				table.insert(self.chunks, { x = (x * 272) + 16, y = (y * 272) + 16, quad = love.graphics.newQuad(x * 256, y * 256, 256, 256, self.img:getWidth(), self.img:getHeight()) })
+			end
+		end
 	end,
 
 	draw = function(self)
 		self.GRAFX:setColor(1, 1, 1)
-		self.GRAFX:draw(self.img, 0, 0)
+		for _, c in ipairs(self.chunks) do
+			self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+		end
 	end,
 
     keepImageInBounds = function(self)
