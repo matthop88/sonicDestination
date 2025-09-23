@@ -16,21 +16,30 @@ return {
 	initQuads = function(self)
 		self.chunks = {}
 
-		for y = 0, math.floor(self.img:getHeight() / 256) - 1 do
-			for x = 0, math.floor(self.img:getWidth() / 256) - 1 do
-				table.insert(self.chunks, { x = (x * 272) + 16, y = (y * 272) + 16, quad = love.graphics.newQuad(x * 256, y * 256, 256, 256, self.img:getWidth(), self.img:getHeight()) })
+		for y = 0, self:getRowCount() - 1 do
+			for x = 0, self:getColumnCount() - 1 do
+				table.insert(self.chunks, love.graphics.newQuad(x * 256, y * 256, 256, 256, self.img:getWidth(), self.img:getHeight()))
 			end
 		end
 	end,
 
 	draw = function(self)
 		self.GRAFX:setColor(1, 1, 1)
-		if self.chunkMode then
-			for _, c in ipairs(self.chunks) do self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1) end
-		else
-			self.GRAFX:draw(self.img, 0, 0)
+		if self.chunkMode then self:drawChunks()
+		else                   self.GRAFX:draw(self.img, 0, 0) end
+	end,
+
+	drawChunks = function(self)
+		local x, y = 0, 0
+		for _, c in ipairs(self.chunks) do
+			self.GRAFX:draw(self.img, c, (x * 272) + 16, (y * 272) + 16, 0, 1, 1)
+			x = x + 1
+			if x >= self:getColumnCount() then x, y = 0, y + 1 end
 		end
 	end,
+
+	getRowCount    = function(self) return math.floor(self.img:getHeight() / 256) end,
+	getColumnCount = function(self) return math.floor(self.img:getWidth()  / 256) end,
 
 	toggleChunkMode = function(self)
 		self.chunkMode = not self.chunkMode
