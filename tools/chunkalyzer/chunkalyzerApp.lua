@@ -51,5 +51,9 @@ end
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
     :add("zooming",      { imageViewer = GRAFX,            })
-    :add("scrolling",    { imageViewer = GRAFX,            })
+    :add("scrolling",    
+    { 
+    	imageViewer = GRAFX,
+    	scrollSpeed = 2400,          
+    })
     :add("readout",      { printFnName = "printToReadout", })      
