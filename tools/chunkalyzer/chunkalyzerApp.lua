@@ -11,6 +11,8 @@ if __WORLD_MAP_FILE ~= nil then
 end
 
 local CHUNKALYZER_VIEW = ({
+	chunkMode = true,
+
 	init = function(self, imgPath)
 		self.imgData = love.image.newImageData(imgPath)
 		self.img     = love.graphics.newImage(self.imgData)
@@ -35,14 +37,30 @@ local CHUNKALYZER_VIEW = ({
 
 	draw = function(self)
 		self.GRAFX:setColor(1, 1, 1)
-		for _, c in ipairs(self.chunks) do
-			self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+		if self.chunkMode then
+			for _, c in ipairs(self.chunks) do self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1) end
+		else
+			self.GRAFX:draw(self.img, 0, 0)
 		end
 	end,
 
+	toggleChunkMode = function(self)
+		self.chunkMode = not self.chunkMode
+	end,
+
+	getPageWidth = function(self)
+		if self.chunkMode then return ((self.img:getWidth()  / 256) * 272) + 32
+		else                   return   self.img:getWidth()                 end
+	end,
+
+	getPageHeight = function(self)
+		if self.chunkMode then return ((self.img:getHeight() / 256) * 272) + 32
+		else                   return   self.img:getHeight()                end
+	end,
+
     keepImageInBounds = function(self)
-        self.GRAFX:setX(math.min(0, math.max(self.GRAFX:getX(), (love.graphics:getWidth()  / self.GRAFX:getScale()) - self.img:getWidth())))
-        self.GRAFX:setY(math.min(0, math.max(self.GRAFX:getY(), (love.graphics:getHeight() / self.GRAFX:getScale()) - self.img:getHeight())))
+        self.GRAFX:setX(math.min(0, math.max(self.GRAFX:getX(), (love.graphics:getWidth()  / self.GRAFX:getScale()) - self:getPageWidth())))
+        self.GRAFX:setY(math.min(0, math.max(self.GRAFX:getY(), (love.graphics:getHeight() / self.GRAFX:getScale()) - self:getPageHeight())))
     end,
 
     moveImage = function(self, deltaX, deltaY)
@@ -60,6 +78,7 @@ local CHUNKALYZER_VIEW = ({
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         self.GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
+
 }):init(imgPath)
 
 --------------------------------------------------------------
@@ -84,7 +103,10 @@ end
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
--- ...
+function love.keypressed(key)
+	if key == "c" then CHUNKALYZER_VIEW:toggleChunkMode() end
+end
+
 -- ...
 -- ...
 
