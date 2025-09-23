@@ -25,6 +25,43 @@ local CHUNKALYZER = {
 	dividerSelected = false,
 	dividerPosition = 400,
 
+	chunkAttributes = { 
+		chunkalyzeRow = function(self)
+			local chunkQuadX, chunkQuadY = WORLD_PANE:getImageCoordinatesOfChunk(self.x, self.y)
+			local chunkID = CHUNK_PANE:addChunk(chunkQuadX, chunkQuadY)
+			WORLD_PANE:tagChunk(chunkID, chunkQuadX, chunkQuadY)
+			self:nextChunk()
+		end,
+
+		beginChunkalyzation = function(self)
+			self.x = self.leftMost
+			self.y = self.topMost
+			self.chunkalyzing = true
+		end,
+
+		nextChunk = function(self)
+			self.x = self.x + 1
+			if self.x > self.rightMost then self:nextRow() end
+		end,
+
+		nextRow = function(self)
+			self.y = self.y + 1
+			self.x = self.leftMost
+			if self.y > self.bottomMost then self.chunkalyzing = false end
+		end,
+
+		populateFrom = function(self, attributes)
+			self.leftMost   = attributes.leftMost
+			self.rightMost  = attributes.rightMost
+			self.topMost    = attributes.topMost
+			self.bottomMost = attributes.bottomMost
+		end,
+
+		update = function(self, dt)
+			if self.chunkalyzing then self:chunkalyzeRow() end
+		end,
+	},
+
 	draw = function(self)
 		love.graphics.setColor(0.5, 0.5, 0.5)
 		love.graphics.rectangle("fill", 0, 0, 1200, 800)
@@ -44,6 +81,8 @@ local CHUNKALYZER = {
 	end,
 
 	update = function(self, dt)
+		self.chunkAttributes:update(dt)
+
 		local _, my = love.mouse.getPosition()
 		if self.dividerSelected then
 			WORLD_PANE:loseFocus()
@@ -74,22 +113,10 @@ local CHUNKALYZER = {
 		else
     		self.CURRENT_PANE:handleMousepressed(mx, my)
 			if modes:isReadyToChunkalyze() and self.CURRENT_PANE == WORLD_PANE then
-				local attr = modes:getData().chunkAttributes
-				print("Chunk Attributes: LeftMost = " .. attr.leftMost .. ", TopMost = " .. attr.topMost .. ", RightMost = " .. attr.rightMost .. ", BottomMost = " .. attr.bottomMost)
-				self:chunkalyzeAll()
+				self.chunkAttributes:populateFrom(modes:getData().chunkAttributes)
+				self.chunkAttributes:beginChunkalyzation()
 			end
     	end
-	end,
-
-	chunkalyzeAll = function(self)
-		local attr = modes:getData().chunkAttributes
-		for y = attr.topMost, attr.bottomMost do
-			for x = attr.leftMost, attr.rightMost do
-				local chunkQuadX, chunkQuadY = WORLD_PANE:getImageCoordinatesOfChunk(x, y)
-				local chunkID = CHUNK_PANE:addChunk(chunkQuadX, chunkQuadY)
-				WORLD_PANE:tagChunk(chunkID, chunkQuadX, chunkQuadY)
-			end
-		end
 	end,
 
 	handleMousereleased = function(self, mx, my)
