@@ -76,10 +76,20 @@ local CHUNKALYZER = {
 			if modes:isReadyToChunkalyze() and self.CURRENT_PANE == WORLD_PANE then
 				local attr = modes:getData().chunkAttributes
 				print("Chunk Attributes: LeftMost = " .. attr.leftMost .. ", TopMost = " .. attr.topMost .. ", RightMost = " .. attr.rightMost .. ", BottomMost = " .. attr.bottomMost)
-				local chunkID = CHUNK_PANE:addChunk(WORLD_PANE:getQuadFromMouseCoordinates())
-				WORLD_PANE:tagChunk(chunkID, WORLD_PANE:getQuadFromMouseCoordinates())
+				self:chunkalyzeAll()
 			end
     	end
+	end,
+
+	chunkalyzeAll = function(self)
+		local attr = modes:getData().chunkAttributes
+		for y = attr.topMost, attr.bottomMost do
+			for x = attr.leftMost, attr.rightMost do
+				local chunkQuadX, chunkQuadY = WORLD_PANE:getImageCoordinatesOfChunk(x, y)
+				local chunkID = CHUNK_PANE:addChunk(chunkQuadX, chunkQuadY)
+				WORLD_PANE:tagChunk(chunkID, chunkQuadX, chunkQuadY)
+			end
+		end
 	end,
 
 	handleMousereleased = function(self, mx, my)
