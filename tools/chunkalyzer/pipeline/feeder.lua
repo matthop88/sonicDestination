@@ -4,17 +4,20 @@
 
 return {
 	create = function(self, data)
-		return {
+		return ({
 			data = nil,
 			index = 1,
 
 			init = function(self)
-				self.data = { },
+				self.data = { }
+
 				if type(data) == "table" and #data > 0 then 
 					for _, d in ipairs(data) do table.insert(self.data, d) end
 				else                                        
 					self.data = { data } 
 				end
+
+				return self
 			end,
 
 			next = function(self)
@@ -29,6 +32,6 @@ return {
 
 			isComplete   = function(self) return self.index >  #self.data end,
 			isProcessing = function(self) return self.index <= #self.data end,
-		}
+		}):init()
 	end,
 }
