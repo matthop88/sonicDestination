@@ -3,9 +3,8 @@
 -- If it is not a list (table with size of 0 or a non-table), inserts into table prior to wrapping.
 
 return {
-	create = function(self, name, data)
+	create = function(self, data)
 		return {
-			name = name,
 			data = nil,
 			index = 1,
 
@@ -16,10 +15,6 @@ return {
 				else                                        
 					self.data = { data } 
 				end
-			end,
-
-			getName = function(self)
-				return name
 			end,
 
 			next = function(self)
