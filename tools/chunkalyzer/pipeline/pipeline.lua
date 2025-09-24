@@ -26,11 +26,12 @@ return {
 
 				local timeElapsed = 0
 
-				while timeElapsed < executionTimeInMs * 1000 and not self:isComplete() do
+				while timeElapsed < executionTimeInMs / 1000 and not self:isComplete() do
 					self:executeOneStep()
 
 					timeElapsed = love.timer.getTime() - startTime
 				end
+				print("Time Elapsed: " .. timeElapsed)
 			end,
 
 			executeOneStep = function(self)
