@@ -1,12 +1,13 @@
 return {
-	create = function(self, stageObj)
+	create = function(self, name, taskFn)
 		return {
-			
+			name          = name,
+			taskFn        = taskFn,
+
 			isReady       = function(self) return self.feeder:isComplete()   end,
 			isComplete    = function(self) return self.feeder:isComplete()   end,
 			isProcessing  = function(self) return self.feeder:isProcessing() end,
 			
-			self.stageObj = stageObj,
 			
 			execute = function(self, downStreamStage)
 				if self.feeder == nil then
@@ -41,25 +42,25 @@ return {
 --[[
 	Stage #1 implementation:
 
-	{
-		init = function(self, chunkFeeder)
-			self.chunks = chunkFeeder
-			
-			return self
-		end,
+	processMapChunk = function(self, chunks, addToChunkRepoStage, result)
+		local myChunk = chunks:next()
 
-		nextChunk = function(self, chunks, addToChunkRepoStage, result)
-			local myChunk = chunks:next()
+		if myChunk ~= nil then
+			addToChunkRepoStage:push(myChunk)
+		end
 
-			if myChunk ~= nil then
-				addToChunkRepoStage:push(myChunk)
-			end
+		if result ~= nil then
+			return result
+		end
+	end
+	
+	PIPELINE:add(STAGE:create("Map Chunk Gobbler", processMapChunk))
 
-			if result ~= nil then
-				return result
-			end
-		end,
-	}
+	...
+
+	PIPELINE:push(MAP_CHUNKS) -- Turns MAP_CHUNKS into a Feeder
+
+	local timeElapsed = PIPELINE:execute(5) -- 5 milliseconds
 
 
 -- The feeder (chunks) is managed by the stage object
