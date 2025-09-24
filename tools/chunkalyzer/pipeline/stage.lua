@@ -1,13 +1,22 @@
+local FEEDER = require("tools/chunkalyzer/pipeline/feeder")
+
 return {
 	create = function(self, name, taskFn)
 		return {
 			name          = name,
 			taskFn        = taskFn,
 
-			isReady       = function(self) return self.feeder:isComplete()   end,
-			isComplete    = function(self) return self.feeder:isComplete()   end,
-			isProcessing  = function(self) return self.feeder:isProcessing() end,
-			
+			isReady       = function(self) 
+				return self.feeder == nil or self.feeder:isComplete()   
+			end,
+
+			isComplete    = function(self) 
+				return self.feeder == nil or self.feeder:isComplete()   
+			end,
+
+			isProcessing  = function(self) 
+				return self.feeder ~= nil and self.feeder:isProcessing()
+			end,
 			
 			execute = function(self, downStreamStage)
 				if self.feeder == nil then
