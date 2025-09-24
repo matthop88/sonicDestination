@@ -22,7 +22,9 @@ return {
 				if self.feeder == nil then
 					-- ERROR!
 				else
-					self.result = self.taskFn(downStreamStage, self.feeder, downStreamStage:popResult())
+					local downStreamResult = nil
+					if downStreamStage then downStreamResult = downStreamStage:popResult() end
+					self.result = self.taskFn(self.feeder, downStreamStage, downStreamResult)
 				end
 			end,
 
@@ -51,7 +53,7 @@ return {
 --[[
 	Stage #1 implementation:
 
-	processMapChunk = function(self, chunks, addToChunkRepoStage, result)
+	processMapChunk = function(chunks, addToChunkRepoStage, result)
 		local myChunk = chunks:next()
 
 		if myChunk ~= nil then
