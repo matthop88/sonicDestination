@@ -16,6 +16,8 @@ local img     = love.graphics.newImage(imgData)
 local CHUNKALYZER_MODEL = require("tools/chunkalyzer/model"):init(img)
 local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZER_MODEL)
 
+local CHUNK_PIPELINE    = require("tools/chunkalyzer/chunkPipeline")
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -25,6 +27,8 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 img:setFilter("nearest", "nearest")
 
+CHUNK_PIPELINE:setup(CHUNKALYZER_MODEL:getChunks())
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -33,7 +37,12 @@ function love.draw()
     CHUNKALYZER_VIEW:draw()
 end
 
--- ...
+function love.update(dt)
+	if not CHUNK_PIPELINE:isComplete() then
+		CHUNK_PIPELINE:execute()
+	end
+end
+
 -- ...
 
 --------------------------------------------------------------
