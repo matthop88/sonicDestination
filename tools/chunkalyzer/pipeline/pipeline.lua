@@ -21,7 +21,6 @@ return {
 
 					timeElapsed = love.timer.getTime() - startTime
 				end
-				print("Time Elapsed: " .. timeElapsed)
 			end,
 
 			executeOneStep = function(self)
