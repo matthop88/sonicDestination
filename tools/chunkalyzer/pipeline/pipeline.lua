@@ -28,7 +28,8 @@ return {
 				local executeStageIndex = nil
 				
 				for n, stage in ipairs(self.stages) do
-					if stage:isProcessing() then executeStageIndex = n end
+					if     stage:isProcessing() then executeStageIndex = n 
+					elseif executeStageIndex    then break             end
 				end
 
 				if executeStageIndex == nil then
