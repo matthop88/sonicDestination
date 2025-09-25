@@ -37,6 +37,12 @@ return {
 			if c.id ~= nil then
 				self.GRAFX:setColor(1, 1, 1, 0.5)
 				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
+				self.GRAFX:setFontSize(32)
+				self.GRAFX:setColor(0, 0, 0, 0.4)
+				local numberWidth = self.GRAFX:getFontWidth("" .. c.id) + 8
+				self.GRAFX:rectangle("fill", c.x + 134 - (numberWidth / 2), c.y + 118, numberWidth, 32)
+				self.GRAFX:setColor(1, 1, 1)
+				self.GRAFX:printf("" .. c.id, c.x + 6, c.y + 116, 256, "center")
 			end
 		end
 	end,
