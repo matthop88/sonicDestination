@@ -20,7 +20,7 @@ return {
 		for _, c in ipairs(self.model:getChunks()) do
 			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, self.img:getWidth(), self.img:getHeight())
 			local cX, cY = math.floor(c.x / 256), math.floor(c.y / 256)
-			table.insert(self.viewModel, { x = (cX * 272) + 16, y = (cY * 272) + 16, quad = quad })
+			table.insert(self.viewModel, { mapX = c.x, mapY = c.y, x = (cX * 272) + 16, y = (cY * 272) + 16, quad = quad })
 		end
 	end,
 
@@ -32,7 +32,18 @@ return {
 
 	drawChunks = function(self)
 		for _, c in ipairs(self.viewModel) do
+			self.GRAFX:setColor(1, 1, 1)
 			self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+			if c.id ~= nil then
+				self.GRAFX:setColor(1, 1, 1, 0.5)
+				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
+			end
+		end
+	end,
+
+	tagChunk = function(self, x, y, cID)
+		for _, c in ipairs(self.viewModel) do
+			if c.mapX == x and c.mapY == y then c.id = cID end
 		end
 	end,
 
