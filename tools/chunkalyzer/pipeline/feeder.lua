@@ -20,6 +20,7 @@ return {
 				return value
 			end,
 
+			getIndex     = function(self) return self.index               end,
 			get          = function(self) return self.data                end,
 
 			reset        = function(self) self.index = 1                  end,
