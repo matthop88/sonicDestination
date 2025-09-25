@@ -1,41 +1,43 @@
-local FEEDER = require("tools/chunkalyzer/pipeline/feeder")
-
 return {
 	create = function(self, name, taskFn)
 		return {
-			name          = name,
-			taskFn        = taskFn,
+			name    = name,
+			results = nil,
+			dataIn  = nil,
+			taskFn  = taskFn,
 
-			isReady       = function(self) 
-				return self.feeder == nil or self.feeder:isComplete()   
-			end,
+			getName       = function(self) return self.name                                 end,
 
-			isComplete    = function(self) 
-				return self.feeder == nil or self.feeder:isComplete()   
-			end,
-
-			isProcessing  = function(self) 
-				return self.feeder ~= nil and self.feeder:isProcessing()
-			end,
+			isReady       = function(self) return self.results ~= nil or self.dataIn == nil end,
+			isComplete    = function(self) return self:isReady()                            end,
+			isProcessing  = function(self) return not self:isReady()                        end,
 			
 			execute = function(self, downStreamStage)
-				if self.feeder == nil then
+				if self.dataIn == nil then
 					-- ERROR!
 				else
 					local downStreamResult = nil
-					if downStreamStage then downStreamResult = downStreamStage:popResult() end
-					self.result = self.taskFn(self.feeder, downStreamStage, downStreamResult)
+					if downStreamStage then downStreamResults = downStreamStage:popResults() end
+
+					local outData = {}
+					self.results = self.taskFn(downStreamResults, self.dataIn, outData)
+
+					if outData ~= {} and downStreamStage then
+						downStreamStage:push(outData)
+					end
+
 				end
 			end,
 
-			push = function(self, data)
-				self.feeder = FEEDER:create(data)
+			push = function(self, dataIn)
+				self.dataIn = dataIn
 			end,
 
-			popResult = function(self)
-				local myResult = self.result
-				self.result = nil
-				return myResult
+			popResults = function(self)
+				local myResults = self.results
+				self.results = nil
+				self.dataIn = nil
+				return myResults
 			end,
 
 		}
