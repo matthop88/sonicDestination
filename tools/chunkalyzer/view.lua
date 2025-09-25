@@ -20,7 +20,7 @@ return {
 		for _, c in ipairs(self.model:getChunks()) do
 			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, self.img:getWidth(), self.img:getHeight())
 			local cX, cY = math.floor(c.x / 256), math.floor(c.y / 256)
-			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, y = (cY * 272) + 16, quad = quad })
+			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, origX = (cX * 272) + 16, y = (cY * 272) + 16, origY = (cY * 272) + 16, quad = quad })
 		end
 	end,
 
@@ -49,8 +49,19 @@ return {
 
 	update = function(self, dt)
 		for _, c in ipairs(self.viewModel) do
-			if c.id and not c.isUnique then
-				c.alpha = math.max(0, c.alpha - (1 * dt))
+			if c.id then
+				if c.isUnique then
+					c.x = c.x + ((c.targetX - c.origX) * dt)
+					if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
+						c.x = c.targetX
+					end
+					c.y = c.y + ((c.targetY - c.origY) * dt)
+					if math.abs(c.origY - c.y) > math.abs(c.origY - c.targetY) then
+						c.y = c.targetY
+					end
+				else
+					c.alpha = math.max(0, c.alpha - (1 * dt))
+				end
 			end
 		end
 	end,
@@ -59,6 +70,8 @@ return {
 		for _, c in ipairs(self.viewModel) do
 			if c.mapX == x and c.mapY == y then 
 				c.id = cID
+				c.targetX = self.viewModel[cID].origX
+				c.targetY = self.viewModel[cID].origY
 				c.isUnique = isUnique 
 			end
 		end
