@@ -1,24 +1,17 @@
--- FEEDER creates an indexable wrapper around a data set.
--- If it is a list (size of > 0), simple.
--- If it is not a list (table with size of 0 or a non-table), inserts into table prior to wrapping.
-
 return {
-	create = function(self, data)
+	create = function(self, name, data)
 		return ({
+			name = nil,
 			data = nil,
 			index = 1,
 
 			init = function(self)
-				self.data = { }
-
-				if type(data) == "table" and #data > 0 then 
-					for _, d in ipairs(data) do table.insert(self.data, d) end
-				else                                        
-					self.data = { data } 
-				end
-
+				self.data = data 
+				self.name = name
 				return self
 			end,
+
+			getName = function(self) return self.name end,
 
 			next = function(self)
 				local value = self.data[self.index]
@@ -26,6 +19,8 @@ return {
 				self.index = self.index + 1
 				return value
 			end,
+
+			get          = function(self) return self.data                end,
 
 			reset        = function(self) self.index = 1                  end,
 			complete     = function(self) self.index = #self.data + 1     end,
