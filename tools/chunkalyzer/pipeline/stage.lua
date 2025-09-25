@@ -19,11 +19,14 @@ return {
 					local downStreamResult = nil
 					if downStreamStage then downStreamResults = downStreamStage:popResults() end
 
-					local outData = {}
-					self.results = self.taskFn(downStreamResults, self.dataIn, outData)
+					local dataOut = {}
+					self.results = self.taskFn(downStreamResults, self.dataIn, dataOut)
+					
+					local numKeys = 0
+					for _, _ in pairs(dataOut) do numKeys = numKeys + 1 end
 
-					if outData ~= {} and downStreamStage then
-						downStreamStage:push(outData)
+					if numKeys > 0 and downStreamStage then
+						downStreamStage:push(dataOut)
 					end
 
 				end
