@@ -41,6 +41,8 @@ function love.update(dt)
 	if not CHUNK_PIPELINE:isComplete() then
 		CHUNK_PIPELINE:execute()
 	end
+
+	CHUNKALYZER_VIEW:update(dt)
 end
 
 -- ...
