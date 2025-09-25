@@ -32,9 +32,11 @@ return {
 
 	drawChunks = function(self)
 		for _, c in ipairs(self.viewModel) do
-			self.GRAFX:setColor(1, 1, 1)
-			self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
-			if c.id ~= nil then
+			if c.id == nil or c.isUnique then
+				self.GRAFX:setColor(1, 1, 1)
+				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+			end
+			if c.isUnique then
 				self.GRAFX:setColor(1, 1, 1, 0.5)
 				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
 				self.GRAFX:setFontSize(32)
@@ -47,12 +49,15 @@ return {
 		end
 	end,
 
-	tagChunk = function(self, x, y, cID)
+	tagChunk = function(self, x, y, cID, isUnique)
 		for _, c in ipairs(self.viewModel) do
-			if c.mapX == x and c.mapY == y then c.id = cID end
+			if c.mapX == x and c.mapY == y then 
+				c.id = cID
+				c.isUnique = isUnique 
+			end
 		end
 	end,
-
+	
 	toggleChunkMode = function(self)
 		self.chunkMode = not self.chunkMode
 	end,
