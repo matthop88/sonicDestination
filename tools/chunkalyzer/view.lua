@@ -20,7 +20,7 @@ return {
 		for _, c in ipairs(self.model:getChunks()) do
 			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, self.img:getWidth(), self.img:getHeight())
 			local cX, cY = math.floor(c.x / 256), math.floor(c.y / 256)
-			table.insert(self.viewModel, { mapX = c.x, mapY = c.y, x = (cX * 272) + 16, y = (cY * 272) + 16, quad = quad })
+			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, y = (cY * 272) + 16, quad = quad })
 		end
 	end,
 
@@ -32,11 +32,9 @@ return {
 
 	drawChunks = function(self)
 		for _, c in ipairs(self.viewModel) do
-			if c.id == nil or c.isUnique then
-				self.GRAFX:setColor(1, 1, 1)
-				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
-			end
-			if c.isUnique then
+			self.GRAFX:setColor(1, 1, 1, c.alpha)
+			self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+			if c.id and c.isUnique then
 				self.GRAFX:setColor(1, 1, 1, 0.5)
 				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
 				self.GRAFX:setFontSize(32)
@@ -45,6 +43,14 @@ return {
 				self.GRAFX:rectangle("fill", c.x + 134 - (numberWidth / 2), c.y + 118, numberWidth, 32)
 				self.GRAFX:setColor(1, 1, 1)
 				self.GRAFX:printf("" .. c.id, c.x + 6, c.y + 116, 256, "center")
+			end
+		end
+	end,
+
+	update = function(self, dt)
+		for _, c in ipairs(self.viewModel) do
+			if c.id and not c.isUnique then
+				c.alpha = math.max(0, c.alpha - (1 * dt))
 			end
 		end
 	end,
