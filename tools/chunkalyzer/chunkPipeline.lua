@@ -53,7 +53,7 @@ end
 
 local processMapChunks = function(results, dataIn, dataOut)
 	if results then
-		CHUNK_VIEW:tagChunk(results.chunk.x, results.chunk.y, results.repoChunkID)
+		CHUNK_VIEW:tagChunk(results.chunk.x, results.chunk.y, results.repoChunkID, results.wasAdded)
 
 		if dataIn.MAP_CHUNKS:isComplete() then
 			return { completed = true }
@@ -70,11 +70,11 @@ local addMapChunkToRepo = function(results, dataIn, dataOut)
 					
 		if not results.chunkIsUnique then
 			repoChunkID = results.repoChunkID
-			return { repoChunkID = repoChunkID, chunk = results.chunk, wasAdded = true }
+			return { repoChunkID = repoChunkID, chunk = results.chunk, wasAdded = false }
 		else
 			if dataIn.CHUNK_REPO:isComplete() then
 				repoChunkID = dataIn.CHUNK_REPO:get():add(results.chunk)
-				return { repoChunkID = repoChunkID, chunk = results.chunk, wasAdded = false }
+				return { repoChunkID = repoChunkID, chunk = results.chunk, wasAdded = true }
 			end
 		end
 	end
