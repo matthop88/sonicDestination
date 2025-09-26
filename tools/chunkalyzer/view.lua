@@ -128,12 +128,8 @@ return {
 			for _, c in ipairs(self.viewModel) do
 				if c.id then
 					if c.isUnique then
-						if self:ptInChunk(mx, my, c.x, c.y) then
-							c.numberAlpha = math.max(0.33, c.numberAlpha - (2 * dt))
-						else
-							c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
-						end
-
+						c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
+						
 						if not c.targetChunk or c.targetChunk.isMoved then
 							c.x = c.x + (c.targetX - c.origX) * (2 * dt)
 							if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
