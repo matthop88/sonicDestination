@@ -54,6 +54,7 @@ local processMapChunks = function(results, dataIn, dataOut)
 			print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 			printToReadout("Press 'return' to save to file.")
 			TALLY_SOUND:play()
+			CHUNK_VIEW:setRepoMode()
 			return { completed = true }
 		end
 	end
