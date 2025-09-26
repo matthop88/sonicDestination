@@ -56,6 +56,7 @@ local processMapChunks = function(results, dataIn, dataOut)
 		CHUNK_VIEW:tagChunk(results.chunk.x, results.chunk.y, results.repoChunkID, results.wasAdded)
 
 		if dataIn.MAP_CHUNKS:isComplete() then
+			print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 			return { completed = true }
 		end
 	end
