@@ -168,7 +168,13 @@ return {
     end,
 
     adjustScaleGeometrically = function(self, deltaScale)
-        self.GRAFX:adjustScaleGeometrically(deltaScale)
+    	if self.chunkMode then
+    		if (deltaScale < 0 and self.GRAFX:getScale() >= 0.15) or (deltaScale > 0 and self.GRAFX:getScale() <= 3.0) then
+				self.GRAFX:adjustScaleGeometrically(deltaScale)
+			end
+		else
+			self.GRAFX:adjustScaleGeometrically(deltaScale)
+		end
     end,
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
