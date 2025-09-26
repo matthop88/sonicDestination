@@ -37,7 +37,7 @@ return {
 		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
 
 		for _, c in ipairs(self.viewModel) do
-			if not c.id or (c.id and not c.isUnique) then
+			if c.alpha > 0 and (not c.id or (c.id and not c.isUnique)) then
 				self.GRAFX:setColor(1, 1, 1, c.alpha)
 				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
 				if self:ptInChunk(mx, my, c.x, c.y) then
