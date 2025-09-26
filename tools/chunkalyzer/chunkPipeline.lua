@@ -44,7 +44,7 @@ local CHUNK_REPO = {
 local sliceChunkIntoRows = function(chunk)
 	local rows = {}
 
-	for y = chunk.y, chunk.y + 255 do
+	for y = chunk.y + 255, chunk.y, -1 do
 		table.insert(rows, { x = chunk.x, y = y} )
 	end
 
