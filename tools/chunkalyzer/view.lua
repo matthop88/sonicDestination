@@ -1,8 +1,9 @@
 local IMAGE
 
 return {
-	mapMode  = false,
-	repoMode = false,
+	mapMode      = false,
+	repoMode     = false,
+	showMapAlpha = true,
 
 	chunkRepo = {
 		add = function(self, c)
@@ -66,13 +67,17 @@ return {
 				if self:ptInChunk(mx, my, c.mapX, c.mapY) then
 					highlightRect = { x = c.mapX - 3, y = c.mapY - 3, w = 262, h = 262 }
 				end
+				
+				local mapOverlayAlpha = c.mapOverlayAlpha
+				if not self.showMapAlpha then mapOverlayAlpha = 0.33 end
+				
 				if c.id then
-					self.GRAFX:setColor(0.56, 0.84, 1, c.mapOverlayAlpha)
+					self.GRAFX:setColor(0.56, 0.84, 1, mapOverlayAlpha - 0.33)
 					self.GRAFX:rectangle("fill", c.mapX, c.mapY, 256, 256)
-					self.GRAFX:setColor(1, 1, 1, c.mapOverlayAlpha + 0.2)
+					self.GRAFX:setColor(1, 1, 1, mapOverlayAlpha + 0.2)
 					self.GRAFX:setFontSize(96)
 					self.GRAFX:printf("" .. c.id, c.mapX + 6, c.mapY + 84, 256, "center")
-					self.GRAFX:setColor(0, 0, 0, c.mapOverlayAlpha - 0.33)
+					self.GRAFX:setColor(0, 0, 0, mapOverlayAlpha - 0.33)
 					self.GRAFX:setLineWidth(5)
 					self.GRAFX:rectangle("line", c.mapX + 3, c.mapY + 3, 250, 250)
 				end
@@ -231,8 +236,8 @@ return {
 			if     key == "shiftright"                then selectedChunk.id = selectedChunk.id + 1
 			elseif key == "shiftleft"                 then selectedChunk.id = selectedChunk.id - 1
 			elseif key == "shiftup"                   then selectedChunk.id = selectedChunk.id - 9
-			elseif key == "shiftdown"                 then selectedChunk.id = selectedChunk.id + 9               end
-
+			elseif key == "shiftdown"                 then selectedChunk.id = selectedChunk.id + 9
+			elseif key == "escape"                    then self:toggleMapAlpha()               end
 			if     selectedChunk.id > #self.chunkRepo then selectedChunk.id = selectedChunk.id - #self.chunkRepo
 			elseif selectedChunk.id < 1               then selectedChunk.id = selectedChunk.id + #self.chunkRepo end
 		end
@@ -291,6 +296,10 @@ return {
 		self.mapMode = not self.mapMode
 	end,
 
+	toggleMapAlpha = function(self)
+		self.showMapAlpha = not self.showMapAlpha
+	end,
+
 	setRepoMode = function(self)
 		self.repoMode = true
 	end,
@@ -319,7 +328,7 @@ return {
     end,
 
     adjustScaleGeometrically = function(self, deltaScale)
-    	if self.chunkMode then
+    	if not self.repoMode then
     		if (deltaScale < 0 and self.GRAFX:getScale() >= 0.15) or (deltaScale > 0 and self.GRAFX:getScale() <= 3.0) then
 				self.GRAFX:adjustScaleGeometrically(deltaScale)
 			end
