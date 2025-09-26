@@ -1,6 +1,13 @@
 return {
 	chunkMode = true,
 
+	chunkRepo = {
+		add = function(self, chunk)
+			table.insert(self, chunk)
+			return #self
+		end,
+	},
+
 	init = function(self, img, model)
 		self.img   = img
 		self.model = model
@@ -26,6 +33,8 @@ return {
 			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, origX = (cX * 272) + 16, y = (cY * 272) + 16, origY = (cY * 272) + 16, quad = quad })
 		end
 	end,
+
+	getChunkRepo = function(self) return self.chunkRepo end,
 
 	draw = function(self)
 		self.GRAFX:setColor(1, 1, 1)
