@@ -58,7 +58,10 @@ function love.keypressed(key)
 	elseif key == "space" then okayToChunkalyze = true      end
 end
 
--- ...
+function love.mousepressed(mx, my)
+	CHUNKALYZER_VIEW:handleMousepressed(mx, my)
+end
+
 -- ...
 
 --------------------------------------------------------------
