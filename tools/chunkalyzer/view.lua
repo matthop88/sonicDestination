@@ -222,7 +222,8 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-		if self.mapMode and self.repoMode then
+		if     key == "return"                then self:saveChunkImage()
+		elseif self.mapMode and self.repoMode then
 			local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
 
 			local selectedChunk = nil
@@ -341,4 +342,9 @@ return {
         self.GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
+	saveChunkImage = function(self)
+    	if self.repoMode then
+    		local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo)
+    	end
+    end,
 }
