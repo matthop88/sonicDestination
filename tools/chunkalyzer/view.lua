@@ -32,9 +32,18 @@ return {
 
 	drawChunks = function(self)
 		for _, c in ipairs(self.viewModel) do
-			self.GRAFX:setColor(1, 1, 1, c.alpha)
-			self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+			if not c.id or (c.id and not c.isUnique) then
+				self.GRAFX:setColor(1, 1, 1, c.alpha)
+				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+			end
+		end
+
+		for _, c in ipairs(self.viewModel) do
 			if c.id and c.isUnique then
+				self.GRAFX:setColor(1, 1, 1, c.alpha)
+				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+				self.GRAFX:setColor(1, 1, 1, c.highlightAlpha)
+				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
 				self.GRAFX:setFontSize(32)
 				self.GRAFX:setColor(0, 0, 0, 0.4)
 				local numberWidth = self.GRAFX:getFontWidth("" .. c.id) + 8
@@ -49,16 +58,21 @@ return {
 		for _, c in ipairs(self.viewModel) do
 			if c.id then
 				if c.isUnique then
-					if (not c.targetChunk and self.viewModel[#self.viewModel].id) or (c.targetChunk and c.targetChunk.isMoved) then
-						c.x = c.x + (c.targetX - c.origX) * dt
+					if not c.targetChunk or c.targetChunk.isMoved then
+						c.x = c.x + (c.targetX - c.origX) * (2 * dt)
 						if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
 							c.x = c.targetX
 						end
-						c.y = c.y + (c.targetY - c.origY) * dt
+						c.y = c.y + (c.targetY - c.origY) * (2 * dt)
 						if math.abs(c.origY - c.y) > math.abs(c.origY - c.targetY) then
 							c.y = c.targetY
 						end
 						c.isMoved = true
+					end
+					if c.x == c.targetX and c.y == c.targetY then
+						c.highlightAlpha = math.max(0, c.highlightAlpha - (0.5 * dt))
+					else
+						c.highlightAlpha = math.min(0.5, c.highlightAlpha + (0.5 * dt))
 					end
 				else
 					c.alpha = math.max(0, c.alpha - (1 * dt))
@@ -77,6 +91,7 @@ return {
 				c.targetX = (((cID - 1) % 9) * 272) + 16
 				c.targetY = (math.floor((cID - 1) / 9) * 272) + 16
 				c.isUnique = isUnique 
+				c.highlightAlpha = 0
 
 				for _, k in ipairs(self.viewModel) do
 					if k.origX == c.targetX and k.origY == c.targetY then
