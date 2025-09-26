@@ -18,6 +18,8 @@ local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZE
 
 local CHUNK_PIPELINE    = require("tools/chunkalyzer/chunkPipeline")
 
+local okayToChunkalyze  = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -38,7 +40,7 @@ function love.draw()
 end
 
 function love.update(dt)
-	if not CHUNK_PIPELINE:isComplete() then
+	if not CHUNK_PIPELINE:isComplete() and okayToChunkalyze then
 		CHUNK_PIPELINE:execute()
 	end
 
@@ -52,7 +54,8 @@ end
 --------------------------------------------------------------
 
 function love.keypressed(key)
-	if key == "c" then CHUNKALYZER_VIEW:toggleChunkMode() end
+	if     key == "c"     then CHUNKALYZER_VIEW:toggleChunkMode() 
+	elseif key == "space" then okayToChunkalyze = true        end
 end
 
 -- ...
@@ -70,5 +73,19 @@ PLUGINS = require("plugins/engine")
     	imageViewer = CHUNKALYZER_VIEW,
     	scrollSpeed = 2400,          
     })
-    :add("readout",      { printFnName = "printToReadout", })      
+    :add("readout",      
+    { 
+    	printFnName    = "printToReadout", 
+    	accessorFnName = "getReadout",
+    })  
+    :add("timedFunctions",
+	{
+		{	secondsWait = 1, 
+			callback = function() 
+				getReadout():setSustain(180) 
+				printToReadout("Press 'space' to begin chunkalyzing.") 
+			end,
+		},
+	})    
+
 
