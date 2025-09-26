@@ -73,6 +73,7 @@ PLUGINS = require("plugins/engine")
     	imageViewer = CHUNKALYZER_VIEW,
     	scrollSpeed = 2400,          
     })
+	:add("pause")
     :add("readout",      
     { 
     	printFnName    = "printToReadout", 
