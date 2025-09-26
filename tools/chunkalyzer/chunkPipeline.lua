@@ -3,6 +3,8 @@ local FEEDER   = require("tools/chunkalyzer/pipeline/feeder")
 
 local TASK_SLICE_TIME_IN_MS = 12
 
+local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
+
 local chunkNum = 0
 local IMAGE_DATA, CHUNK_VIEW
 
@@ -58,6 +60,7 @@ local processMapChunks = function(results, dataIn, dataOut)
 		if dataIn.MAP_CHUNKS:isComplete() then
 			print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 			printToReadout("Press 'return' to save to file.")
+			TALLY_SOUND:play()
 			return { completed = true }
 		end
 	end
