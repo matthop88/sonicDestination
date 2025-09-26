@@ -45,9 +45,31 @@ return {
 
 	draw = function(self)
 		self.GRAFX:setColor(1, 1, 1)
-		if     self.mapMode   then self.GRAFX:draw(IMAGE, 0, 0)
+		if     self.mapMode   then self:drawMap()
 		elseif self.repoMode  then self:drawRepo()
 		else                       self:drawChunks()        end
+	end,
+
+	drawMap = function(self)
+		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
+		local highlightRect = nil
+
+		for _, c in ipairs(self.viewModel) do
+			if self:isChunkOnScreen(c.mapX, c.mapY) then
+				self.GRAFX:setColor(1, 1, 1)
+				self.GRAFX:draw(IMAGE, c.quad, c.mapX, c.mapY, 0, 1, 1)
+				if self:ptInChunk(mx, my, c.mapX, c.mapY) then
+					highlightRect = { x = c.mapX - 3, y = c.mapY - 3, w = 262, h = 262 }
+				end
+			end
+		end 
+
+		if highlightRect then
+			self.GRAFX:setColor(1, 1, 0)
+			self.GRAFX:setLineWidth(5)
+			self.GRAFX:rectangle("line", highlightRect.x, highlightRect.y, highlightRect.w, highlightRect.h)
+		end
 	end,
 
 	drawRepo = function(self)
