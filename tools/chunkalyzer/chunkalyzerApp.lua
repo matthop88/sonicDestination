@@ -54,8 +54,8 @@ end
 --------------------------------------------------------------
 
 function love.keypressed(key)
-	if     key == "c"     then CHUNKALYZER_VIEW:toggleChunkMode() 
-	elseif key == "space" then okayToChunkalyze = true        end
+	if     key == "m"     then CHUNKALYZER_VIEW:toggleMapMode() 
+	elseif key == "space" then okayToChunkalyze = true      end
 end
 
 -- ...
