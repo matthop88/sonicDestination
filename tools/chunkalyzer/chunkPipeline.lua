@@ -6,7 +6,7 @@ local TASK_SLICE_TIME_IN_MS = 12
 local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
 
 local chunkNum = 0
-local IMAGE_DATA, CHUNK_VIEW
+local IMAGE_DATA, CHUNK_VIEW, CHUNK_REPO
 
 local getPixelColorAt = function(x, y)
     local r, g, b, a = IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
@@ -35,13 +35,6 @@ local comparePixelsInChunkRow = function(c1X, c1Y, c2X, c2Y)
 
     return true
 end
-
-local CHUNK_REPO = {
-	add = function(self, chunk)
-		table.insert(self, chunk)
-		return #self
-	end,
-}
 
 local sliceChunkIntoRows = function(chunk)
 	local rows = {}
@@ -120,9 +113,11 @@ local compareChunkRow = function(results, dataIn, dataOut)
 end
 
 return {
-	setup = function(self, chunks, imageData, chunkalyzerView)
+	setup = function(self, chunks, imageData, chunkalyzerView, chunkRepo)
 		IMAGE_DATA = imageData
 		CHUNK_VIEW = chunkalyzerView
+		CHUNK_REPO = chunkRepo
+		
 		PIPELINE:add("Map Processor",         processMapChunks)
 		PIPELINE:add("Add Map Chunk to Repo", addMapChunkToRepo)
 		PIPELINE:add("Compare Chunks",        compareChunks)
