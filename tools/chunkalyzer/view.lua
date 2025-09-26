@@ -37,7 +37,7 @@ return {
 		for _, c in ipairs(self.model:getChunks()) do
 			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, IMAGE:getWidth(), IMAGE:getHeight())
 			local cX, cY = math.floor(c.x / 256), math.floor(c.y / 256)
-			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, origX = (cX * 272) + 16, y = (cY * 272) + 16, origY = (cY * 272) + 16, quad = quad })
+			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, origX = (cX * 272) + 16, y = (cY * 272) + 16, origY = (cY * 272) + 16, quad = quad, mapOverlayAlpha = 0.9 })
 		end
 	end,
 
@@ -58,9 +58,23 @@ return {
 		for _, c in ipairs(self.viewModel) do
 			if self:isChunkOnScreen(c.mapX, c.mapY) then
 				self.GRAFX:setColor(1, 1, 1)
-				self.GRAFX:draw(IMAGE, c.quad, c.mapX, c.mapY, 0, 1, 1)
+				if c.id and self.chunkRepo[c.id] then
+					self.GRAFX:draw(IMAGE, self.chunkRepo[c.id].quad, c.mapX, c.mapY, 0, 1, 1)
+				else
+					self.GRAFX:draw(IMAGE, c.quad, c.mapX, c.mapY, 0, 1, 1)
+				end
 				if self:ptInChunk(mx, my, c.mapX, c.mapY) then
 					highlightRect = { x = c.mapX - 3, y = c.mapY - 3, w = 262, h = 262 }
+				end
+				if c.id then
+					self.GRAFX:setColor(0.56, 0.84, 1, c.mapOverlayAlpha)
+					self.GRAFX:rectangle("fill", c.mapX, c.mapY, 256, 256)
+					self.GRAFX:setColor(1, 1, 1, c.mapOverlayAlpha + 0.2)
+					self.GRAFX:setFontSize(96)
+					self.GRAFX:printf("" .. c.id, c.mapX + 6, c.mapY + 84, 256, "center")
+					self.GRAFX:setColor(0, 0, 0, c.mapOverlayAlpha - 0.33)
+					self.GRAFX:setLineWidth(5)
+					self.GRAFX:rectangle("line", c.mapX + 3, c.mapY + 3, 250, 250)
 				end
 			end
 		end 
@@ -145,7 +159,8 @@ return {
 	update = function(self, dt)
 		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
 
-		if self.repoMode then self:updateRepo(dt)
+		if     self.mapMode  then self:updateMap(dt)
+		elseif self.repoMode then self:updateRepo(dt)
 		else
 			for _, c in ipairs(self.viewModel) do
 				if c.id then
@@ -191,6 +206,27 @@ return {
 		end
 	end,
 
+	updateMap = function(self, dt)
+		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
+		for _, c in ipairs(self.viewModel) do
+			if c.clicked then
+				c.mapOverlayAlpha = math.max(0.33, c.mapOverlayAlpha - (3 * dt))
+			end
+		end
+	end,
+
+	handleMousepressed = function(self, mx, my)
+		if self.mapMode and self.repoMode then
+			mx, my = self:screenToImageCoordinates(mx, my)
+
+			for _, c in ipairs(self.viewModel) do
+				if self:ptInChunk(mx, my, c.mapX, c.mapY) then
+					c.clicked = true
+				end
+			end
+		end
+	end,
 
 	tagChunk = function(self, x, y, cID, isUnique)
 		for _, c in ipairs(self.viewModel) do
@@ -201,7 +237,7 @@ return {
 				c.isUnique = isUnique 
 				c.highlightAlpha = 0
 				c.numberAlpha = 0
-
+				
 				for _, k in ipairs(self.viewModel) do
 					if k.origX == c.targetX and k.origY == c.targetY then
 						c.targetChunk = k
