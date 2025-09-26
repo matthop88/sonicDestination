@@ -55,10 +55,10 @@ return {
 				self.GRAFX:setColor(1, 1, 1, c.highlightAlpha)
 				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
 				self.GRAFX:setFontSize(96)
-				self.GRAFX:setColor(0, 0, 0, 0.4)
+				self.GRAFX:setColor(0, 0, 0, 0.4 * c.numberAlpha)
 				local numberWidth = self.GRAFX:getFontWidth("" .. c.id) + 8
 				self.GRAFX:rectangle("fill", c.x + 134 - (numberWidth / 2), c.y + 86, numberWidth, 96)
-				self.GRAFX:setColor(1, 1, 1)
+				self.GRAFX:setColor(1, 1, 1, c.numberAlpha)
 				self.GRAFX:printf("" .. c.id, c.x + 6, c.y + 84, 256, "center")
 				if self:ptInChunk(mx, my, c.x, c.y) then
 					self.GRAFX:setColor(1, 1, 0, c.alpha)
@@ -82,9 +82,17 @@ return {
 	end,
 
 	update = function(self, dt)
+		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
 		for _, c in ipairs(self.viewModel) do
 			if c.id then
 				if c.isUnique then
+					if self:ptInChunk(mx, my, c.x, c.y) then
+						c.numberAlpha = math.max(0.33, c.numberAlpha - (2 * dt))
+					else
+						c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
+					end
+
 					if not c.targetChunk or c.targetChunk.isMoved then
 						c.x = c.x + (c.targetX - c.origX) * (2 * dt)
 						if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
@@ -119,6 +127,7 @@ return {
 				c.targetY = (math.floor((cID - 1) / 9) * 272) + 16
 				c.isUnique = isUnique 
 				c.highlightAlpha = 0
+				c.numberAlpha = 0
 
 				for _, k in ipairs(self.viewModel) do
 					if k.origX == c.targetX and k.origY == c.targetY then
