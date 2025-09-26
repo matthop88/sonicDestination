@@ -9,6 +9,9 @@ return {
 
 		self.GRAFX = require("tools/lib/graphics"):create()
 
+		self.pageWidth  = ((self.img:getWidth()  / 256) * 272) + 32
+		self.pageHeight = ((self.img:getHeight() / 256) * 272) + 32
+
 		return self
 	end,
 
@@ -100,6 +103,24 @@ return {
 				end
 			end
 		end
+
+		self:updatePageWidthAndHeight()
+	end,
+
+	updatePageWidthAndHeight = function(self)
+		local width, height = 0, 0
+		for _, c in ipairs(self.viewModel) do
+			if c.targetX and c.targetY then
+				width  = math.max(width,  c.targetX + 304)
+				height = math.max(height, c.targetY + 304)
+			else
+				width  = math.max(width,  c.x + 304)
+				height = math.max(height, c.y + 304)
+			end
+		end
+
+		self.pageWidth  = width
+		self.pageHeight = height
 	end,
 	
 	toggleChunkMode = function(self)
@@ -107,13 +128,13 @@ return {
 	end,
 
 	getPageWidth = function(self)
-		if self.chunkMode then return ((self.img:getWidth()  / 256) * 272) + 32
-		else                   return   self.img:getWidth()                 end
+		if self.chunkMode then return self.pageWidth
+		else                   return self.img:getWidth() end
 	end,
 
 	getPageHeight = function(self)
-		if self.chunkMode then return ((self.img:getHeight() / 256) * 272) + 32
-		else                   return   self.img:getHeight()                end
+		if self.chunkMode then return self.pageHeight
+		else                   return self.img:getHeight() end
 	end,
 
     keepImageInBounds = function(self)
