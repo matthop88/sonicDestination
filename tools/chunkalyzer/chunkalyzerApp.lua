@@ -29,7 +29,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 img:setFilter("nearest", "nearest")
 
-CHUNK_PIPELINE:setup(CHUNKALYZER_MODEL:getChunks(), imgData, CHUNKALYZER_VIEW)
+CHUNK_PIPELINE:setup(CHUNKALYZER_MODEL:getChunks(), imgData, CHUNKALYZER_VIEW, CHUNKALYZER_VIEW:getChunkRepo())
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
