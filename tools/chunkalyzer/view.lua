@@ -1,23 +1,30 @@
+local IMAGE
+
 return {
-	chunkMode = true,
+	mapMode  = false,
+	repoMode = false,
 
 	chunkRepo = {
-		add = function(self, chunk)
-			table.insert(self, chunk)
+		add = function(self, c)
+			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, IMAGE:getWidth(), IMAGE:getHeight())
+			local cID = #self + 1
+			local X = (((cID - 1) % 9) * 272) + 16
+			local Y = (math.floor((cID - 1) / 9) * 272) + 16
+			table.insert(self, { x = c.x, y = c.y, X = X, Y = Y, quad = quad, numberAlpha = 1 })
 			return #self
 		end,
 	},
 
 	init = function(self, img, model)
-		self.img   = img
+		IMAGE   = img
 		self.model = model
 
 		self:initViewModel()
 
 		self.GRAFX = require("tools/lib/graphics"):create()
 
-		self.pageWidth  = ((self.img:getWidth()  / 256) * 272) + 32
-		self.pageHeight = ((self.img:getHeight() / 256) * 272) + 32
+		self.pageWidth  = ((IMAGE:getWidth()  / 256) * 272) + 32
+		self.pageHeight = ((IMAGE:getHeight() / 256) * 272) + 32
 
 		return self
 	end,
@@ -28,7 +35,7 @@ return {
 		local cX, cY = 0, 0
 
 		for _, c in ipairs(self.model:getChunks()) do
-			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, self.img:getWidth(), self.img:getHeight())
+			local quad = love.graphics.newQuad(c.x, c.y, 256, 256, IMAGE:getWidth(), IMAGE:getHeight())
 			local cX, cY = math.floor(c.x / 256), math.floor(c.y / 256)
 			table.insert(self.viewModel, { alpha = 1, mapX = c.x, mapY = c.y, x = (cX * 272) + 16, origX = (cX * 272) + 16, y = (cY * 272) + 16, origY = (cY * 272) + 16, quad = quad })
 		end
@@ -38,8 +45,31 @@ return {
 
 	draw = function(self)
 		self.GRAFX:setColor(1, 1, 1)
-		if self.chunkMode then self:drawChunks()
-		else                   self.GRAFX:draw(self.img, 0, 0) end
+		if     self.mapMode   then self.GRAFX:draw(IMAGE, 0, 0)
+		elseif self.repoMode  then self:drawRepo()
+		else                       self:drawChunks()        end
+	end,
+
+	drawRepo = function(self)
+		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
+		for cID, c in ipairs(self.chunkRepo) do
+			if self:isChunkOnScreen(c.X, c.Y) then
+				self.GRAFX:setColor(1, 1, 1)
+				self.GRAFX:draw(IMAGE, c.quad, c.X, c.Y, 0, 1, 1)
+				self.GRAFX:setFontSize(96)
+				self.GRAFX:setColor(0, 0, 0, 0.4 * c.numberAlpha)
+				local numberWidth = self.GRAFX:getFontWidth("" .. cID) + 8
+				self.GRAFX:rectangle("fill", c.X + 134 - (numberWidth / 2), c.Y + 86, numberWidth, 96)
+				self.GRAFX:setColor(1, 1, 1, c.numberAlpha)
+				self.GRAFX:printf("" .. cID, c.X + 6, c.Y + 84, 256, "center")
+				if self:ptInChunk(mx, my, c.X, c.Y) then
+					self.GRAFX:setColor(1, 1, 0, c.alpha)
+					self.GRAFX:setLineWidth(5)
+					self.GRAFX:rectangle("line", c.X - 3, c.Y - 3, 262, 262)
+				end
+			end
+		end
 	end,
 
 	drawChunks = function(self)
@@ -48,7 +78,7 @@ return {
 		for _, c in ipairs(self.viewModel) do
 			if c.alpha > 0 and (not c.id or (c.id and not c.isUnique)) then
 				self.GRAFX:setColor(1, 1, 1, c.alpha)
-				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+				self.GRAFX:draw(IMAGE, c.quad, c.x, c.y, 0, 1, 1)
 				if self:ptInChunk(mx, my, c.x, c.y) then
 					self.GRAFX:setColor(1, 1, 0, c.alpha)
 					self.GRAFX:setLineWidth(5)
@@ -60,7 +90,7 @@ return {
 		for _, c in ipairs(self.viewModel) do
 			if c.id and c.isUnique and self:isChunkOnScreen(c.x, c.y) then
 				self.GRAFX:setColor(1, 1, 1, c.alpha)
-				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+				self.GRAFX:draw(IMAGE, c.quad, c.x, c.y, 0, 1, 1)
 				self.GRAFX:setColor(1, 1, 1, c.highlightAlpha)
 				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
 				self.GRAFX:setFontSize(96)
@@ -93,40 +123,56 @@ return {
 	update = function(self, dt)
 		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
 
-		for _, c in ipairs(self.viewModel) do
-			if c.id then
-				if c.isUnique then
-					if self:ptInChunk(mx, my, c.x, c.y) then
-						c.numberAlpha = math.max(0.33, c.numberAlpha - (2 * dt))
-					else
-						c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
-					end
+		if self.repoMode then self:updateRepo(dt)
+		else
+			for _, c in ipairs(self.viewModel) do
+				if c.id then
+					if c.isUnique then
+						if self:ptInChunk(mx, my, c.x, c.y) then
+							c.numberAlpha = math.max(0.33, c.numberAlpha - (2 * dt))
+						else
+							c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
+						end
 
-					if not c.targetChunk or c.targetChunk.isMoved then
-						c.x = c.x + (c.targetX - c.origX) * (2 * dt)
-						if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
-							c.x = c.targetX
+						if not c.targetChunk or c.targetChunk.isMoved then
+							c.x = c.x + (c.targetX - c.origX) * (2 * dt)
+							if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
+								c.x = c.targetX
+							end
+							c.y = c.y + (c.targetY - c.origY) * (2 * dt)
+							if math.abs(c.origY - c.y) > math.abs(c.origY - c.targetY) then
+								c.y = c.targetY
+							end
+							c.isMoved = true
 						end
-						c.y = c.y + (c.targetY - c.origY) * (2 * dt)
-						if math.abs(c.origY - c.y) > math.abs(c.origY - c.targetY) then
-							c.y = c.targetY
+						if c.x == c.targetX and c.y == c.targetY then
+							c.highlightAlpha = math.max(0, c.highlightAlpha - (0.5 * dt))
+						else
+							c.highlightAlpha = math.min(0.5, c.highlightAlpha + (0.5 * dt))
 						end
-						c.isMoved = true
-					end
-					if c.x == c.targetX and c.y == c.targetY then
-						c.highlightAlpha = math.max(0, c.highlightAlpha - (0.5 * dt))
 					else
-						c.highlightAlpha = math.min(0.5, c.highlightAlpha + (0.5 * dt))
-					end
-				else
-					c.alpha = math.max(0, c.alpha - (1 * dt))
-					if c.alpha == 0 then
-						c.isMoved = true
+						c.alpha = math.max(0, c.alpha - (1 * dt))
+						if c.alpha == 0 then
+							c.isMoved = true
+						end
 					end
 				end
 			end
 		end
 	end,
+
+	updateRepo = function(self, dt)
+		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
+		for _, c in ipairs(self.chunkRepo) do
+			if self:ptInChunk(mx, my, c.X, c.Y) then
+				c.numberAlpha = math.max(0.33, c.numberAlpha - (2 * dt))
+			else
+				c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
+			end
+		end
+	end,
+
 
 	tagChunk = function(self, x, y, cID, isUnique)
 		for _, c in ipairs(self.viewModel) do
@@ -165,18 +211,22 @@ return {
 		self.pageHeight = height
 	end,
 	
-	toggleChunkMode = function(self)
-		self.chunkMode = not self.chunkMode
+	toggleMapMode = function(self)
+		self.mapMode = not self.mapMode
+	end,
+
+	setRepoMode = function(self)
+		self.repoMode = true
 	end,
 
 	getPageWidth = function(self)
 		if self.chunkMode then return self.pageWidth
-		else                   return self.img:getWidth() end
+		else                   return IMAGE:getWidth() end
 	end,
 
 	getPageHeight = function(self)
 		if self.chunkMode then return self.pageHeight
-		else                   return self.img:getHeight() end
+		else                   return IMAGE:getHeight() end
 	end,
 
     keepImageInBounds = function(self)
