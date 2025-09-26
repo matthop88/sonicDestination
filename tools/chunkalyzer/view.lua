@@ -216,6 +216,28 @@ return {
 		end
 	end,
 
+	handleKeypressed = function(self, key)
+		if self.mapMode and self.repoMode then
+			local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
+			local selectedChunk = nil
+
+			for _, c in ipairs(self.viewModel) do
+				if self:ptInChunk(mx, my, c.mapX, c.mapY) then
+					selectedChunk = c
+				end
+			end
+
+			if     key == "shiftright"                then selectedChunk.id = selectedChunk.id + 1
+			elseif key == "shiftleft"                 then selectedChunk.id = selectedChunk.id - 1
+			elseif key == "shiftup"                   then selectedChunk.id = selectedChunk.id - 9
+			elseif key == "shiftdown"                 then selectedChunk.id = selectedChunk.id + 9               end
+
+			if     selectedChunk.id > #self.chunkRepo then selectedChunk.id = selectedChunk.id - #self.chunkRepo
+			elseif selectedChunk.id < 1               then selectedChunk.id = selectedChunk.id + #self.chunkRepo end
+		end
+	end,
+
 	handleMousepressed = function(self, mx, my)
 		if self.mapMode and self.repoMode then
 			mx, my = self:screenToImageCoordinates(mx, my)
@@ -274,13 +296,13 @@ return {
 	end,
 
 	getPageWidth = function(self)
-		if self.chunkMode then return self.pageWidth
-		else                   return IMAGE:getWidth() end
+		if self.mapMode then return IMAGE:getWidth()
+		else                 return self.pageWidth  end
 	end,
 
 	getPageHeight = function(self)
-		if self.chunkMode then return self.pageHeight
-		else                   return IMAGE:getHeight() end
+		if self.mapMode then return IMAGE:getHeight()
+		else                 return self.pageHeight  end
 	end,
 
     keepImageInBounds = function(self)
