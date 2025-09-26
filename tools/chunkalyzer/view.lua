@@ -49,7 +49,7 @@ return {
 		end
 
 		for _, c in ipairs(self.viewModel) do
-			if c.id and c.isUnique then
+			if c.id and c.isUnique and self:isChunkOnScreen(c.x, c.y) then
 				self.GRAFX:setColor(1, 1, 1, c.alpha)
 				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
 				self.GRAFX:setColor(1, 1, 1, c.highlightAlpha)
@@ -72,6 +72,13 @@ return {
 	ptInChunk = function(self, x, y, rX, rY)
 		--print("x, y, rX, rY = ", x, y, rX, rY)
 		return x >= rX and x <= rX + 256 and y >= rY and y <= rY + 256
+	end,
+
+	isChunkOnScreen = function(self, cX, cY)
+		local leftX, topY     = self:screenToImageCoordinates(0, 0)
+		local rightX, bottomY = self:screenToImageCoordinates(love.graphics:getWidth(), love.graphics:getHeight())
+
+		return cX < rightX and cX + 256 > leftX and cY < bottomY and cY + 256 > topY
 	end,
 
 	update = function(self, dt)
