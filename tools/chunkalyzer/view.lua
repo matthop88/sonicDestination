@@ -44,12 +44,12 @@ return {
 				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
 				self.GRAFX:setColor(1, 1, 1, c.highlightAlpha)
 				self.GRAFX:rectangle("fill", c.x, c.y, 256, 256)
-				self.GRAFX:setFontSize(32)
+				self.GRAFX:setFontSize(96)
 				self.GRAFX:setColor(0, 0, 0, 0.4)
 				local numberWidth = self.GRAFX:getFontWidth("" .. c.id) + 8
-				self.GRAFX:rectangle("fill", c.x + 134 - (numberWidth / 2), c.y + 118, numberWidth, 32)
+				self.GRAFX:rectangle("fill", c.x + 134 - (numberWidth / 2), c.y + 86, numberWidth, 96)
 				self.GRAFX:setColor(1, 1, 1)
-				self.GRAFX:printf("" .. c.id, c.x + 6, c.y + 116, 256, "center")
+				self.GRAFX:printf("" .. c.id, c.x + 6, c.y + 84, 256, "center")
 			end
 		end
 	end,
