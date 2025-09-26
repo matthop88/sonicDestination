@@ -10,9 +10,13 @@ return {
 			name = name,
 
 			stages = {},
+			startTime = nil,
 
 			execute = function(self, executionTimeInMs)
 				local startTime = love.timer.getTime()
+				if self.startTime == nil then
+					self.startTime = startTime
+				end
 
 				local timeElapsed = 0
 
@@ -55,6 +59,10 @@ return {
 
 			getResults = function(self)
 				return self.stages[1].results
+			end,
+
+			getTotalElapsedTime = function(self)
+				return love.timer.getTime() - self.startTime
 			end,
 		}
 	end,
