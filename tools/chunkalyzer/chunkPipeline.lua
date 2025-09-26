@@ -1,7 +1,7 @@
 local PIPELINE = require("tools/chunkalyzer/pipeline/pipeline"):create("Chunk Pipeline")
 local FEEDER   = require("tools/chunkalyzer/pipeline/feeder")
 
-local TASK_SLICE_TIME_IN_MS = 10
+local TASK_SLICE_TIME_IN_MS = 12
 
 local chunkNum = 0
 local IMAGE_DATA, CHUNK_VIEW
