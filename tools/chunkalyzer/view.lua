@@ -34,10 +34,17 @@ return {
 	end,
 
 	drawChunks = function(self)
+		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
+
 		for _, c in ipairs(self.viewModel) do
 			if not c.id or (c.id and not c.isUnique) then
 				self.GRAFX:setColor(1, 1, 1, c.alpha)
 				self.GRAFX:draw(self.img, c.quad, c.x, c.y, 0, 1, 1)
+				if self:ptInChunk(mx, my, c.x, c.y) then
+					self.GRAFX:setColor(1, 1, 0, c.alpha)
+					self.GRAFX:setLineWidth(5)
+					self.GRAFX:rectangle("line", c.x - 3, c.y - 3, 262, 262)
+				end
 			end
 		end
 
@@ -53,8 +60,18 @@ return {
 				self.GRAFX:rectangle("fill", c.x + 134 - (numberWidth / 2), c.y + 86, numberWidth, 96)
 				self.GRAFX:setColor(1, 1, 1)
 				self.GRAFX:printf("" .. c.id, c.x + 6, c.y + 84, 256, "center")
+				if self:ptInChunk(mx, my, c.x, c.y) then
+					self.GRAFX:setColor(1, 1, 0, c.alpha)
+					self.GRAFX:setLineWidth(5)
+					self.GRAFX:rectangle("line", c.x - 3, c.y - 3, 262, 262)
+				end
 			end
 		end
+	end,
+
+	ptInChunk = function(self, x, y, rX, rY)
+		--print("x, y, rX, rY = ", x, y, rX, rY)
+		return x >= rX and x <= rX + 256 and y >= rY and y <= rY + 256
 	end,
 
 	update = function(self, dt)
