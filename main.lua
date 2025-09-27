@@ -37,6 +37,12 @@ local launchChunkalyzer          = function(args)
     require "tools/chunkalyzer/chunkalyzerApp"
 end
 
+local launchMapViewer            = function(args)
+    __MAP_FILE   = args[2]
+    __CHUNK_FILE = args[3]
+    require "tools/mapViewer/mapViewerApp"
+end
+
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
 end
@@ -53,6 +59,7 @@ local APP_LAUNCHER = {
     stateMachine = launchStateMachineViewer,
     soundGraph   = launchSoundGraph,
     chunkalyzer  = launchChunkalyzer,
+    mapViewer    = launchMapViewer,
     test         = launchTestingFramework,
 }
 
