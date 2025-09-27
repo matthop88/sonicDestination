@@ -222,7 +222,7 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-		if     key == "return"                then self:saveChunkImage()
+		if     key == "return"                then self:save()
 		elseif self.mapMode and self.repoMode then
 			local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
 
@@ -234,13 +234,15 @@ return {
 				end
 			end
 
-			if     key == "shiftright"                then selectedChunk.id = selectedChunk.id + 1
-			elseif key == "shiftleft"                 then selectedChunk.id = selectedChunk.id - 1
-			elseif key == "shiftup"                   then selectedChunk.id = selectedChunk.id - 9
-			elseif key == "shiftdown"                 then selectedChunk.id = selectedChunk.id + 9
-			elseif key == "escape"                    then self:toggleMapAlpha()               end
-			if     selectedChunk.id > #self.chunkRepo then selectedChunk.id = selectedChunk.id - #self.chunkRepo
-			elseif selectedChunk.id < 1               then selectedChunk.id = selectedChunk.id + #self.chunkRepo end
+			if     key == "shiftright"                    then selectedChunk.id = selectedChunk.id + 1
+			elseif key == "shiftleft"                     then selectedChunk.id = selectedChunk.id - 1
+			elseif key == "shiftup"                       then selectedChunk.id = selectedChunk.id - 9
+			elseif key == "shiftdown"                     then selectedChunk.id = selectedChunk.id + 9
+			elseif key == "escape"                        then self:toggleMapAlpha()               end
+			if     selectedChunk then
+				if     selectedChunk.id > #self.chunkRepo then selectedChunk.id = selectedChunk.id - #self.chunkRepo
+				elseif selectedChunk.id < 1               then selectedChunk.id = selectedChunk.id + #self.chunkRepo end
+			end
 		end
 	end,
 
@@ -342,13 +344,22 @@ return {
         self.GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
-	saveChunkImage = function(self)
+    save = function(self)
     	if self.repoMode then
-    		local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo, IMAGE)
-    		local fileData = savableChunkLayout:save()
-
-    		printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
-    		print("Saved to " .. love.filesystem.getSaveDirectory())
+    		self:saveChunkImage()
+    		self:saveMapLayout()
     	end
+    end,
+
+	saveChunkImage = function(self)
+    	local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo, IMAGE)
+    	local fileData = savableChunkLayout:save()
+
+    	printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+    	print("Saved to " .. love.filesystem.getSaveDirectory())
+    end,
+
+    saveMapLayout = function(self)
+    	local savableChunkLayout = require("tools/chunkalyzer/savableMapLayout"):create(self.viewModel)
     end,
 }
