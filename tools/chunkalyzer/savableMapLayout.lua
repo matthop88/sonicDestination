@@ -22,11 +22,11 @@ return {
 			end,
 
 			save = function(self)
-				self:encodeMapData()
-				self:printMapData()
+				self:createMapData()
+				self:saveMapData()
 			end,
 
-			encodeMapData = function(self)
+			createMapData = function(self)
 				self.mapData = {}
 
 				for i = 1, self.height do table.insert(self.mapData, {}) end
@@ -43,16 +43,20 @@ return {
 				end
 			end,
 
-			printMapData = function(self)
-				print("return {")
+			saveMapData = function(self)
+				love.filesystem.write("sampleMapLayout.lua", self:encodeMapData())
+			end,
+
+			encodeMapData = function(self)
+				serializedData = "return {\n"
 				for _, row in ipairs(self.mapData) do
 					local rowString = "  { "
 					for _, chunkID in ipairs(row) do
 						rowString = rowString .. (string.rep(" ", 3 - string.len("" .. chunkID))) .. chunkID .. ", "
 					end
-					print(rowString .. "},")
+					serializedData = serializedData .. rowString .. "},\n"
 				end
-				print("}")
+				return serializedData .. "}\n"
 			end,
 
 		}):init()
