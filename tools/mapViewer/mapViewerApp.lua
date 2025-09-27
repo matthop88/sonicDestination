@@ -66,6 +66,11 @@ local map = ({
                 local scale, xMod, yMod = 1, 0, 0
                 if self.chunkMode then scale, xMod, yMod = 0.94, 8, 8 end
                 chunks:draw(chunkID, x + xMod, y + yMod, scale)
+                if self.chunkMode then
+                    GRAFX:setFontSize(96)
+                    GRAFX:printf("" .. chunkID, x + xMod, y + yMod + 64, 256, "center")
+                end
+                    
             end
         end
 
