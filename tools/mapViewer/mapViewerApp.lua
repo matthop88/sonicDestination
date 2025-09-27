@@ -24,10 +24,7 @@ end
 
 local chunks = ({
     init = function(self)
-        local width, height = chunkImg:getWidth(), chunkImg:getHeight()
-
-        local chunkCount = math.floor(width / 256) * math.floor(height / 256)
-
+        local chunkCount = self:calculateChunkCount()
         for i = 1, chunkCount do
             local chunkX = ((i - 1) % 9)           * 256
             local chunkY = math.floor((i - 1) / 9) * 256
@@ -37,6 +34,17 @@ local chunks = ({
 
         return self
     end,
+
+    calculateChunkCount = function(self)
+        local width, height = chunkImg:getWidth(), chunkImg:getHeight()
+
+        return math.floor(width / 256) * math.floor(height / 256)
+    end,
+
+    draw = function(self, chunkID, x, y)
+        GRAFX:draw(chunkImg, self[chunkID], x, y, 0, 1, 1)
+    end,
+
 }):init()
 
 
@@ -59,7 +67,7 @@ function love.draw()
         local y = (rowNum - 1) * 256
         for colNum, chunkID in ipairs(row) do
             local x = (colNum - 1) * 256
-            GRAFX:draw(chunkImg, chunks[chunkID], x, y, 0, 1, 1)
+            chunks:draw(chunkID, x, y)
         end
     end
 end
