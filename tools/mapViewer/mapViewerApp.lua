@@ -128,14 +128,18 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    map:handleKeypressed(key)
+    if   key == "space" then refreshMap()
+    else                     map:handleKeypressed(key) end
 end
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
--- ...
+function refreshMap()
+    mapData = dofile("resources/zones/maps/" .. __MAP_FILE .. ".lua")
+end
+
 -- ...
 -- ...
 
