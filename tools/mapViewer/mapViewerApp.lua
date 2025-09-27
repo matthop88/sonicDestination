@@ -16,10 +16,29 @@ end
 local chunkImgData = love.image.newImageData(chunkImgPath)
 local chunkImg     = love.graphics.newImage(chunkImgData)
 
+
 local mapData
 if __MAP_FILE ~= nil then
     mapData = require("resources/zones/maps/" .. __MAP_FILE)
 end
+
+local chunks = ({
+    init = function(self)
+        local width, height = chunkImg:getWidth(), chunkImg:getHeight()
+
+        local chunkCount = math.floor(width / 256) * math.floor(height / 256)
+
+        for i = 1, chunkCount do
+            local chunkX = ((i - 1) % 9)           * 256
+            local chunkY = math.floor((i - 1) / 9) * 256
+            
+            table.insert(self, love.graphics.newQuad(chunkX, chunkY, 256, 256, chunkImg:getWidth(), chunkImg:getHeight()))
+        end
+
+        return self
+    end,
+}):init()
+
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -35,7 +54,14 @@ chunkImg:setFilter("nearest", "nearest")
 --------------------------------------------------------------
 
 function love.draw()
-    -- Drawing goes here
+    GRAFX:setColor(1, 1, 1)
+    for rowNum, row in ipairs(mapData) do
+        local y = (rowNum - 1) * 256
+        for colNum, chunkID in ipairs(row) do
+            local x = (colNum - 1) * 256
+            GRAFX:draw(chunkImg, chunks[chunkID], x, y, 0, 1, 1)
+        end
+    end
 end
 
 function love.update(dt)
