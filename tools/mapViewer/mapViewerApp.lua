@@ -41,13 +41,15 @@ local chunks = ({
         return math.floor(width / 256) * math.floor(height / 256)
     end,
 
-    draw = function(self, chunkID, x, y)
-        GRAFX:draw(chunkImg, self[chunkID], x, y, 0, 1, 1)
+    draw = function(self, chunkID, x, y, scale)
+        GRAFX:draw(chunkImg, self[chunkID], x, y, 0, scale, scale)
     end,
 
 }):init()
 
 local map = ({
+    chunkMode = false,
+
     init = function(self)
         self.pageWidth  = #mapData[1] * 256
         self.pageHeight = #mapData    * 256
@@ -56,14 +58,21 @@ local map = ({
     end,
 
     draw = function(self)
-        GRAFX:setColor(1, 1, 1)
         for rowNum, row in ipairs(mapData) do
             local y = (rowNum - 1) * 256
             for colNum, chunkID in ipairs(row) do
                 local x = (colNum - 1) * 256
-                chunks:draw(chunkID, x, y)
+                GRAFX:setColor(1, 1, 1)
+                local scale, xMod, yMod = 1, 0, 0
+                if self.chunkMode then scale, xMod, yMod = 0.94, 8, 8 end
+                chunks:draw(chunkID, x + xMod, y + yMod, scale)
             end
         end
+
+    end,
+
+    handleKeypressed = function(self, key)
+        if key == "c" then self.chunkMode = not self.chunkMode end
     end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
@@ -113,7 +122,9 @@ function love.update(dt)
 	-- Updating happens here
 end
 
--- ...
+function love.keypressed(key)
+    map:handleKeypressed(key)
+end
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
