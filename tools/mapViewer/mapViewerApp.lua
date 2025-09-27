@@ -47,6 +47,50 @@ local chunks = ({
 
 }):init()
 
+local map = ({
+    init = function(self)
+        self.pageWidth  = #mapData[1] * 256
+        self.pageHeight = #mapData    * 256
+
+        return self
+    end,
+
+    draw = function(self)
+        GRAFX:setColor(1, 1, 1)
+        for rowNum, row in ipairs(mapData) do
+            local y = (rowNum - 1) * 256
+            for colNum, chunkID in ipairs(row) do
+                local x = (colNum - 1) * 256
+                chunks:draw(chunkID, x, y)
+            end
+        end
+    end,
+
+    getPageWidth  = function(self) return self.pageWidth  end,
+
+    getPageHeight = function(self) return self.pageHeight end,
+    
+    keepImageInBounds = function(self)
+        GRAFX:setX(math.min(0, math.max(GRAFX:getX(), (love.graphics:getWidth()  / GRAFX:getScale()) - self:getPageWidth())))
+        GRAFX:setY(math.min(0, math.max(GRAFX:getY(), (love.graphics:getHeight() / GRAFX:getScale()) - self:getPageHeight())))
+    end,
+
+    moveImage = function(self, deltaX, deltaY)
+        GRAFX:moveImage(deltaX, deltaY)
+    end,
+
+    screenToImageCoordinates = function(self, screenX, screenY)
+        return GRAFX:screenToImageCoordinates(screenX, screenY)
+    end,
+
+    adjustScaleGeometrically = function(self, deltaScale)
+        GRAFX:adjustScaleGeometrically(deltaScale)
+    end,
+
+    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
+        GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    end,
+}):init()
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -62,14 +106,7 @@ chunkImg:setFilter("nearest", "nearest")
 --------------------------------------------------------------
 
 function love.draw()
-    GRAFX:setColor(1, 1, 1)
-    for rowNum, row in ipairs(mapData) do
-        local y = (rowNum - 1) * 256
-        for colNum, chunkID in ipairs(row) do
-            local x = (colNum - 1) * 256
-            chunks:draw(chunkID, x, y)
-        end
-    end
+    map:draw()
 end
 
 function love.update(dt)
@@ -92,10 +129,10 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = GRAFX,            })
+    :add("zooming",      { imageViewer = map,            })
     :add("scrolling",    
     { 
-    	imageViewer = GRAFX,
+    	imageViewer = map,
     	scrollSpeed = 2400,          
     })
 	:add("readout",      
