@@ -14,7 +14,7 @@ end
 
 
 local chunkImgData = love.image.newImageData(chunkImgPath)
-local imgData      = love.graphics.newImage(chunkImgData)
+local chunkImg     = love.graphics.newImage(chunkImgData)
 
 local mapData
 if __MAP_FILE ~= nil then
@@ -28,7 +28,7 @@ end
 love.window.setTitle("Map Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-img:setFilter("nearest", "nearest")
+chunkImg:setFilter("nearest", "nearest")
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
