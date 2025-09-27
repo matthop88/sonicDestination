@@ -77,7 +77,8 @@ local map = ({
     end,
 
     handleKeypressed = function(self, key)
-        if key == "c" then self.chunkMode = not self.chunkMode end
+        if     key == "c"      then self.chunkMode = not self.chunkMode 
+        elseif key == "return" then self:saveMapImage()             end
     end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
@@ -103,6 +104,14 @@ local map = ({
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    end,
+
+    saveMapImage = function(self)
+        local savableMap = require("tools/mapViewer/savableMap"):create(mapData, chunkImg, chunks)
+        local fileData = savableMap:save()
+
+        printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+        print("Saved to " .. love.filesystem.getSaveDirectory())
     end,
 }):init()
 
