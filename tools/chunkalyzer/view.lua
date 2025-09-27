@@ -344,7 +344,11 @@ return {
 
 	saveChunkImage = function(self)
     	if self.repoMode then
-    		local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo)
+    		local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo, IMAGE)
+    		local fileData = savableChunkLayout:save()
+
+    		printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+    		print("Saved to " .. love.filesystem.getSaveDirectory())
     	end
     end,
 }
