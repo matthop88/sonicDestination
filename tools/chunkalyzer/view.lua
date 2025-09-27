@@ -360,7 +360,6 @@ return {
     end,
 
     saveMapLayout = function(self)
-    	saveMapLayout = function(self)
     	local savableMapLayout = require("tools/chunkalyzer/savableMapLayout"):create(self.viewModel)
     	savableMapLayout:save()
     end,
