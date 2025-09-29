@@ -33,7 +33,8 @@ local launchSoundGraph           = function(args)
 end
 
 local launchChunkalyzer          = function(args)
-    __WORLD_MAP_FILE = args[2]
+    __WORLD_MAP_FILE   = args[2]
+    __CHUNK_IMAGE_FILE = args[3]
     require "tools/chunkalyzer/chunkalyzerApp"
 end
 
@@ -41,6 +42,12 @@ local launchMapViewer            = function(args)
     __MAP_FILE   = args[2]
     __CHUNK_FILE = args[3]
     require "tools/mapViewer/mapViewerApp"
+end
+
+local launchImageCombiner        = function(args)
+    __IMAGE_1_PATH = args[2]
+    __IMAGE_2_PATH = args[3]
+    require "tools/imageCombiner/imageCombinerApp"
 end
 
 local launchTestingFramework     = function(args)
@@ -60,6 +67,7 @@ local APP_LAUNCHER = {
     soundGraph   = launchSoundGraph,
     chunkalyzer  = launchChunkalyzer,
     mapViewer    = launchMapViewer,
+    combiner     = launchImageCombiner,
     test         = launchTestingFramework,
 }
 
