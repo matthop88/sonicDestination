@@ -162,41 +162,9 @@ return {
 	end,
 
 	update = function(self, dt)
-		local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
-
 		if     self.mapMode  then self:updateMap(dt)
 		elseif self.repoMode then self:updateRepo(dt)
-		else
-			for _, c in ipairs(self.viewModel) do
-				if c.id then
-					if c.isUnique then
-						c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
-						
-						if not c.targetChunk or c.targetChunk.isMoved then
-							c.x = c.x + (c.targetX - c.origX) * (2 * dt)
-							if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
-								c.x = c.targetX
-							end
-							c.y = c.y + (c.targetY - c.origY) * (2 * dt)
-							if math.abs(c.origY - c.y) > math.abs(c.origY - c.targetY) then
-								c.y = c.targetY
-							end
-							c.isMoved = true
-						end
-						if c.x == c.targetX and c.y == c.targetY then
-							c.highlightAlpha = math.max(0, c.highlightAlpha - (0.5 * dt))
-						else
-							c.highlightAlpha = math.min(0.5, c.highlightAlpha + (0.5 * dt))
-						end
-					else
-						c.alpha = math.max(0, c.alpha - (1 * dt))
-						if c.alpha == 0 then
-							c.isMoved = true
-						end
-					end
-				end
-			end
-		end
+		else                      self:updateChunks(dt) end
 	end,
 
 	updateRepo = function(self, dt)
@@ -218,6 +186,43 @@ return {
 			if c.clicked then
 				c.mapOverlayAlpha = math.max(0.33, c.mapOverlayAlpha - (3 * dt))
 			end
+		end
+	end,
+
+	updateChunks = function(self, dt)
+		for _, c in ipairs(self.viewModel) do
+			if c.id then
+				if c.isUnique then self:updateUniqueChunk(c, dt)
+				else               self:updateNonUniqueChunk(c, dt)  end
+			end
+		end
+	end,
+
+	updateUniqueChunk = function(self, c, dt)
+		c.numberAlpha = math.min(1, c.numberAlpha + (1 * dt))
+					
+		if not c.targetChunk or c.targetChunk.isMoved then
+			c.x = c.x + (c.targetX - c.origX) * (2 * dt)
+			if math.abs(c.origX - c.x) > math.abs(c.origX - c.targetX) then
+				c.x = c.targetX
+			end
+			c.y = c.y + (c.targetY - c.origY) * (2 * dt)
+			if math.abs(c.origY - c.y) > math.abs(c.origY - c.targetY) then
+				c.y = c.targetY
+			end
+			c.isMoved = true
+		end
+		if c.x == c.targetX and c.y == c.targetY then
+			c.highlightAlpha = math.max(0, c.highlightAlpha - (0.5 * dt))
+		else
+			c.highlightAlpha = math.min(0.5, c.highlightAlpha + (0.5 * dt))
+		end
+	end,
+
+	updateNonUniqueChunk = function(self, c, dt)
+		c.alpha = math.max(0, c.alpha - (1 * dt))
+		if c.alpha == 0 then
+			c.isMoved = true
 		end
 	end,
 
