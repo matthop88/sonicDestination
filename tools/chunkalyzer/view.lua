@@ -222,28 +222,8 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-		if     key == "return"                then self:save()
-		elseif self.mapMode and self.repoMode then
-			local mx, my = self:screenToImageCoordinates(love.mouse.getPosition())
-
-			local selectedChunk = nil
-
-			for _, c in ipairs(self.viewModel) do
-				if self:ptInChunk(mx, my, c.mapX, c.mapY) then
-					selectedChunk = c
-				end
-			end
-
-			if     key == "shiftright"                    then selectedChunk.id = selectedChunk.id + 1
-			elseif key == "shiftleft"                     then selectedChunk.id = selectedChunk.id - 1
-			elseif key == "shiftup"                       then selectedChunk.id = selectedChunk.id - 9
-			elseif key == "shiftdown"                     then selectedChunk.id = selectedChunk.id + 9
-			elseif key == "escape"                        then self:toggleMapAlpha()               end
-			if     selectedChunk then
-				if     selectedChunk.id > #self.chunkRepo then selectedChunk.id = selectedChunk.id - #self.chunkRepo
-				elseif selectedChunk.id < 1               then selectedChunk.id = selectedChunk.id + #self.chunkRepo end
-			end
-		end
+		if      key == "return" then self:save()
+		elseif key == "escape" then self:toggleMapAlpha() end
 	end,
 
 	handleMousepressed = function(self, mx, my)
@@ -280,32 +260,31 @@ return {
 	end,
 
 	updatePageWidthAndHeight = function(self)
+		self.pageWidth, self.pageHeight = self:calculatePageWidthAndHeight()
+	end,
+
+	calculatePageWidthAndHeight = function(self)
 		local width, height = 0, 0
 		for _, c in ipairs(self.viewModel) do
-			if c.targetX and c.targetY then
-				width  = math.max(width,  c.targetX + 304)
-				height = math.max(height, c.targetY + 304)
-			else
-				width  = math.max(width,  c.x + 304)
-				height = math.max(height, c.y + 304)
-			end
+			width, height = self:updateWidthAndHeightBasedOnSingleChunk(c, width, height)
 		end
+		return width, height
+	end,
 
-		self.pageWidth  = width
-		self.pageHeight = height
+	updateWidthAndHeightBasedOnSingleChunk = function(self, c, width, height)
+		if c.targetX and c.targetY then
+			width  = math.max(width,  c.targetX + 304)
+			height = math.max(height, c.targetY + 304)
+		else
+			width  = math.max(width,  c.x + 304)
+			height = math.max(height, c.y + 304)
+		end
+		return width, height
 	end,
 	
-	toggleMapMode = function(self)
-		self.mapMode = not self.mapMode
-	end,
-
-	toggleMapAlpha = function(self)
-		self.showMapAlpha = not self.showMapAlpha
-	end,
-
-	setRepoMode = function(self)
-		self.repoMode = true
-	end,
+	toggleMapMode  = function(self) self.mapMode      = not self.mapMode      end,
+	toggleMapAlpha = function(self) self.showMapAlpha = not self.showMapAlpha end,
+	setRepoMode    = function(self) self.repoMode     = true                  end,
 
 	getPageWidth = function(self)
 		if self.mapMode then return IMAGE:getWidth()
