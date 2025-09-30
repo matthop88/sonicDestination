@@ -51,7 +51,9 @@ return {
     drawChunk = function(self, rowNum, colNum, chunkID)
     	local y = (rowNum - 1) * 256
         local x = (colNum - 1) * 256
-               
+
+		y = y - 384
+		
         self.graphics:setColor(1, 1, 1)
     	self.graphics:draw(CHUNKS_IMAGE, CHUNKS:get(chunkID), x, y, 0, 1, 1)
 	end,
