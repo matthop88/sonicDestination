@@ -94,7 +94,25 @@ EX:
 
 runs the Map Viewer application on the map layout file `sonicDestination/resources/zones/maps/ghz1Map.lua` and the chunk image file `sonicDestination/resources/zones/chunks/ghz1Chunks.png`.
 
-To execute the Test Suite application, use the command
+To execute the ImageCombiner application, use the command
+
+    love . combiner
+
+with two arguments (required!) specifying the paths to the two images (WITHOUT the extension.)
+Images are expected to be located in the resources/ directory, but subdirectories can (and should!) be specified in the command-line arguments.
+
+EX: 
+
+    love . combiner zones/maps/ghz1Map zones/maps/ghz2Map
+
+combines the two images:
+`sonicDestination/resources/zones/maps/ghz1Map.png`
+and
+`sonicDestination/resources/zones/maps/ghz2Map.png`
+
+into a single image (with the maps stacked vertically).
+
+
 
     love . test
 
