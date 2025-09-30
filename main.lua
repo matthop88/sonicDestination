@@ -44,12 +44,6 @@ local launchMapViewer            = function(args)
     require "tools/mapViewer/mapViewerApp"
 end
 
-local launchImageCombiner        = function(args)
-    __IMAGE_1_PATH = args[2]
-    __IMAGE_2_PATH = args[3]
-    require "tools/imageCombiner/imageCombinerApp"
-end
-
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
 end
@@ -67,7 +61,6 @@ local APP_LAUNCHER = {
     soundGraph   = launchSoundGraph,
     chunkalyzer  = launchChunkalyzer,
     mapViewer    = launchMapViewer,
-    combiner     = launchImageCombiner,
     test         = launchTestingFramework,
 }
 
