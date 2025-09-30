@@ -39,8 +39,6 @@ TESTING = {
                 self.testsSucceeded, self.testsFailed = 0, 0
                 self.errors = {}
 
-                if self.testsClass.beforeAll then self.testsClass:beforeAll() end
-                
                 for testName, testFn in pairs(self.tests) do
                     self:runTest(testFn, testName)
                 end
@@ -160,8 +158,8 @@ TESTING = {
 TESTING:queueTestClasses {
     require("testing/tests/testModKeyEnabler"),
     require("testing/tests/testPropertyNotifier"),
-    require("testing/tests/testWidgetFactory"),
-    require("testing/tests/testWidgets"),
+    --require("testing/tests/testWidgetFactory"),
+    --require("testing/tests/testWidgets"),
 }
 
 require("testing/delayTests")

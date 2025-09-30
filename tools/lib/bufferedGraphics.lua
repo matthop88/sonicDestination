@@ -111,6 +111,10 @@ return {
                 love.graphics.setColor(c)
                 love.graphics.draw(self.buffer, x, y, r, sx, sy)
             end,
+
+            saveImage = function(self, imgName)
+                return self.buffer:newImageData():encode("png", imgName .. ".png")
+            end,
         }
     end,
 }

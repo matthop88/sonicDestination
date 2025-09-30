@@ -13,6 +13,14 @@ local keyEventReceiver = ({
         wasPressed  = function(self, key) return self.events.keypressed[key]        end,
         wasReleased = function(self, key) return self.events.keyreleased[key]       end,
 
+        getKeypressedEvents = function(self)
+            local events = {}
+            for k, v in pairs(self.events.keypressed) do
+                table.insert(events, k)
+            end
+            return events
+        end,
+
 }):clear()
 
 return {
@@ -150,5 +158,44 @@ return {
 
         return TESTING:assertTrue(name, keyEventReceiver:wasPressed("A")
                                     and keyEventReceiver:wasReleased("A"))
+    end,
+
+    testOptionModifier = function(self)
+        local name = "Option Key Down, 'a' Key Down, Option Key Up, 'a' Key Up => 'optiona'"
+
+        self.pluginEngine:keypressed("lalt")
+        self.pluginEngine:keypressed("a")
+        self.pluginEngine:keyreleased("lalt")
+        self.pluginEngine:keyreleased("a")
+
+        return TESTING:assertTrue(name, keyEventReceiver:wasPressed("optiona")
+                                    and keyEventReceiver:wasReleased("optiona"))
+    end,
+
+    testShiftOptionModifier = function(self)
+        local name = "Option Key Down, Shift Key Down 'a' Key Down, Option Key Up, 'a' Key Up, Shift Key Up => 'optionA'"
+
+        self.pluginEngine:keypressed("lalt")
+        self.pluginEngine:keypressed("lshift")
+        self.pluginEngine:keypressed("a")
+        self.pluginEngine:keyreleased("lalt")
+        self.pluginEngine:keyreleased("a")
+        self.pluginEngine:keyreleased("lshift")
+
+        return TESTING:assertTrue(name, keyEventReceiver:wasPressed("optionA")
+                                    and keyEventReceiver:wasReleased("optionA"))
+    end,
+
+    testNumberOfKeyPressedEvents = function(self)
+        local name = "Option Key Down, Shift Key Down 'a' Key Down, Option Key Up, 'a' Key Up, Shift Key Up => 1 Key Pressed Event"
+
+        self.pluginEngine:keypressed("lalt")
+        self.pluginEngine:keypressed("lshift")
+        self.pluginEngine:keypressed("a")
+        self.pluginEngine:keyreleased("lalt")
+        self.pluginEngine:keyreleased("a")
+        self.pluginEngine:keyreleased("lshift")
+
+        return TESTING:assertTrue(name, #keyEventReceiver:getKeypressedEvents() == 1)
     end,
 }

@@ -16,6 +16,7 @@ end
 
 local SONIC              = requireRelative("sonic",     { GRAPHICS = GRAPHICS })
 local WORKSPACE          = requireRelative("workspace", { GRAPHICS = GRAPHICS })
+local TERRAIN            = requireRelative("terrain",   { GRAPHICS = GRAPHICS })
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -34,6 +35,7 @@ PROP_LOADER:notifyOnChange(SONIC)
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
+    TERRAIN:draw()
     WORKSPACE:draw()
     SONIC:draw()
 end

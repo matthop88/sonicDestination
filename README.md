@@ -65,7 +65,37 @@ EX:
 
 runs the Sound Graph application on the sound file `sonicDestination/game/resources/sounds/jump.ogg`.
 
-To execute the Test Suite application, use the command
+To execute the Chunkalyzer application, use the command
+
+    love . chunkalyzer
+
+with an argument (required!) specifying the map image you wish to chunkalyze.
+Only specify the filename (WITHOUT the extension.)
+Map image is expected to be located in the resources/zones/maps/ directory.
+
+EX: 
+
+    love . chunkalyzer GHZ_Act1_Map
+
+runs the Chunkalyzer application on the map image file `sonicDestination/resources/zones/maps/GHZ_Act1_Map.png`.
+
+To execute the MapViewer application, use the command
+
+    love . mapViewer
+
+with two arguments (required!) specifying the map layout file (.lua) and the chunk image, respectively.
+Only specify the filenames (WITHOUT the extension.)
+Map layout file is expected to be located in the resources/zones/maps/ directory.
+Chunk image file is expected to be located in the resources/zones/chunks/ directory.
+
+EX: 
+
+    love . mapViewer ghz1Map ghz1Chunks
+
+runs the Map Viewer application on the map layout file `sonicDestination/resources/zones/maps/ghz1Map.lua` and the chunk image file `sonicDestination/resources/zones/chunks/ghz1Chunks.png`.
+
+To execute the TestSuite application, use the command
 
     love . test
+
 

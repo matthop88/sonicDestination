@@ -97,7 +97,7 @@ return {
             })
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("stateMachineViewer", {
-                graphics = dofile("tools/lib/graphics.lua"),
+                graphics = require("tools/lib/graphics"):create(),
                 states   = { "runningBrakingJumping" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",

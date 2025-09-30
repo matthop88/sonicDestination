@@ -1,15 +1,19 @@
 return {
-    x         = 0,
-    y         = 0,
-    scale     = 1,
-    imagePath = nil,
-    imageData = nil,
-    image     = nil,
+    x            = 0,
+    y            = 0,
+    scale        = 1,
+    imagePath    = nil,
+    imageData    = nil,
+    image        = nil,
+    horizMargins = 0,
+    vertMargins  = 0,
 
     init = function(self, params)
-        self.imagePath = params.imagePath
-        self.pixelated = params.pixelated
-
+        self.imagePath    = params.imagePath
+        self.pixelated    = params.pixelated
+        self.horizMargins = params.horizMargins or 0
+        self.vertMargins  = params.vertMargins  or 0
+        
         self:loadImage()
         
         return self
@@ -61,6 +65,10 @@ return {
         return screenX, screenY, screenW, screenH
     end,
 
+    pageToScreenRect = function(self, imageX, imageY, imageW, imageH)
+        return self:imageToScreenRect(imageX + self.horizMargins, imageY + self.vertMargins, imageW, imageH)
+    end,
+
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         self.x = (screenX / self.scale) - imageX
         self.y = (screenY / self.scale) - imageY
@@ -78,12 +86,24 @@ return {
         return self.image:getHeight()
     end,
 
+    getPageWidth   = function(self)
+        return self:getImageWidth()  + (self.horizMargins * 2)
+    end,
+
+    getPageHeight  = function(self)
+        return self:getImageHeight() + (self.vertMargins  * 2)
+    end,
+    
     getImageSize   = function(self)
         return self:getImageWidth(), self:getImageHeight()
     end,
 
     getImagePixelAt = function(self, x, y)
         return self.imageData:getPixel(math.floor(x), math.floor(y))
+    end,
+
+    getPagePixelAt  = function(self, x, y)
+        return self:getImagePixelAt(x - self.horizMargins, y - self.vertMargins)
     end,
 
     isPixelInRange = function(self, x, y)
@@ -112,7 +132,7 @@ return {
 
     draw = function(self)
         love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(self.image, self.x * self.scale, self.y * self.scale, 0, self.scale, self.scale)
+        love.graphics.draw(self.image, (self.x + self.horizMargins) * self.scale, (self.y + self.vertMargins) * self.scale, 0, self.scale, self.scale)
     end,
 
     update = function(self, dt)
@@ -120,8 +140,8 @@ return {
     end,
 
     keepImageInBounds = function(self)
-        self.x = math.min(0, math.max(self.x, (love.graphics:getWidth()  / self.scale) - self:getImageWidth()))
-        self.y = math.min(0, math.max(self.y, (love.graphics:getHeight() / self.scale) - self:getImageHeight()))
+        self.x = math.min(0, math.max(self.x, (love.graphics:getWidth()  / self.scale) - self:getPageWidth()))
+        self.y = math.min(0, math.max(self.y, (love.graphics:getHeight() / self.scale) - self:getPageHeight()))
     end,
 }
 

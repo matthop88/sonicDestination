@@ -26,17 +26,27 @@ return {
     keys = { 
         pressed = { },
     
-        shiftKeyDown = false,
+        shiftKeyDown  = false,
+        optionKeyDown = false,
 
-        shiftDown   = function(self)      self.shiftKeyDown = true        end,
-        shiftUp     = function(self)      self.shiftKeyDown = false       end,
-        isShiftDown = function(self)      return self.shiftKeyDown        end,
-        isDown      = function(self, key) return self.pressed[key] ~= nil end,
-        getValue    = function(self, key) return self.pressed[key]        end,
+        shiftDown    = function(self)      self.shiftKeyDown  = true       end,
+        shiftUp      = function(self)      self.shiftKeyDown  = false      end,
+        optionDown   = function(self)      self.optionKeyDown = true       end,
+        optionUp     = function(self)      self.optionKeyDown = false      end,
+        
+        isShiftDown  = function(self)      return self.shiftKeyDown        end,
+        isOptionDown = function(self)      return self.optionKeyDown       end,
+        isDown       = function(self, key) return self.pressed[key] ~= nil end,
+        getValue     = function(self, key) return self.pressed[key]        end,
         
         press = function(self, key)
-            if self:isShiftDown() then self.pressed[key] = self:applyShift(key)
-            else                       self.pressed[key] = key             end
+            if self:isShiftDown()  then self.pressed[key] = self:applyShift(key)
+            else                        self.pressed[key] = key             end
+
+            if self:isOptionDown() then
+                self.pressed[key] = self:applyOption(self.pressed[key])
+            end
+            
             return self.pressed[key]
         end,
 
@@ -45,6 +55,10 @@ return {
             elseif key == "."           then return ">"
             elseif string.len(key) == 1 then return string.upper(key)
             else                             return "shift" .. key  end
+        end,
+
+        applyOption = function(self, key)
+            return "option" .. key
         end,
 
         release = function(self, key)
@@ -67,12 +81,18 @@ return {
         if self:isShift(key) then
             self.keys:shiftDown()
             return true
+        elseif self:isOption(key) then
+            self.keys:optionDown()
+            return true
         end
     end,
 
     handleKeyreleased = function(self, key)
         if self:isShift(key) then
             self.keys:shiftUp()
+            return true
+        elseif self:isOption(key) then
+            self.keys:optionUp()
             return true
         end
     end,
@@ -82,19 +102,21 @@ return {
     --------------------------------------------------------------
     
     prehandleKeypressed  = function(self, key)
-        if  self:isShift(key) then return key
-        else                       return self.keys:press(key) end
+        if  self:isModifier(key) then return key
+        else                          return self.keys:press(key) end
     end,
     
     prehandleKeyreleased = function(self, key)
-        if  self:isShift(key) then return key
-        else                       return self.keys:release(key) end
+        if  self:isModifier(key) then return key
+        else                          return self.keys:release(key) end
     end,
 
     --------------------------------------------------------------
     --                   Specialized Functions                  --
     --------------------------------------------------------------
 
-    reset   = function(self)      self.keys:reset()                         end,
-    isShift = function(self, key) return key == "lshift" or key == "rshift" end,
+    reset      = function(self)      self.keys:reset()                              end,
+    isModifier = function(self, key) return self:isShift(key) or self:isOption(key) end,
+    isShift    = function(self, key) return key == "lshift"   or key == "rshift"    end,
+    isOption   = function(self, key) return key == "lalt"     or key == "ralt"      end,
 }

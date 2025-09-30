@@ -15,18 +15,12 @@ return {
 
     draw = function(self)
         self:updateImageCoordinates()
-        self:drawBackground()
         self:drawHorizontalLine()
     end,
 
     updateImageCoordinates = function(self)
         leftX,  topY    = self.graphics:screenToImageCoordinates(0, 0)
         rightX, bottomY = self.graphics:screenToImageCoordinates(self:getWidth(), self:getHeight())
-    end,
-
-    drawBackground = function(self)
-        self.graphics:setColor(COLOR_GREEN)
-        self.graphics:rectangle("fill", leftX, topY, rightX - leftX, bottomY - topY)
     end,
 
     drawHorizontalLine = function(self)

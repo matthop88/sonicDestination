@@ -18,7 +18,7 @@ return ({
         for name, element in pairs(self.data) do
             element.load = function(self)
                 if self.sound == nil then
-                    self.sound = love.audio.newSource("game/resources/sounds/" .. self.filename, "static")
+                    self.sound = love.audio.newSource(relativePath("resources/sounds/") .. self.filename, "static")
                 end
             end
             element.play = function(self)
