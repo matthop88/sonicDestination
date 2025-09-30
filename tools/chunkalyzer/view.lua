@@ -150,7 +150,6 @@ return {
 	end,
 
 	ptInChunk = function(self, x, y, rX, rY)
-		--print("x, y, rX, rY = ", x, y, rX, rY)
 		return x >= rX and x <= rX + 256 and y >= rY and y <= rY + 256
 	end,
 
