@@ -41,12 +41,22 @@ return {
     end,
 
     draw = function(self)
-        for rowNum, row in ipairs(MAP_DATA) do
+		self:drawBackground()
+		self:drawTerrain()
+    end,
+
+	drawBackground = function(self)
+		self.graphics:setColor(0, 0, 0)
+		self.graphics:rectangle("fill", self.graphics:calculateViewportRect())
+	end,
+
+	drawTerrain = function(self)
+		for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkID in ipairs(row) do
                 self:drawChunk(rowNum, colNum, chunkID)
             end
         end
-    end,
+	end,
 
     drawChunk = function(self, rowNum, colNum, chunkID)
     	local y = (rowNum - 1) * 256
