@@ -2,8 +2,8 @@ if __DEV_MODE then
     return require("tools/lib/graphics"):create()
 else
     return {
-        setColor	= function(self, color)
-            love.graphics.setColor(color)
+        setColor     = function(self, arg1, arg2, arg3, arg4)
+            love.graphics.setColor(arg1, arg2, arg3, arg4)
         end,
         
         setLineWidth = function(self, lineWidth)
