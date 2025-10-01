@@ -9,7 +9,7 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local mapData
 
 if __IN_MAP_FILE_NAME ~= nil then
-    mapData = require("resources/zones/maps/" .. __MAP_FILE)
+    mapData = require("resources/zones/maps/" .. __IN_MAP_FILE_NAME)
 end
 
 local chunkImgPath = "resources/zones/chunks/" .. mapData.chunksImageName .. ".png"
