@@ -329,7 +329,7 @@ return {
     save = function(self, chunkImageName, mapLayoutName)
     	if self.repoMode then
     		self:saveChunkImage(chunkImageName)
-    		self:saveMapLayout(mapLayoutName)
+    		self:saveMapLayout(mapLayoutName, chunkImageName)
     	end
     end,
 
@@ -341,8 +341,8 @@ return {
     	print("Saved to " .. love.filesystem.getSaveDirectory())
     end,
 
-    saveMapLayout = function(self, mapLayoutName)
+    saveMapLayout = function(self, mapLayoutName, chunkImageName)
     	local savableMapLayout = require("tools/chunkalyzer/savableMapLayout"):create(self.viewModel)
-    	savableMapLayout:save(mapLayoutName)
+    	savableMapLayout:save(mapLayoutName, chunkImageName)
     end,
 }
