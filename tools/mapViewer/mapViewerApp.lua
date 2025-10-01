@@ -6,21 +6,20 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX   = require("tools/lib/graphics"):create()
 
-local chunkImgPath
-
-if __CHUNK_FILE ~= nil then
-    chunkImgPath = "resources/zones/chunks/" .. __CHUNK_FILE .. ".png"
-end
-
-
-local chunkImgData = love.image.newImageData(chunkImgPath)
-local chunkImg     = love.graphics.newImage(chunkImgData)
-
-
 local mapData
 if __MAP_FILE ~= nil then
     mapData = require("resources/zones/maps/" .. __MAP_FILE)
 end
+
+local chunkImgPath
+
+if __CHUNK_FILE ~= nil then
+    chunkImgPath = "resources/zones/chunks/" .. __CHUNK_FILE .. ".png"
+elseif mapData.chunksImageName then
+	chunkImgPath = "resources/zones/chunks/" .. mapData.chunksImageName .. ".png"
+end
+
+local chunkImg = love.graphics.newImage(chunkImgPath)
 
 local chunks = ({
     init = function(self)
