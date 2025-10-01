@@ -19,6 +19,7 @@ return {
 
 			save = function(self, filename)
 				self:draw()
+				love.filesystem.createDirectory("resources/zones/maps")
 				return self.GRAFX:saveImage(filename)
 			end,
 
