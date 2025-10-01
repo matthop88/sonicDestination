@@ -17,9 +17,9 @@ return {
 				return #self.mapData[1] * 256, #self.mapData * 256
 			end,
 
-			save = function(self)
+			save = function(self, filename)
 				self:draw()
-				return self.GRAFX:saveImage("sampleRewrittenMapImage")
+				return self.GRAFX:saveImage(filename)
 			end,
 
 			draw = function(self)
