@@ -141,7 +141,7 @@ end
 --------------------------------------------------------------
 
 function refreshMap()
-    mapData = dofile("resources/zones/maps/" .. __MAP_FILE .. ".lua")
+    mapData = dofile("resources/zones/maps/" .. __IN_MAP_FILE_NAME .. ".lua")
 end
 
 -- ...
