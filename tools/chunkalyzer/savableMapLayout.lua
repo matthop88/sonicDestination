@@ -44,7 +44,8 @@ return {
 			end,
 
 			saveMapData = function(self)
-				love.filesystem.write("sampleMapLayout.lua", self:encodeMapData())
+				love.filesystem.createDirectory("resources/zones/maps")
+				love.filesystem.write("resources/zones/maps/sampleMapLayout.lua", self:encodeMapData())
 			end,
 
 			encodeMapData = function(self)
