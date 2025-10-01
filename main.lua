@@ -33,8 +33,9 @@ local launchSoundGraph           = function(args)
 end
 
 local launchChunkalyzer          = function(args)
-    __WORLD_MAP_FILE   = args[2]
-    __CHUNK_IMAGE_FILE = args[3]
+    __WORLD_MAP_FILE        = args[2]
+    __OUT_CHUNKS_IMAGE_NAME = args[3]
+    __OUT_MAP_FILE_NAME     = args[4]
     require "tools/chunkalyzer/chunkalyzerApp"
 end
 
