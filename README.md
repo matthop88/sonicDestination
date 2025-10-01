@@ -69,30 +69,38 @@ To execute the Chunkalyzer application, use the command
 
     love . chunkalyzer
 
-with an argument (required!) specifying the map image you wish to chunkalyze.
+with one arguments (required!) specifying the map image you wish to chunkalyze.
 Only specify the filename (WITHOUT the extension.)
 Map image is expected to be located in the resources/zones/maps/ directory.
 
+Two further arguments can be specified, which are the the name of the chunks image file to write, and the name of the map data file to write. Both are optional, and default to `sampleChunksImage` and `sampleMapFile` respectively.
+
 EX: 
 
-    love . chunkalyzer GHZ_Act1_Map
+    love . chunkalyzer GHZ_Act1_Map ghzChunks_IMG ghz1Map
 
-runs the Chunkalyzer application on the map image file `sonicDestination/resources/zones/maps/GHZ_Act1_Map.png`.
+runs the Chunkalyzer application on the map image file `sonicDestination/resources/zones/maps/GHZ_Act1_Map.png`, and writes the following two files upon saving:
+
+`sonicDestination/resources/zones/chunks/ghzChunks_IMG.png`
+and
+`sonicDestination/resources/zones/maps/ghz1Map.lua`
 
 To execute the MapViewer application, use the command
 
     love . mapViewer
 
-with two arguments (required!) specifying the map layout file (.lua) and the chunk image, respectively.
+with two arguments (first is required!) specifying the map layout file (.lua) and the map image to rewrite (.png), respectively.
 Only specify the filenames (WITHOUT the extension.)
-Map layout file is expected to be located in the resources/zones/maps/ directory.
-Chunk image file is expected to be located in the resources/zones/chunks/ directory.
+Map layout file is expected to be located in the `resources/zones/maps/` directory.
+Map image file will be written to the            `resources/zones/maps/` directory.
 
 EX: 
 
-    love . mapViewer ghz1Map ghz1Chunks
+    love . mapViewer ghz1Map ghz1Map_v2_IMG
 
-runs the Map Viewer application on the map layout file `sonicDestination/resources/zones/maps/ghz1Map.lua` and the chunk image file `sonicDestination/resources/zones/chunks/ghz1Chunks.png`.
+runs the Map Viewer application on the map layout file `sonicDestination/resources/zones/maps/ghz1Map.lua` and, if desired, writes a new map image file of name `sonicDestination/resources/zones/maps/ghz1Map_v2_IMG.png`.
+
+If a 2nd argument is not specified, the filename will default to `sampleRewrittenMapImage.png`.
 
 To execute the TestSuite application, use the command
 
