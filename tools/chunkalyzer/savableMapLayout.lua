@@ -21,9 +21,9 @@ return {
 				return math.floor(maxChunkX / 256) + 1, math.floor(maxChunkY / 256) + 1
 			end,
 
-			save = function(self, mapFilename)
+			save = function(self, mapFilename, chunksImageName)
 				self:createMapData()
-				self:saveMapData(mapFilename)
+				self:saveMapData(mapFilename, chunksImageName)
 			end,
 
 			createMapData = function(self)
@@ -43,13 +43,13 @@ return {
 				end
 			end,
 
-			saveMapData = function(self, mapFilename)
+			saveMapData = function(self, mapFilename, chunksImageName)
 				love.filesystem.createDirectory("resources/zones/maps")
-				love.filesystem.write("resources/zones/maps/" .. mapFilename .. ".lua", self:encodeMapData())
+				love.filesystem.write("resources/zones/maps/" .. mapFilename .. ".lua", self:encodeMapData(chunksImageName))
 			end,
 
-			encodeMapData = function(self)
-				serializedData = "return {\n"
+			encodeMapData = function(self, chunksImageName)
+				serializedData = "return {\n  chunksImageName = \"" .. chunksImageName .. "\",\n"
 				for _, row in ipairs(self.mapData) do
 					local rowString = "  { "
 					for _, chunkID in ipairs(row) do
