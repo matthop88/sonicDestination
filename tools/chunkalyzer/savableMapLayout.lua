@@ -21,9 +21,9 @@ return {
 				return math.floor(maxChunkX / 256) + 1, math.floor(maxChunkY / 256) + 1
 			end,
 
-			save = function(self)
+			save = function(self, mapFilename)
 				self:createMapData()
-				self:saveMapData()
+				self:saveMapData(mapFilename)
 			end,
 
 			createMapData = function(self)
@@ -43,9 +43,9 @@ return {
 				end
 			end,
 
-			saveMapData = function(self)
+			saveMapData = function(self, mapFilename)
 				love.filesystem.createDirectory("resources/zones/maps")
-				love.filesystem.write("resources/zones/maps/sampleMapLayout.lua", self:encodeMapData())
+				love.filesystem.write("resources/zones/maps/" .. mapFilename .. ".lua", self:encodeMapData())
 			end,
 
 			encodeMapData = function(self)
