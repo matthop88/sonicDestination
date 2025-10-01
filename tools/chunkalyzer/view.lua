@@ -226,8 +226,7 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-		if      key == "return" then self:save()
-		elseif key == "escape" then self:toggleMapAlpha() end
+		if key == "escape" then self:toggleMapAlpha() end
 	end,
 
 	handleMousepressed = function(self, mx, my)
@@ -327,23 +326,23 @@ return {
         self.GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
-    save = function(self)
+    save = function(self, chunkImageName, mapLayoutName)
     	if self.repoMode then
-    		self:saveChunkImage()
-    		self:saveMapLayout()
+    		self:saveChunkImage(chunkImageName)
+    		self:saveMapLayout(mapLayoutName)
     	end
     end,
 
-	saveChunkImage = function(self)
+	saveChunkImage = function(self, chunkImageName)
     	local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo, IMAGE)
-    	local fileData = savableChunkLayout:save()
+    	local fileData = savableChunkLayout:save(chunkImageName)
 
     	printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
     	print("Saved to " .. love.filesystem.getSaveDirectory())
     end,
 
-    saveMapLayout = function(self)
+    saveMapLayout = function(self, mapLayoutName)
     	local savableMapLayout = require("tools/chunkalyzer/savableMapLayout"):create(self.viewModel)
-    	savableMapLayout:save()
+    	savableMapLayout:save(mapLayoutName)
     end,
 }
