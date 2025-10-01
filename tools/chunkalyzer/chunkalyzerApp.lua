@@ -12,6 +12,9 @@ end
 
 local imgData = love.image.newImageData(imgPath)
 local img     = love.graphics.newImage(imgData)
+
+local chunksImageNameToWrite = __OUT_CHUNKS_IMAGE_NAME or "sampleChunksImage"
+local mapFileNameToWrite     = __OUT_MAP_FILE_NAME     or "sampleMapFile"
 		
 local CHUNKALYZER_MODEL = require("tools/chunkalyzer/model"):init(img)
 local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZER_MODEL)
@@ -54,9 +57,10 @@ end
 --------------------------------------------------------------
 
 function love.keypressed(key)
-	if     key == "m"     then CHUNKALYZER_VIEW:toggleMapMode() 
-	elseif key == "space" then okayToChunkalyze = true
-	else                       CHUNKALYZER_VIEW:handleKeypressed(key) end
+	if     key == "m"      then CHUNKALYZER_VIEW:toggleMapMode() 
+	elseif key == "space"  then okayToChunkalyze = true
+	elseif key == "return" then CHUNKALYZER_VIEW:save(chunksImageNameToWrite, mapFileNameToWrite)
+	else                        CHUNKALYZER_VIEW:handleKeypressed(key) end
 end
 
 function love.mousepressed(mx, my)
