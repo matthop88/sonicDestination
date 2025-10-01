@@ -39,8 +39,8 @@ local launchChunkalyzer          = function(args)
 end
 
 local launchMapViewer            = function(args)
-    __MAP_FILE   = args[2]
-    __CHUNK_FILE = args[3]
+    __IN_MAP_FILE_NAME   = args[2]
+    __OUT_MAP_IMAGE_NAME = args[3]
     require "tools/mapViewer/mapViewerApp"
 end
 
