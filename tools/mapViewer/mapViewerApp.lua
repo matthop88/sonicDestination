@@ -7,19 +7,15 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 local GRAFX   = require("tools/lib/graphics"):create()
 
 local mapData
-if __MAP_FILE ~= nil then
+
+if __IN_MAP_FILE_NAME ~= nil then
     mapData = require("resources/zones/maps/" .. __MAP_FILE)
 end
 
-local chunkImgPath
-
-if __CHUNK_FILE ~= nil then
-    chunkImgPath = "resources/zones/chunks/" .. __CHUNK_FILE .. ".png"
-elseif mapData.chunksImageName then
-	chunkImgPath = "resources/zones/chunks/" .. mapData.chunksImageName .. ".png"
-end
-
+local chunkImgPath = "resources/zones/chunks/" .. mapData.chunksImageName .. ".png"
 local chunkImg = love.graphics.newImage(chunkImgPath)
+
+local mapImageNameToRewrite = __OUT_MAP_IMAGE_NAME or "sampleRewrittenMapImage"
 
 local chunks = ({
     init = function(self)
@@ -107,7 +103,7 @@ local map = ({
 
     saveMapImage = function(self)
         local savableMap = require("tools/mapViewer/savableMap"):create(mapData, chunkImg, chunks)
-        local fileData = savableMap:save()
+        local fileData = savableMap:save(mapImageNameToRewrite)
 
         printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
         print("Saved to " .. love.filesystem.getSaveDirectory())
