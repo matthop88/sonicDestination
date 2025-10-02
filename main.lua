@@ -80,7 +80,7 @@ function love.load(args)
     local appName = args[1]
     
     local cmdLineTools = require("commandLineTools")
-    cmdLineTools:listArgs(args)
+    cmdLineTools:listParams(args)
     
     if APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
     else                                 require "game/main"     end
