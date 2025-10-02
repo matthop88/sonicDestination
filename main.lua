@@ -44,9 +44,14 @@ local launchChunkalyzer          = function(args)
 end
 
 local launchMapViewer            = function(args)
-    __IN_MAP_FILE_NAME   = args[2]
-    __OUT_MAP_IMAGE_NAME = args[3]
-    require "tools/mapViewer/mapViewerApp"
+    local cmdLineTools = require("commandLineTools"):create("tools/mapViewer")
+    
+    __PARAMS = cmdLineTools:getParams(args)
+    if __PARAMS["help"] then
+        cmdLineTools:printHelp()
+    elseif cmdLineTools:validateParams(args) then
+        require "tools/mapViewer/mapViewerApp"
+    end
 end
 
 local launchTestingFramework     = function(args)
