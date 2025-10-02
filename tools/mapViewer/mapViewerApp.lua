@@ -6,16 +6,12 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX   = require("tools/lib/graphics"):create()
 
-local mapData
-
-if __IN_MAP_FILE_NAME ~= nil then
-    mapData = require("resources/zones/maps/" .. __IN_MAP_FILE_NAME)
-end
+local mapData = require("resources/zones/maps/" .. __PARAMS["mapIn"])
 
 local chunkImgPath = "resources/zones/chunks/" .. mapData.chunksImageName .. ".png"
 local chunkImg = love.graphics.newImage(chunkImgPath)
 
-local mapImageNameToRewrite = __OUT_MAP_IMAGE_NAME or "sampleRewrittenMapImage"
+local mapImageNameToRewrite = __PARAMS["mapOut"] or "sampleRewrittenMapImage"
 
 local chunks = ({
     init = function(self)
@@ -141,7 +137,7 @@ end
 --------------------------------------------------------------
 
 function refreshMap()
-    mapData = dofile("resources/zones/maps/" .. __IN_MAP_FILE_NAME .. ".lua")
+    mapData = dofile("resources/zones/maps/" .. __PARAMS["mapIn"] .. ".lua")
 end
 
 -- ...
