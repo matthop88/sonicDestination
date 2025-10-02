@@ -12,15 +12,16 @@ return {
 		params = {}
 
 		for n, arg in ipairs(args) do
-			if key ~= nil then
-				params[key] = arg
-				key = nil
-			elseif string.sub(arg, 1, 2) == "--" then
+			if     string.sub(arg, 1, 2) == "--" then
 				key = string.sub(arg, 3, -1)
+				params[key] = true
 			elseif string.sub(arg, 1, 1) == "-" then
 				key = string.sub(arg, 2, -1)
+				params[key] = true
+			elseif key ~= nil then
+				params[key] = arg
+				key = nil
 			end
-
 		end
 
 		return params
