@@ -79,5 +79,15 @@ return {
                                     and params["woogieWoogieWoogie"] == true
                                     and params["zizzerZazzerZuzz"]   == "7")
     end,
+
+    testFindMissingParams = function(self)
+        local name = [[Three argument (-e 1 --woogieWoogieWoogie)           => "Missing zizzerZazzerZuzz parameter"]]
+        
+        local params = self.commandLineTools:getParams({ "-e", "1", "--woogieWoogieWoogie" })
+
+        local missingParams = self.commandLineTools:findMissingParams(params)
+
+        return TESTING:assertEquals(name, "zizzerZazzerZuzz", missingParams[1])
+    end,
         
 }
