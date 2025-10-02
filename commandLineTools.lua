@@ -40,7 +40,25 @@ return {
 					end
 				end
 
-				return params
+				return self:transformParams(params)
+			end,
+
+			transformParams = function(self, params)
+				params2 = {}
+				for k, v in pairs(params) do
+					if string.len(k) == 1 then
+						local fullCmd = self:expandShortcut(k)
+						if fullCmd ~= nil then
+							params2[fullCmd] = v
+						else
+							params2[k] = v
+						end
+					else
+						params2[k] = v
+					end
+				end
+
+				return params2
 			end,
 
 			expandShortcut = function(self, shortcut)
