@@ -37,7 +37,7 @@ local launchChunkalyzer          = function(args)
     
     __PARAMS = cmdLineTools:getParams(args)
     if __PARAMS["help"] then
-        cmdLineTools:generateHelp(__PARAMS)
+        cmdLineTools:printHelp()
     elseif cmdLineTools:validateParams(args) then
         require "tools/chunkalyzer/chunkalyzerApp"
     end
