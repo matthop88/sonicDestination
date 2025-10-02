@@ -87,8 +87,12 @@ return {
 			end,
 
 			expandShortcut = function(self, shortcut)
-				for k, v in pairs(self.schema.COMMANDS) do
-					if v.shortcut == shortcut then return k end
+				if shortcut == "h" then 
+					return "help"
+				else
+					for k, v in pairs(self.schema.COMMANDS) do
+						if v.shortcut == shortcut then return k end
+					end
 				end
 			end,
 
