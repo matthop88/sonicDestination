@@ -4,6 +4,7 @@ return {
 	COMMANDS = {
 		zizzerZazzerZuzz = {
 			shortcut = "z",
+			required = true,
 		},
 
 		woogieWoogieWoogie = {
