@@ -89,5 +89,23 @@ return {
 
         return TESTING:assertEquals(name, "zizzerZazzerZuzz", missingParams[1])
     end,
+
+    testHelp = function(self)
+        local name = "Autogeneration of help for testCmdSchema1"
+
+        local expectedHelpString = 
+[[
+
+
+Accepted commands include:
+  --help,                      -h  Show this help.
+  --ekiEkiFoo,                 -e  self-explanatory. There will be a quiz tomorrow.
+  --woogieWoogieWoogie,        -w  are you frightened yet?
+  --zizzerZazzerZuzz,          -z  as you can plainly see!
+]]
+        local actualHelpString = self.commandLineTools:generateHelp()
+
+        return TESTING:assertEquals(name, expectedHelpString, actualHelpString)
+    end,
         
 }
