@@ -7,6 +7,8 @@ return {
 			if key ~= nil then
 				params[key] = arg
 				key = nil
+			elseif string.sub(arg, 1, 2) == "--" then
+				key = string.sub(arg, 3, -1)
 			elseif string.sub(arg, 1, 1) == "-" then
 				key = string.sub(arg, 2, -1)
 			end
