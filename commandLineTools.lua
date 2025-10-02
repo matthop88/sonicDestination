@@ -15,12 +15,37 @@ return {
 		return {
 			schema = getSchema(appDirectory),
 
-			listParams = function(self, args)
+			validateParams = function(self, args)
 				local params = self:getParams(args)
 
-				for k, v in pairs(params) do
-					print(k .. " = " .. v)
+				local missingParams = self:findMissingParams(params)
+				
+				if #missingParams > 0 then
+					print("\nERROR! The following parameters are missing:")
+					for _, p in ipairs(missingParams) do
+						local s = p
+						if self.schema.COMMANDS[p].shortcut then
+							s = s .. " (shortcut: '-" .. self.schema.COMMANDS[p].shortcut .. "')"
+						end
+						print(s)
+					end
+					print("\n")
+					love.event.quit()
+				else
+					return true
 				end
+			end,
+
+			findMissingParams = function(self, params)
+				local missingParams = {}
+
+				for k, v in pairs(self.schema.COMMANDS) do
+					if v.required and params[k] == nil then
+						table.insert(missingParams, k)
+					end
+				end
+				
+				return missingParams
 			end,
 
 			getParams = function(self, args)
