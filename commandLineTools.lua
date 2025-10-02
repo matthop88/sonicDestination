@@ -96,9 +96,16 @@ return {
 				end
 			end,
 
+
+			printHelp = function(self)
+				local helpString = self:generateHelp()
+				print(helpString)
+				love.event.quit()
+			end,
+			
 			generateHelp = function(self)
-				print("\n\nAccepted commands include:")
-				print("  --help,                      -h  Show this help.")
+				local helpString = "\n\nAccepted commands include:\n"
+				helpString = helpString .. "  --help,                      -h  Show this help.\n"
 
 				local keys = {}
 				for k, v in pairs(self.schema.COMMANDS) do
@@ -109,10 +116,9 @@ return {
 
 				for _, k in pairs(keys) do
 					local v = self.schema.COMMANDS[k]
-					print("  --" .. k .. "," .. string.rep(" ", 20 - string.len(k)) .. "      -" .. v.shortcut .. "  " .. v.description)
+					helpString = helpString .. "  --" .. k .. "," .. string.rep(" ", 20 - string.len(k)) .. "      -" .. v.shortcut .. "  " .. v.description .. "\n"
 				end
-				print("\n")
-				love.event.quit()
+				return helpString
 			end,
 		}
 	end,
