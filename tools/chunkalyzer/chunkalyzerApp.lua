@@ -6,15 +6,13 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local imgPath
 
-if __WORLD_MAP_FILE ~= nil then
-    imgPath = "resources/zones/maps/" .. __WORLD_MAP_FILE .. ".png"
-end
+imgPath = "resources/zones/maps/" .. __PARAMS["mapImageIn"] .. ".png"
 
 local imgData = love.image.newImageData(imgPath)
 local img     = love.graphics.newImage(imgData)
 
-local chunksImageNameToWrite = __OUT_CHUNKS_IMAGE_NAME or "sampleChunksImage"
-local mapFileNameToWrite     = __OUT_MAP_FILE_NAME     or "sampleMapFile"
+local chunksImageNameToWrite = __PARAMS["chunkImageOut"] or "sampleChunksImage"
+local mapFileNameToWrite     = __PARAMS["mapFileOut"]    or "sampleMapFile"
 		
 local CHUNKALYZER_MODEL = require("tools/chunkalyzer/model"):init(img)
 local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZER_MODEL)
@@ -96,5 +94,3 @@ PLUGINS = require("plugins/engine")
 			end,
 		},
 	})    
-
-
