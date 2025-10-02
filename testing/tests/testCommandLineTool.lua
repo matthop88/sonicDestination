@@ -52,7 +52,7 @@ return {
     end,
 
     testFiveArgumentsMixed = function(self)
-        local name = [[Five argument (-i inFile --silentMode -o outFile)       => { "silentMode" = true, "i" = inFile, "o" = outFile }]]
+        local name = [[Five argument (-i inFile --silentMode -o outFile)       => { "silentMode" = true, "i" = "inFile", "o" = "outFile" }]]
         local params = self.commandLineTools:getParams({ "-i", "inFile", "--silentMode", "-o", "outFile" })
         
         return TESTING:assertTrue(name, params["silentMode"] == true
@@ -70,4 +70,14 @@ return {
         return TESTING:assertEquals(name, "ekiEkiFoo woogieWoogieWoogie zizzerZazzerZuzz", eCmd .. " " .. wCmd .. " " .. zCmd)
     end,
 
+    testMixedArgumentNames = function(self)
+        local name = [[Five argument (-e 1 --woogieWoogieWoogie -z 7)       => { "ekiEkiFoo" = "1", "woogiWoogieWoogie" = true, "zizzerZazzerZuzz" = "7" }]]
+        
+        local params = self.commandLineTools:getParams({ "-e", "1", "--woogieWoogieWoogie", "-z", "7" })
+
+        return TESTING:assertTrue(name, params["ekiEkiFoo"]          == "1"
+                                    and params["woogieWoogieWoogie"] == true
+                                    and params["zizzerZazzerZuzz"]   == "7")
+    end,
+        
 }
