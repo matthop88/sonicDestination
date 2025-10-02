@@ -1,6 +1,14 @@
 return {
-	listArgs = function(self, args)
-		key = nil
+	listParams = function(self, args)
+		local params = self:getParams(args)
+
+		for k, v in pairs(params) do
+			print(k .. " = " .. v)
+		end
+	end,
+
+	getParams = function(self, args)
+		local key = nil
 		params = {}
 
 		for n, arg in ipairs(args) do
@@ -15,9 +23,6 @@ return {
 
 		end
 
-		for k, v in pairs(params) do
-			print(k .. " = " .. v)
-		end
-
+		return params
 	end,
 }
