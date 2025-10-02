@@ -36,7 +36,9 @@ local launchChunkalyzer          = function(args)
     local cmdLineTools = require("commandLineTools"):create("tools/chunkalyzer")
     
     __PARAMS = cmdLineTools:getParams(args)
-    require "tools/chunkalyzer/chunkalyzerApp"
+    if cmdLineTools:validateParams(args) then
+        require "tools/chunkalyzer/chunkalyzerApp"
+    end
 end
 
 local launchMapViewer            = function(args)
