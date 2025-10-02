@@ -60,4 +60,14 @@ return {
                                     and params["o"]          == "outFile")
     end,
 
+    testShortcutExpansion = function(self)
+        local name = [[Five argument (-e 1 -w -z 9) yields "ekiEkiFoo", "woogieWoogieWoogie", "zizzerZazzerZuzz" ]]
+
+        local eCmd = self.commandLineTools:expandShortcut("e")
+        local wCmd = self.commandLineTools:expandShortcut("w")
+        local zCmd = self.commandLineTools:expandShortcut("z")
+
+        return TESTING:assertEquals(name, "ekiEkiFoo woogieWoogieWoogie zizzerZazzerZuzz", eCmd .. " " .. wCmd .. " " .. zCmd)
+    end,
+
 }
