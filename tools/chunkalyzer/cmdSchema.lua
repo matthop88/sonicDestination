@@ -4,6 +4,7 @@ return {
 	COMMANDS = {
 		mapImageIn = {
 			shortcut = "i",
+			required = true,
 		},
 
 		mapFileOut = {
