@@ -91,6 +91,25 @@ return {
 					if v.shortcut == shortcut then return k end
 				end
 			end,
+
+			generateHelp = function(self)
+				print("\n\nAccepted commands include:")
+				print("  --help,                      -h  Show this help.")
+
+				local keys = {}
+				for k, v in pairs(self.schema.COMMANDS) do
+					table.insert(keys, k)
+				end
+
+				table.sort(keys)
+
+				for _, k in pairs(keys) do
+					local v = self.schema.COMMANDS[k]
+					print("  --" .. k .. "," .. string.rep(" ", 20 - string.len(k)) .. "      -" .. v.shortcut .. "  " .. v.description)
+				end
+				print("\n")
+				love.event.quit()
+			end,
 		}
 	end,
 
