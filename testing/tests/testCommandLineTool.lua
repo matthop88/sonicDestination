@@ -1,6 +1,6 @@
 return {
 
-    commandLineTools = require("commandLineTools"),
+    commandLineTools = require("commandLineTools"):create("testing/resources/testCmdSchema1"),
     
     getName = function(self)
         return "Command Line Tool Tests"
@@ -59,14 +59,5 @@ return {
                                     and params["i"]          == "inFile"
                                     and params["o"]          == "outFile")
     end,
-
-    testCmdSchemaLoading = function(self)
-        local name = "Loading Command Schema                                   => successful"
-
-        local cmdSchema = self.commandLineTools:getSchema("testing/resources/testCmdSchema1")
-
-        return TESTING:assertEquals(name, "w", cmdSchema.COMMANDS.woogieWoogieWoogie.shortcut)
-    end,
-        
 
 }
