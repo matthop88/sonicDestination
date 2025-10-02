@@ -33,6 +33,9 @@ local launchSoundGraph           = function(args)
 end
 
 local launchChunkalyzer          = function(args)
+    local cmdLineTools = require("commandLineTools"):create("tools/chunkalyzer")
+    cmdLineTools:listParams(args)
+    
     __WORLD_MAP_FILE        = args[2]
     __OUT_CHUNKS_IMAGE_NAME = args[3]
     __OUT_MAP_FILE_NAME     = args[4]
@@ -78,9 +81,6 @@ function love.load(args)
     __DEV_MODE = true
 
     local appName = args[1]
-    
-    local cmdLineTools = require("commandLineTools")
-    cmdLineTools:listParams(args)
     
     if APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
     else                                 require "game/main"     end
