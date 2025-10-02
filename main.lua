@@ -36,7 +36,9 @@ local launchChunkalyzer          = function(args)
     local cmdLineTools = require("commandLineTools"):create("tools/chunkalyzer")
     
     __PARAMS = cmdLineTools:getParams(args)
-    if cmdLineTools:validateParams(args) then
+    if __PARAMS["help"] then
+        cmdLineTools:generateHelp(__PARAMS)
+    elseif cmdLineTools:validateParams(args) then
         require "tools/chunkalyzer/chunkalyzerApp"
     end
 end
