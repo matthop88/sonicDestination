@@ -51,4 +51,13 @@ return {
         return TESTING:assertEquals(name, true, params["silentMode"])
     end,
 
+    testFiveArgumentsMixed = function(self)
+        local name = [[Five argument (-i inFile --silentMode -o outFile)       => { "silentMode" = true, "i" = inFile, "o" = outFile }]]
+        local params = self.commandLineTools:getParams({ "-i", "inFile", "--silentMode", "-o", "outFile" })
+        
+        return TESTING:assertTrue(name, params["silentMode"] == true
+                                    and params["i"]          == "inFile"
+                                    and params["o"]          == "outFile")
+    end,
+
 }
