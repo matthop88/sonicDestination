@@ -9,7 +9,7 @@ return {
 		},
 
 		mapFileOut = {
-			description = "image data file to write out",
+			description = "map data file to write out",
 			shortcut = "m",
 		},
 
