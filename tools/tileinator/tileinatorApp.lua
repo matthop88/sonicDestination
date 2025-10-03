@@ -6,19 +6,21 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX   = require("tools/lib/graphics"):create()
 
-local chunkImg = love.graphics.newImage("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
+local CHUNK_IMG = love.graphics.newImage("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 
 local CHUNK = {
-    create = function(self, chunkX, chunkY)
+    create = function(self, img, chunkX, chunkY)
         return ({
-            quad = love.graphics.newQuad(chunkX * 256, chunkY * 256, 256, 256, chunkImg:getWidth(), chunkImg:getHeight()),
+            chunkImg = img,
+
+            quad = love.graphics.newQuad(chunkX * 256, chunkY * 256, 256, 256, img:getWidth(), img:getHeight()),
 
             tiles = { },
 
             init = function(self)
                 for y = chunkY * 256, (chunkY * 256) + 240, 16 do
                     for x = chunkX * 256, (chunkX * 256) + 240, 16 do
-                        table.insert(self.tiles, love.graphics.newQuad(x, y, 16, 16, chunkImg:getWidth(), chunkImg:getHeight()))
+                        table.insert(self.tiles, love.graphics.newQuad(x, y, 16, 16, self.chunkImg:getWidth(), self.chunkImg:getHeight()))
                     end
                 end
 
@@ -37,12 +39,12 @@ local CHUNK = {
                     local x = ((chunkX * 256) +   8) +           (((n - 1) % 16) * (16 * 0.94))
                     local y = ((chunkY * 256) +   8) + (math.floor((n - 1) / 16) * (16 * 0.94))
                     
-                    GRAFX:draw(chunkImg, tile, x + 1, y + 1, 0, 0.875, 0.875)
+                    GRAFX:draw(self.chunkImg, tile, x + 1, y + 1, 0, 0.875, 0.875)
                 end
             end,
 
             drawChunk = function(self)
-                GRAFX:draw(chunkImg, self.quad, (chunkX * 256) + 8, (chunkY * 256) + 8, 0, 0.94, 0.94)
+                GRAFX:draw(self.chunkImg, self.quad, (chunkX * 256) + 8, (chunkY * 256) + 8, 0, 0.94, 0.94)
             end,
 
             isOnScreen = function(self, cX, cY)
@@ -58,14 +60,17 @@ local CHUNK = {
 
 local chunks = ({
     tileMode = false,
+    chunkImg = nil,
 
-    init = function(self)
+    init = function(self, img)
+        self.chunkImg = img
+
         local chunkCount = self:calculateChunkCount()
         for i = 1, chunkCount do
             local chunkX = (i - 1) % 9          
             local chunkY = math.floor((i - 1) / 9)
             
-            table.insert(self, CHUNK:create(chunkX, chunkY))
+            table.insert(self, CHUNK:create(self.chunkImg, chunkX, chunkY))
         end
 
         return self
@@ -79,7 +84,7 @@ local chunks = ({
     end,
 
     calculateChunkCount = function(self)
-        local width, height = chunkImg:getWidth(), chunkImg:getHeight()
+        local width, height = self.chunkImg:getWidth(), self.chunkImg:getHeight()
 
         return math.floor(width / 256) * math.floor(height / 256)
     end,
@@ -89,7 +94,7 @@ local chunks = ({
     end,
 
 
-}):init()
+}):init(CHUNK_IMG)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -98,7 +103,7 @@ local chunks = ({
 love.window.setTitle("Tileinator")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-chunkImg:setFilter("nearest", "nearest")
+CHUNK_IMG:setFilter("nearest", "nearest")
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
