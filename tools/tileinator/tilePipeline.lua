@@ -11,11 +11,13 @@ local processChunks = function(results, dataIn, dataOut)
 		return { completed = true }
 	end
 				
-	dataOut.chunk = dataIn.ALL_CHUNKS:next()
+	dataOut.chunkID = dataIn.ALL_CHUNKS:getIndex()
+	dataOut.chunk   = dataIn.ALL_CHUNKS:next()
+	
 end
 
 local processChunk = function(results, dataIn, dataOut)
-	print("Processing Chunk #" .. dataIn.chunk.chunkID)
+	print("Processing Chunk #" .. dataIn.chunkID)
 
 	return { completed = true }
 end
