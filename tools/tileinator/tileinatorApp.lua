@@ -6,7 +6,22 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX   = require("tools/lib/graphics"):create()
 
-local CHUNK_IMG = love.graphics.newImage("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
+local CHUNK_IMG_DATA = love.image.newImageData("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
+local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
+
+
+local TILE = {
+    create = function(self, imgData, x, y)
+        return {
+            IMG_DATA = imgData,
+
+            x        = x,
+            y        = y,
+
+            quad     = love.graphics.newQuad(x, y, 16, 16, imgData:getWidth(), imgData:getHeight()),
+        }
+    end,
+}
 
 local CHUNK = {
     create = function(self, img, chunkX, chunkY)
@@ -20,7 +35,7 @@ local CHUNK = {
             init = function(self)
                 for y = chunkY * 256, (chunkY * 256) + 240, 16 do
                     for x = chunkX * 256, (chunkX * 256) + 240, 16 do
-                        table.insert(self.tiles, love.graphics.newQuad(x, y, 16, 16, self.chunkImg:getWidth(), self.chunkImg:getHeight()))
+                        table.insert(self.tiles, TILE:create(CHUNK_IMG_DATA, x, y))
                     end
                 end
 
@@ -39,7 +54,7 @@ local CHUNK = {
                     local x = ((chunkX * 256) +   8) +           (((n - 1) % 16) * (16 * 0.94))
                     local y = ((chunkY * 256) +   8) + (math.floor((n - 1) / 16) * (16 * 0.94))
                     
-                    GRAFX:draw(self.chunkImg, tile, x + 1, y + 1, 0, 0.875, 0.875)
+                    GRAFX:draw(self.chunkImg, tile.quad, x + 1, y + 1, 0, 0.875, 0.875)
                 end
             end,
 
