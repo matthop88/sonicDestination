@@ -9,10 +9,21 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local CHUNK_IMG_DATA = love.image.newImageData("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
 
+local GRAVITY_FORCE  = 787.5
+
 local GARBAGE_HEAP   = {
     draw = function(self)
         for _, tile in ipairs(self) do
             tile:draw()
+        end
+    end,
+
+    update = function(self, dt)
+        for _, tile in ipairs(self) do
+            if tile.velocity == nil then tile.velocity = 0 end
+            
+            tile.velocity = tile.velocity + (GRAVITY_FORCE * dt)
+            tile.posY     = tile.posY     + (tile.velocity * dt)
         end
     end,
 }
@@ -33,7 +44,7 @@ local TILE = {
         
             draw     = function(self)
                 GRAFX:setColor(1, 1, 1)
-                GRAFX:draw(self.IMG, self.quad, posX + 1, posY + 1, 0, 0.875, 0.875)
+                GRAFX:draw(self.IMG, self.quad, self.posX + 1, self.posY + 1, 0, 0.875, 0.875)
             end,
         }
     end,
@@ -50,14 +61,20 @@ local CHUNK = {
 
             init = function(self)
                 local n = 0
+                local tempTiles = {}
+
                 for y = chunkY * 256, (chunkY * 256) + 240, 16 do
                     for x = chunkX * 256, (chunkX * 256) + 240, 16 do
                         n = n + 1
                         local posX = ((chunkX * 256) +   8) +           (((n - 1) % 16) * (16 * 0.94))
                         local posY = ((chunkY * 256) +   8) + (math.floor((n - 1) / 16) * (16 * 0.94))
                      
-                        table.insert(self.tiles, TILE:create(CHUNK_IMG, CHUNK_IMG_DATA, x, y, posX, posY))
+                        table.insert(tempTiles, TILE:create(CHUNK_IMG, CHUNK_IMG_DATA, x, y, posX, posY))
                     end
+                end
+
+                for i = #tempTiles, 1, -1 do
+                    table.insert(self.tiles, tempTiles[i])
                 end
 
                 return self
@@ -151,12 +168,14 @@ TILE_PIPELINE:setup(chunks, GARBAGE_HEAP)
 
 function love.draw()
     chunks:draw()
+    GARBAGE_HEAP:draw()
 end
 
 function love.update(dt)
 	if not TILE_PIPELINE:isComplete() and okayToTileinate then
         TILE_PIPELINE:execute()
     end
+    GARBAGE_HEAP:update(dt)
 end
 
 function love.keypressed(key)
