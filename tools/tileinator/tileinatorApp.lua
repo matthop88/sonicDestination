@@ -69,20 +69,14 @@ local CHUNK = {
 
             init = function(self)
                 local n = 0
-                local tempTiles = {}
-
                 for y = chunkY * 256, (chunkY * 256) + 240, 16 do
                     for x = chunkX * 256, (chunkX * 256) + 240, 16 do
                         n = n + 1
                         local posX = ((chunkX * 256) +   8) +           (((n - 1) % 16) * (16 * 0.94))
                         local posY = ((chunkY * 256) +   8) + (math.floor((n - 1) / 16) * (16 * 0.94))
                      
-                        table.insert(tempTiles, TILE:create(CHUNK_IMG, CHUNK_IMG_DATA, x, y, posX, posY))
+                        table.insert(self.tiles, TILE:create(CHUNK_IMG, CHUNK_IMG_DATA, x, y, posX, posY))
                     end
-                end
-
-                for i = #tempTiles, 1, -1 do
-                    table.insert(self.tiles, tempTiles[i])
                 end
 
                 return self
@@ -128,17 +122,11 @@ local chunks = ({
 
         local chunkCount = self:calculateChunkCount()
 
-        local tempChunks = {}
-
         for i = 1, chunkCount do
-            local chunkX = 8 - ((i - 1) % 9)         
+            local chunkX = ((i - 1) % 9)         
             local chunkY = math.floor((i - 1) / 9)
             
-            table.insert(tempChunks, CHUNK:create(self.chunkImg, chunkX, chunkY))
-        end
-
-        for i = chunkCount, 1, -1 do
-            table.insert(self, tempChunks[i])
+            table.insert(self, CHUNK:create(self.chunkImg, chunkX, chunkY))
         end
 
         return self
