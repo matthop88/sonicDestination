@@ -26,8 +26,10 @@ local CHUNK = {
             end,
 
             draw = function(self, tileMode)
-                if tileMode then self:drawTiles()
-                else             self:drawChunk() end
+                if self:isOnScreen() then
+                    if tileMode then self:drawTiles()
+                    else             self:drawChunk() end
+                end
             end,
 
             drawTiles = function(self)
@@ -41,6 +43,13 @@ local CHUNK = {
 
             drawChunk = function(self)
                 GRAFX:draw(chunkImg, self.quad, (chunkX * 256) + 8, (chunkY * 256) + 8, 0, 0.94, 0.94)
+            end,
+
+            isOnScreen = function(self, cX, cY)
+                local leftX, topY     = GRAFX:screenToImageCoordinates(0, 0)
+                local rightX, bottomY = GRAFX:screenToImageCoordinates(love.graphics:getWidth(), love.graphics:getHeight())
+
+                return chunkX * 256 < rightX and (chunkX * 256) + 256 > leftX and chunkY * 256 < bottomY and (chunkY * 256) + 256 > topY
             end,
 
         }):init()
@@ -78,6 +87,7 @@ local chunks = ({
     toggleTileMode = function(self)
         self.tileMode = not self.tileMode
     end,
+
 
 }):init()
 
