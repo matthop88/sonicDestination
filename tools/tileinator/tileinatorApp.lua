@@ -22,13 +22,15 @@ local GARBAGE_HEAP   = {
         for _, tile in ipairs(self) do
             if tile.velocity == nil then 
                 tile.delay = math.random(15)
-                tile.velocity = 0 
+                tile.velocity = 0
+                tile.alpha = 1
             end
             
             tile.delay = math.max(0, tile.delay - 1)
             if tile.delay == 0 then
                 tile.velocity = tile.velocity + (GRAVITY_FORCE * dt)
                 tile.posY     = tile.posY     + (tile.velocity * dt)
+                tile.alpha    = tile.alpha - (0.333 * dt)
             end
         end
     end,
@@ -49,7 +51,7 @@ local TILE = {
             quad     = love.graphics.newQuad(x, y, 16, 16, imgData:getWidth(), imgData:getHeight()),
         
             draw     = function(self)
-                GRAFX:setColor(1, 1, 1)
+                GRAFX:setColor(1, 1, 1, self.alpha or 1)
                 GRAFX:draw(self.IMG, self.quad, self.posX + 1, self.posY + 1, 0, 0.875, 0.875)
             end,
         }
@@ -102,6 +104,7 @@ local CHUNK = {
             end,
 
             drawChunk = function(self)
+                GRAFX:setColor(1, 1, 1)
                 GRAFX:draw(self.chunkImg, self.quad, (chunkX * 256) + 8, (chunkY * 256) + 8, 0, 0.94, 0.94)
             end,
 
