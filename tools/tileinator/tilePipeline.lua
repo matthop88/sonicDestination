@@ -33,10 +33,30 @@ local processTiles = function(results, dataIn, dataOut)
 
 	dataOut.tileID = dataIn.CHUNK_TILES:getIndex()
 	dataOut.tile   = dataIn.CHUNK_TILES:next()
+	dataOut.TILE_REPO = FEEDER:create("Tile Repo", TILE_REPO)
 end
 
-local processTile = function(results, dataIn, dataOut)
+local addTileToRepo = function(results, dataIn, dataOut)
 	print("Processing Tile #" .. dataIn.tileID)
+
+	if results and dataIn.TILE_REPO:isComplete() then
+		return { completed = true }
+	end
+			
+	if dataIn.tileID % 16 == 0 then
+		table.insert(dataIn.TILE_REPO:get(), dataIn.tile)
+		return { completed = true }
+	end
+
+	dataOut.tile       = dataIn.tile
+	dataOut.repoTileID = dataIn.TILE_REPO:getIndex()
+	dataOut.repoTile   = dataIn.TILE_REPO:next()
+end
+
+local compareTiles = function(results, dataIn, dataOut)
+	if dataIn.repoTile ~= nil then
+		print("Comparing with Repo Tile #" .. dataIn.repoTileID)
+	end
 
 	return { completed = true }
 end
@@ -49,7 +69,8 @@ return {
 		PIPELINE:add("Chunks Processor",      processChunks)
 		PIPELINE:add("Process Chunk",         processChunk)
 		PIPELINE:add("Process Tiles",         processTiles)
-		PIPELINE:add("Process Tile",          processTile)
+		PIPELINE:add("Add Tile to Repo",      addTileToRepo)
+		PIPELINE:add("Compare Tiles",         compareTiles)
 		PIPELINE:push({ ALL_CHUNKS = FEEDER:create("All Chunks", CHUNKS) })
 	end,
 
