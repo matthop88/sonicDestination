@@ -5,9 +5,38 @@ local TASK_SLICE_TIME_IN_MS = 12
 
 local CHUNKS, TILE_REPO
 
+local getPixelColorAt = function(imageData, x, y)
+    local r, g, b, a = imageData:getPixel(math.floor(x), math.floor(y))
+    return { r = r, g = g, b = b, a = a }
+end
+
+local colorsMatch = function(c1, c2)
+    return c1 ~= nil 
+       and c2 ~= nil
+       and math.abs(c1.r - c2.r) < 0.005
+       and math.abs(c1.g - c2.g) < 0.005 
+       and math.abs(c1.b - c2.b) < 0.005
+       and math.abs(c1.a - c2.a) < 0.005
+end
+
+local comparePixelsOfTiles = function(tile1, tile2)
+    local x1, y1, x2, y2 = tile1.x, tile1.y, tile2.x, tile2.y
+
+    for i = 0, 15 do
+    	for j = 0, 15 do
+    		if not colorsMatch(getPixelColorAt(tile1.IMG_DATA, x1 + j, y1 + i), getPixelColorAt(tile2.IMG_DATA, x2 + j, y2 + i)) then 
+        		return false
+        	end
+        end
+    end
+
+    return true
+end
+
 local processChunks = function(results, dataIn, dataOut)
 	if dataIn.ALL_CHUNKS:isComplete() then
 		print("Tileination complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
+		print("Number of tiles in repo: " .. #TILE_REPO)
 		return { completed = true }
 	end
 				
@@ -20,8 +49,6 @@ local processChunk = function(results, dataIn, dataOut)
 	if results then
 		return { completed = true }
 	end
-
-	print("Processing Chunk #" .. dataIn.chunkID)
 
 	dataOut.CHUNK_TILES = FEEDER:create("Chunk Tiles", dataIn.chunk.tiles)
 end
@@ -37,17 +64,17 @@ local processTiles = function(results, dataIn, dataOut)
 end
 
 local addTileToRepo = function(results, dataIn, dataOut)
-	print("Processing Tile #" .. dataIn.tileID)
-
-	if results and dataIn.TILE_REPO:isComplete() then
-		return { completed = true }
-	end
-			
-	if dataIn.tileID % 16 == 0 then
-		table.insert(dataIn.TILE_REPO:get(), dataIn.tile)
-		return { completed = true }
-	end
-
+	if results then
+		if not results.tilesAreEqual then
+			if dataIn.TILE_REPO:isComplete() then
+				table.insert(dataIn.TILE_REPO:get(), dataIn.tile)
+				return { wasAdded = true }
+			end
+		else
+			return { wasAdded = false }
+		end
+	end		
+	
 	dataOut.tile       = dataIn.tile
 	dataOut.repoTileID = dataIn.TILE_REPO:getIndex()
 	dataOut.repoTile   = dataIn.TILE_REPO:next()
@@ -55,10 +82,11 @@ end
 
 local compareTiles = function(results, dataIn, dataOut)
 	if dataIn.repoTile ~= nil then
-		print("Comparing with Repo Tile #" .. dataIn.repoTileID)
+		local tilesAreEqual = comparePixelsOfTiles(dataIn.tile, dataIn.repoTile)
+		return { tilesAreEqual = tilesAreEqual }
 	end
 
-	return { completed = true }
+	return { tilesAreEqual = false }
 end
 
 return {
