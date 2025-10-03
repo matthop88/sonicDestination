@@ -9,11 +9,10 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local CHUNK_IMG = love.graphics.newImage("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 
 local CHUNK = {
-    create = function(self, img, chunkID, chunkX, chunkY)
+    create = function(self, img, chunkX, chunkY)
         return ({
             chunkImg = img,
-            chunkID  = chunkID,
-
+            
             quad = love.graphics.newQuad(chunkX * 256, chunkY * 256, 256, 256, img:getWidth(), img:getHeight()),
 
             tiles = { },
@@ -71,7 +70,7 @@ local chunks = ({
             local chunkX = (i - 1) % 9          
             local chunkY = math.floor((i - 1) / 9)
             
-            table.insert(self, CHUNK:create(self.chunkImg, i, chunkX, chunkY))
+            table.insert(self, CHUNK:create(self.chunkImg, chunkX, chunkY))
         end
 
         return self
