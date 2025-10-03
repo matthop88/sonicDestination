@@ -20,10 +20,16 @@ local GARBAGE_HEAP   = {
 
     update = function(self, dt)
         for _, tile in ipairs(self) do
-            if tile.velocity == nil then tile.velocity = 0 end
+            if tile.velocity == nil then 
+                tile.delay = math.random(15)
+                tile.velocity = 0 
+            end
             
-            tile.velocity = tile.velocity + (GRAVITY_FORCE * dt)
-            tile.posY     = tile.posY     + (tile.velocity * dt)
+            tile.delay = math.max(0, tile.delay - 1)
+            if tile.delay == 0 then
+                tile.velocity = tile.velocity + (GRAVITY_FORCE * dt)
+                tile.posY     = tile.posY     + (tile.velocity * dt)
+            end
         end
     end,
 }
@@ -118,11 +124,18 @@ local chunks = ({
         self.chunkImg = img
 
         local chunkCount = self:calculateChunkCount()
+
+        local tempChunks = {}
+
         for i = 1, chunkCount do
-            local chunkX = (i - 1) % 9          
+            local chunkX = 8 - ((i - 1) % 9)         
             local chunkY = math.floor((i - 1) / 9)
             
-            table.insert(self, CHUNK:create(self.chunkImg, chunkX, chunkY))
+            table.insert(tempChunks, CHUNK:create(self.chunkImg, chunkX, chunkY))
+        end
+
+        for i = chunkCount, 1, -1 do
+            table.insert(self, tempChunks[i])
         end
 
         return self
