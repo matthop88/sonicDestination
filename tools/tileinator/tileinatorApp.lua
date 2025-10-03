@@ -17,6 +17,35 @@ local TILE_REPO      = {
             tile:draw()
         end
     end,
+
+    update = function(self, dt)
+        for _, tile in ipairs(self) do
+            if tile.targetX == nil then
+                tile.delay = math.random(25) + 50
+                local chunkID = math.floor((tile.tileID - 1) / 256)
+                local x = (tile.tileID - 1) % 16
+                local y = math.floor(((tile.tileID - 1) % 256) / 16)
+
+                tile.origX   = tile.posX
+                tile.origY   = tile.posY
+
+                tile.targetX = (chunkID * 350) + (x * 20) + 8
+                tile.targetY = (y * 20) + 8
+            end
+
+            tile.delay = math.max(0, tile.delay - 1)
+            if tile.delay == 0 then
+                tile.posX = tile.posX + (tile.targetX - tile.origX) * dt
+                if math.abs(tile.origX - tile.posX) > math.abs(tile.origX - tile.targetX) then
+                    tile.posX = tile.targetX
+                end
+                tile.posY = tile.posY + (tile.targetY - tile.origY) * dt
+                if math.abs(tile.origY - tile.posY) > math.abs(tile.origY - tile.targetY) then
+                    tile.posY = tile.targetY
+                end
+            end
+        end
+    end,
 }
 
 local GARBAGE_HEAP   = {
@@ -189,6 +218,7 @@ function love.update(dt)
         TILE_PIPELINE:execute()
     end
     GARBAGE_HEAP:update(dt)
+    TILE_REPO:update(dt)
 end
 
 function love.keypressed(key)
