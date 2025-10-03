@@ -9,16 +9,26 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local CHUNK_IMG_DATA = love.image.newImageData("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
 
+local GARBAGE_HEAP   = {}
 
 local TILE = {
-    create = function(self, imgData, x, y)
+    create = function(self, img, imgData, x, y, posX, posY)
         return {
             IMG_DATA = imgData,
+            IMG      = img,
 
             x        = x,
             y        = y,
 
+            posX     = posX,
+            posY     = posY,
+
             quad     = love.graphics.newQuad(x, y, 16, 16, imgData:getWidth(), imgData:getHeight()),
+        
+            draw     = function(self)
+                GRAFX:setColor(1, 1, 1)
+                GRAFX:draw(self.IMG, self.quad, posX + 1, posY + 1, 0, 0.875, 0.875)
+            end,
         }
     end,
 }
@@ -33,9 +43,14 @@ local CHUNK = {
             tiles = { },
 
             init = function(self)
+                local n = 0
                 for y = chunkY * 256, (chunkY * 256) + 240, 16 do
                     for x = chunkX * 256, (chunkX * 256) + 240, 16 do
-                        table.insert(self.tiles, TILE:create(CHUNK_IMG_DATA, x, y))
+                        n = n + 1
+                        local posX = ((chunkX * 256) +   8) +           (((n - 1) % 16) * (16 * 0.94))
+                        local posY = ((chunkY * 256) +   8) + (math.floor((n - 1) / 16) * (16 * 0.94))
+                     
+                        table.insert(self.tiles, TILE:create(CHUNK_IMG, CHUNK_IMG_DATA, x, y, posX, posY))
                     end
                 end
 
@@ -51,10 +66,7 @@ local CHUNK = {
 
             drawTiles = function(self)
                 for n, tile in ipairs(self.tiles) do
-                    local x = ((chunkX * 256) +   8) +           (((n - 1) % 16) * (16 * 0.94))
-                    local y = ((chunkY * 256) +   8) + (math.floor((n - 1) / 16) * (16 * 0.94))
-                    
-                    GRAFX:draw(self.chunkImg, tile.quad, x + 1, y + 1, 0, 0.875, 0.875)
+                    tile:draw()
                 end
             end,
 
@@ -123,7 +135,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 CHUNK_IMG:setFilter("nearest", "nearest")
 
-TILE_PIPELINE:setup(chunks)
+TILE_PIPELINE:setup(chunks, GARBAGE_HEAP)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
