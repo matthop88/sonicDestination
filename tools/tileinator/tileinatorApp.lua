@@ -9,6 +9,8 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local CHUNK_IMG_DATA = love.image.newImageData("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
 
+local tileinationDone = false
+
 local GRAVITY_FORCE  = 787.5
 
 local TILE_REPO      = {
@@ -19,7 +21,7 @@ local TILE_REPO      = {
     end,
 
     update = function(self, dt)
-        for _, tile in ipairs(self) do
+        for n, tile in ipairs(self) do
             if tile.targetX == nil then
                 tile.delay = math.random(25) + 50
                 local chunkID = math.floor((tile.tileID - 1) / 256)
@@ -35,14 +37,25 @@ local TILE_REPO      = {
 
             tile.delay = math.max(0, tile.delay - 1)
             if tile.delay == 0 then
-                tile.posX = tile.posX + (tile.targetX - tile.origX) * dt
-                if math.abs(tile.origX - tile.posX) > math.abs(tile.origX - tile.targetX) then
-                    tile.posX = tile.targetX
+                if not tile.reachedX then
+                    tile.posX = tile.posX + (tile.targetX - tile.origX) * dt
+                    if math.abs(tile.origX - tile.posX) > math.abs(tile.origX - tile.targetX) then
+                        tile.posX = tile.targetX
+                        tile.reachedX = true
+                    end
                 end
-                tile.posY = tile.posY + (tile.targetY - tile.origY) * dt
-                if math.abs(tile.origY - tile.posY) > math.abs(tile.origY - tile.targetY) then
-                    tile.posY = tile.targetY
+                if not tile.reachedY then
+                    tile.posY = tile.posY + (tile.targetY - tile.origY) * dt
+                    if math.abs(tile.origY - tile.posY) > math.abs(tile.origY - tile.targetY) then
+                        tile.posY = tile.targetY
+                        tile.reachedY = true
+                    end
                 end
+            end
+
+            if n == #self and tile.reachedX and tile.reachedY and tileinationDone == false then
+                tileinationDone = true
+                printToReadout("Press 'return' to save the tiles to disk.")
             end
         end
     end,
