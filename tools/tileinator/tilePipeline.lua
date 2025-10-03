@@ -3,7 +3,7 @@ local FEEDER   = require("tools/lib/pipeline/feeder")
 
 local TASK_SLICE_TIME_IN_MS = 12
 
-local CHUNKS, TILE_REPO
+local CHUNKS, TILE_REPO, GARBAGE_HEAP
 
 local getPixelColorAt = function(imageData, x, y)
     local r, g, b, a = imageData:getPixel(math.floor(x), math.floor(y))
@@ -71,6 +71,8 @@ local addTileToRepo = function(results, dataIn, dataOut)
 				return { wasAdded = true }
 			end
 		else
+			dataIn.tile.garbage = true
+			table.insert(GARBAGE_HEAP, dataIn.tile)
 			return { wasAdded = false }
 		end
 	end		
@@ -90,9 +92,10 @@ local compareTiles = function(results, dataIn, dataOut)
 end
 
 return {
-	setup = function(self, chunks)
-		CHUNKS    = chunks
-		TILE_REPO = {}
+	setup = function(self, chunks, garbageHeap)
+		CHUNKS       = chunks
+		TILE_REPO    = {}
+		GARBAGE_HEAP = garbageHeap
 		
 		PIPELINE:add("Chunks Processor",      processChunks)
 		PIPELINE:add("Process Chunk",         processChunk)
