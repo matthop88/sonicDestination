@@ -67,7 +67,8 @@ local addTileToRepo = function(results, dataIn, dataOut)
 	if results then
 		if not results.tilesAreEqual then
 			if dataIn.TILE_REPO:isComplete() then
-				table.insert(dataIn.TILE_REPO:get(), dataIn.tile)
+				table.insert(TILE_REPO, dataIn.tile)
+				dataIn.tile.tileID = #TILE_REPO
 				return { wasAdded = true }
 			end
 		else
@@ -92,9 +93,9 @@ local compareTiles = function(results, dataIn, dataOut)
 end
 
 return {
-	setup = function(self, chunks, garbageHeap)
+	setup = function(self, chunks, tileRepo, garbageHeap)
 		CHUNKS       = chunks
-		TILE_REPO    = {}
+		TILE_REPO    = tileRepo
 		GARBAGE_HEAP = garbageHeap
 		
 		PIPELINE:add("Chunks Processor",      processChunks)
