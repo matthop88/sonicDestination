@@ -130,7 +130,7 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = GRAFX,            })
+    :add("zooming",      { imageViewer = GRAFX, })
     :add("scrolling",    
     { 
     	imageViewer = GRAFX,
@@ -140,6 +140,15 @@ PLUGINS = require("plugins/engine")
     { 
     	printFnName    = "printToReadout", 
     	accessorFnName = "getReadout",
+    }) 
+    :add("timedFunctions",
+    {
+        {   secondsWait = 1, 
+            callback = function() 
+                getReadout():setSustain(180) 
+                printToReadout("Press 'space' to begin tileinating.") 
+            end,
+        },
     })    
 
 
