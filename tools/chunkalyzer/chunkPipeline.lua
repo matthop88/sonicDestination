@@ -1,5 +1,5 @@
-local PIPELINE = require("tools/chunkalyzer/pipeline/pipeline"):create("Chunk Pipeline")
-local FEEDER   = require("tools/chunkalyzer/pipeline/feeder")
+local PIPELINE = require("tools/lib/pipeline/pipeline"):create("Chunk Pipeline")
+local FEEDER   = require("tools/lib/pipeline/feeder")
 
 local TASK_SLICE_TIME_IN_MS = 12
 
