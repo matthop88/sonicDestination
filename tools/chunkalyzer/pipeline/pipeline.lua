@@ -1,4 +1,4 @@
-local STAGE = require("tools/chunkalyzer/pipeline/stage")
+local STAGE = require("tools/lib/pipeline/stage")
 
 -- When we call execute() on the pipeline, the pipeline iterates through the stages, and
 -- executes the first stage with a successor that is complete.
