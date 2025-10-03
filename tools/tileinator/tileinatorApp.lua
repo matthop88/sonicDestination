@@ -11,6 +11,14 @@ local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
 
 local GRAVITY_FORCE  = 787.5
 
+local TILE_REPO      = {
+    draw = function(self)
+        for _, tile in ipairs(self) do
+            tile:draw()
+        end
+    end,
+}
+
 local GARBAGE_HEAP   = {
     draw = function(self)
         for _, tile in ipairs(self) do
@@ -21,7 +29,7 @@ local GARBAGE_HEAP   = {
     update = function(self, dt)
         for _, tile in ipairs(self) do
             if tile.velocity == nil then 
-                tile.delay = math.random(15)
+                tile.delay = math.random(50)
                 tile.velocity = 0
                 tile.alpha = 1
             end
@@ -91,7 +99,7 @@ local CHUNK = {
 
             drawTiles = function(self)
                 for n, tile in ipairs(self.tiles) do
-                    if not tile.garbage then
+                    if not tile.garbage and not tile.tileID then
                         tile:draw()
                     end
                 end
@@ -164,7 +172,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 CHUNK_IMG:setFilter("nearest", "nearest")
 
-TILE_PIPELINE:setup(chunks, GARBAGE_HEAP)
+TILE_PIPELINE:setup(chunks, TILE_REPO, GARBAGE_HEAP)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -172,6 +180,7 @@ TILE_PIPELINE:setup(chunks, GARBAGE_HEAP)
 
 function love.draw()
     chunks:draw()
+    TILE_REPO:draw()
     GARBAGE_HEAP:draw()
 end
 
@@ -184,7 +193,10 @@ end
 
 function love.keypressed(key)
     if     key == "t"     then chunks:toggleTileMode() 
-    elseif key == "space" then okayToTileinate = true end
+    elseif key == "space" then 
+        chunks.tileMode = true
+        okayToTileinate = true 
+    end
 end
 
 --------------------------------------------------------------
