@@ -9,9 +9,10 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local CHUNK_IMG = love.graphics.newImage("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 
 local CHUNK = {
-    create = function(self, img, chunkX, chunkY)
+    create = function(self, img, chunkID, chunkX, chunkY)
         return ({
             chunkImg = img,
+            chunkID  = chunkID,
 
             quad = love.graphics.newQuad(chunkX * 256, chunkY * 256, 256, 256, img:getWidth(), img:getHeight()),
 
@@ -70,7 +71,7 @@ local chunks = ({
             local chunkX = (i - 1) % 9          
             local chunkY = math.floor((i - 1) / 9)
             
-            table.insert(self, CHUNK:create(self.chunkImg, chunkX, chunkY))
+            table.insert(self, CHUNK:create(self.chunkImg, i, chunkX, chunkY))
         end
 
         return self
@@ -96,6 +97,9 @@ local chunks = ({
 
 }):init(CHUNK_IMG)
 
+local TILE_PIPELINE = require("tools/tileinator/tilePipeline")
+local okayToTileinate = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -104,6 +108,8 @@ love.window.setTitle("Tileinator")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 CHUNK_IMG:setFilter("nearest", "nearest")
+
+TILE_PIPELINE:setup(chunks)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -114,11 +120,14 @@ function love.draw()
 end
 
 function love.update(dt)
-	-- Updating happens here
+	if not TILE_PIPELINE:isComplete() and okayToTileinate then
+        TILE_PIPELINE:execute()
+    end
 end
 
 function love.keypressed(key)
-    if key == "t" then chunks:toggleTileMode() end
+    if     key == "t"     then chunks:toggleTileMode() 
+    elseif key == "space" then okayToTileinate = true end
 end
 
 --------------------------------------------------------------
