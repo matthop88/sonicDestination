@@ -9,7 +9,13 @@ local GRAFX   = require("tools/lib/graphics"):create()
 local CHUNK_IMG_DATA = love.image.newImageData("resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png")
 local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
 
-local GARBAGE_HEAP   = {}
+local GARBAGE_HEAP   = {
+    draw = function(self)
+        for _, tile in ipairs(self) do
+            tile:draw()
+        end
+    end,
+}
 
 local TILE = {
     create = function(self, img, imgData, x, y, posX, posY)
@@ -66,7 +72,9 @@ local CHUNK = {
 
             drawTiles = function(self)
                 for n, tile in ipairs(self.tiles) do
-                    tile:draw()
+                    if not tile.garbage then
+                        tile:draw()
+                    end
                 end
             end,
 
