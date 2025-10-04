@@ -45,6 +45,16 @@ local processChunks = function(results, dataIn, dataOut)
 	
 end
 
+--[[
+local processChunks = function(params, nextParams)
+	if params.ALL_CHUNKS:isComplete() then
+		print("Tileination complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
+		print("Number of tiles in repo: " .. #TILE_REPO)
+		return true
+	end
+	nextParams.chunk = params.ALL_CHUNKS:next()
+--]]
+
 local processChunk = function(results, dataIn, dataOut)
 	if results then
 		return { completed = true }
@@ -52,6 +62,12 @@ local processChunk = function(results, dataIn, dataOut)
 
 	dataOut.CHUNK_TILES = FEEDER:create("Chunk Tiles", dataIn.chunk.tiles)
 end
+
+--[[
+local processChunk = function(params, nextParams)
+	nextParams.CHUNK_TILES = FEEDER:create("Chunk Tiles", params.chunk.tiles)
+	return true
+--]]
 
 local processTiles = function(results, dataIn, dataOut)
 	if dataIn.CHUNK_TILES:isComplete() then
@@ -62,6 +78,15 @@ local processTiles = function(results, dataIn, dataOut)
 	dataOut.tile   = dataIn.CHUNK_TILES:next()
 	dataOut.TILE_REPO = FEEDER:create("Tile Repo", TILE_REPO)
 end
+
+--[[
+local processTiles = function(params, nextParams)
+	if params.CHUNK_TILES:isComplete() then
+		return true
+	end
+	nextParams.chunkTile = params.CHUNK_TILES:next()
+	nextParams.TILE_REPO = FEEDER:create("Tile Repo", TILE_REPO)
+--]]
 
 local addTileToRepo = function(results, dataIn, dataOut)
 	if results then
@@ -83,6 +108,22 @@ local addTileToRepo = function(results, dataIn, dataOut)
 	dataOut.repoTile   = dataIn.TILE_REPO:next()
 end
 
+--[[
+local addTileToRepo = function(params, nextParams)
+	if params.chunkTile.isDuplicate then
+		table.insert(GARBAGE_HEAP, params.chunkTile)
+		return true
+	elseif params.TILE_REPO:isComplete() then
+		table.insert(TILE_REPO, params.chunkTile)
+		params.chunkTile.tileID = #TILE_REPO
+		return true
+	end
+
+	nextParams.repoTile = params.TILE_REPO:next()
+end
+
+--]]
+
 local compareTiles = function(results, dataIn, dataOut)
 	if dataIn.repoTile ~= nil then
 		local tilesAreEqual = comparePixelsOfTiles(dataIn.tile, dataIn.repoTile)
@@ -91,6 +132,16 @@ local compareTiles = function(results, dataIn, dataOut)
 
 	return { tilesAreEqual = false }
 end
+
+--[[
+local compareTiles = function(params, nextParams)
+	if comparePixelsOfTiles(params.chunkTile, params.repoTile) then
+		params.chunkTile.isDuplicate = true
+	end
+
+	return true
+end
+--]]
 
 return {
 	setup = function(self, chunks, tileRepo, garbageHeap)
