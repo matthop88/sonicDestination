@@ -1,5 +1,6 @@
-local PIPELINE = require("tools/lib/pipeline/pipeline"):create("Chunk Pipeline")
-local FEEDER   = require("tools/lib/pipeline/feeder")
+local PIPELINE   = require("tools/lib/pipeline/pipeline"):create("Chunk Pipeline")
+local FEEDER     = require("tools/lib/pipeline/feeder")
+local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
 local TASK_SLICE_TIME_IN_MS = 12
 
@@ -8,25 +9,11 @@ local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
 local chunkNum = 0
 local IMAGE_DATA, CHUNK_VIEW, CHUNK_REPO
 
-local getPixelColorAt = function(x, y)
-    local r, g, b, a = IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
-    return { r = r, g = g, b = b, a = a }
-end
-
-local colorsMatch = function(c1, c2)
-    return c1 ~= nil 
-       and c2 ~= nil
-       and math.abs(c1.r - c2.r) < 0.005
-       and math.abs(c1.g - c2.g) < 0.005 
-       and math.abs(c1.b - c2.b) < 0.005
-       and math.abs(c1.a - c2.a) < 0.005
-end
-
 local comparePixelsInChunkRow = function(c1X, c1Y, c2X, c2Y)
     local x1, y1, x2, y2 = c1X, c1Y, c2X, c2Y
 
     for i = 0, 255 do
-        if not colorsMatch(getPixelColorAt(x1, y1), getPixelColorAt(x2, y2)) then
+        if not PIXEL_UTIL:pixelsMatch(IMAGE_DATA, x1, y1, IMAGE_DATA, x2, y2) then
             return false
         end
         x1 = x1 + 1
