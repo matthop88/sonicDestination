@@ -161,6 +161,7 @@ TESTING:queueTestClasses {
     require("testing/tests/testWidgetFactory"),
     require("testing/tests/testWidgets"),
     require("testing/tests/testCommandLineTool"),
+    require("testing/tests/testPipeline"),
 }
 
 require("testing/delayTests")
