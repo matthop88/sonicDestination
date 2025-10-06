@@ -47,7 +47,6 @@ local processMapChunks = function(params, nextParams)
 	end
 
 	nextParams:init {
-		mapChunkID = params.MAP_CHUNKS:getIndex(),
 		mapChunk   = params.MAP_CHUNKS:next(),
 		CHUNK_REPO = FEEDER:create("Chunk Repo", CHUNK_REPO)
 	}
