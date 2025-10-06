@@ -1,5 +1,10 @@
 local IMAGE
 
+local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
+
+local CHUNKALYZATION_DONE = false
+local PIPELINE
+
 return {
 	mapMode      = false,
 	repoMode     = false,
@@ -195,6 +200,40 @@ return {
 				else               self:updateNonUniqueChunk(c, dt)  end
 			end
 		end
+
+		if self:areChunksDoneMoving() and not CHUNKALYZATION_DONE then
+			self:onChunkalyzationComplete()
+		end
+	end,
+
+	setPipeline = function(self, pipeline)
+		PIPELINE = pipeline
+	end,
+
+	areChunksDoneMoving = function(self)
+		if not PIPELINE:isComplete() then
+			return false
+		end
+		local n = 0
+		for _, c in ipairs(self.viewModel) do
+			if c.isUnique then
+				n = n + 1
+				if c.targetX then
+					if c.targetX ~= c.x and c.targetY ~= c.y then
+						return false
+					end
+				end
+			end
+		end
+		return true
+	end,
+
+	onChunkalyzationComplete = function(self)
+		print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
+		printToReadout("Press 'return' to save to file.")
+		TALLY_SOUND:play()
+		self:setRepoMode()
+		CHUNKALYZATION_DONE = true
 	end,
 
 	updateUniqueChunk = function(self, c, dt)
