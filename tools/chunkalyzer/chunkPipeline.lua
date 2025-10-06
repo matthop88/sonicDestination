@@ -36,7 +36,7 @@ end
 local onChunkalyzationComplete = function()
 	print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 	printToReadout("Press 'return' to save to file.")
-	--TALLY_SOUND:play()
+	TALLY_SOUND:play()
 	CHUNK_VIEW:setRepoMode()
 end
 
