@@ -4,8 +4,6 @@ local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
 local TASK_SLICE_TIME_IN_MS = 12
 
-local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
-
 local chunkNum = 0
 local IMAGE_DATA, CHUNK_VIEW, CHUNK_REPO
 
@@ -33,17 +31,9 @@ local sliceChunkIntoRows = function(chunk)
 	return rows
 end
 
-local onChunkalyzationComplete = function()
-	print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
-	printToReadout("Press 'return' to save to file.")
-	TALLY_SOUND:play()
-	CHUNK_VIEW:setRepoMode()
-end
-
 local processMapChunks = function(params, nextParams)
 	if params.MAP_CHUNKS:isComplete() then
-		onChunkalyzationComplete()
-		return { completed = true }
+		return true
 	end
 
 	nextParams:init {
@@ -56,12 +46,12 @@ end
 local addMapChunkToRepo = function(params, nextParams)
 	if     params.mapChunk.isDuplicate == true then
 		CHUNK_VIEW:tagChunk(params.mapChunk)
-		return { completed = true }
+		return true
 	elseif params.CHUNK_REPO:isComplete() then
 		params.mapChunk.isDuplicate = false
 		params.mapChunk.repoChunkID = CHUNK_REPO:add(params.mapChunk)
 		CHUNK_VIEW:tagChunk(params.mapChunk)
-		return { completed = true }
+		return true
 	end
 
 	nextParams:init {
@@ -74,7 +64,7 @@ end
 local compareChunks = function(params, nextParams)
 	if params.mapChunk.isDuplicate ~= nil then
 		params.mapChunk.repoChunkID = params.repoChunkID
-		return { completed = true }
+		return true
 	end		
 		
 	nextParams:init {
@@ -87,10 +77,10 @@ end
 local compareChunkRows = function(params, nextParams)
 	if params.mapChunkRow and params.mapChunkRow.isEqual == false then
 		params.mapChunk.isDuplicate = false
-		return { completed = true }
+		return true
 	elseif params.mapChunkRows:isComplete() then
 		params.mapChunk.isDuplicate = true
-		return { completed = true }
+		return true
 	end
 	
 	nextParams:init {
@@ -104,7 +94,7 @@ local compareChunkRow = function(params, nextParams)
 	local rowsAreEqual = comparePixelsInChunkRow(params.mapChunkRow.x, params.mapChunkRow.y, params.repoChunkRow.x, params.repoChunkRow.y)
 	params.mapChunkRow.isEqual = rowsAreEqual
 
-	return { completed = true }
+	return true
 end
 
 return {
@@ -127,5 +117,9 @@ return {
 
 	isComplete = function(self)
 		return PIPELINE:isComplete()
+	end,
+
+	getTotalElapsedTime = function(self)
+		return PIPELINE:getTotalElapsedTime()
 	end,
 }
