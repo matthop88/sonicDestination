@@ -19,6 +19,8 @@ local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZE
 
 local CHUNK_PIPELINE    = require("tools/chunkalyzer/chunkPipeline")
 
+CHUNKALYZER_VIEW:setPipeline(CHUNK_PIPELINE)
+
 local okayToChunkalyze  = false
 
 --------------------------------------------------------------
