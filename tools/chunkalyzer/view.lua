@@ -241,13 +241,13 @@ return {
 		end
 	end,
 
-	tagChunk = function(self, x, y, cID, isUnique)
+	tagChunk = function(self, chunk)
 		for _, c in ipairs(self.viewModel) do
-			if c.mapX == x and c.mapY == y then 
-				c.id = cID
-				c.targetX = (((cID - 1) % 9) * 272) + 16
-				c.targetY = (math.floor((cID - 1) / 9) * 272) + 16
-				c.isUnique = isUnique 
+			if c.mapX == chunk.x and c.mapY == chunk.y then 
+				c.id = chunk.repoChunkID
+				c.targetX = (((chunk.repoChunkID - 1) % 9) * 272) + 16
+				c.targetY = (math.floor((chunk.repoChunkID - 1) / 9) * 272) + 16
+				c.isUnique = not chunk.isDuplicate 
 				c.highlightAlpha = 0
 				c.numberAlpha = 0
 				
