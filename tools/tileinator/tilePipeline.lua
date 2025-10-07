@@ -79,10 +79,10 @@ local compareTiles = function(params, nextParams)
 end
 
 return {
-	setup = function(self, chunks, tileRepo, garbageHeap)
-		CHUNKS       = chunks
-		TILE_REPO    = tileRepo
-		GARBAGE_HEAP = garbageHeap
+	setup = function(self, tileView)
+		CHUNKS       = tileView.CHUNKS
+		TILE_REPO    = tileView.TILE_REPO
+		GARBAGE_HEAP = tileView.GARBAGE_HEAP
 		
 		PIPELINE:add("Chunks Processor",      processChunks)
 		PIPELINE:add("Process Chunk",         processChunk)
