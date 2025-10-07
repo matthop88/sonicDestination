@@ -220,7 +220,8 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-	    if     key == "t"     then self.CHUNKS:toggleTileMode() end
+	    if     key == "t"      then self.CHUNKS:toggleTileMode() 
+	   	elseif key == "return" then self:save("sampleTileImage")	end
 	end,
 
 	getPageWidth = function(self)
@@ -258,5 +259,17 @@ return {
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+    end,
+
+    save = function(self, tileImageName)
+    	if tileinationDone then self:saveTileImage(tileImageName) end
+    end,
+
+	saveTileImage = function(self, tileImageName)
+    	local savableTileImage = require("tools/tileinator/savableTileImage"):create(self.TILE_REPO, CHUNK_IMG)
+    	local fileData = savableTileImage:save(tileImageName)
+
+    	printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+    	print("Saved to " .. love.filesystem.getSaveDirectory())
     end,
 }
