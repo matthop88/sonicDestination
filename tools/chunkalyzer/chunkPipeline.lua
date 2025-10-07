@@ -37,6 +37,7 @@ local processMapChunks = function(params, nextParams)
 	end
 
 	nextParams:init {
+		mapChunkID = params.MAP_CHUNKS:getIndex(),
 		mapChunk   = params.MAP_CHUNKS:next(),
 		CHUNK_REPO = FEEDER:create("Chunk Repo", CHUNK_REPO)
 	}
@@ -62,8 +63,9 @@ local addMapChunkToRepo = function(params, nextParams)
 end
 
 local compareChunks = function(params, nextParams)
-	if params.mapChunk.isDuplicate ~= nil then
+	if params.mapChunk.processed then
 		params.mapChunk.repoChunkID = params.repoChunkID
+		params.mapChunk.processed = false
 		return true
 	end		
 		
@@ -76,16 +78,18 @@ end
 
 local compareChunkRows = function(params, nextParams)
 	if params.mapChunkRow and params.mapChunkRow.isEqual == false then
-		params.mapChunk.isDuplicate = false
+		params.mapChunk.processed   = true
 		return true
 	elseif params.mapChunkRows:isComplete() then
 		params.mapChunk.isDuplicate = true
+		params.mapChunk.processed   = true
 		return true
 	end
 	
 	nextParams:init {
-		mapChunkRow  = params.mapChunkRows:next(),
-		repoChunkRow = params.repoChunkRows:next() 
+		mapChunkRowNum = params.mapChunkRows:getIndex(),
+		mapChunkRow    = params.mapChunkRows:next(),
+		repoChunkRow   = params.repoChunkRows:next() 
 	}
 	
 end
@@ -93,7 +97,7 @@ end
 local compareChunkRow = function(params, nextParams)
 	local rowsAreEqual = comparePixelsInChunkRow(params.mapChunkRow.x, params.mapChunkRow.y, params.repoChunkRow.x, params.repoChunkRow.y)
 	params.mapChunkRow.isEqual = rowsAreEqual
-
+	
 	return true
 end
 
