@@ -133,6 +133,9 @@ return {
 	            end
 	        end
 	    end,
+
+	    getWidth  = function(self) return ((math.floor((#self - 1) / 256) + 1) * 350 ) + 8  end,
+	    getHeight = function(self) return 272 end,
 	},
 
 	GARBAGE_HEAP   = {
@@ -187,14 +190,16 @@ return {
 	    end,
 
 	    calculateChunkCount = function(self)
-	        local width, height = self.chunkImg:getWidth(), self.chunkImg:getHeight()
+	        local width, height = self:getWidth(), self:getHeight()
 
 	        return math.floor(width / 256) * math.floor(height / 256)
 	    end,
 
-	    toggleTileMode = function(self)
-	        self.tileMode = not self.tileMode
-	    end,
+	    getWidth       = function(self) return self.chunkImg:getWidth()   end,
+	    getHeight      = function(self) return self.chunkImg:getHeight()  end,
+
+	    toggleTileMode = function(self) self.tileMode = not self.tileMode end,
+
 	}):init(CHUNK_IMG),
 
 	setTileMode = function(self, tileMode)
@@ -219,21 +224,26 @@ return {
 	end,
 
 	getPageWidth = function(self)
-		if self.mapMode then return IMAGE:getWidth()
-		else                 return self.pageWidth  end
+		if   self.CHUNKS.tileMode then return self.TILE_REPO:getWidth()
+		else                           return self.CHUNKS:getWidth()    end
 	end,
 
 	getPageHeight = function(self)
-		if self.mapMode then return IMAGE:getHeight()
-		else                 return self.pageHeight  end
+		if   self.CHUNKS.tileMode then return self.TILE_REPO:getHeight() 
+		else                           return self.CHUNKS:getHeight()   end
 	end,
 
 	keepImageInBounds = function(self)
-        -- do something
+        GRAFX:setX(math.min(0, math.max(GRAFX:getX(), (love.graphics:getWidth()  / GRAFX:getScale()) - self:getPageWidth())))
+        GRAFX:setY(math.min(0, math.max(GRAFX:getY(), (love.graphics:getHeight() / GRAFX:getScale()) - self:getPageHeight())))
     end,
 
     moveImage = function(self, deltaX, deltaY)
-	    GRAFX:moveImage(deltaX, deltaY)
+	    if self.CHUNKS.tileMode then
+	    	GRAFX:moveImage(deltaX / 2, deltaY / 2)
+	    else
+	    	GRAFX:moveImage(deltaX, deltaY)
+	    end
     end,
 
     screenToImageCoordinates = function(self, screenX, screenY)
