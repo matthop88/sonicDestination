@@ -229,13 +229,13 @@ return {
 	end,
 
 	getPageWidth = function(self)
-		if   self.CHUNKS.tileMode then return self.TILE_REPO:getWidth()
-		else                           return self.CHUNKS:getWidth()    end
+		if   tileinationDone and self.CHUNKS.tileMode then return self.TILE_REPO:getWidth()
+		else                                               return self.CHUNKS:getWidth()    end
 	end,
 
 	getPageHeight = function(self)
-		if   self.CHUNKS.tileMode then return self.TILE_REPO:getHeight() 
-		else                           return self.CHUNKS:getHeight()   end
+		if   tileinationDone and self.CHUNKS.tileMode then return self.TILE_REPO:getHeight() 
+		else                                               return self.CHUNKS:getHeight()   end
 	end,
 
 	keepImageInBounds = function(self)
@@ -256,7 +256,7 @@ return {
     end,
 
     adjustScaleGeometrically = function(self, deltaScale)
-    	if (deltaScale < 0 and GRAFX:getScale() >= 0.5) or (deltaScale > 0 and GRAFX:getScale() <= 5.0) then
+    	if (deltaScale < 0 and GRAFX:getScale() >= 0.3) or (deltaScale > 0 and GRAFX:getScale() <= 5.0) then
 			GRAFX:adjustScaleGeometrically(deltaScale)
 		end
     end,
