@@ -66,14 +66,18 @@ local addTileToRepo = function(params, nextParams)
 	end		
 	
 	nextParams:init {
-		repoTile = params.TILE_REPO:next(),
+		repoTileID = params.TILE_REPO:getIndex(),
+		repoTile   = params.TILE_REPO:next(),
 	}
 
 end
 
 local compareTiles = function(params, nextParams)
 	local tilesAreEqual = comparePixelsOfTiles(params.tile, params.repoTile)
-	if tilesAreEqual then params.tile.garbage = true end
+	if tilesAreEqual then 
+		params.tile.garbage = true 
+		params.tile.tileID  = params.repoTileID
+	end
 
 	return true
 end
