@@ -13,6 +13,11 @@ return {
 			shortcut = "c",
 		},
 
+		mapFileIn = {
+			description = "map data file which contains reference to chunks; will be modified",
+			shortcut = "m",
+		},
+
 		tileImageOut = {
 			description = "tiles image to write based upon chunk compression",
 			shortcut = "t",
