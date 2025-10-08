@@ -225,7 +225,7 @@ return {
 
 	handleKeypressed = function(self, key)
 	    if     key == "t"      then self.CHUNKS:toggleTileMode() 
-	   	elseif key == "return" then self:save("sampleChunkLayout", "sampleTileImage")	end
+	   	elseif key == "return" then self:save()	end
 	end,
 
 	getPageWidth = function(self)
@@ -265,7 +265,9 @@ return {
         GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
-    save = function(self, chunkLayoutName, tilesImageName)
+    save = function(self)
+    	local chunkLayoutName = __PARAMS["chunkFileOut"] or "sampleChunkLayout"
+    	local tilesImageName  = __PARAMS["tileImageOut"] or "sampleTileImage"
     	if tileinationDone then 
     		self:saveTileImage(tilesImageName) 
     		self:saveChunkLayout(chunkLayoutName, tilesImageName)
