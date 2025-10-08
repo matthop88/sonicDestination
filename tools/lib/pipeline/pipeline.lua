@@ -28,18 +28,17 @@ return {
 			end,
 
 			executeOneStep = function(self)
-				local executeStageIndex = nil
+				local lastProcessingStageIndex = nil
 				
 				for n, stage in ipairs(self.stages) do
-					if     stage:isProcessing() then executeStageIndex = n 
-					elseif executeStageIndex    then break             end
+					if     stage:isProcessing() then lastProcessingStageIndex = n end
 				end
 
-				if executeStageIndex == nil then
+				if lastProcessingStageIndex == nil then
 					print("ERROR: no stage to execute!")
 				else
-					local stageToExecute  = self.stages[executeStageIndex]
-					local downStreamStage = self.stages[executeStageIndex + 1]
+					local stageToExecute  = self.stages[lastProcessingStageIndex]
+					local downStreamStage = self.stages[lastProcessingStageIndex + 1]
 					
 					stageToExecute:execute(downStreamStage)
 				end
