@@ -268,9 +268,11 @@ return {
     save = function(self)
     	local chunkLayoutName = __PARAMS["chunkFileOut"] or "sampleChunkLayout"
     	local tilesImageName  = __PARAMS["tileImageOut"] or "sampleTileImage"
+    	local mapDataFilename = __PARAMS["mapFileIn"]
     	if tileinationDone then 
     		self:saveTileImage(tilesImageName) 
     		self:saveChunkLayout(chunkLayoutName, tilesImageName)
+    		self:updateMapLayout(mapDataFilename, chunkLayoutName)
     	end
     end,
 
@@ -285,5 +287,12 @@ return {
     saveChunkLayout = function(self, chunkLayoutName, tilesImageName)
     	local savableChunkLayout = require("tools/tileinator/savableChunkLayout"):create(self.CHUNKS)
     	savableChunkLayout:save(chunkLayoutName, tilesImageName)
+    end,
+
+    updateMapLayout = function(self, mapDataFilename, chunkLayoutName)
+    	if mapDataFilename ~= nil then
+    		local updatableMapLayout = require("tools/tileinator/updatableMapLayout"):create()
+    		updatableMapLayout:update(mapDataFilename, chunkLayoutName)
+    	end
     end,
 }
