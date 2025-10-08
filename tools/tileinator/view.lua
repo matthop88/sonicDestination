@@ -3,6 +3,8 @@ local CHUNK_IMG      = love.graphics.newImage(CHUNK_IMG_DATA)
 
 local GRAVITY_FORCE  = 787.5
 
+local DARK_MODE = false
+
 CHUNK_IMG:setFilter("nearest", "nearest")
 
 local GRAFX   = require("tools/lib/graphics"):create()
@@ -207,11 +209,13 @@ return {
 	end,
 
 	draw = function(self)
-	    self.CHUNKS:draw()
-	    if self.CHUNKS.tileMode then
-	    	self.TILE_REPO:draw()
-	    	self.GARBAGE_HEAP:draw()
-	    end
+		if not DARK_MODE then
+		    self.CHUNKS:draw()
+		    if self.CHUNKS.tileMode then
+		    	self.TILE_REPO:draw()
+		    	self.GARBAGE_HEAP:draw()
+		    end
+		end
 	end,
 
 	update = function(self, dt)
@@ -221,7 +225,7 @@ return {
 
 	handleKeypressed = function(self, key)
 	    if     key == "t"      then self.CHUNKS:toggleTileMode() 
-	   	elseif key == "return" then self:save("sampleTileImage")	end
+	   	elseif key == "return" then self:save("sampleChunkLayout", "sampleTileImage")	end
 	end,
 
 	getPageWidth = function(self)
@@ -261,15 +265,23 @@ return {
         GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
-    save = function(self, tileImageName)
-    	if tileinationDone then self:saveTileImage(tileImageName) end
+    save = function(self, chunkLayoutName, tilesImageName)
+    	if tileinationDone then 
+    		self:saveTileImage(tilesImageName) 
+    		self:saveChunkLayout(chunkLayoutName, tilesImageName)
+    	end
     end,
 
-	saveTileImage = function(self, tileImageName)
+	saveTileImage = function(self, tilesImageName)
     	local savableTileImage = require("tools/tileinator/savableTileImage"):create(self.TILE_REPO, CHUNK_IMG)
-    	local fileData = savableTileImage:save(tileImageName)
+    	local fileData = savableTileImage:save(tilesImageName)
 
     	printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
     	print("Saved to " .. love.filesystem.getSaveDirectory())
+    end,
+
+    saveChunkLayout = function(self, chunkLayoutName, tilesImageName)
+    	local savableChunkLayout = require("tools/tileinator/savableChunkLayout"):create(self.CHUNKS)
+    	savableChunkLayout:save(chunkLayoutName, tilesImageName)
     end,
 }
