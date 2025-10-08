@@ -1,6 +1,6 @@
 return {
-	encode = function(self, mapData, params)
-		local serializedData = "return {\n" .. self:encodeParams(params)
+	encode = function(self, mapData)
+		local serializedData = "return {\n" .. self:encodeParams(mapData)
 		for _, row in ipairs(mapData) do
 			local rowString = "  { "
 			for _, chunkID in ipairs(row) do
@@ -14,7 +14,9 @@ return {
 	encodeParams = function(self, params)
 		local paramString = ""
 		for k, v in pairs(params) do
-			paramString = paramString .. "  " .. k .. " = \"" .. v .. "\",\n"
+			if type(v) == "string" then
+				paramString = paramString .. "  " .. k .. " = \"" .. v .. "\",\n"
+			end
 		end
 		return paramString
 	end,
