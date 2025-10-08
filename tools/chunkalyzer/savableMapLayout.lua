@@ -49,8 +49,9 @@ return {
 			end,
 
 			encodeMapData = function(self, chunksImageName)
+				self.mapData.chunksImageName = chunksImageName
 				local mapEncoder = require("tools/lib/map/mapEncoder")
-				return mapEncoder:encode(self.mapData, { chunksImageName = chunksImageName })
+				return mapEncoder:encode(self.mapData)
 			end,
 
 		}):init()
