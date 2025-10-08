@@ -49,15 +49,8 @@ return {
 			end,
 
 			encodeMapData = function(self, chunksImageName)
-				serializedData = "return {\n  chunksImageName = \"" .. chunksImageName .. "\",\n"
-				for _, row in ipairs(self.mapData) do
-					local rowString = "  { "
-					for _, chunkID in ipairs(row) do
-						rowString = rowString .. (string.rep(" ", 3 - string.len("" .. chunkID))) .. chunkID .. ", "
-					end
-					serializedData = serializedData .. rowString .. "},\n"
-				end
-				return serializedData .. "}\n"
+				local mapEncoder = require("tools/lib/map/mapEncoder")
+				return mapEncoder:encode(self.mapData, { chunksImageName = chunksImageName })
 			end,
 
 		}):init()
