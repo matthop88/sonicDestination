@@ -27,20 +27,16 @@ local processChunks = function(params, nextParams)
 		print("Number of tiles in repo: " .. #TILE_REPO)
 		return true
 	end
-				
+			
+	local chunkID = params.ALL_CHUNKS:getIndex()
+	local chunk   = params.ALL_CHUNKS:next()
+
 	nextParams:init {
-		chunk = params.ALL_CHUNKS:next(),
+		chunkID     = chunkID,
+		chunk       = chunk,
+		CHUNK_TILES = FEEDER:create("Chunk Tiles", chunk.tiles),
 	}
 	
-end
-
-local processChunk = function(params, nextParams)
-	
-	nextParams:init {
-		CHUNK_TILES = FEEDER:create("Chunk Tiles", params.chunk.tiles),
-	}
-
-	return true
 end
 
 local processTiles = function(params, nextParams)
@@ -49,6 +45,7 @@ local processTiles = function(params, nextParams)
 	end
 
 	nextParams:init {
+		tileNum   = params.CHUNK_TILES:getIndex(),
 		tile      = params.CHUNK_TILES:next(),
 		TILE_REPO = FEEDER:create("Tile Repo", TILE_REPO),
 	}
@@ -89,7 +86,6 @@ return {
 		GARBAGE_HEAP = tileView.GARBAGE_HEAP
 		
 		PIPELINE:add("Chunks Processor",      processChunks)
-		PIPELINE:add("Process Chunk",         processChunk)
 		PIPELINE:add("Process Tiles",         processTiles)
 		PIPELINE:add("Add Tile to Repo",      addTileToRepo)
 		PIPELINE:add("Compare Tiles",         compareTiles)
