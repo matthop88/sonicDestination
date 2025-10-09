@@ -28,6 +28,7 @@ return ({
 		if self.mapData.chunksImageName then
 			local chunkImgPath = "resources/zones/chunks/" .. self.mapData.chunksImageName .. ".png"
 			self.chunkImg = love.graphics.newImage(chunkImgPath)
+			self.chunkImg:setFilter("nearest", "nearest")
 		else
 			-- do something else
 		end
@@ -70,7 +71,9 @@ return ({
 	end,
 
 	refresh = function(self)
-		self:loadMapData()
+		if __PARAMS["mapIn"] then
+			self:loadMapData()
+		end
 	end,
 	
 }):init()
