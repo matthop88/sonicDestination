@@ -16,7 +16,8 @@ return ({
 		elseif __PARAMS["chunkImageIn"] then
 			self:loadChunkImgAndConstructMap()
 		elseif __PARAMS["chunkDataIn"] then
-			self:loadChunkDataAndConstructMap(__PARAMS["chunkDataIn"])
+			self:loadChunkData(__PARAMS["chunkDataIn"])
+			self:constructMap()
 		else
 			-- throw error
 		end
@@ -27,7 +28,9 @@ return ({
 	loadMapData = function(self)
 		self.mapData = dofile("resources/zones/maps/" .. __PARAMS["mapIn"] .. ".lua")
 
-		if self.mapData.chunksImageName then
+		if self.mapData.chunksDataName then
+			self:loadChunkData(self.mapData.chunksDataName)
+		elseif self.mapData.chunksImageName then
 			local chunkImgPath = "resources/zones/chunks/" .. self.mapData.chunksImageName .. ".png"
 			self.chunkImg = self:loadImgFromPath(chunkImgPath)
 		else
@@ -51,18 +54,16 @@ return ({
 		self.mapData = require("tools/mapViewer/mapConstructor"):create(self.chunkImg)
 	end,
 
-	loadChunkDataAndConstructMap = function(self, chunksDataName)
-		self.chunksData = dofile("resources/zones/chunks/" .. chunksDataName .. ".lua")
-		self.tilesImgPath = "resources/zones/tiles/" .. chunksData.tilesImageName .. ".png"
-		self.tilesImg = self:loadImgFromPath(tilesImgPath)
+	loadChunkData = function(self, chunksDataName)
+		local chunksData = dofile("resources/zones/chunks/" .. chunksDataName .. ".lua")
+		local tilesImgPath = "resources/zones/tiles/" .. chunksData.tilesImageName .. ".png"
+		local tilesImg = self:loadImgFromPath(tilesImgPath)
 
-		-- Now construct an image using a chunks constructor object
+		self.chunkImg = require("tools/mapViewer/chunkImageConstructor"):create(chunksData, tilesImg)
 	end,
 
 	refresh = function(self)
-		if __PARAMS["mapIn"] then
-			self:loadMapData()
-		end
+		self:init()
 	end,
 	
 }):init()
