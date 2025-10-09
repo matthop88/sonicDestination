@@ -113,8 +113,6 @@ local map = ({
 love.window.setTitle("Map Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-chunkImg:setFilter("nearest", "nearest")
-
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
