@@ -27,7 +27,7 @@ return ({
 
 		if self.mapData.chunksImageName then
 			local chunkImgPath = "resources/zones/chunks/" .. self.mapData.chunksImageName .. ".png"
-			self:loadChunkImgFromPath(chunkImgPath)
+			self.chunkImg = self:loadImgFromPath(chunkImgPath)
 		else
 			-- do something else
 		end
@@ -35,13 +35,14 @@ return ({
 
 	loadChunkImgAndConstructMap = function(self)
 		local chunkImgPath = "resources/zones/chunks/" .. __PARAMS["chunkImageIn"] .. ".png"
-		self:loadChunkImgFromPath(chunkImgPath)
+		self.chunkImg = self:loadImgFromPath(chunkImgPath)
 		self:constructMap()
 	end,
 
-	loadChunkImgFromPath = function(self, chunkImgPath)
-		self.chunkImg = love.graphics.newImage(chunkImgPath)
-		self.chunkImg:setFilter("nearest", "nearest")
+	loadImgFromPath = function(self, imgPath)
+		local img = love.graphics.newImage(imgPath)
+		img:setFilter("nearest", "nearest")
+		return img
 	end,
 
 	constructMap = function(self)
