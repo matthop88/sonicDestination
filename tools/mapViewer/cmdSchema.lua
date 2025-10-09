@@ -8,9 +8,14 @@ return {
 			--required = true,
 		},
 
+		chunkDataIn = {
+			description = "chunk data file to read in, construct impromptu map from",
+			shortcut = "c",
+		},
+		
 		chunkImageIn = {
 			description = "chunk image to read in, construct impromptu map from",
-			shortcut = "c",
+			shortcut = "C",
 		},
 		
 		mapOut = {
