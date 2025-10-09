@@ -15,6 +15,8 @@ return ({
 			self:loadMapData()
 		elseif __PARAMS["chunkImageIn"] then
 			self:loadChunkImgAndConstructMap()
+		elseif __PARAMS["chunkDataIn"] then
+			self:loadChunkDataAndConstructMap(__PARAMS["chunkDataIn"])
 		else
 			-- throw error
 		end
@@ -45,11 +47,11 @@ return ({
 		return img
 	end,
 
+	-- Map Constructor object?
 	constructMap = function(self)
 		local width, height = self:calculateMapDimensions()
 
 		self:createMapData(width, height)
-
 	end,	
 
 	calculateMapDimensions = function(self)
@@ -73,6 +75,14 @@ return ({
 			end
 			table.insert(self.mapData, currentRow)
 		end
+	end,
+
+	loadChunkDataAndConstructMap = function(self, chunksDataName)
+		self.chunksData = dofile("resources/zones/chunks/" .. chunksDataName .. ".lua")
+		self.tilesImgPath = "resources/zones/tiles/" .. chunksData.tilesImageName .. ".png"
+		self.tilesImg = self:loadImgFromPath(tilesImgPath)
+
+		-- Now construct an image using a chunks constructor object
 	end,
 
 	refresh = function(self)
