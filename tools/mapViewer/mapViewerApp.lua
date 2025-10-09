@@ -137,7 +137,9 @@ end
 --------------------------------------------------------------
 
 function refreshMap()
-    mapData = dofile("resources/zones/maps/" .. __PARAMS["mapIn"] .. ".lua")
+    RESOURCE_MANAGER:refresh()
+    mapData  = RESOURCE_MANAGER:getMapData()
+    chunkImg = RESOURCE_MANAGER:getChunkImage()
 end
 
 -- ...
