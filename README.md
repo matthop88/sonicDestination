@@ -67,9 +67,9 @@ runs the Sound Graph application on the sound file `sonicDestination/game/resour
 
 To execute the Chunkalyzer application, use the command
 
-    love . chunkalyzer
+    love . chunkalyzer -i {mapImageIn}
 
-with one arguments (required!) specifying the map image you wish to chunkalyze.
+with one required argument specifying the map image you wish to chunkalyze.
 Only specify the filename (WITHOUT the extension.)
 Map image is expected to be located in the resources/zones/maps/ directory.
 
@@ -77,7 +77,7 @@ Two further arguments can be specified, which are the the name of the chunks ima
 
 EX: 
 
-    love . chunkalyzer GHZ_Act1_Map ghzChunks_IMG ghz1Map
+    love . chunkalyzer -i GHZ_Act1_Map -c ghzChunks_IMG -m ghz1Map
 
 runs the Chunkalyzer application on the map image file `sonicDestination/resources/zones/maps/GHZ_Act1_Map.png`, and writes the following two files upon saving:
 
@@ -89,18 +89,53 @@ To execute the MapViewer application, use the command
 
     love . mapViewer
 
-with two arguments (first is required!) specifying the map layout file (.lua) and the map image to rewrite (.png), respectively.
-Only specify the filenames (WITHOUT the extension.)
+with three possible inputs:
+--mapIn,        -m  A map data file to read in, which links to a chunks image or chunk data image
+--chunkDataIn,  -c  A chunk data file to read in; an impromptu map will be constructed from it
+--chunkImageIn, -C  A chunk image file to read in; an impromptu map will be constructed from it. (Not a useful option)
+
+If desired, a map image file can be specified to rewrite out
+--mapOut,       -o  Raw map image to write out. 
+
+Do NOT specify the exception for any of these.
+
 Map layout file is expected to be located in the `resources/zones/maps/` directory.
 Map image file will be written to the            `resources/zones/maps/` directory.
 
 EX: 
 
-    love . mapViewer ghz1Map ghz1Map_v2_IMG
+    love . mapViewer -i ghz1Map -o ghz1Map_v2_IMG
 
 runs the Map Viewer application on the map layout file `sonicDestination/resources/zones/maps/ghz1Map.lua` and, if desired, writes a new map image file of name `sonicDestination/resources/zones/maps/ghz1Map_v2_IMG.png`.
 
 If a 2nd argument is not specified, the filename will default to `sampleRewrittenMapImage.png`.
+
+To execute the Tileinator application, use the command
+
+    love . tileinator
+
+with these inputs:
+
+--chunkImageIn,  -i,  An image file with chunks derived from a world map; a tiles image will be created from it
+--mapFileIn,     -m,  An optional map data file containing chunk references; a new reference will be added pointing to the new chunk data
+
+and with these two outputs:
+
+--chunkFileOut,  -c,  A chunk data file to write out; will refer to the tiles image file that is created.
+                      If unspecified, this will default to `sampleChunkLayout.lua`
+--tileImageOut,  -t   A tiles image to write based upon compression from chunk.
+                      If unspecified, this will default to `sampleTileImage.png`
+
+Chunk layout file is expected to be located in the `resources/zones/chunks/` directory.
+Tile image   file will be written to the           `resources/zones/tiles/`  directory.
+
+EX: 
+
+    love . tileinator -i ghzChunks_IMG -m ghz1Map -c ghzChunks -t ghzTiles_IMG
+
+runs the Tileinator application, which analyzes the file `resources/zones/chunks/ghzChunks_IMG.png` and creates two files: `resources/zones/chunks/ghzChunks.lua` and `resources/zones/tiles/ghzTiles_IMG.png`.
+
+In addition, the file `resources/zones/maps/ghz1Map.lua` is updated to have a reference to the new ghzChunks.lua chunk data file embedded inside of it.
 
 To execute the TestSuite application, use the command
 
