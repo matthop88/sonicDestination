@@ -23,7 +23,7 @@ return ({
 	end,
 
 	loadMapData = function(self)
-		self.mapData = require("resources/zones/maps/" .. __PARAMS["mapIn"])
+		self.mapData = dofile("resources/zones/maps/" .. __PARAMS["mapIn"] .. ".lua")
 
 		if self.mapData.chunksImageName then
 			local chunkImgPath = "resources/zones/chunks/" .. self.mapData.chunksImageName .. ".png"
@@ -68,4 +68,9 @@ return ({
 			table.insert(self.mapData, currentRow)
 		end
 	end,
+
+	refresh = function(self)
+		self:loadMapData()
+	end,
+	
 }):init()
