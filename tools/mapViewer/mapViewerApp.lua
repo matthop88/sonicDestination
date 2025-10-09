@@ -28,11 +28,12 @@ local chunks = ({
 
     calculateChunkCount = function(self)
         local width, height = chunkImg:getWidth(), chunkImg:getHeight()
-
+        
         return math.floor(width / 256) * math.floor(height / 256)
     end,
 
     draw = function(self, chunkID, x, y, scale)
+        GRAFX:setColor(1, 1, 1)
         GRAFX:draw(chunkImg, self[chunkID], x, y, 0, scale, scale)
     end,
 
@@ -159,6 +160,12 @@ PLUGINS = require("plugins/engine")
     { 
     	printFnName    = "printToReadout", 
     	accessorFnName = "getReadout",
-    })    
-
-
+    })
+    :add("timedFunctions",
+    {
+        {   secondsWait = 1, 
+            callback = function() 
+                refreshMap()
+            end,
+        },
+    }) 
