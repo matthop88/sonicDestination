@@ -6,10 +6,10 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX   = require("tools/lib/graphics"):create()
 
-local mapData = require("resources/zones/maps/" .. __PARAMS["mapIn"])
+local RESOURCE_MANAGER = require("tools/mapViewer/resourceManager")
 
-local chunkImgPath = "resources/zones/chunks/" .. mapData.chunksImageName .. ".png"
-local chunkImg = love.graphics.newImage(chunkImgPath)
+local mapData  = RESOURCE_MANAGER:getMapData()
+local chunkImg = RESOURCE_MANAGER:getChunkImage()
 
 local mapImageNameToRewrite = __PARAMS["mapOut"] or "sampleRewrittenMapImage"
 
