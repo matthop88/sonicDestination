@@ -1,10 +1,10 @@
-local CHUNKS_IMG_PATH = relativePath("resources/zones/chunks/ghzChunks_IMG.png")
+local CHUNK_BUILDER   = requireRelative("terrain/chunkBuilder")
+
 local MAP_PATH        = relativePath("resources/zones/maps/ghz1Map.lua")
+local CHUNKS_PATH     = relativePath("resources/zones/chunks/ghzChunks.lua")
 
-local CHUNKS_IMAGE    = love.graphics.newImage(CHUNKS_IMG_PATH)
+local CHUNKS_IMAGE    = CHUNK_BUILDER:create(CHUNKS_PATH)
 local MAP_DATA        = dofile(MAP_PATH)
-
-CHUNKS_IMAGE:setFilter("nearest", "nearest")
 
 local CHUNKS       = ({
     init = function(self)
