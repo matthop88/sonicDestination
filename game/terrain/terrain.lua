@@ -1,9 +1,10 @@
+local CHUNKS_IMG_PATH = relativePath("resources/zones/chunks/ghzChunks_IMG.png")
+local MAP_PATH        = relativePath("resources/zones/maps/ghz1Map.lua")
 
-local CHUNKS_IMAGE = love.graphics.newImage(relativePath("resources/zones/chunks/ghzChunks_IMG.png"))
-local MAP_DATA     = requireRelative("resources/zones/maps/ghz1Map")
+local CHUNKS_IMAGE    = love.graphics.newImage(CHUNKS_IMG_PATH)
+local MAP_DATA        = dofile(MAP_PATH)
 
 CHUNKS_IMAGE:setFilter("nearest", "nearest")
-
 
 local CHUNKS       = ({
     init = function(self)
