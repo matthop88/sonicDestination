@@ -1,10 +1,10 @@
-local CHUNK_BUILDER = requireRelative("terrain/chunkBuilder")
+local CHUNKS_BUILDER = requireRelative("terrain/chunksBuilder")
 
-local MAP_PATH      = relativePath("resources/zones/maps/ghz1Map.lua")
-local CHUNKS_PATH   = relativePath("resources/zones/chunks/ghzChunks.lua")
+local MAP_PATH       = relativePath("resources/zones/maps/ghz1Map.lua")
+local CHUNKS_PATH    = relativePath("resources/zones/chunks/ghzChunks.lua")
 
-local MAP_DATA      = dofile(MAP_PATH)
-local CHUNKS        = CHUNK_BUILDER:create(CHUNKS_PATH)
+local MAP_DATA       = dofile(MAP_PATH)
+local CHUNKS         = CHUNKS_BUILDER:create(CHUNKS_PATH)
 
 return {
     init = function(self, params)
