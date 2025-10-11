@@ -5,17 +5,20 @@ local getSchema = function(path)
 	if status == true then
 		return cmdSchema
 	else
-		print("XXX Command Schema not found for path " .. path .. "!")
 		return nil
 	end
 end
 
 return {
-	create = function(self, appDirectory)
+	create = function(self, appPathMap, appName)
+		local appPath = appPathMap[appName] or "tools/" .. appName
+		
 		return {
-			schema = getSchema(appDirectory),
+			schema = getSchema(appPath),
 
 			validateParams = function(self, args)
+				if self.schema == nil then return true end
+
 				local params = self:getParams(args)
 
 				local missingParams = self:findMissingParams(params)
@@ -51,6 +54,8 @@ return {
 			getParams = function(self, args)
 				local key = nil
 				params = {}
+
+				if self.schema == nil then return params end
 
 				for n, arg in ipairs(args) do
 					if     string.sub(arg, 1, 2) == "--" then
@@ -95,7 +100,6 @@ return {
 					end
 				end
 			end,
-
 
 			printHelp = function(self)
 				local helpString = self:generateHelp()
