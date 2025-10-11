@@ -71,10 +71,9 @@ local APP_LAUNCHER = {
 }
 
 local APP_PATH = {
-    chunkalyzer  = "tools/chunkalyzer",
-    mapViewer    = "tools/mapViewer",
-    tileinator   = "tools/tileinator",
-    chunkDoctor  = "tools/chunkDoctor",
+    inspector    = "tools/colorInspector",
+    slicer       = "tools/spriteSheetSlicer",
+    transparency = "tools/transparencyEditor",
 }
 
 --------------------------------------------------------------
@@ -91,16 +90,15 @@ function love.load(args)
 
     local appName = args[1]
     
-    if APP_PATH[appName] ~= nil then
-        local cmdLineTools = require("commandLineTools"):create(APP_PATH[appName])
-        __PARAMS = cmdLineTools:getParams(args)
-        if __PARAMS["help"] then
-            cmdLineTools:printHelp()
-            return
-        elseif not cmdLineTools:validateParams(args) then
-            return
-        end
-    end   
+    local cmdLineTools = require("commandLineTools"):create(APP_PATH, appName)
+    __PARAMS = cmdLineTools:getParams(args)
+    if __PARAMS["help"] then
+        cmdLineTools:printHelp()
+        return
+    elseif not cmdLineTools:validateParams(args) then
+        return
+    end
+    
     if   APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
     else                                   require "game/main"     end
 end
