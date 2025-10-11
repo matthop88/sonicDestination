@@ -15,7 +15,6 @@ return {
 
     renderChunks = function(self, chunksData, tiles)
         local width, height = self:calculateImageDimensions(chunksData)
-        print("Width, height of buffer:", width, height)
         local imageBuffer = love.graphics.newCanvas(width, height)
 
         love.graphics.setCanvas(imageBuffer)
@@ -33,7 +32,6 @@ return {
     end,
 
     drawChunks = function(self, chunksData, tiles)
-        print("Tile Count: " .. #tiles)
         local x, y = 0, 0
         for n, chunk in ipairs(chunksData) do
             x = ((n - 1) % 9) * 256
@@ -51,7 +49,6 @@ return {
 
     drawRow = function(self, row, x, y, tiles)
         for n, tileID in ipairs(row) do
-            --print("Drawing tile #" .. tileID .. " at x = " .. x .. ", y = " .. y)
             tiles:draw(x, y, tileID)
             x = x + 16 
         end
