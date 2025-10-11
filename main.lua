@@ -74,6 +74,7 @@ local APP_PATH = {
     chunkalyzer  = "tools/chunkalyzer",
     mapViewer    = "tools/mapViewer",
     tileinator   = "tools/tileinator",
+    chunkDoctor  = "tools/chunkDoctor",
 }
 
 --------------------------------------------------------------
