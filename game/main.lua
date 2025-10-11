@@ -6,17 +6,20 @@ require "requireRelative"
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
-local PROP_LOADER        = requireRelative("properties/loader")
+local PROP_LOADER = requireRelative("properties/loader")
 
-local GRAPHICS           = requireRelative("graphics")
+local GRAPHICS    = requireRelative("graphics")
 
 if __DEV_MODE == true then
     GRAPHICS = require("tools/lib/bufferedGraphics"):create(GRAPHICS, 1024, 768)
 end
 
-local SONIC              = requireRelative("sonic",           { GRAPHICS = GRAPHICS })
-local WORKSPACE          = requireRelative("workspace",       { GRAPHICS = GRAPHICS })
-local TERRAIN            = requireRelative("terrain/terrain", { GRAPHICS = GRAPHICS })
+local SONIC       = requireRelative("sonic",           { GRAPHICS = GRAPHICS })
+local WORKSPACE   = requireRelative("workspace",       { GRAPHICS = GRAPHICS })
+local TERRAIN     = requireRelative("terrain/terrain", { GRAPHICS = GRAPHICS })
+
+local timer       = 0
+local refreshed   = false
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -46,6 +49,7 @@ end
 function love.update(dt)
     PROP_LOADER:update(dt)
     SONIC:update(dt)
+    updateRefreshed(dt)
 end
 
 -- Function Name: love.keypressed(key)
@@ -53,6 +57,9 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     SONIC:keypressed(key)
+    if key == "r" then
+        TERRAIN:refresh()
+    end
 end
 
 -- Function Name: love.keyreleased(key)
@@ -60,6 +67,16 @@ end
 --------------------------------------------------------------
 function love.keyreleased(key)
     SONIC:keyreleased(key)
+end
+
+function updateRefreshed(dt)
+    if not refreshed then
+        timer = timer + dt
+        if timer >= 0.2 then
+            TERRAIN:refresh()
+            refreshed = true
+        end
+    end
 end
 
 --------------------------------------------------------------
