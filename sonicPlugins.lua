@@ -34,6 +34,7 @@ return {
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
             self.SONIC:update(dt) 
+            updateRefreshed()
         end
 
         self.AIR_DRAG   = self.SONIC.AIR_DRAG_VALUE
