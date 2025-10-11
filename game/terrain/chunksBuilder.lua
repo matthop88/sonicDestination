@@ -1,16 +1,19 @@
 local CHUNKS = {
+	data = {},
+
     init = function(self, chunksImg)
     	self.chunksImg = chunksImg
 
-        local chunkCount = self:calculateChunkCount()
-        for i = 1, chunkCount do
-            local chunkX = ((i - 1) % 9)           * 256
-            local chunkY = math.floor((i - 1) / 9) * 256
-            
-            table.insert(self, love.graphics.newQuad(chunkX, chunkY, 256, 256, self.chunksImg:getWidth(), self.chunksImg:getHeight()))
-        end
+    	self.data = {}
 
-        return self
+	    local chunkCount = self:calculateChunkCount()
+	    for i = 1, chunkCount do
+	        local chunkX = ((i - 1) % 9)           * 256
+	        local chunkY = math.floor((i - 1) / 9) * 256
+	            
+	        table.insert(self.data, love.graphics.newQuad(chunkX, chunkY, 256, 256, self.chunksImg:getWidth(), self.chunksImg:getHeight()))
+	    end
+	    return self
     end,
 
     calculateChunkCount = function(self)
@@ -20,7 +23,7 @@ local CHUNKS = {
     end,
 
     get = function(self, chunkID)
-    	return self[chunkID]
+    	return self.data[chunkID]
     end,
 
     draw = function(self, graphics, rowNum, colNum, chunkID)
@@ -36,13 +39,7 @@ local CHUNKS = {
 }
 
 return {
-	create = function(self, chunkDataPath)
-		-- ignore chunkDataPath... for now
-		local chunksImgPath = relativePath("resources/zones/chunks/ghzChunks_IMG.png")
-
-		local chunksImg     = love.graphics.newImage(chunksImgPath)
-		chunksImg:setFilter("nearest", "nearest")
-
+	create = function(self, chunksImg)
 		return CHUNKS:init(chunksImg)
 	end,
 }
