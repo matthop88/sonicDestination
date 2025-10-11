@@ -44,6 +44,10 @@ local launchTileinator           = function(args)
     require "tools/tileinator/tileinatorApp"
 end
 
+local launchChunkDoctor          = function(args)
+    require "tools/chunkDoctor/chunkDoctorApp"
+end
+
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
 end
@@ -62,6 +66,7 @@ local APP_LAUNCHER = {
     chunkalyzer  = launchChunkalyzer,
     mapViewer    = launchMapViewer,
     tileinator   = launchTileinator,
+    chunkDoctor  = launchChunkDoctor,
     test         = launchTestingFramework,
 }
 
