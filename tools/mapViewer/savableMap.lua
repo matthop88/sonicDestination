@@ -17,9 +17,10 @@ return {
 				return #self.mapData[1] * 256, #self.mapData * 256
 			end,
 
-			save = function(self)
+			save = function(self, filename)
 				self:draw()
-				return self.GRAFX:saveImage("sampleRewrittenMapImage")
+				love.filesystem.createDirectory("resources/zones/maps")
+				return self.GRAFX:saveImage("resources/zones/maps/" .. filename)
 			end,
 
 			draw = function(self)

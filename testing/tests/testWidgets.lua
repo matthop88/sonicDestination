@@ -7,8 +7,8 @@ return {
     end,
     
     beforeAll = function(self)
-        self.WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"):init(1, 32, nil)
-        self.WIDGETS = require("tools/stateMachine/widgets"):init(self.WIDGET_FACTORY)
+        self.WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(1, 32, nil)
+        self.WIDGETS = require("plugins/modules/stateMachineViewer/widgets"):init(self.WIDGET_FACTORY, {})
     end,
 
     before    = function(self)

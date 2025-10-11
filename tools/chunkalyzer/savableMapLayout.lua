@@ -21,9 +21,9 @@ return {
 				return math.floor(maxChunkX / 256) + 1, math.floor(maxChunkY / 256) + 1
 			end,
 
-			save = function(self)
+			save = function(self, mapFilename, chunksImageName)
 				self:createMapData()
-				self:saveMapData()
+				self:saveMapData(mapFilename, chunksImageName)
 			end,
 
 			createMapData = function(self)
@@ -43,20 +43,15 @@ return {
 				end
 			end,
 
-			saveMapData = function(self)
-				love.filesystem.write("sampleMapLayout.lua", self:encodeMapData())
+			saveMapData = function(self, mapFilename, chunksImageName)
+				love.filesystem.createDirectory("resources/zones/maps")
+				love.filesystem.write("resources/zones/maps/" .. mapFilename .. ".lua", self:encodeMapData(chunksImageName))
 			end,
 
-			encodeMapData = function(self)
-				serializedData = "return {\n"
-				for _, row in ipairs(self.mapData) do
-					local rowString = "  { "
-					for _, chunkID in ipairs(row) do
-						rowString = rowString .. (string.rep(" ", 3 - string.len("" .. chunkID))) .. chunkID .. ", "
-					end
-					serializedData = serializedData .. rowString .. "},\n"
-				end
-				return serializedData .. "}\n"
+			encodeMapData = function(self, chunksImageName)
+				self.mapData.chunksImageName = chunksImageName
+				local mapEncoder = require("tools/lib/map/mapEncoder")
+				return mapEncoder:encode(self.mapData)
 			end,
 
 		}):init()

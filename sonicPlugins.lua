@@ -34,6 +34,7 @@ return {
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
             self.SONIC:update(dt) 
+            updateRefreshed(dt)
         end
 
         self.AIR_DRAG   = self.SONIC.AIR_DRAG_VALUE
@@ -49,8 +50,9 @@ return {
         require("plugins/engine")
             :add("modKeyEnabler")
             :add("grid3D",         { 
-                graphics      = self.GRAPHICS,
-                toggleGridKey = "g",
+                graphics       = self.GRAPHICS,
+                topLineYOffset = 0,
+                toggleGridKey  = "g",
             })
             :add("tracer", {
                 toggleShowKey      = "t",

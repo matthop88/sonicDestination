@@ -18,6 +18,20 @@ local printBanner = function(str)
     print("***   " .. str .. "   ***")
     print(asteriskStr)
 end
+
+local discoverTests = function()
+    local testClasses = {}
+
+    local testFilenames = love.filesystem.getDirectoryItems("testing/tests")
+    for _, testFilename in ipairs(testFilenames) do
+        local keyName = string.sub(testFilename, 1, string.len(testFilename) - 4)
+        local filePath = "testing/tests/" .. keyName
+
+        table.insert(testClasses, require(filePath))
+    end
+
+    return testClasses
+end
     
 TESTING = {
     initTests = function(self, testsClass)
@@ -155,11 +169,6 @@ TESTING = {
     end,
 }
 
-TESTING:queueTestClasses {
-    require("testing/tests/testModKeyEnabler"),
-    require("testing/tests/testPropertyNotifier"),
-    --require("testing/tests/testWidgetFactory"),
-    --require("testing/tests/testWidgets"),
-}
+TESTING:queueTestClasses(discoverTests())
 
 require("testing/delayTests")

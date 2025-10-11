@@ -19,9 +19,10 @@ return {
 				return width, height
 			end,
 
-			save = function(self)
+			save = function(self, chunkImageName)
 				self:draw()
-				return self.GRAFX:saveImage("sampleChunkLayout")
+				love.filesystem.createDirectory("resources/zones/chunks")
+				return self.GRAFX:saveImage("resources/zones/chunks/" .. chunkImageName)
 			end,
 
 			draw = function(self)

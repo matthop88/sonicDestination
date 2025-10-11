@@ -1,5 +1,10 @@
 local IMAGE
 
+local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
+
+local CHUNKALYZATION_DONE = false
+local PIPELINE
+
 return {
 	mapMode      = false,
 	repoMode     = false,
@@ -195,6 +200,40 @@ return {
 				else               self:updateNonUniqueChunk(c, dt)  end
 			end
 		end
+
+		if self:areChunksDoneMoving() and not CHUNKALYZATION_DONE then
+			self:onChunkalyzationComplete()
+		end
+	end,
+
+	setPipeline = function(self, pipeline)
+		PIPELINE = pipeline
+	end,
+
+	areChunksDoneMoving = function(self)
+		if not PIPELINE:isComplete() then
+			return false
+		end
+		local n = 0
+		for _, c in ipairs(self.viewModel) do
+			if c.isUnique then
+				n = n + 1
+				if c.targetX then
+					if c.targetX ~= c.x and c.targetY ~= c.y then
+						return false
+					end
+				end
+			end
+		end
+		return true
+	end,
+
+	onChunkalyzationComplete = function(self)
+		print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
+		printToReadout("Press 'return' to save to file.")
+		TALLY_SOUND:play()
+		self:setRepoMode()
+		CHUNKALYZATION_DONE = true
 	end,
 
 	updateUniqueChunk = function(self, c, dt)
@@ -226,8 +265,7 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-		if      key == "return" then self:save()
-		elseif key == "escape" then self:toggleMapAlpha() end
+		if key == "escape" then self:toggleMapAlpha() end
 	end,
 
 	handleMousepressed = function(self, mx, my)
@@ -242,13 +280,13 @@ return {
 		end
 	end,
 
-	tagChunk = function(self, x, y, cID, isUnique)
+	tagChunk = function(self, chunk)
 		for _, c in ipairs(self.viewModel) do
-			if c.mapX == x and c.mapY == y then 
-				c.id = cID
-				c.targetX = (((cID - 1) % 9) * 272) + 16
-				c.targetY = (math.floor((cID - 1) / 9) * 272) + 16
-				c.isUnique = isUnique 
+			if c.mapX == chunk.x and c.mapY == chunk.y then 
+				c.id = chunk.repoChunkID
+				c.targetX = (((chunk.repoChunkID - 1) % 9) * 272) + 16
+				c.targetY = (math.floor((chunk.repoChunkID - 1) / 9) * 272) + 16
+				c.isUnique = not chunk.isDuplicate 
 				c.highlightAlpha = 0
 				c.numberAlpha = 0
 				
@@ -327,23 +365,23 @@ return {
         self.GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
-    save = function(self)
+    save = function(self, chunkImageName, mapLayoutName)
     	if self.repoMode then
-    		self:saveChunkImage()
-    		self:saveMapLayout()
+    		self:saveChunkImage(chunkImageName)
+    		self:saveMapLayout(mapLayoutName, chunkImageName)
     	end
     end,
 
-	saveChunkImage = function(self)
-    	local savableChunkLayout = require("tools/chunkalyzer/savableChunkLayout"):create(self.chunkRepo, IMAGE)
-    	local fileData = savableChunkLayout:save()
+	saveChunkImage = function(self, chunkImageName)
+    	local savableChunkImage = require("tools/chunkalyzer/savableChunkImage"):create(self.chunkRepo, IMAGE)
+    	local fileData = savableChunkImage:save(chunkImageName)
 
     	printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
     	print("Saved to " .. love.filesystem.getSaveDirectory())
     end,
 
-    saveMapLayout = function(self)
+    saveMapLayout = function(self, mapLayoutName, chunkImageName)
     	local savableMapLayout = require("tools/chunkalyzer/savableMapLayout"):create(self.viewModel)
-    	savableMapLayout:save()
+    	savableMapLayout:save(mapLayoutName, chunkImageName)
     end,
 }

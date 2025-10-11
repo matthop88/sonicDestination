@@ -1,5 +1,5 @@
 return {
-    WIDGET_FACTORY = require("tools/stateMachine/widgetFactory"),
+    WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"),
     pluginManager  = nil,
 
     getName = function(self)

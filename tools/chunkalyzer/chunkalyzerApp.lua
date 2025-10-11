@@ -6,17 +6,20 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local imgPath
 
-if __WORLD_MAP_FILE ~= nil then
-    imgPath = "resources/zones/maps/" .. __WORLD_MAP_FILE .. ".png"
-end
+imgPath = "resources/zones/maps/" .. __PARAMS["mapImageIn"] .. ".png"
 
 local imgData = love.image.newImageData(imgPath)
 local img     = love.graphics.newImage(imgData)
+
+local chunksImageNameToWrite = __PARAMS["chunkImageOut"] or "sampleChunksImage"
+local mapFileNameToWrite     = __PARAMS["mapFileOut"]    or "sampleMapFile"
 		
 local CHUNKALYZER_MODEL = require("tools/chunkalyzer/model"):init(img)
 local CHUNKALYZER_VIEW  = require("tools/chunkalyzer/view"):init(img, CHUNKALYZER_MODEL)
 
 local CHUNK_PIPELINE    = require("tools/chunkalyzer/chunkPipeline")
+
+CHUNKALYZER_VIEW:setPipeline(CHUNK_PIPELINE)
 
 local okayToChunkalyze  = false
 
@@ -54,9 +57,10 @@ end
 --------------------------------------------------------------
 
 function love.keypressed(key)
-	if     key == "m"     then CHUNKALYZER_VIEW:toggleMapMode() 
-	elseif key == "space" then okayToChunkalyze = true
-	else                       CHUNKALYZER_VIEW:handleKeypressed(key) end
+	if     key == "m"      then CHUNKALYZER_VIEW:toggleMapMode() 
+	elseif key == "space"  then okayToChunkalyze = true
+	elseif key == "return" then CHUNKALYZER_VIEW:save(chunksImageNameToWrite, mapFileNameToWrite)
+	else                        CHUNKALYZER_VIEW:handleKeypressed(key) end
 end
 
 function love.mousepressed(mx, my)
@@ -92,5 +96,3 @@ PLUGINS = require("plugins/engine")
 			end,
 		},
 	})    
-
-

@@ -50,8 +50,10 @@ return {
     end,
 
     refresh = function(self)
-        self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
-        self.x, self.y, self.scale = self.currentWidgetList.x, self.currentWidgetList.y, self.currentWidgetList.scale
+        if #self > 0 then
+            self.currentWidgetList = self.WIDGET_FACTORY:createWidgets(dofile(self:getFileName()))
+            self.x, self.y, self.scale = self.currentWidgetList.x, self.currentWidgetList.y, self.currentWidgetList.scale
+        end
     end,
 
     getFileName = function(self) return "tools/stateMachine/data/" .. self:getDataName() .. ".lua" end,

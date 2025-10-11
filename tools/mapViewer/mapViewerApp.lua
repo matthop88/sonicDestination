@@ -6,21 +6,12 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX   = require("tools/lib/graphics"):create()
 
-local chunkImgPath
+local RESOURCE_MANAGER = require("tools/mapViewer/resourceManager")
 
-if __CHUNK_FILE ~= nil then
-    chunkImgPath = "resources/zones/chunks/" .. __CHUNK_FILE .. ".png"
-end
+local mapData  = RESOURCE_MANAGER:getMapData()
+local chunkImg = RESOURCE_MANAGER:getChunkImage()
 
-
-local chunkImgData = love.image.newImageData(chunkImgPath)
-local chunkImg     = love.graphics.newImage(chunkImgData)
-
-
-local mapData
-if __MAP_FILE ~= nil then
-    mapData = require("resources/zones/maps/" .. __MAP_FILE)
-end
+local mapImageNameToRewrite = __PARAMS["mapOut"] or "sampleRewrittenMapImage"
 
 local chunks = ({
     init = function(self)
@@ -37,11 +28,12 @@ local chunks = ({
 
     calculateChunkCount = function(self)
         local width, height = chunkImg:getWidth(), chunkImg:getHeight()
-
+        
         return math.floor(width / 256) * math.floor(height / 256)
     end,
 
     draw = function(self, chunkID, x, y, scale)
+        GRAFX:setColor(1, 1, 1)
         GRAFX:draw(chunkImg, self[chunkID], x, y, 0, scale, scale)
     end,
 
@@ -108,7 +100,7 @@ local map = ({
 
     saveMapImage = function(self)
         local savableMap = require("tools/mapViewer/savableMap"):create(mapData, chunkImg, chunks)
-        local fileData = savableMap:save()
+        local fileData = savableMap:save(mapImageNameToRewrite)
 
         printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
         print("Saved to " .. love.filesystem.getSaveDirectory())
@@ -121,8 +113,6 @@ local map = ({
 
 love.window.setTitle("Map Viewer")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-
-chunkImg:setFilter("nearest", "nearest")
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -146,7 +136,9 @@ end
 --------------------------------------------------------------
 
 function refreshMap()
-    mapData = dofile("resources/zones/maps/" .. __MAP_FILE .. ".lua")
+    RESOURCE_MANAGER:refresh()
+    mapData  = RESOURCE_MANAGER:getMapData()
+    chunkImg = RESOURCE_MANAGER:getChunkImage()
 end
 
 -- ...
@@ -168,6 +160,12 @@ PLUGINS = require("plugins/engine")
     { 
     	printFnName    = "printToReadout", 
     	accessorFnName = "getReadout",
-    })    
-
-
+    })
+    :add("timedFunctions",
+    {
+        {   secondsWait = 1, 
+            callback = function() 
+                refreshMap()
+            end,
+        },
+    }) 

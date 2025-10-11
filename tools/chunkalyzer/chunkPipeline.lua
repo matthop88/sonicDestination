@@ -1,32 +1,17 @@
-local PIPELINE = require("tools/chunkalyzer/pipeline/pipeline"):create("Chunk Pipeline")
-local FEEDER   = require("tools/chunkalyzer/pipeline/feeder")
+local PIPELINE   = require("tools/lib/pipeline/pipeline"):create("Chunk Pipeline")
+local FEEDER     = require("tools/lib/pipeline/feeder")
+local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
 local TASK_SLICE_TIME_IN_MS = 12
 
-local TALLY_SOUND = require("tools/chunkalyzer/sounds/tally")
-
 local chunkNum = 0
 local IMAGE_DATA, CHUNK_VIEW, CHUNK_REPO
-
-local getPixelColorAt = function(x, y)
-    local r, g, b, a = IMAGE_DATA:getPixel(math.floor(x), math.floor(y))
-    return { r = r, g = g, b = b, a = a }
-end
-
-local colorsMatch = function(c1, c2)
-    return c1 ~= nil 
-       and c2 ~= nil
-       and math.abs(c1.r - c2.r) < 0.005
-       and math.abs(c1.g - c2.g) < 0.005 
-       and math.abs(c1.b - c2.b) < 0.005
-       and math.abs(c1.a - c2.a) < 0.005
-end
 
 local comparePixelsInChunkRow = function(c1X, c1Y, c2X, c2Y)
     local x1, y1, x2, y2 = c1X, c1Y, c2X, c2Y
 
     for i = 0, 255 do
-        if not colorsMatch(getPixelColorAt(x1, y1), getPixelColorAt(x2, y2)) then
+        if not PIXEL_UTIL:pixelsMatch(IMAGE_DATA, x1, y1, IMAGE_DATA, x2, y2) then
             return false
         end
         x1 = x1 + 1
@@ -46,71 +31,74 @@ local sliceChunkIntoRows = function(chunk)
 	return rows
 end
 
-local processMapChunks = function(results, dataIn, dataOut)
-	if results then
-		CHUNK_VIEW:tagChunk(results.chunk.x, results.chunk.y, results.repoChunkID, results.wasAdded)
-
-		if dataIn.MAP_CHUNKS:isComplete() then
-			print("Chunkalyzation complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
-			printToReadout("Press 'return' to save to file.")
-			TALLY_SOUND:play()
-			CHUNK_VIEW:setRepoMode()
-			return { completed = true }
-		end
+local processMapChunks = function(params, nextParams)
+	if params.MAP_CHUNKS:isComplete() then
+		return true
 	end
-				
-	dataOut.mapChunk   = dataIn.MAP_CHUNKS:next()
-	dataOut.CHUNK_REPO = FEEDER:create("Chunk Repo", CHUNK_REPO)
+
+	nextParams:init {
+		mapChunkID = params.MAP_CHUNKS:getIndex(),
+		mapChunk   = params.MAP_CHUNKS:next(),
+		CHUNK_REPO = FEEDER:create("Chunk Repo", CHUNK_REPO)
+	}
+
 end
 
-local addMapChunkToRepo = function(results, dataIn, dataOut)
-	if results then
-		local repoChunkID
-					
-		if not results.chunkIsUnique then
-			repoChunkID = results.repoChunkID
-			return { repoChunkID = repoChunkID, chunk = results.chunk, wasAdded = false }
-		else
-			if dataIn.CHUNK_REPO:isComplete() then
-				repoChunkID = dataIn.CHUNK_REPO:get():add(results.chunk)
-				return { repoChunkID = repoChunkID, chunk = results.chunk, wasAdded = true }
-			end
-		end
+local addMapChunkToRepo = function(params, nextParams)
+	if     params.mapChunk.isDuplicate == true then
+		CHUNK_VIEW:tagChunk(params.mapChunk)
+		return true
+	elseif params.CHUNK_REPO:isComplete() then
+		params.mapChunk.isDuplicate = false
+		params.mapChunk.repoChunkID = CHUNK_REPO:add(params.mapChunk)
+		CHUNK_VIEW:tagChunk(params.mapChunk)
+		return true
 	end
-			
-	dataOut.mapChunk    = dataIn.mapChunk
-	dataOut.repoChunkID = dataIn.CHUNK_REPO:getIndex()
-	dataOut.repoChunk   = dataIn.CHUNK_REPO:next()
+
+	nextParams:init {
+		repoChunkID = params.CHUNK_REPO:getIndex(),
+		repoChunk   = params.CHUNK_REPO:next()
+	}
+
 end
 
-local compareChunks = function(results, dataIn, dataOut)
-	if dataIn.repoChunk == nil then
-		return { chunkIsUnique = true, chunk = dataIn.mapChunk }
-	elseif results then
-		return { chunkIsUnique = not results.chunksAreEqual, chunk = dataIn.mapChunk, repoChunkID = dataIn.repoChunkID }
+local compareChunks = function(params, nextParams)
+	if params.mapChunk.processed then
+		params.mapChunk.repoChunkID = params.repoChunkID
+		params.mapChunk.processed = false
+		return true
 	end		
 		
-	dataOut.mapChunkRows  = FEEDER:create("Map Chunk Row",  sliceChunkIntoRows(dataIn.mapChunk))
-	dataOut.repoChunkRows = FEEDER:create("Repo Chunk Row", sliceChunkIntoRows(dataIn.repoChunk))
+	nextParams:init {
+		repoChunkRows = FEEDER:create("Repo Chunk Row", sliceChunkIntoRows(params.repoChunk)),
+		mapChunkRows  = FEEDER:create("Map Chunk Row",  sliceChunkIntoRows(params.mapChunk)),
+	}
+
 end
 
-local compareChunkRows = function(results, dataIn, dataOut)
-	if results then
-		if not results.rowsAreEqual then
-			return { chunksAreEqual = false }
-		elseif dataIn.mapChunkRows:isComplete() then
-			return { chunksAreEqual = true }
-		end
+local compareChunkRows = function(params, nextParams)
+	if params.mapChunkRow and params.mapChunkRow.isEqual == false then
+		params.mapChunk.processed   = true
+		return true
+	elseif params.mapChunkRows:isComplete() then
+		params.mapChunk.isDuplicate = true
+		params.mapChunk.processed   = true
+		return true
 	end
-
-	dataOut.mapChunkRow  = dataIn.mapChunkRows:next()
-	dataOut.repoChunkRow = dataIn.repoChunkRows:next() 
+	
+	nextParams:init {
+		mapChunkRowNum = params.mapChunkRows:getIndex(),
+		mapChunkRow    = params.mapChunkRows:next(),
+		repoChunkRow   = params.repoChunkRows:next() 
+	}
+	
 end
 
-local compareChunkRow = function(results, dataIn, dataOut)
-	local rowsAreEqual = comparePixelsInChunkRow(dataIn.mapChunkRow.x, dataIn.mapChunkRow.y, dataIn.repoChunkRow.x, dataIn.repoChunkRow.y)
-			
-	return { rowsAreEqual = rowsAreEqual }
+local compareChunkRow = function(params, nextParams)
+	local rowsAreEqual = comparePixelsInChunkRow(params.mapChunkRow.x, params.mapChunkRow.y, params.repoChunkRow.x, params.repoChunkRow.y)
+	params.mapChunkRow.isEqual = rowsAreEqual
+	
+	return true
 end
 
 return {
@@ -133,5 +121,9 @@ return {
 
 	isComplete = function(self)
 		return PIPELINE:isComplete()
+	end,
+
+	getTotalElapsedTime = function(self)
+		return PIPELINE:getTotalElapsedTime()
 	end,
 }

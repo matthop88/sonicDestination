@@ -33,15 +33,15 @@ local launchSoundGraph           = function(args)
 end
 
 local launchChunkalyzer          = function(args)
-    __WORLD_MAP_FILE   = args[2]
-    __CHUNK_IMAGE_FILE = args[3]
     require "tools/chunkalyzer/chunkalyzerApp"
 end
 
 local launchMapViewer            = function(args)
-    __MAP_FILE   = args[2]
-    __CHUNK_FILE = args[3]
     require "tools/mapViewer/mapViewerApp"
+end
+
+local launchTileinator           = function(args)
+    require "tools/tileinator/tileinatorApp"
 end
 
 local launchTestingFramework     = function(args)
@@ -61,7 +61,14 @@ local APP_LAUNCHER = {
     soundGraph   = launchSoundGraph,
     chunkalyzer  = launchChunkalyzer,
     mapViewer    = launchMapViewer,
+    tileinator   = launchTileinator,
     test         = launchTestingFramework,
+}
+
+local APP_PATH = {
+    chunkalyzer  = "tools/chunkalyzer",
+    mapViewer    = "tools/mapViewer",
+    tileinator   = "tools/tileinator",
 }
 
 --------------------------------------------------------------
@@ -78,8 +85,18 @@ function love.load(args)
 
     local appName = args[1]
     
-    if APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
-    else                                 require "game/main"     end
+    if APP_PATH[appName] ~= nil then
+        local cmdLineTools = require("commandLineTools"):create(APP_PATH[appName])
+        __PARAMS = cmdLineTools:getParams(args)
+        if __PARAMS["help"] then
+            cmdLineTools:printHelp()
+            return
+        elseif not cmdLineTools:validateParams(args) then
+            return
+        end
+    end   
+    if   APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
+    else                                   require "game/main"     end
 end
 
 function relativePath(path)
