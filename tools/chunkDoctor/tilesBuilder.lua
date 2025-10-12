@@ -1,13 +1,27 @@
-local TILES = {
+local TILES_BUILDER = {
+	tiles = {
+		img = nil,
+
+		get = function(self, tileID)
+    		return self[tileID]
+    	end,
+
+    	draw = function(self, x, y, tileID, graphics)
+			graphics:setColor(1, 1, 1)
+    		graphics:draw(self.img, self:get(tileID), x, y, 0, 1, 1)
+		end,
+    },
+
     init = function(self, tilesImg)
     	if not self.tilesImg then
-	    	self.tilesImg = tilesImg
+	    	self.tilesImg  = tilesImg
+	    	self.tiles.img = tilesImg
 
 	        local tileCount = self:calculateTileCount()
 	        self:constructTiles(tileCount)
 	    end
 
-        return self
+        return self.tiles
     end,
 
     calculateTileCount = function(self)
@@ -22,7 +36,7 @@ local TILES = {
 
 		for i = 1, tileCount do
 			local quad = love.graphics.newQuad(x, y, 16, 16, self.tilesImg:getWidth(), self.tilesImg:getHeight())
-			table.insert(self, quad)
+			table.insert(self.tiles, quad)
 			
 			x, y, baseX = self:moveTileCursor(x, y, baseX)
 		end
@@ -53,6 +67,6 @@ return {
 		local tilesImg = love.graphics.newImage(tilesImgPath)
 		tilesImg:setFilter("nearest", "nearest")
 
-		return TILES:init(tilesImg)
+		return TILES_BUILDER:init(tilesImg)
 	end,
 }
