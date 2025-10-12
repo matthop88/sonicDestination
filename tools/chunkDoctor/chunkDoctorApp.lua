@@ -4,6 +4,14 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
+local MAIN_GRAFX                  = require("tools/lib/graphics"):create()
+local SIDEBAR_GRAFX               = require("tools/lib/graphics"):create()
+
+local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] .. ".lua"
+local CHUNK_ARTIST     = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
+
+local chunkID = 1
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -11,18 +19,14 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 love.window.setTitle("Chunk Doctor")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] .. ".lua"
-
-local CHUNK_ARTIST = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
-
-local chunkID = 1
+MAIN_GRAFX:setScale(2)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
-    CHUNK_ARTIST:draw(chunkID, 200, 144, 2)
+    CHUNK_ARTIST:draw(chunkID, 100, 72, MAIN_GRAFX)
 end
 
 function love.keypressed(key)
@@ -36,8 +40,6 @@ function love.keypressed(key)
         end
     end
 end
-
-
 
 -- ...
 
