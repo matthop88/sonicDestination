@@ -10,20 +10,19 @@ return {
         return self
 	end,
 
-    draw = function(self, chunkID, x, y, scale)
-        scale = scale or 1
+    draw = function(self, chunkID, x, y, graphics)
         local chunk = self.chunksData[chunkID]
         
         for _, row in ipairs(chunk) do
-            self:drawRow(row, x, y, scale)
-            y = y + (16 * scale)
+            self:drawRow(row, x, y, graphics)
+            y = y + 16
         end
     end,
 
-    drawRow = function(self, row, x, y, scale)
+    drawRow = function(self, row, x, y, graphics)
         for n, tileID in ipairs(row) do
-            self.tiles:draw(x, y, tileID, scale)
-            x = x + (16 * scale)
+            self.tiles:draw(x, y, tileID, graphics)
+            x = x + 16
         end
     end,
 
@@ -31,5 +30,3 @@ return {
         return #self.chunksData
     end,
 }
-
-
