@@ -41,9 +41,9 @@ local TILES = {
     	return self[tileID]
     end,
 
-    draw = function(self, x, y, tileID)
+    draw = function(self, x, y, tileID, scale)
     	love.graphics.setColor(1, 1, 1)
-    	love.graphics.draw(self.tilesImg, self:get(tileID), x, y, 0, 1, 1)
+    	love.graphics.draw(self.tilesImg, self:get(tileID), x, y, 0, scale, scale)
 	end,
 
 }
