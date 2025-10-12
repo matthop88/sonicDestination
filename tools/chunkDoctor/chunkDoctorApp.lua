@@ -26,18 +26,22 @@ MAIN_GRAFX:setScale(2)
 --------------------------------------------------------------
 
 function love.draw()
-    CHUNK_ARTIST:draw(chunkID, 100, 72, MAIN_GRAFX)
+    for i = 1, CHUNK_ARTIST:getNumChunks() do
+        CHUNK_ARTIST:draw(i, 100, ((i - 1) * 400) + 72, MAIN_GRAFX)
+    end
 end
 
 function love.keypressed(key)
     if key == "up" then
         chunkID = chunkID - 1
         if chunkID < 1 then chunkID = CHUNK_ARTIST:getNumChunks() end
+        MAIN_GRAFX:setY(-(chunkID - 1) * 400)
     elseif key == "down" then
         chunkID = chunkID + 1
         if chunkID > CHUNK_ARTIST:getNumChunks() then
             chunkID = 1
         end
+        MAIN_GRAFX:setY(-(chunkID - 1) * 400)
     end
 end
 
