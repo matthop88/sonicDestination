@@ -25,6 +25,10 @@ return {
             x = x + 16 
         end
     end,
+
+	getNumChunks = function(self)
+        return #self.chunksData
+    end,
 }
 
 
