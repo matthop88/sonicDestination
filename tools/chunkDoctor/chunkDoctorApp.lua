@@ -15,14 +15,30 @@ local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] ..
 
 local CHUNK_ARTIST = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
 
+local chunkID = 1
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
-    CHUNK_ARTIST:draw(1, 200, 200)
+    CHUNK_ARTIST:draw(chunkID, 200, 200)
 end
--- ...
+
+function love.keypressed(key)
+    if key == "up" then
+        chunkID = chunkID - 1
+        if chunkID < 1 then chunkID = CHUNK_ARTIST:getNumChunks() end
+    elseif key == "down" then
+        chunkID = chunkID + 1
+        if chunkID > CHUNK_ARTIST:getNumChunks() then
+            chunkID = 1
+        end
+    end
+end
+
+
+
 -- ...
 
 --------------------------------------------------------------
