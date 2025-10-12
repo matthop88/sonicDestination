@@ -22,7 +22,7 @@ local chunkID = 1
 --------------------------------------------------------------
 
 function love.draw()
-    CHUNK_ARTIST:draw(chunkID, 200, 200)
+    CHUNK_ARTIST:draw(chunkID, 200, 144, 2)
 end
 
 function love.keypressed(key)
