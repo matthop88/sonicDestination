@@ -50,16 +50,6 @@ local TILES_BUILDER = {
 		end
 		return x, y, baseX
 	end,
-
-    get = function(self, tileID)
-    	return self[tileID]
-    end,
-
-    draw = function(self, x, y, tileID, graphics)
-		graphics:setColor(1, 1, 1)
-    	graphics:draw(self.tilesImg, self:get(tileID), x, y, 0, 1, 1)
-	end,
-
 }
 
 return {
