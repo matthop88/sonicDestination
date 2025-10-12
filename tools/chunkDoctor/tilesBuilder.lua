@@ -42,6 +42,7 @@ local TILES = {
     end,
 
     draw = function(self, x, y, tileID, scale)
+		scale = scale or 1
     	love.graphics.setColor(1, 1, 1)
     	love.graphics.draw(self.tilesImg, self:get(tileID), x, y, 0, scale, scale)
 	end,
