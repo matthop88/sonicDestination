@@ -61,10 +61,12 @@ end
 --------------------------------------------------------------
 
 function renderChunk(chunkNum, y)
-    MAIN_GRAFX:setColor(1, 1, 1)
-    MAIN_GRAFX:setFontSize(32)
-    CHUNK_ARTIST:draw(chunkNum, 100, y, MAIN_GRAFX)
-    MAIN_GRAFX:printf("" .. chunkNum, 50, y + 112, 50, "center")
+    if y + MAIN_GRAFX:getY() < 400 and y + MAIN_GRAFX:getY() > -256 then        
+        MAIN_GRAFX:setColor(1, 1, 1)
+        MAIN_GRAFX:setFontSize(32)
+        CHUNK_ARTIST:draw(chunkNum, 100, y, MAIN_GRAFX)
+        MAIN_GRAFX:printf("" .. chunkNum, 50, y + 112, 50, "center")
+    end
 end
 
 function prevChunk()
