@@ -10,7 +10,8 @@ local SIDEBAR_GRAFX               = require("tools/lib/graphics"):create()
 local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] .. ".lua"
 local CHUNK_ARTIST     = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
 
-local chunkID = 1
+local chunkID    = 1
+local mainChunkY =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -20,6 +21,8 @@ love.window.setTitle("Chunk Doctor")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 MAIN_GRAFX:setScale(2)
+
+
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -31,17 +34,22 @@ function love.draw()
     end
 end
 
+function love.update(dt)
+    mainChunkY:update(dt)
+    MAIN_GRAFX:setY(mainChunkY:get())
+end
+
 function love.keypressed(key)
     if key == "up" then
         chunkID = chunkID - 1
         if chunkID < 1 then chunkID = CHUNK_ARTIST:getNumChunks() end
-        MAIN_GRAFX:setY(-(chunkID - 1) * 400)
+        mainChunkY:setDestination(-(chunkID - 1) * 400)
     elseif key == "down" then
         chunkID = chunkID + 1
         if chunkID > CHUNK_ARTIST:getNumChunks() then
             chunkID = 1
         end
-        MAIN_GRAFX:setY(-(chunkID - 1) * 400)
+        mainChunkY:setDestination(-(chunkID - 1) * 400)
     end
 end
 
