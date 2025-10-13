@@ -19,6 +19,12 @@ return {
 				self.destination = destination
 			end,
 
+			set = function(self, value)
+				self.value       = value
+				self.origin      = value
+				self.destination = value
+			end,
+
 			update = function(self, dt)
 				if self.timer <= self.delay then
 					self.timer = self.timer + dt
