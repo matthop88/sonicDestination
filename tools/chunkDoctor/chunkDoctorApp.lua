@@ -30,10 +30,10 @@ MAIN_GRAFX:setScale(2)
 
 function love.draw()
     for i = 1, CHUNK_ARTIST:getNumChunks() do
-        CHUNK_ARTIST:draw(i, 100, ((i - 1) * 400) + 72, MAIN_GRAFX)
+        renderChunk(i, ((i - 1) * 400) + 72)
     end
-    CHUNK_ARTIST:draw(1, 100, (CHUNK_ARTIST:getNumChunks() * 400) + 72, MAIN_GRAFX)
-    CHUNK_ARTIST:draw(CHUNK_ARTIST:getNumChunks(), 100, -328, MAIN_GRAFX)
+    renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 400) + 72)
+    renderChunk(CHUNK_ARTIST:getNumChunks(), -328)
 end
 
 function love.update(dt)
@@ -59,6 +59,13 @@ end
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
+
+function renderChunk(chunkNum, y)
+    MAIN_GRAFX:setColor(1, 1, 1)
+    MAIN_GRAFX:setFontSize(32)
+    CHUNK_ARTIST:draw(chunkNum, 100, y, MAIN_GRAFX)
+    MAIN_GRAFX:printf("" .. chunkNum, 50, y + 112, 50, "center")
+end
 
 function prevChunk()
     chunkID = chunkID - 1
