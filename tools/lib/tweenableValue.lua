@@ -31,8 +31,7 @@ return {
 				elseif self.value ~= self.destination then
 					self.value = self.value + (self.destination - self.origin) * dt * self.speed
 	                if math.abs(self.origin - self.value) > math.abs(self.destination - self.origin) then
-	                    self.value  = self.destination
-	                    self.origin = self.value
+	                    self:set(self.destination)
 	                end 
 				end
 			end,
