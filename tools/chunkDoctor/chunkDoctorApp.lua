@@ -105,4 +105,4 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    -- :add( ... )
+    :add("keyRepeat")
