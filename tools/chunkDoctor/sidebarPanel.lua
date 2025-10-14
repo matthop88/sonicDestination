@@ -53,8 +53,8 @@ return {
         if y + SIDEBAR_GRAFX:getY() < 800 and y + SIDEBAR_GRAFX:getY() > -256 then        
             SIDEBAR_GRAFX:setColor(1, 1, 1)
             SIDEBAR_GRAFX:setFontSize(32)
-            CHUNK_ARTIST:draw(chunkNum, 750, y, SIDEBAR_GRAFX)
-            SIDEBAR_GRAFX:printf("" .. chunkNum, 700, y + 112, 50, "center")
+            CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX)
+            SIDEBAR_GRAFX:printf("" .. chunkNum, 710, y + 112, 50, "center")
         end
     end,
 
