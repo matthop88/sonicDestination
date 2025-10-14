@@ -52,7 +52,9 @@ function love.keypressed(key)
     end
 end
 
--- ...
+function love.keyreleased(key)
+    mainChunkY.speed = 4
+end
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
@@ -110,6 +112,6 @@ PLUGINS = require("plugins/engine")
     :add("keyRepeat", {
         interval    = 0.1,
         delay       = 0.5,
-        onKeyRepeat = function() print("Key repeating has begun...") end,
+        onKeyRepeat = function() mainChunkY.speed = 12 end,
     })
 
