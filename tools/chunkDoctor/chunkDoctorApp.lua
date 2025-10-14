@@ -42,6 +42,7 @@ function love.update(dt)
         mainChunkY:set(getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
     end
     MAIN_GRAFX:setY(mainChunkY:get())
+    CHUNK_ARTIST:update(dt)
 end
 
 function love.keypressed(key)
@@ -49,6 +50,8 @@ function love.keypressed(key)
         prevChunk()
     elseif key == "down" then
         nextChunk()
+    elseif key == "space" then
+        CHUNK_ARTIST:toggleMode()
     end
 end
 
