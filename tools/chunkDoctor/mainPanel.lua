@@ -2,7 +2,8 @@ local MAIN_GRAFX                  = require("tools/lib/graphics"):create()
 local CHUNK_ARTIST
 
 local chunkID    = 1
-local mainChunkY =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
+local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
+local gridSize   = require("tools/lib/tweenableValue"):create(0, { speed = 4 }),
 
 MAIN_GRAFX:setScale(2)
 
@@ -22,13 +23,14 @@ return {
 
     update = function(self, dt)
         mainChunkY:update(dt)
+        gridSize:update(dt)
+
         if     mainChunkY:get() == self:getMainYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
             mainChunkY:set(self:getMainYForChunk(1))
         elseif mainChunkY:get() == self:getMainYForChunk(0) then
             mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
         end
         MAIN_GRAFX:setY(mainChunkY:get())
-        CHUNK_ARTIST:update(dt)
     end,
 
     handleKeypressed = function(self, key)
@@ -37,7 +39,7 @@ return {
         elseif key == "down" then
             self:nextChunk()
         elseif key == "space" then
-            CHUNK_ARTIST:toggleMode()
+            self:toggleGridMode()
         end
     end,
 
@@ -49,7 +51,7 @@ return {
         if y + MAIN_GRAFX:getY() < 400 and y + MAIN_GRAFX:getY() > -256 then        
             MAIN_GRAFX:setColor(1, 1, 1)
             MAIN_GRAFX:setFontSize(32)
-            CHUNK_ARTIST:draw(chunkNum, 65, y, MAIN_GRAFX)
+            CHUNK_ARTIST:draw(chunkNum, 65, y, MAIN_GRAFX, gridSize:get() / 100)
             MAIN_GRAFX:printf("" .. chunkNum, 15, y + 112, 50, "center")
         end
     end,
@@ -78,6 +80,11 @@ return {
         end
     end,
 
+    toggleGridMode = function(self)
+        if gridSize:get() == 0 then gridSize:setDestination(200)
+        else                        gridSize:setDestination(0)  end
+    end,
+        
     moveMainYToChunk = function(self, chunkNum)
         mainChunkY:setDestination(self:getMainYForChunk(chunkNum))
     end,
