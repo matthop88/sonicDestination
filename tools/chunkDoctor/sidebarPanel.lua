@@ -2,7 +2,7 @@ local SIDEBAR_GRAFX    = require("tools/lib/graphics"):create()
 
 local CHUNK_ARTIST
 
-local chunkID    = 1
+local chunkID    = 2
 local mainChunkY =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
 
 SIDEBAR_GRAFX:setScale(1)
@@ -10,6 +10,7 @@ SIDEBAR_GRAFX:setScale(1)
 return {
     init = function(self, chunkArtist)
         CHUNK_ARTIST = chunkArtist
+        mainChunkY:set(self:getMainYForChunk(2))
         return self
     end,
 
