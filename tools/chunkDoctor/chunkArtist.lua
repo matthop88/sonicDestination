@@ -10,6 +10,10 @@ return {
         return self
 	end,
 
+    update = function(self, dt)
+        self.tiles:update(dt)
+    end,
+    
     draw = function(self, chunkID, x, y, graphics)
         local chunk = self.chunksData[chunkID]
         
@@ -28,5 +32,9 @@ return {
 
 	getNumChunks = function(self)
         return #self.chunksData
+    end,
+
+    toggleMode = function(self)
+        self.tiles:toggleMode()
     end,
 }
