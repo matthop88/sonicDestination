@@ -108,7 +108,8 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("keyRepeat", {
-        interval = 0.1,
-        delay    = 0.5,
+        interval    = 0.1,
+        delay       = 0.5,
+        onKeyRepeat = function() print("Key repeating has begun...") end,
     })
 
