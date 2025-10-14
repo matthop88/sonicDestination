@@ -15,10 +15,12 @@ return {
 
     draw = function(self)
         for i = 1, CHUNK_ARTIST:getNumChunks() do
-            self:renderChunk(i, ((i - 1) * 264) + 8)
+            self:renderChunk(i, ((i - 1) * 264) + 272)
         end
-        self:renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 264) + 8)
-        self:renderChunk(CHUNK_ARTIST:getNumChunks(), -256)
+        self:renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 264) + 272)
+        self:renderChunk(CHUNK_ARTIST:getNumChunks(), 8)
+        self:renderChunk(2, (CHUNK_ARTIST:getNumChunks() * 264) + 536)
+        self:renderChunk(CHUNK_ARTIST:getNumChunks() - 1, -256)
     end,
 
     update = function(self, dt)
