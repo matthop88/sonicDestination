@@ -22,8 +22,6 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 MAIN_GRAFX:setScale(2)
 
-
-
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -70,22 +68,26 @@ function renderChunk(chunkNum, y)
 end
 
 function prevChunk()
-    chunkID = chunkID - 1
-    if chunkID < 1 then 
-        chunkID = CHUNK_ARTIST:getNumChunks() 
-        moveMainYToChunk(0)
-    else
-        moveMainYToChunk(chunkID)
+    if not mainChunkY:inFlux() then
+        chunkID = chunkID - 1
+        if chunkID < 1 then 
+            chunkID = CHUNK_ARTIST:getNumChunks() 
+            moveMainYToChunk(0)
+        else
+            moveMainYToChunk(chunkID)
+        end
     end
 end
 
 function nextChunk()
-    chunkID = chunkID + 1
-    if chunkID > CHUNK_ARTIST:getNumChunks() then
-        chunkID = 1
-        moveMainYToChunk(CHUNK_ARTIST:getNumChunks() + 1)
-    else
-        moveMainYToChunk(chunkID)
+    if not mainChunkY:inFlux() then
+        chunkID = chunkID + 1
+        if chunkID > CHUNK_ARTIST:getNumChunks() then
+            chunkID = 1
+            moveMainYToChunk(CHUNK_ARTIST:getNumChunks() + 1)
+        else
+            moveMainYToChunk(chunkID)
+        end
     end
 end
 
@@ -106,7 +108,7 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("keyRepeat", {
-        interval = 0.2,
+        interval = 0.1,
         delay    = 0.5,
     })
 
