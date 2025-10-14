@@ -94,6 +94,7 @@ return ({
         if params.accessorFnName ~= nil then
             self:createGlobalAccessorFn(params.accessorFnName, plugin)
         end
+        plugin.__ENGINE = self
     end,
 
     createGlobalAccessorFn = function(self, name, plugin)
