@@ -84,7 +84,7 @@ return {
     end,
 
     getMainYForChunk = function(self, chunkNum)
-        return -(chunkNum - 1) * 400
+        return -(chunkNum - 1) * 264
     end,
 
     onKeyRepeat = function() 
