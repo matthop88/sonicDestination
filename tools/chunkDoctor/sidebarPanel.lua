@@ -32,7 +32,6 @@ return {
             mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
         end
         SIDEBAR_GRAFX:setY(mainChunkY:get())
-        CHUNK_ARTIST:update(dt)
     end,
 
     handleKeypressed = function(self, key)
@@ -40,8 +39,6 @@ return {
             self:prevChunk()
         elseif key == "down" then
             self:nextChunk()
-        elseif key == "space" then
-            CHUNK_ARTIST:toggleMode()
         end
     end,
 
