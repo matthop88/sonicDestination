@@ -105,4 +105,7 @@ end
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
-    :add("keyRepeat")
+    :add("keyRepeat", {
+        interval = 0.25,
+    })
+
