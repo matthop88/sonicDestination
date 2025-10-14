@@ -10,31 +10,23 @@ return {
         return self
 	end,
 
-    update = function(self, dt)
-        self.tiles:update(dt)
-    end,
-    
-    draw = function(self, chunkID, x, y, graphics)
+    draw = function(self, chunkID, x, y, graphics, gridSize)
         local chunk = self.chunksData[chunkID]
         
         for _, row in ipairs(chunk) do
-            self:drawRow(row, x, y, graphics)
+            self:drawRow(row, x, y, graphics, gridSize)
             y = y + 16
         end
     end,
 
-    drawRow = function(self, row, x, y, graphics)
+    drawRow = function(self, row, x, y, graphics, gridSize)
         for n, tileID in ipairs(row) do
-            self.tiles:draw(x, y, tileID, graphics)
+            self.tiles:draw(x, y, tileID, graphics, gridSize)
             x = x + 16
         end
     end,
 
 	getNumChunks = function(self)
         return #self.chunksData
-    end,
-
-    toggleMode = function(self)
-        self.tiles:toggleMode()
     end,
 }
