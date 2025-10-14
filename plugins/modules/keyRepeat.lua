@@ -13,12 +13,53 @@ return {
     Note: a LOVE2D keypressed and keyreleased event are both generated sequentially as a result of this.
     --]]
 
-    delay      = nil,
-    interval   = nil,
-
     pressedKey = {
         value    = nil,
         duration = 0,
+
+        pulse    = {
+            interval            = nil,
+            nextEvent           = "keypressed",
+            timeOfNextEvent     = 0,
+
+            setInterval  = function(self, interval)
+                self.interval = interval - 0.05
+            end,
+
+            setDelay     = function(self, delay)
+                self.delay = delay
+                self.timeOfNextEvent = self.delay
+            end,
+
+            getNextEvent = function(self, timeHeld)
+                if timeHeld > self.timeOfNextEvent then
+                    local result = self.nextEvent
+
+                    self:alternateEventType()
+                    return result
+                end
+            end,  
+
+            alternateEventType = function(self)
+                if self.nextEvent == "keypressed" then self:setToKeyreleasedEvent()
+                else                                   self:setToKeypressedEvent()  end
+            end,
+
+            setToKeypressedEvent  = function(self)
+                self.nextEvent = "keypressed"
+                self.timeOfNextEvent = self.timeOfNextEvent + self.interval
+            end,
+
+            setToKeyreleasedEvent = function(self)
+                self.nextEvent = "keyreleased"
+                self.timeOfNextEvent = self.timeOfNextEvent + 0.05
+            end,
+
+            reset = function(self)
+                self.nextEvent = "keypressed"
+                self.timeOfNextEvent = self.delay  
+            end,  
+        },
 
         get    = function(self)      return self.value        end,
         set    = function(self, key) self.value = key         end,
@@ -27,23 +68,29 @@ return {
         reset = function(self)
             self.value    = nil
             self.duration = 0
+            self.pulse:reset()
         end,
 
         update = function(self, dt)
-            if self.value ~= nil then
-                self.duration = self.duration + dt
-            end
+            if self.value ~= nil then self.duration = self.duration + dt   end
         end,
 
-        getHoldTime = function(self)
-            return self.duration
+        getHoldTime = function(self)           return self.duration             end,
+        setDelay    = function(self, delay)    self.pulse:setDelay(delay)       end,
+        setInterval = function(self, interval) self.pulse:setInterval(interval) end,
+
+        isSendingKeypressed  = function(self)
+            return self.pulse:getNextEvent(self.duration) == "keypressed"
         end,
 
+        isSendingKeyreleased = function(self)
+            return self.pulse:getNextEvent(self.duration) == "keyreleased"
+        end,
     },
     
     init   = function(self, params)
-        self.delay    = params.delay    or DEFAULT_DELAY
-        self.interval = params.interval or DEFAULT_INTERVAL
+        self.pressedKey:setDelay(params.delay or DEFAULT_DELAY)
+        self.pressedKey:setInterval(params.interval or DEFAULT_INTERVAL)
         
         return self
     end,
@@ -54,8 +101,10 @@ return {
 
     update = function(self, dt)
         self.pressedKey:update(dt)
-        if self.pressedKey:getHoldTime() > self.delay then
-            print("Holding key '" .. self.pressedKey:get() .. "' for " .. self.pressedKey:getHoldTime() .. " seconds")
+        if     self.pressedKey:isSendingKeypressed() then
+            print("Sending keypressed  event at time of " .. self.pressedKey:getHoldTime())
+        elseif self.pressedKey:isSendingKeyreleased() then
+            print("Sending keyreleased event at time of " .. self.pressedKey:getHoldTime())
         end
     end,
 
