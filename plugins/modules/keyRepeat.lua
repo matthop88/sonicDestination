@@ -23,7 +23,7 @@ return {
             timeOfNextEvent     = 0,
 
             setInterval  = function(self, interval)
-                self.interval = interval - 0.05
+                self.interval = interval - 0.01
             end,
 
             setDelay     = function(self, delay)
@@ -41,8 +41,8 @@ return {
             end,  
 
             alternateEventType = function(self)
-                if self.nextEvent == "keypressed" then self:setToKeyreleasedEvent()
-                else                                   self:setToKeypressedEvent()  end
+                if     self.nextEvent == "keypressed"  then self:setToKeyreleasedEvent()
+                elseif self.nextEvent == "keyreleased" then self:setToKeypressedEvent()  end
             end,
 
             setToKeypressedEvent  = function(self)
@@ -52,7 +52,7 @@ return {
 
             setToKeyreleasedEvent = function(self)
                 self.nextEvent = "keyreleased"
-                self.timeOfNextEvent = self.timeOfNextEvent + 0.05
+                self.timeOfNextEvent = self.timeOfNextEvent + 0.01
             end,
 
             reset = function(self)
@@ -72,20 +72,18 @@ return {
         end,
 
         update = function(self, dt)
-            if self.value ~= nil then self.duration = self.duration + dt   end
+            if self.value ~= nil then 
+                self.duration = self.duration + dt   
+                self.nextEvent = self.pulse:getNextEvent(self.duration)
+            end
         end,
 
-        getHoldTime = function(self)           return self.duration             end,
-        setDelay    = function(self, delay)    self.pulse:setDelay(delay)       end,
-        setInterval = function(self, interval) self.pulse:setInterval(interval) end,
+        getHoldTime = function(self)           return self.duration                   end,
+        setDelay    = function(self, delay)    self.pulse:setDelay(delay)             end,
+        setInterval = function(self, interval) self.pulse:setInterval(interval)       end,
 
-        isSendingKeypressed  = function(self)
-            return self.pulse:getNextEvent(self.duration) == "keypressed"
-        end,
-
-        isSendingKeyreleased = function(self)
-            return self.pulse:getNextEvent(self.duration) == "keyreleased"
-        end,
+        isSendingKeypressed  = function(self)  return self.nextEvent == "keypressed"  end,
+        isSendingKeyreleased = function(self)  return self.nextEvent == "keyreleased" end,
     },
     
     init   = function(self, params)
@@ -102,9 +100,9 @@ return {
     update = function(self, dt)
         self.pressedKey:update(dt)
         if     self.pressedKey:isSendingKeypressed() then
-            print("Sending keypressed  event at time of " .. self.pressedKey:getHoldTime())
+            self:sendKeypressed(self.pressedKey:get())
         elseif self.pressedKey:isSendingKeyreleased() then
-            print("Sending keyreleased event at time of " .. self.pressedKey:getHoldTime())
+            self:sendKeyreleased(self.pressedKey:get())
         end
     end,
 
@@ -127,4 +125,35 @@ return {
     isCommand  = function(self, key) return key == "lgui"     or key == "rgui"      end,
     isShift    = function(self, key) return key == "lshift"   or key == "rshift"    end,
     isOption   = function(self, key) return key == "lalt"     or key == "ralt"      end,
+
+    sendKeypressed = function(self, key)
+        local isPluginDownstream = false
+        for _, plugin in ipairs(self.__ENGINE) do
+            if isPluginDownstream then
+                if plugin.handleKeypressed ~= nil and plugin:handleKeypressed(key) then 
+                    return true
+                end
+            end
+            if plugin == self then
+                isPluginDownstream = true
+            end
+        end
+        self.__ENGINE.oldKeypressed(key)
+    end,
+
+    sendKeyreleased = function(self, key)
+        local isPluginDownstream = false
+        for _, plugin in ipairs(self.__ENGINE) do
+            if isPluginDownstream then
+                if plugin.handleKeyreleased ~= nil and plugin:handleKeyreleased(key) then 
+                    return true
+                end
+            end
+            if plugin == self then
+                isPluginDownstream = true
+            end
+        end
+        self.__ENGINE.oldKeyreleased(key)
+    end,
+
 }
