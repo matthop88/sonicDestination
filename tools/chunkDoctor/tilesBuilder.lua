@@ -1,5 +1,6 @@
 local TILES_BUILDER = {
 	tiles = {
+		offset = require("tools/lib/tweenableValue"):create(0, { speed = 4 }),
 		img = nil,
 
 		get = function(self, tileID)
@@ -8,7 +9,16 @@ local TILES_BUILDER = {
 
     	draw = function(self, x, y, tileID, graphics)
 			graphics:setColor(1, 1, 1)
-    		graphics:draw(self.img, self:get(tileID), x, y, 0, 1, 1)
+    		graphics:draw(self.img, self:get(tileID), x + (self.offset:get() * 0.01), y + (self.offset:get() * 0.01), 0, 1 - (self.offset:get() * 0.00125), 1 - (self.offset:get() * 0.00125))
+		end,
+
+		toggleMode = function(self)
+			if self.offset:get() == 0 then self.offset:setDestination(200)
+			else                           self.offset:setDestination(0)   end
+		end,
+
+		update = function(self, dt) 
+			self.offset:update(dt)
 		end,
     },
 
