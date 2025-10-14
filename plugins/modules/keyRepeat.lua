@@ -11,6 +11,8 @@ return {
     Interval - how much time occurs between key presses generated.
     
     Note: a LOVE2D keypressed and keyreleased event are both generated sequentially as a result of this.
+
+    Also, an onKeyRepeat function can be customized; this will be called when the repeat sequence begins.
     --]]
 
     pressedKey = {
@@ -39,6 +41,10 @@ return {
                     return result
                 end
             end,  
+
+            isJustStarting = function(self, timeHeld)
+                return timeHeld > self.delay and self.timeOfNextEvent == self.delay
+            end,
 
             alternateEventType = function(self)
                 if     self.nextEvent == "keypressed"  then self:setToKeyreleasedEvent()
@@ -74,6 +80,9 @@ return {
         update = function(self, dt)
             if self.value ~= nil then 
                 self.duration = self.duration + dt   
+                if self.pulse:isJustStarting(self.duration) then
+                    self.onKeyRepeat()
+                end
                 self.nextEvent = self.pulse:getNextEvent(self.duration)
             end
         end,
@@ -84,11 +93,17 @@ return {
 
         isSendingKeypressed  = function(self)  return self.nextEvent == "keypressed"  end,
         isSendingKeyreleased = function(self)  return self.nextEvent == "keyreleased" end,
+
+        isStartingRepeat = function(self)  
+            return self.pulse:isJustStarting(self.duration) 
+        end,
+        
     },
     
     init   = function(self, params)
         self.pressedKey:setDelay(params.delay or DEFAULT_DELAY)
         self.pressedKey:setInterval(params.interval or DEFAULT_INTERVAL)
+        self.pressedKey.onKeyRepeat = params.onKeyRepeat or function() end
         
         return self
     end,
