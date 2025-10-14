@@ -25,6 +25,7 @@ function love.draw()
     MAIN_PANEL:draw()
     SIDEBAR_PANEL:draw()
     love.graphics.setColor(1, 1, 1)
+    love.graphics.setLineWidth(1)
     love.graphics.line(700, 0, 700, 800)
 end
 
