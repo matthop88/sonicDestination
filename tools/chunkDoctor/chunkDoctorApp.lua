@@ -28,14 +28,17 @@ end
 
 function love.update(dt)
     MAIN_PANEL:update(dt)
+    SIDEBAR_PANEL:update(dt)
 end
 
 function love.keypressed(key)
     MAIN_PANEL:handleKeypressed(key)
+    SIDEBAR_PANEL:handleKeypressed(key)
 end
 
 function love.keyreleased(key)
     MAIN_PANEL:handleKeyreleased(key)
+    SIDEBAR_PANEL:handleKeyreleased(key)
 end
 
 --------------------------------------------------------------
@@ -54,6 +57,9 @@ PLUGINS = require("plugins/engine")
     :add("keyRepeat", {
         interval    = 0.1,
         delay       = 0.5,
-        onKeyRepeat = function() MAIN_PANEL:onKeyRepeat() end,
+        onKeyRepeat = function() 
+            MAIN_PANEL:onKeyRepeat() 
+            SIDEBAR_PANEL:onKeyRepeat()
+        end,
     })
 
