@@ -28,12 +28,16 @@ return {
 			update = function(self, dt)
 				if self.timer <= self.delay then
 					self.timer = self.timer + dt
-				elseif self.value ~= self.destination then
+				elseif self:inFlux() then
 					self.value = self.value + (self.destination - self.origin) * dt * self.speed
 	                if math.abs(self.origin - self.value) > math.abs(self.destination - self.origin) then
 	                    self:set(self.destination)
 	                end 
 				end
+			end,
+
+			inFlux = function(self)
+				return self.value ~= self.destination
 			end,
 		}
 	end,
