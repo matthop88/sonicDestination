@@ -4,12 +4,11 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local SIDEBAR_GRAFX    = require("tools/lib/graphics"):create()
-
 local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] .. ".lua"
 local CHUNK_ARTIST     = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
 
 local MAIN_PANEL       = require("tools/chunkDoctor/mainPanel"):init(CHUNK_ARTIST)
+local SIDEBAR_PANEL    = require("tools/chunkDoctor/sidebarPanel"):init(CHUNK_ARTIST)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -24,6 +23,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 function love.draw()
     MAIN_PANEL:draw()
+    SIDEBAR_PANEL:draw()
 end
 
 function love.update(dt)
