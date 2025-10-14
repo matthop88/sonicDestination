@@ -3,7 +3,7 @@ local CHUNK_ARTIST
 
 local chunkID    = 1
 local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
-local gridSize   = require("tools/lib/tweenableValue"):create(0, { speed = 4 }),
+local gridSize   = require("tools/lib/tweenableValue"):create(0, { speed = 6 }),
 
 MAIN_GRAFX:setScale(2)
 
@@ -19,13 +19,18 @@ return {
         end
         self:renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 400) + 72)
         self:renderChunk(CHUNK_ARTIST:getNumChunks(), -328)
+
+        if self:isPtInsideChunk(love.mouse.getPosition()) then gridSize:setDestination(150)
+        else                                                   gridSize:setDestination(0)   end
+        
+        self:drawCurrentTileHighlight()
     end,
 
     update = function(self, dt)
         mainChunkY:update(dt)
         gridSize:update(dt)
 
-        if     mainChunkY:get() == self:getMainYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
+        if mainChunkY:get() == self:getMainYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
             mainChunkY:set(self:getMainYForChunk(1))
         elseif mainChunkY:get() == self:getMainYForChunk(0) then
             mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
@@ -34,18 +39,11 @@ return {
     end,
 
     handleKeypressed = function(self, key)
-        if key == "up" then
-            self:prevChunk()
-        elseif key == "down" then
-            self:nextChunk()
-        elseif key == "space" then
-            self:toggleGridMode()
-        end
+        if     key == "up"   then self:prevChunk()
+        elseif key == "down" then self:nextChunk()  end
     end,
 
-    handleKeyreleased = function(self, key)
-        mainChunkY.speed = 4
-    end,
+    handleKeyreleased = function(self, key) mainChunkY.speed = 4  end,
 
     renderChunk = function(self, chunkNum, y)
         if y + MAIN_GRAFX:getY() < 400 and y + MAIN_GRAFX:getY() > -256 then        
@@ -54,6 +52,25 @@ return {
             CHUNK_ARTIST:draw(chunkNum, 65, y, MAIN_GRAFX, gridSize:get() / 100)
             MAIN_GRAFX:printf("" .. chunkNum, 15, y + 112, 50, "center")
         end
+    end,
+
+    drawCurrentTileHighlight = function(self)
+        if not mainChunkY:inFlux() then
+            local mx, my = love.mouse.getPosition()
+
+            if self:isPtInsideChunk(mx, my) then
+                local chunkX = math.floor((mx - 130) / 32)
+                local chunkY = math.floor((my - 144) / 32)
+                
+                MAIN_GRAFX:setColor(1, 1, 0)
+                MAIN_GRAFX:setLineWidth(3)
+                MAIN_GRAFX:rectangle("line", (chunkX * 16) + 64, (chunkY * 16) + 71 - mainChunkY:get(), 18, 18)
+            end
+        end
+    end,
+
+    isPtInsideChunk = function(self, px, py)
+        return px >= 130 and px <= 642 and py >= 144 and py <= 656
     end,
 
     prevChunk = function(self)
@@ -80,20 +97,10 @@ return {
         end
     end,
 
-    toggleGridMode = function(self)
-        if gridSize:get() == 0 then gridSize:setDestination(200)
-        else                        gridSize:setDestination(0)  end
-    end,
-        
     moveMainYToChunk = function(self, chunkNum)
         mainChunkY:setDestination(self:getMainYForChunk(chunkNum))
     end,
 
-    getMainYForChunk = function(self, chunkNum)
-        return -(chunkNum - 1) * 400
-    end,
-
-    onKeyRepeat = function() 
-        mainChunkY.speed = 12 
-    end,
+    getMainYForChunk = function(self, chunkNum) return -(chunkNum - 1) * 400 end,
+    onKeyRepeat      = function()               mainChunkY.speed = 12        end,
 }
