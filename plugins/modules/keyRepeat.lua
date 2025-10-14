@@ -21,11 +21,10 @@ return {
 
         pulse    = {
             interval            = nil,
-            nextEvent           = "keypressed",
             timeOfNextEvent     = 0,
 
             setInterval  = function(self, interval)
-                self.interval = interval - 0.01
+                self.interval = interval
             end,
 
             setDelay     = function(self, delay)
@@ -33,12 +32,10 @@ return {
                 self.timeOfNextEvent = self.delay
             end,
 
-            getNextEvent = function(self, timeHeld)
+            isSendingEvent = function(self, timeHeld)
                 if timeHeld > self.timeOfNextEvent then
-                    local result = self.nextEvent
-
-                    self:alternateEventType()
-                    return result
+                    self.timeOfNextEvent = self.timeOfNextEvent + self.interval
+                    return true
                 end
             end,  
 
@@ -46,23 +43,7 @@ return {
                 return timeHeld > self.delay and self.timeOfNextEvent == self.delay
             end,
 
-            alternateEventType = function(self)
-                if     self.nextEvent == "keypressed"  then self:setToKeyreleasedEvent()
-                elseif self.nextEvent == "keyreleased" then self:setToKeypressedEvent()  end
-            end,
-
-            setToKeypressedEvent  = function(self)
-                self.nextEvent = "keypressed"
-                self.timeOfNextEvent = self.timeOfNextEvent + self.interval
-            end,
-
-            setToKeyreleasedEvent = function(self)
-                self.nextEvent = "keyreleased"
-                self.timeOfNextEvent = self.timeOfNextEvent + 0.01
-            end,
-
             reset = function(self)
-                self.nextEvent = "keypressed"
                 self.timeOfNextEvent = self.delay  
             end,  
         },
@@ -83,7 +64,6 @@ return {
                 if self.pulse:isJustStarting(self.duration) then
                     self.onKeyRepeat()
                 end
-                self.nextEvent = self.pulse:getNextEvent(self.duration)
             end
         end,
 
@@ -91,9 +71,8 @@ return {
         setDelay    = function(self, delay)    self.pulse:setDelay(delay)             end,
         setInterval = function(self, interval) self.pulse:setInterval(interval)       end,
 
-        isSendingKeypressed  = function(self)  return self.nextEvent == "keypressed"  end,
-        isSendingKeyreleased = function(self)  return self.nextEvent == "keyreleased" end,
-
+        isSendingEvent = function(self)  return self.pulse:isSendingEvent(self.duration) end,
+        
         isStartingRepeat = function(self)  
             return self.pulse:isJustStarting(self.duration) 
         end,
@@ -114,10 +93,8 @@ return {
 
     update = function(self, dt)
         self.pressedKey:update(dt)
-        if     self.pressedKey:isSendingKeypressed() then
+        if  self.pressedKey:isSendingEvent() then
             self:sendKeypressed(self.pressedKey:get())
-        elseif self.pressedKey:isSendingKeyreleased() then
-            self:sendKeyreleased(self.pressedKey:get())
         end
     end,
 
@@ -154,21 +131,6 @@ return {
             end
         end
         self.__ENGINE.oldKeypressed(key)
-    end,
-
-    sendKeyreleased = function(self, key)
-        local isPluginDownstream = false
-        for _, plugin in ipairs(self.__ENGINE) do
-            if isPluginDownstream then
-                if plugin.handleKeyreleased ~= nil and plugin:handleKeyreleased(key) then 
-                    return true
-                end
-            end
-            if plugin == self then
-                isPluginDownstream = true
-            end
-        end
-        self.__ENGINE.oldKeyreleased(key)
     end,
 
 }
