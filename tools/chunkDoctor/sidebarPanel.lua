@@ -56,7 +56,9 @@ return {
             
             SIDEBAR_GRAFX:setColor(1, 1, 0)
             SIDEBAR_GRAFX:setLineWidth(3)
-            SIDEBAR_GRAFX:rectangle("line", (tileCandidate.x * 16) + 759, (tileCandidate.y * 16) + y - 1, 18, 18)
+            SIDEBAR_GRAFX:rectangle("line", (tileCandidate.x * 16) + 751, (tileCandidate.y * 16) + y - 9, 34, 34)
+        
+            CHUNK_ARTIST:drawTile(chunkSelected, tileCandidate.x, tileCandidate.y, 752, y - 8, 2, SIDEBAR_GRAFX, { 1, 1, 1, 0.8 })
         end
     end,
 
@@ -80,6 +82,8 @@ return {
                 chunkSelected = nil
             end
         end
+
+        love.mouse.setVisible(tileCandidate == nil)
 
     end,
 
