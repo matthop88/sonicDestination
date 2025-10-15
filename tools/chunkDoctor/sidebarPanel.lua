@@ -64,10 +64,22 @@ return {
         SIDEBAR_GRAFX:setY(mainChunkY:get())
 
         chunkCandidate = self:getChunkCandidate(love.mouse.getPosition())
-        if chunkSelected == nil then gridSize:setDestination(0)
-        else                         gridSize:setDestination(100) end
+        if chunkSelected == nil then 
+            gridSize:setDestination(0)
+        else                         
+            gridSize:setDestination(100)
+            if not self:isChunkOnscreen(chunkSelected) then
+                chunkSelected = nil
+            end
+        end
 
     end,
+
+    isChunkOnscreen = function(self, chunkNum)
+        local y = ((chunkNum - 1) * 264) + 272
+
+        return y + SIDEBAR_GRAFX:getY() < 800 and y + SIDEBAR_GRAFX:getY() > -256
+    end,       
 
     handleMousepressed = function(self, mx, my)
         chunkSelected = chunkCandidate
@@ -90,11 +102,9 @@ return {
     end,
 
     handleKeypressed = function(self, key)
-        if key == "up" then
-            self:prevChunk()
-        elseif key == "down" then
-            self:nextChunk()
-        end
+        if     key == "up"     then self:prevChunk()
+        elseif key == "down"   then self:nextChunk()
+        elseif key == "escape" then chunkSelected = nil end
     end,
 
     handleKeyreleased = function(self, key)
