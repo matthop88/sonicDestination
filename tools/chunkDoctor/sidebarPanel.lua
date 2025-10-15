@@ -27,6 +27,7 @@ return {
         self:renderChunk(CHUNK_ARTIST:getNumChunks() - 1, -256)
 
         self:highlightCandidateChunk()
+        self:decorateSelectedChunk()
     end,
 
     highlightCandidateChunk = function(self)
@@ -34,6 +35,17 @@ return {
             SIDEBAR_GRAFX:setColor(1, 1, 0)
             SIDEBAR_GRAFX:setLineWidth(3)
             SIDEBAR_GRAFX:rectangle("line", 759, ((chunkCandidate - 1) * 264) + 271, 258, 258)
+        end
+    end,
+
+    decorateSelectedChunk = function(self)
+        if chunkSelected ~= nil then
+            SIDEBAR_GRAFX:setColor(1, 1, 1, 0.5)
+            SIDEBAR_GRAFX:rectangle("fill", 756, ((chunkSelected - 1) * 264) + 268, 264, 264)
+            SIDEBAR_GRAFX:setColor(1, 1, 1)
+            SIDEBAR_GRAFX:setLineWidth(3)
+            SIDEBAR_GRAFX:rectangle("line", 759, ((chunkSelected - 1) * 264) + 271, 258, 258)
+
         end
     end,
 
@@ -52,9 +64,13 @@ return {
         SIDEBAR_GRAFX:setY(mainChunkY:get())
 
         chunkCandidate = self:getChunkCandidate(love.mouse.getPosition())
-        if chunkCandidate == nil then gridSize:setDestination(0)
+        if chunkSelected == nil then gridSize:setDestination(0)
         else                         gridSize:setDestination(100) end
 
+    end,
+
+    handleMousepressed = function(self, mx, my)
+        chunkSelected = chunkCandidate
     end,
 
     getChunkCandidate = function(self, mX, mY)
@@ -89,7 +105,7 @@ return {
         if y + SIDEBAR_GRAFX:getY() < 800 and y + SIDEBAR_GRAFX:getY() > -256 then        
             SIDEBAR_GRAFX:setColor(1, 1, 1)
             SIDEBAR_GRAFX:setFontSize(32)
-            if chunkNum == chunkCandidate then CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX, gridSize:get() / 100)
+            if chunkNum == chunkSelected then CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX, gridSize:get() / 100)
             else                              CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX, 0)                 end
             SIDEBAR_GRAFX:printf("" .. chunkNum, 710, y + 112, 50, "center")
         end
