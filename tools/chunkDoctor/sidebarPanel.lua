@@ -66,7 +66,7 @@ return {
         sidebarY:update(dt)
         gridSize:update(dt)
         if     sidebarY:get() == self:getSidebarYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
-            sidebarY:set(self:geSidebarYForChunk(1))
+            sidebarY:set(self:getSidebarYForChunk(1))
         elseif sidebarY:get() == self:getSidebarYForChunk(0) then
             sidebarY:set(self:getSidebarYForChunk(CHUNK_ARTIST:getNumChunks()))
         end
