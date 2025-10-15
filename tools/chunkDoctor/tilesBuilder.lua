@@ -6,10 +6,12 @@ local TILES_BUILDER = {
     		return self[tileID]
     	end,
 
-    	draw = function(self, x, y, tileID, graphics, offset)
+    	draw = function(self, x, y, tileID, graphics, offset, scale, color)
     		offset = offset or 0
-			graphics:setColor(1, 1, 1)
-    		graphics:draw(self.img, self:get(tileID), x + offset, y + offset, 0, 1 - (offset * 0.125), 1 - (offset * 0.125))
+    		scale  = scale  or 1
+    		color  = color   or { 1, 1, 1 }
+			graphics:setColor(color)
+    		graphics:draw(self.img, self:get(tileID), x + offset, y + offset, 0, scale - (offset * 0.125 * scale), scale - (offset * 0.125 * scale))
 		end,
     },
 
