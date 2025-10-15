@@ -3,17 +3,18 @@ local SIDEBAR_GRAFX    = require("tools/lib/graphics"):create()
 local CHUNK_ARTIST
 
 local chunkID        = 2
-local mainChunkY     =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
+local sidebarY       =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
 local gridSize       = require("tools/lib/tweenableValue"):create(0, { speed = 8 })
 local chunkSelected  = nil
 local chunkCandidate = nil
+local tileCandidate  = nil
 
 SIDEBAR_GRAFX:setScale(1)
 
 return {
     init = function(self, chunkArtist)
         CHUNK_ARTIST = chunkArtist
-        mainChunkY:set(self:getMainYForChunk(2))
+        sidebarY:set(self:getSidebarYForChunk(2))
         return self
     end,
 
@@ -28,6 +29,7 @@ return {
 
         self:highlightCandidateChunk()
         self:decorateSelectedChunk()
+        self:highlightCandidateTile()
     end,
 
     highlightCandidateChunk = function(self)
@@ -45,25 +47,31 @@ return {
             SIDEBAR_GRAFX:setColor(1, 1, 1)
             SIDEBAR_GRAFX:setLineWidth(3)
             SIDEBAR_GRAFX:rectangle("line", 759, ((chunkSelected - 1) * 264) + 271, 258, 258)
-
         end
     end,
 
-    isPtInsideChunk = function(self, px, py)
-        return px >= 130 and px <= 642 and py >= 144 and py <= 656
+    highlightCandidateTile = function(self)
+        if tileCandidate ~= nil and chunkSelected ~= nil then
+            local y = self:getYForChunk(chunkSelected)
+            
+            SIDEBAR_GRAFX:setColor(1, 1, 0)
+            SIDEBAR_GRAFX:setLineWidth(3)
+            SIDEBAR_GRAFX:rectangle("line", (tileCandidate.x * 16) + 759, (tileCandidate.y * 16) + y - 1, 18, 18)
+        end
     end,
 
     update = function(self, dt)
-        mainChunkY:update(dt)
+        sidebarY:update(dt)
         gridSize:update(dt)
-        if     mainChunkY:get() == self:getMainYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
-            mainChunkY:set(self:getMainYForChunk(1))
-        elseif mainChunkY:get() == self:getMainYForChunk(0) then
-            mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
+        if     sidebarY:get() == self:getSidebarYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
+            sidebarY:set(self:geSidebarYForChunk(1))
+        elseif sidebarY:get() == self:getSidebarYForChunk(0) then
+            sidebarY:set(self:getSidebarYForChunk(CHUNK_ARTIST:getNumChunks()))
         end
-        SIDEBAR_GRAFX:setY(mainChunkY:get())
+        SIDEBAR_GRAFX:setY(sidebarY:get())
 
         chunkCandidate = self:getChunkCandidate(love.mouse.getPosition())
+        tileCandidate  = self:getTileCandidate(love.mouse.getPosition())
         if chunkSelected == nil then 
             gridSize:setDestination(0)
         else                         
@@ -73,6 +81,19 @@ return {
             end
         end
 
+    end,
+
+    getTileCandidate = function(self, mx, my)
+        if chunkSelected ~= nil then
+            local y      = self:getYForChunk(chunkSelected)
+            local sY     = y + sidebarY:get()
+            local mx, my = love.mouse.getPosition()
+            if mx >= 760 and mx <= 1012 and my >= sY and my <= sY + 256 then
+                local tileX = math.floor((mx - 760) / 16)
+                local tileY = math.floor((my - sY)  / 16)
+                return { x = tileX, y = tileY }
+            end
+        end
     end,
 
     isChunkOnscreen = function(self, chunkNum)
@@ -108,7 +129,7 @@ return {
     end,
 
     handleKeyreleased = function(self, key)
-        mainChunkY.speed = 4
+        sidebarY.speed = 4
     end,
 
     renderChunk = function(self, chunkNum, y)
@@ -122,38 +143,42 @@ return {
     end,
 
     prevChunk = function(self)
-        if not mainChunkY:inFlux() then
+        if not sidebarY:inFlux() then
             chunkID = chunkID - 1
             if chunkID < 1 then 
                 chunkID = CHUNK_ARTIST:getNumChunks() 
-                self:moveMainYToChunk(0)
+                self:moveSidebarYToChunk(0)
             else
-                self:moveMainYToChunk(chunkID)
+                self:moveSidebarYToChunk(chunkID)
             end
         end
     end,
 
     nextChunk = function(self)
-        if not mainChunkY:inFlux() then
+        if not sidebarY:inFlux() then
             chunkID = chunkID + 1
             if chunkID > CHUNK_ARTIST:getNumChunks() then
                 chunkID = 1
-                self:moveMainYToChunk(CHUNK_ARTIST:getNumChunks() + 1)
+                self:moveSidebarYToChunk(CHUNK_ARTIST:getNumChunks() + 1)
             else
-                self:moveMainYToChunk(chunkID)
+                self:moveSidebarYToChunk(chunkID)
             end
         end
     end,
 
-    moveMainYToChunk = function(self, chunkNum)
-        mainChunkY:setDestination(self:getMainYForChunk(chunkNum))
+    moveSidebarYToChunk = function(self, chunkNum)
+        sidebarY:setDestination(self:getSidebarYForChunk(chunkNum))
     end,
 
-    getMainYForChunk = function(self, chunkNum)
+    getSidebarYForChunk = function(self, chunkNum)
         return -(chunkNum - 1) * 264
     end,
 
+    getYForChunk = function(self, chunkNum)
+        return ((chunkNum - 1) * 264) + 272
+    end,
+
     onKeyRepeat = function() 
-        mainChunkY.speed = 12 
+        sidebarY.speed = 12 
     end,
 }
