@@ -19,6 +19,19 @@ return {
         end
     end,
 
+    drawTile = function(self, chunkID, chunkX, chunkY, x, y, scale, graphics, color)
+        local chunk = self.chunksData[chunkID]
+        
+        local tileRow = chunk[chunkY + 1]
+        if tileRow ~= nil then
+            local tileID  = tileRow[chunkX + 1]
+
+            if tileID ~= nil then
+                self.tiles:draw(x + (chunkX * 16), y + (chunkY * 16), tileID, graphics, nil, scale, color)
+            end
+        end
+    end,
+
     drawRow = function(self, row, x, y, graphics, gridSize)
         for n, tileID in ipairs(row) do
             self.tiles:draw(x, y, tileID, graphics, gridSize)
