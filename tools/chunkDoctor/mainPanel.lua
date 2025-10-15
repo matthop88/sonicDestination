@@ -58,15 +58,29 @@ return {
         if not mainChunkY:inFlux() then
             local mx, my = love.mouse.getPosition()
 
-            if self:isPtInsideChunk(mx, my) then
-                local chunkX = math.floor((mx - 130) / 32)
-                local chunkY = math.floor((my - 144) / 32)
-                
-                MAIN_GRAFX:setColor(1, 1, 0)
-                MAIN_GRAFX:setLineWidth(3)
-                MAIN_GRAFX:rectangle("line", (chunkX * 16) + 64, (chunkY * 16) + 71 - mainChunkY:get(), 18, 18)
+            local chunkX, chunkY = self:getTargetedChunkXY()
+            if chunkX ~= nil then
+                if love.mouse.isDown(1) then
+                    MAIN_GRAFX:setColor(1, 1, 1, 0.8)
+                    MAIN_GRAFX:rectangle("fill", (chunkX * 16) + 63, (chunkY * 16) + 70 - mainChunkY:get(), 20, 20)
+                else
+                    MAIN_GRAFX:setColor(1, 1, 0)
+                    MAIN_GRAFX:setLineWidth(3)
+                    MAIN_GRAFX:rectangle("line", (chunkX * 16) + 64, (chunkY * 16) + 71 - mainChunkY:get(), 18, 18)
+                end
             end
         end
+    end,
+
+    getTargetedChunkXY = function(self)
+        local mx, my = love.mouse.getPosition()
+
+        if self:isPtInsideChunk(mx, my) then
+            local chunkX = math.floor((mx - 130) / 32)
+            local chunkY = math.floor((my - 144) / 32)
+            return chunkX, chunkY
+        end
+           
     end,
 
     isPtInsideChunk = function(self, px, py)
