@@ -2,8 +2,10 @@ local SIDEBAR_GRAFX    = require("tools/lib/graphics"):create()
 
 local CHUNK_ARTIST
 
-local chunkID    = 2
-local mainChunkY =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
+local chunkID       = 2
+local mainChunkY    =  require("tools/lib/tweenableValue"):create(0, { speed = 4 })
+local gridSize      = require("tools/lib/tweenableValue"):create(0, { speed = 8 })
+local chunkSelected = nil
 
 SIDEBAR_GRAFX:setScale(1)
 
@@ -26,12 +28,34 @@ return {
 
     update = function(self, dt)
         mainChunkY:update(dt)
+        gridSize:update(dt)
         if     mainChunkY:get() == self:getMainYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
             mainChunkY:set(self:getMainYForChunk(1))
         elseif mainChunkY:get() == self:getMainYForChunk(0) then
             mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
         end
         SIDEBAR_GRAFX:setY(mainChunkY:get())
+
+        chunkSelected = self:getChunkSelected(love.mouse.getPosition())
+        if chunkSelected == nil then gridSize:setDestination(0)
+        else                         gridSize:setDestination(100) end
+
+    end,
+
+    getChunkSelected = function(self, mX, mY)
+        local chunk = self:calculateChunkSelected(mX, mY)
+        if     chunk == nil                        then return nil
+        elseif chunk < 1                           then return chunk + CHUNK_ARTIST:getNumChunks()
+        elseif chunk > CHUNK_ARTIST:getNumChunks() then return chunk - CHUNK_ARTIST:getNumChunks() 
+        else                                            return chunk                               end
+    end,
+
+    calculateChunkSelected = function(self, mX, mY)
+        if mX >= 760 and mX <= 1016 then
+            if     mY >= 272 and mY <= 528 then return chunkID
+            elseif mY >= 8   and mY <= 264 then return chunkID - 1
+            elseif mY >= 536 and mY <= 792 then return chunkID + 1 end
+        end
     end,
 
     handleKeypressed = function(self, key)
@@ -50,7 +74,8 @@ return {
         if y + SIDEBAR_GRAFX:getY() < 800 and y + SIDEBAR_GRAFX:getY() > -256 then        
             SIDEBAR_GRAFX:setColor(1, 1, 1)
             SIDEBAR_GRAFX:setFontSize(32)
-            CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX)
+            if chunkNum == chunkSelected then CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX, gridSize:get() / 100)
+            else                              CHUNK_ARTIST:draw(chunkNum, 760, y, SIDEBAR_GRAFX, 0)                 end
             SIDEBAR_GRAFX:printf("" .. chunkNum, 710, y + 112, 50, "center")
         end
     end,
