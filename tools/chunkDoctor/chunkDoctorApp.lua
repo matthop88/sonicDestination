@@ -45,6 +45,14 @@ function love.keyreleased(key)
     SIDEBAR_PANEL:handleKeyreleased(key)
 end
 
+function love.mousepressed(mx, my)
+    MAIN_PANEL:handleMousepressed(mx, my)
+end
+
+function love.mousereleased(mx, my)
+    MAIN_PANEL:handleMousereleased(mx, my)
+end
+
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
