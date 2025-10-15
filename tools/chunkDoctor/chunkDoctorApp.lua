@@ -46,7 +46,9 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(mx, my)
-    MAIN_PANEL:handleMousepressed(mx, my)
+    if mx <= 700 then MAIN_PANEL:handleMousepressed(mx, my)
+    else              SIDEBAR_PANEL:handleMousepressed(mx, my) end
+
 end
 
 function love.mousereleased(mx, my)
