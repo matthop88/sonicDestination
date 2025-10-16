@@ -5,6 +5,7 @@ local MOUSE_GRAFX = require("tools/lib/graphics"):create()
 return {
 	tileBeingHeld = nil,
 	chunkID       = nil,
+	transparency  = 0.9,
 
 	init = function(self, chunkArtist)
 		CHUNK_ARTIST = chunkArtist
@@ -21,12 +22,16 @@ return {
 		self.tileBeingHeld = nil
 	end,
 
+	setTransparency = function(self, transparency)
+		self.transparency = transparency
+	end,
+
 	draw = function(self)
 		local mX, mY = love.mouse.getPosition()
 
 		if self.tileBeingHeld ~= nil then
 			local tileID = CHUNK_ARTIST:getTileID(self.chunkID, self.tileBeingHeld.x, self.tileBeingHeld.y)
-			CHUNK_ARTIST:drawTileAt(tileID, mX - 32, mY - 32, MOUSE_GRAFX, 4, { 1, 1, 1, 0.9 })
+			CHUNK_ARTIST:drawTileAt(tileID, mX - 32, mY - 32, MOUSE_GRAFX, 4, { 1, 1, 1, self.transparency })
 			MOUSE_GRAFX:setColor(1, 1, 1)
 			MOUSE_GRAFX:setLineWidth(3)
 			MOUSE_GRAFX:rectangle("line", mX - 33, mY - 33, 66, 66)
