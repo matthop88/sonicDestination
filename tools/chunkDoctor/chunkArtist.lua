@@ -30,6 +30,15 @@ return {
         end
     end,
 
+    setTileID = function(self, tileID, chunkID, chunkX, chunkY)
+        local chunk = self.chunksData[chunkID]
+        
+        local tileRow = chunk[chunkY + 1]
+        if tileRow ~= nil then
+            tileRow[chunkX + 1] = tileID
+        end
+    end,
+
     drawTile = function(self, chunkID, chunkX, chunkY, x, y, scale, graphics, color)
         local tileID = self:getTileID(chunkID, chunkX, chunkY)
         if tileID ~= nil then
