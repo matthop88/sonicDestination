@@ -29,7 +29,8 @@ return {
     end,
 
     draw = function(self)
-        for _, chunk in ipairs(CHUNKS) do chunk:draw() end
+        for _, chunk in ipairs(CHUNKS) do chunk:draw()            end
+        for _, chunk in ipairs(CHUNKS) do chunk:drawHighlitTile() end
     end,
 
     update = function(self, dt)
@@ -42,6 +43,8 @@ return {
         self:updateChunkCandidate(love.mouse.getPosition())
         if self:isAnyChunkSelected() then gridSize:setDestination(100)
         else                              gridSize:setDestination(0)   end
+
+        love.mouse.setVisible(not self:isAnyTileHighlighted())
     end,
 
     updateSidebar = function(self, dt)
@@ -59,13 +62,9 @@ return {
 
     updateChunkCandidate = function(self, mX, mY)
         local chunkID = self:getChunkCandidate(mX, mY)
-        if chunkID ~= nil then
-            for _, chunk in ipairs(CHUNKS) do
-                chunk.highlighted = false
-            end
-
-            CHUNKS[chunkID].highlighted = true
-        end
+        self:unhighlightAllChunks()
+        
+        if chunkID ~= nil then CHUNKS[chunkID].highlighted = true end
     end,
 
     getChunkCandidate = function(self, mX, mY)
@@ -87,6 +86,12 @@ return {
     isAnyChunkSelected = function(self)
         for _, chunk in ipairs(CHUNKS) do 
             if chunk.selected then return true end
+        end
+    end,
+
+    isAnyTileHighlighted = function(self)
+        for _, chunk in ipairs(CHUNKS) do
+            if chunk.selected and chunk.highlighted then return true end
         end
     end,
 
@@ -126,6 +131,10 @@ return {
 
     unselectAllChunks = function(self)
         for _, chunk in ipairs(CHUNKS) do chunk.selected = false end
+    end,
+
+    unhighlightAllChunks = function(self)
+        for _, chunk in ipairs(CHUNKS) do chunk.highlighted = false end
     end,
 
     handleMousepressed = function(self, mx, my)
