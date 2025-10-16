@@ -13,11 +13,12 @@ local STICKY_MOUSE
 SIDEBAR_GRAFX:setScale(1)
 
 return {
-    init = function(self, chunkArtist)
+    init = function(self, chunkArtist, stickyMouse)
         CHUNK_ARTIST = chunkArtist
+        STICKY_MOUSE = stickyMouse
+        
         sidebarY:set(self:getSidebarYForChunk(2))
 
-        STICKY_MOUSE  = require("tools/chunkDoctor/stickyMouse"):init(CHUNK_ARTIST)
         SIDEBAR_CHUNK = require("tools/chunkDoctor/sidebar/sidebarChunk"):init(CHUNK_ARTIST, SIDEBAR_GRAFX, gridSize, STICKY_MOUSE)
 
         for i = 1, CHUNK_ARTIST:getNumChunks() do
