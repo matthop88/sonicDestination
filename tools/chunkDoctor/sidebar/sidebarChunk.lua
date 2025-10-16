@@ -2,12 +2,18 @@ local SIDEBAR_GRAFX
 local CHUNK_ARTIST
 local GRID_SIZE
 
+local STICKY_MOUSE
+
 return {
-	create = function(self, chunkArtist, graphics, chunkID, gridSize)
+	init = function(self, chunkArtist, graphics, gridSize, stickyMouse)
 		CHUNK_ARTIST  = chunkArtist
 		SIDEBAR_GRAFX = graphics
 		GRID_SIZE     = gridSize
+		STICKY_MOUSE  = stickyMouse
+		return self
+	end,
 
+	create = function(self, chunkID)
 		return ({
 			highlighted  = false,
 			selected     = false,
@@ -25,6 +31,9 @@ return {
 			end,
 
 			select         = function(self, selected)
+				if self.selected and not selected then
+					STICKY_MOUSE:releaseTile()
+				end
 				self.selected = selected
 				if not self.selected then self.selectedTile = nil end
 			end,
@@ -45,6 +54,16 @@ return {
     			self:drawHighlitTileAt(self.y)
     			self:drawHighlitTileAt(self.alternateY)
     		end,
+
+    		drawHighlitTileAt = function(self, y)
+    			if y ~= nil and self.selected and self.highlitTile ~= nil then
+            		SIDEBAR_GRAFX:setColor(1, 1, 0)
+            		SIDEBAR_GRAFX:setLineWidth(3)
+            		SIDEBAR_GRAFX:rectangle("line", (self.highlitTile.x * 16) + 751, (self.highlitTile.y * 16) + y - 9, 34, 34)
+        
+            		CHUNK_ARTIST:drawTile(chunkID, self.highlitTile.x, self.highlitTile.y, 752, y - 8, 2, SIDEBAR_GRAFX, { 1, 1, 1, 0.8 })
+            	end
+        	end,
 
     		drawSelectedTile = function(self)
     			self:drawSelectedTileAt(self.y)
@@ -96,16 +115,6 @@ return {
         		end
     		end,
 
-    		drawHighlitTileAt = function(self, y)
-    			if y ~= nil and self.selected and self.highlitTile ~= nil then
-            		SIDEBAR_GRAFX:setColor(1, 1, 0)
-            		SIDEBAR_GRAFX:setLineWidth(3)
-            		SIDEBAR_GRAFX:rectangle("line", (self.highlitTile.x * 16) + 751, (self.highlitTile.y * 16) + y - 9, 34, 34)
-        
-            		CHUNK_ARTIST:drawTile(chunkID, self.highlitTile.x, self.highlitTile.y, 752, y - 8, 2, SIDEBAR_GRAFX, { 1, 1, 1, 0.8 })
-            	end
-        	end,
-
     		calculateHighlitTileAt = function(self, y)
     			if y ~= nil and self.selected then
 		            local sY     = y + SIDEBAR_GRAFX:getY()
@@ -135,6 +144,9 @@ return {
 				self.selected = true
 				if self.highlitTile ~= nil then
 					self.selectedTile = self.highlitTile
+					STICKY_MOUSE:holdTile(self.chunkID, self.selectedTile)
+				else
+					STICKY_MOUSE:releaseTile()
 				end
 			end,
 
