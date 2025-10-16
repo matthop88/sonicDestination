@@ -25,14 +25,6 @@ return {
         self:renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 400) + 72)
         self:renderChunk(CHUNK_ARTIST:getNumChunks(), -328)
 
-        if self:isPtInsideChunk(love.mouse.getPosition()) then 
-            STICKY_MOUSE:setTransparency(0.4)
-            gridSize:setDestination(150)
-        else               
-            STICKY_MOUSE:setTransparency(0.9)                                    
-            gridSize:setDestination(0)   
-        end
-        
         if not self:drawSelectedTile() then self:drawCurrentTileHighlight() end
     end,
 
@@ -50,17 +42,30 @@ return {
         if love.mouse.isDown(1) and love.keyboard.isDown("lshift", "rshift") then
             self:updateSelectedTile()
         end
+
+        if self:isPtInsideChunk(love.mouse.getPosition()) then 
+            STICKY_MOUSE:setTransparency(0.4)
+            gridSize:setDestination(150)
+        else               
+            STICKY_MOUSE:setTransparency(0.9)                                    
+            gridSize:setDestination(0)   
+        end
     end,
 
     handleKeypressed = function(self, key)
-        if     key == "up"   then self:prevChunk()
-        elseif key == "down" then self:nextChunk()  end
+        if     key == "up"     then self:prevChunk()
+        elseif key == "down"   then self:nextChunk()  
+        elseif key == "escape" then STICKY_MOUSE:releaseTile() end
     end,
 
     handleKeyreleased = function(self, key) mainChunkY.speed = 4  end,
 
     handleMousepressed = function(self, mx, my)
         self:updateSelectedTile()
+        local tileID = STICKY_MOUSE:getTileID()
+        if tileID ~= nil and selectedTile ~= nil then
+            CHUNK_ARTIST:setTileID(tileID, chunkID, selectedTile.x, selectedTile.y)
+        end
     end,
 
     handleMousereleased = function(self, mx, my)
