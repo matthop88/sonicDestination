@@ -51,7 +51,16 @@ return {
         if self:isAnyChunkSelected() then gridSize:setDestination(100)
         else                              gridSize:setDestination(0)   end
 
-        STICKY_MOUSE:setVisible(not self:isAnyTileHighlighted())
+        local anyTileHighlighted = self:isAnyTileHighlighted()
+        STICKY_MOUSE:setVisible(not anyTileHighlighted)
+        if self:isHighlightedTileSelected() then
+            STICKY_MOUSE:setTransparency(0.9)
+        elseif anyTileHighlighted then
+            STICKY_MOUSE:setTransparency(0.2)
+        elseif STICKY_MOUSE:getTransparency() ~= 0.4 then
+            STICKY_MOUSE:setTransparency(0.9)
+        end
+
     end,
 
     updateSidebar = function(self, dt)
@@ -100,6 +109,13 @@ return {
         for _, chunk in ipairs(CHUNKS) do
             if chunk.selected and chunk.highlighted then return true end
         end
+    end,
+
+    isHighlightedTileSelected = function(self)
+        for _, chunk in ipairs(CHUNKS) do
+            if chunk:isHighlightedTileSelected() then return true end
+        end
+        return false
     end,
 
     handleKeypressed = function(self, key)
