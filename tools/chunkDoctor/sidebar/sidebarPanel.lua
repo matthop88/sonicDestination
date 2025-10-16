@@ -130,7 +130,7 @@ return {
     end,
 
     unselectAllChunks = function(self)
-        for _, chunk in ipairs(CHUNKS) do chunk.selected = false end
+        for _, chunk in ipairs(CHUNKS) do chunk:select(false) end
     end,
 
     unhighlightAllChunks = function(self)
@@ -138,9 +138,9 @@ return {
     end,
 
     handleMousepressed = function(self, mx, my)
+        self:unselectAllChunks()
         for _, chunk in ipairs(CHUNKS) do 
-            if chunk.highlighted then chunk.selected = true
-            else                      chunk.selected = false  end
+            if chunk.highlighted then chunk:handleMousepressed(mx, my) end
         end
     end,
 
