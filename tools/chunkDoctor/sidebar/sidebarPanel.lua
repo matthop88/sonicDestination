@@ -7,7 +7,8 @@ local sidebarY       = require("tools/lib/tweenableValue"):create(0, { speed = 4
 local gridSize       = require("tools/lib/tweenableValue"):create(0, { speed = 8 })
 
 local CHUNKS         = {}
-local SIDEBAR_CHUNK  = require("tools/chunkDoctor/sidebar/sidebarChunk")
+local SIDEBAR_CHUNK
+local STICKY_MOUSE
 
 SIDEBAR_GRAFX:setScale(1)
 
@@ -16,8 +17,11 @@ return {
         CHUNK_ARTIST = chunkArtist
         sidebarY:set(self:getSidebarYForChunk(2))
 
+        STICKY_MOUSE  = require("tools/chunkDoctor/stickyMouse"):init(CHUNK_ARTIST)
+        SIDEBAR_CHUNK = require("tools/chunkDoctor/sidebar/sidebarChunk"):init(CHUNK_ARTIST, SIDEBAR_GRAFX, gridSize, STICKY_MOUSE)
+
         for i = 1, CHUNK_ARTIST:getNumChunks() do
-            table.insert(CHUNKS, SIDEBAR_CHUNK:create(CHUNK_ARTIST, SIDEBAR_GRAFX, i, gridSize))
+            table.insert(CHUNKS, SIDEBAR_CHUNK:create(i))
         end
 
         CHUNKS[1].alternateY = (#CHUNKS * 264) + 272
@@ -31,6 +35,8 @@ return {
     draw = function(self)
         for _, chunk in ipairs(CHUNKS) do chunk:draw()            end
         for _, chunk in ipairs(CHUNKS) do chunk:drawHighlitTile() end
+
+        STICKY_MOUSE:draw()
     end,
 
     update = function(self, dt)
@@ -44,7 +50,7 @@ return {
         if self:isAnyChunkSelected() then gridSize:setDestination(100)
         else                              gridSize:setDestination(0)   end
 
-        love.mouse.setVisible(not self:isAnyTileHighlighted())
+        STICKY_MOUSE:setVisible(not self:isAnyTileHighlighted())
     end,
 
     updateSidebar = function(self, dt)
