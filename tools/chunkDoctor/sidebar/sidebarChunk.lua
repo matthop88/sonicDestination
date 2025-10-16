@@ -40,6 +40,13 @@ return {
 
 			setHighlighted = function(self, highlighted) self.highlighted = highlighted end,
 
+			isHighlightedTileSelected = function(self)
+				return self.highlitTile  ~= nil 
+				   and self.selectedTile ~= nil
+				   and self.highlitTile.x == self.selectedTile.x
+				   and self.highlitTile.y == self.selectedTile.y
+			end,
+
 			isOnScreen = function(self, y)
 				if y == nil then return false end
 				return y + SIDEBAR_GRAFX:getY() < 800 and y + SIDEBAR_GRAFX:getY() > - 256
@@ -75,6 +82,9 @@ return {
     				self:select(false)
     			else
     				self.highlitTile = self:calculateHighlitTileAt(self.y) or self:calculateHighlitTileAt(self.alternateY)
+    			end
+    			if not STICKY_MOUSE:isHoldingTile() and self.selectedTile then
+    				self:select(false)
     			end
     		end,
 
@@ -121,9 +131,7 @@ return {
 		            if mx >= 760 and mx <= 1012 and my >= sY and my <= sY + 256 then
 		                local tileX = math.floor((mx - 760) / 16)
 		                local tileY = math.floor((my - sY)  / 16)
-		                if not self.selectedTile or self.selectedTile.x ~= tileX or self.selectedTile.y ~= tileY then
-							return { x = tileX, y = tileY }
-						end
+		                return { x = tileX, y = tileY }
 		            end
 		        end
 		    end,
