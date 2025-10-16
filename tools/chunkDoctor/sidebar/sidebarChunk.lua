@@ -32,7 +32,12 @@ return {
 
 			draw = function(self)
         		self:drawAt(self.y)
-        		if self.alternateY then self:drawAt(self.alternateY) end
+        		self:drawAt(self.alternateY)
+    		end,
+
+    		drawHighlitTile = function(self)
+    			self:drawHighlitTileAt(self.y)
+    			self:drawHighlitTileAt(self.alternateY)
     		end,
 
     		update = function(self, dt)
@@ -44,11 +49,10 @@ return {
     		end,
 
     		drawAt = function(self, y)
-    			if self:isOnScreen(y) then        
+    			if y ~= nil and self:isOnScreen(y) then        
             		self:drawChunkAt(y)
             		self:drawHighlightAt(y)
             		self:drawSelectedAt(y)
-            		self:drawHighlitTileAt(y)
         		end
     		end,
 
