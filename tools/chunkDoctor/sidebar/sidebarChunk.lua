@@ -72,8 +72,7 @@ return {
 
     		update = function(self, dt)
     			if not self:isOnScreen(self.y) and not self:isOnScreen(self.alternateY) then
-    				self.selected     = false
-    				self.selectedTile = false
+    				self:select(false)
     			else
     				self.highlitTile = self:calculateHighlitTileAt(self.y) or self:calculateHighlitTileAt(self.alternateY)
     			end
