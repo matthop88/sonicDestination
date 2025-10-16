@@ -1,5 +1,6 @@
 local MAIN_GRAFX                  = require("tools/lib/graphics"):create()
 local CHUNK_ARTIST
+local STICKY_MOUSE
 
 local chunkID    = 1
 local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
@@ -10,8 +11,10 @@ local selectedTile = nil
 MAIN_GRAFX:setScale(2)
 
 return {
-    init = function(self, chunkArtist)
+    init = function(self, chunkArtist, stickyMouse)
         CHUNK_ARTIST = chunkArtist
+        STICKY_MOUSE = stickyMouse
+
         return self
     end,
 
@@ -22,8 +25,13 @@ return {
         self:renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 400) + 72)
         self:renderChunk(CHUNK_ARTIST:getNumChunks(), -328)
 
-        if self:isPtInsideChunk(love.mouse.getPosition()) then gridSize:setDestination(150)
-        else                                                   gridSize:setDestination(0)   end
+        if self:isPtInsideChunk(love.mouse.getPosition()) then 
+            STICKY_MOUSE:setTransparency(0.4)
+            gridSize:setDestination(150)
+        else               
+            STICKY_MOUSE:setTransparency(0.9)                                    
+            gridSize:setDestination(0)   
+        end
         
         if not self:drawSelectedTile() then self:drawCurrentTileHighlight() end
     end,
