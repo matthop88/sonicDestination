@@ -9,9 +9,10 @@ return {
 		GRID_SIZE     = gridSize
 
 		return ({
-			highlighted = false,
-			selected    = false,
-			highlitTile = nil,
+			highlighted  = false,
+			selected     = false,
+			highlitTile  = nil,
+			selectedTile = nil,
 
 			init = function(self)
 				self:setChunkID(chunkID)
@@ -21,6 +22,11 @@ return {
 			setChunkID     = function(self, chunkID)     
 				self.chunkID = chunkID
 				self:updateBounds()    
+			end,
+
+			select         = function(self, selected)
+				self.selected = selected
+				if not self.selected then self.selectedTile = nil end
 			end,
 
 			setHighlighted = function(self, highlighted) self.highlighted = highlighted end,
@@ -40,9 +46,15 @@ return {
     			self:drawHighlitTileAt(self.alternateY)
     		end,
 
+    		drawSelectedTile = function(self)
+    			self:drawSelectedTileAt(self.y)
+    			self:drawSelectedTileAt(self.alternateY)
+    		end,
+
     		update = function(self, dt)
     			if not self:isOnScreen(self.y) and not self:isOnScreen(self.alternateY) then
-    				self.selected = false
+    				self.selected     = false
+    				self.selectedTile = false
     			else
     				self.highlitTile = self:calculateHighlitTileAt(self.y) or self:calculateHighlitTileAt(self.alternateY)
     			end
@@ -53,6 +65,7 @@ return {
             		self:drawChunkAt(y)
             		self:drawHighlightAt(y)
             		self:drawSelectedAt(y)
+            		self:drawSelectedTileAt(y)
         		end
     		end,
 
@@ -100,13 +113,29 @@ return {
 		            if mx >= 760 and mx <= 1012 and my >= sY and my <= sY + 256 then
 		                local tileX = math.floor((mx - 760) / 16)
 		                local tileY = math.floor((my - sY)  / 16)
-		                return { x = tileX, y = tileY }
+		                if not self.selectedTile or self.selectedTile.x ~= tileX or self.selectedTile.y ~= tileY then
+							return { x = tileX, y = tileY }
+						end
 		            end
 		        end
 		    end,
 
+		    drawSelectedTileAt = function(self, y)
+		    	if y ~= nil and self.selectedTile then
+		    		SIDEBAR_GRAFX:setColor(0, 0, 0, 0.5)
+            		SIDEBAR_GRAFX:rectangle("fill", (self.selectedTile.x * 16) + 760, (self.selectedTile.y * 16) + y, 16, 16)
+        		end
+        	end,
+
 			updateBounds = function(self)
 				self.y = ((self.chunkID - 1) * 264) + 272
+			end,
+
+			handleMousepressed = function(self, mx, my)
+				self.selected = true
+				if self.highlitTile ~= nil then
+					self.selectedTile = self.highlitTile
+				end
 			end,
 
 		}):init()
