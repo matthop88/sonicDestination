@@ -22,15 +22,29 @@ return {
 		self.tileBeingHeld = nil
 	end,
 
+	isHoldingTile = function(self)
+		return self.tileBeingHeld ~= nil
+	end,
+
+	getTileID = function(self)
+		if self.tileBeingHeld then
+			return CHUNK_ARTIST:getTileID(self.chunkID, self.tileBeingHeld.x, self.tileBeingHeld.y)
+		end
+	end,
+
 	setTransparency = function(self, transparency)
 		self.transparency = transparency
+	end,
+
+	getTransparency = function(self)
+		return self.transparency
 	end,
 
 	draw = function(self)
 		local mX, mY = love.mouse.getPosition()
 
 		if self.tileBeingHeld ~= nil then
-			local tileID = CHUNK_ARTIST:getTileID(self.chunkID, self.tileBeingHeld.x, self.tileBeingHeld.y)
+			local tileID = self:getTileID()
 			CHUNK_ARTIST:drawTileAt(tileID, mX - 32, mY - 32, MOUSE_GRAFX, 4, { 1, 1, 1, self.transparency })
 			MOUSE_GRAFX:setColor(1, 1, 1)
 			MOUSE_GRAFX:setLineWidth(3)
