@@ -39,19 +39,9 @@ return {
 			end,
 
 			encodeChunkData = function(self, tilesImageName)
-				serializedData = "return {\n  tilesImageName = \"" .. tilesImageName .. "\",\n"
-				for _, chunk in ipairs(self.chunkData) do
-					local chunkString = "  { chunkID = " .. chunk.chunkID .. ",\n"
-					for _, chunkRow in ipairs(chunk) do
-						chunkString = chunkString .. "    { "
-						for _, tileID in ipairs(chunkRow) do
-							chunkString = chunkString .. (string.rep(" ", 3 - string.len("" .. tileID))) .. tileID .. ", "
-						end
-						chunkString = chunkString .. "},\n"
-					end
-					serializedData = serializedData .. chunkString .. "  },\n"
-				end
-				return serializedData .. "}\n"
+				self.chunkData.tilesImageName = tilesImageName
+				local chunkEncoder = require("tools/lib/map/chunkEncoder")
+				return chunkEncoder:encode(self.chunkData)
 			end,
 
 		}):init()
