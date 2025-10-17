@@ -5,6 +5,7 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] .. ".lua"
+local CHUNKS_OUT_NAME  = __PARAMS["chunkDataOut"] or __PARAMS["chunkDataIn"]
 local CHUNK_ARTIST     = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
 
 local STICKY_MOUSE     = require("tools/chunkDoctor/stickyMouse"):init(CHUNK_ARTIST)
@@ -49,7 +50,7 @@ end
 function love.mousepressed(mx, my)
     if mx <= 700 then MAIN_PANEL:handleMousepressed(mx, my)
     else              SIDEBAR_PANEL:handleMousepressed(mx, my) end
-
+    CHUNK_ARTIST:saveChunkData(CHUNKS_OUT_NAME)
 end
 
 function love.mousereleased(mx, my)
