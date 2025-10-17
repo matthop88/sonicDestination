@@ -90,17 +90,21 @@ function love.load(args)
 
     local appName = args[1]
     
-    local cmdLineTools = require("commandLineTools"):create(APP_PATH, appName)
-    __PARAMS = cmdLineTools:getParams(args)
-    if __PARAMS["help"] then
-        cmdLineTools:printHelp()
-        return
-    elseif not cmdLineTools:validateParams(args) then
-        return
+    if appName == nil then 
+        require "game/main"
+    else
+        local cmdLineTools = require("commandLineTools"):create(APP_PATH, appName)
+        __PARAMS = cmdLineTools:getParams(args)
+        if __PARAMS["help"] then
+            cmdLineTools:printHelp()
+            return
+        elseif not cmdLineTools:validateParams(args) then
+            return
+        end
+        
+        if   APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
+        else                                   require "game/main"     end
     end
-    
-    if   APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
-    else                                   require "game/main"     end
 end
 
 function relativePath(path)
