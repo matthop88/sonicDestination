@@ -38,7 +38,8 @@ end
 
 function love.keypressed(key)
     local mx, _ = love.mouse.getPosition()
-    if mx <= 700 then MAIN_PANEL:handleKeypressed(key)
+    if     key == "z" then MAIN_PANEL:undo()
+    elseif mx <= 700  then MAIN_PANEL:handleKeypressed(key)
     else              SIDEBAR_PANEL:handleKeypressed(key) end
 end
 
