@@ -38,8 +38,8 @@ end
 
 function love.keypressed(key)
     local mx, _ = love.mouse.getPosition()
-    if     key == "z" then MAIN_PANEL:undo()
-    elseif key == "Z" then MAIN_PANEL:redo()
+    if     key == "commandz" then MAIN_PANEL:undo()
+    elseif key == "commandZ" then MAIN_PANEL:redo()
     elseif mx <= 700  then MAIN_PANEL:handleKeypressed(key)
     else              SIDEBAR_PANEL:handleKeypressed(key) end
 end
