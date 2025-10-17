@@ -171,8 +171,10 @@ return {
     onKeyRepeat      = function()               mainChunkY.speed = 12        end,
 
     undo             = function(self)
-        if TILE_COMMAND ~= nil then
-            TILE_COMMAND:undo()
-        end
+        if TILE_COMMAND ~= nil then TILE_COMMAND:undo()  end
+    end,
+
+    redo             = function(self)
+        if TILE_COMMAND ~= nil then TILE_COMMAND:execute() end
     end,
 }
