@@ -26,18 +26,22 @@ return {
     keys = { 
         pressed = { },
     
-        shiftKeyDown  = false,
-        optionKeyDown = false,
+        shiftKeyDown   = false,
+        optionKeyDown  = false,
+        commandKeyDown = false,
 
-        shiftDown    = function(self)      self.shiftKeyDown  = true       end,
-        shiftUp      = function(self)      self.shiftKeyDown  = false      end,
-        optionDown   = function(self)      self.optionKeyDown = true       end,
-        optionUp     = function(self)      self.optionKeyDown = false      end,
+        shiftDown     = function(self)      self.shiftKeyDown   = true       end,
+        shiftUp       = function(self)      self.shiftKeyDown   = false      end,
+        optionDown    = function(self)      self.optionKeyDown  = true       end,
+        optionUp      = function(self)      self.optionKeyDown  = false      end,
+        commandDown   = function(self)      self.commandKeyDown = true       end,
+        commandUp     = function(self)      self.commandKeyDown = false      end,
         
-        isShiftDown  = function(self)      return self.shiftKeyDown        end,
-        isOptionDown = function(self)      return self.optionKeyDown       end,
-        isDown       = function(self, key) return self.pressed[key] ~= nil end,
-        getValue     = function(self, key) return self.pressed[key]        end,
+        isCommandDown = function(self)      return self.commandKeyDown       end,
+        isShiftDown   = function(self)      return self.shiftKeyDown         end,
+        isOptionDown  = function(self)      return self.optionKeyDown        end,
+        isDown        = function(self, key) return self.pressed[key] ~= nil  end,
+        getValue      = function(self, key) return self.pressed[key]         end,
         
         press = function(self, key)
             if self:isShiftDown()  then self.pressed[key] = self:applyShift(key)
@@ -45,6 +49,10 @@ return {
 
             if self:isOptionDown() then
                 self.pressed[key] = self:applyOption(self.pressed[key])
+            end
+
+            if self:isCommandDown() then
+                self.pressed[key] = self:applyCommand(self.pressed[key])
             end
             
             return self.pressed[key]
@@ -59,6 +67,10 @@ return {
 
         applyOption = function(self, key)
             return "option" .. key
+        end,
+
+        applyCommand = function(self, key)
+            return "command" .. key
         end,
 
         release = function(self, key)
@@ -84,6 +96,9 @@ return {
         elseif self:isOption(key) then
             self.keys:optionDown()
             return true
+        elseif self:isCommand(key) then
+            self.keys:commandDown()
+            return true
         end
     end,
 
@@ -93,6 +108,9 @@ return {
             return true
         elseif self:isOption(key) then
             self.keys:optionUp()
+            return true
+        elseif self:isCommand(key) then
+            self.keys:commandUp()
             return true
         end
     end,
@@ -119,4 +137,5 @@ return {
     isModifier = function(self, key) return self:isShift(key) or self:isOption(key) end,
     isShift    = function(self, key) return key == "lshift"   or key == "rshift"    end,
     isOption   = function(self, key) return key == "lalt"     or key == "ralt"      end,
+    isCommand  = function(self, key) return key == "lgui"     or key == "rgui"      end,
 }
