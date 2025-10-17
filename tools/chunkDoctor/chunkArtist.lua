@@ -60,4 +60,15 @@ return {
 	getNumChunks = function(self)
         return #self.chunksData
     end,
+
+    saveChunkData = function(self, chunkFilename)
+        love.filesystem.createDirectory("resources/zones/chunks")
+        love.filesystem.write("resources/zones/chunks/" .. chunkFilename .. ".lua", self:encodeChunkData())
+    end,
+
+    encodeChunkData = function(self)
+        local chunkEncoder = require("tools/lib/map/chunkEncoder")
+        return chunkEncoder:encode(self.chunksData)
+    end,
+
 }
