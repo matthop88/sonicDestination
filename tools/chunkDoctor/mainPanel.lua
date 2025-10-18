@@ -2,7 +2,7 @@ local MAIN_GRAFX                  = require("tools/lib/graphics"):create()
 local CHUNK_ARTIST
 local STICKY_MOUSE
 
-local TILE_COMMAND
+local TILE_COMMAND_QUEUE = require("tools/chunkDoctor/command/queue"):create()
 
 local chunkID    = 1
 local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
@@ -75,7 +75,7 @@ return {
     end,
 
     changeTile = function(self, tileID, selectedTileX, selectedTileY)
-        TILE_COMMAND = require("tools/chunkDoctor/command/setTileCommand"):create {
+        local tileCommand = require("tools/chunkDoctor/command/setTileCommand"):create {
             chunkArtist = CHUNK_ARTIST,
             chunkID     = chunkID,
             chunkX      = selectedTileX,
@@ -84,7 +84,8 @@ return {
             toTileID    = tileID,
         }
 
-        TILE_COMMAND:execute()
+        tileCommand:execute()
+        TILE_COMMAND_QUEUE:add(tileCommand)
     end,
 
     updateSelectedTile = function(self)
@@ -171,10 +172,12 @@ return {
     onKeyRepeat      = function()               mainChunkY.speed = 12        end,
 
     undo             = function(self)
-        if TILE_COMMAND ~= nil then TILE_COMMAND:undo()  end
+        local tileCommand = TILE_COMMAND_QUEUE:prev()
+        if tileCommand ~= nil then tileCommand:undo()  end
     end,
 
     redo             = function(self)
-        if TILE_COMMAND ~= nil then TILE_COMMAND:execute() end
+        local tileCommand = TILE_COMMAND_QUEUE:next()
+        if tileCommand ~= nil then tileCommand:execute() end
     end,
 }
