@@ -3,6 +3,7 @@ local CHUNK_ARTIST
 local STICKY_MOUSE
 
 local TILE_COMMAND_QUEUE = require("tools/chunkDoctor/command/queue"):create()
+local COMMAND_CHAIN      = require("tools/chunkDoctor/command/chain"):create()
 
 local chunkID    = 1
 local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
@@ -47,6 +48,8 @@ return {
             if tileID ~= nil and selectedTile ~= nil then
                 self:changeTile(tileID, selectedTile.x, selectedTile.y)
             end
+        elseif not COMMAND_CHAIN:isEmpty() then 
+            self:purgeCommandChain() 
         end
 
         if self:isPtInsideChunk(love.mouse.getPosition()) then 
@@ -76,6 +79,12 @@ return {
 
     handleMousereleased = function(self, mx, my)
         selectedTile = nil
+        if not COMMAND_CHAIN:isEmpty() then self:purgeCommandChain() end
+    end,
+
+    purgeCommandChain = function(self)
+        TILE_COMMAND_QUEUE:add(COMMAND_CHAIN)
+        COMMAND_CHAIN = require("tools/chunkDoctor/command/chain"):create()
     end,
 
     changeTile = function(self, tileID, selectedTileX, selectedTileY)
@@ -89,9 +98,9 @@ return {
                 fromTileID  = fromTileID,
                 toTileID    = tileID,
             }
-
             tileCommand:execute()
-            TILE_COMMAND_QUEUE:add(tileCommand)
+            if love.keyboard.isDown("lshift", "rshift") then COMMAND_CHAIN:add(tileCommand)
+            else                                             TILE_COMMAND_QUEUE:add(tileCommand) end
         end
     end,
 
