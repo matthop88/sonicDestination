@@ -74,6 +74,7 @@ local APP_PATH = {
     inspector    = "tools/colorInspector",
     slicer       = "tools/spriteSheetSlicer",
     transparency = "tools/transparencyEditor",
+    test         = "testing",
 }
 
 --------------------------------------------------------------
@@ -93,7 +94,7 @@ function love.load(args)
     if appName == nil then 
         require "game/main"
     else
-        local cmdLineTools = require("commandLineTools"):create(APP_PATH, appName)
+        local cmdLineTools = require("commandLineTools"):create(appName, APP_PATH)
         __PARAMS = cmdLineTools:getParams(args)
         if __PARAMS["help"] then
             cmdLineTools:printHelp()
