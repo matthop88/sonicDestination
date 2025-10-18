@@ -48,8 +48,8 @@ return {
         for _, chunk in ipairs(CHUNKS) do chunk:update(dt) end
 
         self:updateChunkCandidate(love.mouse.getPosition())
-        if self:isAnyChunkSelected() then gridSize:setDestination(100)
-        else                              gridSize:setDestination(0)   end
+        if self:getChunkSelected() then gridSize:setDestination(100)
+        else                            gridSize:setDestination(0)   end
 
         local anyTileHighlighted = self:isAnyTileHighlighted()
         STICKY_MOUSE:setVisible(not anyTileHighlighted)
@@ -99,9 +99,9 @@ return {
         end
     end,
 
-    isAnyChunkSelected = function(self)
-        for _, chunk in ipairs(CHUNKS) do 
-            if chunk.selected then return true end
+    getChunkSelected = function(self)
+        for _, chunk in ipairs(CHUNKS) do
+            if chunk.selected then return chunk end
         end
     end,
 
@@ -119,9 +119,17 @@ return {
     end,
 
     handleKeypressed = function(self, key)
-        if     key == "up"     then self:prevChunk()
-        elseif key == "down"   then self:nextChunk()
-        elseif key == "escape" then self:unselectAllChunks() end
+        if     key == "up"         then self:prevChunk()
+        elseif key == "down"       then self:nextChunk()
+        elseif key == "escape"     then self:unselectAllChunks() 
+        end
+    end,
+
+    walkSelectedTile = function(self, deltaX, deltaY)
+        local chunkSelected = self:getChunkSelected()
+        if chunkSelected then
+            chunkSelected:walkSelectedTile(deltaX, deltaY)
+        end
     end,
 
     prevChunk = function(self)
