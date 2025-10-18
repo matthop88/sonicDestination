@@ -38,10 +38,14 @@ end
 
 function love.keypressed(key)
     local mx, _ = love.mouse.getPosition()
-    if     key == "commandz" then MAIN_PANEL:undo()
-    elseif key == "commandZ" then MAIN_PANEL:redo()
-    elseif mx <= 700  then MAIN_PANEL:handleKeypressed(key)
-    else              SIDEBAR_PANEL:handleKeypressed(key) end
+    if     key == "commandz"   then MAIN_PANEL:undo()
+    elseif key == "commandZ"   then MAIN_PANEL:redo()
+    elseif key == "shiftright" then SIDEBAR_PANEL:walkSelectedTile( 1,  0)
+    elseif key == "shiftleft"  then SIDEBAR_PANEL:walkSelectedTile(-1,  0)
+    elseif key == "shiftup"    then SIDEBAR_PANEL:walkSelectedTile( 0, -1)
+    elseif key == "shiftdown"  then SIDEBAR_PANEL:walkSelectedTile( 0,  1)
+    elseif mx <= 700           then MAIN_PANEL:handleKeypressed(key)
+    else                            SIDEBAR_PANEL:handleKeypressed(key) end
 end
 
 function love.keyreleased(key)
