@@ -147,6 +147,20 @@ return {
 				self.y = ((self.chunkID - 1) * 264) + 272
 			end,
 
+			walkSelectedTile = function(self, deltaX, deltaY)
+				if self.selectedTile ~= nil then
+					self.selectedTile.x = self.selectedTile.x + deltaX
+					if     self.selectedTile.x > 15 then self.selectedTile.x = 0
+					elseif self.selectedTile.x < 0  then self.selectedTile.x = 15 end
+
+					self.selectedTile.y = self.selectedTile.y + deltaY
+					if     self.selectedTile.y > 15 then self.selectedTile.y = 0
+					elseif self.selectedTile.y < 0  then self.selectedTile.y = 15 end
+
+					STICKY_MOUSE:holdTile(self.chunkID, self.selectedTile)
+				end
+			end,
+
 			handleMousepressed = function(self, mx, my)
 				self.selected = true
 				if self.highlitTile ~= nil then
