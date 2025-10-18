@@ -10,7 +10,9 @@ local getSchema = function(path)
 end
 
 return {
-	create = function(self, appPathMap, appName)
+	create = function(self, appName, appPathMap)
+		appPathMap = appPathMap or {}
+		
 		local appPath = appPathMap[appName] or "tools/" .. appName
 		
 		return {
