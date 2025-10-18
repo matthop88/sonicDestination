@@ -1,7 +1,7 @@
 return {
 
-    commandLineTools = require("commandLineTools"):create("testing/resources/testCmdSchema1"),
-    
+    commandLineTools = require("commandLineTools"):create("test", { test = "testing/resources/testCmdSchema1" }),
+
     getName = function(self)
         return "Command Line Tool Tests"
     end,
