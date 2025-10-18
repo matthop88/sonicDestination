@@ -43,6 +43,10 @@ return {
 
         if love.mouse.isDown(1) and love.keyboard.isDown("lshift", "rshift") then
             self:updateSelectedTile()
+            local tileID = STICKY_MOUSE:getTileID()
+            if tileID ~= nil and selectedTile ~= nil then
+                self:changeTile(tileID, selectedTile.x, selectedTile.y)
+            end
         end
 
         if self:isPtInsideChunk(love.mouse.getPosition()) then 
@@ -75,17 +79,20 @@ return {
     end,
 
     changeTile = function(self, tileID, selectedTileX, selectedTileY)
-        local tileCommand = require("tools/chunkDoctor/command/setTileCommand"):create {
-            chunkArtist = CHUNK_ARTIST,
-            chunkID     = chunkID,
-            chunkX      = selectedTileX,
-            chunkY      = selectedTileY,
-            fromTileID  = CHUNK_ARTIST:getTileID(chunkID, selectedTileX, selectedTileY),
-            toTileID    = tileID,
-        }
+        local fromTileID = CHUNK_ARTIST:getTileID(chunkID, selectedTileX, selectedTileY)
+        if tileID ~= fromTileID then
+            local tileCommand = require("tools/chunkDoctor/command/setTileCommand"):create {
+                chunkArtist = CHUNK_ARTIST,
+                chunkID     = chunkID,
+                chunkX      = selectedTileX,
+                chunkY      = selectedTileY,
+                fromTileID  = fromTileID,
+                toTileID    = tileID,
+            }
 
-        tileCommand:execute()
-        TILE_COMMAND_QUEUE:add(tileCommand)
+            tileCommand:execute()
+            TILE_COMMAND_QUEUE:add(tileCommand)
+        end
     end,
 
     updateSelectedTile = function(self)
