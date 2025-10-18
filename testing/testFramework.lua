@@ -27,7 +27,9 @@ local discoverTests = function()
         local keyName = string.sub(testFilename, 1, string.len(testFilename) - 4)
         local filePath = "testing/tests/" .. keyName
 
-        table.insert(testClasses, require(filePath))
+        if __PARAMS["runTests"] == nil or __PARAMS["runTests"] == keyName then
+            table.insert(testClasses, require(filePath))
+        end
     end
 
     return testClasses
