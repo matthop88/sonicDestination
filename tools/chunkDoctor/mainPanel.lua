@@ -1,6 +1,7 @@
 local MAIN_GRAFX                  = require("tools/lib/graphics"):create()
 local CHUNK_ARTIST
 local STICKY_MOUSE
+local SIDEBAR_PANEL
 
 local TILE_COMMAND_QUEUE = require("tools/chunkDoctor/command/queue"):create()
 local COMMAND_CHAIN      = require("tools/chunkDoctor/command/chain"):create()
@@ -10,13 +11,15 @@ local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
 local gridSize   = require("tools/lib/tweenableValue"):create(0, { speed = 6 })
 
 local selectedTile = nil
+local anchorTile   = nil
 
 MAIN_GRAFX:setScale(2)
 
 return {
-    init = function(self, chunkArtist, stickyMouse)
-        CHUNK_ARTIST = chunkArtist
-        STICKY_MOUSE = stickyMouse
+    init = function(self, chunkArtist, stickyMouse, sidebarPanel)
+        CHUNK_ARTIST  = chunkArtist
+        STICKY_MOUSE  = stickyMouse
+        SIDEBAR_PANEL = sidebarPanel
 
         return self
     end,
@@ -41,6 +44,8 @@ return {
             mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
         end
         MAIN_GRAFX:setY(mainChunkY:get())
+
+        if love.keyboard.isDown("lgui", "rgui") then self:updateBasedOnAnchor() end
 
         if love.mouse.isDown(1) and love.keyboard.isDown("lshift", "rshift") then
             self:updateSelectedTile()
@@ -101,6 +106,7 @@ return {
             tileCommand:execute()
             if love.keyboard.isDown("lshift", "rshift") then COMMAND_CHAIN:add(tileCommand)
             else                                             TILE_COMMAND_QUEUE:add(tileCommand) end
+            self.anchorTile = { x = selectedTileX, y = selectedTileY, deltaX = 0, deltaY = 0, }
         end
     end,
 
@@ -110,6 +116,21 @@ return {
             selectedTile = nil
         else
             selectedTile = { x = tileX, y = tileY }
+        end
+    end,
+
+    updateBasedOnAnchor = function(self)
+        if not STICKY_MOUSE:isHoldingTile() then self.anchorTile = nil end
+        if self.anchorTile ~= nil then
+            local tileX, tileY = self:getTargetedTileXY()
+            if tileX ~= nil then
+                local deltaX, deltaY = tileX - self.anchorTile.x, tileY - self.anchorTile.y
+                if deltaX ~= 0 or deltaY ~= 0 then
+                    SIDEBAR_PANEL:walkSelectedTile(deltaX, deltaY)
+                    self.anchorTile.x = tileX
+                    self.anchorTile.y = tileY
+                end
+            end
         end
     end,
 
