@@ -9,8 +9,8 @@ local CHUNKS_OUT_NAME  = __PARAMS["chunkDataOut"] or __PARAMS["chunkDataIn"]
 local CHUNK_ARTIST     = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
 
 local STICKY_MOUSE     = require("tools/chunkDoctor/stickyMouse"):init(CHUNK_ARTIST)
-local MAIN_PANEL       = require("tools/chunkDoctor/mainPanel"):init(CHUNK_ARTIST, STICKY_MOUSE)
 local SIDEBAR_PANEL    = require("tools/chunkDoctor/sidebar/sidebarPanel"):init(CHUNK_ARTIST, STICKY_MOUSE)
+local MAIN_PANEL       = require("tools/chunkDoctor/mainPanel"):init(CHUNK_ARTIST, STICKY_MOUSE, SIDEBAR_PANEL)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
