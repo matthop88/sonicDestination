@@ -13,8 +13,20 @@ return {
     draw = function(self, chunkID, x, y, graphics, gridSize)
         local chunk = self.chunksData[chunkID]
         
+        self:drawRows(  chunk, x, y, graphics, gridSize)
+        self:drawSolids(chunk, x, y, graphics, gridSize)
+    end,
+
+    drawRows = function(self, chunk, x, y, graphics, gridSize)
         for _, row in ipairs(chunk) do
             self:drawRow(row, x, y, graphics, gridSize)
+            y = y + 16
+        end
+    end,
+
+    drawSolids = function(self, chunk, x, y, graphics, gridSize)
+        for _, row in ipairs(chunk) do
+            self:drawSolidsForRow(row, x, y, graphics, gridSize)
             y = y + 16
         end
     end,
@@ -53,14 +65,17 @@ return {
     drawRow = function(self, row, x, y, graphics, gridSize)
         for n, tileID in ipairs(row) do
             self.tiles:draw(x, y, tileID, graphics, gridSize)
-            if row.S ~= nil and row.S[n] == 1 then
-                graphics:setLineWidth(3)
-                graphics:line(x, y + 14, x + 16, y + 14)
-            end
             x = x + 16
         end
-        if row.S ~= nil then
+    end,
 
+    drawSolidsForRow = function(self, row, x, y, graphics, gridSize)
+        for n, tileID in ipairs(row) do
+            if row.S ~= nil and row.S[n] == 1 then
+                graphics:setLineWidth(3)
+                graphics:line(x, y + 17, x + 16, y + 17)
+            end
+            x = x + 16
         end
     end,
 
