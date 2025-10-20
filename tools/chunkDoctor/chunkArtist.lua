@@ -53,7 +53,14 @@ return {
     drawRow = function(self, row, x, y, graphics, gridSize)
         for n, tileID in ipairs(row) do
             self.tiles:draw(x, y, tileID, graphics, gridSize)
+            if row.S ~= nil and row.S[n] == 1 then
+                graphics:setLineWidth(3)
+                graphics:line(x, y + 14, x + 16, y + 14)
+            end
             x = x + 16
+        end
+        if row.S ~= nil then
+
         end
     end,
 
