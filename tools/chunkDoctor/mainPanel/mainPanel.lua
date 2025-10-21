@@ -77,4 +77,7 @@ return {
 
     undo             = function(self)           MAIN_CHUNK:undo()            end,
     redo             = function(self)           MAIN_CHUNK:redo()            end,
+
+    toggleSolidsMode   = function(self) MAIN_CHUNK:toggleSolidsMode() end,
+
 }
