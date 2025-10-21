@@ -4,10 +4,11 @@ local MAIN_CHUNK_Y
 local STICKY_MOUSE
 local SIDEBAR_PANEL
 
-local TILE_COMMAND_QUEUE = require("tools/chunkDoctor/command/queue"):create()
-local COMMAND_CHAIN      = require("tools/chunkDoctor/command/chain"):create()
+local TILE_COMMAND_QUEUE  = require("tools/chunkDoctor/command/queue"):create()
+local COMMAND_CHAIN       = require("tools/chunkDoctor/command/chain"):create()
 
-local GRID_SIZE          = require("tools/lib/tweenableValue"):create(0, { speed = 6 })
+local GRID_SIZE           = require("tools/lib/tweenableValue"):create(0, { speed = 6  })
+local SOLIDS_CURSOR_COLOR = require("tools/lib/tweenableValue"):create(0, { speed = 1 })
 
 local SOLIDS_MODE  = false
 
@@ -38,6 +39,11 @@ return {
     update = function(self, dt, chunkID)
     	MAIN_GRAFX:setY(MAIN_CHUNK_Y:get())
     	GRID_SIZE:update(dt)
+        if not SOLIDS_CURSOR_COLOR:inFlux() then
+            if SOLIDS_CURSOR_COLOR:get() == -50 then SOLIDS_CURSOR_COLOR:setDestination(305)
+            else                                     SOLIDS_CURSOR_COLOR:setDestination(-50) end
+        end
+        SOLIDS_CURSOR_COLOR:update(dt)
 
     	if self:isPtInsideChunk(love.mouse.getPosition()) then 
             STICKY_MOUSE:setTransparency(0.4)
@@ -85,8 +91,12 @@ return {
             local tileX, tileY = self:getTargetedTileXY()
             if tileX ~= nil then
                 if SOLIDS_MODE == true then
+                    local c = SOLIDS_CURSOR_COLOR:get() / 350
                     MAIN_GRAFX:setColor(1, 0, 0)
-                    MAIN_GRAFX:rectangle("fill", (tileX * 16) + 64, (tileY * 16) + 87 - MAIN_CHUNK_Y:get(), 18, 3)
+                    MAIN_GRAFX:setLineWidth(3)
+                    MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 85 - MAIN_CHUNK_Y:get(), 18, 6)
+                    MAIN_GRAFX:setColor(1, 1, 0, c)
+                    MAIN_GRAFX:rectangle("fill", (tileX * 16) + 65, (tileY * 16) + 86 - MAIN_CHUNK_Y:get(), 16, 4)
                 else
                     MAIN_GRAFX:setColor(1, 1, 0)
                     MAIN_GRAFX:setLineWidth(3)
@@ -146,6 +156,9 @@ return {
             if tileID ~= nil and selectedTile ~= nil then
                 self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
             end
+        else
+            local tileX, tileY = self:getTargetedTileXY()
+            CHUNK_ARTIST:toggleSolidAt(chunkID, tileX + 1, tileY + 1)
         end
     end,
 
@@ -154,7 +167,10 @@ return {
         if not COMMAND_CHAIN:isEmpty() then self:purgeCommandChain() end
     end,
 
-    toggleSolidsMode = function(self) SOLIDS_MODE = not SOLIDS_MODE end,
+    toggleSolidsMode = function(self) 
+        SOLIDS_MODE = not SOLIDS_MODE 
+        STICKY_MOUSE:setVisible(not SOLIDS_MODE)
+    end,
 
     changeTile = function(self, chunkID, tileID, selectedTileX, selectedTileY)
         local fromTileID = CHUNK_ARTIST:getTileID(chunkID, selectedTileX, selectedTileY)
