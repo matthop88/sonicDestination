@@ -13,8 +13,7 @@ return {
     draw = function(self, chunkID, x, y, graphics, gridSize)
         local chunk = self.chunksData[chunkID]
         
-        self:drawRows(  chunk, x, y, graphics, gridSize)
-        self:drawSolids(chunk, x, y, graphics, gridSize)
+        self:drawRows(chunk, x, y, graphics, gridSize)
     end,
 
     drawRows = function(self, chunk, x, y, graphics, gridSize)
@@ -24,7 +23,8 @@ return {
         end
     end,
 
-    drawSolids = function(self, chunk, x, y, graphics, gridSize)
+    drawSolids = function(self, chunkID, x, y, graphics, gridSize)
+        local chunk = self.chunksData[chunkID]
         for _, row in ipairs(chunk) do
             self:drawSolidsForRow(row, x, y, graphics, gridSize)
             y = y + 16
