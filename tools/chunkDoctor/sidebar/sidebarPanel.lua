@@ -177,4 +177,9 @@ return {
 
     handleKeyreleased  = function(self, key) sidebarY.speed = 4   end,
     onKeyRepeat        = function()          sidebarY.speed = 12  end,
+
+    toggleSolidsMode   = function(self)      
+        for _, chunk in ipairs(CHUNKS) do chunk:toggleSolidsMode() end
+    end,
+
 }
