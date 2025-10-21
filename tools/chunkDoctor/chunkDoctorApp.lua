@@ -38,8 +38,8 @@ end
 
 function love.keypressed(key)
     local mx, _ = love.mouse.getPosition()
-    if     key == "commandz"   then MAIN_PANEL:undo()
-    elseif key == "commandZ"   then MAIN_PANEL:redo()
+    if     key == "commandz"   then undo()
+    elseif key == "commandZ"   then redo()
     elseif key == "shiftright" then SIDEBAR_PANEL:walkSelectedTile( 1,  0)
     elseif key == "shiftleft"  then SIDEBAR_PANEL:walkSelectedTile(-1,  0)
     elseif key == "shiftup"    then SIDEBAR_PANEL:walkSelectedTile( 0, -1)
@@ -70,8 +70,16 @@ end
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
--- ...
--- ...
+function undo()
+    MAIN_PANEL:undo()
+    CHUNK_ARTIST:saveChunkData(CHUNKS_OUT_NAME)
+end
+
+function redo()
+    MAIN_PANEL:redo()
+    CHUNK_ARTIST:saveChunkData(CHUNKS_OUT_NAME)
+end
+
 -- ...
 
 --------------------------------------------------------------
