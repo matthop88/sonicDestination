@@ -9,6 +9,7 @@ local COMMAND_CHAIN      = require("tools/chunkDoctor/command/chain"):create()
 
 local GRID_SIZE          = require("tools/lib/tweenableValue"):create(0, { speed = 6 })
 
+local SOLIDS_MODE  = false
 
 local selectedTile = nil
 local anchorTile   = nil
@@ -64,6 +65,9 @@ return {
             MAIN_GRAFX:setColor(1, 1, 1)
             MAIN_GRAFX:setFontSize(32)
             CHUNK_ARTIST:draw(chunkNum, 65, y, MAIN_GRAFX, GRID_SIZE:get() / 100)
+            if SOLIDS_MODE == true then
+                CHUNK_ARTIST:drawSolids(chunkNum, 65, y, MAIN_GRAFX, GRID_SIZE:get() / 100)
+            end
             MAIN_GRAFX:printf("" .. chunkNum, 15, y + 112, 50, "center")
         end
     end,
@@ -127,7 +131,7 @@ return {
     end,
 
     handleKeypressed = function(self, key)
-    	if key == "escape" then STICKY_MOUSE:releaseTile() end
+    	if     key == "escape" then STICKY_MOUSE:releaseTile() end
     end,
 
     handleMousepressed = function(self, mx, my, chunkID)
@@ -142,6 +146,8 @@ return {
         selectedTile = nil
         if not COMMAND_CHAIN:isEmpty() then self:purgeCommandChain() end
     end,
+
+    toggleSolidsMode = function(self) SOLIDS_MODE = not SOLIDS_MODE end,
 
     changeTile = function(self, chunkID, tileID, selectedTileX, selectedTileY)
         local fromTileID = CHUNK_ARTIST:getTileID(chunkID, selectedTileX, selectedTileY)
