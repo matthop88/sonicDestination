@@ -4,6 +4,8 @@ local GRID_SIZE
 
 local STICKY_MOUSE
 
+local SOLIDS_MODE = false
+
 return {
 	init = function(self, chunkArtist, graphics, gridSize, stickyMouse)
 		CHUNK_ARTIST  = chunkArtist
@@ -103,6 +105,8 @@ return {
             
             	if self.selected then CHUNK_ARTIST:draw(self.chunkID, 760, y, SIDEBAR_GRAFX, GRID_SIZE:get() / 100)
             	else                  CHUNK_ARTIST:draw(self.chunkID, 760, y, SIDEBAR_GRAFX, 0)                        end
+            	
+            	if SOLIDS_MODE == true then CHUNK_ARTIST:drawSolids(self.chunkID, 760, y, SIDEBAR_GRAFX, 0) end
             	SIDEBAR_GRAFX:printf("" .. self.chunkID, 710, y + 112, 50, "center")
             end,
 
@@ -170,6 +174,8 @@ return {
 					STICKY_MOUSE:releaseTile()
 				end
 			end,
+
+			toggleSolidsMode = function(self) SOLIDS_MODE = not SOLIDS_MODE end,
 
 		}):init()
 	end,
