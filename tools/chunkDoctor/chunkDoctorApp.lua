@@ -44,6 +44,9 @@ function love.keypressed(key)
     elseif key == "shiftleft"  then SIDEBAR_PANEL:walkSelectedTile(-1,  0)
     elseif key == "shiftup"    then SIDEBAR_PANEL:walkSelectedTile( 0, -1)
     elseif key == "shiftdown"  then SIDEBAR_PANEL:walkSelectedTile( 0,  1)
+    elseif key == "s"          then
+        MAIN_PANEL:toggleSolidsMode()
+        SIDEBAR_PANEL:toggleSolidsMode()
     elseif mx <= 700           then MAIN_PANEL:handleKeypressed(key)
     else                            SIDEBAR_PANEL:handleKeypressed(key) end
 end
