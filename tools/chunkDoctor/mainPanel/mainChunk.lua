@@ -84,9 +84,14 @@ return {
         if not MAIN_CHUNK_Y:inFlux() then
             local tileX, tileY = self:getTargetedTileXY()
             if tileX ~= nil then
-                MAIN_GRAFX:setColor(1, 1, 0)
-                MAIN_GRAFX:setLineWidth(3)
-                MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 71 - MAIN_CHUNK_Y:get(), 18, 18)
+                if SOLIDS_MODE == true then
+                    MAIN_GRAFX:setColor(1, 0, 0)
+                    MAIN_GRAFX:rectangle("fill", (tileX * 16) + 64, (tileY * 16) + 87 - MAIN_CHUNK_Y:get(), 18, 3)
+                else
+                    MAIN_GRAFX:setColor(1, 1, 0)
+                    MAIN_GRAFX:setLineWidth(3)
+                    MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 71 - MAIN_CHUNK_Y:get(), 18, 18)
+                end
             end
         end
     end,
@@ -131,14 +136,16 @@ return {
     end,
 
     handleKeypressed = function(self, key)
-    	if     key == "escape" then STICKY_MOUSE:releaseTile() end
+    	if key == "escape" then STICKY_MOUSE:releaseTile() end
     end,
 
     handleMousepressed = function(self, mx, my, chunkID)
-        self:updateSelectedTile()
-        local tileID = STICKY_MOUSE:getTileID()
-        if tileID ~= nil and selectedTile ~= nil then
-            self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
+        if not SOLIDS_MODE then
+            self:updateSelectedTile()
+            local tileID = STICKY_MOUSE:getTileID()
+            if tileID ~= nil and selectedTile ~= nil then
+                self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
+            end
         end
     end,
 
