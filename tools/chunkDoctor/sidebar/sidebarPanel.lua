@@ -10,6 +10,8 @@ local CHUNKS         = {}
 local SIDEBAR_CHUNK
 local STICKY_MOUSE
 
+local SOLIDS_MODE = false
+
 SIDEBAR_GRAFX:setScale(1)
 
 return {
@@ -37,7 +39,7 @@ return {
         for _, chunk in ipairs(CHUNKS) do chunk:draw()            end
         for _, chunk in ipairs(CHUNKS) do chunk:drawHighlitTile() end
 
-        STICKY_MOUSE:draw()
+        if not SOLIDS_MODE then STICKY_MOUSE:draw() end
     end,
 
     update = function(self, dt)
@@ -178,7 +180,8 @@ return {
     handleKeyreleased  = function(self, key) sidebarY.speed = 4   end,
     onKeyRepeat        = function()          sidebarY.speed = 12  end,
 
-    toggleSolidsMode   = function(self)      
+    toggleSolidsMode   = function(self) 
+        SOLIDS_MODE = not SOLIDS_MODE     
         for _, chunk in ipairs(CHUNKS) do chunk:toggleSolidsMode() end
     end,
 
