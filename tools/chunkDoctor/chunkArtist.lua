@@ -72,11 +72,18 @@ return {
     drawSolidsForRow = function(self, row, x, y, graphics, gridSize)
         for n, tileID in ipairs(row) do
             if row.S ~= nil and row.S[n] == 1 then
-                graphics:setLineWidth(3)
-                graphics:line(x, y + 17, x + 16, y + 17)
+                graphics:setLineWidth(2)
+                graphics:line(x, y + 16, x + 16, y + 16)
             end
             x = x + 16
         end
+    end,
+
+    toggleSolidAt = function(self, chunkID, tileX, tileY)
+        local chunk = self.chunksData[chunkID]
+        local row = chunk[tileY]
+        if row.S == nil then row.S = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, } end
+        row.S[tileX] = 1 - row.S[tileX]
     end,
 
 	getNumChunks = function(self)
