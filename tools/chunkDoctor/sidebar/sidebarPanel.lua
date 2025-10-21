@@ -181,7 +181,8 @@ return {
     onKeyRepeat        = function()          sidebarY.speed = 12  end,
 
     toggleSolidsMode   = function(self) 
-        SOLIDS_MODE = not SOLIDS_MODE     
+        SOLIDS_MODE = not SOLIDS_MODE   
+        if SOLIDS_MODE == true then self:unselectAllChunks() end  
         for _, chunk in ipairs(CHUNKS) do chunk:toggleSolidsMode() end
     end,
 
