@@ -8,7 +8,15 @@ return {
 				for _, tileID in ipairs(chunkRow) do
 					chunkString = chunkString .. (string.rep(" ", 3 - string.len("" .. tileID))) .. tileID .. ", "
 				end
-				chunkString = chunkString .. "},\n"
+				if chunkRow.S == nil then chunkString = chunkString .. "},\n"
+				else                      
+					chunkString = chunkString .. "\n"  
+					chunkString = chunkString .. "  S={ "
+					for _, solidCode in ipairs(chunkRow.S) do
+						chunkString = chunkString .. (string.rep(" ", 3 - string.len("" .. solidCode))) .. solidCode .. ", "
+					end
+					chunkString = chunkString .. "}},\n"  
+				end
 			end
 			serializedData = serializedData .. chunkString .. "  },\n"
 		end
