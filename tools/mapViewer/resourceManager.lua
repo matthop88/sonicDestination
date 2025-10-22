@@ -1,14 +1,15 @@
 return ({
 	mapData  = nil,
 	chunkImg = nil,
+	solids   = {
+		draw = function(self)
+			-- do nothing
+		end,
+	},
 
-	getMapData = function(self)
-		return self.mapData
-	end,
-
-	getChunkImage = function(self)
-		return self.chunkImg
-	end,
+	getMapData    = function(self) return self.mapData  end,
+	getChunkImage = function(self) return self.chunkImg end,
+	getSolids     = function(self) return self.solids   end,
 
 	init = function(self)
 		if __PARAMS["mapIn"] then
@@ -60,6 +61,7 @@ return ({
 		local tilesImg = self:loadImgFromPath(tilesImgPath)
 
 		self.chunkImg = require("tools/mapViewer/chunkImageConstructor"):create(chunksData, tilesImg)
+		self.solids   = require("tools/mapViewer/solidsConstructor"):create(chunksData)
 	end,
 
 	refresh = function(self)
