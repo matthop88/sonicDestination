@@ -19,7 +19,7 @@ MAIN_GRAFX:setScale(2)
 
 return {
 	init = function(self, chunkHelper, mainChunkY, stickyMouse, sidebarPanel)
-		CHUNK_HELPER  = CHUNK_HELPER
+		CHUNK_HELPER  = chunkHelper
 		MAIN_CHUNK_Y  = mainChunkY
 		STICKY_MOUSE  = stickyMouse
 		SIDEBAR_PANEL = sidebarPanel
