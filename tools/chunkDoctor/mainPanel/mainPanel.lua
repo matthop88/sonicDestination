@@ -1,13 +1,13 @@
 local MAIN_CHUNK
-local CHUNK_ARTIST
+local CHUNK_HELPER
 
 local chunkID    = 1
 local mainChunkY = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
 
 return {
-    init = function(self, chunkArtist, stickyMouse, sidebarPanel)
-        CHUNK_ARTIST  = chunkArtist
-        MAIN_CHUNK    = require("tools/chunkDoctor/mainPanel/mainChunk"):init(chunkArtist, mainChunkY, stickyMouse, sidebarPanel)
+    init = function(self, chunkHelper, stickyMouse, sidebarPanel)
+        CHUNK_HELPER  = chunkHelper
+        MAIN_CHUNK    = require("tools/chunkDoctor/mainPanel/mainChunk"):init(chunkHelper, mainChunkY, stickyMouse, sidebarPanel)
         
         return self
     end,
@@ -19,10 +19,10 @@ return {
     update = function(self, dt)
         mainChunkY:update(dt)
         
-        if mainChunkY:get() == self:getMainYForChunk(CHUNK_ARTIST:getNumChunks() + 1) then
+        if mainChunkY:get() == self:getMainYForChunk(CHUNK_HELPER:getNumChunks() + 1) then
             mainChunkY:set(self:getMainYForChunk(1))
         elseif mainChunkY:get() == self:getMainYForChunk(0) then
-            mainChunkY:set(self:getMainYForChunk(CHUNK_ARTIST:getNumChunks()))
+            mainChunkY:set(self:getMainYForChunk(CHUNK_HELPER:getNumChunks()))
         end
         
         MAIN_CHUNK:update(dt, chunkID)
@@ -48,7 +48,7 @@ return {
         if not mainChunkY:inFlux() then
             chunkID = chunkID - 1
             if chunkID < 1 then 
-                chunkID = CHUNK_ARTIST:getNumChunks() 
+                chunkID = CHUNK_HELPER:getNumChunks() 
                 self:moveMainYToChunk(0)
             else
                 self:moveMainYToChunk(chunkID)
@@ -59,9 +59,9 @@ return {
     nextChunk = function(self)
         if not mainChunkY:inFlux() then
             chunkID = chunkID + 1
-            if chunkID > CHUNK_ARTIST:getNumChunks() then
+            if chunkID > CHUNK_HELPER:getNumChunks() then
                 chunkID = 1
-                self:moveMainYToChunk(CHUNK_ARTIST:getNumChunks() + 1)
+                self:moveMainYToChunk(CHUNK_HELPER:getNumChunks() + 1)
             else
                 self:moveMainYToChunk(chunkID)
             end
