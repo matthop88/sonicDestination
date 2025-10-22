@@ -1,5 +1,5 @@
 local MAIN_GRAFX   = require("tools/lib/graphics"):create()
-local CHUNK_ARTIST
+local CHUNK_HELPER
 local MAIN_CHUNK_Y
 local STICKY_MOUSE
 local SIDEBAR_PANEL
@@ -18,8 +18,8 @@ local anchorTile   = nil
 MAIN_GRAFX:setScale(2)
 
 return {
-	init = function(self, chunkArtist, mainChunkY, stickyMouse, sidebarPanel)
-		CHUNK_ARTIST  = chunkArtist
+	init = function(self, chunkHelper, mainChunkY, stickyMouse, sidebarPanel)
+		CHUNK_HELPER  = CHUNK_HELPER
 		MAIN_CHUNK_Y  = mainChunkY
 		STICKY_MOUSE  = stickyMouse
 		SIDEBAR_PANEL = sidebarPanel
@@ -27,11 +27,11 @@ return {
 	end,
 
 	draw = function(self)
-        for i = 1, CHUNK_ARTIST:getNumChunks() do
+        for i = 1, CHUNK_HELPER:getNumChunks() do
             self:renderChunk(i, ((i - 1) * 400) + 72)
         end
-        self:renderChunk(1, (CHUNK_ARTIST:getNumChunks() * 400) + 72)
-        self:renderChunk(CHUNK_ARTIST:getNumChunks(), -328)
+        self:renderChunk(1, (CHUNK_HELPER:getNumChunks() * 400) + 72)
+        self:renderChunk(CHUNK_HELPER:getNumChunks(), -328)
 
         if not self:drawSelectedTile() then self:drawCurrentTileHighlight() end
     end,
@@ -89,7 +89,7 @@ return {
     end,
 
     setSolidValueAt = function(self, chunkID, tileX, tileY, value)
-        local currentValue = CHUNK_ARTIST:getSolidValueAt(chunkID, tileX, tileY)
+        local currentValue = CHUNK_HELPER:getSolidValueAt(chunkID, tileX, tileY)
         if value ~= currentValue then
             self:toggleSolidValueAt(chunkID, tileX, tileY)
         end
@@ -97,7 +97,7 @@ return {
 
     toggleSolidValueAt = function(self, chunkID, tileX, tileY)
         local solidCommand = require("tools/chunkDoctor/command/toggleSolidCommand"):create {
-            chunkArtist = CHUNK_ARTIST,
+            chunkArtist = CHUNK_HELPER,
             chunkID     = chunkID,
             chunkX      = tileX,
             chunkY      = tileY,
@@ -105,16 +105,16 @@ return {
         solidCommand:execute()
         if love.keyboard.isDown("lshift", "rshift") then COMMAND_CHAIN:add(solidCommand)
         else                                             TILE_COMMAND_QUEUE:add(solidCommand) end
-        return CHUNK_ARTIST:getSolidValueAt(chunkID, tileX, tileY)
+        return CHUNK_HELPER:getSolidValueAt(chunkID, tileX, tileY)
     end,
 
     renderChunk = function(self, chunkNum, y)
         if y + MAIN_GRAFX:getY() < 400 and y + MAIN_GRAFX:getY() > -256 then        
             MAIN_GRAFX:setColor(1, 1, 1)
             MAIN_GRAFX:setFontSize(32)
-            CHUNK_ARTIST:draw(chunkNum, 65, y, MAIN_GRAFX, GRID_SIZE:get() / 100)
+            CHUNK_HELPER:draw(chunkNum, 65, y, MAIN_GRAFX, GRID_SIZE:get() / 100)
             if SOLIDS_MODE == true then
-                CHUNK_ARTIST:drawSolids(chunkNum, 65, y, MAIN_GRAFX, GRID_SIZE:get() / 100)
+                CHUNK_HELPER:drawSolids(chunkNum, 65, y, MAIN_GRAFX, GRID_SIZE:get() / 100)
             end
             MAIN_GRAFX:printf("" .. chunkNum, 15, y + 112, 50, "center")
         end
@@ -224,10 +224,10 @@ return {
     end,
 
     changeTile = function(self, chunkID, tileID, selectedTileX, selectedTileY)
-        local fromTileID = CHUNK_ARTIST:getTileID(chunkID, selectedTileX, selectedTileY)
+        local fromTileID = CHUNK_HELPER:getTileID(chunkID, selectedTileX, selectedTileY)
         if tileID ~= fromTileID then
             local tileCommand = require("tools/chunkDoctor/command/setTileCommand"):create {
-                chunkArtist = CHUNK_ARTIST,
+                chunkArtist = CHUNK_HELPER,
                 chunkID     = chunkID,
                 chunkX      = selectedTileX,
                 chunkY      = selectedTileY,
