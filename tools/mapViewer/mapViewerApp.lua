@@ -10,6 +10,7 @@ local RESOURCE_MANAGER = require("tools/mapViewer/resourceManager")
 
 local mapData  = RESOURCE_MANAGER:getMapData()
 local chunkImg = RESOURCE_MANAGER:getChunkImage()
+local solids   = RESOURCE_MANAGER:getSolids()
 
 local mapImageNameToRewrite = __PARAMS["mapOut"] or "sampleRewrittenMapImage"
 
@@ -35,12 +36,13 @@ local chunks = ({
     draw = function(self, chunkID, x, y, scale)
         GRAFX:setColor(1, 1, 1)
         GRAFX:draw(chunkImg, self[chunkID], x, y, 0, scale, scale)
-    end,
+    end,    
 
 }):init()
 
 local map = ({
     chunkMode = false,
+    showSolids = false,
 
     init = function(self)
         self.pageWidth  = #mapData[1] * 256
@@ -62,7 +64,7 @@ local map = ({
                     GRAFX:setFontSize(96)
                     GRAFX:printf("" .. chunkID, x + xMod, y + yMod + 64, 256, "center")
                 end
-                    
+                if self.showSolids then solids:draw(chunkID, x + xMod, y + yMod, scale, GRAFX) end  
             end
         end
 
@@ -70,8 +72,11 @@ local map = ({
 
     handleKeypressed = function(self, key)
         if     key == "c"      then self.chunkMode = not self.chunkMode 
-        elseif key == "return" then self:saveMapImage()             end
+        elseif key == "return" then self:saveMapImage()             
+        elseif key == "s"      then self:toggleShowSolids()         end
     end,
+
+    toggleShowSolids = function(self) self.showSolids = not self.showSolids end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
 
