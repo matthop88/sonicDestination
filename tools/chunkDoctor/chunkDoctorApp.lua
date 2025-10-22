@@ -6,11 +6,11 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local CHUNKS_DATA_PATH = "resources/zones/chunks/" .. __PARAMS["chunkDataIn"] .. ".lua"
 local CHUNKS_OUT_NAME  = __PARAMS["chunkDataOut"] or __PARAMS["chunkDataIn"]
-local CHUNK_ARTIST     = require("tools/chunkDoctor/chunkArtist"):create(CHUNKS_DATA_PATH)
+local CHUNK_HELPER     = require("tools/chunkDoctor/chunk/chunk"):create(CHUNKS_DATA_PATH)
 
-local STICKY_MOUSE     = require("tools/chunkDoctor/stickyMouse"):init(CHUNK_ARTIST)
-local SIDEBAR_PANEL    = require("tools/chunkDoctor/sidebar/sidebarPanel"):init(CHUNK_ARTIST, STICKY_MOUSE)
-local MAIN_PANEL       = require("tools/chunkDoctor/mainPanel/mainPanel"):init(CHUNK_ARTIST, STICKY_MOUSE, SIDEBAR_PANEL)
+local STICKY_MOUSE     = require("tools/chunkDoctor/stickyMouse"):init(CHUNK_HELPER)
+local SIDEBAR_PANEL    = require("tools/chunkDoctor/sidebar/sidebarPanel"):init(CHUNK_HELPER, STICKY_MOUSE)
+local MAIN_PANEL       = require("tools/chunkDoctor/mainPanel/mainPanel"):init(CHUNK_HELPER, STICKY_MOUSE, SIDEBAR_PANEL)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -59,7 +59,7 @@ end
 function love.mousepressed(mx, my)
     if mx <= 700 then MAIN_PANEL:handleMousepressed(mx, my)
     else              SIDEBAR_PANEL:handleMousepressed(mx, my) end
-    CHUNK_ARTIST:saveChunkData(CHUNKS_OUT_NAME)
+    CHUNK_HELPER:saveChunkData(CHUNKS_OUT_NAME)
 end
 
 function love.mousereleased(mx, my)
@@ -72,12 +72,12 @@ end
 
 function undo()
     MAIN_PANEL:undo()
-    CHUNK_ARTIST:saveChunkData(CHUNKS_OUT_NAME)
+    CHUNK_HELPER:saveChunkData(CHUNKS_OUT_NAME)
 end
 
 function redo()
     MAIN_PANEL:redo()
-    CHUNK_ARTIST:saveChunkData(CHUNKS_OUT_NAME)
+    CHUNK_HELPER:saveChunkData(CHUNKS_OUT_NAME)
 end
 
 -- ...
