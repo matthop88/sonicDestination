@@ -87,6 +87,12 @@ return {
         return row.S[tileX]
     end,
 
+    getSolidValueAt = function(self, chunkID, tileX, tileY)
+        local chunk = self.chunksData[chunkID]
+        local row = chunk[tileY]
+        if row.S ~= nil then return row.S[tileX] end
+    end,
+
     setSolidValueAt = function(self, chunkID, tileX, tileY, value)
         local chunk = self.chunksData[chunkID]
         local row = chunk[tileY]
