@@ -124,7 +124,6 @@ return {
         MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 71 - MAIN_CHUNK_Y:get(), 18, 18)
     end, 
 
-
     getTargetedTileXY = function(self)
         local mx, my = love.mouse.getPosition()
 
@@ -132,8 +131,7 @@ return {
             local tileX = math.floor((mx - 130) / 32)
             local tileY = math.floor((my - 144) / 32)
             return tileX, tileY
-        end
-           
+        end  
     end,
 
     isPtInsideChunk = function(self, px, py)
@@ -165,7 +163,10 @@ return {
     end,
 
     handleKeypressed = function(self, key)
-    	if key == "escape" then STICKY_MOUSE:releaseTile() end
+    	if key == "escape" then 
+			STICKY_MOUSE:releaseTile() 
+			SOLIDS_MODE = false
+		end
     end,
 
     handleMousepressed = function(self, mx, my, chunkID)
