@@ -80,7 +80,11 @@ return {
             end
         else
             local tileX, tileY = self:getTargetedTileXY()
-            if SOLID_VALUE and tileX and tileY then CHUNK_ARTIST:setSolidValueAt(chunkID, tileX + 1, tileY + 1, SOLID_VALUE) end
+
+            if SOLID_VALUE and tileX then
+                if     LOCKED_Y then CHUNK_ARTIST:setSolidValueAt(chunkID, tileX + 1, LOCKED_Y + 1, SOLID_VALUE)
+                elseif tileY    then CHUNK_ARTIST:setSolidValueAt(chunkID, tileX + 1, tileY    + 1, SOLID_VALUE) end
+            end
         end
     end,
 
@@ -183,12 +187,14 @@ return {
             end
         else
             local tileX, tileY = self:getTargetedTileXY()
+            LOCKED_Y = tileY
             SOLID_VALUE = CHUNK_ARTIST:toggleSolidAt(chunkID, tileX + 1, tileY + 1)
         end
     end,
 
     handleMousereleased = function(self, mx, my)
         selectedTile = nil
+        LOCKED_Y = nil
         if not COMMAND_CHAIN:isEmpty() then self:purgeCommandChain() end
     end,
 
