@@ -84,6 +84,14 @@ return {
         local row = chunk[tileY]
         if row.S == nil then row.S = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, } end
         row.S[tileX] = 1 - row.S[tileX]
+        return row.S[tileX]
+    end,
+
+    setSolidValueAt = function(self, chunkID, tileX, tileY, value)
+        local chunk = self.chunksData[chunkID]
+        local row = chunk[tileY]
+        if row.S == nil then row.S = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, } end
+        row.S[tileX] = value
     end,
 
 	getNumChunks = function(self)
