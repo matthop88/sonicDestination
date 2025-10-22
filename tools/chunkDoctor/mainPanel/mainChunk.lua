@@ -38,31 +38,44 @@ return {
 
     update = function(self, dt, chunkID)
     	MAIN_GRAFX:setY(MAIN_CHUNK_Y:get())
-    	GRID_SIZE:update(dt)
-        if not SOLIDS_CURSOR_COLOR:inFlux() then
-            if SOLIDS_CURSOR_COLOR:get() == -50 then SOLIDS_CURSOR_COLOR:setDestination(305)
-            else                                     SOLIDS_CURSOR_COLOR:setDestination(-50) end
-        end
-        SOLIDS_CURSOR_COLOR:update(dt)
+    	
+    	self:updateGrid(dt)
+        self:updateSolidsCursor(dt)
 
-    	if self:isPtInsideChunk(love.mouse.getPosition()) then 
+        if love.keyboard.isDown("lgui", "rgui") then self:updateBasedOnAnchor() end
+
+        if love.mouse.isDown(1) and love.keyboard.isDown("lshift", "rshift") then
+            self:updateSelectedTileUsingChain(chunkID)
+        elseif not COMMAND_CHAIN:isEmpty() then 
+            self:purgeCommandChain() 
+        end
+    end,
+
+    updateGrid = function(self, dt)
+        if self:isPtInsideChunk(love.mouse.getPosition()) then 
             STICKY_MOUSE:setTransparency(0.4)
             GRID_SIZE:setDestination(150)
         else               
             STICKY_MOUSE:setTransparency(0.9)                                    
             GRID_SIZE:setDestination(0)   
         end
+        GRID_SIZE:update(dt)
+        
+    end,
 
-        if love.keyboard.isDown("lgui", "rgui") then self:updateBasedOnAnchor() end
+    updateSolidsCursor = function(self, dt)
+        if not SOLIDS_CURSOR_COLOR:inFlux() then
+            if SOLIDS_CURSOR_COLOR:get() == 0 then SOLIDS_CURSOR_COLOR:setDestination(305)
+            else                                   SOLIDS_CURSOR_COLOR:setDestination(0)   end
+        end
+        SOLIDS_CURSOR_COLOR:update(dt)
+    end,
 
-        if love.mouse.isDown(1) and love.keyboard.isDown("lshift", "rshift") then
-            self:updateSelectedTile()
-            local tileID = STICKY_MOUSE:getTileID()
-            if tileID ~= nil and selectedTile ~= nil then
-                self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
-            end
-        elseif not COMMAND_CHAIN:isEmpty() then 
-            self:purgeCommandChain() 
+    updateSelectedTileUsingChain = function(self, chunkID)
+        self:updateSelectedTile()
+        local tileID = STICKY_MOUSE:getTileID()
+        if tileID ~= nil and selectedTile ~= nil then
+            self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
         end
     end,
 
@@ -90,21 +103,27 @@ return {
         if not MAIN_CHUNK_Y:inFlux() then
             local tileX, tileY = self:getTargetedTileXY()
             if tileX ~= nil then
-                if SOLIDS_MODE == true then
-                    local c = SOLIDS_CURSOR_COLOR:get() / 350
-                    MAIN_GRAFX:setColor(1, 0, 0)
-                    MAIN_GRAFX:setLineWidth(3)
-                    MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 85 - MAIN_CHUNK_Y:get(), 18, 6)
-                    MAIN_GRAFX:setColor(1, 1, 0, c)
-                    MAIN_GRAFX:rectangle("fill", (tileX * 16) + 65, (tileY * 16) + 86 - MAIN_CHUNK_Y:get(), 16, 4)
-                else
-                    MAIN_GRAFX:setColor(1, 1, 0)
-                    MAIN_GRAFX:setLineWidth(3)
-                    MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 71 - MAIN_CHUNK_Y:get(), 18, 18)
-                end
+                if SOLIDS_MODE == true then self:drawSolidsCursorAt(   tileX, tileY)
+                else                        self:drawHighlightedTileAt(tileX, tileY) end
             end
         end
     end,
+
+    drawSolidsCursorAt = function(self, tileX, tileY)
+        local c = SOLIDS_CURSOR_COLOR:get() / 350
+        MAIN_GRAFX:setColor(1, 0, 0)
+        MAIN_GRAFX:setLineWidth(3)
+        MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 85 - MAIN_CHUNK_Y:get(), 18, 6)
+        MAIN_GRAFX:setColor(1, 1, 0, c)
+        MAIN_GRAFX:rectangle("fill", (tileX * 16) + 65, (tileY * 16) + 86 - MAIN_CHUNK_Y:get(), 16, 4)
+    end,
+
+    drawHighlightedTileAt = function(self, tileX, tileY)
+        MAIN_GRAFX:setColor(1, 1, 0)
+        MAIN_GRAFX:setLineWidth(3)
+        MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 71 - MAIN_CHUNK_Y:get(), 18, 18)
+    end, 
+
 
     getTargetedTileXY = function(self)
         local mx, my = love.mouse.getPosition()
