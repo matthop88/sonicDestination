@@ -82,10 +82,30 @@ return {
             local tileX, tileY = self:getTargetedTileXY()
 
             if SOLID_VALUE and tileX then
-                if     LOCKED_Y then CHUNK_ARTIST:setSolidValueAt(chunkID, tileX + 1, LOCKED_Y + 1, SOLID_VALUE)
-                elseif tileY    then CHUNK_ARTIST:setSolidValueAt(chunkID, tileX + 1, tileY    + 1, SOLID_VALUE) end
+                if     LOCKED_Y then self:setSolidValueAt(chunkID, tileX + 1, LOCKED_Y + 1, SOLID_VALUE)
+                elseif tileY    then self:setSolidValueAt(chunkID, tileX + 1, tileY    + 1, SOLID_VALUE) end
             end
         end
+    end,
+
+    setSolidValueAt = function(self, chunkID, tileX, tileY, value)
+        local currentValue = CHUNK_ARTIST:getSolidValueAt(chunkID, tileX, tileY)
+        if value ~= currentValue then
+            self:toggleSolidValueAt(chunkID, tileX, tileY)
+        end
+    end,
+
+    toggleSolidValueAt = function(self, chunkID, tileX, tileY)
+        local solidCommand = require("tools/chunkDoctor/command/toggleSolidCommand"):create {
+            chunkArtist = CHUNK_ARTIST,
+            chunkID     = chunkID,
+            chunkX      = tileX,
+            chunkY      = tileY,
+        }
+        solidCommand:execute()
+        if love.keyboard.isDown("lshift", "rshift") then COMMAND_CHAIN:add(solidCommand)
+        else                                             TILE_COMMAND_QUEUE:add(solidCommand) end
+        return CHUNK_ARTIST:getSolidValueAt(chunkID, tileX, tileY)
     end,
 
     renderChunk = function(self, chunkNum, y)
@@ -188,7 +208,7 @@ return {
         else
             local tileX, tileY = self:getTargetedTileXY()
             LOCKED_Y = tileY
-            SOLID_VALUE = CHUNK_ARTIST:toggleSolidAt(chunkID, tileX + 1, tileY + 1)
+            SOLID_VALUE = self:toggleSolidValueAt(chunkID, tileX + 1, tileY + 1)
         end
     end,
 
