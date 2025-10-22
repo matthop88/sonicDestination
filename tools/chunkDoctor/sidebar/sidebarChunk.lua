@@ -1,5 +1,5 @@
 local SIDEBAR_GRAFX    
-local CHUNK_ARTIST
+local CHUNK_HELPER
 local GRID_SIZE
 
 local STICKY_MOUSE
@@ -7,8 +7,8 @@ local STICKY_MOUSE
 local SOLIDS_MODE = false
 
 return {
-	init = function(self, chunkArtist, graphics, gridSize, stickyMouse)
-		CHUNK_ARTIST  = chunkArtist
+	init = function(self, chunkHelper, graphics, gridSize, stickyMouse)
+		CHUNK_HELPER  = chunkHelper
 		SIDEBAR_GRAFX = graphics
 		GRID_SIZE     = gridSize
 		STICKY_MOUSE  = stickyMouse
@@ -70,7 +70,7 @@ return {
             		SIDEBAR_GRAFX:setLineWidth(3)
             		SIDEBAR_GRAFX:rectangle("line", (self.highlitTile.x * 16) + 751, (self.highlitTile.y * 16) + y - 9, 34, 34)
         
-            		CHUNK_ARTIST:drawTile(chunkID, self.highlitTile.x, self.highlitTile.y, 752, y - 8, 2, SIDEBAR_GRAFX, { 1, 1, 1, 0.8 })
+            		CHUNK_HELPER:drawTile(chunkID, self.highlitTile.x, self.highlitTile.y, 752, y - 8, 2, SIDEBAR_GRAFX, { 1, 1, 1, 0.8 })
             	end
         	end,
 
@@ -103,10 +103,10 @@ return {
     			SIDEBAR_GRAFX:setColor(1, 1, 1)
             	SIDEBAR_GRAFX:setFontSize(32)
             
-            	if self.selected then CHUNK_ARTIST:draw(self.chunkID, 760, y, SIDEBAR_GRAFX, GRID_SIZE:get() / 100)
-            	else                  CHUNK_ARTIST:draw(self.chunkID, 760, y, SIDEBAR_GRAFX, 0)                        end
+            	if self.selected then CHUNK_HELPER:draw(self.chunkID, 760, y, SIDEBAR_GRAFX, GRID_SIZE:get() / 100)
+            	else                  CHUNK_HELPER:draw(self.chunkID, 760, y, SIDEBAR_GRAFX, 0)                        end
             	
-            	if SOLIDS_MODE == true then CHUNK_ARTIST:drawSolids(self.chunkID, 760, y, SIDEBAR_GRAFX, 0) end
+            	if SOLIDS_MODE == true then CHUNK_HELPER:drawSolids(self.chunkID, 760, y, SIDEBAR_GRAFX, 0) end
             	SIDEBAR_GRAFX:printf("" .. self.chunkID, 710, y + 112, 50, "center")
             end,
 
