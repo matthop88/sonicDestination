@@ -1,6 +1,6 @@
 local SIDEBAR_GRAFX    = require("tools/lib/graphics"):create()
 
-local CHUNK_ARTIST
+local CHUNK_HELPER
 
 local chunkID        = 2
 local sidebarY       = require("tools/lib/tweenableValue"):create(0, { speed = 4 })
@@ -15,15 +15,15 @@ local SOLIDS_MODE = false
 SIDEBAR_GRAFX:setScale(1)
 
 return {
-    init = function(self, chunkArtist, stickyMouse)
-        CHUNK_ARTIST = chunkArtist
+    init = function(self, chunkHelper, stickyMouse)
+        CHUNK_HELPER = chunkHelper
         STICKY_MOUSE = stickyMouse
         
         sidebarY:set(self:getSidebarYForChunk(2))
 
-        SIDEBAR_CHUNK = require("tools/chunkDoctor/sidebar/sidebarChunk"):init(CHUNK_ARTIST, SIDEBAR_GRAFX, gridSize, STICKY_MOUSE)
+        SIDEBAR_CHUNK = require("tools/chunkDoctor/sidebar/sidebarChunk"):init(CHUNK_HELPER, SIDEBAR_GRAFX, gridSize, STICKY_MOUSE)
 
-        for i = 1, CHUNK_ARTIST:getNumChunks() do
+        for i = 1, CHUNK_HELPER:getNumChunks() do
             table.insert(CHUNKS, SIDEBAR_CHUNK:create(i))
         end
 
