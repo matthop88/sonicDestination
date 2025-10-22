@@ -54,7 +54,7 @@ return {
         else                            gridSize:setDestination(0)   end
 
         local anyTileHighlighted = self:isAnyTileHighlighted()
-        STICKY_MOUSE:setVisible(not anyTileHighlighted)
+        if not SOLIDS_MODE then STICKY_MOUSE:setVisible(not anyTileHighlighted) end
         if self:isHighlightedTileSelected() then
             STICKY_MOUSE:setTransparency(0.9)
         elseif anyTileHighlighted then
