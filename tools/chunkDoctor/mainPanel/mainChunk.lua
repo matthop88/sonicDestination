@@ -72,10 +72,15 @@ return {
     end,
 
     updateSelectedTileUsingChain = function(self, chunkID)
-        self:updateSelectedTile()
-        local tileID = STICKY_MOUSE:getTileID()
-        if tileID ~= nil and selectedTile ~= nil then
-            self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
+        if not SOLIDS_MODE then
+            self:updateSelectedTile()
+            local tileID = STICKY_MOUSE:getTileID()
+            if tileID ~= nil and selectedTile ~= nil then
+                self:changeTile(chunkID, tileID, selectedTile.x, selectedTile.y)
+            end
+        else
+            local tileX, tileY = self:getTargetedTileXY()
+            if SOLID_VALUE and tileX and tileY then CHUNK_ARTIST:setSolidValueAt(chunkID, tileX + 1, tileY + 1, SOLID_VALUE) end
         end
     end,
 
@@ -178,7 +183,7 @@ return {
             end
         else
             local tileX, tileY = self:getTargetedTileXY()
-            CHUNK_ARTIST:toggleSolidAt(chunkID, tileX + 1, tileY + 1)
+            SOLID_VALUE = CHUNK_ARTIST:toggleSolidAt(chunkID, tileX + 1, tileY + 1)
         end
     end,
 
