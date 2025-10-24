@@ -46,7 +46,7 @@ return {
         for n, tileID in ipairs(row) do
             if row.S ~= nil and row.S[n] == 1 then
                 graphics:setLineWidth(2)
-                graphics:line(x, y + 16, x + 16, y + 16)
+                graphics:line(x, y, x + 16, y)
             end
             x = x + 16
         end
