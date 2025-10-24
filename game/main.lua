@@ -60,8 +60,9 @@ function love.keypressed(key)
     if key == "r" then
         TERRAIN:refresh()
     elseif key == "return" then
-        local tileID, chunkID = TERRAIN:getTileIDAt(30, 800)
+        local tileID, chunkID = TERRAIN:getTileIDAt(30, 970)
         print("CHUNK ID:", chunkID, "TILE ID:", tileID)
+        print("TILE SOLIDITY:", TERRAIN:getSolidAt(30, 970))
     end
 end
 
