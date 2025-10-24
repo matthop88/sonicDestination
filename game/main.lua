@@ -7,6 +7,7 @@ require "requireRelative"
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
 
 local PROP_LOADER = requireRelative("properties/loader")
+GRAPHICS:setY(-384)
 
 local GRAPHICS    = requireRelative("graphics")
 
