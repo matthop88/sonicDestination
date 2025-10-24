@@ -16,7 +16,6 @@ end
 
 local SONIC     = requireRelative("sonic",                 { GRAPHICS = GRAPHICS })
 local WORLD     = requireRelative("world/world",           { GRAPHICS = GRAPHICS })
-local TERRAIN   = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
 
 local timer     = 0
 local refreshed = false
@@ -38,7 +37,6 @@ PROP_LOADER:notifyOnChange(SONIC)
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    TERRAIN:draw()
     WORLD:draw()
     SONIC:draw()
 end
@@ -58,11 +56,11 @@ end
 function love.keypressed(key)
     SONIC:keypressed(key)
     if key == "r" then
-        TERRAIN:refresh()
+        WORLD:refresh()
     elseif key == "return" then
-        local tileID, chunkID = TERRAIN:getTileIDAt(30, 970)
+        local tileID, chunkID = WORLD:getTileIDAt(30, 970)
         print("CHUNK ID:", chunkID, "TILE ID:", tileID)
-        print("TILE SOLIDITY:", TERRAIN:getSolidAt(30, 970))
+        print("TILE SOLIDITY:", WORLD:getSolidAt(30, 970))
     end
 end
 
@@ -77,7 +75,7 @@ function updateRefreshed(dt)
     if not refreshed then
         timer = timer + dt
         if timer >= 0.2 then
-            TERRAIN:refresh()
+            WORLD:refresh()
             refreshed = true
         end
     end
