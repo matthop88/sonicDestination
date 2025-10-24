@@ -1,37 +1,22 @@
-local COLOR_GREEN         = { 0, 0.45, 0 }
-                            -- https://htmlcolorcodes.com/colors/shades-of-green/
-local COLOR_PURE_WHITE    = { 1, 1,    1 }
-
-local leftX, topY, rightX, bottomY
+local GRAPHICS
+local TERRAIN
+local WORKSPACE
 
 return {
-    getWidth  = love.graphics.getWidth,
-    getHeight = love.graphics.getHeight,
-
     init = function(self, params)
-        self.graphics = params.GRAPHICS
+        GRAPHICS = params.GRAPHICS
+        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
+        WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
+        
         return self
     end,
 
     draw = function(self)
-        self:updateImageCoordinates()
-        self:drawHorizontalLine()
+        TERRAIN:draw()
+        WORKSPACE:draw()
     end,
 
-    updateImageCoordinates = function(self)
-        leftX,  topY    = self.graphics:screenToImageCoordinates(0, 0)
-        rightX, bottomY = self.graphics:screenToImageCoordinates(self:getWidth(), self:getHeight())
-    end,
-
-    drawHorizontalLine = function(self)
-        self.graphics:setColor(COLOR_PURE_WHITE)
-        self.graphics:setLineWidth(1.5)
-        self.graphics:line(leftX, 898, rightX, 898)
-    end,
-
-    drawVerticalLine = function(self)
-        self.graphics:setColor(COLOR_PURE_WHITE)
-        self.graphics:setLineWidth(1.5)
-        self.graphics:line(leftX + (rightX - leftX) / 2, topY, leftX + (rightX - leftX) / 2, bottomY)
-    end,
+    refresh     = function(self)       TERRAIN:refresh()                end,
+    getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y) end,
+    getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)  end,
 }
