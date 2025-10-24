@@ -33,7 +33,7 @@ return {
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
     ------------------------------------------------------------------
-    GROUND_LEVEL            = 876,
+    GROUND_LEVEL            = 556,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -77,6 +77,7 @@ return {
         self:applyGravity(dt)
         self:applyAirDrag(dt)
         self:updatePosition(dt)
+        self:updateSensors(dt)
     end,
 
     keypressed = function(self, key)
@@ -158,6 +159,10 @@ return {
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
         self.position.y = math.min(self.GROUND_LEVEL, self.position.y + (self.velocity.y * dt))
+    end,
+
+    updateSensors = function(self, dt)
+        for _, sensor in ipairs(self.sensors) do sensor:update(dt) end
     end,
 
     applyGravity = function(self, dt)
