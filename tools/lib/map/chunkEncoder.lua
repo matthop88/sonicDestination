@@ -8,7 +8,7 @@ return {
 				for _, tileID in ipairs(chunkRow) do
 					chunkString = chunkString .. (string.rep(" ", 3 - string.len("" .. tileID))) .. tileID .. ", "
 				end
-				if chunkRow.S == nil then chunkString = chunkString .. "},\n"
+				if chunkRow.S == nil or not self:solidsExistForRow(chunkRow) then chunkString = chunkString .. "},\n"
 				else                      
 					chunkString = chunkString .. "\n"  
 					chunkString = chunkString .. "  S={ "
@@ -31,5 +31,11 @@ return {
 			end
 		end
 		return paramString
+	end,
+
+	solidsExistForRow = function(self, chunkRow)
+		for _, s in ipairs(chunkRow.S) do 
+			if s ~= 0 then return true end
+		end
 	end,
 }
