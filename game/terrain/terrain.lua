@@ -40,6 +40,22 @@ return {
         self.graphics:setColor(1, 1, 1)
 	end,
 
+    getChunkAt = function(self, x, y)
+        local chunkID = self:getChunkIDAt(x, y)
+        if    chunkID == nil then return nil
+        else                      return CHUNKS_DATA[chunkID] end
+    end,
+
+    getChunkIDAt = function(self, x, y)
+        local mapX, mapY = self:screenToMapCoordinates(x, y)
+        local mapRow = MAP_DATA[mapY] or {}
+        return mapRow[mapX]
+    end,
+
+    screenToMapCoordinates = function(self, x, y)
+        return math.floor(x / 256) + 1, math.floor(y / 256) + 1
+    end,
+
     refresh = function(self)
         self:init({ GRAPHICS = self.graphics })
     end,
