@@ -30,9 +30,7 @@ local CHUNKS = {
     	local y = (rowNum - 1) * 256
         local x = (colNum - 1) * 256
 
-		y = y - 384
-		
-        graphics:setColor(1, 1, 1)
+		graphics:setColor(1, 1, 1)
     	graphics:draw(self.chunksImg, self:get(chunkID), x, y, 0, 1, 1)
 	end,
 
