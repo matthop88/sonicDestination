@@ -63,8 +63,17 @@ return {
     end,
 
     getTileIDForChunkAt = function(self, chunk, x, y)
-        local chunkX, chunkY = self:screenToChunkCoordinates(x, y)
-        return chunk[chunkY][chunkX]
+        local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
+        return chunk[yInChunk][xInChunk]
+    end,
+
+    getSolidAt = function(self, x, y)
+        local chunkID = self:getChunkIDAt(x, y)
+        if chunkID == nil then return nil
+        else
+            local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
+            return SOLIDS:getSolidAt(chunkID, xInChunk, yInChunk)
+        end
     end,
 
     screenToChunkCoordinates = function(self, x, y)
