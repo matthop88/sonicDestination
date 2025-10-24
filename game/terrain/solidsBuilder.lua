@@ -20,7 +20,13 @@ return {
                 	rowY = rowY + 16
 				end
 		    end,
-		}
+
+		    getSolidAt = function(self, chunkID, xInChunk, yInChunk)
+        		local chunkSolids = self[chunkID]
+        		if    chunkSolids == nil then return nil
+        		else                          return chunkSolids[yInChunk][xInChunk] end
+    		end,
+    	}
 
 		for n, chunk in ipairs(chunkData) do
 			local chunkSolids = {}
