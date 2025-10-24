@@ -10,7 +10,7 @@ return {
         local chunksImg = self:renderChunks(chunksData, tiles)
         chunksImg:setFilter("nearest", "nearest")
 
-        return chunksImg
+        return chunksImg, chunksData
 	end,
 
     renderChunks = function(self, chunksData, tiles)
