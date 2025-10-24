@@ -13,7 +13,7 @@ return {
 						if solid == 1 then
 							graphics:setColor(1, 1, 1)
 							graphics:setLineWidth(2)
-                			graphics:line(rowX, rowY + 16, rowX + 16, rowY + 16)
+                			graphics:line(rowX, rowY, rowX + 16, rowY)
                 		end
                 		rowX = rowX + 16
                 	end
