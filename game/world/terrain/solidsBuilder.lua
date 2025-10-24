@@ -2,7 +2,7 @@ return {
 	create = function(self, chunkData)
 		local solids = {
 			draw = function(self, graphics, rowNum, colNum, chunkID)
-				local y = ((rowNum - 1) * 256) - 384
+				local y = (rowNum - 1) * 256
         		local x = (colNum - 1) * 256
 
 				local chunkSolids = self[chunkID]
