@@ -1,7 +1,7 @@
 return {
-	create = function(self, owner)
+	init = function(self, params)
 		return {
-			owner = owner,
+			owner = params.OWNER,
 		}
 	end,
 }
