@@ -52,7 +52,7 @@ return {
             :add("grid3D",         { 
                 graphics       = self.GRAPHICS,
                 topLineYOffset = 0,
-                standingLine   = 898,
+                standingLine   = 1262,
                 toggleGridKey  = "g",
             })
             :add("tracer", {
