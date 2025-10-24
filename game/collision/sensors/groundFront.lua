@@ -9,15 +9,18 @@ return {
 			graphics = params.GRAPHICS,
 			x        = nil,
 			y        = nil,
+			visible  = false,
 
 			draw = function(self)
-				local xOffset = 9
-				if self.owner:isFacingLeft() then xOffset = xOffset * -1 end
+				if self.visible then
+					local xOffset = 9
+					if self.owner:isFacingLeft() then xOffset = xOffset * -1 end
 
-				self.graphics:setColor(0.13, 0.93, 0.19)
-				self.graphics:line(self.x, self.y - 20, self.x, self.y)
-				self.graphics:setColor(1,    1,    1)
-				self.graphics:line(self.x, self.y -  1, self.x, self.y)
+					self.graphics:setColor(0.13, 0.93, 0.19)
+					self.graphics:line(self.x, self.y - 20, self.x, self.y)
+					self.graphics:setColor(1,    1,    1)
+					self.graphics:line(self.x, self.y -  1, self.x, self.y)
+				end
 			end,
 
 			update = function(self, dt)
@@ -35,6 +38,8 @@ return {
 					self.owner.GROUND_LEVEL = 1262
 				end
 			end,
+
+			toggleShow = function(self) self.visible = not self.visible end,
 		}
 	end,
 }
