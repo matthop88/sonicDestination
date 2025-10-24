@@ -59,6 +59,9 @@ function love.keypressed(key)
     SONIC:keypressed(key)
     if key == "r" then
         TERRAIN:refresh()
+    elseif key == "return" then
+        local tileID, chunkID = TERRAIN:getTileIDAt(30, 800)
+        print("CHUNK ID:", chunkID, "TILE ID:", tileID)
     end
 end
 
