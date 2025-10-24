@@ -189,4 +189,10 @@ return {
             JUMP_SOUND = propData.jumpSound
         end
     end,
+
+    toggleShowSensors = function(self)
+        for _, sensor in ipairs(self.sensors) do sensor:toggleShow() end
+    end,
+
+    getWorld = function(self) return WORLD end,
 }
