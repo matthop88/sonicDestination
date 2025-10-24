@@ -1,3 +1,4 @@
+local WORLD
 local STATES
 
 local sonic1Sprite, sonic2Sprite
@@ -38,6 +39,7 @@ return {
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
+        WORLD = params.WORLD
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
@@ -54,7 +56,7 @@ return {
 
     initSensors = function(self)
         self.sensors = {
-            requireRelative("collision/sensors/groundFront", { OWNER = self })
+            requireRelative("collision/sensors/groundFront", { OWNER = self, WORLD = WORLD })
         }
 
     end,
