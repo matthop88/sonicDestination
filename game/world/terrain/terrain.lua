@@ -7,6 +7,8 @@ local CHUNKS_DATA
 local SOLIDS
 local CHUNKS
 return {
+    showSolids = false,
+
     init = function(self, params)
         self.pageWidth  = #MAP_DATA[1] * 256
         self.pageHeight = #MAP_DATA    * 256
@@ -34,7 +36,7 @@ return {
         for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkID in ipairs(row) do
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
-                SOLIDS:draw(self.graphics, rowNum, colNum, chunkID)
+                if self.showSolids then SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) end
             end
         end
         self.graphics:setColor(1, 1, 1)
@@ -83,5 +85,9 @@ return {
 
     refresh = function(self)
         self:init({ GRAPHICS = self.graphics })
+    end,
+
+    toggleShowSolids = function(self)
+        self.showSolids = not self.showSolids
     end,
 }
