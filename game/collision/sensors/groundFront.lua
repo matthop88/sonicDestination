@@ -10,7 +10,7 @@ return {
 
 			draw = function(self)
 				self.graphics:setColor(0.13, 0.93, 0.19)
-				self.graphics:line(self.owner:getX() + 15, self.owner:getY(), self.owner:getX() + 15, self.owner:getY() + 20)
+				self.graphics:line(self.owner:getX() + 10, self.owner:getY(), self.owner:getX() + 10, self.owner:getY() + 20)
 			end,
 		}
 	end,
