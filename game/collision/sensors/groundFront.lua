@@ -25,9 +25,15 @@ return {
 				if self.owner:isFacingLeft() then xOffset = xOffset * -1 end
 				self.x = self.owner:getX() + xOffset
 				self.y = self.owner:getY() + 20
+				self:scan()
 			end,
 
 			scan = function(self)
+				if WORLD:getSolidAt(self.x, self.y + 1) == 1 then
+					self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 20
+				else
+					self.owner.GROUND_LEVEL = 1262
+				end
 			end,
 		}
 	end,
