@@ -27,7 +27,7 @@ return {
     drawHorizontalLine = function(self)
         self.graphics:setColor(COLOR_PURE_WHITE)
         self.graphics:setLineWidth(1.5)
-        self.graphics:line(leftX, 898, rightX, 898)
+        self.graphics:line(leftX, 1282, rightX, 1282)
     end,
 
     drawVerticalLine = function(self)
