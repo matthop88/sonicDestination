@@ -32,7 +32,7 @@ return {
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
     ------------------------------------------------------------------
-    GROUND_LEVEL            = 556,
+    GROUND_LEVEL            = 876,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
