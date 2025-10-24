@@ -14,12 +14,12 @@ if __DEV_MODE == true then
     GRAPHICS = require("tools/lib/bufferedGraphics"):create(GRAPHICS, 1024, 768)
 end
 
-local SONIC       = requireRelative("sonic",                 { GRAPHICS = GRAPHICS })
-local WORKSPACE   = requireRelative("workspace",             { GRAPHICS = GRAPHICS })
-local TERRAIN     = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
+local SONIC     = requireRelative("sonic",                 { GRAPHICS = GRAPHICS })
+local WORLD     = requireRelative("world/world",           { GRAPHICS = GRAPHICS })
+local TERRAIN   = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
 
-local timer       = 0
-local refreshed   = false
+local timer     = 0
+local refreshed = false
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -39,7 +39,7 @@ PROP_LOADER:notifyOnChange(SONIC)
 --------------------------------------------------------------
 function love.draw()
     TERRAIN:draw()
-    WORKSPACE:draw()
+    WORLD:draw()
     SONIC:draw()
 end
 
