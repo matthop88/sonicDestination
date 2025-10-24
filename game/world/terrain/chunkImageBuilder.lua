@@ -1,4 +1,4 @@
-local TILES_BUILDER = requireRelative("terrain/tilesBuilder")
+local TILES_BUILDER = requireRelative("world/terrain/tilesBuilder")
 
 return {
 	create = function(self, chunksDataPath)
