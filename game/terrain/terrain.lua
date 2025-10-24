@@ -35,7 +35,6 @@ return {
             for colNum, chunkID in ipairs(row) do
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
                 SOLIDS:draw(self.graphics, rowNum, colNum, chunkID)
-            
             end
         end
         self.graphics:setColor(1, 1, 1)
