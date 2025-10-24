@@ -45,7 +45,7 @@ return {
         sonic2Sprite = spriteFactory:create("sonic2")
         
         self.sprite = sonic1Sprite
-        self:initSensors()
+        self:initSensors(params.GRAPHICS)
         
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
@@ -54,15 +54,20 @@ return {
         return self
     end,
 
-    initSensors = function(self)
+    initSensors = function(self, graphics)
         self.sensors = {
-            requireRelative("collision/sensors/groundFront", { OWNER = self, WORLD = WORLD })
+            requireRelative("collision/sensors/groundFront", { OWNER = self, WORLD = WORLD, GRAPHICS = graphics })
         }
 
     end,
 
     draw = function(self)
         self.sprite:draw(self:getX(), self:getY())
+        self:drawSensors()
+    end,
+
+    drawSensors = function(self)
+        for _, sensor in ipairs(self.sensors) do sensor:draw() end
     end,
 
     update = function(self, dt)
