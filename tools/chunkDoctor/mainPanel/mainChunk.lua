@@ -142,9 +142,9 @@ return {
         local c = SOLIDS_CURSOR_COLOR:get() / 350
         MAIN_GRAFX:setColor(1, 0, 0)
         MAIN_GRAFX:setLineWidth(3)
-        MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 85 - MAIN_CHUNK_Y:get(), 18, 6)
+        MAIN_GRAFX:rectangle("line", (tileX * 16) + 64, (tileY * 16) + 69 - MAIN_CHUNK_Y:get(), 18, 6)
         MAIN_GRAFX:setColor(1, 1, 0, c)
-        MAIN_GRAFX:rectangle("fill", (tileX * 16) + 65, (tileY * 16) + 86 - MAIN_CHUNK_Y:get(), 16, 4)
+        MAIN_GRAFX:rectangle("fill", (tileX * 16) + 65, (tileY * 16) + 70 - MAIN_CHUNK_Y:get(), 16, 4)
     end,
 
     drawHighlightedTileAt = function(self, tileX, tileY)
