@@ -43,12 +43,20 @@ return {
         sonic2Sprite = spriteFactory:create("sonic2")
         
         self.sprite = sonic1Sprite
+        self:initSensors()
         
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
 
         self:moveTo(512, self.GROUND_LEVEL)
         return self
+    end,
+
+    initSensors = function(self)
+        self.sensors = {
+            requireRelative("collision/sensors/groundFront", { OWNER = self })
+        }
+
     end,
 
     draw = function(self)
