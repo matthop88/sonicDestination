@@ -14,9 +14,9 @@ if __DEV_MODE == true then
     GRAPHICS = require("tools/lib/bufferedGraphics"):create(GRAPHICS, 1024, 768)
 end
 
-local SONIC       = requireRelative("sonic",           { GRAPHICS = GRAPHICS })
-local WORKSPACE   = requireRelative("workspace",       { GRAPHICS = GRAPHICS })
-local TERRAIN     = requireRelative("terrain/terrain", { GRAPHICS = GRAPHICS })
+local SONIC       = requireRelative("sonic",                 { GRAPHICS = GRAPHICS })
+local WORKSPACE   = requireRelative("workspace",             { GRAPHICS = GRAPHICS })
+local TERRAIN     = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
 
 local timer       = 0
 local refreshed   = false
