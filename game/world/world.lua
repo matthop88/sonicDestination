@@ -19,4 +19,6 @@ return {
     refresh     = function(self)       TERRAIN:refresh()                end,
     getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y) end,
     getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)  end,
+
+    toggleShowSolids = function(self) TERRAIN:toggleShowSolids() end,
 }
