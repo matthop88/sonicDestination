@@ -3,6 +3,8 @@ local CHUNKS_PATH = relativePath("resources/zones/chunks/ghzChunks.lua")
 
 local MAP_DATA    = dofile(MAP_PATH)
 local CHUNKS_IMG
+local CHUNKS_DATA
+local SOLIDS
 local CHUNKS
 return {
     init = function(self, params)
@@ -10,8 +12,9 @@ return {
         self.pageHeight = #MAP_DATA    * 256
         self.graphics   = params.GRAPHICS
 
-        CHUNKS_IMG = requireRelative("terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-        CHUNKS     = requireRelative("terrain/chunksBuilder"):create(CHUNKS_IMG)
+        CHUNKS_IMG, CHUNKS_DATA = requireRelative("terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+        SOLIDS                  = requireRelative("terrain/solidsBuilder"):create(CHUNKS_DATA)
+        CHUNKS                  = requireRelative("terrain/chunksBuilder"):create(CHUNKS_IMG)
         
         return self
     end,
@@ -31,6 +34,8 @@ return {
         for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkID in ipairs(row) do
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
+                SOLIDS:draw(self.graphics, rowNum, colNum, chunkID)
+            
             end
         end
         self.graphics:setColor(1, 1, 1)
