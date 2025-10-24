@@ -34,11 +34,13 @@ return {
     end,
 
     toggleSolidAt = function(self, chunkID, tileX, tileY)
-        local chunk = self.chunksData[chunkID]
-        local row = chunk[tileY]
-        if row.S == nil then row.S = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, } end
-        row.S[tileX] = 1 - row.S[tileX]
-        return row.S[tileX]
+        if tileX < 17 then
+            local chunk = self.chunksData[chunkID]
+            local row = chunk[tileY]
+            if row.S == nil then row.S = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, } end
+            row.S[tileX] = 1 - row.S[tileX]
+            return row.S[tileX]
+        end
     end,
 
     getSolidValueAt = function(self, chunkID, tileX, tileY)
