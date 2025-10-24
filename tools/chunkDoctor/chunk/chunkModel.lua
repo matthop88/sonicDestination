@@ -28,7 +28,7 @@ return {
         local chunk = self.chunksData[chunkID]
         
         local tileRow = chunk[chunkY + 1]
-        if tileRow ~= nil then
+        if tileRow ~= nil and chunkX < 16 then
             tileRow[chunkX + 1] = tileID
         end
     end,
