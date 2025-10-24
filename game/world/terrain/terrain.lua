@@ -12,9 +12,9 @@ return {
         self.pageHeight = #MAP_DATA    * 256
         self.graphics   = params.GRAPHICS
 
-        CHUNKS_IMG, CHUNKS_DATA = requireRelative("terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-        SOLIDS                  = requireRelative("terrain/solidsBuilder"):create(CHUNKS_DATA)
-        CHUNKS                  = requireRelative("terrain/chunksBuilder"):create(CHUNKS_IMG)
+        CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+        SOLIDS                  = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
+        CHUNKS                  = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
         
         return self
     end,
