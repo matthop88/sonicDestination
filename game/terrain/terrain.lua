@@ -40,6 +40,12 @@ return {
         self.graphics:setColor(1, 1, 1)
 	end,
 
+    getTileIDAt = function(self, x, y)
+        local chunk = self:getChunkAt(x, y)
+        if    chunk == nil then return nil
+        else                    return self:getTileIDForChunkAt(chunk, x, y), chunk.chunkID end
+    end,
+
     getChunkAt = function(self, x, y)
         local chunkID = self:getChunkIDAt(x, y)
         if    chunkID == nil then return nil
@@ -54,6 +60,16 @@ return {
 
     screenToMapCoordinates = function(self, x, y)
         return math.floor(x / 256) + 1, math.floor(y / 256) + 1
+    end,
+
+    getTileIDForChunkAt = function(self, chunk, x, y)
+        local chunkX, chunkY = self:screenToChunkCoordinates(x, y)
+        return chunk[chunkY][chunkX]
+    end,
+
+    screenToChunkCoordinates = function(self, x, y)
+        local xInChunk, yInChunk = x % 256, y % 256
+        return math.floor(xInChunk / 16) + 1, math.floor(yInChunk / 16) + 1
     end,
 
     refresh = function(self)
