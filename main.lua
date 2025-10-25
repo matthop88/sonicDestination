@@ -13,7 +13,6 @@ local launchSlicer               = function(args)
 end
 
 local launchTransparencyEditor   = function(args)
-    __TRANSPARENCY_FILE = args[2]
     require "tools/transparencyEditor/editorApp"
 end
 
