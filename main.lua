@@ -51,6 +51,10 @@ local launchTestingFramework     = function(args)
     require "testing/testFramework"
 end
 
+local launchProgress             = function(args)
+    require "fun/applications/progress/progress"
+end
+
 --------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
@@ -66,6 +70,7 @@ local APP_LAUNCHER = {
     mapViewer    = launchMapViewer,
     tileinator   = launchTileinator,
     chunkDoctor  = launchChunkDoctor,
+    progress     = launchProgress,
     test         = launchTestingFramework,
 }
 
