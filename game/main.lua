@@ -57,13 +57,7 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     SONIC:keypressed(key)
-    if key == "r" then
-        WORLD:refresh()
-    elseif key == "return" then
-        local tileID, chunkID = WORLD:getTileIDAt(30, 970)
-        print("CHUNK ID:", chunkID, "TILE ID:", tileID)
-        print("TILE SOLIDITY:", WORLD:getSolidAt(30, 970))
-    end
+    if key == "r" then WORLD:refresh() end
 end
 
 -- Function Name: love.keyreleased(key)
