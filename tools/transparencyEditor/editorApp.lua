@@ -41,6 +41,14 @@ end
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
+
+love.draw = function()
+    if __PARAMS["outline"] then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+    end
+end
+
 -- Function Name: love.keypressed(key)
 -- Called By:     LOVE2D application, when a key is pressed
 --------------------------------------------------------------
@@ -69,13 +77,17 @@ makeSelectedColorTransparent = function()
 end
 
 createTransparency = function(x, y, r, g, b, a)
-   if colorMatchesRGB(selectedColor, r, g, b) then return 0, 0, 0, 0
-   else                                            return r, g, b, a
-   end
+    if __PARAMS["outline"] then
+        if not (r < 0.1 and g < 0.1 and b < 0.1)   then return 0, 0, 0, 0
+        else                                            return r, g, b, a end
+    else
+        if colorMatchesRGB(selectedColor, r, g, b) then return 0, 0, 0, 0
+        else                                            return r, g, b, a end
+    end
 end
 
 colorMatchesRGB = function(color, r, g, b)
-     return color ~= nil and color.r == r and color.g == g and color.b == b
+    return color ~= nil and color.r == r and color.g == g and color.b == b
 end
 
 revertChanges = function()
