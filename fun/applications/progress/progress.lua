@@ -23,10 +23,13 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.draw()
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(0.5, 0.5, 0.5)
+    love.graphics.rectangle("fill", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+    love.graphics.draw(COLOR_IMAGE,   -z, -z, 0, 0.5 - (z / 1500), 0.5 - (z / 1500))
+    love.graphics.setColor(1, 1, 1, 1 - (z / 150))
     love.graphics.rectangle("fill",   0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-    love.graphics.draw(COLOR_IMAGE,   -z, -z, 0, 0.5, 0.5)
-    love.graphics.draw(OUTLINE_IMAGE, z, z, 0, 0.5, 0.5)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(OUTLINE_IMAGE, z, z, 0, 0.5 + (z / 1500), 0.5 + (z / 1500))
 end
 
 function love.keypressed(key)
