@@ -35,15 +35,16 @@ runs the Sprite Sheet Slicer application on the image file `sonicDestination/res
 
 To execute the Transparency Editor application, use the command
 
-    love . transparency
+    love . transparency -i {imageName} -p {pathName}
 
 with an argument (REQUIRED) specifying the image you wish to edit the transparencies of.
 Only specify the image name (without an extension.)
 Image is expected to be a png image located in the resources/images/spriteSheets directory.
+If a path is specified, can operate on an image located elsewhere
 
 EX: 
 
-    love . transparency sonic1
+    love . transparency -i sonic1
 
 runs the Transparency Editor application on the image file `sonicDestination/resources/images/spriteSheets/sonic1.png`.
 
