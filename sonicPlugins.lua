@@ -49,6 +49,14 @@ return {
     initPlugins = function(self)
         require("plugins/engine")
             :add("modKeyEnabler")
+            :add("debugCmds",      {
+                onDebugOn  = function() printMessage("Debug Mode On") end,
+                onDebugOff = function() printMessage("Debug Mode Off") end,
+                cmds = { 
+                    {   key = "s", fn = function() self.SONIC:toggleShowSensors()           end, },
+                    {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
+                },
+            })
             :add("grid3D",         { 
                 graphics       = self.GRAPHICS,
                 topLineYOffset = 0,
