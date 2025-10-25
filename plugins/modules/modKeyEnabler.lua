@@ -1,3 +1,5 @@
+local SHIFT_KEY_TRANSFORMER = require("plugins/libraries/shiftKeyTransformer")
+
 return {
     --[[
     Mod Key Enabler is designed to generate more specific key events
@@ -59,10 +61,8 @@ return {
         end,
 
         applyShift = function(self, key)
-            if     key == ","           then return "<"
-            elseif key == "."           then return ">"
-            elseif string.len(key) == 1 then return string.upper(key)
-            else                             return "shift" .. key  end
+            if string.len(key) == 1 then return SHIFT_KEY_TRANSFORMER:transformShiftedKey(key)
+            else                         return "shift" .. key                             end
         end,
 
         applyOption = function(self, key)
