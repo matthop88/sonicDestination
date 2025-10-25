@@ -31,10 +31,10 @@ local selectedColor               = nil
 local changesMade                 = false
 
 local imgPath                     = "resources/images/transparencySad.png"
-local imgName                     = __TRANSPARENCY_FILE
+local imgName                     = __PARAMS["image"]
 
 if imgName ~= nil then
-    imgPath = "resources/images/spriteSheets/" .. imgName .. ".png"
+    imgPath = (__PARAMS["path"] or "resources/images/spriteSheets/") .. imgName .. ".png"
 end
 
 --------------------------------------------------------------
