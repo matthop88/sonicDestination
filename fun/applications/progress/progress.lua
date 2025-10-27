@@ -85,13 +85,14 @@ function markTargetedProgress()
 end
 
 function drawProgress()
+    local offsetY = -math.min(0, 882 + y)
     local progress = math.max(0, -(y + 35) / 865) * 100
     love.graphics.setFont(FONT)
     love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 400, 882 + y, 150, 40)
+    love.graphics.rectangle("fill", 400, 882 + y + offsetY, 150, 40)
     love.graphics.setLineWidth(3)
     love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("line", 400, 882 + y, 150, 40)
+    love.graphics.rectangle("line", 400, 882 + y + offsetY, 150, 40)
     love.graphics.setColor(1, 1, 0)
-    love.graphics.printf(string.format("%.2f%%", progress), 0, 885 + y, 540, "right")
+    love.graphics.printf(string.format("%.2f%%", progress), 0, 885 + y + offsetY, 540, "right")
 end
