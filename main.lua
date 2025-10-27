@@ -31,21 +31,12 @@ local launchSoundGraph           = function(args)
     require "tools/soundGraph/soundGraphApp"
 end
 
-local launchChunkalyzer          = function(args)
-    require "tools/chunkalyzer/chunkalyzerApp"
-end
+local launchChunkalyzer = function(args) require "tools/chunkalyzer/chunkalyzerApp" end
+local launchMapViewer   = function(args) require "tools/mapViewer/mapViewerApp"     end
+local launchTileinator  = function(args) require "tools/tileinator/tileinatorApp"   end
+local launchChunkDoctor = function(args) require "tools/chunkDoctor/chunkDoctorApp" end
+local launchRingMaster  = function(args) require "tools/ringMaster/ringMasterApp"   end
 
-local launchMapViewer            = function(args)
-    require "tools/mapViewer/mapViewerApp"
-end
-
-local launchTileinator           = function(args)
-    require "tools/tileinator/tileinatorApp"
-end
-
-local launchChunkDoctor          = function(args)
-    require "tools/chunkDoctor/chunkDoctorApp"
-end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -71,6 +62,7 @@ local APP_LAUNCHER = {
     mapViewer    = launchMapViewer,
     tileinator   = launchTileinator,
     chunkDoctor  = launchChunkDoctor,
+    ringMaster   = launchRingMaster,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
