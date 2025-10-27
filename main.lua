@@ -52,6 +52,7 @@ local launchTestingFramework     = function(args)
 end
 
 local launchProgress             = function(args)
+    __PROGRESS = args[2]
     require "fun/applications/progress/progress"
 end
 
