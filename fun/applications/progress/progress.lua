@@ -75,11 +75,6 @@ function updateBasedUponManualControls(dt)
     y = math.min(0, math.max(-900, y + (ySpeed * dt))) 
 end
 
-function printProgress()
-    local progress = math.max(0, -(y + 35) / 865) * 100
-    print(string.format("PROGRESS: %.2f%%", progress))
-end
-
 function markTargetedProgress()
     targetedY = -((targetedProgress / 100 * 865) + 35)
 end
