@@ -7,19 +7,20 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 550, 900
 local COLOR_IMAGE   = love.graphics.newImage("fun/resources/images/sonicAdventure.png")
 local OUTLINE_IMAGE = love.graphics.newImage("fun/resources/images/sonicAdventureTransparent.png")
 
-local LAYER_SPEED   = 120
-local FILL_SPEED    = 120
-local ySpeed        = 0
-local y             = 0
-local zSpeed        = 0
-local z             = 0
+local LAYER_SPEED      = 120
+local FILL_SPEED       = 120
+local ySpeed           = 0
+local y                = 0
+local zSpeed           = 0
+local z                = 0
+local targetedProgress = 50.0
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
 love.window.setTitle("Sonic Progress")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 1 })
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -52,7 +53,16 @@ end
 
 function love.update(dt)
     z = math.min(150, math.max(0, z + (zSpeed * dt)))
-    y = math.min(0, y + (ySpeed * dt))
+    y = math.min(0, math.max(-900, y + (ySpeed * dt)))
+
+    if ySpeed ~= 0 then printProgress() end
 end
 
+--------------------------------------------------------------
+--                  Specialized Functions                   --
+--------------------------------------------------------------
 
+function printProgress()
+    local progress = math.max(0, -(y + 35) / 865) * 100
+    print(string.format("PROGRESS: %.2f%%", progress))
+end
