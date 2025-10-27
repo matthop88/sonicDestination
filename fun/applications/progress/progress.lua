@@ -57,8 +57,8 @@ function love.keyreleased(key)
 end
 
 function love.update(dt)
-    if targetedY ~= nil then updateBasedUponTargetedY(dt)
-    else                     updateBasedUponManualControls(dt) end
+    if targetedY ~= nil and zSpeed == 0 then updateBasedUponTargetedY(dt)
+    else                                    updateBasedUponManualControls(dt) end
 end
 
 --------------------------------------------------------------
