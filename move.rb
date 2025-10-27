@@ -23,12 +23,24 @@
 
 require 'fileutils'
 
+def moveFile(src, dst)
+  puts("Moving #{src} to #{dst}")
+  FileUtils.mv(src, dst)
+end
+
 appSupportDirName = "Application\ Support"
 
 src_zones_dir = "/Users/mhopk5/Library/#{appSupportDirName}/LOVE/sonicDestination/resources/zones"
 dst_zones_dir = "/Users/mhopk5/Development/games/love2d/sonicDestination/resources/zones"
 
-src_map_file = "#{src_zones_dir}/maps/#{ARGV[0]}.lua"
+src_map_file   = "#{src_zones_dir}/maps/#{ARGV[0]}.lua"
+src_chunk_file = "#{src_zones_dir}/chunks/#{ARGV[0]}.lua" if ARGV[0].include? "Chunks"
+dst_chunk_file = "#{dst_zones_dir}/chunks/#{ARGV[0]}.lua" unless src_chunk_file.nil?
+
+if dst_chunk_file
+  moveFile(src_chunk_file, dst_chunk_file)
+  exit()
+end
 
 chunkImgName   = nil
 chunksDataName = nil
@@ -67,10 +79,7 @@ dst_map_dir = "#{dst_zones_dir}/maps"
 dst_chk_dir = "#{dst_zones_dir}/chunks"
 dst_til_dir = "#{dst_zones_dir}/tiles"
 
-def moveFile(src, dst)
-  puts("Moving #{src} to #{dst}")
-  FileUtils.mv(src, dst)
-end
+
 
 moveFile(src_map_file, dst_map_dir)
 moveFile(src_chk_img_file, dst_chk_dir) unless src_chk_img_file.nil? or not File.exist?(src_chk_img_file)

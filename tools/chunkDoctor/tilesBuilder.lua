@@ -1,0 +1,65 @@
+local TILES_BUILDER = {
+	tiles = {
+		img = nil,
+
+		get = function(self, tileID)
+    		return self[tileID]
+    	end,
+
+    	draw = function(self, x, y, tileID, graphics, offset, scale, color)
+    		offset = offset or 0
+    		scale  = scale  or 1
+    		color  = color   or { 1, 1, 1 }
+			graphics:setColor(color)
+    		graphics:draw(self.img, self:get(tileID), x + offset, y + offset, 0, scale - (offset * 0.125 * scale), scale - (offset * 0.125 * scale))
+		end,
+    },
+
+    init = function(self, tilesImg)
+    	if not self.tilesImg then
+	    	self.tilesImg  = tilesImg
+	    	self.tiles.img = tilesImg
+
+	        local tileCount = self:calculateTileCount()
+	        self:constructTiles(tileCount)
+	    end
+
+        return self.tiles
+    end,
+
+    calculateTileCount = function(self)
+        local widthInTiles  = self.tilesImg:getWidth()  / 16
+		local heightInTiles = self.tilesImg:getHeight() / 16
+
+		return widthInTiles * heightInTiles
+    end,
+
+    constructTiles = function(self, tileCount)
+    	local x, y, baseX = 0, 0, 0
+
+		for i = 1, tileCount do
+			local quad = love.graphics.newQuad(x, y, 16, 16, self.tilesImg:getWidth(), self.tilesImg:getHeight())
+			table.insert(self.tiles, quad)
+			
+			x, y, baseX = self:moveTileCursor(x, y, baseX)
+		end
+	end,
+
+	moveTileCursor = function(self, x, y, baseX)
+		x = x + 16
+		if x >= baseX + 256 then
+			x, y = baseX, y + 16
+			if y >= 256 then baseX, x, y = baseX + 256, baseX + 256, 0 end
+		end
+		return x, y, baseX
+	end,
+}
+
+return {
+	create = function(self, tilesImgPath)
+		local tilesImg = love.graphics.newImage(tilesImgPath)
+		tilesImg:setFilter("nearest", "nearest")
+
+		return TILES_BUILDER:init(tilesImg)
+	end,
+}

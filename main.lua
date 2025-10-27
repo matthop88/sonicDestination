@@ -13,7 +13,6 @@ local launchSlicer               = function(args)
 end
 
 local launchTransparencyEditor   = function(args)
-    __TRANSPARENCY_FILE = args[2]
     require "tools/transparencyEditor/editorApp"
 end
 
@@ -44,8 +43,17 @@ local launchTileinator           = function(args)
     require "tools/tileinator/tileinatorApp"
 end
 
+local launchChunkDoctor          = function(args)
+    require "tools/chunkDoctor/chunkDoctorApp"
+end
+
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
+end
+
+local launchProgress             = function(args)
+    __PROGRESS = args[2]
+    require "fun/applications/progress/progress"
 end
 
 --------------------------------------------------------------
@@ -62,13 +70,16 @@ local APP_LAUNCHER = {
     chunkalyzer  = launchChunkalyzer,
     mapViewer    = launchMapViewer,
     tileinator   = launchTileinator,
+    chunkDoctor  = launchChunkDoctor,
+    progress     = launchProgress,
     test         = launchTestingFramework,
 }
 
 local APP_PATH = {
-    chunkalyzer  = "tools/chunkalyzer",
-    mapViewer    = "tools/mapViewer",
-    tileinator   = "tools/tileinator",
+    inspector    = "tools/colorInspector",
+    slicer       = "tools/spriteSheetSlicer",
+    transparency = "tools/transparencyEditor",
+    test         = "testing",
 }
 
 --------------------------------------------------------------
@@ -85,8 +96,10 @@ function love.load(args)
 
     local appName = args[1]
     
-    if APP_PATH[appName] ~= nil then
-        local cmdLineTools = require("commandLineTools"):create(APP_PATH[appName])
+    if appName == nil then 
+        require "game/main"
+    else
+        local cmdLineTools = require("commandLineTools"):create(appName, APP_PATH)
         __PARAMS = cmdLineTools:getParams(args)
         if __PARAMS["help"] then
             cmdLineTools:printHelp()
@@ -94,9 +107,10 @@ function love.load(args)
         elseif not cmdLineTools:validateParams(args) then
             return
         end
-    end   
-    if   APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
-    else                                   require "game/main"     end
+        
+        if   APP_LAUNCHER[appName] ~= nil then APP_LAUNCHER[appName](args)
+        else                                   require "game/main"     end
+    end
 end
 
 function relativePath(path)

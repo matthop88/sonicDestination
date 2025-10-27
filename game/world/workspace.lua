@@ -10,6 +10,7 @@ return {
 
     init = function(self, params)
         self.graphics = params.GRAPHICS
+        
         return self
     end,
 
@@ -26,7 +27,7 @@ return {
     drawHorizontalLine = function(self)
         self.graphics:setColor(COLOR_PURE_WHITE)
         self.graphics:setLineWidth(1.5)
-        self.graphics:line(leftX, self:getHeight() * 3/4, rightX, self:getHeight() * 3/4)
+        self.graphics:line(leftX, 1282, rightX, 1282)
     end,
 
     drawVerticalLine = function(self)

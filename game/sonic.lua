@@ -1,3 +1,4 @@
+local WORLD
 local STATES
 
 local sonic1Sprite, sonic2Sprite
@@ -32,17 +33,19 @@ return {
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
     ------------------------------------------------------------------
-    GROUND_LEVEL            = 556,
+    GROUND_LEVEL            = 940,
     
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
+        WORLD = params.WORLD
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
         
         self.sprite = sonic1Sprite
+        self:initSensors(params.GRAPHICS)
         
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
@@ -51,8 +54,20 @@ return {
         return self
     end,
 
+    initSensors = function(self, graphics)
+        self.sensors = {
+            requireRelative("collision/sensors/groundFront", { OWNER = self, WORLD = WORLD, GRAPHICS = graphics })
+        }
+
+    end,
+
     draw = function(self)
         self.sprite:draw(self:getX(), self:getY())
+        self:drawSensors()
+    end,
+
+    drawSensors = function(self)
+        for _, sensor in ipairs(self.sensors) do sensor:draw() end
     end,
 
     update = function(self, dt)
@@ -62,6 +77,7 @@ return {
         self:applyGravity(dt)
         self:applyAirDrag(dt)
         self:updatePosition(dt)
+        self:updateSensors(dt)
     end,
 
     keypressed = function(self, key)
@@ -145,6 +161,10 @@ return {
         self.position.y = math.min(self.GROUND_LEVEL, self.position.y + (self.velocity.y * dt))
     end,
 
+    updateSensors = function(self, dt)
+        for _, sensor in ipairs(self.sensors) do sensor:update(dt) end
+    end,
+
     applyGravity = function(self, dt)
         if not self:isGrounded() then
             self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
@@ -169,4 +189,10 @@ return {
             JUMP_SOUND = propData.jumpSound
         end
     end,
+
+    toggleShowSensors = function(self)
+        for _, sensor in ipairs(self.sensors) do sensor:toggleShow() end
+    end,
+
+    getWorld = function(self) return WORLD end,
 }

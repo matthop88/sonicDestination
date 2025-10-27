@@ -1,4 +1,4 @@
-local TILES_BUILDER = requireRelative("terrain/tilesBuilder")
+local TILES_BUILDER = requireRelative("world/terrain/tilesBuilder")
 
 return {
 	create = function(self, chunksDataPath)
@@ -10,7 +10,7 @@ return {
         local chunksImg = self:renderChunks(chunksData, tiles)
         chunksImg:setFilter("nearest", "nearest")
 
-        return chunksImg
+        return chunksImg, chunksData
 	end,
 
     renderChunks = function(self, chunksData, tiles)
@@ -54,5 +54,3 @@ return {
         end
     end,
 }
-
-

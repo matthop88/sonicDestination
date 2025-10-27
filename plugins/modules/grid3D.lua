@@ -2,7 +2,7 @@ return {
     init = function(self, parameters)
         self.graphics     = parameters.graphics
         self.gridSize     = parameters.gridSize or 64
-        self.standingLine = self.graphics:getScreenHeight() * 3/4
+        self.standingLine = parameters.standingLine or self.graphics:getScreenHeight() * 3/4
         self.midLineY     = self.standingLine + 48
         self.topLineY     = self.standingLine - (parameters.topLineYOffset or 24)
         self.bottomLineY  = self.standingLine + 144

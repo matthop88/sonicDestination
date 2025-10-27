@@ -14,12 +14,13 @@ if __DEV_MODE == true then
     GRAPHICS = require("tools/lib/bufferedGraphics"):create(GRAPHICS, 1024, 768)
 end
 
-local SONIC       = requireRelative("sonic",           { GRAPHICS = GRAPHICS })
-local WORKSPACE   = requireRelative("workspace",       { GRAPHICS = GRAPHICS })
-local TERRAIN     = requireRelative("terrain/terrain", { GRAPHICS = GRAPHICS })
+GRAPHICS:setY(-384)
 
-local timer       = 0
-local refreshed   = false
+local WORLD     = requireRelative("world/world", { GRAPHICS = GRAPHICS })
+local SONIC     = requireRelative("sonic",       { GRAPHICS = GRAPHICS, WORLD = WORLD })
+
+local timer     = 0
+local refreshed = false
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -38,8 +39,7 @@ PROP_LOADER:notifyOnChange(SONIC)
 -- Called By:     LOVE2D application, every single frame
 --------------------------------------------------------------
 function love.draw()
-    TERRAIN:draw()
-    WORKSPACE:draw()
+    WORLD:draw()
     SONIC:draw()
 end
 
@@ -57,9 +57,7 @@ end
 --------------------------------------------------------------
 function love.keypressed(key)
     SONIC:keypressed(key)
-    if key == "r" then
-        TERRAIN:refresh()
-    end
+    if key == "r" then WORLD:refresh() end
 end
 
 -- Function Name: love.keyreleased(key)
@@ -73,7 +71,7 @@ function updateRefreshed(dt)
     if not refreshed then
         timer = timer + dt
         if timer >= 0.2 then
-            TERRAIN:refresh()
+            WORLD:refresh()
             refreshed = true
         end
     end
