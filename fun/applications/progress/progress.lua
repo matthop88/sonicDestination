@@ -20,7 +20,7 @@ local targetedProgress = 50.0
 --------------------------------------------------------------
 
 love.window.setTitle("Sonic Progress")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 1 })
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
