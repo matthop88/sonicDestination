@@ -41,6 +41,7 @@ function love.keypressed(key)
     elseif key == "left"  then zSpeed = -LAYER_SPEED
     elseif key == "up"    then ySpeed = -FILL_SPEED
     elseif key == "down"  then ySpeed =  FILL_SPEED
+    elseif key == "space" then print("Y Coordinate: " .. y)
     end
 end
 
