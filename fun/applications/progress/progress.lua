@@ -14,6 +14,7 @@ local y                = 0
 local zSpeed           = 0
 local z                = 0
 local targetedProgress = 50.0
+local targetedY        = nil
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -52,8 +53,8 @@ function love.keyreleased(key)
 end
 
 function love.update(dt)
-    z = math.min(150, math.max(0, z + (zSpeed * dt)))
-    y = math.min(0, math.max(-900, y + (ySpeed * dt)))
+    if targetedY ~= nil then updateBasedUponTargetedY(dt)
+    else                     updateBasedUponManualControls(dt) end
 
     if ySpeed ~= 0 then printProgress() end
 end
@@ -62,12 +63,21 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
+function updateBasedUponTargetedY(dt)
+    ySpeed = -FILL_SPEED
+    y = math.max(targetedY, y + (ySpeed * dt))
+end
+
+function updateBasedUponManualControls(dt)
+    z = math.min(150, math.max(0, z + (zSpeed * dt)))
+    y = math.min(0, math.max(-900, y + (ySpeed * dt))) 
+end
+
 function printProgress()
     local progress = math.max(0, -(y + 35) / 865) * 100
     print(string.format("PROGRESS: %.2f%%", progress))
 end
 
 function markTargetedProgress()
-    local targetedY = -((targetedProgress / 100 * 865) + 35)
-    y = targetedY
+    targetedY = -((targetedProgress / 100 * 865) + 35)
 end
