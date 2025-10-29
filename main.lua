@@ -2,15 +2,6 @@
 --              Application Launching Functions             --
 --------------------------------------------------------------
 
-local launchColorInspector       = function(args)
-    require "tools/colorInspector/inspector"
-end
-
-local launchSlicer               = function(args)
-    __SLICER_FILE = args[2]
-    require "tools/spriteSheetSlicer/slicerApp"
-end
-
 local launchTransparencyEditor   = function(args)
     require "tools/transparencyEditor/editorApp"
 end
@@ -30,12 +21,13 @@ local launchSoundGraph           = function(args)
     require "tools/soundGraph/soundGraphApp"
 end
 
-local launchChunkalyzer = function(args) require "tools/chunkalyzer/chunkalyzerApp" end
-local launchMapViewer   = function(args) require "tools/mapViewer/mapViewerApp"     end
-local launchTileinator  = function(args) require "tools/tileinator/tileinatorApp"   end
-local launchChunkDoctor = function(args) require "tools/chunkDoctor/chunkDoctorApp" end
-local launchRingMaster  = function(args) require "tools/ringMaster/ringMasterApp"   end
-
+local launchColorInspector = function(args) require "tools/colorInspector/inspector"    end
+local launchSlicer         = function(args) require "tools/spriteSheetSlicer/slicerApp" end
+local launchChunkalyzer    = function(args) require "tools/chunkalyzer/chunkalyzerApp"  end
+local launchMapViewer      = function(args) require "tools/mapViewer/mapViewerApp"      end
+local launchTileinator     = function(args) require "tools/tileinator/tileinatorApp"    end
+local launchChunkDoctor    = function(args) require "tools/chunkDoctor/chunkDoctorApp"  end
+local launchRingMaster     = function(args) require "tools/ringMaster/ringMasterApp"    end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -104,6 +96,4 @@ function love.load(args)
     end
 end
 
-function relativePath(path)
-    return "game/" .. path
-end
+function relativePath(path) return "game/" .. path end
