@@ -3,7 +3,6 @@
 --------------------------------------------------------------
 
 local launchColorInspector       = function(args)
-    __INSPECTOR_FILE = args[2]
     require "tools/colorInspector/inspector"
 end
 
