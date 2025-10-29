@@ -136,6 +136,7 @@ local animRects   = {
 }
             
 local imgPath     = "resources/images/sadSlicer.png"
+local imgName     = __PARAMS["image"]
 
 local sheetInfo   = { spriteRects = {}, animations = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
@@ -144,9 +145,15 @@ local gallery
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
-if __SLICER_FILE ~= nil then
-    sheetInfo = require("tools/spriteSheetSlicer/data/" .. __SLICER_FILE)
-    imgPath = sheetInfo.imagePath
+
+if imgName ~= nil then
+    imgPath = __PARAMS["path"]
+    if not imgPath then
+        sheetInfo = require("tools/spriteSheetSlicer/data/" .. imgName)
+        imgPath = sheetInfo.imagePath
+    else
+        imgPath = imgPath .. imgName .. ".png"
+    end
 end
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
