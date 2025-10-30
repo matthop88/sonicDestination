@@ -4,7 +4,8 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local IMAGE = love.graphics.newImage("tools/ringMaster/resources/commonObj.png")
+local IMAGE     = love.graphics.newImage("tools/ringMaster/resources/commonObj.png")
+local RING_QUAD = love.graphics.newQuad(24, 198, 16, 16, IMAGE:getWidth(), IMAGE:getHeight())
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -21,7 +22,7 @@ IMAGE:setFilter("nearest", "nearest")
 
 function love.draw()
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(IMAGE, 0, 0)
+    love.graphics.draw(IMAGE, RING_QUAD, 0, 0, 0, 1, 1)
 end
 
 -- ...
