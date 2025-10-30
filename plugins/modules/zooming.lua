@@ -24,10 +24,7 @@ return {
     end,
     
     update = function(self, dt)
-        if self.scaleDelta ~= 0 then
-            self:zoomFromCoordinates(dt, self.getMousePositionFn())
-            self:adjustImagePositionIfZoomingOut()
-        end
+        if self.scaleDelta ~= 0 then self:zoomFromCoordinates(dt, self.getMousePositionFn()) end
     end,
 
     adjustImagePositionIfZoomingOut = function(self)
