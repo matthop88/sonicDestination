@@ -4,6 +4,8 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
+local IMAGE = love.graphics.newImage("tools/ringMaster/resources/commonObj.png")
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -11,11 +13,17 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 love.window.setTitle("RingMaster")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+IMAGE:setFilter("nearest", "nearest")
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+function love.draw()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(IMAGE, 0, 0)
+end
+
 -- ...
 -- ...
 
