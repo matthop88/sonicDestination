@@ -22,7 +22,7 @@ IMAGE:setFilter("nearest", "nearest")
 
 function love.draw()
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(IMAGE, RING_QUAD, 0, 0, 0, 1, 1)
+    love.graphics.draw(IMAGE, RING_QUAD, 0, 0, 0, 16, 16)
 end
 
 -- ...
