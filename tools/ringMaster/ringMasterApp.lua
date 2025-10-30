@@ -9,18 +9,32 @@ local RING_IMG  = love.graphics.newImage("tools/ringMaster/resources/commonObj.p
 local RING_QUAD = love.graphics.newQuad(24, 198, 16, 16, RING_IMG:getWidth(), RING_IMG:getHeight())
 
 local map = ({
+    rings = {},
+
     init = function(self)
         self.pageWidth  = 10240
         self.pageHeight =  1280
 
+        self:initRings()
         return self
+    end,
+
+    initRings = function(self)
+        for i = 1, 150 do
+            local ringX = math.random(4, 636) * 16
+            local ringY = math.random(4,  76) * 16
+
+            table.insert(self.rings, { x = ringX, y = ringY})
+        end
     end,
 
     draw = function(self)
         GRAFX:setColor(0.3, 0.3, 0.3)
         GRAFX:rectangle("fill", 10, 10, self:getPageWidth() - 20, self:getPageHeight() - 20)
         GRAFX:setColor(1, 1, 1)
-        GRAFX:draw(RING_IMG, RING_QUAD, 300, 200, 0, 1, 1)
+        for _, ring in ipairs(self.rings) do
+            GRAFX:draw(RING_IMG, RING_QUAD, ring.x, ring.y, 0, 1, 1)
+        end
     end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
