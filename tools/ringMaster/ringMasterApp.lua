@@ -4,29 +4,47 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local GRAFX         = require("tools/lib/graphics"):create()
-local OBJ_IMG_DATA  = love.image.newImageData("tools/ringMaster/resources/commonObj.png")
-local OBJ_IMG       = love.graphics.newImage(OBJ_IMG_DATA)
-local RING_QUAD     = love.graphics.newQuad(24, 198, 16, 16, OBJ_IMG:getWidth(), OBJ_IMG:getHeight())
+local GRAFX      = require("tools/lib/graphics"):create()
+
+local OBJ_IMG    = love.graphics.newImage("tools/ringMaster/resources/commonObj.png")
+
+-- Static code... NOT a local variable
+OBJ_IMG:setFilter("nearest", "nearest")
+-- yeah yeah I know
+
+local RING_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 16, 16)
+
+local RING_QUAD  = love.graphics.newQuad(24, 198, 16, 16, OBJ_IMG:getWidth(), OBJ_IMG:getHeight())
+
+local RING = {
+    
+    init = function(self)
+        RING_GRAFX:setColor(1, 1, 1)
+        RING_GRAFX:draw(OBJ_IMG, RING_QUAD, 0, 0, 0, 1, 1)
+
+        return self
+    end,
+
+}
 
 local map = ({
-    isZooming  = false,
-    ringsDrawn = false,
+    isZooming = false,
+    ring      = nil,
 
     init = function(self)
         self.pageWidth  = 1200
         self.pageHeight =  800
 
-        OBJ_IMG:setFilter("nearest", "nearest")
-
         self.MAP_GRAFX  = require("tools/lib/bufferedGraphics"):create(GRAFX, self.pageWidth, self.pageHeight)
-        self.RING_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 16, 16)
         self.imageData = self.MAP_GRAFX:getBuffer():newImageData()
         return self
     end,
 
     draw = function(self)
-        if not self.ringsDrawn then self:drawRingsToBuffer() end
+        if not self.ring then 
+            self.ring = RING:init()
+            self:drawRingsToBuffer() 
+        end
             
         GRAFX:setColor(1, 1, 1)
         GRAFX:drawImage(self.MAP_GRAFX:getBuffer(), 0, 0)
@@ -45,16 +63,12 @@ local map = ({
     end,
 
     drawRings = function(self)
-        self.RING_GRAFX:setColor(1, 1, 1)
-        self.RING_GRAFX:draw(OBJ_IMG, RING_QUAD, 0, 0, 0, 1, 1)
-
         self.MAP_GRAFX:setColor(1, 1, 1)
         for i = 1, 150 do
             local ringX = math.random(1, (self:getPageWidth()  / 16) - 3) * 16
             local ringY = math.random(1, (self:getPageHeight() / 16) - 3) * 16
-            self.MAP_GRAFX:drawImage(self.RING_GRAFX:getBuffer(), ringX, ringY)
+            self.MAP_GRAFX:drawImage(RING_GRAFX:getBuffer(), ringX, ringY)
         end
-        self.ringsDrawn = true
     end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
