@@ -4,9 +4,10 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local GRAFX     = require("tools/lib/graphics"):create()
-local RING_IMG  = love.graphics.newImage("tools/ringMaster/resources/commonObj.png")
-local RING_QUAD = love.graphics.newQuad(24, 198, 16, 16, RING_IMG:getWidth(), RING_IMG:getHeight())
+local GRAFX         = require("tools/lib/graphics"):create()
+local RING_IMG_DATA = love.image.newImageData("tools/ringMaster/resources/commonObj.png")
+local RING_IMG      = love.graphics.newImage(RING_IMG_DATA)
+local RING_QUAD     = love.graphics.newQuad(24, 198, 16, 16, RING_IMG:getWidth(), RING_IMG:getHeight())
 
 local map = ({
     isZooming  = false,
@@ -17,7 +18,7 @@ local map = ({
         self.pageHeight =  800
 
         self.BUF_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, self.pageWidth, self.pageHeight)
-
+        self.imageData = self.BUF_GRAFX:getBuffer():newImageData()
         return self
     end,
 
@@ -97,7 +98,10 @@ function love.draw()
     map:draw()
 end
 
--- ...
+function love.mousepressed(mx, my)
+    print("Scanning for rings...")
+end
+
 -- ...
 
 --------------------------------------------------------------
