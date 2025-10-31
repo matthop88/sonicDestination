@@ -49,6 +49,7 @@ local map = ({
             local ringY = math.random(1, (self:getPageHeight() / 16) - 3) * 16
             self.MAP_GRAFX:drawImage(self.ring:getImage(), ringX, ringY)
         end
+        self.MAP_GRAFX:getBuffer():setFilter("nearest", "nearest")
     end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
