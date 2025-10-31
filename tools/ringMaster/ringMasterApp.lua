@@ -5,9 +5,9 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX         = require("tools/lib/graphics"):create()
-local RING_IMG_DATA = love.image.newImageData("tools/ringMaster/resources/commonObj.png")
-local RING_IMG      = love.graphics.newImage(RING_IMG_DATA)
-local RING_QUAD     = love.graphics.newQuad(24, 198, 16, 16, RING_IMG:getWidth(), RING_IMG:getHeight())
+local OBJ_IMG_DATA  = love.image.newImageData("tools/ringMaster/resources/commonObj.png")
+local OBJ_IMG       = love.graphics.newImage(OBJ_IMG_DATA)
+local RING_QUAD     = love.graphics.newQuad(24, 198, 16, 16, OBJ_IMG:getWidth(), OBJ_IMG:getHeight())
 
 local map = ({
     isZooming  = false,
@@ -17,8 +17,11 @@ local map = ({
         self.pageWidth  = 1200
         self.pageHeight =  800
 
-        self.BUF_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, self.pageWidth, self.pageHeight)
-        self.imageData = self.BUF_GRAFX:getBuffer():newImageData()
+        OBJ_IMG:setFilter("nearest", "nearest")
+
+        self.MAP_GRAFX  = require("tools/lib/bufferedGraphics"):create(GRAFX, self.pageWidth, self.pageHeight)
+        self.RING_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 16, 16)
+        self.imageData = self.MAP_GRAFX:getBuffer():newImageData()
         return self
     end,
 
@@ -26,7 +29,7 @@ local map = ({
         if not self.ringsDrawn then self:drawRingsToBuffer() end
             
         GRAFX:setColor(1, 1, 1)
-        GRAFX:drawImage(self.BUF_GRAFX:getBuffer(), 0, 0)
+        GRAFX:drawImage(self.MAP_GRAFX:getBuffer(), 0, 0)
     end,
 
     drawRingsToBuffer = function(self)
@@ -35,18 +38,21 @@ local map = ({
     end,
 
     drawBackground = function(self)
-        self.BUF_GRAFX:setColor(0, 0, 0)
-        self.BUF_GRAFX:rectangle("fill", self.BUF_GRAFX:calculateViewport())
-        self.BUF_GRAFX:setColor(0.3, 0.3, 0.3)
-        self.BUF_GRAFX:rectangle("fill", 10, 10, self:getPageWidth() - 20, self:getPageHeight() - 20)
+        self.MAP_GRAFX:setColor(0, 0, 0)
+        self.MAP_GRAFX:rectangle("fill", self.MAP_GRAFX:calculateViewport())
+        self.MAP_GRAFX:setColor(0.3, 0.3, 0.3)
+        self.MAP_GRAFX:rectangle("fill", 10, 10, self:getPageWidth() - 20, self:getPageHeight() - 20)
     end,
 
     drawRings = function(self)
-        self.BUF_GRAFX:setColor(1, 1, 1)
+        self.RING_GRAFX:setColor(1, 1, 1)
+        self.RING_GRAFX:draw(OBJ_IMG, RING_QUAD, 0, 0, 0, 1, 1)
+
+        self.MAP_GRAFX:setColor(1, 1, 1)
         for i = 1, 150 do
-            local ringX = math.random(1, (self:getPageWidth() / 16)  - 3) * 16
+            local ringX = math.random(1, (self:getPageWidth()  / 16) - 3) * 16
             local ringY = math.random(1, (self:getPageHeight() / 16) - 3) * 16
-            self.BUF_GRAFX:draw(RING_IMG, RING_QUAD, ringX, ringY, 0, 1, 1)
+            self.MAP_GRAFX:drawImage(self.RING_GRAFX:getBuffer(), ringX, ringY)
         end
         self.ringsDrawn = true
     end,
@@ -56,27 +62,27 @@ local map = ({
     
     keepImageInBounds = function(self)
         if not self.isZooming then
-            self.BUF_GRAFX:setX(math.min(0, math.max(self.BUF_GRAFX:getX(), (love.graphics:getWidth()  / self.BUF_GRAFX:getScale()) - self:getPageWidth())))
-            self.BUF_GRAFX:setY(math.min(0, math.max(self.BUF_GRAFX:getY(), (love.graphics:getHeight() / self.BUF_GRAFX:getScale()) - self:getPageHeight())))
+            self.MAP_GRAFX:setX(math.min(0, math.max(self.MAP_GRAFX:getX(), (love.graphics:getWidth()  / self.MAP_GRAFX:getScale()) - self:getPageWidth())))
+            self.MAP_GRAFX:setY(math.min(0, math.max(self.MAP_GRAFX:getY(), (love.graphics:getHeight() / self.MAP_GRAFX:getScale()) - self:getPageHeight())))
         end
         self.isZooming = false
     end,
 
     moveImage = function(self, deltaX, deltaY)
-        self.BUF_GRAFX:moveImage(deltaX, deltaY)
+        self.MAP_GRAFX:moveImage(deltaX, deltaY)
     end,
 
     screenToImageCoordinates = function(self, screenX, screenY)
-        return self.BUF_GRAFX:screenToImageCoordinates(screenX, screenY)
+        return self.MAP_GRAFX:screenToImageCoordinates(screenX, screenY)
     end,
 
     adjustScaleGeometrically = function(self, deltaScale)
-        self.BUF_GRAFX:adjustScaleGeometrically(deltaScale)
+        self.MAP_GRAFX:adjustScaleGeometrically(deltaScale)
         if deltaScale > 0 then self.isZooming = true end
     end,
 
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
-       self.BUF_GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+       self.MAP_GRAFX:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
 
 }):init()
@@ -88,14 +94,13 @@ local map = ({
 love.window.setTitle("RingMaster")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-RING_IMG:setFilter("nearest", "nearest")
-
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
     map:draw()
+    love.graphics.setColor(1, 1, 1)
 end
 
 function love.mousepressed(mx, my)
