@@ -9,7 +9,6 @@ local RING_IMG  = love.graphics.newImage("tools/ringMaster/resources/commonObj.p
 local RING_QUAD = love.graphics.newQuad(24, 198, 16, 16, RING_IMG:getWidth(), RING_IMG:getHeight())
 
 local map = ({
-    rings      = {},
     isZooming  = false,
     ringsDrawn = false,
 
@@ -19,17 +18,7 @@ local map = ({
 
         self.BUF_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, self.pageWidth, self.pageHeight)
 
-        self:initRings()
         return self
-    end,
-
-    initRings = function(self)
-        for i = 1, 150 do
-            local ringX = math.random(1, (self:getPageWidth() / 16)  - 3) * 16
-            local ringY = math.random(1, (self:getPageHeight() / 16) - 3) * 16
-
-            table.insert(self.rings, { x = ringX, y = ringY})
-        end
     end,
 
     draw = function(self)
@@ -40,13 +29,23 @@ local map = ({
     end,
 
     drawRingsToBuffer = function(self)
+        self:drawBackground()
+        self:drawRings()
+    end,
+
+    drawBackground = function(self)
         self.BUF_GRAFX:setColor(0, 0, 0)
         self.BUF_GRAFX:rectangle("fill", self.BUF_GRAFX:calculateViewport())
         self.BUF_GRAFX:setColor(0.3, 0.3, 0.3)
         self.BUF_GRAFX:rectangle("fill", 10, 10, self:getPageWidth() - 20, self:getPageHeight() - 20)
+    end,
+
+    drawRings = function(self)
         self.BUF_GRAFX:setColor(1, 1, 1)
-        for _, ring in ipairs(self.rings) do
-            self.BUF_GRAFX:draw(RING_IMG, RING_QUAD, ring.x, ring.y, 0, 1, 1)
+        for i = 1, 150 do
+            local ringX = math.random(1, (self:getPageWidth() / 16)  - 3) * 16
+            local ringY = math.random(1, (self:getPageHeight() / 16) - 3) * 16
+            self.BUF_GRAFX:draw(RING_IMG, RING_QUAD, ringX, ringY, 0, 1, 1)
         end
         self.ringsDrawn = true
     end,
