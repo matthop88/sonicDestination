@@ -112,6 +112,10 @@ return {
                 love.graphics.draw(self.buffer, x, y, r, sx, sy)
             end,
 
+            getBuffer = function(self)
+                return self.buffer
+            end,
+
             saveImage = function(self, imgName)
                 return self.buffer:newImageData():encode("png", imgName .. ".png")
             end,
