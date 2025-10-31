@@ -18,6 +18,7 @@ return {
     create = function(self)
         RING_GRAFX:setColor(1, 1, 1)
         RING_GRAFX:draw(OBJ_IMG, RING_QUAD, 0, 0, 0, 1, 1)
+        RING_GRAFX:getBuffer():setFilter("nearest", "nearest")
 
         return {
             getImage = function(self)
