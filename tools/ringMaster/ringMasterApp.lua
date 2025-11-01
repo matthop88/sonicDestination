@@ -90,7 +90,7 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = map,              })
-    :add("scrolling",    { imageViewer = map,              })
+    :add("zooming",      { imageViewer = mapView,          })
+    :add("scrolling",    { imageViewer = mapView,          })
     :add("readout",      { printFnName = "printToReadout", })
     
