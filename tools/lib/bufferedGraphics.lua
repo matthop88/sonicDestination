@@ -122,6 +122,10 @@ return {
                 return self.buffer
             end,
 
+            setFilter = function(self, a, b)
+                self.buffer:setFilter(a, b)
+            end,
+
             saveImage = function(self, imgName)
                 return self.buffer:newImageData():encode("png", imgName .. ".png")
             end,
