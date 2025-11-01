@@ -9,7 +9,7 @@ local GRAFX      = require("tools/lib/graphics"):create()
 local RING_FORGE = require("tools/ringMaster/ringForge")
 local MAP_MAKER  = require("tools/ringMaster/cartographer")
 
-local map = {
+local mapView = {
     isZooming  = false,
     ring       = nil,
     pageWidth  = 1200,
@@ -67,7 +67,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.draw()
-    map:draw()
+    mapView:draw()
 end
 
 function love.mousepressed(mx, my)
