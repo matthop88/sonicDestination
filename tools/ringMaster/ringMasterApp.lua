@@ -71,7 +71,7 @@ function love.draw()
 end
 
 function love.mousepressed(mx, my)
-    print("Scanning for rings...")
+    printToReadout("Scanning for rings...")
 end
 
 -- ...
@@ -90,7 +90,7 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("zooming",      { imageViewer = map, })
-    :add("scrolling",    { imageViewer = map, })
-
-
+    :add("zooming",      { imageViewer = map,              })
+    :add("scrolling",    { imageViewer = map,              })
+    :add("readout",      { printFnName = "printToReadout", })
+    
