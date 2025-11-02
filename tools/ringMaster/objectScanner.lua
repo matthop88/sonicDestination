@@ -15,6 +15,7 @@ return {
   				for y = 0, MAP_HEIGHT - OBJECT_HEIGHT do
   					self:scanForObjectsAtLine(y)
   				end
+  				print("Done Scanning.")
   			end,
 
   			scanForObjectsAtLine = function(self, y)
