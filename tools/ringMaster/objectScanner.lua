@@ -1,16 +1,16 @@
 return {
 	create = function(self, OBJECT_DATA, MAP_DATA)
+		local OBJECT_WIDTH  = OBJECT_DATA:getWidth()
+  		local OBJECT_HEIGHT = OBJECT_DATA:getHeight()
+  
+  		local MAP_WIDTH     = MAP_DATA:getWidth()
+  		local MAP_HEIGHT    = MAP_DATA:getHeight()
+
 		return {
 			scanAll = function(self)
-				local objectWidth  = OBJECT_DATA:getWidth()
-  				local objectHeight = OBJECT_DATA:getHeight()
-  
-  				local mapWidth     = MAP_DATA:getWidth()
-  				local mapHeight    = MAP_DATA:getHeight()
-
   				local x = 0
-  				for y = 0, mapHeight - objectHeight do
-  					while x < mapWidth - objectWidth do
+  				for y = 0, MAP_HEIGHT - OBJECT_HEIGHT do
+  					while x < MAP_WIDTH - OBJECT_WIDTH do
   						-- Look for object at x, y in map
   						x = x + 1
   					end
