@@ -6,10 +6,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX      = require("tools/lib/graphics"):create()
 
-local MAP_MAKER  = require("tools/ringMaster/cartographer")
-
-local RING
-local MAP
+local RING, MAP
 
 local mapView = {
     isZooming  = false,
