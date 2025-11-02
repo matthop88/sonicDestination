@@ -4,7 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local RING
+local RING_INFO    = require("tools/ringMaster/ringInfo")
 local RING_SCANNER
 
 local MAP_IMG_PATH = "resources/zones/maps/GHZ_Act1_Map.png"
@@ -20,15 +20,11 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
-function love.draw()
-    if not RING then 
-        RING = require("tools/ringMaster/ringForge"):create()
-    end  
-end
-
 function love.mousepressed(mx, my)
     scanForRings()
 end
+
+-- ...
 
 -- ...
 
@@ -38,7 +34,7 @@ end
 
 function scanForRings()
     if not RING_SCANNER then
-        RING_SCANNER = require("tools/ringMaster/objectScanner"):create(getRingInfo(), getMapInfo())
+        RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING_INFO, getMapInfo())
         printToReadout("Scanning for rings...")
         local startTime = love.timer.getTime()
         RING_SCANNER:scanAll()
@@ -47,13 +43,9 @@ function scanForRings()
     end
 end
 
-function getRingInfo()
-    return { data = RING:getImageData(), width = 16, height = 16, startX = 0, startY = 0 }
-end
-
 function getMapInfo()
-    return { data = getImageViewer():getImageData(), width = getImageViewer():getImageWidth(), height = getImageViewer():getImageHeight(),
-             startX = 0, startY = 0 }
+    local img = getImageViewer()
+    return { data = img:getImageData(), width = img:getImageWidth(), height = img:getImageHeight(), startX = 0, startY = 0 }
 end
 
 function drawObjects()
