@@ -9,11 +9,22 @@ return {
   		local MAP_HEIGHT    = MAP_DATA:getHeight()
 
 		return {
+			objectsFound = {},
+
 			scanAll = function(self)
-  				local x = 0
   				for y = 0, MAP_HEIGHT - OBJECT_HEIGHT do
-  					while x < MAP_WIDTH - OBJECT_WIDTH do
-  						self:scanForObjectAt(x, y)
+  					self:scanForObjectsAtLine(y)
+  				end
+  			end,
+
+  			scanForObjectsAtLine = function(self, y)
+  				local x = 0
+  				while x < MAP_WIDTH - OBJECT_WIDTH do
+  					if self:scanForObjectAt(x, y) then
+  						table.insert(self.objectsFound, { x = x, y = y })
+  						print("" .. #self.objectsFound .. ": Found ring at { " .. x .. ", " .. y .. " }")
+  						x = x + 16
+  					else
   						x = x + 1
   					end
   				end
