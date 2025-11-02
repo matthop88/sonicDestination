@@ -54,6 +54,10 @@ return {
     		pixelsMatch = function(self, objX, objY, mapX, mapY)
     			return PIXEL_UTIL:pixelsMatchWithWildcardTransparency(OBJECT_DATA, objX, objY, MAP_DATA, mapX, mapY) 	
  			end,
+
+			getObjectsFound = function(self)
+ 				return self.objectsFound
+ 			end,
  		}
  	end,
  }
