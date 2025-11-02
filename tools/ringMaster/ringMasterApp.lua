@@ -42,7 +42,10 @@ function scanForRings()
     if not RING_SCANNER then
         RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING:getImageData(), getImageViewer():getImageData())
         printToReadout("Scanning for rings...")
+        local startTime = love.timer.getTime()
         RING_SCANNER:scanAll()
+        local timeElapsed = love.timer.getTime() - startTime
+        print("Completed scan in " .. timeElapsed .. " seconds.")
     end
 end
 
