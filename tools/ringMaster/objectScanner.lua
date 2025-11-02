@@ -1,4 +1,9 @@
+local PIPELINE   = require("tools/lib/pipeline/pipeline"):create("Scanner Pipeline")
+local FEEDER     = require("tools/lib/pipeline/feeder")
+
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
+
+local TASK_SLICE_TIME_IN_MS = 12
 
 return {
 	create = function(self, objectInfo, mapInfo)
