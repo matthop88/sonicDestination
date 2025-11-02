@@ -4,8 +4,6 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local GRAFX        = require("tools/lib/graphics"):create()
- 
 local RING
 local RING_SCANNER
 
