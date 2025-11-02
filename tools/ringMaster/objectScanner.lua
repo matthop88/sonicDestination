@@ -59,11 +59,13 @@ return {
     		end,
 
     		pixelsMatch = function(self, objX, objY, mapX, mapY)
-    			local match = PIXEL_UTIL:pixelsMatchWithWildcardTransparency(OBJECT_DATA, objX, objY, MAP_DATA, mapX, mapY) 
- 				if DEBUGGING then
-    				print("Checking if pixels match for ring { " .. objX .. ", " .. objY .. " } and map { " .. mapX .. ", " .. mapY .. " } =>", match)
+    			if DEBUGGING then
+    				print("Checking if pixels match for ring { " .. objX .. ", " .. objY .. " } and map { " .. mapX .. ", " .. mapY .. " }")
     			end
-
+				local match = PIXEL_UTIL:pixelsMatchWithWildcardTransparency(OBJECT_DATA, objX, objY, MAP_DATA, mapX, mapY, DEBUGGING) 
+ 				if DEBUGGING then
+					print("Result =>", match)
+				end
     			return match
     			
  			end,
