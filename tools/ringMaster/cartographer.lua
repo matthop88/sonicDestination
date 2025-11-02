@@ -19,6 +19,10 @@ return {
         	getImage = function(self)
         		return MAP_GRAFX:getBuffer()
         	end,
+
+            getImageData = function(self)
+                return MAP_IMG_DATA
+            end,
         }
     end,
 
@@ -42,6 +46,4 @@ return {
             MAP_GRAFX:drawImage(RING:getImage(), ringX, ringY)
         end
     end,
-
-
 }
