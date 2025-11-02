@@ -19,6 +19,7 @@ return {
   			end,
 
   			scanForObjectsAtLine = function(self, y)
+  				print("Scanning for objects at line: " .. y)
   				local x = 0
   				while x < MAP_WIDTH - OBJECT_WIDTH do
   					if self:scanForObjectAt(x, y) then
