@@ -3,8 +3,7 @@ local PAGE_WIDTH, PAGE_HEIGHT, RING
 local GRAFX        = require("tools/lib/graphics"):create()
 local MAP_GRAFX 
 local MAP_IMG_DATA
-
-local DEBUG_RING_X, DEBUG_RING_Y
+local RING_TOTAL   = 0
 
 return {
     create = function(self, ring, pageWidth, pageHeight)
@@ -27,12 +26,8 @@ return {
                 return MAP_IMG_DATA
             end,
 
-            getDebugRingX = function(self)
-                return DEBUG_RING_X
-            end,
-
-            getDebugRingY = function(self)
-                return DEBUG_RING_Y
+            getRingTotal = function(self)
+                return RING_TOTAL
             end,
         }
     end,
@@ -51,11 +46,20 @@ return {
 
     drawRings = function(self)
         MAP_GRAFX:setColor(1, 1, 1)
-        for i = 1, 150 do
-            local ringX = math.random(1, (PAGE_WIDTH  / 16) - 3) * 16
-            local ringY = math.random(1, (PAGE_HEIGHT / 16) - 3) * 16
-            MAP_GRAFX:drawImage(RING:getImage(), ringX, ringY)
-            DEBUG_RING_X, DEBUG_RING_Y = ringX, ringY
+        for y = 16, PAGE_HEIGHT - 32, 16 do
+            local targetNumber = math.random(1, 320)
+            local x = 16
+            while x < PAGE_WIDTH - 32 do
+                local guessingNumber = math.random(1, 320)
+                if guessingNumber == targetNumber then 
+                    MAP_GRAFX:drawImage(RING:getImage(), x, y)
+                    RING_TOTAL = RING_TOTAL + 1
+                    x = x + 16
+                else
+                    x = x + 1
+                end
+            end       
         end
+        print("Number of rings: " .. RING_TOTAL)
     end,
 }
