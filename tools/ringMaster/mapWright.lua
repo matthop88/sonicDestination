@@ -11,11 +11,12 @@ return {
     	PAGE_WIDTH, PAGE_HEIGHT = pageWidth, pageHeight
     	RING                    = ring
     	MAP_GRAFX               = require("tools/lib/bufferedGraphics"):create(GRAFX, PAGE_WIDTH, PAGE_HEIGHT)
-    	MAP_IMG_DATA            = MAP_GRAFX:getBuffer():newImageData()
     	
     	MAP_GRAFX:setFilter("nearest", "nearest")
 
     	self:drawRingsToBuffer()
+        
+        MAP_IMG_DATA            = MAP_GRAFX:getBuffer():newImageData()
         
         return {
         	getImage = function(self)
