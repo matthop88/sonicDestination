@@ -4,9 +4,10 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local GRAFX      = require("tools/lib/graphics"):create()
-
+local GRAFX        = require("tools/lib/graphics"):create()
+ 
 local RING, MAP
+local RING_SCANNER
 
 local mapView = {
     isZooming  = false,
@@ -16,8 +17,9 @@ local mapView = {
 
     draw = function(self)
         if not RING then 
-            RING = require("tools/ringMaster/ringForge"):create()
-            MAP  = require("tools/ringMaster/cartographer"):create(RING, self.pageWidth, self.pageHeight)
+            RING         = require("tools/ringMaster/ringForge"):create()
+            MAP          = require("tools/ringMaster/cartographer"):create(RING, self.pageWidth, self.pageHeight)
+            RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING:getImageData(), MAP:getImageData())
         end
             
         GRAFX:setColor(1, 1, 1)
@@ -70,7 +72,7 @@ function love.draw()
 end
 
 function love.mousepressed(mx, my)
-    printToReadout("Scanning for rings...")
+    scanForRings()
 end
 
 -- ...
@@ -79,7 +81,11 @@ end
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
--- ...
+function scanForRings()
+    printToReadout("Scanning for rings...")
+    RING_SCANNER:scanAll()
+end
+
 -- ...
 -- ...
 
