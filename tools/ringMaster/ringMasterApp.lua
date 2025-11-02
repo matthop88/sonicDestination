@@ -6,8 +6,10 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX      = require("tools/lib/graphics"):create()
 
-local RING_FORGE = require("tools/ringMaster/ringForge")
 local MAP_MAKER  = require("tools/ringMaster/cartographer")
+
+local RING
+local MAP
 
 local mapView = {
     isZooming  = false,
@@ -16,13 +18,13 @@ local mapView = {
     pageHeight = 800,
 
     draw = function(self)
-        if not self.ring then 
-            self.ring = RING_FORGE:create()
-            self.map  = MAP_MAKER:create(self.ring, self.pageWidth, self.pageHeight)
+        if not RING then 
+            RING = require("tools/ringMaster/ringForge"):create()
+            MAP  = require("tools/ringMaster/cartographer"):create(RING, self.pageWidth, self.pageHeight)
         end
             
         GRAFX:setColor(1, 1, 1)
-        GRAFX:drawImage(self.map:getImage(), 0, 0)
+        GRAFX:drawImage(MAP:getImage(), 0, 0)
     end,
 
     getPageWidth  = function(self) return self.pageWidth  end,
