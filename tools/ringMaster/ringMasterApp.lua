@@ -19,7 +19,7 @@ local mapView = {
         if not RING then 
             RING         = require("tools/ringMaster/ringForge"):create()
             MAP          = require("tools/ringMaster/mapWright"):create(RING, self.pageWidth, self.pageHeight)
-            RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING:getImageData(), MAP:getImageData(), MAP:getDebugRingX(), MAP:getDebugRingY())
+            RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING:getImageData(), MAP:getImageData())
         end
             
         GRAFX:setColor(1, 1, 1)
