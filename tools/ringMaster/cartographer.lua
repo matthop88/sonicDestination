@@ -4,6 +4,8 @@ local GRAFX        = require("tools/lib/graphics"):create()
 local MAP_GRAFX 
 local MAP_IMG_DATA
 
+local DEBUG_RING_X, DEBUG_RING_Y
+
 return {
     create = function(self, ring, pageWidth, pageHeight)
     	PAGE_WIDTH, PAGE_HEIGHT = pageWidth, pageHeight
@@ -22,6 +24,14 @@ return {
 
             getImageData = function(self)
                 return MAP_IMG_DATA
+            end,
+
+            getDebugRingX = function(self)
+                return DEBUG_RING_X
+            end,
+
+            getDebugRingY = function(self)
+                return DEBUG_RING_Y
             end,
         }
     end,
@@ -44,6 +54,7 @@ return {
             local ringX = math.random(1, (PAGE_WIDTH  / 16) - 3) * 16
             local ringY = math.random(1, (PAGE_HEIGHT / 16) - 3) * 16
             MAP_GRAFX:drawImage(RING:getImage(), ringX, ringY)
+            DEBUG_RING_X, DEBUG_RING_Y = ringX, ringY
         end
     end,
 }
