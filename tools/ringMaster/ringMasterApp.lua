@@ -49,7 +49,18 @@ function scanForRings()
     end
 end
 
--- ...
+function drawObjects()
+    if RING_SCANNER then
+        local IMAGE_VIEWER = getImageViewer()
+        love.graphics.setColor(1, 1, 0, 0.7)
+        love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
+
+        for _, obj in ipairs(RING_SCANNER:getObjectsFound()) do
+            love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(obj.x, obj.y, 16, 16))
+        end
+    end
+end
+
 -- ...
 
 --------------------------------------------------------------
@@ -66,5 +77,6 @@ PLUGINS = require("plugins/engine")
     })
     :add("zooming",      { imageViewer = getImageViewer() })
     :add("scrolling",    { imageViewer = getImageViewer() })
-    :add("readout",      { printFnName = "printToReadout", })
+    :add("drawingLayer", { drawingFn   = drawObjects      })
+    :add("readout",      { printFnName = "printToReadout" })
     
