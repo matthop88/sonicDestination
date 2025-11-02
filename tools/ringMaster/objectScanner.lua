@@ -1,26 +1,20 @@
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
 return {
-	create = function(self, OBJECT_DATA, MAP_DATA, DEBUG_RING_X, DEBUG_RING_Y)
+	create = function(self, OBJECT_DATA, MAP_DATA)
 		local OBJECT_WIDTH  = OBJECT_DATA:getWidth()
   		local OBJECT_HEIGHT = OBJECT_DATA:getHeight()
   
   		local MAP_WIDTH     = MAP_DATA:getWidth()
   		local MAP_HEIGHT    = MAP_DATA:getHeight()
 
-  		DEBUG_RING_X = DEBUG_RING_X or 0
-  		DEBUG_RING_Y = DEBUG_RING_Y or 0
-
-  		local DEBUGGING = false
-
-		return {
+  		return {
 			objectsFound = {},
 
 			scanAll = function(self)
   				for y = 0, MAP_HEIGHT - OBJECT_HEIGHT do
   					self:scanForObjectsAtLine(y)
   				end
-  				print("Done Scanning.")
   			end,
 
   			scanForObjectsAtLine = function(self, y)
@@ -37,7 +31,6 @@ return {
 			end,
 
 			scanForObjectAt = function(self, x, y)
-				DEBUGGING = (x == DEBUG_RING_X and y == DEBUG_RING_Y)
 				for objY = 0, OBJECT_HEIGHT - 1 do
 					if not self:scanlineMatches(objY, x, y) then
 						return false
@@ -59,15 +52,7 @@ return {
     		end,
 
     		pixelsMatch = function(self, objX, objY, mapX, mapY)
-    			if DEBUGGING then
-    				print("Checking if pixels match for ring { " .. objX .. ", " .. objY .. " } and map { " .. mapX .. ", " .. mapY .. " }")
-    			end
-				local match = PIXEL_UTIL:pixelsMatchWithWildcardTransparency(OBJECT_DATA, objX, objY, MAP_DATA, mapX, mapY, DEBUGGING) 
- 				if DEBUGGING then
-					print("Result =>", match)
-				end
-    			return match
-    			
+    			return PIXEL_UTIL:pixelsMatchWithWildcardTransparency(OBJECT_DATA, objX, objY, MAP_DATA, mapX, mapY) 	
  			end,
  		}
  	end,
