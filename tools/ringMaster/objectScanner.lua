@@ -38,7 +38,7 @@ return {
 
 			scanForObjectAt = function(self, x, y)
 				for objY = 0, OBJECT_HEIGHT - 1 do
-					if not self:scanlineMatches(objY, x, y) then
+					if not self:scanForObjectScanlineAt(objY, x, y) then
 						return false
 					end
 				end
@@ -46,7 +46,7 @@ return {
 				return true
 			end,
 
-			scanlineMatches = function(self, objY, x, y)
+			scanForObjectScanlineAt = function(self, objY, x, y)
 				for objX = 0, OBJECT_WIDTH - 1 do
     				local mapX, mapY = objX + x, objY + y
     				if not self:pixelsMatch(OBJECT_START_X + objX, OBJECT_START_Y + objY, mapX, mapY) then
