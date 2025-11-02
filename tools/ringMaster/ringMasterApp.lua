@@ -18,7 +18,7 @@ local mapView = {
     draw = function(self)
         if not RING then 
             RING         = require("tools/ringMaster/ringForge"):create()
-            MAP          = require("tools/ringMaster/cartographer"):create(RING, self.pageWidth, self.pageHeight)
+            MAP          = require("tools/ringMaster/mapWright"):create(RING, self.pageWidth, self.pageHeight)
             RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING:getImageData(), MAP:getImageData())
         end
             
