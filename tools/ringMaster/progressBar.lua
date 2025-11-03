@@ -4,7 +4,7 @@ local FONT_SIZE      = 40
 local FONT           = love.graphics.newFont(FONT_SIZE)
 
 return {
-	create = function(self, callback, y)
+	create = function(self, callback, yCoord)
 		CALLBACK = callback
 		return {
 			time = 0,
@@ -12,20 +12,23 @@ return {
 			alpha = 0.0,
 			
 			draw = function(self)
+				local width  = love.graphics.getWidth()
+				local height = love.graphics.getHeight()
+				local y = yCoord or height / 2
 				if self.progress ~= 0 and self.alpha > 0.0 then
 					love.graphics.setColor(0, 0, 0, self.alpha * 0.5)
-					love.graphics.rectangle("fill", 90, 320, 1020, 120)
+					love.graphics.rectangle("fill", 90, y - 80, width - 180, 120)
 					love.graphics.setColor(1, 1, 1, self.alpha)
 					love.graphics.setLineWidth(1)
-					love.graphics.rectangle("line", 100, 380, 1000, 40)
-					for x = 103, 103 + (994 * self.progress) do
-						local gValue = 0.5 + math.sin((self.time * 5) + ((x - 103) / 994 * 15)) * 0.5
+					love.graphics.rectangle("line", 100, y - 20, width - 200, 40)
+					for x = 103, 103 + ((width - 206) * self.progress) do
+						local gValue = 0.5 + math.sin((self.time * 5) + ((x - 103) / (width - 206) * 15)) * 0.5
 						love.graphics.setColor(1, 1 - gValue, 0, self.alpha)
-						love.graphics.rectangle("fill", x, 382, 1, 36)
+						love.graphics.rectangle("fill", x, y - 18, 1, 36)
 					end
 					love.graphics.setColor(1, 1, 1, self.alpha)
 					love.graphics.setFont(FONT)
-					love.graphics.printf("Scanning for Rings...", 0, 330, 1200, "center")
+					love.graphics.printf("Scanning for Rings...", 0, y - 70, width, "center")
 				end
 			end,
 
