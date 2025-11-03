@@ -27,6 +27,7 @@ function love.update(dt)
     if RING_SCANNER:isComplete() then
         printToReadout("Scanning Complete.")
     end
+    updateObjects(dt)
 end
 
 function love.mousepressed(mx, my)
@@ -54,29 +55,25 @@ function drawObjects()
     for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
         drawRingHighlight(ring)
     end
-
-    drawVScanline()
 end
 
 function drawRingHighlight(ring)
     local IMAGE_VIEWER = getImageViewer()
-    love.graphics.setColor(1, 1, 0, 0.7)
-    love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
+    
+    if ring.alpha ~= nil then
+        local x, y = IMAGE_VIEWER:imageToScreenCoordinates(ring.x, ring.y)
+        RING_INFO:draw(x, y, IMAGE_VIEWER:getScale(), { 1, 0, 0, ring.alpha })
+        love.graphics.setColor(1, 1, 0, (1 - ring.alpha) * 0.7)
+        love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
+        love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
 
-    love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
+    end
 end
 
-function drawVScanline()
-    local IMAGE_VIEWER = getImageViewer()
-    local vScanX = RING_SCANNER:getVScanX()
-    if vScanX ~= nil then
-        love.graphics.setColor(1, 0, 0, 0.7)
-        love.graphics.setLineWidth(9 * IMAGE_VIEWER:getScale())
-        local x, _ = IMAGE_VIEWER:imageToScreenCoordinates(vScanX, 0)
-        love.graphics.line(x, 0, x, WINDOW_HEIGHT)
-        love.graphics.setLineWidth(3 * IMAGE_VIEWER:getScale())
-        love.graphics.setColor(1, 1, 0)
-        love.graphics.line(x, 0, x, WINDOW_HEIGHT)
+function updateObjects(dt)
+    for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
+        if   ring.alpha == nil then ring.alpha = 1
+        else                        ring.alpha = ring.alpha - (3 * dt) end
     end
 end
 
