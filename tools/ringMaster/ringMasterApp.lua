@@ -5,7 +5,7 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local RING_INFO    = require("tools/ringMaster/ringInfo")
-local RING_SCANNER
+local RING_SCANNER = require("tools/ringMaster/objectScanner")
 
 local MAP_IMG_PATH = "resources/zones/maps/GHZ_Act1_Map.png"
 
@@ -33,14 +33,12 @@ end
 --------------------------------------------------------------
 
 function scanForRings()
-    if not RING_SCANNER then
-        RING_SCANNER = require("tools/ringMaster/objectScanner"):create(RING_INFO, getMapInfo())
-        printToReadout("Scanning for rings...")
-        local startTime = love.timer.getTime()
-        RING_SCANNER:scanAll()
-        local timeElapsed = love.timer.getTime() - startTime
-        print("Completed scan in " .. timeElapsed .. " seconds.")
-    end
+    RING_SCANNER:setup(RING_INFO, getMapInfo())
+    printToReadout("Scanning for rings...")
+    local startTime = love.timer.getTime()
+    RING_SCANNER:execute()
+    local timeElapsed = love.timer.getTime() - startTime
+    print("Completed scan in " .. timeElapsed .. " seconds.")
 end
 
 function getMapInfo()
@@ -49,14 +47,12 @@ function getMapInfo()
 end
 
 function drawObjects()
-    if RING_SCANNER then
-        local IMAGE_VIEWER = getImageViewer()
-        love.graphics.setColor(1, 1, 0, 0.7)
-        love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
+    local IMAGE_VIEWER = getImageViewer()
+    love.graphics.setColor(1, 1, 0, 0.7)
+    love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
 
-        for _, obj in ipairs(RING_SCANNER:getObjectsFound()) do
-            love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(obj.x, obj.y, 16, 16))
-        end
+    for _, obj in ipairs(RING_SCANNER:getObjectsFound()) do
+        love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(obj.x, obj.y, 16, 16))
     end
 end
 
