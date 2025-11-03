@@ -6,7 +6,11 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local RING_INFO    = require("tools/ringMaster/ringInfo")
 local RING_SCANNER = require("tools/ringMaster/objectScanner")
-local PROGRESS_BAR = require("tools/ringMaster/progressBar"):create { message = "Scanning for Rings..." }
+local PROGRESS_BAR = require("tools/ringMaster/progressBar"):create(
+    {
+        message  = "Scanning for Rings...",
+        callback = function() return RING_SCANNER:getProgress() end,
+    })
 
 local MAP_IMG_PATH = "resources/zones/maps/GHZ_Act1_Map.png"
 
@@ -74,11 +78,7 @@ function updateObjects(dt)
         if   ring.alpha == nil then ring.alpha = 1
         else                        ring.alpha = ring.alpha - (3 * dt) end
     end
-    PROGRESS_BAR:update(dt, getProgress)
-end
-
-function getProgress()
-    return RING_SCANNER:getProgress()
+    PROGRESS_BAR:update(dt)
 end
 
 --------------------------------------------------------------
