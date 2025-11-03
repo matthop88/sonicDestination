@@ -20,11 +20,15 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
+function love.update(dt)
+    if RING_SCANNER:isReady() then
+        RING_SCANNER:execute()
+    end
+end
+
 function love.mousepressed(mx, my)
     scanForRings()
 end
-
--- ...
 
 -- ...
 
@@ -35,10 +39,7 @@ end
 function scanForRings()
     RING_SCANNER:setup(RING_INFO, getMapInfo())
     printToReadout("Scanning for rings...")
-    local startTime = love.timer.getTime()
     RING_SCANNER:execute()
-    local timeElapsed = love.timer.getTime() - startTime
-    print("Completed scan in " .. timeElapsed .. " seconds.")
 end
 
 function getMapInfo()
