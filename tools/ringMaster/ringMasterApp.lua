@@ -51,14 +51,23 @@ function getMapInfo()
 end
 
 function drawObjects()
+    for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
+        drawRingHighlight(ring)
+    end
+
+    drawVScanline()
+end
+
+function drawRingHighlight(ring)
     local IMAGE_VIEWER = getImageViewer()
     love.graphics.setColor(1, 1, 0, 0.7)
     love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
 
-    for _, obj in ipairs(RING_SCANNER:getObjectsFound()) do
-        love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(obj.x, obj.y, 16, 16))
-    end
+    love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
+end
 
+function drawVScanline()
+    local IMAGE_VIEWER = getImageViewer()
     local vScanX = RING_SCANNER:getVScanX()
     if vScanX ~= nil then
         love.graphics.setColor(1, 0, 0, 0.7)
@@ -70,8 +79,6 @@ function drawObjects()
         love.graphics.line(x, 0, x, WINDOW_HEIGHT)
     end
 end
-
--- ...
 
 --------------------------------------------------------------
 --                          Plugins                         --
