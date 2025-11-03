@@ -6,7 +6,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local RING_INFO    = require("tools/ringMaster/ringInfo")
 local RING_SCANNER = require("tools/ringMaster/objectScanner")
-local PROGRESS_BAR = require("tools/ringMaster/progressBar"):create()
+local PROGRESS_BAR = require("tools/ringMaster/progressBar"):create(nil, 266)
 
 local MAP_IMG_PATH = "resources/zones/maps/GHZ_Act1_Map.png"
 
