@@ -19,14 +19,22 @@ local OBJECTS_FOUND = {}
 
 local scanAll, scanForObjectsAtLine, scanForObjectAt, scanForObjectScanlineAt, pixelsMatch
 
-doScanning = function()
-  	for y = MAP_START_Y, MAP_END_Y do
-  		scanForObjectsAtLine(y)
-  	end
+doScanning = function(params, nextParams)
+	if params.MAP_SCAN_LINES:isComplete() then
+		print("Scanning complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
+		print("Number of objects found: " .. #OBJECTS_FOUND)
+		return true
+	end
+
+  	nextParams:init {
+  		y = params.MAP_SCAN_LINES:next()
+  	}
 end
 
-scanForObjectsAtLine = function(y)
+scanForObjectsAtLine = function(params, nextParams)
 	local x = MAP_START_X
+	local y = params.y
+	print("Scanning for objects at line: " .. y)
 	while x < MAP_END_X do
 		if scanForObjectAt(x, y) then
 			table.insert(OBJECTS_FOUND, { x = x, y = y })
@@ -36,6 +44,8 @@ scanForObjectsAtLine = function(y)
 			x = x + 1
 		end
 	end
+
+	return true
 end
 
 scanForObjectAt = function(x, y)
@@ -63,8 +73,19 @@ pixelsMatch = function(objX, objY, mapX, mapY)
     return PIXEL_UTIL:pixelsMatchWithWildcardTransparency(OBJECT_DATA, objX, objY, MAP_DATA, mapX, mapY) 	
 end
 
+createMapFeeder = function()
+	local myList = {}
+	for y = MAP_START_Y, MAP_END_Y do
+		table.insert(myList, y)
+	end
+
+	return FEEDER:create("Map Scan Lines", myList)
+end
+
 return {
 	setup = function(self, objectInfo, mapInfo)
+		OBJECTS_FOUND = {}
+		
 		OBJECT_DATA                    = objectInfo.data
 		OBJECT_WIDTH,   OBJECT_HEIGHT  = objectInfo.width,  objectInfo.height
   		OBJECT_START_X, OBJECT_START_Y = objectInfo.startX, objectInfo.startY
@@ -76,15 +97,22 @@ return {
   		MAP_START_X,    MAP_START_Y    = mapInfo.startX,    mapInfo.startY
   		MAP_END_X                      = MAP_START_X + MAP_WIDTH  - OBJECT_WIDTH
   		MAP_END_Y                      = MAP_START_Y + MAP_HEIGHT - OBJECT_HEIGHT
+
+  		PIPELINE:add("Scan All",           doScanning)
+		PIPELINE:add("Scan at Line",       scanForObjectsAtLine)
+		PIPELINE:push { MAP_SCAN_LINES = createMapFeeder() }
 	end,
 
 	execute = function(self)
-		OBJECTS_FOUND = {}
-		doScanning()
+		PIPELINE:execute(TASK_SLICE_TIME_IN_MS)
 	end,
 
 	isComplete = function(self)
-		return true
+		return PIPELINE:isComplete()
+	end,
+
+	isReady = function(self)
+		return OBJECT_DATA ~= nil and not PIPELINE:isComplete()
 	end,
 
 	getObjectsFound = function(self)
