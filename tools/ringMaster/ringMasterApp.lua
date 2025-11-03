@@ -62,8 +62,11 @@ function drawObjects()
     local vScanX = RING_SCANNER:getVScanX()
     if vScanX ~= nil then
         love.graphics.setColor(1, 0, 0, 0.7)
-        love.graphics.setLineWidth(5 * IMAGE_VIEWER:getScale())
+        love.graphics.setLineWidth(9 * IMAGE_VIEWER:getScale())
         local x, _ = IMAGE_VIEWER:imageToScreenCoordinates(vScanX, 0)
+        love.graphics.line(x, 0, x, WINDOW_HEIGHT)
+        love.graphics.setLineWidth(3 * IMAGE_VIEWER:getScale())
+        love.graphics.setColor(1, 1, 0)
         love.graphics.line(x, 0, x, WINDOW_HEIGHT)
     end
 end
