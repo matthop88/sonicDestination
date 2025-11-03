@@ -2,10 +2,13 @@ local CALLBACK
 
 local FONT_SIZE      = 40
 local FONT           = love.graphics.newFont(FONT_SIZE)
+local MESSAGE        = "Executing Task..."
 
 return {
-	create = function(self, callback, yCoord)
-		CALLBACK = callback
+	create = function(self, params)
+		params = params or {}
+		CALLBACK = params.callback
+		MESSAGE  = params.message or MESSAGE
 		return {
 			time = 0,
 			progress = 0.0,
@@ -14,7 +17,7 @@ return {
 			draw = function(self)
 				local width  = love.graphics.getWidth()
 				local height = love.graphics.getHeight()
-				local y = yCoord or height / 2
+				local y = params.y or height / 2
 				if self.progress ~= 0 and self.alpha > 0.0 then
 					love.graphics.setColor(0, 0, 0, self.alpha * 0.5)
 					love.graphics.rectangle("fill", 90, y - 80, width - 180, 120)
@@ -28,7 +31,7 @@ return {
 					end
 					love.graphics.setColor(1, 1, 1, self.alpha)
 					love.graphics.setFont(FONT)
-					love.graphics.printf("Scanning for Rings...", 0, y - 70, width, "center")
+					love.graphics.printf(MESSAGE, 0, y - 70, width, "center")
 				end
 			end,
 
