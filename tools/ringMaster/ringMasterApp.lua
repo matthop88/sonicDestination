@@ -35,15 +35,12 @@ function love.mousepressed(mx, my)
     scanForRings()
 end
 
--- ...
-
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
 
 function scanForRings()
     RING_SCANNER:setup(RING_INFO, getMapInfo())
-    printToReadout("Scanning for rings...")
     RING_SCANNER:execute()
 end
 
