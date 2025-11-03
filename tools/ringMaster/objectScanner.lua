@@ -64,7 +64,7 @@ pixelsMatch = function(objX, objY, mapX, mapY)
 end
 
 return {
-	create = function(self, objectInfo, mapInfo)
+	setup = function(self, objectInfo, mapInfo)
 		OBJECT_DATA                    = objectInfo.data
 		OBJECT_WIDTH,   OBJECT_HEIGHT  = objectInfo.width,  objectInfo.height
   		OBJECT_START_X, OBJECT_START_Y = objectInfo.startX, objectInfo.startY
@@ -76,15 +76,18 @@ return {
   		MAP_START_X,    MAP_START_Y    = mapInfo.startX,    mapInfo.startY
   		MAP_END_X                      = MAP_START_X + MAP_WIDTH  - OBJECT_WIDTH
   		MAP_END_Y                      = MAP_START_Y + MAP_HEIGHT - OBJECT_HEIGHT
+	end,
 
-  		return {
-  			scanAll = function(self)
-  				doScanning()
-  			end,
-  			
-			getObjectsFound = function(self)
- 				return OBJECTS_FOUND
- 			end,
- 		}
- 	end,
- }
+	execute = function(self)
+		OBJECTS_FOUND = {}
+		doScanning()
+	end,
+
+	isComplete = function(self)
+		return true
+	end,
+
+	getObjectsFound = function(self)
+		return OBJECTS_FOUND
+	end,
+}
