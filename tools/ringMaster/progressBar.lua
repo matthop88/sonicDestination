@@ -35,8 +35,7 @@ return {
 				end
 			end,
 
-			update = function(self, dt, callback)
-				CALLBACK = CALLBACK or callback
+			update = function(self, dt)
 				if CALLBACK then
 					self.progress = math.max(self.progress, CALLBACK())
 				end
