@@ -38,11 +38,9 @@ scanForObjectsAtVLine = function(params, nextParams)
 	local y = MAP_START_Y
 	local x = params.x
 	MAP_VLINE = x
-	print("Scanning for objects at vline: " .. x)
 	while y < MAP_END_Y do
 		if scanForObjectAt(x, y) then
 			table.insert(OBJECTS_FOUND, { x = x, y = y })
-			print("" .. #OBJECTS_FOUND .. ": Found ring at { " .. x .. ", " .. y .. " }")
 			y = y + 16
 		else
 			y = y + 1
