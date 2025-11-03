@@ -123,6 +123,11 @@ return {
 		return MAP_VLINE
 	end,
 
+	getProgress = function(self)
+		if   MAP_VLINE == nil then return 0
+		else                       return MAP_VLINE / MAP_WIDTH end
+	end,
+
 	getObjectsFound = function(self)
 		return OBJECTS_FOUND
 	end,
