@@ -20,28 +20,28 @@ local OBJECTS_FOUND = {}
 local scanAll, scanForObjectsAtLine, scanForObjectAt, scanForObjectScanlineAt, pixelsMatch
 
 doScanning = function(params, nextParams)
-	if params.MAP_SCAN_LINES:isComplete() then
+	if params.MAP_VLINES:isComplete() then
 		print("Scanning complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 		print("Number of objects found: " .. #OBJECTS_FOUND)
 		return true
 	end
 
   	nextParams:init {
-  		y = params.MAP_SCAN_LINES:next()
+  		x = params.MAP_VLINES:next()
   	}
 end
 
-scanForObjectsAtLine = function(params, nextParams)
-	local x = MAP_START_X
-	local y = params.y
-	print("Scanning for objects at line: " .. y)
-	while x < MAP_END_X do
+scanForObjectsAtVLine = function(params, nextParams)
+	local y = MAP_START_Y
+	local x = params.x
+	print("Scanning for objects at vline: " .. x)
+	while y < MAP_END_Y do
 		if scanForObjectAt(x, y) then
 			table.insert(OBJECTS_FOUND, { x = x, y = y })
 			print("" .. #OBJECTS_FOUND .. ": Found ring at { " .. x .. ", " .. y .. " }")
-			x = x + 16
+			y = y + 16
 		else
-			x = x + 1
+			y = y + 1
 		end
 	end
 
@@ -75,11 +75,11 @@ end
 
 createMapFeeder = function()
 	local myList = {}
-	for y = MAP_START_Y, MAP_END_Y do
-		table.insert(myList, y)
+	for x = MAP_START_X, MAP_END_X do
+		table.insert(myList, x)
 	end
 
-	return FEEDER:create("Map Scan Lines", myList)
+	return FEEDER:create("Map VLines", myList)
 end
 
 return {
@@ -99,8 +99,8 @@ return {
   		MAP_END_Y                      = MAP_START_Y + MAP_HEIGHT - OBJECT_HEIGHT
 
   		PIPELINE:add("Scan All",           doScanning)
-		PIPELINE:add("Scan at Line",       scanForObjectsAtLine)
-		PIPELINE:push { MAP_SCAN_LINES = createMapFeeder() }
+		PIPELINE:add("Scan at VLine",      scanForObjectsAtVLine)
+		PIPELINE:push { MAP_VLINES = createMapFeeder() }
 	end,
 
 	execute = function(self)
