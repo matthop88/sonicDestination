@@ -77,6 +77,11 @@ function updateObjects(dt)
         if   ring.alpha == nil then ring.alpha = 1
         else                        ring.alpha = ring.alpha - (3 * dt) end
     end
+    PROGRESS_BAR:update(dt, getProgress)
+end
+
+function getProgress()
+    return RING_SCANNER:getProgress()
 end
 
 --------------------------------------------------------------
