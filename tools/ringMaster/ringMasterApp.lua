@@ -24,6 +24,9 @@ function love.update(dt)
     if RING_SCANNER:isReady() then
         RING_SCANNER:execute()
     end
+    if RING_SCANNER:isComplete() then
+        printToReadout("Scanning Complete.")
+    end
 end
 
 function love.mousepressed(mx, my)
@@ -54,6 +57,14 @@ function drawObjects()
 
     for _, obj in ipairs(RING_SCANNER:getObjectsFound()) do
         love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(obj.x, obj.y, 16, 16))
+    end
+
+    local vScanX = RING_SCANNER:getVScanX()
+    if vScanX ~= nil then
+        love.graphics.setColor(1, 0, 0, 0.7)
+        love.graphics.setLineWidth(5 * IMAGE_VIEWER:getScale())
+        local x, _ = IMAGE_VIEWER:imageToScreenCoordinates(vScanX, 0)
+        love.graphics.line(x, 0, x, WINDOW_HEIGHT)
     end
 end
 
