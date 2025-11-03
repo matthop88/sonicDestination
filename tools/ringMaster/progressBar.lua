@@ -1,5 +1,8 @@
 local CALLBACK
 
+local FONT_SIZE      = 40
+local FONT           = love.graphics.newFont(FONT_SIZE)
+
 return {
 	create = function(self, callback)
 		CALLBACK = callback
@@ -13,6 +16,9 @@ return {
 					love.graphics.rectangle("line", 100, 380, 1000, 40)
 					love.graphics.setColor(1, 1, 0)
 					love.graphics.rectangle("fill", 103, 382, 994 * self.progress, 36)
+					love.graphics.setColor(1, 1, 1)
+					love.graphics.setFont(FONT)
+					love.graphics.printf("Scanning for Rings...", 0, 330, 1200, "center")
 				end
 			end,
 
