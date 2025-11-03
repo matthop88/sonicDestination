@@ -72,7 +72,11 @@ PLUGINS = require("plugins/engine")
         pixelated       = true,
     })
     :add("zooming",      { imageViewer = getImageViewer() })
-    :add("scrolling",    { imageViewer = getImageViewer() })
+    :add("scrolling",    
+    { 
+        imageViewer = getImageViewer(),
+        scrollSpeed = 2400,
+    })
     :add("drawingLayer", { drawingFn   = drawObjects      })
     :add("readout",      { printFnName = "printToReadout" })
     
