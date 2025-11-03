@@ -6,11 +6,6 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local RING_INFO    = require("tools/ringMaster/ringInfo")
 local RING_SCANNER = require("tools/ringMaster/objectScanner")
-local PROGRESS_BAR = require("tools/ringMaster/progressBar"):create(
-    {
-        message  = "Scanning for Rings...",
-        callback = function() return RING_SCANNER:getProgress() end,
-    })
 
 local MAP_IMG_PATH = "resources/zones/maps/GHZ_Act1_Map.png"
 
@@ -26,12 +21,9 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.update(dt)
-    if RING_SCANNER:isReady() then
-        RING_SCANNER:execute()
-    end
-    if RING_SCANNER:isComplete() then
-        printToReadout("Scanning Complete.")
-    end
+    if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
+    if RING_SCANNER:isComplete() then printToReadout("Scanning Complete.") end
+    
     updateObjects(dt)
 end
 
@@ -54,7 +46,6 @@ function getMapInfo()
 end
 
 function drawObjects()
-    PROGRESS_BAR:draw()
     for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
         drawRingHighlight(ring)
     end
@@ -69,7 +60,6 @@ function drawRingHighlight(ring)
         love.graphics.setColor(1, 1, 0, (1 - ring.alpha) * 0.7)
         love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
         love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
-
     end
 end
 
@@ -78,7 +68,6 @@ function updateObjects(dt)
         if   ring.alpha == nil then ring.alpha = 1
         else                        ring.alpha = ring.alpha - (3 * dt) end
     end
-    PROGRESS_BAR:update(dt)
 end
 
 --------------------------------------------------------------
@@ -100,5 +89,10 @@ PLUGINS = require("plugins/engine")
         scrollSpeed = 2400,
     })
     :add("drawingLayer", { drawingFn   = drawObjects      })
+    :add("progressBar",
+    {
+        message  = "Scanning for Rings...",
+        callback = function() return RING_SCANNER:getProgress() end,
+    })
     :add("readout",      { printFnName = "printToReadout" })
     
