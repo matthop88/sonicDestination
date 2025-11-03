@@ -15,6 +15,8 @@ local MAP_WIDTH,      MAP_HEIGHT
 local MAP_START_X,    MAP_START_Y
 local MAP_END_X,      MAP_END_Y
 
+local MAP_VLINE
+
 local OBJECTS_FOUND = {}
 
 local scanAll, scanForObjectsAtLine, scanForObjectAt, scanForObjectScanlineAt, pixelsMatch
@@ -23,6 +25,7 @@ doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
 		print("Scanning complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 		print("Number of objects found: " .. #OBJECTS_FOUND)
+		MAP_VLINE = nil
 		return true
 	end
 
@@ -34,6 +37,7 @@ end
 scanForObjectsAtVLine = function(params, nextParams)
 	local y = MAP_START_Y
 	local x = params.x
+	MAP_VLINE = x
 	print("Scanning for objects at vline: " .. x)
 	while y < MAP_END_Y do
 		if scanForObjectAt(x, y) then
@@ -113,6 +117,10 @@ return {
 
 	isReady = function(self)
 		return OBJECT_DATA ~= nil and not PIPELINE:isComplete()
+	end,
+
+	getVScanX = function(self)
+		return MAP_VLINE
 	end,
 
 	getObjectsFound = function(self)
