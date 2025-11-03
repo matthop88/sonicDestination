@@ -57,7 +57,8 @@ return {
 			end,
 
 			getResults = function(self)
-				return self.stages[1].results
+				if #self.stages == 0 then return nil
+				else                      return self.stages[1].results end
 			end,
 
 			getTotalElapsedTime = function(self)
