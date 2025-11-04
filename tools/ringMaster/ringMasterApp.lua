@@ -22,7 +22,6 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
-    if RING_SCANNER:isComplete() then printToReadout("Scanning Complete.") end
     
     updateObjects(dt)
 end
