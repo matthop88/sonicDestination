@@ -25,6 +25,8 @@ doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
 		print("Scanning complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
 		print("Number of objects found: " .. #OBJECTS_FOUND)
+		printToReadout("Scanning Complete.")
+    
 		MAP_VLINE = MAP_WIDTH
 		return true
 	end
