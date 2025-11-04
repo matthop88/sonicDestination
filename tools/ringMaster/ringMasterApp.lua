@@ -36,8 +36,11 @@ end
 --------------------------------------------------------------
 
 function scanForRings()
-    RING_SCANNER:setup(RING_INFO, getMapInfo())
-    RING_SCANNER:execute()
+    if not scanComplete then
+        RING_SCANNER:setup(RING_INFO, getMapInfo())
+        RING_SCANNER:execute()
+        scanComplete = true
+    end
 end
 
 function getMapInfo()
@@ -95,4 +98,3 @@ PLUGINS = require("plugins/engine")
         callback = function() return RING_SCANNER:getProgress() end,
     })
     :add("readout",      { printFnName = "printToReadout" })
-    
