@@ -17,9 +17,13 @@ local MAP_END_X,      MAP_END_Y
 
 local MAP_VLINE
 
+local COMPARISON_COLOR
+local COLOR_POSITIONS
+local MAX_STRIKES
+
 local OBJECTS_FOUND = {}
 
-local scanAll, scanForObjectsAtLine, scanForObjectAt, scanForObjectScanlineAt, pixelsMatch
+local scanAll, scanForObjectsAtLine, scanForObjectAt, pixelsMatch
 
 doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
@@ -53,20 +57,15 @@ scanForObjectsAtVLine = function(params, nextParams)
 end
 
 scanForObjectAt = function(x, y)
-	for objY = 0, OBJECT_HEIGHT - 1 do
-		if not scanForObjectScanlineAt(objY, x, y) then
-			return false
-		end
-	end
-
-	return true
-end
-
-scanForObjectScanlineAt = function(objY, x, y)
-	for objX = 0, OBJECT_WIDTH - 1 do
+	local strikeCount = 0
+	for _, position in ipairs(COLOR_POSITIONS) do
+		local objX, objY = position.x, position.y
 		local mapX, mapY = objX + x, objY + y
 		if not pixelsMatch(OBJECT_START_X + objX, OBJECT_START_Y + objY, mapX, mapY) then
-			return false
+			strikeCount = strikeCount + 1
+			if strikeCount >= MAX_STRIKES then
+				return false
+			end
 		end
 	end
 
@@ -95,6 +94,12 @@ return {
   		OBJECT_START_X, OBJECT_START_Y = objectInfo.startX, objectInfo.startY
   		OBJECT_END_X                   = OBJECT_START_X + OBJECT_WIDTH  - 1
   		OBJECT_END_Y                   = OBJECT_START_Y + OBJECT_HEIGHT - 1
+
+  		COMPARISON_COLOR               = objectInfo.keyColor.color
+  		COLOR_POSITIONS                = objectInfo.keyColor.positions
+  		MAX_STRIKES                    = objectInfo.maxStrikes
+
+  		print("MAX_STRIKES: " .. MAX_STRIKES)
 
   		MAP_DATA                       = mapInfo.data
 		MAP_WIDTH,      MAP_HEIGHT     = mapInfo.width,     mapInfo.height
