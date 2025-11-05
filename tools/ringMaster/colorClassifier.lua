@@ -21,8 +21,8 @@ return {
 		return self:convertToColorFrequencyList(colorFrequencyMap)
 	end,
 
-	buildColorFrequencyMap = function(self, imgData, startX, startY, width, height)
-		local colorFrequencyMap = {}
+	buildColorFrequencyMap = function(self, imgData, startX, startY, width, height, colorFrequencyMap)
+		colorFrequencyMap = colorFrequencyMap or {}
 
 		for y = startY, startY + height - 1 do
 			for x = startX, startX + width - 1 do
