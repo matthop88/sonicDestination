@@ -44,6 +44,12 @@ end
 
 function getMapInfo()
     local img = getImageViewer()
+    mapColorFrequencies = require("tools/ringMaster/colorClassifier"):classifyImageData(img:getImageData())
+
+    for _, v in ipairs(mapColorFrequencies) do
+        print("Color: { r = " .. v.color.r .. ", g = " .. v.color.g .. ", b = " .. v.color.b .. ", a = " .. v.color.a .. " }, Frequency: " .. v.frequency)
+    end
+
     return { data = img:getImageData(), width = img:getImageWidth(), height = img:getImageHeight(), startX = 0, startY = 0 }
 end
 
