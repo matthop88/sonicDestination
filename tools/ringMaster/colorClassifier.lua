@@ -11,6 +11,11 @@ end
 
 return {
 	classifyImageData = function(self, imgData, startX, startY, width, height)
+		startX = startX or 0
+		startY = startY or 0
+		width  = width  or imgData:getWidth()
+		height = height or imgData:getHeight()
+		
 		local colorFrequencyMap = self:buildColorFrequencyMap(imgData, startX, startY, width, height)
 
 		return self:convertToColorFrequencyList(colorFrequencyMap)
@@ -46,6 +51,6 @@ return {
 		end
 
 		return colorFrequencies
-	end,
+	end,	
 
 }
