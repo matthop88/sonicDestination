@@ -16,6 +16,12 @@ local MAP_IMG_PATH  = "resources/zones/maps/GHZ_Act1_Map.png"
 love.window.setTitle("RingMaster")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+print("Color: { r = " .. RING_INFO.keyColor.color.r .. ", g = " .. RING_INFO.keyColor.color.g .. ", b = " .. RING_INFO.keyColor.color.b .. ", a = " .. RING_INFO.keyColor.color.a .. " }, Frequency: " .. RING_INFO.keyColor.frequency)
+for _, position in ipairs(RING_INFO.keyColor.positions) do
+     print("  x = " .. position.x .. ", y = " .. position.y)
+end
+
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
