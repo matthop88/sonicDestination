@@ -15,6 +15,9 @@ OBJECT_IMG:setFilter("nearest", "nearest")
 
 for _, v in ipairs(COLOR_FREQ) do
     print("Color: { r = " .. v.color.r .. ", g = " .. v.color.g .. ", b = " .. v.color.b .. ", a = " .. v.color.a .. " }, Frequency: " .. v.frequency)
+    for _, position in ipairs(v.positions) do
+        print("  x = " .. position.x .. ", y = " .. position.y)
+    end
 end
 
 return {
