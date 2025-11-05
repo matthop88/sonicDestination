@@ -4,10 +4,11 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local RING_INFO    = require("tools/ringMaster/ringInfo")
-local RING_SCANNER = require("tools/ringMaster/objectScanner")
+local RING_INFO     = require("tools/ringMaster/ringInfo")
+local RING_SCANNER  = require("tools/ringMaster/objectScanner")
+local MAP_PREFILTER = require("tools/ringMaster/prefiltering")
 
-local MAP_IMG_PATH = "resources/zones/maps/GHZ_Act1_Map.png"
+local MAP_IMG_PATH  = "resources/zones/maps/GHZ_Act1_Map.png"
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -22,7 +23,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
-    
+    if MAP_PREFILTER:isReady()   then MAP_PREFILTER:execute()              end
     updateObjects(dt)
 end
 
@@ -36,20 +37,16 @@ end
 
 function scanForRings()
     if not scanComplete then
-        RING_SCANNER:setup(RING_INFO, getMapInfo())
-        RING_SCANNER:execute()
+        --RING_SCANNER:setup(RING_INFO, getMapInfo())
+        --RING_SCANNER:execute()
+        MAP_PREFILTER:setup(getMapInfo())
+        MAP_PREFILTER:execute()
         scanComplete = true
     end
 end
 
 function getMapInfo()
     local img = getImageViewer()
-    mapColorFrequencies = require("tools/ringMaster/colorClassifier"):classifyImageData(img:getImageData())
-
-    for _, v in ipairs(mapColorFrequencies) do
-        print("Color: { r = " .. v.color.r .. ", g = " .. v.color.g .. ", b = " .. v.color.b .. ", a = " .. v.color.a .. " }, Frequency: " .. v.frequency)
-    end
-
     return { data = img:getImageData(), width = img:getImageWidth(), height = img:getImageHeight(), startX = 0, startY = 0 }
 end
 
@@ -100,6 +97,6 @@ PLUGINS = require("plugins/engine")
     :add("progressBar",
     {
         message  = "Scanning for Rings...",
-        callback = function() return RING_SCANNER:getProgress() end,
+        callback = function() return MAP_PREFILTER:getProgress() end,
     })
     :add("readout",      { printFnName = "printToReadout" })
