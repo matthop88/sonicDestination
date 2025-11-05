@@ -27,20 +27,20 @@ return {
 		for y = startY, startY + height - 1 do
 			for x = startX, startX + width - 1 do
 				local myColor = buildColor(imgData:getPixel(x, y))
-				if not isFullyTransparent(myColor) then self:insertColorToMap(colorFrequencyMap, myColor) end
+				if not isFullyTransparent(myColor) then self:insertColorToMap(colorFrequencyMap, myColor, x - startX, y - startY) end
 			end
 		end
 
 		return colorFrequencyMap
 	end,
 
-	insertColorToMap = function(self, colorFrequencyMap, myColor)
+	insertColorToMap = function(self, colorFrequencyMap, myColor, x, y)
 		local colorKey = buildColorKey(myColor)
 		if not colorFrequencyMap[colorKey] then
-			colorFrequencyMap[colorKey] = { color = myColor, frequency = 1 }
-		else
-			colorFrequencyMap[colorKey].frequency = colorFrequencyMap[colorKey].frequency + 1
+			colorFrequencyMap[colorKey] = { color = myColor, frequency = 0, positions = {} }
 		end
+		colorFrequencyMap[colorKey].frequency = colorFrequencyMap[colorKey].frequency + 1
+		table.insert(colorFrequencyMap[colorKey].positions, { x = x, y = y })
 	end,
 
 	convertToColorFrequencyList = function(self, colorFrequencyMap)
