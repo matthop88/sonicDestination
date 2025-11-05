@@ -13,19 +13,23 @@ local COLOR_FREQ  = require("tools/ringMaster/colorClassifier"):classifyImageDat
 
 OBJECT_IMG:setFilter("nearest", "nearest")
 
-for _, v in ipairs(COLOR_FREQ) do
-    print("Color: { r = " .. v.color.r .. ", g = " .. v.color.g .. ", b = " .. v.color.b .. ", a = " .. v.color.a .. " }, Frequency: " .. v.frequency)
-    for _, position in ipairs(v.positions) do
-        print("  x = " .. position.x .. ", y = " .. position.y)
+local minInstances = 256
+local bestKey      = 0
+
+for n, v in ipairs(COLOR_FREQ) do
+    if minInstances > v.frequency then
+        minInstances = v.frequency
+        bestKey = n
     end
 end
 
 return {
-    data   = OBJECT_DATA, 
-    width  = 16,
-    height = 16, 
-    startX = 24, 
-    startY = 198,
+    data     = OBJECT_DATA, 
+    width    = 16,
+    height   = 16, 
+    startX   = 24, 
+    startY   = 198,
+    keyColor = COLOR_FREQ[bestKey],
 
     draw = function(self, x, y, scale, color)
         love.graphics.setColor(color)
