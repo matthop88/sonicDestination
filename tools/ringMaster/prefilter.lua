@@ -6,18 +6,9 @@ local COLD_LIST  = require("tools/ringMaster/rectList"):create()
 return {
 	prefilter = function(self, imageData, hotColor)
 		print("Hot Color: r = " .. hotColor.r .. ", g = " .. hotColor.g .. ", b = " .. hotColor.b .. ", a = " .. hotColor.a)
-		local myColor = { r = hotColor.r / 255, g = hotColor.r / 255, b = hotColor.b / 255, a = hotColor.a / 255 }
-		local isHot = false
+		
 		for x = 0, imageData:getWidth() - 1 do
-			for y = 0, imageData:getHeight() - 1 do
-				if PIXEL_UTIL:pixelMatchesColor(imageData, x, y, myColor, 0.1, false) then
-					HOT_LIST:add(x)
-					isHot = true
-					break
-				end
-			end
-			if not isHot then COLD_LIST:add(x) end
-			isHot = false
+			self:prefilterAtVScan(imageData, hotColor, x)
 		end
 
 		COLD_LIST = self:compressList(COLD_LIST)
@@ -33,6 +24,19 @@ return {
 		--]]
 
 		return self:getHotList(), self:getColdList()
+	end,
+
+	prefilterAtVScan = function(self, imageData, hotColor, scanX)
+		local myColor = { r = hotColor.r / 255, g = hotColor.r / 255, b = hotColor.b / 255, a = hotColor.a / 255 }
+		local isHot = false
+		for y = 0, imageData:getHeight() - 1 do
+			if PIXEL_UTIL:pixelMatchesColor(imageData, scanX, y, myColor, 0.1, false) then
+				HOT_LIST:add(scanX)
+				isHot = true
+				break
+			end
+		end
+		if not isHot then COLD_LIST:add(scanX) end
 	end,
 
 	getHotList  = function(self) return HOT_LIST  end,
