@@ -19,13 +19,22 @@ return {
         return self:colorsMatch(r1, g1, b1, a1, r2, g2, b2, a2)
     end,
 
+    pixelMatchesColor = function(self, imageData, x, y, c, tolerance, debug)
+        local r, g, b, a = imageData:getPixel(x, y)
+        if debug then
+            print("{ r = " .. r .. ", g = " .. g .. ", b = " .. b .. ", a = " .. a .. " } vs { r = " .. c.r .. ", g = " .. c.g .. ", b = " .. c.b .. ", a = " .. c.a .. " }")
+        end
+            
+        return self:colorsMatch(r, g, b, a, c.r, c.g, c.b, c.a, tolerance)
+    end,
+        
     pixelsMatchWithWildcardTransparency = function(self, imageData1, x1, y1, imageData2, x2, y2, debug)
         local r1, g1, b1, a1 = imageData1:getPixel(math.floor(x1), math.floor(y1))
         if a1 == 0 then return true
         else
             local r2, g2, b2, a2 = imageData2:getPixel(math.floor(x2), math.floor(y2))
             if debug then
-                print("{ r = " .. r1 .. ", g = " .. g1 .. ", b = " .. b1 .. ", a = " .. a1 .. " } vs { r = " .. r2 .. ", g = " .. g2 .. ", b = " .. b2 .. ", a = " .. a2 .. "}")
+                print("{ r = " .. r1 .. ", g = " .. g1 .. ", b = " .. b1 .. ", a = " .. a1 .. " } vs { r = " .. r2 .. ", g = " .. g2 .. ", b = " .. b2 .. ", a = " .. a2 .. " }")
             end
             return self:colorsMatch(r1, g1, b1, a1, r2, g2, b2, a2, 0.1)
         end
