@@ -21,9 +21,18 @@ local COMPARISON_COLOR
 local COLOR_POSITIONS
 local MAX_STRIKES
 
+local COLD_LIST
+local COLD_LIST_INDEX
 local OBJECTS_FOUND = {}
 
-local scanAll, scanForObjectsAtLine, scanForObjectAt, pixelsMatch
+
+local doPrefiltering, doScanning, scanForObjectsAtLine, scanForObjectAt, pixelsMatch
+
+doPrefiltering = function()
+	local prefilterEngine = require("tools/ringMaster/prefilter")
+	_, COLD_LIST = prefilterEngine:prefilter(MAP_DATA, COMPARISON_COLOR)
+	COLD_LIST_INDEX = 1
+end
 
 doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
@@ -44,6 +53,15 @@ scanForObjectsAtVLine = function(params, nextParams)
 	local y = MAP_START_Y
 	local x = params.x
 	MAP_VLINE = x
+	local coldElt = COLD_LIST[COLD_LIST_INDEX]
+	if coldElt then 
+		if x >= coldElt.x and x < coldElt.x + coldElt.w then
+			return false
+		elseif x >= coldElt.x + coldElt.w then
+			COLD_LIST_INDEX = COLD_LIST_INDEX + 1
+		end
+	end
+
 	while y < MAP_END_Y do
 		if scanForObjectAt(x, y) then
 			table.insert(OBJECTS_FOUND, { x = x, y = y })
@@ -106,6 +124,8 @@ return {
   		MAP_START_X,    MAP_START_Y    = mapInfo.startX,    mapInfo.startY
   		MAP_END_X                      = MAP_START_X + MAP_WIDTH  - OBJECT_WIDTH
   		MAP_END_Y                      = MAP_START_Y + MAP_HEIGHT - OBJECT_HEIGHT
+
+  		doPrefiltering()
 
   		PIPELINE:add("Scan All",           doScanning)
 		PIPELINE:add("Scan at VLine",      scanForObjectsAtVLine)
