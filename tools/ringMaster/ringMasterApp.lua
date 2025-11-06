@@ -56,8 +56,12 @@ function drawRingHighlight(ring)
     local IMAGE_VIEWER = getImageViewer()
     
     if ring.alpha ~= nil then
-        local x, y = IMAGE_VIEWER:imageToScreenCoordinates(ring.x, ring.y)
-        RING_INFO:draw(x, y, IMAGE_VIEWER:getScale(), { 1, 0, 0, ring.alpha })
+        local ringScale = math.max(1, (ring.alpha * ring.alpha * 400))
+        local deltaX = ring.deltaX * (ringScale - 1)
+        local deltaY = ring.deltaY * (ringScale - 1)
+        local x, y = IMAGE_VIEWER:imageToScreenCoordinates(ring.x + 8 - (8 * ringScale) + deltaX, ring.y + 8 - (8 * ringScale) + deltaY)
+        local scale = IMAGE_VIEWER:getScale() * ringScale
+        RING_INFO:draw(x, y, scale, { 1, 0, 0, (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
         love.graphics.setColor(1, 1, 0, (1 - ring.alpha) * 0.7)
         love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
         love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
@@ -66,8 +70,14 @@ end
 
 function updateObjects(dt)
     for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
-        if   ring.alpha == nil then ring.alpha = 1
-        else                        ring.alpha = ring.alpha - (3 * dt) end
+        if ring.alpha == nil then 
+            ring.alpha  = 1
+            ring.speed  = math.random(2, 6) / 3
+            ring.deltaX = math.random(-20, 20)
+            ring.deltaY = math.random(-6, 6)
+        else           
+            ring.alpha  = math.max(0, ring.alpha - (ring.speed * dt))
+        end
     end
 end
 
