@@ -53,7 +53,9 @@ function drawObjects()
             local x, y, w, h = getImageViewer():imageToScreenRect(block.offset, 0, block.size, RING_SCANNER:getMapData():getHeight())
             love.graphics.rectangle("fill", x, y, w, h)
         end
+    end
 
+    if RING_SCANNER:getHotList() then
         for _, block in ipairs(RING_SCANNER:getHotList()) do
             if block.coldList then
                 for _, blockH in ipairs(block.coldList) do
