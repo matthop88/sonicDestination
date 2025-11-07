@@ -41,7 +41,7 @@ return {
 				if elt.coldList then
 					table.insert(newList, { offset = elt.offset, size = elt.size, coldList = self:compressList(elt.coldList) })
 				else
-					table.insert(newList, { offset = elt.offset - 3, size = elt.size - 12 })
+					table.insert(newList, { offset = elt.offset - 3, size = elt.size - 12, alpha = elt.alpha })
 				end
 			end
 		end
