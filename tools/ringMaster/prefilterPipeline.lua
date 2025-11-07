@@ -10,13 +10,13 @@ local COMPARISON_COLOR
 local PREFILTER_ENGINE = require("tools/ringMaster/prefilter")
 local MAP_VLINE
 
-local COLD_LIST
+local HOT_LIST, COLD_LIST
 
 local doPrefiltering, prefilterAtVScan, createMapFeeder
 
 doPrefiltering = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
-		_, COLD_LIST = PREFILTER_ENGINE:getResults()
+		HOT_LIST, COLD_LIST = PREFILTER_ENGINE:getResults()
 		
 		MAP_VLINE = MAP_WIDTH
 		return true
@@ -81,6 +81,10 @@ return {
 
 	getColdList = function(self)
 		return COLD_LIST
+	end,
+
+	getHotList = function(self)
+		return HOT_LIST
 	end,
 
 	getTotalElapsedTime = function(self)
