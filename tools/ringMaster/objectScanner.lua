@@ -23,7 +23,8 @@ local MAX_STRIKES
 
 local PREFILTER_PIPELINE = require("tools/ringMaster/prefilterPipeline")
 	
-local COLD_LIST_INDEX = 1
+local HOT_LIST_INDEX = 1
+
 local OBJECTS_FOUND = {}
 
 local doPrefiltering, doScanning, scanForObjectsAtLine, scanForObjectAt, pixelsMatch
@@ -47,15 +48,16 @@ scanForObjectsAtVLine = function(params, nextParams)
 	local y = MAP_START_Y
 	local x = params.x
 	MAP_VLINE = x
-	local coldElt = PREFILTER_PIPELINE:getColdList()[COLD_LIST_INDEX]
-	if coldElt then 
-		if x >= coldElt.offset and x < coldElt.offset + coldElt.size then
+	local hotElt = PREFILTER_PIPELINE:getHotList()[HOT_LIST_INDEX]
+	if hotElt then
+		if x < hotElt.offset or x >= hotElt.offset + hotElt.size then
+			if x >= hotElt.offset + hotElt.size then
+				HOT_LIST_INDEX = HOT_LIST_INDEX + 1
+			end
 			return false
-		elseif x >= coldElt.offset + coldElt.size then
-			COLD_LIST_INDEX = COLD_LIST_INDEX + 1
 		end
 	end
-
+	
 	while y < MAP_END_Y do
 		if scanForObjectAt(x, y) then
 			table.insert(OBJECTS_FOUND, { x = x, y = y })
