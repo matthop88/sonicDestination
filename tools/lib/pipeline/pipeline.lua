@@ -6,7 +6,10 @@ local STAGE = require("tools/lib/pipeline/stage")
 
 return {
 	create = function(self, name)
+		local END_TIME = 0
+		
 		return {
+
 			name = name,
 
 			stages = {},
@@ -23,7 +26,12 @@ return {
 				while timeElapsed < executionTimeInMs / 1000 and not self:isComplete() do
 					self:executeOneStep()
 
-					timeElapsed = love.timer.getTime() - startTime
+					local endTime = love.timer.getTime()
+					timeElapsed = endTime - startTime
+
+					if not self:isComplete() then
+						END_TIME = endTime
+					end
 				end
 			end,
 
@@ -62,8 +70,9 @@ return {
 			end,
 
 			getTotalElapsedTime = function(self)
-				return love.timer.getTime() - self.startTime
+				return END_TIME - self.startTime
 			end,
+
 		}
 	end,
 }
