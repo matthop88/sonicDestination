@@ -21,22 +21,16 @@ local COMPARISON_COLOR
 local COLOR_POSITIONS
 local MAX_STRIKES
 
-local COLD_LIST
-local COLD_LIST_INDEX
+local PREFILTER_PIPELINE = require("tools/ringMaster/prefilterPipeline")
+	
+local COLD_LIST_INDEX = 1
 local OBJECTS_FOUND = {}
-
 
 local doPrefiltering, doScanning, scanForObjectsAtLine, scanForObjectAt, pixelsMatch
 
-doPrefiltering = function()
-	local prefilterEngine = require("tools/ringMaster/prefilter")
-	_, COLD_LIST = prefilterEngine:prefilter(MAP_DATA, COMPARISON_COLOR)
-	COLD_LIST_INDEX = 1
-end
-
 doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
-		print("Scanning complete in " .. PIPELINE:getTotalElapsedTime() .. " seconds.")
+		print("Scanning complete in " .. PREFILTER_PIPELINE:getTotalElapsedTime() + PIPELINE:getTotalElapsedTime() .. " seconds.")
 		print("Number of objects found: " .. #OBJECTS_FOUND)
 		printToReadout("Scanning Complete.")
     
@@ -53,7 +47,7 @@ scanForObjectsAtVLine = function(params, nextParams)
 	local y = MAP_START_Y
 	local x = params.x
 	MAP_VLINE = x
-	local coldElt = COLD_LIST[COLD_LIST_INDEX]
+	local coldElt = PREFILTER_PIPELINE:getColdList()[COLD_LIST_INDEX]
 	if coldElt then 
 		if x >= coldElt.x and x < coldElt.x + coldElt.w then
 			return false
@@ -105,6 +99,8 @@ end
 
 return {
 	setup = function(self, objectInfo, mapInfo)
+		PREFILTER_PIPELINE:setup(objectInfo, mapInfo)
+
 		OBJECTS_FOUND = {}
 		
 		OBJECT_DATA                    = objectInfo.data
@@ -117,15 +113,11 @@ return {
   		COLOR_POSITIONS                = objectInfo.keyColor.positions
   		MAX_STRIKES                    = objectInfo.maxStrikes
 
-  		print("MAX_STRIKES: " .. MAX_STRIKES)
-
   		MAP_DATA                       = mapInfo.data
 		MAP_WIDTH,      MAP_HEIGHT     = mapInfo.width,     mapInfo.height
   		MAP_START_X,    MAP_START_Y    = mapInfo.startX,    mapInfo.startY
   		MAP_END_X                      = MAP_START_X + MAP_WIDTH  - OBJECT_WIDTH
   		MAP_END_Y                      = MAP_START_Y + MAP_HEIGHT - OBJECT_HEIGHT
-
-  		doPrefiltering()
 
   		PIPELINE:add("Scan All",           doScanning)
 		PIPELINE:add("Scan at VLine",      scanForObjectsAtVLine)
@@ -133,7 +125,8 @@ return {
 	end,
 
 	execute = function(self)
-		PIPELINE:execute(TASK_SLICE_TIME_IN_MS)
+		if not PREFILTER_PIPELINE:isComplete() then PREFILTER_PIPELINE:execute()
+		else                                        PIPELINE:execute(TASK_SLICE_TIME_IN_MS) end
 	end,
 
 	isComplete = function(self)
@@ -149,6 +142,10 @@ return {
 	end,
 
 	getProgress = function(self)
+		return (PREFILTER_PIPELINE:getProgress() * 0.1) + (self:getScanProgress() * 0.9)
+	end,
+
+	getScanProgress = function(self)
 		if   MAP_VLINE == nil then return 0
 		else                       return MAP_VLINE / MAP_WIDTH end
 	end,
