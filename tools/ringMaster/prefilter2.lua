@@ -1,16 +1,13 @@
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
-local HOT_LIST
-
 return {
 	prefilter = function(self, imageData, hotColor, hotList)
-		HOT_LIST = hotList
-		for _, block in ipairs(HOT_LIST) do
+		for _, block in ipairs(hotList) do
 			block.coldList = require("tools/ringMaster/rectList"):create()
 			self:prefilterAtBlock(imageData, hotColor, block) 
 		end
 
-		return self:getResults()
+		return self:getResults(hotList)
 	end,
 
 	prefilterAtBlock = function(self, imageData, hotColor, block)
@@ -31,10 +28,10 @@ return {
 		if not isHot then block.coldList:add(scanY) end
 	end,
 
-	getResults = function(self)
-		HOT_LIST = self:compressList(HOT_LIST)
+	getResults = function(self, hotList)
+		hotList = self:compressList(hotList)
 
-		return self:getHotList()
+		return hotList
 	end,
 
 	compressList = function(self, myList)
@@ -51,8 +48,6 @@ return {
 
 		return newList
 	end,
-
-	getHotList = function(self) return HOT_LIST end,
 
 	printList = function(self, myList, indent)
 		indent = indent or ""
