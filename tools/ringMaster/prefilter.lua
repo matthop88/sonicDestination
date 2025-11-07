@@ -36,8 +36,8 @@ return {
 	compressList = function(self, myList)
 		local newList = {}
 		for _, elt in ipairs(myList) do
-			if elt.w > 15 then
-				table.insert(newList, { x = elt.x - 3, w = elt.w - 12 })
+			if elt.size > 15 then
+				table.insert(newList, { offset = elt.offset - 3, size = elt.size - 12 })
 			end
 		end
 
@@ -49,7 +49,7 @@ return {
 
 	printList = function(self, myList)
 		for n, elt in ipairs(myList) do
-			print("" .. n .. ": x = " .. elt.x .. ", w = " .. elt.w)
+			print("" .. n .. ": offset = " .. elt.offset .. ", size = " .. elt.size)
 		end
 	end,
 }
