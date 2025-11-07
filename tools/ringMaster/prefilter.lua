@@ -11,19 +11,7 @@ return {
 			self:prefilterAtVScan(imageData, hotColor, x)
 		end
 
-		COLD_LIST = self:compressList(COLD_LIST)
-
-		--[[
-		print("Hot List:")
-		print("---------")
-		self:printList(self:getHotList())
-
-		print("Cold List:")
-		print("----------")
-		self:printList(self:getColdList())
-		--]]
-
-		return self:getHotList(), self:getColdList()
+		return self:getResults()
 	end,
 
 	prefilterAtVScan = function(self, imageData, hotColor, scanX)
@@ -39,13 +27,10 @@ return {
 		if not isHot then COLD_LIST:add(scanX) end
 	end,
 
-	getHotList  = function(self) return HOT_LIST  end,
-	getColdList = function(self) return COLD_LIST end,
+	getResults = function(self)
+		COLD_LIST = self:compressList(COLD_LIST)
 
-	printList = function(self, myList)
-		for n, elt in ipairs(myList) do
-			print("" .. n .. ": x = " .. elt.x .. ", w = " .. elt.w)
-		end
+		return self:getHotList(), self:getColdList()
 	end,
 
 	compressList = function(self, myList)
@@ -57,5 +42,14 @@ return {
 		end
 
 		return newList
+	end,
+
+	getHotList  = function(self) return HOT_LIST  end,
+	getColdList = function(self) return COLD_LIST end,
+
+	printList = function(self, myList)
+		for n, elt in ipairs(myList) do
+			print("" .. n .. ": x = " .. elt.x .. ", w = " .. elt.w)
+		end
 	end,
 }
