@@ -1,7 +1,7 @@
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
-local HOT_LIST   = require("tools/ringMaster/rectList"):create()
-local COLD_LIST  = require("tools/ringMaster/rectList"):create()
+local HOT_LIST   = require("tools/ringMaster/rectXList"):create()
+local COLD_LIST  = require("tools/ringMaster/rectXList"):create()
 
 return {
 	prefilter = function(self, imageData, hotColor)
