@@ -58,7 +58,17 @@ scanForObjectsAtVLine = function(params, nextParams)
 		end
 	end
 	
+	local coldListIndex = 1
 	while y < MAP_END_Y do
+		if hotElt then
+			local coldElt = hotElt.coldList[coldListIndex]
+			if coldElt then
+				if y >= coldElt.offset and y < coldElt.offset + coldElt.size then
+					y = coldElt.offset + coldElt.size
+					coldListIndex = coldListIndex + 1
+				end
+			end
+		end
 		if scanForObjectAt(x, y) then
 			table.insert(OBJECTS_FOUND, { x = x, y = y })
 			y = y + 16
