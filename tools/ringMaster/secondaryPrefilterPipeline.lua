@@ -1,4 +1,4 @@
-local PIPELINE   = require("tools/lib/pipeline/pipeline"):create("Prefilter Pipeline")
+local PIPELINE   = require("tools/lib/pipeline/pipeline"):create("Secondary Prefilter Pipeline")
 local FEEDER     = require("tools/lib/pipeline/feeder")
 
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
@@ -11,13 +11,13 @@ local SECONDARY_PREFILTER_ENGINE = require("tools/ringMaster/secondaryPrefilter"
 local MAP_VLINE
 local Y_FEEDER
 
-local HOT_LIST, COLD_LIST
+local HOT_LIST
 
 local doSecondaryPrefiltering, prefilterAtBlock, prefilterAtScanline, createYFeeder
 
 doSecondaryPrefiltering = function(params, nextParams)
 	if params.hotList:isComplete() then
-		HOT_LIST, COLD_LIST = SECONDARY_PREFILTER_ENGINE:getResults()
+		HOT_LIST = SECONDARY_PREFILTER_ENGINE:getResults(HOT_LIST)
 		
 		MAP_VLINE = MAP_WIDTH
 		return true
@@ -30,9 +30,12 @@ doSecondaryPrefiltering = function(params, nextParams)
 end
 
 prefilterAtBlock = function(params, nextParams)
-	Y_FEEDER:reset()
-
 	MAP_VLINE = params.block.offset
+
+	if Y_FEEDER:isComplete() then 
+		Y_FEEDER:reset() 
+		return true
+	end
 
 	nextParams:init {
 		block = params.block,
@@ -56,17 +59,23 @@ createYFeeder = function(startY, endY)
 end
 
 return {
-	setup = function(self, objectInfo, mapInfo, hotList)
-		COMPARISON_COLOR  = objectInfo.keyColor.color
-  		MAP_DATA          = mapInfo.data
-		MAP_WIDTH         = mapInfo.width
+	setup = function(self, comparisonColor, mapData, objHeight, hotList)
+		print("Setting up secondary pipeline...")
+		COMPARISON_COLOR  = comparisonColor
+  		MAP_DATA          = mapData
+		MAP_WIDTH         = mapData:getWidth()
+		HOT_LIST          = hotList
   		
-  		Y_FEEDER          = createYFeeder(0, IMAGE_DATA:getHeight() - 1)
+  		Y_FEEDER          = createYFeeder(0, MAP_DATA:getHeight() - objHeight)
 
   		PIPELINE:add("Prefilter All #2",           doSecondaryPrefiltering)
   		PIPELINE:add("Prefilter #2 at Block",      prefilterAtBlock)
 		PIPELINE:add("Secondary Scan at Scanline", prefilterAtScanline)
 		PIPELINE:push { hotList = FEEDER:create("List of Hot Zones", hotList) }
+
+		for _, block in ipairs(hotList) do
+			block.coldList = require("tools/ringMaster/rectList"):create()
+		end
 	end,
 
 	execute = function(self)
@@ -78,7 +87,7 @@ return {
 	end,
 
 	isReady = function(self)
-		return OBJECT_DATA ~= nil and not PIPELINE:isComplete()
+		return HOT_LIST ~= nil and not PIPELINE:isComplete()
 	end,
 
 	getVScanX = function(self)
@@ -88,10 +97,6 @@ return {
 	getProgress = function(self)
 		if   MAP_VLINE == nil then return 0
 		else                       return MAP_VLINE / MAP_WIDTH end
-	end,
-
-	getColdList = function(self)
-		return COLD_LIST
 	end,
 
 	getHotList = function(self)
