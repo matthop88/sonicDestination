@@ -33,7 +33,7 @@ return {
 	getResults = function(self)
 		self:compressColdList()
 		
-		HOT_LIST = require("tools/ringMaster/prefilter2"):prefilter(IMAGE_DATA, HOT_COLOR, self:generateHotList())
+		HOT_LIST = require("tools/ringMaster/secondaryPrefilter"):prefilter(IMAGE_DATA, HOT_COLOR, self:generateHotList())
 		
 		return self:getHotList(), self:getColdList()
 	end,
