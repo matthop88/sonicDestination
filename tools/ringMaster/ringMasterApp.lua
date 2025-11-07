@@ -47,24 +47,6 @@ function getMapInfo()
 end
 
 function drawObjects()
-    if RING_SCANNER:getColdList() then
-        for _, block in ipairs(RING_SCANNER:getColdList()) do
-            love.graphics.setColor(0, 0, 0, 0.1)
-            local x, y, w, h = getImageViewer():imageToScreenRect(block.offset, 0, block.size, RING_SCANNER:getMapData():getHeight())
-            love.graphics.rectangle("fill", x, y, w, h)
-        end
-
-        for _, block in ipairs(RING_SCANNER:getHotList()) do
-            if block.coldList then
-                for _, blockH in ipairs(block.coldList) do
-                    love.graphics.setColor(1, 0, 1, 0.3)
-                    local x, y, w, h = getImageViewer():imageToScreenRect(block.offset, blockH.offset, block.size, blockH.size)
-                    love.graphics.rectangle("fill", x, y, w, h)
-                end
-            end
-        end
-    end
-
     for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
         drawRingHighlight(ring)
     end
