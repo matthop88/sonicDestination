@@ -21,7 +21,8 @@ local COMPARISON_COLOR
 local COLOR_POSITIONS
 local MAX_STRIKES
 
-local PREFILTER_PIPELINE = require("tools/ringMaster/prefilterPipeline")
+local PREFILTER_PIPELINE   = require("tools/ringMaster/prefilterPipeline")
+local PREFILTER_2_PIPELINE = require("tools/ringMaster/secondaryPrefilterPipeline")
 	
 local HOT_LIST_INDEX = 1
 
@@ -138,7 +139,14 @@ return {
 
 	execute = function(self)
 		if not PREFILTER_PIPELINE:isComplete() then PREFILTER_PIPELINE:execute()
-		else                                        PIPELINE:execute(TASK_SLICE_TIME_IN_MS) end
+		elseif not PREFILTER_2_PIPELINE:isComplete() then 
+			if not PREFILTER_2_PIPELINE:isReady() then
+				PREFILTER_2_PIPELINE:setup(COMPARISON_COLOR, MAP_DATA, OBJECT_HEIGHT, PREFILTER_PIPELINE:getHotList())
+			end                                       
+			PREFILTER_2_PIPELINE:execute()
+		else
+			PIPELINE:execute(TASK_SLICE_TIME_IN_MS) 
+		end
 	end,
 
 	isComplete = function(self)
@@ -154,7 +162,7 @@ return {
 	end,
 
 	getProgress = function(self)
-		return (PREFILTER_PIPELINE:getProgress() * 0.5) + (self:getScanProgress() * 0.5)
+		return (PREFILTER_PIPELINE:getProgress() * 0.3) + (PREFILTER_2_PIPELINE:getProgress() * 0.2) + (self:getScanProgress() * 0.5)
 	end,
 
 	getScanProgress = function(self)
@@ -171,7 +179,7 @@ return {
 	end,
 
 	getHotList = function(self)
-		return PREFILTER_PIPELINE:getHotList()
+		return PREFILTER_2_PIPELINE:getHotList()
 	end,
 
 	getMapData = function(self)
