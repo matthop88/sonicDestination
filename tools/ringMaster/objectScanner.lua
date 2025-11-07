@@ -153,4 +153,16 @@ return {
 	getObjectsFound = function(self)
 		return OBJECTS_FOUND
 	end,
+
+	getColdList = function(self)
+		return PREFILTER_PIPELINE:getColdList()
+	end,
+
+	getHotList = function(self)
+		return PREFILTER_PIPELINE:getHotList()
+	end,
+
+	getMapData = function(self)
+		return MAP_DATA
+	end,
 }
