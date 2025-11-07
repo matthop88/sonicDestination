@@ -49,9 +49,9 @@ scanForObjectsAtVLine = function(params, nextParams)
 	MAP_VLINE = x
 	local coldElt = PREFILTER_PIPELINE:getColdList()[COLD_LIST_INDEX]
 	if coldElt then 
-		if x >= coldElt.x and x < coldElt.x + coldElt.w then
+		if x >= coldElt.offset and x < coldElt.offset + coldElt.size then
 			return false
-		elseif x >= coldElt.x + coldElt.w then
+		elseif x >= coldElt.offset + coldElt.size then
 			COLD_LIST_INDEX = COLD_LIST_INDEX + 1
 		end
 	end
