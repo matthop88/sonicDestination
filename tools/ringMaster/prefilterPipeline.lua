@@ -12,7 +12,7 @@ local MAP_VLINE
 
 local HOT_LIST, COLD_LIST
 
-local doPrefiltering, prefilterAtVScan, createMapFeeder
+local doPrefiltering, prefilterAtVLine, createMapFeeder
 
 doPrefiltering = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
