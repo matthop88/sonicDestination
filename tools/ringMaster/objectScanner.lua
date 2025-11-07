@@ -154,7 +154,7 @@ return {
 	end,
 
 	getProgress = function(self)
-		return (PREFILTER_PIPELINE:getProgress() * 0.1) + (self:getScanProgress() * 0.9)
+		return (PREFILTER_PIPELINE:getProgress() * 0.5) + (self:getScanProgress() * 0.5)
 	end,
 
 	getScanProgress = function(self)
