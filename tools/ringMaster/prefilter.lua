@@ -33,7 +33,7 @@ return {
 	getResults = function(self)
 		self:compressColdList()
 		
-		HOT_LIST = require("tools/ringMaster/secondaryPrefilter"):prefilter(IMAGE_DATA, HOT_COLOR, self:generateHotList())
+		HOT_LIST = self:generateHotList()
 		
 		return self:getHotList(), self:getColdList()
 	end,
@@ -44,7 +44,7 @@ return {
 			if n == #COLD_LIST then
 				table.insert(newList, { offset = elt.offset - 3, size = IMAGE_DATA:getWidth() - elt.offset + 2 })
 			elseif elt.size > 15 then
-				table.insert(newList, { offset = elt.offset - 3, size = elt.size - 12 })
+				table.insert(newList, { offset = elt.offset, size = elt.size - 15 })
 			end
 		end
 
