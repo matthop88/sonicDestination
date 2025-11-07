@@ -40,8 +40,10 @@ return {
 
 	compressColdList = function(self)
 		local newList = {}
-		for _, elt in ipairs(COLD_LIST) do
-			if elt.size > 15 then
+		for n, elt in ipairs(COLD_LIST) do
+			if n == #COLD_LIST then
+				table.insert(newList, { offset = elt.offset - 3, size = IMAGE_DATA:getWidth() - elt.offset + 2 })
+			elseif elt.size > 15 then
 				table.insert(newList, { offset = elt.offset - 3, size = elt.size - 12 })
 			end
 		end
