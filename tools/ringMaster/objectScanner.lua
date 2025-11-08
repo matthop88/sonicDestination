@@ -33,8 +33,7 @@ local doPrefiltering, doScanning, scanForObjectsAtLine, scanForObjectAt, pixelsM
 doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
 		print("Scanning complete in " .. PREFILTER_PIPELINE:getTotalElapsedTime() + PIPELINE:getTotalElapsedTime() .. " seconds.")
-		print("Number of objects found: " .. #OBJECTS_FOUND)
-		printToReadout("Scanning Complete.")
+		printToReadout("Scanning Complete. " .. #OBJECTS_FOUND .. " rings found.")
     
 		MAP_VLINE = MAP_WIDTH
 		return true
