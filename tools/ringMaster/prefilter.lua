@@ -1,6 +1,6 @@
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
-local HOT_LIST   = require("tools/ringMaster/rectList"):create()
+local HOT_LIST
 local COLD_LIST  = require("tools/ringMaster/rectList"):create()
 
 local IMAGE_DATA, HOT_COLOR
@@ -35,7 +35,7 @@ return {
 		
 		HOT_LIST = self:generateHotList()
 		
-		return self:getHotList(), self:getColdList()
+		return self:getHotList()
 	end,
 
 	compressColdList = function(self)
