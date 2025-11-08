@@ -16,11 +16,13 @@ local doPrefiltering, prefilterAtVLine, createMapFeeder
 
 doPrefiltering = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
-		HOT_LIST, COLD_LIST = PREFILTER_ENGINE:getResults()
+		HOT_LIST = PREFILTER_ENGINE:getResults()
 		
 		MAP_VLINE = MAP_WIDTH
 		return true
 	end
+
+	COLD_LIST = PREFILTER_ENGINE:getColdList()
 		
 	nextParams:init {
 		x = params.MAP_VLINES:next()
@@ -67,7 +69,7 @@ return {
 	end,
 
 	isReady = function(self)
-		return OBJECT_DATA ~= nil and not PIPELINE:isComplete()
+		return COMPARISON_COLOR ~= nil and not PIPELINE:isComplete()
 	end,
 
 	getVScanX = function(self)
