@@ -21,8 +21,8 @@ local COMPARISON_COLOR
 local COLOR_POSITIONS
 local MAX_STRIKES
 
-local PREFILTER_PIPELINE   = require("tools/ringMaster/prefilterPipeline")
-local PREFILTER_2_PIPELINE = require("tools/ringMaster/secondaryPrefilterPipeline")
+local PREFILTER_PIPELINE   = require("tools/ringMaster/pipelines/prefilterPipeline")
+local PREFILTER_2_PIPELINE = require("tools/ringMaster/pipelines/secondaryPrefilterPipeline")
 	
 local HOT_LIST_INDEX = 1
 
