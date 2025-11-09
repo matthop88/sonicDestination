@@ -9,9 +9,9 @@ local RING_SCANNER  = require("tools/ringMaster/objectScanner")
 
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
 
-local HOTCOLD_ALPHA    = 1
+local HOTCOLD_ALPHA    = 0
 local DEBUG_MODE       = false
-local RING_PULSE       = 0
+local RING_PULSE       = 1
 local TIME             = 0
 
 --------------------------------------------------------------
@@ -88,12 +88,9 @@ function drawRingHighlight(ring)
         local deltaX = ring.deltaX * (ringScale - 1)
         local deltaY = ring.deltaY * (ringScale - 1)
 
-        love.graphics.setColor(0, 0, 0, RING_PULSE)
-        love.graphics.rectangle("fill", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
-        
         local x, y = IMAGE_VIEWER:imageToScreenCoordinates(ring.x + 8 - (8 * ringScale) + deltaX, ring.y + 8 - (8 * ringScale) + deltaY)
         local scale = IMAGE_VIEWER:getScale() * ringScale
-        RING_INFO:draw(x, y, scale, { 1, 1, 1, (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
+        RING_INFO:draw(x, y, scale, { 1, 0, 0, RING_PULSE * (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
         love.graphics.setColor(1, 1, 0, (1 - ring.alpha) * 0.7)
         love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
         love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(ring.x, ring.y, 16, 16))
