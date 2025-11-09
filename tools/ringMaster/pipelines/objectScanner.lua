@@ -3,7 +3,7 @@ local FEEDER     = require("tools/lib/pipeline/feeder")
 
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
-local TASK_SLICE_TIME_IN_MS = 2
+local TASK_SLICE_TIME_IN_MS = 3
 
 local OBJECT_DATA
 local OBJECT_WIDTH,   OBJECT_HEIGHT
