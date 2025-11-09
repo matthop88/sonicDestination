@@ -7,7 +7,7 @@ local TASK_SLICE_TIME_IN_MS = 12
 
 local COMPARISON_COLOR
 
-local SECONDARY_PREFILTER_ENGINE = require("tools/ringMaster/secondaryPrefilter")
+local SECONDARY_PREFILTER_ENGINE = require("tools/ringMaster/pipelines/secondaryPrefilter")
 local MAP_VLINE
 local Y_FEEDER
 
