@@ -9,8 +9,6 @@ local RING_SCANNER  = require("tools/ringMaster/objectScanner")
 
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
 
-local HOTCOLD_ALPHA    = 0
-local DEBUG_MODE       = false
 local RING_PULSE       = 1
 local TIME             = 0
 
@@ -31,7 +29,7 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    if key == "d" then DEBUG_MODE = not DEBUG_MODE end
+    -- do nothing
 end
 
 function love.mousepressed(mx, my)
@@ -55,26 +53,6 @@ function getMapInfo()
 end
 
 function drawObjects()
-    if RING_SCANNER:getColdList() then
-        for _, block in ipairs(RING_SCANNER:getColdList()) do
-            love.graphics.setColor(0, 0, 0, 0.5 * (block.alpha or 0) * HOTCOLD_ALPHA)
-            local x, y, w, h = getImageViewer():imageToScreenRect(block.offset, 0, block.size, RING_SCANNER:getMapData():getHeight())
-            love.graphics.rectangle("fill", x, y, w, h)
-        end
-    end
-
-    if RING_SCANNER:getHotList() then
-        for _, block in ipairs(RING_SCANNER:getHotList()) do
-            if block.coldList then
-                for _, blockH in ipairs(block.coldList) do
-                    love.graphics.setColor(0, 0, 0, 0.5 * (blockH.alpha or 1) * HOTCOLD_ALPHA)
-                    local x, y, w, h = getImageViewer():imageToScreenRect(block.offset, blockH.offset, block.size, blockH.size)
-                    love.graphics.rectangle("fill", x, y, w, h)
-                end
-            end
-        end
-    end
-
     for _, ring in ipairs(RING_SCANNER:getObjectsFound()) do
         drawRingHighlight(ring)
     end
@@ -109,29 +87,7 @@ function updateObjects(dt)
         end
     end
 
-    if RING_SCANNER:getColdList() then
-        for _, block in ipairs(RING_SCANNER:getColdList()) do
-            if block.alpha == nil then block.alpha = 0
-            else                       block.alpha = math.min(1, block.alpha + (0.5 * dt)) end
-        end
-    end
-
-    if RING_SCANNER:getHotList() then
-        for _, block in ipairs(RING_SCANNER:getHotList()) do
-            if block.coldList then
-                for _, blockH in ipairs(block.coldList) do
-                    if blockH.alpha == nil then blockH.alpha = 0
-                    else                        blockH.alpha = math.min(1, blockH.alpha + (1 * dt)) end
-                end
-            end
-        end
-    end
     if RING_SCANNER:isComplete() then
-        if DEBUG_MODE then
-            HOTCOLD_ALPHA = math.max(0.5, HOTCOLD_ALPHA - (1 * dt))
-        else
-            HOTCOLD_ALPHA  = math.max(0, HOTCOLD_ALPHA  - (1 * dt))
-        end
         RING_PULSE = 0.5 + math.sin(TIME * 5) * 0.5
         TIME = TIME + dt
     end
