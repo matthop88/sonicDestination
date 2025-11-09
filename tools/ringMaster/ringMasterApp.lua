@@ -8,6 +8,7 @@ local RING_INFO     = require("tools/ringMaster/ringInfo")
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
+local MAP_SAVER     = require("tools/ringMaster/savableMap"):create(MAP_IMG_PATH, (__PARAMS["ringDataOut"] or "sampleRingData") .. ".lua")
 
 local RING_PULSE       = 1
 local TIME             = 0
@@ -29,7 +30,9 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    -- do nothing
+    if key == "return" then
+        MAP_SAVER:save(RING_SCANNER:getObjectsFound())
+    end
 end
 
 function love.mousepressed(mx, my)
