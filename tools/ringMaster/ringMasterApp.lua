@@ -7,7 +7,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 local RING_INFO     = require("tools/ringMaster/ringInfo")
 local RING_SCANNER  = require("tools/ringMaster/objectScanner")
 
-local MAP_IMG_PATH  = "resources/zones/maps/GHZ_Act1_Map.png"
+local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
 
 local HOTCOLD_ALPHA    = 1
 local DEBUG_MODE       = false
