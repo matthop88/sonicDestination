@@ -7,7 +7,7 @@ local TASK_SLICE_TIME_IN_MS = 12
 
 local COMPARISON_COLOR
 
-local PREFILTER_ENGINE = require("tools/ringMaster/prefilter")
+local PREFILTER_ENGINE = require("tools/ringMaster/pipelines/prefilter")
 local MAP_VLINE
 
 local HOT_LIST, COLD_LIST
