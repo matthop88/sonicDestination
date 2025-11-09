@@ -3,7 +3,7 @@ local FEEDER     = require("tools/lib/pipeline/feeder")
 
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
-local TASK_SLICE_TIME_IN_MS = 12
+local TASK_SLICE_TIME_IN_MS = 2
 
 local OBJECT_DATA
 local OBJECT_WIDTH,   OBJECT_HEIGHT
@@ -161,7 +161,7 @@ return {
 	end,
 
 	getProgress = function(self)
-		return (PREFILTER_PIPELINE:getProgress() * 0.3) + (PREFILTER_2_PIPELINE:getProgress() * 0.2) + (self:getScanProgress() * 0.5)
+		return (PREFILTER_PIPELINE:getProgress() * 0.1) + (PREFILTER_2_PIPELINE:getProgress() * 0.1) + (self:getScanProgress() * 0.8)
 	end,
 
 	getScanProgress = function(self)
