@@ -113,8 +113,6 @@ return {
 	setup = function(self, objectInfo, mapInfo)
 		PREFILTER_PIPELINE:setup(objectInfo, mapInfo)
 
-		OBJECTS_FOUND = {}
-		
 		OBJECT_DATA                    = objectInfo.data
 		OBJECT_WIDTH,   OBJECT_HEIGHT  = objectInfo.width,  objectInfo.height
   		OBJECT_START_X, OBJECT_START_Y = objectInfo.startX, objectInfo.startY
