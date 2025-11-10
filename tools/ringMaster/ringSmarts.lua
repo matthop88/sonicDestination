@@ -3,6 +3,16 @@ local TIME             = 0
 
 local FONT           = love.graphics.newFont(16)
 
+FONTS = {
+    get = function(self, size)
+        local fontSize = math.floor(size)
+        if self[fontSize] == nil and fontSize >= 1 then
+            self[fontSize] = love.graphics.newFont(fontSize)
+        end
+        return self[fontSize]
+    end,
+}
+
 local isInsideRing = function(ring, px, py)
     return px >= ring.x and px < ring.x + 16 and py >= ring.y and py < ring.y + 16
 end
@@ -12,10 +22,12 @@ local drawRingDetails = function(ring, imageViewer)
     love.graphics.setColor(1, 1, 1, 0.7)
     love.graphics.rectangle("fill", imageViewer:pageToScreenRect(ring.x - 2, ring.y - 2, 20, 20))
     love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("fill", mx + 16, my + 16, 100, 20)
+    local scale = imageViewer:getScale()
+    love.graphics.rectangle("fill", mx + (16 * scale), my + (16 * scale), 100 * scale, 20 * scale)
     love.graphics.setColor(1, 1, 1)
+    FONT = FONTS:get(16 * scale)
     love.graphics.setFont(FONT)
-    love.graphics.printf("" .. ring.x .. ", " .. ring.y, mx + 16, my + 16, 100, "center")
+    love.graphics.printf("" .. ring.x .. ", " .. ring.y, mx + (16 * scale), my + (16 * scale), 100 * scale, "center")
 end
 
 local drawRing = function(ring, imageViewer, ringInfo)
