@@ -37,7 +37,7 @@ return {
 	compressList = function(self, myList)
 		local newList = {}
 		for _, elt in ipairs(myList) do
-			if elt.size > 15 then
+			if elt.size > 12 then
 				if elt.coldList then
 					table.insert(newList, { offset = elt.offset, size = elt.size, coldList = self:compressList(elt.coldList) })
 				else
