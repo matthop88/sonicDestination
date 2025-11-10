@@ -48,7 +48,7 @@ scanForObjectsAtVLine = function(params, nextParams)
 	local y = MAP_START_Y
 	local x = params.x
 	MAP_VLINE = x
-	local hotElt = PREFILTER_PIPELINE:getHotList()[HOT_LIST_INDEX]
+	local hotElt = PREFILTER_2_PIPELINE:getHotList()[HOT_LIST_INDEX]
 	if hotElt then
 		if x < hotElt.offset or x >= hotElt.offset + hotElt.size then
 			if x >= hotElt.offset + hotElt.size then
@@ -177,6 +177,10 @@ return {
 
 	getHotList = function(self)
 		return PREFILTER_2_PIPELINE:getHotList()
+	end,
+
+	getOldHotList = function(self)
+		return PREFILTER_PIPELINE:getHotList()
 	end,
 
 	getMapData = function(self)
