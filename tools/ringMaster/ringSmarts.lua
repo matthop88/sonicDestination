@@ -90,9 +90,18 @@ local updateRings = function(self, dt, isComplete)
     end
 end
 
+local findSelectedRing = function(self, imageViewer)
+    for _, ring in ipairs(self) do
+        if isInsideRing(ring, imageViewer:screenToImageCoordinates(love.mouse.getPosition())) then
+            return ring
+        end
+    end
+end
+
 return {
 	upgradeRingList = function(self, ringList)
 		ringList.draw = drawRings
 		ringList.update = updateRings
+        ringList.findSelected = findSelectedRing
 	end,
 }
