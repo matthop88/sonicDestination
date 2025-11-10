@@ -6,7 +6,7 @@ local OBJECT_DATA   = love.image.newImageData("tools/ringMaster/resources/common
 local OBJECT_IMG    = love.graphics.newImage(OBJECT_DATA)
 local RING_QUAD     = love.graphics.newQuad(24, 198, 16, 16, OBJECT_IMG:getWidth(), OBJECT_IMG:getHeight())
 local COLOR_FREQ    = require("tools/ringMaster/colorClassifier"):classifyImageData(OBJECT_DATA, 24, 198, 16, 16)
-local MATCH_PERCENT = 50
+local MATCH_PERCENT = 60
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
