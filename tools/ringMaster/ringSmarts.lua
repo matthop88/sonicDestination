@@ -1,12 +1,20 @@
 local RING_PULSE       = 1
 local TIME             = 0
 
+local isInsideRing = function(ring, px, py)
+    return px >= ring.x and px < ring.x + 16 and py >= ring.y and py < ring.y + 16
+end
+
 local drawRing = function(ring, imageViewer, ringInfo)
-	if ring.alpha ~= nil then
+    if ring.alpha ~= nil then
         local ringScale = math.max(1, (ring.alpha * ring.alpha * 400))
         local deltaX = ring.deltaX * (ringScale - 1)
         local deltaY = ring.deltaY * (ringScale - 1)
 
+        if ringScale == 1 and isInsideRing(ring, imageViewer:screenToImageCoordinates(love.mouse.getPosition())) then
+            love.graphics.setColor(1, 1, 1, 0.7)
+            love.graphics.rectangle("fill", imageViewer:pageToScreenRect(ring.x - 2, ring.y - 2, 20, 20))
+        end
         local x, y = imageViewer:imageToScreenCoordinates(ring.x + 8 - (8 * ringScale) + deltaX, ring.y + 8 - (8 * ringScale) + deltaY)
         local scale = imageViewer:getScale() * ringScale
         ringInfo:draw(x, y, scale, { 1, 0, 0, RING_PULSE * (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
@@ -46,8 +54,6 @@ end
 
 return {
 	upgradeRingList = function(self, ringList)
-		print("Update Rings FN: ", updateRings)
-		print("RingList: ", ringList)
 		ringList.draw = drawRings
 		ringList.update = updateRings
 	end,
