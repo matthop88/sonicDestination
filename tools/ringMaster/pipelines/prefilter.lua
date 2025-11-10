@@ -30,8 +30,6 @@ return {
 
 	finalize = function(self)
 		self:normalizeHotListElement(#HOT_LIST)
-		
-		self:printList(HOT_LIST)
 	end,
 
 	normalizeHotListElement = function(self, index)
