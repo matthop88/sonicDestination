@@ -28,11 +28,10 @@ return {
 		end
 	end,
 
-	getResults = function(self)
+	finalize = function(self)
 		self:normalizeHotListElement(#HOT_LIST)
 		
 		self:printList(HOT_LIST)
-		return self:getHotList()
 	end,
 
 	normalizeHotListElement = function(self, index)
