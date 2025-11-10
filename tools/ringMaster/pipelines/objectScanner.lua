@@ -40,6 +40,7 @@ doScanning = function(params, nextParams)
 	end
 
   	nextParams:init {
+  		MAP_VLINES = params.MAP_VLINES,
   		x = params.MAP_VLINES:next()
   	}
 end
@@ -61,6 +62,11 @@ scanForObjectsAtVLine = function(params, nextParams)
 	local coldListIndex = 1
 	while y < MAP_END_Y do
 		if hotElt then
+			if not hotElt.prefilteringComplete then
+				params.MAP_VLINES:pushBack()
+				return false
+			end
+
 			local coldElt = hotElt.coldList[coldListIndex]
 			if coldElt then
 				if y >= coldElt.offset and y < coldElt.offset + coldElt.size then
@@ -133,13 +139,17 @@ return {
 		PIPELINE:add("Scan at VLine",      scanForObjectsAtVLine)
 		PIPELINE:push { MAP_VLINES = createMapFeeder() }
 
-		PREFILTER_2_PIPELINE:setup(COMPARISON_COLOR, MAP_DATA, OBJECT_HEIGHT, PREFILTER_PIPELINE)
+		PREFILTER_2_PIPELINE:setup(COMPARISON_COLOR, MAP_DATA, OBJECT_HEIGHT, PREFILTER_PIPELINE)                                       
+			
 	end,
 
 	execute = function(self)
-		if not PREFILTER_PIPELINE:isComplete()   then PREFILTER_PIPELINE:execute()            end
-		if not PREFILTER_2_PIPELINE:isComplete() then PREFILTER_2_PIPELINE:execute()
-		else                                          PIPELINE:execute(TASK_SLICE_TIME_IN_MS) end
+		if not PREFILTER_PIPELINE:isComplete()   then PREFILTER_PIPELINE:execute() end
+		if not PREFILTER_2_PIPELINE:isComplete() then PREFILTER_2_PIPELINE:execute() end
+		if self:getScanProgress() > 0.9 then
+			TASK_SLICE_TIME_IN_MS = 18
+		end
+		PIPELINE:execute(TASK_SLICE_TIME_IN_MS)
 	end,
 
 	isComplete = function(self)
@@ -165,6 +175,10 @@ return {
 
 	getObjectsFound = function(self)
 		return OBJECTS_FOUND
+	end,
+
+	getColdList = function(self)
+		return PREFILTER_PIPELINE:getColdList()
 	end,
 
 	getHotList = function(self)
