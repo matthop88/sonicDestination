@@ -8,25 +8,34 @@ local TASK_SLICE_TIME_IN_MS = 12
 local COMPARISON_COLOR
 
 local SECONDARY_PREFILTER_ENGINE = require("tools/ringMaster/pipelines/secondaryPrefilter")
+local PRIMARY_PREFILTER_PIPELINE
+
 local MAP_VLINE
 local Y_FEEDER
 
-local HOT_LIST
+local HOT_LIST = {}
 
 local doSecondaryPrefiltering, prefilterAtBlock, prefilterAtScanline, createYFeeder
 
 doSecondaryPrefiltering = function(params, nextParams)
-	if params.hotList:isComplete() then
-		HOT_LIST = SECONDARY_PREFILTER_ENGINE:getResults(HOT_LIST)
-		
+	if params.hotList:isComplete() and PRIMARY_PREFILTER_PIPELINE:isComplete() then
 		MAP_VLINE = MAP_WIDTH
 		return true
 	end
-		
-	nextParams:init {
-		block = params.hotList:next()
-	}
 
+	local mostRecentHotListElement = params.hotList:next()
+	if mostRecentHotListElement ~= nil then
+		if not mostRecentHotListElement.normalized then
+			params.hotList:pushBack()
+		else
+			local newBlock = { offset = mostRecentHotListElement.offset, size = mostRecentHotListElement.size }
+			newBlock.coldList = require("tools/ringMaster/rectList"):create()
+			table.insert(HOT_LIST, newBlock)
+			nextParams:init {
+				block = newBlock
+			}
+		end
+	end
 end
 
 prefilterAtBlock = function(params, nextParams)
@@ -59,28 +68,20 @@ createYFeeder = function(startY, endY)
 end
 
 return {
-	setup = function(self, comparisonColor, mapData, objHeight, oldHotList)
-		local hotList = require("tools/ringMaster/rectList"):create()
-		for _, elt in ipairs(oldHotList) do
-			table.insert(hotList, { offset = elt.offset, size = elt.size })
-		end
+	setup = function(self, comparisonColor, mapData, objHeight, prefilterPipeline)
+		PRIMARY_PREFILTER_PIPELINE = prefilterPipeline
 		print("Setting up secondary pipeline...")
 		
 		COMPARISON_COLOR  = comparisonColor
   		MAP_DATA          = mapData
 		MAP_WIDTH         = mapData:getWidth()
-		HOT_LIST          = hotList
-  		
+		
   		Y_FEEDER          = createYFeeder(0, MAP_DATA:getHeight() - objHeight)
 
   		PIPELINE:add("Prefilter All #2",           doSecondaryPrefiltering)
   		PIPELINE:add("Prefilter #2 at Block",      prefilterAtBlock)
 		PIPELINE:add("Secondary Scan at Scanline", prefilterAtScanline)
-		PIPELINE:push { hotList = FEEDER:create("List of Hot Zones", hotList) }
-
-		for _, block in ipairs(hotList) do
-			block.coldList = require("tools/ringMaster/rectList"):create()
-		end
+		PIPELINE:push { hotList = FEEDER:create("List of Hot Zones", prefilterPipeline:getHotList()) }
 	end,
 
 	execute = function(self)
