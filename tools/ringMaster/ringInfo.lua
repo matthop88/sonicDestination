@@ -35,6 +35,6 @@ return {
 
     draw = function(self, x, y, scale, color)
         love.graphics.setColor(color)
-        love.graphics.draw(OBJECT_IMG, RING_QUAD, x, y, 0, scale, scale)
+        love.graphics.draw(OBJECT_IMG, RING_QUAD, x - (8 * scale), y - (8 * scale), 0, scale, scale)
     end,
 }
