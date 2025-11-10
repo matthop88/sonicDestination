@@ -59,8 +59,13 @@ createYFeeder = function(startY, endY)
 end
 
 return {
-	setup = function(self, comparisonColor, mapData, objHeight, hotList)
+	setup = function(self, comparisonColor, mapData, objHeight, oldHotList)
+		local hotList = require("tools/ringMaster/rectList"):create()
+		for _, elt in ipairs(oldHotList) do
+			table.insert(hotList, { offset = elt.offset, size = elt.size })
+		end
 		print("Setting up secondary pipeline...")
+		
 		COMPARISON_COLOR  = comparisonColor
   		MAP_DATA          = mapData
 		MAP_WIDTH         = mapData:getWidth()
