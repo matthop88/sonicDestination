@@ -32,7 +32,20 @@ end
 function love.keypressed(key)
     if     key == "space"  then scanForRings()
     elseif key == "return" then MAP_SAVER:save(RING_SCANNER:getObjectsFound()) 
-    elseif key == "r"      then RING_MODE = not RING_MODE                      end
+    elseif key == "r"      then RING_MODE = not RING_MODE
+    elseif key == "shiftright"
+        or key == "shiftleft"
+        or key == "shiftup"
+        or key == "shiftdown" then
+            local ring = RING_SCANNER:getObjectsFound():findSelected(getImageViewer())
+            if ring then
+                if     key == "shiftright" then ring.x = ring.x + 1
+                elseif key == "shiftleft"  then ring.x = ring.x - 1
+                elseif key == "shiftup"    then ring.y = ring.y - 1
+                elseif key == "shiftdown"  then ring.y = ring.y + 1 end
+            end
+    end
+
 end
 
 function love.mousepressed(mx, my)
