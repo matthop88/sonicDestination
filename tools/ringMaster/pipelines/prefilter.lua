@@ -22,22 +22,27 @@ return {
 		for y = 0, imageData:getHeight() - 1 do
 			if PIXEL_UTIL:pixelMatchesColor(imageData, scanX, y, myColor, 0.1, false) then
 				HOT_LIST:add(scanX)
+				self:normalizeHotListElement(#HOT_LIST - 1)
 				break
 			end
 		end
 	end,
 
 	getResults = function(self)
-		self:normalizeHotList()
+		self:normalizeHotListElement(#HOT_LIST)
 		
 		self:printList(HOT_LIST)
 		return self:getHotList()
 	end,
 
-	normalizeHotList = function(self)
-		for n, elt in ipairs(HOT_LIST) do
-			elt.offset = math.max(0, elt.offset - 3)
-			elt.size = elt.size + 3
+	normalizeHotListElement = function(self, index)
+		if index > 0 then
+			local elt = HOT_LIST[index]
+			if not elt.normalized then
+				elt.offset = math.max(0, elt.offset - 3)
+				elt.size = elt.size + 3
+				elt.normalized = true
+			end
 		end
 	end,
 
