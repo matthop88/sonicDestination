@@ -14,13 +14,13 @@ FONTS = {
 }
 
 local isInsideRing = function(ring, px, py)
-    return px >= ring.x and px < ring.x + 16 and py >= ring.y and py < ring.y + 16
+    return px >= ring.x - 8 and px < ring.x + 8 and py >= ring.y - 8 and py < ring.y + 8
 end
 
 local drawRingDetails = function(ring, imageViewer)
     local mx, my = love.mouse.getPosition()
     love.graphics.setColor(1, 1, 1, 0.7)
-    love.graphics.rectangle("fill", imageViewer:pageToScreenRect(ring.x - 2, ring.y - 2, 20, 20))
+    love.graphics.rectangle("fill", imageViewer:pageToScreenRect(ring.x - 10, ring.y - 10, 20, 20))
     love.graphics.setColor(0, 0, 0)
     local scale = imageViewer:getScale()
     love.graphics.rectangle("fill", mx + (16 * scale), my + (16 * scale), 100 * scale, 20 * scale)
@@ -39,12 +39,12 @@ local drawRing = function(ring, imageViewer, ringInfo)
         if ringScale == 1 and isInsideRing(ring, imageViewer:screenToImageCoordinates(love.mouse.getPosition())) then
             drawRingDetails(ring, imageViewer)
         end
-        local x, y = imageViewer:imageToScreenCoordinates(ring.x + 8 - (8 * ringScale) + deltaX, ring.y + 8 - (8 * ringScale) + deltaY)
+        local x, y = imageViewer:imageToScreenCoordinates(ring.x + deltaX, ring.y + deltaY)
         local scale = imageViewer:getScale() * ringScale
         ringInfo:draw(x, y, scale, { 1, 0, 0, RING_PULSE * (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
         love.graphics.setColor(1, 1, 0, (1 - ring.alpha) * 0.7)
         love.graphics.setLineWidth(1 * imageViewer:getScale())
-        love.graphics.rectangle("line", imageViewer:pageToScreenRect(ring.x, ring.y, 16, 16))
+        love.graphics.rectangle("line", imageViewer:pageToScreenRect(ring.x - 8, ring.y - 8, 16, 16))
     end
 end
 
