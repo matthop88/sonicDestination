@@ -56,6 +56,19 @@ end
 
 function drawObjects()
     RING_SCANNER:getObjectsFound():draw(getImageViewer(), RING_INFO)
+    if RING_SCANNER:getOldHotList() then
+        drawHotList()
+    end
+end
+
+function drawHotList()
+    local img = getImageViewer()
+    local hotList = RING_SCANNER:getOldHotList()
+    for n, elt in ipairs(hotList) do
+        local x, y = img:imageToScreenCoordinates(elt.offset, 0)
+        love.graphics.setColor(1, 1, 1, 0.3)
+        love.graphics.rectangle("fill", x, 0, elt.size * img:getScale(), WINDOW_HEIGHT)
+    end
 end
 
 --------------------------------------------------------------
