@@ -3,7 +3,7 @@ local FEEDER     = require("tools/lib/pipeline/feeder")
 
 local PIXEL_UTIL = require("tools/lib/pixelUtil")
 
-local TASK_SLICE_TIME_IN_MS = 12
+local TASK_SLICE_TIME_IN_MS = 3
 
 local COMPARISON_COLOR
 
@@ -43,6 +43,8 @@ prefilterAtBlock = function(params, nextParams)
 
 	if Y_FEEDER:isComplete() then 
 		Y_FEEDER:reset() 
+		SECONDARY_PREFILTER_ENGINE:compressHotListElement(params.block)
+		params.block.prefilteringComplete = true
 		return true
 	end
 
