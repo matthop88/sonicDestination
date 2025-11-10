@@ -10,7 +10,7 @@ local COMPARISON_COLOR
 local PREFILTER_ENGINE = require("tools/ringMaster/pipelines/prefilter")
 local MAP_VLINE
 
-local HOT_LIST, COLD_LIST
+local HOT_LIST
 
 local doPrefiltering, prefilterAtVLine, createMapFeeder
 
@@ -22,8 +22,6 @@ doPrefiltering = function(params, nextParams)
 		return true
 	end
 
-	COLD_LIST = PREFILTER_ENGINE:getColdList()
-		
 	nextParams:init {
 		x = params.MAP_VLINES:next()
 	}
@@ -79,10 +77,6 @@ return {
 	getProgress = function(self)
 		if   MAP_VLINE == nil then return 0
 		else                       return MAP_VLINE / MAP_WIDTH end
-	end,
-
-	getColdList = function(self)
-		return COLD_LIST
 	end,
 
 	getHotList = function(self)
