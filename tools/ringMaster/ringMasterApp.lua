@@ -9,6 +9,7 @@ local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
 local MAP_SAVER     = require("tools/ringMaster/savableMap"):create(MAP_IMG_PATH, (__PARAMS["ringDataOut"] or "sampleRingData") .. ".lua")
+local RING_MODE     = false
 
 require("tools/ringMaster/ringSmarts"):upgradeRingList(RING_SCANNER:getObjectsFound())
 
@@ -29,13 +30,17 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    if key == "return" then
-        MAP_SAVER:save(RING_SCANNER:getObjectsFound())
-    end
+    if     key == "space"  then scanForRings()
+    elseif key == "return" then MAP_SAVER:save(RING_SCANNER:getObjectsFound()) 
+    elseif key == "r"      then RING_MODE = not RING_MODE                      end
 end
 
 function love.mousepressed(mx, my)
-    scanForRings()
+    if RING_MODE then
+        local x, y = getImageViewer():screenToImageCoordinates(mx, my)
+        table.insert(RING_SCANNER:getObjectsFound(), { x = math.floor(x), y = math.floor(y) })
+        RING_MODE = false
+    end
 end
 
 --------------------------------------------------------------
@@ -56,6 +61,13 @@ end
 
 function drawObjects()
     RING_SCANNER:getObjectsFound():draw(getImageViewer(), RING_INFO)
+    love.mouse.setVisible(not RING_MODE)
+    if RING_MODE then
+        local x, y = love.mouse.getPosition()
+        local scale = getImageViewer():getScale()
+        RING_INFO:draw(x, y, scale, { 1, 1, 1 })
+    end
+
 end
 
 --------------------------------------------------------------
