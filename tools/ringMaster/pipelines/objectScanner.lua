@@ -132,18 +132,14 @@ return {
   		PIPELINE:add("Scan All",           doScanning)
 		PIPELINE:add("Scan at VLine",      scanForObjectsAtVLine)
 		PIPELINE:push { MAP_VLINES = createMapFeeder() }
+
+		PREFILTER_2_PIPELINE:setup(COMPARISON_COLOR, MAP_DATA, OBJECT_HEIGHT, PREFILTER_PIPELINE)
 	end,
 
 	execute = function(self)
-		if not PREFILTER_PIPELINE:isComplete() then PREFILTER_PIPELINE:execute()
-		elseif not PREFILTER_2_PIPELINE:isComplete() then 
-			if not PREFILTER_2_PIPELINE:isReady() then
-				PREFILTER_2_PIPELINE:setup(COMPARISON_COLOR, MAP_DATA, OBJECT_HEIGHT, PREFILTER_PIPELINE:getHotList())
-			end                                       
-			PREFILTER_2_PIPELINE:execute()
-		else
-			PIPELINE:execute(TASK_SLICE_TIME_IN_MS) 
-		end
+		if not PREFILTER_PIPELINE:isComplete()   then PREFILTER_PIPELINE:execute()            end
+		if not PREFILTER_2_PIPELINE:isComplete() then PREFILTER_2_PIPELINE:execute()
+		else                                          PIPELINE:execute(TASK_SLICE_TIME_IN_MS) end
 	end,
 
 	isComplete = function(self)
@@ -169,10 +165,6 @@ return {
 
 	getObjectsFound = function(self)
 		return OBJECTS_FOUND
-	end,
-
-	getColdList = function(self)
-		return PREFILTER_PIPELINE:getColdList()
 	end,
 
 	getHotList = function(self)
