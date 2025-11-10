@@ -15,9 +15,14 @@ return {
 
 			next = function(self)
 				local value = self.data[self.index]
+				if value ~= nil then
+					self.index = self.index + 1
+					return value
+				end
+			end,
 
-				self.index = self.index + 1
-				return value
+			pushBack = function(self)
+				self.index = math.max(0, self.index - 1)
 			end,
 
 			getIndex     = function(self) return self.index               end,
