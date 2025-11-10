@@ -5,7 +5,7 @@ return {
 
 			add = function(self, offset)
 				if self:canAppend(offset) then
-					self:getLast().size = self:getLast().size + 1
+					self:joinTogether(self:getLast(), offset)
 				else
 					if #self == 0 or offset ~= self:getLast().offset then
 						table.insert(self, { offset = offset, size = 1 })
@@ -19,8 +19,12 @@ return {
 				end
 			end,
 
+			joinTogether = function(self, rect, offset)
+				rect.size = offset - rect.offset + 1
+			end,
+
 			canJoinTogether = function(self, rect, offset)
-				return rect.offset + rect.size == offset
+				return offset - (rect.offset + rect.size) < 8
 			end,
 
 		}
