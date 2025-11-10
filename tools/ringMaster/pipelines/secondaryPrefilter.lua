@@ -28,25 +28,14 @@ return {
 		if not isHot then block.coldList:add(scanY) end
 	end,
 
-	getResults = function(self, hotList)
-		hotList = self:compressList(hotList)
-
-		return hotList
-	end,
-
-	compressList = function(self, myList)
-		local newList = {}
-		for _, elt in ipairs(myList) do
-			if elt.size > 12 then
-				if elt.coldList then
-					table.insert(newList, { offset = elt.offset, size = elt.size, coldList = self:compressList(elt.coldList) })
-				else
-					table.insert(newList, { offset = elt.offset - 3, size = elt.size - 12, alpha = elt.alpha })
-				end
+	compressHotListElement = function(self, block)
+		local newColdList = {}
+		for _, coldListElt in ipairs(block.coldList) do
+			if coldListElt.size > 12 then
+				table.insert(newColdList, { offset = coldListElt.offset - 3, size = coldListElt.size - 12 })
 			end
 		end
-
-		return newList
+		block.coldList = newColdList
 	end,
 
 	printList = function(self, myList, indent)
