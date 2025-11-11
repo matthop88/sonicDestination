@@ -49,9 +49,11 @@ local drawRing = function(ring, imageViewer, ringInfo)
         local deltaX = ring.deltaX * (ringScale - 1)
         local deltaY = ring.deltaY * (ringScale - 1)
         drawRingBorder(ring, imageViewer)
-        local x, y = imageViewer:imageToScreenCoordinates(ring.x + deltaX, ring.y + deltaY)
-        local scale = imageViewer:getScale() * ringScale
-        ringInfo:draw(x, y, scale, { 1, 0, 0, RING_PULSE * (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
+        if not ring.erased then
+            local x, y = imageViewer:imageToScreenCoordinates(ring.x + deltaX, ring.y + deltaY)
+            local scale = imageViewer:getScale() * ringScale
+            ringInfo:draw(x, y, scale, { 1, 0, 0, RING_PULSE * (1 - ring.alpha) *  (1 - ring.alpha) * 0.7})
+        end
     end
 end
 
