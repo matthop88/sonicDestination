@@ -2,6 +2,7 @@
 --                     Local Variables                      --
 --------------------------------------------------------------
 
+local PIXEL_UTIL    = require("tools/lib/pixelUtil")
 local OBJECT_DATA   = love.image.newImageData("tools/ringMaster/resources/commonObj.png")
 local OBJECT_IMG    = love.graphics.newImage(OBJECT_DATA)
 local RING_QUAD     = love.graphics.newQuad(24, 198, 16, 16, OBJECT_IMG:getWidth(), OBJECT_IMG:getHeight())
@@ -46,9 +47,13 @@ return {
                 if a ~= 0 then
                     local mapX = ring.x + x - self.startX - 8
                     local mapY = ring.y + y - self.startY - 8
-                    mapData:setPixel(mapX, mapY, er, eg, eb, 1)
+                    local mr, mg, mb, ma = mapData:getPixel(mapX, mapY)
+                    if PIXEL_UTIL:colorsMatch(r, g, b, 1, mr, mg, mb, 1, 0.1) then
+                        mapData:setPixel(mapX, mapY, er, eg, eb, 1)
+                    end
                 end
             end
         end
+        ring.erased = true
     end,
 }
