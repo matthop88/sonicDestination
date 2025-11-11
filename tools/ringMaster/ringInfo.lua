@@ -37,4 +37,17 @@ return {
         love.graphics.setColor(color)
         love.graphics.draw(OBJECT_IMG, RING_QUAD, x - (8 * scale), y - (8 * scale), 0, scale, scale)
     end,
+
+    eraseRing = function(self, ring, mapData)
+        for y = self.startY, self.startY + self.height - 1 do
+            for x = self.startX, self.startX + self.width - 1 do
+                local r, g, b, a = OBJECT_DATA:getPixel(x, y)
+                if a ~= 0 then
+                    local mapX = ring.x + x - self.startX - 8
+                    local mapY = ring.y + y - self.startY - 8
+                    mapData:setPixel(mapX, mapY, 0, 0, 0, 1)
+                end
+            end
+        end
+    end,
 }
