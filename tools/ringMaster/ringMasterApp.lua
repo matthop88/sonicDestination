@@ -36,13 +36,18 @@ function love.keypressed(key)
     elseif key == "shiftright"
         or key == "shiftleft"
         or key == "shiftup"
-        or key == "shiftdown" then
+        or key == "shiftdown" 
+        or key == "x" then
             local ring = RING_SCANNER:getObjectsFound():findSelected(getImageViewer())
             if ring then
                 if     key == "shiftright" then ring.x = ring.x + 1
                 elseif key == "shiftleft"  then ring.x = ring.x - 1
                 elseif key == "shiftup"    then ring.y = ring.y - 1
-                elseif key == "shiftdown"  then ring.y = ring.y + 1 end
+                elseif key == "shiftdown"  then ring.y = ring.y + 1 
+                elseif key == "x"          then 
+                    RING_INFO:eraseRing(ring, RING_SCANNER:getMapData()) 
+                    getImageViewer():refresh()
+                end
             end
     end
 
