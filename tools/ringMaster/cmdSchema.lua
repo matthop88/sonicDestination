@@ -12,5 +12,10 @@ return {
 			description = "data file to write out which specifies ring locations",
 			shortcut = "o",
 		},
+
+		mapOut = {
+			description = "map image file to write out",
+			shortcut = "m",
+		},
 	},
 }
