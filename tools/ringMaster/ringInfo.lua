@@ -39,13 +39,14 @@ return {
     end,
 
     eraseRing = function(self, ring, mapData)
+        local er, eg, eb, ea = mapData:getPixel(ring.x, ring.y)
         for y = self.startY, self.startY + self.height - 1 do
             for x = self.startX, self.startX + self.width - 1 do
                 local r, g, b, a = OBJECT_DATA:getPixel(x, y)
                 if a ~= 0 then
                     local mapX = ring.x + x - self.startX - 8
                     local mapY = ring.y + y - self.startY - 8
-                    mapData:setPixel(mapX, mapY, 0, 0, 0, 1)
+                    mapData:setPixel(mapX, mapY, er, eg, eb, 1)
                 end
             end
         end
