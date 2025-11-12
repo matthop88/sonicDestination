@@ -55,6 +55,7 @@ return {
                 cmds = { 
                     {   key = "s", fn = function() self.SONIC:toggleShowSensors()           end, },
                     {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
+                    {   key = "U", fn = function() self.SONIC:moveTo(self.SONIC:getX(), 0)  end, },
                 },
             })
             :add("grid3D",         { 
