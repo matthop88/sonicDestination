@@ -6,6 +6,7 @@ local sonic1Sprite, sonic2Sprite
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
 local JUMP_SOUND = "sonicJumping"
+local GRAPHICS
 
 return {
     ------------------------------------------------------------------
@@ -51,6 +52,8 @@ return {
         self.nextState  = STATES.STAND_RIGHT
 
         self:moveTo(512, self.GROUND_LEVEL)
+
+        GRAPHICS = params.GRAPHICS
         return self
     end,
 
@@ -64,6 +67,8 @@ return {
     draw = function(self)
         self.sprite:draw(self:getX(), self:getY())
         self:drawSensors()
+        GRAPHICS:setColor(0, 1, 1)
+        GRAPHICS:line(0, self.GROUND_LEVEL, 2000, self.GROUND_LEVEL)
     end,
 
     drawSensors = function(self)
@@ -158,7 +163,11 @@ return {
     
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
-        self.position.y = math.min(self.GROUND_LEVEL, self.position.y + (self.velocity.y * dt))
+        local oldYPosition = self.position.y
+        self.position.y = self.position.y + (self.velocity.y * dt)
+        if self.velocity.y > 0 and oldYPosition - 10 < self.GROUND_LEVEL and self.position.y + 10 >= self.GROUND_LEVEL then
+            self.position.y = self.GROUND_LEVEL
+        end
     end,
 
     updateSensors = function(self, dt)
