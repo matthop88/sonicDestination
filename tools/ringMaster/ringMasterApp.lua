@@ -27,6 +27,9 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
     RING_SCANNER:getObjectsFound():update(dt, RING_SCANNER:isComplete())
+    if not RING_SCANNER:isComplete() then
+        setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
+    end
 end
 
 function love.keypressed(key)
@@ -110,7 +113,8 @@ PLUGINS = require("plugins/engine")
     :add("drawingLayer", { drawingFn   = drawObjects      })
     :add("progressBar",
     {
-        message  = "Scanning for Rings...",
-        callback = function() return RING_SCANNER:getProgress() end,
+        message       = "Scanning for Rings...",
+        callback      = function() return RING_SCANNER:getProgress() end,
+        setTextFnName = "setProgressBarText",
     })
     :add("readout",      { printFnName = "printToReadout" })
