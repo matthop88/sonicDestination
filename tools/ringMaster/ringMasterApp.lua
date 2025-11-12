@@ -8,6 +8,7 @@ local RING_INFO     = require("tools/ringMaster/ringInfo")
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
+local MAP_IMG_OUT   = "resources/zones/maps/" .. (__PARAMS["mapOut"] or "sampleRingMapImage")
 local MAP_SAVER     = require("tools/ringMaster/savableMap"):create(MAP_IMG_PATH, (__PARAMS["ringDataOut"] or "sampleRingData") .. ".lua")
 local RING_MODE     = false
 
@@ -33,10 +34,11 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    if     key == "space"  then scanForRings()
-    elseif key == "return" then MAP_SAVER:save(RING_SCANNER:getObjectsFound()) 
-    elseif key == "r"      then RING_MODE = not RING_MODE
-    elseif key == "c"      then printToReadout("Number of Rings: " .. #RING_SCANNER:getObjectsFound())
+    if     key == "space"       then scanForRings()
+    elseif key == "return"      then MAP_SAVER:save(RING_SCANNER:getObjectsFound()) 
+    elseif key == "shiftreturn" then saveMapImage()
+    elseif key == "r"           then RING_MODE = not RING_MODE
+    elseif key == "c"           then printToReadout("Number of Rings: " .. #RING_SCANNER:getObjectsFound())
     elseif key == "shiftright"
         or key == "shiftleft"
         or key == "shiftup"
@@ -89,7 +91,12 @@ function drawObjects()
         local scale = getImageViewer():getScale()
         RING_INFO:draw(x, y, scale, { 1, 1, 1 })
     end
+end
 
+function saveMapImage()
+    local fileData = MAP_SAVER:saveImage(RING_SCANNER:getMapData(), MAP_IMG_OUT)
+    printToReadout("Changes have been saved (" .. fileData:getSize() .. " bytes.)")
+    print("Saved to " .. love.filesystem.getSaveDirectory())
 end
 
 --------------------------------------------------------------
