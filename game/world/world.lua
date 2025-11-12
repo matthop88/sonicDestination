@@ -10,7 +10,10 @@ return {
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
-        table.insert(self.objects, requireRelative("world/gameObjects/object"):create("objects/ring", 500, 500, GRAPHICS))
+        local ringMap = requireRelative("resources/zones/maps/ringMap")
+        for _, ring in ipairs(ringMap) do
+            table.insert(self.objects, requireRelative("world/gameObjects/object"):create("objects/ring", ring.x, ring.y, GRAPHICS))
+        end
         return self
     end,
 
