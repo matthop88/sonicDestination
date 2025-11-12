@@ -16,7 +16,7 @@ return {
         MESSAGE  = params.message or MESSAGE
         Y_COORD  = params.y
 
-        if params.setTextFnName ~- nil then
+        if params.setTextFnName ~= nil then
             _G[params.setTextFnName] = function(msg) MESSAGE = msg end
         end
         
