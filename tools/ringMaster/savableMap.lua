@@ -6,7 +6,8 @@ return {
 
 			save = function(self, objList)
 				local dataString = self:construct(objList)
-				print(dataString)
+				love.filesystem.createDirectory("resources/zones/maps")
+				love.filesystem.write("resources/zones/maps/" .. self.filename, dataString)
 			end,
 
 			saveImage = function(self, imgData, imgName)
