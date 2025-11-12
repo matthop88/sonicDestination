@@ -6,7 +6,6 @@ local sonic1Sprite, sonic2Sprite
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
 local JUMP_SOUND = "sonicJumping"
-local GRAPHICS
 
 return {
     ------------------------------------------------------------------
@@ -53,7 +52,6 @@ return {
 
         self:moveTo(512, self.GROUND_LEVEL)
 
-        GRAPHICS = params.GRAPHICS
         return self
     end,
 
@@ -67,8 +65,6 @@ return {
     draw = function(self)
         self.sprite:draw(self:getX(), self:getY())
         self:drawSensors()
-        GRAPHICS:setColor(0, 1, 1)
-        GRAPHICS:line(0, self.GROUND_LEVEL, 2000, self.GROUND_LEVEL)
     end,
 
     drawSensors = function(self)
