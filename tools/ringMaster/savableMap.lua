@@ -9,6 +9,11 @@ return {
 				print(dataString)
 			end,
 
+			saveImage = function(self, imgData, imgName)
+				love.filesystem.createDirectory("resources/zones/maps")
+				return imgData:encode("png", imgName .. ".png")
+			end,
+
 			construct = function(self, objList)
 				local dataString = "return {\n"
 				dataString = dataString .. "  sourceImage = \"" .. self.srcImg .. "\",\n"
