@@ -49,6 +49,7 @@ end
 function love.update(dt)
     PROP_LOADER:update(dt)
     SONIC:update(dt)
+    WORLD:update(dt)
     updateRefreshed(dt)
 end
 
