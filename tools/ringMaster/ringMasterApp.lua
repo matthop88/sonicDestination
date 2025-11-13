@@ -14,6 +14,8 @@ local RING_MODE     = false
 
 require("tools/ringMaster/ringSmarts"):upgradeRingList(RING_SCANNER:getObjectsFound())
 
+local QUESTION_FONT = love.graphics.newFont(64)
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -93,6 +95,18 @@ function drawObjects()
         local scale = getImageViewer():getScale()
         RING_INFO:draw(x, y, scale, { 1, 1, 1 })
     end
+    drawQuestionMark()
+end
+
+function drawQuestionMark()
+    love.graphics.setColor(0.3, 0.3, 0.3, 0.2)
+    love.graphics.rectangle("fill", 1110, 10, 80, 80)
+    love.graphics.setColor(0, 0, 0, 0.1)
+    love.graphics.setLineWidth(3)
+    love.graphics.rectangle("line", 1110, 10, 80, 80)
+    love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.setFont(QUESTION_FONT)
+    love.graphics.printf("?", 1110, 15, 80, "center")
 end
 
 function saveMapImage()
