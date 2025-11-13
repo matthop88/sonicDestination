@@ -50,6 +50,12 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            drawImage = function(self, image, x, y)
+                love.graphics.setCanvas(self.buffer)
+                graphics:drawImage(image, x, y)
+                love.graphics.setCanvas()
+            end,
+
             printf    = function(self, text, x, y, w, align)
                 love.graphics.setCanvas(self.buffer)
                 graphics:printf(text, x, y, w, align)
@@ -110,6 +116,14 @@ return {
 
                 love.graphics.setColor(c)
                 love.graphics.draw(self.buffer, x, y, r, sx, sy)
+            end,
+
+            getBuffer = function(self)
+                return self.buffer
+            end,
+
+            setFilter = function(self, a, b)
+                self.buffer:setFilter(a, b)
             end,
 
             saveImage = function(self, imgName)

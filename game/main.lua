@@ -49,6 +49,7 @@ end
 function love.update(dt)
     PROP_LOADER:update(dt)
     SONIC:update(dt)
+    WORLD:update(dt)
     updateRefreshed(dt)
 end
 
@@ -82,7 +83,7 @@ end
 --------------------------------------------------------------
 
 if __DEV_MODE == true then
-    require("sonicPlugins"):init({ SONIC = SONIC, GRAPHICS = GRAPHICS, PROP_LOADER = PROP_LOADER })
+    require("sonicPlugins"):init({ SONIC = SONIC, GRAPHICS = GRAPHICS, WORLD = WORLD, PROP_LOADER = PROP_LOADER })
 end
 
 --[[

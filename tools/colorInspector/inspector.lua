@@ -50,11 +50,13 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 love.window.setTitle("Color Inspector")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local imgPath = "resources/images/sadInspector.png"
+local imgPath                     = "resources/images/sadInspector.png"
+local imgName                     = __PARAMS["image"]
 
-if __INSPECTOR_FILE ~= nil then
-    imgPath = "resources/images/spriteSheets/" .. __INSPECTOR_FILE .. ".png"
+if imgName ~= nil then
+    imgPath = (__PARAMS["path"] or "resources/images/spriteSheets/") .. imgName .. ".png"
 end
+
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --

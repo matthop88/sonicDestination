@@ -1,20 +1,42 @@
-return {
-    getPixelColorAt = function(self, imageData, x, y)
-        local r, g, b, a = imageData:getPixel(math.floor(x), math.floor(y))
-        return { r = r, g = g, b = b, a = a }
-    end,
+-- Much more optimized version of pixel matching algorithm.
+-- Performance difference:
+-- Chunkalyzation of 10240 x 1280 image -> 4.73 sec (was 8.36 sec)
+-- Tileination of     2304 x 1280 image -> 7.20 sec (was 9.57 sec)
+-- Over all, a 20-40% improvement in performance.
 
-    colorsMatch = function(self, c1, c2)
-        return c1 ~= nil 
-           and c2 ~= nil
-           and math.abs(c1.r - c2.r) < 0.005
-           and math.abs(c1.g - c2.g) < 0.005 
-           and math.abs(c1.b - c2.b) < 0.005
-           and math.abs(c1.a - c2.a) < 0.005
+return {
+    colorsMatch = function(self, r1, g1, b1, a1, r2, g2, b2, a2, tolerance)
+        tolerance = tolerance or 0.005
+        return math.abs(r1 - r2) < tolerance
+           and math.abs(g1 - g2) < tolerance
+           and math.abs(b1 - b2) < tolerance
+           and math.abs(a1 - a2) < tolerance
     end,
 
     pixelsMatch = function(self, imageData1, x1, y1, imageData2, x2, y2)
-        return self:colorsMatch(self:getPixelColorAt(imageData1, x1, y1), self:getPixelColorAt(imageData2, x2, y2))
-    end, 
-                
+        local r1, g1, b1, a1 = imageData1:getPixel(math.floor(x1), math.floor(y1))
+        local r2, g2, b2, a2 = imageData2:getPixel(math.floor(x2), math.floor(y2))
+        return self:colorsMatch(r1, g1, b1, a1, r2, g2, b2, a2)
+    end,
+
+    pixelMatchesColor = function(self, imageData, x, y, c, tolerance, debug)
+        local r, g, b, a = imageData:getPixel(x, y)
+        if debug then
+            print("{ r = " .. r .. ", g = " .. g .. ", b = " .. b .. ", a = " .. a .. " } vs { r = " .. c.r .. ", g = " .. c.g .. ", b = " .. c.b .. ", a = " .. c.a .. " }")
+        end
+            
+        return self:colorsMatch(r, g, b, a, c.r, c.g, c.b, c.a, tolerance)
+    end,
+        
+    pixelsMatchWithWildcardTransparency = function(self, imageData1, x1, y1, imageData2, x2, y2, debug)
+        local r1, g1, b1, a1 = imageData1:getPixel(math.floor(x1), math.floor(y1))
+        if a1 == 0 then return true
+        else
+            local r2, g2, b2, a2 = imageData2:getPixel(math.floor(x2), math.floor(y2))
+            if debug then
+                print("{ r = " .. r1 .. ", g = " .. g1 .. ", b = " .. b1 .. ", a = " .. a1 .. " } vs { r = " .. r2 .. ", g = " .. g2 .. ", b = " .. b2 .. ", a = " .. a2 .. " }")
+            end
+            return self:colorsMatch(r1, g1, b1, a1, r2, g2, b2, a2, 0.1)
+        end
+    end,        
 }

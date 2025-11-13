@@ -51,6 +51,7 @@ return {
         self.nextState  = STATES.STAND_RIGHT
 
         self:moveTo(512, self.GROUND_LEVEL)
+
         return self
     end,
 
@@ -158,7 +159,11 @@ return {
     
     updatePosition = function(self, dt)
         self.position.x = self.position.x + (self.velocity.x * dt)
-        self.position.y = math.min(self.GROUND_LEVEL, self.position.y + (self.velocity.y * dt))
+        local oldYPosition = self.position.y
+        self.position.y = self.position.y + (self.velocity.y * dt)
+        if self.velocity.y > 0 and oldYPosition - 10 < self.GROUND_LEVEL and self.position.y + 10 >= self.GROUND_LEVEL then
+            self.position.y = self.GROUND_LEVEL
+        end
     end,
 
     updateSensors = function(self, dt)

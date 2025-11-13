@@ -25,6 +25,7 @@ local GRAVITY = {
 return {
     init = function(self, params)
         self.SONIC      = params.SONIC
+        self.WORLD      = params.WORLD
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
@@ -34,6 +35,7 @@ return {
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
             self.SONIC:update(dt) 
+            self.WORLD:update(dt)
             updateRefreshed(dt)
         end
 
@@ -55,6 +57,7 @@ return {
                 cmds = { 
                     {   key = "s", fn = function() self.SONIC:toggleShowSensors()           end, },
                     {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
+                    {   key = "U", fn = function() self.SONIC:moveTo(self.SONIC:getX(), 0)  end, },
                 },
             })
             :add("grid3D",         { 

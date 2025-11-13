@@ -34,6 +34,8 @@ return {
 			scan = function(self)
 				if WORLD:getSolidAt(self.x, self.y + 1) == 1 then
 					self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 20
+				elseif WORLD:getSolidAt(self.x, self.y + 17) == 1 then
+					self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 4
 				else
 					self.owner.GROUND_LEVEL = 1262
 				end

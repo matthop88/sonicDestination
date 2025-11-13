@@ -2,12 +2,7 @@ return {
     x            = 0,
     y            = 0,
     scale        = 1,
-    imagePath    = nil,
-    imageData    = nil,
-    image        = nil,
-    horizMargins = 0,
-    vertMargins  = 0,
-
+    
     init = function(self, params)
         self.imagePath    = params.imagePath
         self.pixelated    = params.pixelated
@@ -74,29 +69,18 @@ return {
         self.y = (screenY / self.scale) - imageY
     end,
 
-    getImage = function(self)
-        return self.image
-    end,
+    getImage       = function(self) return self.image                                      end,
+    getImageData   = function(self) return self.imageData                                  end,
+
+    getImageWidth  = function(self) return self.image:getWidth()                           end,
+    getImageHeight = function(self) return self.image:getHeight()                          end,
+
+    getScale       = function(self) return self.scale                                      end,
+
+    getPageWidth   = function(self) return self:getImageWidth()  + (self.horizMargins * 2) end,
+    getPageHeight  = function(self) return self:getImageHeight() + (self.vertMargins  * 2) end,
     
-    getImageWidth = function(self)
-        return self.image:getWidth()
-    end,
-
-    getImageHeight = function(self)
-        return self.image:getHeight()
-    end,
-
-    getPageWidth   = function(self)
-        return self:getImageWidth()  + (self.horizMargins * 2)
-    end,
-
-    getPageHeight  = function(self)
-        return self:getImageHeight() + (self.vertMargins  * 2)
-    end,
-    
-    getImageSize   = function(self)
-        return self:getImageWidth(), self:getImageHeight()
-    end,
+    getImageSize   = function(self) return self:getImageWidth(), self:getImageHeight()     end,
 
     getImagePixelAt = function(self, x, y)
         return self.imageData:getPixel(math.floor(x), math.floor(y))
@@ -126,10 +110,6 @@ return {
         return self.imageData:encode("png", imgName .. ".png")
     end,
             
-    getScale = function(self)
-        return self.scale
-    end,
-
     draw = function(self)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.image, (self.x + self.horizMargins) * self.scale, (self.y + self.vertMargins) * self.scale, 0, self.scale, self.scale)
@@ -144,6 +124,3 @@ return {
         self.y = math.min(0, math.max(self.y, (love.graphics:getHeight() / self.scale) - self:getPageHeight()))
     end,
 }
-
-
-

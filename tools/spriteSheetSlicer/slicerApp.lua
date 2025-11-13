@@ -110,13 +110,15 @@ local animRects   = {
 
     getSelectedSprites = function(self)
         if self.selectedIndex ~= 0 then
-            return self[self.selectedIndex].sprites
+            if self[self.selectedIndex] == nil then return nil
+            else                                    return self[self.selectedIndex].sprites end
         end
     end,
 
     getSelectedFPS = function(self)
         if self.selectedIndex ~= 0 then
-            return self[self.selectedIndex].fps
+            if self[self.selectedIndex] == nil then return nil
+            else                                    return self[self.selectedIndex].fps end
         end
     end,
 
@@ -136,6 +138,7 @@ local animRects   = {
 }
             
 local imgPath     = "resources/images/sadSlicer.png"
+local imgName     = __PARAMS["image"]
 
 local sheetInfo   = { spriteRects = {}, animations = {}, MARGIN_BG_COLOR = { r = 0, g = 0, b = 0, a = 1 }, SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 } }
 local gallery
@@ -144,9 +147,20 @@ local gallery
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
-if __SLICER_FILE ~= nil then
-    sheetInfo = require("tools/spriteSheetSlicer/data/" .. __SLICER_FILE)
-    imgPath = sheetInfo.imagePath
+
+if imgName ~= nil then
+    imgPath = __PARAMS["path"]
+    if not imgPath then
+        sheetInfo = require("tools/spriteSheetSlicer/data/" .. imgName)
+        sheetInfo.spriteRects = sheetInfo.spriteRects or {}
+        sheetInfo.animations  = sheetInfo.animations  or {}
+        sheetInfo.MARGIN_BG_COLOR.a = sheetInfo.MARGIN_BG_COLOR.a or 1
+        sheetInfo.SPRITE_BG_COLOR.a = sheetInfo.SPRITE_BG_COLOR.a or 1
+        
+        imgPath = sheetInfo.imagePath
+    else
+        imgPath = imgPath .. imgName .. ".png"
+    end
 end
 
 love.window.setTitle("Sprite Sheet Slicer - SLICING...")
