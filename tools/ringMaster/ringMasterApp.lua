@@ -98,13 +98,31 @@ function drawObjects()
     drawQuestionMark()
 end
 
+
 function drawQuestionMark()
+    local mx, my = love.mouse.getPosition()
+    if mx >= 1110 and my <= 90 then drawQuestionMarkHighlighted()
+    else                            drawQuestionMarkUnhighlighted()  end
+end
+
+function drawQuestionMarkUnhighlighted()
     love.graphics.setColor(0.3, 0.3, 0.3, 0.2)
     love.graphics.rectangle("fill", 1110, 10, 80, 80)
     love.graphics.setColor(0, 0, 0, 0.1)
     love.graphics.setLineWidth(3)
     love.graphics.rectangle("line", 1110, 10, 80, 80)
     love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.setFont(QUESTION_FONT)
+    love.graphics.printf("?", 1110, 15, 80, "center")
+end
+
+function drawQuestionMarkHighlighted()
+    love.graphics.setColor(0.3, 0.3, 0.3, 0.6)
+    love.graphics.rectangle("fill", 1110, 10, 80, 80)
+    love.graphics.setColor(1, 1, 0, 0.6)
+    love.graphics.setLineWidth(3)
+    love.graphics.rectangle("line", 1110, 10, 80, 80)
+    love.graphics.setColor(1, 1, 0, 0.9)
     love.graphics.setFont(QUESTION_FONT)
     love.graphics.printf("?", 1110, 15, 80, "center")
 end
