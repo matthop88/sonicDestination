@@ -29,7 +29,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
-    RING_SCANNER:getObjectsFound():update(dt, RING_SCANNER:isComplete())
+    RING_SCANNER:getObjectsFound():update(dt, getImageViewer(), RING_SCANNER:isComplete())
     if not RING_SCANNER:isComplete() then
         setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
