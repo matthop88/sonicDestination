@@ -58,6 +58,9 @@ local drawRing = function(ring, imageViewer, ringInfo)
 end
 
 local updateRing = function(ring, dt)
+    ring.detailsTimer = ring.detailsTimer or 0
+    ring.detailsTimer = math.max(0, ring.detailsTimer - (60 * dt))
+
 	if ring.alpha == nil then 
         ring.alpha  = 1
         ring.speed  = math.random(2, 6) / 3
@@ -73,15 +76,19 @@ local drawRings = function(self, imageViewer, ringInfo)
 		drawRing(ring, imageViewer, ringInfo)
 	end
     for _, ring in ipairs(self) do
-        if ring.alpha == 0 and isInsideRing(ring, imageViewer:screenToImageCoordinates(love.mouse.getPosition())) then
+        if ring.alpha == 0 and ring.detailsTimer > 0 then
             drawRingDetails(ring, imageViewer)
         end
     end
 end
 
-local updateRings = function(self, dt, isComplete)
-	for _, ring in ipairs(self) do
+local updateRings = function(self, dt, imageViewer, isComplete)
+    for _, ring in ipairs(self) do
 		updateRing(ring, dt)
+        if isInsideRing(ring, imageViewer:screenToImageCoordinates(love.mouse.getPosition())) then
+            for _, ring2 in ipairs(self) do ring2.detailsTimer = 0 end
+            ring.detailsTimer = 20
+        end
 	end
 
     ROTATION = ROTATION + (math.pi / 90)
