@@ -68,7 +68,13 @@ function love.mousepressed(mx, my)
         local x, y = getImageViewer():screenToImageCoordinates(mx, my)
         table.insert(RING_SCANNER:getObjectsFound(), { x = math.floor(x), y = math.floor(y) })
         RING_MODE = false
+    else
+        QUESTION_BOX:handleMousepressed(mx, my)
     end
+end
+
+function love.mousereleased(mx, my)
+    QUESTION_BOX:handleMousereleased(mx, my)
 end
 
 --------------------------------------------------------------
