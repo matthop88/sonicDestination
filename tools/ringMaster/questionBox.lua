@@ -6,11 +6,18 @@ return {
 			draw = function(self)
 				local mx, my = love.mouse.getPosition()
 				if mx >= x and mx < x + 80 and my >= y and my < y + 80 then
-					self:drawHighlighted()
+					if love.mouse.isDown(1) then self:drawClicked()
+					else                         self:drawHighlighted() end
 				else
 					self:drawUnhighlighted()
 				end
 			end,
+
+			drawClicked     = function(self)
+				self:drawPanel        { 1,   1,   1,   0.6 }
+    			self:drawBorder       { 0,   0,   0,   0.6 }
+    			self:drawQuestionMark { 0,   0,   0,   0.9 }
+    		end,
 
 			drawHighlighted = function(self)
     			self:drawPanel        { 0.3, 0.3, 0.3, 0.6 }
