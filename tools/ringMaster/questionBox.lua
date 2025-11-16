@@ -1,7 +1,8 @@
 local QUESTION_FONT = love.graphics.newFont(64)
+local DOCS_FONT     = love.graphics.newFont(24)
 
 return {
-	create = function(self, x, y)
+	create = function(self, x, y, lines)
 		local origX = x
 		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 9 })
 		local h     = require("tools/lib/tweenableValue"):create(80,    { speed = 2 })
@@ -15,6 +16,17 @@ return {
 					else                         self:drawHighlighted() end
 				elseif x:get() ~= origX then self:drawHighlighted()
 				else                         self:drawUnhighlighted() end
+				if opened then self:drawOpened() end
+			end,
+
+			drawOpened = function(self)
+				if not h:inFlux() and not x:inFlux() then
+					love.graphics.setColor(1, 1, 1)
+					love.graphics.setFont(DOCS_FONT)
+					for n, line in ipairs(lines) do
+						love.graphics.printf(line, x:get() + 20, (y + 5) + (n * 24), self:getWidth() - 40, "left")
+					end
+				end
 			end,
 
 			setOpened = function(self) 
