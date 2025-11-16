@@ -33,6 +33,7 @@ function love.update(dt)
     if not RING_SCANNER:isComplete() then
         setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
+    QUESTION_BOX:update(dt)
 end
 
 function love.keypressed(key)
