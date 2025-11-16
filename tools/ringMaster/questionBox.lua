@@ -4,7 +4,7 @@ return {
 	create = function(self, x, y)
 		local origX = x
 		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 9 })
-		local h     = 80
+		local h     = require("tools/lib/tweenableValue"):create(80,    { speed = 3 })
 		local mousePressed = false
 		local opened       = false
 		
@@ -13,11 +13,8 @@ return {
 				if self:isInside(love.mouse.getPosition()) then
 					if love.mouse.isDown(1) then self:drawClicked()
 					else                         self:drawHighlighted() end
-				elseif opened then
-					self:drawHighlighted()
-				else
-					self:drawUnhighlighted()
-				end
+				elseif x:get() ~= origX then self:drawHighlighted()
+				else                         self:drawUnhighlighted() end
 			end,
 
 			setOpened = function(self) 
@@ -25,7 +22,7 @@ return {
 			end,
 
 			setClosed = function(self) 
-				x:setDestination(origX)  
+				h:setDestination(80)
 			end,
 
 			getWidth  = function(self)
@@ -33,7 +30,7 @@ return {
 			end,
 
 			isInside = function(self, px, py)
-				return px >= x:get() and px < 1190 and py >= y and py < y + h
+				return px >= x:get() and px < 1190 and py >= y and py < y + h:get()
 			end,
 				
 			drawClicked     = function(self)
@@ -56,13 +53,13 @@ return {
 
     		drawPanel = function(self, color)
     			love.graphics.setColor(color)
-    			love.graphics.rectangle("fill", x:get(), y, self:getWidth(), h)
+    			love.graphics.rectangle("fill", x:get(), y, self:getWidth(), h:get())
     		end,
 
     		drawBorder = function(self, color)
     			love.graphics.setColor(color)
     			love.graphics.setLineWidth(3)
-    			love.graphics.rectangle("line", x:get(), y, self:getWidth(), h)
+    			love.graphics.rectangle("line", x:get(), y, self:getWidth(), h:get())
     		end,
 
     		drawQuestionMark = function(self, color)
@@ -73,6 +70,12 @@ return {
 
 			update = function(self, dt)
 				x:update(dt)
+				h:update(dt)
+				if opened and not x:inFlux() then
+					h:setDestination(320)
+				elseif not opened and not h:inFlux() then
+					x:setDestination(origX)
+				end
 			end,
 
 			handleMousepressed = function(self, mx, my)
