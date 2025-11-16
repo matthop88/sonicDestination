@@ -3,8 +3,8 @@ local QUESTION_FONT = love.graphics.newFont(64)
 return {
 	create = function(self, x, y)
 		local origX = x
-		local w = 80
-		local h = 80
+		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 3 })
+		local h     = 80
 		local mousePressed = false
 		local opened       = false
 		
@@ -19,17 +19,19 @@ return {
 			end,
 
 			setOpened = function(self) 
-				x = 10
-				w = 1180 
+				x:setDestination(10)
 			end,
 
 			setClosed = function(self) 
-				x = origX
-				w = 80   
+				x:setDestination(origX)  
+			end,
+
+			getWidth  = function(self)
+				return 1190 - x:get()
 			end,
 
 			isInside = function(self, px, py)
-				return px >= x and px < x + w and py >= y and py < y + h
+				return px >= x:get() and px < x:get() + self:getWidth() and py >= y and py < y + h
 			end,
 				
 			drawClicked     = function(self)
@@ -52,19 +54,23 @@ return {
 
     		drawPanel = function(self, color)
     			love.graphics.setColor(color)
-    			love.graphics.rectangle("fill", x, y, w, h)
+    			love.graphics.rectangle("fill", x:get(), y, self:getWidth(), h)
     		end,
 
     		drawBorder = function(self, color)
     			love.graphics.setColor(color)
     			love.graphics.setLineWidth(3)
-    			love.graphics.rectangle("line", x, y, w, h)
+    			love.graphics.rectangle("line", x:get(), y, self:getWidth(), h)
     		end,
 
     		drawQuestionMark = function(self, color)
     			love.graphics.setColor(color)
     			love.graphics.setFont(QUESTION_FONT)
-    			love.graphics.printf("?", x, y + 5, 80, "center")
+    			love.graphics.printf("?", x:get(), y + 5, 80, "center")
+			end,
+
+			update = function(self, dt)
+				x:update(dt)
 			end,
 
 			handleMousepressed = function(self, mx, my)
