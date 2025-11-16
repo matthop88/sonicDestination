@@ -14,7 +14,21 @@ local RING_MODE     = false
 
 require("tools/ringMaster/ringSmarts"):upgradeRingList(RING_SCANNER:getObjectsFound())
 
-local QUESTION_BOX = require("tools/ringMaster/questionBox"):create(1110, 10)
+local DOCS = {
+    "Space         - Scan for Rings",
+    "r                 - Enter / Exit Ring Placement mode",
+    "x                 - Erase ring (in ring placement mode)",
+    "c                 - Show number of rings found",
+    "Shift-Left,",
+    "Shift-Right,",
+    "Shift-Up,",
+    "Shift-Down   - Move a selected ring one pixel",
+    "Return         - Save Ring placement data",
+    "Shift-Return - Save updated map image",
+    
+}
+
+local QUESTION_BOX = require("tools/ringMaster/questionBox"):create(1110, 10, DOCS)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
