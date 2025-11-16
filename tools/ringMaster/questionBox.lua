@@ -5,7 +5,7 @@ return {
 	create = function(self, x, y, lines)
 		local origX = x
 		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 9 })
-		local h     = require("tools/lib/tweenableValue"):create(80,    { speed = 2 })
+		local h     = require("tools/lib/tweenableValue"):create(80,    { speed = 6 })
 		local mousePressed = false
 		local opened       = false
 		
@@ -16,15 +16,20 @@ return {
 					else                         self:drawHighlighted() end
 				elseif x:get() ~= origX then self:drawHighlighted()
 				else                         self:drawUnhighlighted() end
-				if opened then self:drawOpened() end
+				self:drawText()
 			end,
 
-			drawOpened = function(self)
-				if not h:inFlux() and not x:inFlux() then
+			drawText = function(self)
+				if not x:inFlux() and x:get() ~= origX then
 					love.graphics.setColor(1, 1, 1)
 					love.graphics.setFont(DOCS_FONT)
+					local lineY
+					local maxN = #lines * ((h:get() - 80) / 240)
 					for n, line in ipairs(lines) do
-						love.graphics.printf(line, x:get() + 20, (y + 5) + (n * 24), self:getWidth() - 40, "left")
+						lineY = (y + 5) + (n * 24)
+						if n <= maxN then
+							love.graphics.printf(line, x:get() + 20, lineY, self:getWidth() - 40, "left")
+						end
 					end
 				end
 			end,
@@ -48,19 +53,19 @@ return {
 			drawClicked     = function(self)
 				self:drawPanel        { 1,   1,   1,   0.6 }
     			self:drawBorder       { 0,   0,   0,   0.6 }
-    			self:drawQuestionMark { 0,   0,   0,   0.9 * (1 - ((h:get() - 80) / 240)) }
+    			self:drawQuestionMark { 0,   0,   0,   0.9 * ((1 - (self:getWidth() - 80) / 720)) }
     		end,
 
 			drawHighlighted = function(self)
     			self:drawPanel        { 0.3, 0.3, 0.3, 0.6 }
     			self:drawBorder       { 1,   1,   0,   0.6 }
-    			self:drawQuestionMark { 1,   1,   0,   0.9 * (1 - ((h:get() - 80) / 240)) }
+    			self:drawQuestionMark { 1,   1,   0,   0.9 * ((1 - (self:getWidth() - 80) / 720)) }
     		end,
 
     		drawUnhighlighted = function(self)
     			self:drawPanel        { 0.3, 0.3, 0.3, 0.2 }
     			self:drawBorder       { 0,   0,   0,   0.1 }
-    			self:drawQuestionMark { 1,   1,   1,   0.2 * (1 - ((h:get() - 80) / 240)) }
+    			self:drawQuestionMark { 1,   1,   1,   0.2 * ((1 - (self:getWidth() - 80) / 720)) }
     		end,
 
     		drawPanel = function(self, color)
