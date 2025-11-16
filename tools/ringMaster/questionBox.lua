@@ -3,7 +3,7 @@ local QUESTION_FONT = love.graphics.newFont(64)
 return {
 	create = function(self, x, y)
 		local origX = x
-		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 3 })
+		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 9 })
 		local h     = 80
 		local mousePressed = false
 		local opened       = false
