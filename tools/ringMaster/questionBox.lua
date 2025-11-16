@@ -13,13 +13,15 @@ return {
 				if self:isInside(love.mouse.getPosition()) then
 					if love.mouse.isDown(1) then self:drawClicked()
 					else                         self:drawHighlighted() end
+				elseif opened then
+					self:drawHighlighted()
 				else
 					self:drawUnhighlighted()
 				end
 			end,
 
 			setOpened = function(self) 
-				x:setDestination(10)
+				x:setDestination(200)
 			end,
 
 			setClosed = function(self) 
@@ -27,11 +29,11 @@ return {
 			end,
 
 			getWidth  = function(self)
-				return 1190 - x:get()
+				return math.min(800, 1190 - x:get())
 			end,
 
 			isInside = function(self, px, py)
-				return px >= x:get() and px < x:get() + self:getWidth() and py >= y and py < y + h
+				return px >= x:get() and px < 1190 and py >= y and py < y + h
 			end,
 				
 			drawClicked     = function(self)
