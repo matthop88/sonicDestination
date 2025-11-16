@@ -4,7 +4,7 @@ return {
 	create = function(self, x, y)
 		local origX = x
 		local x     = require("tools/lib/tweenableValue"):create(origX, { speed = 9 })
-		local h     = require("tools/lib/tweenableValue"):create(80,    { speed = 3 })
+		local h     = require("tools/lib/tweenableValue"):create(80,    { speed = 2 })
 		local mousePressed = false
 		local opened       = false
 		
@@ -36,19 +36,19 @@ return {
 			drawClicked     = function(self)
 				self:drawPanel        { 1,   1,   1,   0.6 }
     			self:drawBorder       { 0,   0,   0,   0.6 }
-    			self:drawQuestionMark { 0,   0,   0,   0.9 }
+    			self:drawQuestionMark { 0,   0,   0,   0.9 * (1 - ((h:get() - 80) / 240)) }
     		end,
 
 			drawHighlighted = function(self)
     			self:drawPanel        { 0.3, 0.3, 0.3, 0.6 }
     			self:drawBorder       { 1,   1,   0,   0.6 }
-    			self:drawQuestionMark { 1,   1,   0,   0.9 }
+    			self:drawQuestionMark { 1,   1,   0,   0.9 * (1 - ((h:get() - 80) / 240)) }
     		end,
 
     		drawUnhighlighted = function(self)
     			self:drawPanel        { 0.3, 0.3, 0.3, 0.2 }
     			self:drawBorder       { 0,   0,   0,   0.1 }
-    			self:drawQuestionMark { 1,   1,   1,   0.2 }
+    			self:drawQuestionMark { 1,   1,   1,   0.2 * (1 - ((h:get() - 80) / 240)) }
     		end,
 
     		drawPanel = function(self, color)
