@@ -15,6 +15,8 @@ local RING_MODE     = false
 require("tools/ringMaster/ringSmarts"):upgradeRingList(RING_SCANNER:getObjectsFound())
 
 local DOCS = {
+    "Arrow Keys    - Scroll map",
+    "z/a           - Zoom in/out",
     "Space         - Scan for Rings",
     "r                 - Enter / Exit Ring Placement mode",
     "x                 - Erase ring (in ring placement mode)",
