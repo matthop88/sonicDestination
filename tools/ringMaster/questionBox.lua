@@ -29,7 +29,15 @@ return {
 					for n, line in ipairs(lines) do
 						lineY = (y + 5) + (n * 24)
 						if n <= maxN then
-							love.graphics.printf(line, x:get() + 20, lineY, self:getWidth() - 20, "left")
+							if type(line) == "table" then
+								local tx = x:get() + 20
+								for c, text in ipairs(line) do
+									love.graphics.printf(text, tx, lineY, self:getWidth() - 20, "left")
+									tx = tx + (lines.tabSize or 100)
+								end
+							else
+								love.graphics.printf(line, x:get() + 20, lineY, self:getWidth() - 20, "left")
+							end
 						end
 					end
 				end
