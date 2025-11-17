@@ -15,19 +15,19 @@ local RING_MODE     = false
 require("tools/ringMaster/ringSmarts"):upgradeRingList(RING_SCANNER:getObjectsFound())
 
 local DOCS = {
-    "Arrow Keys    - Scroll map",
-    "z/a           - Zoom in/out",
-    "Space         - Scan for Rings",
-    "r                 - Enter / Exit Ring Placement mode",
-    "x                 - Erase ring (in ring placement mode)",
-    "c                 - Show number of rings found",
+    tabSize = 200,
+    { "Arrow Keys",   "- Scroll map"      },
+    { "z/a",          "- Zoom in/out"     },
+    { "Space",        "- Scan for Rings"  },
+    { "r",            "- Enter / Exit Ring Placement mode"    },
+    { "x",            "- Erase ring (in ring placement mode)" },
+    { "c",            "- Show number of rings found"          },
     "Shift-Left,",
     "Shift-Right,",
     "Shift-Up,",
-    "Shift-Down   - Move a selected ring one pixel",
-    "Return         - Save Ring placement data",
-    "Shift-Return - Save updated map image",
-    
+    { "Shift-Down",   "- Move a selected ring one pixel"      },
+    { "Return",       "- Save Ring placement data"            },
+    { "Shift-Return", "- Save updated map image",             },
 }
 
 local QUESTION_BOX = require("tools/ringMaster/questionBox"):create(1150, 10, DOCS)
