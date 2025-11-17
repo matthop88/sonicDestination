@@ -1,5 +1,6 @@
 local QUESTION_FONT = love.graphics.newFont(64)
 local DOCS_FONT     = love.graphics.newFont(24)
+local clickedAt     = nil
 
 return {
 	create = function(self, x, y, lines)
@@ -97,7 +98,14 @@ return {
 
 			handleMousepressed = function(self, mx, my)
 				if self:isInside(mx, my) then
-					mousePressed = true
+					if clickedAt ~= nil then
+						if love.timer.getTime() - clickedAt < 0.3 then
+							mousePressed = true
+						end
+						clickedAt = love.timer.getTime()
+					else
+						clickedAt = love.timer.getTime()
+					end
 				end
 			end,
 
