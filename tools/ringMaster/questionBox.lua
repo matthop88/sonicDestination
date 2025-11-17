@@ -25,7 +25,7 @@ return {
 					love.graphics.setColor(1, 1, 1)
 					love.graphics.setFont(DOCS_FONT)
 					local lineY
-					local maxN = #lines * ((h:get() - 40) / 240)
+					local maxN = #lines * ((h:get() - 40) / 320)
 					for n, line in ipairs(lines) do
 						lineY = (y + 5) + (n * 24)
 						if n <= maxN then
@@ -98,7 +98,7 @@ return {
 				x:update(dt)
 				h:update(dt)
 				if opened and not x:inFlux() then
-					h:setDestination(320)
+					h:setDestination(360)
 				elseif not opened and not h:inFlux() then
 					x:setDestination(origX)
 				end
