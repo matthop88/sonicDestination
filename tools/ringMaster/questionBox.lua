@@ -27,7 +27,7 @@ return {
 					local lineY
 					local maxN = #lines * ((h:get() - 40) / 320)
 					for n, line in ipairs(lines) do
-						lineY = (y + 5) + (n * 24)
+						lineY = (y - 15) + (n * 28)
 						if n <= maxN then
 							if type(line) == "table" then
 								local tx = x:get() + 20
