@@ -63,7 +63,7 @@ return {
 
 			drawHighlighted = function(self)
 				local alpha = 0.2
-				if self:withinDoubleClickMargin() then
+				if self:withinDoubleClickMargin() or x:inFlux() then
 					alpha = 0.6
 				end
     			self:drawPanel        { 0.3, 0.3, 0.3, alpha }
