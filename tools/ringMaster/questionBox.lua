@@ -1,6 +1,6 @@
 local QUESTION_FONT = love.graphics.newFont(64)
 local DOCS_FONT     = love.graphics.newFont(24)
-local clickedAt     = nil
+local clickedAt     = love.timer.getTime()
 
 return {
 	create = function(self, x, y, lines)
@@ -52,21 +52,29 @@ return {
 			end,
 				
 			drawClicked     = function(self)
-				self:drawPanel        { 1,   1,   1,   0.6 }
+				if opened then
+					self:drawPanel { 0.3, 0.3, 0.3, 0.6 }
+				else
+					self:drawPanel { 1,   1,   1,   0.6 }
+				end
     			self:drawBorder       { 0,   0,   0,   0.6 }
     			self:drawQuestionMark { 0,   0,   0,   0.9 * ((1 - (self:getWidth() - 80) / 720)) }
     		end,
 
 			drawHighlighted = function(self)
-    			self:drawPanel        { 0.3, 0.3, 0.3, 0.6 }
-    			self:drawBorder       { 1,   1,   0,   0.6 }
-    			self:drawQuestionMark { 1,   1,   0,   0.9 * ((1 - (self:getWidth() - 80) / 720)) }
+				local alpha = 0.2
+				if self:withinDoubleClickMargin() then
+					alpha = 0.6
+				end
+    			self:drawPanel        { 0.3, 0.3, 0.3, alpha }
+    			self:drawBorder       { 1,   1,   0,   alpha }
+    			self:drawQuestionMark { 1,   1,   0,   (alpha + 0.2) * ((1 - (self:getWidth() - 80) / 720)) }
     		end,
 
     		drawUnhighlighted = function(self)
-    			self:drawPanel        { 0.3, 0.3, 0.3, 0.2 }
+    			self:drawPanel        { 0.3, 0.3, 0.3, 0.1 }
     			self:drawBorder       { 0,   0,   0,   0.1 }
-    			self:drawQuestionMark { 1,   1,   1,   0.2 * ((1 - (self:getWidth() - 80) / 720)) }
+    			self:drawQuestionMark { 1,   1,   1,   0.1 * ((1 - (self:getWidth() - 80) / 720)) }
     		end,
 
     		drawPanel = function(self, color)
@@ -98,14 +106,10 @@ return {
 
 			handleMousepressed = function(self, mx, my)
 				if self:isInside(mx, my) then
-					if clickedAt ~= nil then
-						if love.timer.getTime() - clickedAt < 0.3 then
-							mousePressed = true
-						end
-						clickedAt = love.timer.getTime()
-					else
-						clickedAt = love.timer.getTime()
+					if self:withinDoubleClickMargin() then
+						mousePressed = true
 					end
+					clickedAt = love.timer.getTime()
 				end
 			end,
 
@@ -116,6 +120,10 @@ return {
 					if opened then self:setOpened()
 					else           self:setClosed() end
 				end
+			end,
+
+			withinDoubleClickMargin = function(self)
+				return love.timer.getTime() - clickedAt < 0.3
 			end,
 		}
 	end,
