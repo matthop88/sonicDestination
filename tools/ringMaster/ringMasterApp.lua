@@ -28,7 +28,7 @@ local DOCS = {
     
 }
 
-local QUESTION_BOX = require("tools/ringMaster/questionBox"):create(1110, 10, DOCS)
+local QUESTION_BOX = require("tools/ringMaster/questionBox"):create(1150, 10, DOCS)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
