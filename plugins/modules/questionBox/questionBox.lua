@@ -15,6 +15,8 @@ return {
 		self.destX = params.destX or 200
 		self.lines = params.lines or {}
 		self.maxH  = math.max(40, #self.lines * 30)
+		self.useDoubleClick   = params.useDoubleClick
+		self.getDoubleClickFn = params.getDoubleClickFn
 	end,
 
 	draw = function(self)
@@ -39,6 +41,9 @@ return {
 
 	drawHighlighted = function(self)
 		local alpha = 0.6
+		if self.getDoubleClickFn and not self.getDoubleClickFn():withinThreshold() and not self.x:inFlux() then
+			alpha = 0.2
+		end
 		self:drawPanel        { 0.3, 0.3, 0.3, alpha }
 		self:drawBorder       { 1,   1,   0,   alpha }
 		self:drawQuestionMark { 1,   1,   0,   (alpha + 0.2) * self:getQuestionMarkAlpha() }
@@ -113,7 +118,9 @@ return {
 	end,
 
 	handleMousepressed = function(self, mx, my, params)
-		self.opened = not self.opened
+		if not self.useDoubleClick or (params and params.doubleClicked) then
+			self.opened = not self.opened
+		end
 
 		if self.opened then self:setOpened()
 		else                self:setClosed() end
