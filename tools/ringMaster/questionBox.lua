@@ -1,6 +1,5 @@
 local QUESTION_FONT = love.graphics.newFont(32)
 local DOCS_FONT     = love.graphics.newFont(24)
-local clickedAt     = love.timer.getTime()
 
 return {
 	create = function(self, x, y, lines)
@@ -71,7 +70,7 @@ return {
 
 			drawHighlighted = function(self)
 				local alpha = 0.2
-				if self:withinDoubleClickMargin() or x:inFlux() then
+				if getDoubleClick():withinThreshold() or x:inFlux() then
 					alpha = 0.6
 				end
     			self:drawPanel        { 0.3, 0.3, 0.3, alpha }
@@ -112,12 +111,9 @@ return {
 				end
 			end,
 
-			handleMousepressed = function(self, mx, my)
+			handleMousepressed = function(self, mx, my, params)
 				if self:isInside(mx, my) then
-					if self:withinDoubleClickMargin() then
-						mousePressed = true
-					end
-					clickedAt = love.timer.getTime()
+					mousePressed = params.doubleClicked
 				end
 			end,
 
@@ -128,10 +124,6 @@ return {
 					if opened then self:setOpened()
 					else           self:setClosed() end
 				end
-			end,
-
-			withinDoubleClickMargin = function(self)
-				return love.timer.getTime() - clickedAt < 0.3
 			end,
 		}
 	end,
