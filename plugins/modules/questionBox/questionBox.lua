@@ -8,7 +8,8 @@ return {
 
 	draw = function(self)
 		if self:isInside(love.mouse.getPosition()) then
-			self:drawHighlighted()
+			if love.mouse.isDown(1) then self:drawClicked()
+			else                         self:drawHighlighted() end
 		else
 			self:drawUnhighlighted()
 		end
@@ -30,7 +31,13 @@ return {
 		self:drawBorder       { 1,   1,   0,   alpha }
 		self:drawQuestionMark { 1,   1,   0,   alpha + 0.2 }
 	end,
-    	
+
+	drawClicked = function(self)
+		self:drawPanel        { 1,   1,   1,   0.6 }
+		self:drawBorder       { 0,   0,   0,   0.6 }
+    	self:drawQuestionMark { 0,   0,   0,   0.9 }
+    end,
+	
     drawPanel = function(self, color)
     	love.graphics.setColor(color)
     	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
