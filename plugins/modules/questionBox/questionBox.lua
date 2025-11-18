@@ -1,4 +1,5 @@
 local QUESTION_FONT = love.graphics.newFont(32)
+local DOCS_FONT     = love.graphics.newFont(24)
 
 return {
 	x = require("plugins/libraries/tweenableValue"):create(1150, { speed = 6 }),
@@ -8,13 +9,18 @@ return {
 		
 	opened = false,
 
+	init = function(self, params)
+		self.lines = params.lines or {}
+	end,
+
 	draw = function(self)
-		if self:isInside(love.mouse.getPosition()) or self.opened or self.x:inFlux() then
+		if self:isInside(love.mouse.getPosition()) or self.opened or self.h:inFlux() or self.x:inFlux() then
 			if love.mouse.isDown(1) then self:drawClicked()
 			else                         self:drawHighlighted() end
 		else
 			self:drawUnhighlighted()
 		end
+		self:drawText()
 	end,
 
 	isInside = function(self, px, py)
@@ -66,6 +72,28 @@ return {
 
 	getQuestionMarkAlpha = function(self)
 		return 1 - (self.w:get() - 40) / 720
+	end,
+
+	drawText = function(self)
+		if self.h:inFlux() or self.opened then
+			love.graphics.setColor(1, 1, 1)
+			love.graphics.setFont(DOCS_FONT)
+			local maxN = #self.lines * ((self.h:get() - 40) / 320)
+			for n, line in ipairs(self.lines) do
+				local lineY = (self.y - 15) + (n * 28)
+				if n <= maxN then
+					if type(line) == "table" then
+						local tx = self.x:get() + 20
+						for c, text in ipairs(line) do
+							love.graphics.printf(text, tx, lineY, self:getWidth() - 20, "left")
+							tx = tx + (self.lines.tabSize or 100)
+						end
+					else
+						love.graphics.printf(line, self.x:get() + 20, lineY, self:getWidth() - 20, "left")
+					end
+				end
+			end
+		end
 	end,
 
 	update = function(self, dt)
