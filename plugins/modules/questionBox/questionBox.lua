@@ -4,8 +4,8 @@ return {
 	x = require("plugins/libraries/tweenableValue"):create(1150, { speed = 6 }),
 	y = 10,
 	w = require("plugins/libraries/tweenableValue"):create(40,   { speed = 6 }),
-	h = 40,
-
+	h = require("plugins/libraries/tweenableValue"):create(40,   { speed = 6 }),
+		
 	opened = false,
 
 	draw = function(self)
@@ -18,7 +18,7 @@ return {
 	end,
 
 	isInside = function(self, px, py)
-		return px >= self.x:get() and px < self.x:get() + self:getWidth() and py >= self.y and py < self.y + self.h
+		return px >= self.x:get() and px < self.x:get() + self:getWidth() and py >= self.y and py < self.y + self.h:get()
 	end,
 					
 	drawUnhighlighted = function(self)
@@ -45,13 +45,13 @@ return {
 	
     drawPanel = function(self, color)
     	love.graphics.setColor(color)
-    	love.graphics.rectangle("fill", self.x:get(), self.y, self:getWidth(), self.h)
+    	love.graphics.rectangle("fill", self.x:get(), self.y, self:getWidth(), self.h:get())
     end,
 
     drawBorder = function(self, color)
     	love.graphics.setColor(color)
     	love.graphics.setLineWidth(3)
-    	love.graphics.rectangle("line", self.x:get(), self.y, self:getWidth(), self.h)
+    	love.graphics.rectangle("line", self.x:get(), self.y, self:getWidth(), self.h:get())
     end,
 
     drawQuestionMark = function(self, color)
@@ -69,8 +69,15 @@ return {
 	end,
 
 	update = function(self, dt)
+		if         self.opened and not self.x:inFlux() then self.h:setDestination(360)
+		elseif not self.opened and not self.h:inFlux() then 
+			self.x:setDestination(1150) 
+			self.w:setDestination(40)
+		end
+
 		self.x:update(dt)
 		self.w:update(dt)
+		self.h:update(dt)
 	end,
 
 	handleMousepressed = function(self, mx, my, params)
@@ -86,7 +93,6 @@ return {
 	end,
 
 	setClosed = function(self) 
-		self.x:setDestination(1150)
-		self.w:setDestination(40)
+		self.h:setDestination(40)
 	end,
 }
