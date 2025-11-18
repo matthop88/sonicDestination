@@ -21,13 +21,14 @@ local launchSoundGraph           = function(args)
     require "tools/soundGraph/soundGraphApp"
 end
 
-local launchColorInspector = function(args) require "tools/colorInspector/inspector"    end
-local launchSlicer         = function(args) require "tools/spriteSheetSlicer/slicerApp" end
-local launchChunkalyzer    = function(args) require "tools/chunkalyzer/chunkalyzerApp"  end
-local launchMapViewer      = function(args) require "tools/mapViewer/mapViewerApp"      end
-local launchTileinator     = function(args) require "tools/tileinator/tileinatorApp"    end
-local launchChunkDoctor    = function(args) require "tools/chunkDoctor/chunkDoctorApp"  end
-local launchRingMaster     = function(args) require "tools/ringMaster/ringMasterApp"    end
+local launchColorInspector = function(args) require "tools/colorInspector/inspector"       end
+local launchSlicer         = function(args) require "tools/spriteSheetSlicer/slicerApp"    end
+local launchChunkalyzer    = function(args) require "tools/chunkalyzer/chunkalyzerApp"     end
+local launchMapViewer      = function(args) require "tools/mapViewer/mapViewerApp"         end
+local launchTileinator     = function(args) require "tools/tileinator/tileinatorApp"       end
+local launchChunkDoctor    = function(args) require "tools/chunkDoctor/chunkDoctorApp"     end
+local launchRingMaster     = function(args) require "tools/ringMaster/ringMasterApp"       end
+local launchSpriteSandbox  = function(args) require "tools/spriteSandBox/spriteSandboxApp" end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -54,6 +55,7 @@ local APP_LAUNCHER = {
     tileinator   = launchTileinator,
     chunkDoctor  = launchChunkDoctor,
     ringMaster   = launchRingMaster,
+    sandbox      = launchSpriteSandbox,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
@@ -62,6 +64,7 @@ local APP_PATH = {
     inspector    = "tools/colorInspector",
     slicer       = "tools/spriteSheetSlicer",
     transparency = "tools/transparencyEditor",
+    sandbox      = "tools/spriteSandbox",
     test         = "testing",
 }
 
