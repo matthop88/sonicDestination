@@ -14,7 +14,7 @@ return {
 		self.maxW = params.w or 800
 		self.destX = params.destX or 200
 		self.lines = params.lines or {}
-		self.maxH  = math.max(40, #self.lines * 30)
+		self.maxH  = math.max(40, (#self.lines * 28) + 28)
 		self.useDoubleClick   = params.useDoubleClick
 		self.getDoubleClickFn = params.getDoubleClickFn
 	end,
@@ -41,7 +41,7 @@ return {
 
 	drawHighlighted = function(self)
 		local alpha = 0.6
-		if self.getDoubleClickFn and not self.getDoubleClickFn():withinThreshold() and not self.x:inFlux() then
+		if self.getDoubleClickFn and not self.opened and not self.getDoubleClickFn():withinThreshold() and not self.x:inFlux() then
 			alpha = 0.2
 		end
 		self:drawPanel        { 0.3, 0.3, 0.3, alpha }
