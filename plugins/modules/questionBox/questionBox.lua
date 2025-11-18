@@ -2,15 +2,19 @@ local QUESTION_FONT = love.graphics.newFont(32)
 local DOCS_FONT     = love.graphics.newFont(24)
 
 return {
-	x = require("plugins/libraries/tweenableValue"):create(1150, { speed = 6 }),
-	y = 10,
 	w = require("plugins/libraries/tweenableValue"):create(40,   { speed = 6 }),
 	h = require("plugins/libraries/tweenableValue"):create(40,   { speed = 6 }),
 		
 	opened = false,
 
 	init = function(self, params)
+		self.origX = params.x or 800
+		self.x = require("plugins/libraries/tweenableValue"):create(self.origX, { speed = 6 })
+		self.y = params.y or 10
+		self.maxW = params.w or 800
+		self.destX = params.destX or 200
 		self.lines = params.lines or {}
+		self.maxH  = math.max(40, #self.lines * 30)
 	end,
 
 	draw = function(self)
@@ -71,14 +75,14 @@ return {
 	end,
 
 	getQuestionMarkAlpha = function(self)
-		return 1 - (self.w:get() - 40) / 720
+		return 1 - (self.w:get() - 40) / (self.maxW - 80)
 	end,
 
 	drawText = function(self)
 		if self.h:inFlux() or self.opened then
 			love.graphics.setColor(1, 1, 1)
 			love.graphics.setFont(DOCS_FONT)
-			local maxN = #self.lines * ((self.h:get() - 40) / 320)
+			local maxN = #self.lines * ((self.h:get() - 40) / (self.maxH - 40))
 			for n, line in ipairs(self.lines) do
 				local lineY = (self.y - 15) + (n * 28)
 				if n <= maxN then
@@ -97,9 +101,9 @@ return {
 	end,
 
 	update = function(self, dt)
-		if         self.opened and not self.x:inFlux() then self.h:setDestination(360)
+		if         self.opened and not self.x:inFlux() then self.h:setDestination(self.maxH)
 		elseif not self.opened and not self.h:inFlux() then 
-			self.x:setDestination(1150) 
+			self.x:setDestination(self.origX) 
 			self.w:setDestination(40)
 		end
 
@@ -116,8 +120,8 @@ return {
 	end,
 
 	setOpened = function(self) 
-		self.x:setDestination(200)
-		self.w:setDestination(800)
+		self.x:setDestination(self.destX)
+		self.w:setDestination(self.maxW)
 	end,
 
 	setClosed = function(self) 
