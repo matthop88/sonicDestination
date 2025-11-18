@@ -49,7 +49,7 @@ function love.update(dt)
     if not RING_SCANNER:isComplete() then
         setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
-    QUESTION_BOX:update(dt)
+    --QUESTION_BOX:update(dt)
 end
 
 function love.keypressed(key)
@@ -118,7 +118,7 @@ function drawObjects()
         local scale = getImageViewer():getScale()
         RING_INFO:draw(x, y, scale, { 1, 1, 1 })
     end
-    QUESTION_BOX:draw()
+    --QUESTION_BOX:draw()
 end
 
 function saveMapImage()
@@ -157,3 +157,4 @@ PLUGINS = require("plugins/engine")
         setTextFnName = "setProgressBarText",
     })
     :add("readout",      { printFnName = "printToReadout" })
+    :add("questionBox")
