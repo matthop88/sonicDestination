@@ -138,7 +138,7 @@ PLUGINS = require("plugins/engine")
     })
     :add("readout",      { printFnName = "printToReadout" })
     :add("questionBox",
-    {
+    {   x = 1150,
         lines = {
             tabSize = 200,
             { "Arrow Keys",   "- Scroll map"      },
@@ -153,5 +153,7 @@ PLUGINS = require("plugins/engine")
             { "Shift-Down",   "- Move a selected ring one pixel"      },
             { "Return",       "- Save Ring placement data"            },
             { "Shift-Return", "- Save updated map image",             },
+            "",
+            "And a partridge in a pear tree!",
         },
     })
