@@ -248,6 +248,10 @@ PLUGINS = require("plugins/engine")
         pixelated      = true,
         accessorFnName = "getImageViewer"
     })
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
     :add("modKeyEnabler")
     :add("scrolling",    { 
         imageViewer = getImageViewer(),
@@ -262,6 +266,18 @@ PLUGINS = require("plugins/engine")
     {
         printFnName    = "printToReadout",
         echoToConsole  = true,
+    })
+    :add("questionBox",
+    {   x = 974, destX = 112,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            { "Shift-Arrow Keys", "- Scroll Image"      },
+            { "z/a",              "- Zoom in/out"       },
+            "",
+            "And some other stuff"
+        },
     })
 
 --------------------------------------------------------------
