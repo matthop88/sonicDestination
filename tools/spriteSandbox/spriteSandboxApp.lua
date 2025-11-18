@@ -4,6 +4,8 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
+local RING_SPRITE = require("tools/spriteSandbox/sprite"):create("objects/ring", 300, 200)
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -15,7 +17,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+function love.draw()
+    RING_SPRITE:draw()
+end
+
 -- ...
 -- ...
 
