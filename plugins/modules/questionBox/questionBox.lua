@@ -6,8 +6,10 @@ return {
 	w = 40,
 	h = 40,
 
+	opened = false,
+
 	draw = function(self)
-		if self:isInside(love.mouse.getPosition()) then
+		if self:isInside(love.mouse.getPosition()) or self.opened then
 			if love.mouse.isDown(1) then self:drawClicked()
 			else                         self:drawHighlighted() end
 		else
@@ -33,7 +35,9 @@ return {
 	end,
 
 	drawClicked = function(self)
-		self:drawPanel        { 1,   1,   1,   0.6 }
+		if self.opened then self:drawPanel { 0.3, 0.3, 0.3, 0.1 }
+		else                self:drawPanel { 1,   1,   1,   0.6 } end
+
 		self:drawBorder       { 0,   0,   0,   0.6 }
     	self:drawQuestionMark { 0,   0,   0,   0.9 }
     end,
@@ -53,5 +57,22 @@ return {
     	love.graphics.setColor(color)
     	love.graphics.setFont(QUESTION_FONT)
     	love.graphics.printf("?", self.x, self.y + 2, self.w, "center")
+	end,
+
+	handleMousepressed = function(self, mx, my, params)
+		self.opened = not self.opened
+
+		if self.opened then self:setOpened()
+		else                self:setClosed() end
+	end,
+
+	setOpened = function(self) 
+		self.x = 200
+		self.w = 800
+	end,
+
+	setClosed = function(self) 
+		self.x = 1150
+		self.w = 40
 	end,
 }
