@@ -93,9 +93,14 @@ return {
 				if n <= maxN then
 					if type(line) == "table" then
 						local tx = self.x:get() + 20
+						local tabSize = self.lines.tabSize or 100
 						for c, text in ipairs(line) do
-							love.graphics.printf(text, tx, lineY, self:getWidth() - 20, "left")
-							tx = tx + (self.lines.tabSize or 100)
+							if type(text) == "number" then 
+								tx = tx + text - tabSize
+							else
+								love.graphics.printf(text, tx, lineY, self:getWidth() - 20, "left")
+								tx = tx + tabSize
+							end
 						end
 					else
 						love.graphics.printf(line, self.x:get() + 20, lineY, self:getWidth() - 20, "left")
@@ -134,7 +139,7 @@ return {
 	end,
 
 	handleMousepressed = function(self, mx, my, params)
-		if self:isInside(mx, my) or self.opened then
+		if self:isInside(mx, my) then
 			if not self.useDoubleClick or (params and params.doubleClicked) then
 				self.opened = not self.opened
 			end
@@ -142,6 +147,8 @@ return {
 			if self.opened then self:setOpened()
 			else                self:setClosed() end
 
+			return true
+		elseif self.opened then
 			return true
 		end
 	end,
