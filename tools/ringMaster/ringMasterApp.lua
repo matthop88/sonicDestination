@@ -80,13 +80,13 @@ function love.keypressed(key)
 
 end
 
-function love.mousepressed(mx, my)
+function love.mousepressed(mx, my, p)
     if RING_MODE then
         local x, y = getImageViewer():screenToImageCoordinates(mx, my)
         table.insert(RING_SCANNER:getObjectsFound(), { x = math.floor(x), y = math.floor(y) })
         RING_MODE = false
     else
-        QUESTION_BOX:handleMousepressed(mx, my)
+        QUESTION_BOX:handleMousepressed(mx, my, p)
     end
 end
 
@@ -133,6 +133,10 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
     :add("imageViewer",
     {
         imagePath       = MAP_IMG_PATH,
