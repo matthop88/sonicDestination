@@ -134,7 +134,7 @@ return {
 	end,
 
 	handleMousepressed = function(self, mx, my, params)
-		if self:isInside(mx, my) then
+		if self:isInside(mx, my) or self.opened then
 			if not self.useDoubleClick or (params and params.doubleClicked) then
 				self.opened = not self.opened
 			end
