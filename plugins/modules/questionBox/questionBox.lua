@@ -117,13 +117,33 @@ return {
 		self.h:update(dt)
 	end,
 
-	handleMousepressed = function(self, mx, my, params)
-		if not self.useDoubleClick or (params and params.doubleClicked) then
-			self.opened = not self.opened
+	handleKeypressed = function(self, key)
+		if self:isInside(love.mouse.getPosition()) and not self.opened then
+			if key == "return" then 
+				self.opened = true
+				self:setOpened() 
+			end
+			return true
+		elseif self.opened then
+			if key == "escape" then 
+				self.opened = false
+				self:setClosed()
+			end
+			return true
 		end
+	end,
 
-		if self.opened then self:setOpened()
-		else                self:setClosed() end
+	handleMousepressed = function(self, mx, my, params)
+		if self:isInside(mx, my) then
+			if not self.useDoubleClick or (params and params.doubleClicked) then
+				self.opened = not self.opened
+			end
+
+			if self.opened then self:setOpened()
+			else                self:setClosed() end
+
+			return true
+		end
 	end,
 
 	setOpened = function(self) 
