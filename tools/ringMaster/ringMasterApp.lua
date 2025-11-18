@@ -14,24 +14,6 @@ local RING_MODE     = false
 
 require("tools/ringMaster/ringSmarts"):upgradeRingList(RING_SCANNER:getObjectsFound())
 
-local DOCS = {
-    tabSize = 200,
-    { "Arrow Keys",   "- Scroll map"      },
-    { "z/a",          "- Zoom in/out"     },
-    { "Space",        "- Scan for Rings"  },
-    { "r",            "- Enter / Exit Ring Placement mode"    },
-    { "x",            "- Erase ring (in ring placement mode)" },
-    { "c",            "- Show number of rings found"          },
-    "Shift-Left,",
-    "Shift-Right,",
-    "Shift-Up,",
-    { "Shift-Down",   "- Move a selected ring one pixel"      },
-    { "Return",       "- Save Ring placement data"            },
-    { "Shift-Return", "- Save updated map image",             },
-}
-
-local QUESTION_BOX = require("tools/ringMaster/questionBox"):create(1150, 10, DOCS)
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -49,7 +31,6 @@ function love.update(dt)
     if not RING_SCANNER:isComplete() then
         setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
-    --QUESTION_BOX:update(dt)
 end
 
 function love.keypressed(key)
@@ -86,12 +67,12 @@ function love.mousepressed(mx, my, p)
         table.insert(RING_SCANNER:getObjectsFound(), { x = math.floor(x), y = math.floor(y) })
         RING_MODE = false
     else
-        QUESTION_BOX:handleMousepressed(mx, my, p)
+        --QUESTION_BOX:handleMousepressed(mx, my, p)
     end
 end
 
 function love.mousereleased(mx, my)
-    QUESTION_BOX:handleMousereleased(mx, my)
+    --QUESTION_BOX:handleMousereleased(mx, my)
 end
 
 --------------------------------------------------------------
@@ -118,7 +99,6 @@ function drawObjects()
         local scale = getImageViewer():getScale()
         RING_INFO:draw(x, y, scale, { 1, 1, 1 })
     end
-    --QUESTION_BOX:draw()
 end
 
 function saveMapImage()
@@ -157,4 +137,21 @@ PLUGINS = require("plugins/engine")
         setTextFnName = "setProgressBarText",
     })
     :add("readout",      { printFnName = "printToReadout" })
-    :add("questionBox")
+    :add("questionBox",
+    {
+        lines = {
+            tabSize = 200,
+            { "Arrow Keys",   "- Scroll map"      },
+            { "z/a",          "- Zoom in/out"     },
+            { "Space",        "- Scan for Rings"  },
+            { "r",            "- Enter / Exit Ring Placement mode"    },
+            { "x",            "- Erase ring (in ring placement mode)" },
+            { "c",            "- Show number of rings found"          },
+            "Shift-Left,",
+            "Shift-Right,",
+            "Shift-Up,",
+            { "Shift-Down",   "- Move a selected ring one pixel"      },
+            { "Return",       "- Save Ring placement data"            },
+            { "Shift-Return", "- Save updated map image",             },
+        },
+    })
