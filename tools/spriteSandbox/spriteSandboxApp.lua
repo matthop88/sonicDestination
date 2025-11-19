@@ -63,8 +63,8 @@ PLUGINS = require("plugins/engine")
             { "z/a",          "- Zoom in/out"     },
             { "s",            "- Toggle Sprite Placement Mode" },
             "",
-            "Sprite Placement Mode",
-            "_",
+            "Sprite Placement Mode_",
             { "Mouse Press",  "- Place new sprite on screen"    },
+            { "Escape",       "- Exit Sprite Placement Mode"    },
         },
     })
