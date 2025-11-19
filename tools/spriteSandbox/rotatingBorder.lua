@@ -2,23 +2,34 @@ return {
     create = function(self, x, y, w, h)
         local ROTATION = 0
         
-        return {
+        return ({
+            init = function(self, x, y, w, h)
+                self.x, self.y, self.w, self.h = x, y, w, h
+                return self
+            end,
+
             draw = function(self, GRAFX)
-                local px, py = GRAFX:imageToScreenCoordinates(x, y)
+                local px, py = GRAFX:imageToScreenCoordinates(self.x, self.y)
                 love.graphics.push()
                 love.graphics.translate(px, py)
                 love.graphics.rotate(ROTATION)
                 love.graphics.translate(-px, -py)
                 GRAFX:setColor(1, 1, 1)
                 GRAFX:setLineWidth(1)
-                GRAFX:rectangle("line", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+                GRAFX:rectangle("line", self.x - (self.w / 2) - 2, self.y - (self.h / 2) - 2, self.w + 4, self.h + 4)
                 love.graphics.pop()
             end,
 
             update = function(self, dt)
                 ROTATION = ROTATION + (math.pi / 90)
             end,
-        }
+
+            updateCoordinates = function(self, x, y)
+                self.x = x
+                self.y = y
+            end,
+
+        }):init(x, y, w, h)
     end,
 }
  
