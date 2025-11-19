@@ -63,7 +63,9 @@ return {
     handleMousepressed = function(self, mx, my)
         if self.mode == SPRITE then
             self:placeSprite(mx, my)
-            self.mode = SELECT
+            if not love.keyboard.isDown("lalt", "ralt") then
+                self.mode = SELECT
+            end
         end
     end,
 
