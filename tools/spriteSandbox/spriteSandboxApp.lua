@@ -53,6 +53,7 @@ PLUGINS = require("plugins/engine")
         getDoubleClickFn = getDoubleClick,
         lines = {
             tabSize = 200,
-            "Documentation goes here.",
+            { "Arrow Keys",   "- Scroll Sandbox"      },
+            { "z/a",          "- Zoom in/out"     },
         },
     })
