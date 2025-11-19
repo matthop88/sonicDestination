@@ -16,11 +16,29 @@ return {
             sprite:draw(self.graphics)
         end
 
+        self:drawMode()
+    end,
+
+    drawMode = function(self)
         if self.mode == SPRITE then
             love.mouse.setVisible(false)
             self.currentSprite:draw(self.graphics)
         else
             love.mouse.setVisible(true)
+            self:drawSpriteMouseovers()
+        end
+    end,
+
+    drawSpriteMouseovers = function(self)
+        local px, py = self:screenToImageCoordinates(love.mouse.getPosition())
+
+        for _, sprite in ipairs(self.sprites) do
+            if sprite:isInside(px, py) then
+                self.graphics:setColor(1, 0, 1)
+                self.graphics:setLineWidth(1)
+                local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+                self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
+            end
         end
     end,
 
