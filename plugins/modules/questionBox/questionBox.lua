@@ -90,8 +90,6 @@ return {
 	end,
 
 	drawTextIntern = function(self)
-		love.graphics.setColor(1, 1, 1)
-		love.graphics.setFont(DOCS_FONT)
 		local maxN = #self.lines * ((self.h:get() - 40) / (self.maxH - 40))
 		self:drawTextLines(maxN)
 	end,
@@ -109,7 +107,7 @@ return {
 		if type(line) == "table" then
 			self:drawTextCells(line, lineY)
 		else
-			love.graphics.printf(line, self.x:get() + 20, lineY, self:getWidth() - 20, "left")
+			self:drawTextUnit(line, self.x:get() + 20, lineY)
 		end
 	end,
 
@@ -125,9 +123,28 @@ return {
 		if type(text) == "number" then 
 			return text - tabSize
 		else
-			love.graphics.printf(text, tx, ty, self:getWidth() - 20, "left")
+			self:drawTextUnit(text, tx, ty, self:getWidth() - 20, "left")
 			return tabSize
 		end
+	end,
+
+	drawTextUnit = function(self, text, tx, ty)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.setFont(DOCS_FONT)
+		
+		if string.sub(text, -1) == "_" then
+			self:drawUnderlinedTextUnit(text, tx, ty)
+		else
+			love.graphics.printf(text, tx, ty, self:getWidth() - 20, "left")
+		end
+	end,
+
+	drawUnderlinedTextUnit = function(self, text, tx, ty)
+		love.graphics.setColor(0.6, 0.6, 0.6)
+		love.graphics.setLineWidth(2)
+		love.graphics.line(self.x:get() + 20, ty + 25, self.x:get() + self.w:get() - 20, ty + 25)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.printf(string.sub(text, 1, #text - 1), tx, ty - 7, self:getWidth() - 20, "left")
 	end,
 
 	update = function(self, dt)
