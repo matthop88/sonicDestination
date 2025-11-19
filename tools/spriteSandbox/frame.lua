@@ -14,14 +14,13 @@ return {
 
 	createIntern = function(self, animation)
 		return {
-			frameNumber = 1,
-			animation   = animation,
+			frameNumber  = 1,
+			animation    = animation,
+			creationTime = love.timer.getTime(),
 
 			update = function(self, dt)
-				self.frameNumber = self.frameNumber + ((self.animation.fps) * dt)
-				if self.frameNumber >= #self.animation + 1 then
-					self.frameNumber = self.frameNumber - #self.animation
-				end
+				local time = love.timer.getTime() - self.creationTime
+				self.frameNumber = (math.floor(time * self.animation.fps) % #self.animation) + 1
 			end,
 
 			get = function(self)
