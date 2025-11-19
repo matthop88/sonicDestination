@@ -43,6 +43,13 @@ return {
     end,
 
     handleMousepressed = function(self, mx, my)
+        if self.mode == SPRITE then
+            self:placeSprite(mx, my)
+            self.mode = SELECT
+        end
+    end,
+
+    placeSprite = function(self, mx, my)
         table.insert(self.sprites, self.currentSprite)
         local sX, sY = self:screenToImageCoordinates(love.mouse.getPosition())
         self.currentSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", sX, sY)
