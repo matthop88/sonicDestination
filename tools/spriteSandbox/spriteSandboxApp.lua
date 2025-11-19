@@ -65,6 +65,7 @@ PLUGINS = require("plugins/engine")
             "",
             "Sprite Placement Mode_",
             { "Mouse Press",  "- Place new sprite on screen"    },
+            { "Option",       "- Stay in Sprite Placement Mode when clicking" },
             { "Escape",       "- Exit Sprite Placement Mode"    },
         },
     })
