@@ -38,11 +38,23 @@ return {
 				return self
 			end,
 
+			getX = function(self) return self.x                  end,
+			getY = function(self) return self.y                  end,
+			getW = function(self) return self.currentAnimation.w end,
+			getH = function(self) return self.currentAnimation.h end,
+
 			draw = function(self, GRAFX)
 				local frame = self.currentFrame:get()
 				
 				GRAFX:setColor(1, 1, 1)
 				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
+			end,
+
+			isInside = function(self, px, py)
+				return px >= self.x - self.currentAnimation.offset.x 
+				   and px <= self.x - self.currentAnimation.offset.x + self.currentAnimation.w
+				   and py >= self.y - self.currentAnimation.offset.y
+				   and py <= self.y - self.currentAnimation.offset.y + self.currentAnimation.h
 			end,
 
 			update = function(self, dt)
