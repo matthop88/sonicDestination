@@ -2,9 +2,12 @@ local SELECT = "select"
 local SPRITE = "sprite"
 
 return {
-    graphics      = require("tools/lib/graphics"):create(),
-    currentSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", 0, 0),
+    graphics         = require("tools/lib/graphics"):create(),
+    currentSprite    = require("tools/spriteSandbox/sprite"):create("objects/ring", 0, 0),
 
+    spriteUnderMouse = nil,
+    selectedSprite   = nil,
+    
     sprites = {},
     mode    = SELECT,
 
@@ -30,28 +33,28 @@ return {
     end,
 
     drawSpriteMouseovers = function(self)
-        local px, py = self:screenToImageCoordinates(love.mouse.getPosition())
-
-        for _, sprite in ipairs(self.sprites) do
-            if sprite:isInside(px, py) then
-                self.graphics:setColor(1, 0, 1)
-                self.graphics:setLineWidth(1)
-                local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
-                self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
-                if love.mouse.isDown(1) then
-                    self.graphics:setColor(1, 1, 1, 0.8)
-                    self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
-                end
+        if self.spriteUnderMouse then
+            local sprite = self.spriteUnderMouse
+            self.graphics:setColor(0, 1, 1, 0.7)
+            self.graphics:setLineWidth(1)
+            local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+            self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
+            if love.mouse.isDown(1) then
+                self.graphics:setColor(1, 1, 1, 0.8)
+                self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
             end
         end
     end,
 
     update = function(self, dt)
+        local px, py = self:screenToImageCoordinates(love.mouse.getPosition())
+        
+        self.spriteUnderMouse = nil
         for _, sprite in ipairs(self.sprites) do
             sprite:update(dt)
+            if sprite:isInside(px, py) then self.spriteUnderMouse = sprite end
         end
-
-        self.currentSprite.x, self.currentSprite.y = self:screenToImageCoordinates(love.mouse.getPosition())
+        self.currentSprite.x, self.currentSprite.y = px, py
         self.currentSprite:update(dt)
     end,
 
