@@ -1,8 +1,12 @@
+local SELECT = "select"
+local SPRITE = "sprite"
+
 return {
     graphics      = require("tools/lib/graphics"):create(),
     currentSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", 0, 0),
 
     sprites = {},
+    mode    = SELECT,
 
     draw = function(self)
         love.graphics.setColor(0.1, 0.1, 0.1)
@@ -12,7 +16,12 @@ return {
             sprite:draw(self.graphics)
         end
 
-        self.currentSprite:draw(self.graphics)
+        if self.mode == SPRITE then
+            love.mouse.setVisible(false)
+            self.currentSprite:draw(self.graphics)
+        else
+            love.mouse.setVisible(true)
+        end
     end,
 
     update = function(self, dt)
@@ -22,6 +31,15 @@ return {
 
         self.currentSprite.x, self.currentSprite.y = self:screenToImageCoordinates(love.mouse.getPosition())
         self.currentSprite:update(dt)
+    end,
+
+    handleKeypressed = function(self, key)
+        if key == "s" then
+            if self.mode ~= SPRITE then self.mode = SPRITE
+            else                   self.mode = SELECT end
+        elseif key == "escape" then
+            self.mode = SELECT
+        end
     end,
 
     handleMousepressed = function(self, mx, my)
