@@ -33,6 +33,10 @@ function love.mousepressed(mx, my)
     SANDBOX:handleMousepressed(mx, my)
 end
 
+function love.mousereleased(mx, my)
+    SANDBOX:handleMousereleased(mx, my)
+end
+
 --------------------------------------------------------------
 --                   Specialized Functions                  --
 --------------------------------------------------------------
