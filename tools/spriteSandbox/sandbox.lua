@@ -1,18 +1,33 @@
 return {
-    graphics   = require("tools/lib/graphics"):create(),
+    graphics      = require("tools/lib/graphics"):create(),
+    currentSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", 0, 0),
 
-    ringSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", 0, 0),
+    sprites = {},
 
     draw = function(self)
         love.graphics.setColor(0.1, 0.1, 0.1)
         love.graphics.rectangle("fill", 0, 0, 1200, 800)
 
-        self.ringSprite:draw(self.graphics)
+        for _, sprite in ipairs(self.sprites) do
+            sprite:draw(self.graphics)
+        end
+
+        self.currentSprite:draw(self.graphics)
     end,
 
     update = function(self, dt)
-        self.ringSprite.x, self.ringSprite.y = self:screenToImageCoordinates(love.mouse.getPosition())
-        self.ringSprite:update(dt)
+        for _, sprite in ipairs(self.sprites) do
+            sprite:update(dt)
+        end
+
+        self.currentSprite.x, self.currentSprite.y = self:screenToImageCoordinates(love.mouse.getPosition())
+        self.currentSprite:update(dt)
+    end,
+
+    handleMousepressed = function(self, mx, my)
+        table.insert(self.sprites, self.currentSprite)
+        local sX, sY = self:screenToImageCoordinates(love.mouse.getPosition())
+        self.currentSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", sX, sY)
     end,
 
     moveImage = function(self, deltaX, deltaY)
