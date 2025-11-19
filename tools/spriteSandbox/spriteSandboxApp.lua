@@ -61,5 +61,10 @@ PLUGINS = require("plugins/engine")
             tabSize = 200,
             { "Arrow Keys",   "- Scroll Sandbox"      },
             { "z/a",          "- Zoom in/out"     },
+            { "s",            "- Toggle Sprite Placement Mode" },
+            "",
+            "Sprite Placement Mode",
+            "_",
+            { "Mouse Press",  "- Place new sprite on screen"    },
         },
     })
