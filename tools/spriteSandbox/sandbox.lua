@@ -1,5 +1,6 @@
-local SELECT = "select"
-local SPRITE = "sprite"
+local SELECT   = "select"
+local SPRITE   = "sprite"
+local ROTATION = 0
 
 return {
     graphics         = require("tools/lib/graphics"):create(),
@@ -29,30 +30,39 @@ return {
         else
             love.mouse.setVisible(true)
             self:drawSpriteMouseovers()
-            self:drawSelectedSprite()
         end
+        self:drawSelectedSprite()
     end,
 
     drawSelectedSprite = function(self)
         if self.selectedSprite then
             local sprite = self.selectedSprite
+            local px, py = self:imageToScreenCoordinates(sprite:getX(), sprite:getY())
+            love.graphics.push()
+            love.graphics.translate(px, py)
+            love.graphics.rotate(ROTATION)
+            love.graphics.translate(-px, -py)
+            local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
             self.graphics:setColor(1, 1, 1)
             self.graphics:setLineWidth(1)
-            local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
-            self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
+            self.graphics:rectangle("line", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+            love.graphics.pop()
         end
     end,
 
     drawSpriteMouseovers = function(self)
         if self.spriteUnderMouse then
             local sprite = self.spriteUnderMouse
-            self.graphics:setColor(0, 1, 1, 0.7)
-            self.graphics:setLineWidth(1)
             local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
-            self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
-            if self.spriteUnderMouse == self.selectedSprite and love.mouse.isDown(1) then
-                self.graphics:setColor(1, 1, 1, 0.8)
-                self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+            if sprite == self.selectedSprite then
+                if love.mouse.isDown(1) then
+                    self.graphics:setColor(1, 1, 1, 0.8)
+                    self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+                end
+            else
+                self.graphics:setColor(0, 1, 1, 0.7)
+                self.graphics:setLineWidth(1)
+                self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
             end
         end
     end,
@@ -67,6 +77,8 @@ return {
         end
         self.currentSprite.x, self.currentSprite.y = px, py
         self.currentSprite:update(dt)
+
+        ROTATION = ROTATION + (math.pi / 90)
     end,
 
     handleKeypressed = function(self, key)
@@ -105,6 +117,10 @@ return {
 
     screenToImageCoordinates = function(self, screenX, screenY)
         return self.graphics:screenToImageCoordinates(screenX, screenY)
+    end,
+
+    imageToScreenCoordinates = function(self, imageX, imageY)
+        return self.graphics:imageToScreenCoordinates(imageX, imageY)
     end,
 
     adjustScaleGeometrically = function(self, deltaScale)
