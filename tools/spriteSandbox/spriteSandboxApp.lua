@@ -25,7 +25,9 @@ function love.update(dt)
     SANDBOX:update(dt)
 end
 
--- ...
+function love.mousepressed(mx, my)
+    SANDBOX:handleMousepressed(mx, my)
+end
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
