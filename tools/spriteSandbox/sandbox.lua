@@ -38,6 +38,10 @@ return {
                 self.graphics:setLineWidth(1)
                 local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
                 self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
+                if love.mouse.isDown(1) then
+                    self.graphics:setColor(1, 1, 1, 0.8)
+                    self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+                end
             end
         end
     end,
