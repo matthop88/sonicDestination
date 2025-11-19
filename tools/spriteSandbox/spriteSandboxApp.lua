@@ -4,7 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local RING_SPRITE = require("tools/spriteSandbox/sprite"):create("objects/ring", 300, 200)
+local SANDBOX = require("tools/spriteSandbox/sandbox")
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -18,11 +18,11 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.draw()
-    RING_SPRITE:draw()
+    SANDBOX:draw()
 end
 
 function love.update(dt)
-    RING_SPRITE:update(dt)
+    SANDBOX:update(dt)
 end
 
 -- ...
@@ -45,6 +45,8 @@ PLUGINS = require("plugins/engine")
     {
         accessorFnName = "getDoubleClick",
     })
+    :add("scrolling",    { imageViewer = SANDBOX })
+    :add("zooming",      { imageViewer = SANDBOX })    
     :add("questionBox",
     {   x = 1150,
         useDoubleClick = true,
