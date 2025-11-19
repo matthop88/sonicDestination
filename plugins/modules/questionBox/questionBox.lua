@@ -85,28 +85,48 @@ return {
 
 	drawText = function(self)
 		if self.h:inFlux() or self.opened then
-			love.graphics.setColor(1, 1, 1)
-			love.graphics.setFont(DOCS_FONT)
-			local maxN = #self.lines * ((self.h:get() - 40) / (self.maxH - 40))
-			for n, line in ipairs(self.lines) do
-				local lineY = (self.y - 15) + (n * 28)
-				if n <= maxN then
-					if type(line) == "table" then
-						local tx = self.x:get() + 20
-						local tabSize = self.lines.tabSize or 100
-						for c, text in ipairs(line) do
-							if type(text) == "number" then 
-								tx = tx + text - tabSize
-							else
-								love.graphics.printf(text, tx, lineY, self:getWidth() - 20, "left")
-								tx = tx + tabSize
-							end
-						end
-					else
-						love.graphics.printf(line, self.x:get() + 20, lineY, self:getWidth() - 20, "left")
-					end
-				end
+			self:drawTextIntern()
+		end
+	end,
+
+	drawTextIntern = function(self)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.setFont(DOCS_FONT)
+		local maxN = #self.lines * ((self.h:get() - 40) / (self.maxH - 40))
+		self:drawTextLines(maxN)
+	end,
+
+	drawTextLines = function(self, maxN)
+		for n, line in ipairs(self.lines) do
+			local lineY = (self.y - 15) + (n * 28)
+			if n <= maxN then
+				self:drawTextLine(line, lineY)
 			end
+		end
+	end,
+
+	drawTextLine = function(self, line, lineY)
+		if type(line) == "table" then
+			self:drawTextCells(line, lineY)
+		else
+			love.graphics.printf(line, self.x:get() + 20, lineY, self:getWidth() - 20, "left")
+		end
+	end,
+
+	drawTextCells = function(self, line, ty)
+		local tx = self.x:get() + 20
+		for c, text in ipairs(line) do
+			tx = tx + self:drawTextCell(text, tx, ty)
+		end
+	end,
+
+	drawTextCell = function(self, text, tx, ty)
+		local tabSize = self.lines.tabSize or 100
+		if type(text) == "number" then 
+			return text - tabSize
+		else
+			love.graphics.printf(text, tx, ty, self:getWidth() - 20, "left")
+			return tabSize
 		end
 	end,
 
