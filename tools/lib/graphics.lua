@@ -124,6 +124,13 @@ return {
         
                 return x, y
             end,
+
+            imageToScreenCoordinates = function(self, imageX, imageY)
+                local screenX = (imageX + self.x) * self.scale
+                local screenY = (imageY + self.y) * self.scale
+
+                return screenX, screenY
+            end,
             
             adjustScaleGeometrically = function(self, delta)
                 self.scale = self.scale + (delta * self.scale)
