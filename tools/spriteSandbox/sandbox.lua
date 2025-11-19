@@ -39,7 +39,7 @@ return {
             self.graphics:setLineWidth(1)
             local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
             self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
-            if love.mouse.isDown(1) then
+            if self.spriteUnderMouse == self.selectedSprite then
                 self.graphics:setColor(1, 1, 1, 0.8)
                 self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
             end
@@ -73,7 +73,13 @@ return {
             if not love.keyboard.isDown("lalt", "ralt") then
                 self.mode = SELECT
             end
+        elseif self.spriteUnderMouse then
+            self.selectedSprite = self.spriteUnderMouse
         end
+    end,
+
+    handleMousereleased = function(self, mx, my)
+        self.selectedSprite = nil
     end,
 
     placeSprite = function(self, mx, my)
