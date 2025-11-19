@@ -1,11 +1,11 @@
 return {
 	getDefaultAnimation = function(self, animations)
-		local currentAnimation
-		for _, animation in pairs(animations) do
-			if currentAnimation == nil then currentAnimation = animation end
-			if animation.isDefault     then currentAnimation = animation end
+		local animationName
+		for name, animation in pairs(animations) do
+			if animationName == nil then animationName = name end
+			if animation.isDefault     then animationName = name end
 		end
-		return currentAnimation
+		return animationName, animations[animationName]
 	end,
 
 	enhanceWithQuads = function(self, animations, sheetImage)
@@ -21,14 +21,18 @@ return {
 		local SHEET_IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
 		SHEET_IMAGE:setFilter("nearest", "nearest")
 
-		local currentAnimation = self:getDefaultAnimation(data.animations)
+		local animationName, currentAnimation = self:getDefaultAnimation(data.animations)
 		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
 
 		return ({
 			init = function(self)
 				self.animations       = data.animations
 				self.currentAnimation = currentAnimation
-				self.currentFrame     = require("tools/spriteSandbox/frame"):create(currentAnimation)
+				local syncName = nil
+				if self.currentAnimation.synchronized then
+					syncName = animationName
+				end
+				self.currentFrame     = require("tools/spriteSandbox/frame"):create(currentAnimation, syncName)
 				self.x, self.y        = x,  y
 
 				return self
