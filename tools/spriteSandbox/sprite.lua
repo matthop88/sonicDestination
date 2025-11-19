@@ -24,21 +24,21 @@ return {
 		local currentAnimation = self:getDefaultAnimation(data.animations)
 		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
 
-
 		return ({
 			init = function(self)
 				self.animations       = data.animations
 				self.currentAnimation = currentAnimation
 				self.currentFrame     = 1
+				self.x, self.y        = x,  y
 
 				return self
 			end,
 
-			draw = function(self)
+			draw = function(self, GRAFX)
 				local frame = self:getCurrentFrame()
 				
-				love.graphics.setColor(1, 1, 1)
-				love.graphics.draw(SHEET_IMAGE, frame.QUAD, x - frame.offset.x, y - frame.offset.y, 0, 1, 1)
+				GRAFX:setColor(1, 1, 1)
+				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
 			end,
 
 			getCurrentFrame = function(self)
