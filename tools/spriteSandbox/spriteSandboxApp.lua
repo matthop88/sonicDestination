@@ -21,7 +21,10 @@ function love.draw()
     RING_SPRITE:draw()
 end
 
--- ...
+function love.update(dt)
+    RING_SPRITE:update(dt)
+end
+
 -- ...
 
 --------------------------------------------------------------
