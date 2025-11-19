@@ -103,4 +103,16 @@ return ({
         self:initCurrentSprite(px, py)
     end,
 
+    shiftSelectedSprite = function(self, key)
+        if self.selectedSprite then
+            local sprite = self.selectedSprite
+            if     key == "shiftleft"  then sprite.x = sprite.x - 1
+            elseif key == "shiftright" then sprite.x = sprite.x + 1
+            elseif key == "shiftup"    then sprite.y = sprite.y - 1
+            elseif key == "shiftdown"  then sprite.y = sprite.y + 1 end
+        
+            if self.rotatingBorder then self.rotatingBorder:updateCoordinates(sprite.x, sprite.y) end
+        end
+    end,
+
 }):init()
