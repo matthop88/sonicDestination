@@ -28,32 +28,21 @@ return {
 			init = function(self)
 				self.animations       = data.animations
 				self.currentAnimation = currentAnimation
-				self.currentFrame     = 1
+				self.currentFrame     = require("tools/spriteSandbox/frame"):create(currentAnimation)
 				self.x, self.y        = x,  y
 
 				return self
 			end,
 
 			draw = function(self, GRAFX)
-				local frame = self:getCurrentFrame()
+				local frame = self.currentFrame:get()
 				
 				GRAFX:setColor(1, 1, 1)
 				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
 			end,
 
-			getCurrentFrame = function(self)
-				return self.currentAnimation[math.floor(self.currentFrame)]
-			end,
-
 			update = function(self, dt)
-				self:updateFrame(dt)
-			end,
-
-			updateFrame = function(self, dt)
-				self.currentFrame = self.currentFrame + ((self.currentAnimation.fps) * dt)
-				if self.currentFrame >= #self.currentAnimation + 1 then
-					self.currentFrame = self.currentFrame - #self.currentAnimation
-				end
+				self.currentFrame:update(dt)
 			end,
 
 		}):init()
