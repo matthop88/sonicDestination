@@ -29,6 +29,17 @@ return {
         else
             love.mouse.setVisible(true)
             self:drawSpriteMouseovers()
+            self:drawSelectedSprite()
+        end
+    end,
+
+    drawSelectedSprite = function(self)
+        if self.selectedSprite then
+            local sprite = self.selectedSprite
+            self.graphics:setColor(1, 1, 1)
+            self.graphics:setLineWidth(1)
+            local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+            self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
         end
     end,
 
@@ -39,7 +50,7 @@ return {
             self.graphics:setLineWidth(1)
             local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
             self.graphics:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
-            if self.spriteUnderMouse == self.selectedSprite then
+            if self.spriteUnderMouse == self.selectedSprite and love.mouse.isDown(1) then
                 self.graphics:setColor(1, 1, 1, 0.8)
                 self.graphics:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
             end
@@ -79,7 +90,7 @@ return {
     end,
 
     handleMousereleased = function(self, mx, my)
-        self.selectedSprite = nil
+        --self.selectedSprite = nil
     end,
 
     placeSprite = function(self, mx, my)
