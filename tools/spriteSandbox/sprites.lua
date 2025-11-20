@@ -85,8 +85,8 @@ return ({
     updateHeldSprite = function(self, dt, px, py)
         if self.heldSprite then
             local sprite, dx, dy = self.heldSprite.sprite, self.heldSprite.dx, self.heldSprite.dy
-            sprite.x = px + dx
-            sprite.y = py + dy
+            sprite.x = math.floor(px + dx)
+            sprite.y = math.floor(py + dy)
         end
     end,
 
@@ -130,7 +130,7 @@ return ({
         table.insert(self.sprites, self.currentSprite)
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-        self:initCurrentSprite(px, py)
+        self:initCurrentSprite(math.floor(px), math.floor(py))
     end,
 
     shiftSelectedSprite = function(self, key)
