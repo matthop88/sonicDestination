@@ -7,11 +7,11 @@ return {
 		local leftX, topY = GRAFX:screenToImageCoordinates(0, 0)
 		local rightX, bottomY = GRAFX:screenToImageCoordinates(love.graphics:getWidth(), love.graphics:getHeight())
 		
-		if (rightX - leftX) <= 32 then
+		if (rightX - leftX) <= 96 then
 			self:drawPixelGrid(GRAFX, leftX, topY, rightX, bottomY)
 		end
 
-		if (rightX - leftX) <= 512 then
+		if (rightX - leftX) <= 768 then
 			self:drawTileGrid(GRAFX, leftX, topY, rightX, bottomY)
 		end
 
@@ -19,14 +19,14 @@ return {
 	end,
 
 	drawPixelGrid  = function(self, GRAFX, leftX, topY, rightX, bottomY)
-		GRAFX:setColor(0.5, 0.5, 0.3, (32 - (rightX - leftX)) / 32)
+		GRAFX:setColor(0.5, 0.5, 0.3, (96 - (rightX - leftX)) / 96)
 		GRAFX:setLineWidth(0.125)
 
 		self:drawGrid(GRAFX, leftX, topY, rightX, bottomY, PIXEL_SIZE)
 	end,
 
 	drawTileGrid  = function(self, GRAFX, leftX, topY, rightX, bottomY)
-		GRAFX:setColor(0.5, 0.5, 0.5, (512 - (rightX - leftX)) / 512)
+		GRAFX:setColor(0.5, 0.5, 0.5, (768 - (rightX - leftX)) / 768)
 		GRAFX:setLineWidth(0.25)
 
 		self:drawGrid(GRAFX, leftX + 0.25, topY + 0.25, rightX + 0.25, bottomY + 0.25, TILE_SIZE)
