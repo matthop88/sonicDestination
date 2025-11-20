@@ -55,6 +55,10 @@ PLUGINS = require("plugins/engine")
     {
         accessorFnName = "getDoubleClick",
     })
+    :add("keyRepeat", {
+        interval    = 0.05,
+        delay       = 0.5,
+    })
     :add("scrolling",    { imageViewer = SANDBOX })
     :add("zooming",      { imageViewer = SANDBOX })    
     :add("questionBox",
