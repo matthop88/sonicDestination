@@ -1,6 +1,8 @@
 return {
     create = function(self, x, y)
         return ({
+            motionTimer = 0,
+
             init = function(self, x, y)
                 self.x, self.y = x, y
                 return self
@@ -19,12 +21,23 @@ return {
             end,
 
             getAlpha = function(self, GRAFX)
-                local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-                local distance = math.sqrt(((px - self.x) * (px - self.x)) + ((py - self.y) * (py - self.y)))
-                return math.max(0.1, ((10 - math.sqrt(distance)) / 10) + 0.2)
+                if self.motionTimer > 0 then
+                    return 1.0
+                else
+                    local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+                    local distance = math.sqrt(((px - self.x) * (px - self.x)) + ((py - self.y) * (py - self.y)))
+                    return math.max(0.1, ((10 - math.sqrt(distance)) / 10) + 0.2)
+                end
+            end,
+
+            update = function(self, dt)
+                self.motionTimer = self.motionTimer - dt
             end,
 
             updateCoordinates = function(self, x, y)
+                if self.x ~= x or self.y ~= y then
+                    self.motionTimer = 1
+                end
                 self.x = x
                 self.y = y
             end,
