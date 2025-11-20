@@ -4,6 +4,7 @@ return ({
     sprites         = {},  
     currentSprite   = nil,
     selectedSprite  = nil,
+    heldSprite      = nil,
     mouseoverSprite = nil,
 
     init = function(self)
@@ -59,6 +60,7 @@ return ({
         self:updateSprites(dt)
         self:updateMouseoverSprite(dt, px, py)
         self:updateCurrentSprite(dt, px, py)
+        self:updateHeldSprite(dt, px, py)
         self:updateSelectedSprite(dt)
     end,
 
@@ -80,6 +82,14 @@ return ({
         end
     end,
 
+    updateHeldSprite = function(self, dt, px, py)
+        if self.heldSprite then
+            local sprite, dx, dy = self.heldSprite.sprite, self.heldSprite.dx, self.heldSprite.dy
+            sprite.x = px + dx
+            sprite.y = py + dy
+        end
+    end,
+
     updateSelectedSprite = function(self, dt)
         if self.rotatingBorder then
             self.rotatingBorder:update(dt) 
@@ -91,15 +101,25 @@ return ({
         end
     end,
 
-    onSpriteSelected = function(self)
+    onSpriteHeld = function(self, GRAFX)
         if self.mouseoverSprite then 
+            self:holdSprite(GRAFX)
             self.selectedSprite = self.mouseoverSprite   
-
             local sprite = self.selectedSprite
             local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
             self.rotatingBorder = require("tools/spriteSandbox/rotatingBorder"):create(x, y, w, h)
             self.coordinateBox  = require("tools/spriteSandbox/coordinateBox"):create(x, y)
         end
+    end,
+
+    holdSprite = function(self, GRAFX)
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        local sprite = self.mouseoverSprite
+        self.heldSprite = { sprite = sprite, dx = sprite.x - px, dy = sprite.y - py }
+    end,
+
+    onSpriteReleased = function(self)
+        self.heldSprite = nil
     end,
 
     initCurrentSprite = function(self, px, py)
