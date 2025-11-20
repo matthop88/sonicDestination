@@ -91,14 +91,22 @@ return ({
     end,
 
     updateSelectedSprite = function(self, dt)
-        if self.rotatingBorder then
-            self.rotatingBorder:update(dt) 
-            self.rotatingBorder:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+        if self.selectedSprite then
+            if self.rotatingBorder then
+                self.rotatingBorder:update(dt) 
+                self.rotatingBorder:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+            end
+            if self.coordinateBox  then
+                self.coordinateBox:update(dt)
+                self.coordinateBox:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+            end
         end
-        if self.coordinateBox  then
-            self.coordinateBox:update(dt)
-            self.coordinateBox:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
-        end
+    end,
+
+    deselectSprite = function(self)
+        self.selectedSprite = nil
+        self.rotatingBorder = nil
+        self.coordinateBox  = nil
     end,
 
     onSpriteHeld = function(self, GRAFX)
