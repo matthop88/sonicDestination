@@ -85,7 +85,8 @@ return ({
             self.rotatingBorder:update(dt) 
             self.rotatingBorder:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
         end
-        if self.coordinateBox  then 
+        if self.coordinateBox  then
+            self.coordinateBox:update(dt)
             self.coordinateBox:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
         end
     end,
