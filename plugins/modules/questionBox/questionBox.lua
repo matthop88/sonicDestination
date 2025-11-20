@@ -140,7 +140,7 @@ return {
 	end,
 
 	drawUnderlinedTextUnit = function(self, text, tx, ty)
-		love.graphics.setColor(0.6, 0.6, 0.6)
+		love.graphics.setColor(1, 1, 0, 0.6)
 		love.graphics.setLineWidth(2)
 		love.graphics.line(self.x:get() + 20, ty + 25, self.x:get() + self.w:get() - 20, ty + 25)
 		love.graphics.setColor(1, 1, 1)
