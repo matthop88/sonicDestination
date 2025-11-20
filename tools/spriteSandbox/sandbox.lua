@@ -49,6 +49,7 @@ return ({
             else                        self:setSelectMode() end
         elseif key == "escape" then     
             self:setSelectMode()
+            self.sprites:deselectSprite()
         elseif key == "shiftleft" or key == "shiftup" or key == "shiftdown" or key == "shiftright" then
             self.sprites:shiftSelectedSprite(key)
         end
