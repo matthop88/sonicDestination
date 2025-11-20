@@ -4,6 +4,7 @@ local SPRITE   = "sprite"
 return ({
     graphics         = require("tools/lib/graphics"):create(), 
     sprites          = require("tools/spriteSandbox/sprites"),
+    grid             = require("tools/spriteSandbox/grid"),
     mode             = nil,
 
     init = function(self)
@@ -15,11 +16,16 @@ return ({
         love.graphics.setColor(0.1, 0.1, 0.1)
         love.graphics.rectangle("fill", 0, 0, 1200, 800)
 
+        self:drawGrid()
         self:drawSprites()
         self:drawMode()
         self:drawSelectedSprite()
     end,
 
+    drawGrid = function(self)
+        self.grid:draw(self.graphics)
+    end,
+    
     drawSprites = function(self)
         self.sprites:draw(self.graphics)
     end,
