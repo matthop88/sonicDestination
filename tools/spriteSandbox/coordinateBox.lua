@@ -9,6 +9,15 @@ return {
             end,
 
             draw = function(self, GRAFX)
+                local leftX, topY = GRAFX:screenToImageCoordinates(0, 0)
+                local rightX, bottomY = GRAFX:screenToImageCoordinates(love.graphics:getWidth(), love.graphics:getHeight())
+
+                if (rightX - leftX) > 32 then
+                    self:drawBox(GRAFX)
+                end
+            end,
+
+            drawBox = function(self, GRAFX)
                 local alpha = self:getAlpha(GRAFX)
                 GRAFX:setColor(0, 0, 0, 0.5 * alpha)
                 GRAFX:rectangle("fill", self.x + 6, self.y + 6, 40, 9)
