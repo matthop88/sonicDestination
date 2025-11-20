@@ -80,7 +80,7 @@ return ({
     end,
 
     moveImage = function(self, deltaX, deltaY)
-        self.graphics:moveImage(deltaX, deltaY)
+        self.graphics:moveImage(deltaX / self.graphics:getScale(), deltaY / self.graphics:getScale())
     end,
 
     screenToImageCoordinates = function(self, screenX, screenY)
