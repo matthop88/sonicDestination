@@ -54,12 +54,12 @@ return ({
             
             if not love.keyboard.isDown("lalt", "ralt") then self:setSelectMode() end
         else
-            self.sprites:onSpriteSelected()
+            self.sprites:onSpriteHeld(self.graphics)
         end
     end,
 
     handleMousereleased = function(self, mx, my)
-        -- Do nothing
+        self.sprites:onSpriteReleased()
     end,
 
     setSelectMode = function(self)
