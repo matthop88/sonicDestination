@@ -1,5 +1,6 @@
 return ({
     rotatingBorder  = nil,
+    coordinateBox   = nil,
     sprites         = {},  
     currentSprite   = nil,
     selectedSprite  = nil,
@@ -49,6 +50,7 @@ return ({
 
     drawSelectedSprite = function(self, GRAFX)
         if self.rotatingBorder then self.rotatingBorder:draw(GRAFX) end
+        if self.coordinateBox  then self.coordinateBox:draw(GRAFX)  end
     end,
 
     update = function(self, dt, GRAFX)
@@ -79,7 +81,13 @@ return ({
     end,
 
     updateSelectedSprite = function(self, dt)
-        if self.rotatingBorder then self.rotatingBorder:update(dt) end
+        if self.rotatingBorder then
+            self.rotatingBorder:update(dt) 
+            self.rotatingBorder:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+        end
+        if self.coordinateBox  then 
+            self.coordinateBox:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+        end
     end,
 
     onSpriteSelected = function(self)
@@ -89,6 +97,7 @@ return ({
             local sprite = self.selectedSprite
             local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
             self.rotatingBorder = require("tools/spriteSandbox/rotatingBorder"):create(x, y, w, h)
+            self.coordinateBox  = require("tools/spriteSandbox/coordinateBox"):create(x, y)
         end
     end,
 
@@ -110,8 +119,6 @@ return ({
             elseif key == "shiftright" then sprite.x = sprite.x + 1
             elseif key == "shiftup"    then sprite.y = sprite.y - 1
             elseif key == "shiftdown"  then sprite.y = sprite.y + 1 end
-        
-            if self.rotatingBorder then self.rotatingBorder:updateCoordinates(sprite.x, sprite.y) end
         end
     end,
 
