@@ -12,13 +12,17 @@ return {
 	end,
 
 	drawChunkGrid = function(self, GRAFX, leftX, topY, rightX, bottomY)
-		local offsetX = leftX % CHUNK_SIZE
+		self:drawGrid(GRAFX, leftX, topY, rightX, bottomY, CHUNK_SIZE)
+	end,
+	
+	drawGrid = function(self, GRAFX, leftX, topY, rightX, bottomY, gridSize)
+		local offsetX = leftX % gridSize
         local startX  = leftX - offsetX
         
-        local offsetY = topY  % CHUNK_SIZE
+        local offsetY = topY  % gridSize
         local startY  = topY  - offsetY
         
-        for i = startX, rightX + CHUNK_SIZE, CHUNK_SIZE do GRAFX:line(i, topY, i, bottomY) end
-        for i = startY, rightX + CHUNK_SIZE, CHUNK_SIZE do GRAFX:line(leftX, i, rightX, i) end
+        for i = startX, rightX + gridSize, gridSize do GRAFX:line(i, topY, i, bottomY) end
+        for i = startY, rightX + gridSize, gridSize do GRAFX:line(leftX, i, rightX, i) end
 	end,
 }
