@@ -111,7 +111,7 @@ local createLinkedList = function()
 				local removedLink = self.__current:remove()
 				self.__current = linkAfterCurrent
 				self.__size = self.__size - 1
-				return removedLink
+				return removedLink:data()
 			end
 		end,
 
