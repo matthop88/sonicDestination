@@ -1,7 +1,7 @@
 return ({
     rotatingBorder  = nil,
     coordinateBox   = nil,
-    sprites         = {},  
+    sprites         = require("tools/lib/dataStructures/linkedList"):create(),  
     currentSprite   = nil,
     selectedSprite  = nil,
     heldSprite      = nil,
@@ -13,7 +13,11 @@ return ({
     end,
 
     draw = function(self, GRAFX)
-        for _, sprite in ipairs(self.sprites) do sprite:draw(GRAFX) end
+        self.sprites:head()
+        while not self.sprites:isEnd() do 
+            self.sprites:get():draw(GRAFX)
+            self.sprites:next()
+        end
     end,
 
     drawCurrentSprite = function(self, GRAFX)
@@ -65,13 +69,20 @@ return ({
     end,
 
     updateSprites = function(self, dt)
-        for _, sprite in ipairs(self.sprites) do sprite:update(dt) end
+        self.sprites:head()
+        while not self.sprites:isEnd() do 
+            self.sprites:get():update(dt)
+            self.sprites:next()
+        end
     end,
 
     updateMouseoverSprite = function(self, dt, px, py)
         self.mouseoverSprite = nil
-        for _, sprite in ipairs(self.sprites) do
+        self.sprites:head()
+        while not self.sprites:isEnd() do 
+            local sprite = self.sprites:get()
             if sprite:isInside(px, py) then self.mouseoverSprite = sprite end
+            self.sprites:next()
         end
     end,
 
@@ -135,7 +146,7 @@ return ({
     end,
 
     placeCurrentSprite = function(self, GRAFX)
-        table.insert(self.sprites, self.currentSprite)
+        self.sprites:add(self.currentSprite)
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
         self:initCurrentSprite(math.floor(px), math.floor(py))
