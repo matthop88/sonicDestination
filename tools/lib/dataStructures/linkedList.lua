@@ -50,12 +50,12 @@ return {
 
 			head = function(self) 
 				self.__current = self.__head
-				return not self:isEnd()
+				return self
 			end,
 
 			tail = function(self) 
 				self.__current = self.__tail 
-				return not self:isEnd()
+				return self
 			end,
 
 			size = function(self) return self.__size end,
