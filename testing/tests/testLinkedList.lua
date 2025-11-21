@@ -43,7 +43,7 @@ return {
     end,
     
     testMultiElementListTraversal = function(self)
-        local name = "Multiple List Element Test",
+        local name = "Multiple List Element Traversal Test",
 
         self.LINKED_LIST:add(3)
         self.LINKED_LIST:add(5)
@@ -70,4 +70,22 @@ return {
 
     end,                              
 
+    testMultiElementListRemovalAndInsertion = function(self)
+        local name = "Multiple List Element Removal and Insertion Test",
+
+        self.LINKED_LIST:add(3)
+        self.LINKED_LIST:add(5)
+        self.LINKED_LIST:add(8)
+        self.LINKED_LIST:add(13)
+
+        return TESTING:assertTrue(name, self.LINKED_LIST:next():next():remove() == 8
+                                    and self.LINKED_LIST:size()                 == 3
+                                    and self.LINKED_LIST:get()                  == 13
+                                    and self.LINKED_LIST:prev():insert(7):get() == 7
+                                    and self.LINKED_LIST:size()                 == 4
+                                    and self.LINKED_LIST:head()                 == true
+                                    and self.LINKED_LIST:remove()               == 3
+                                    and self.LINKED_LIST:size()                 == 3)
+
+    end,     
 }
