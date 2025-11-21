@@ -79,6 +79,8 @@ return {
 					local newLink = link:create(data)
 					self.__current:addAfter(newLink)
 					if self.__tail == self.__current then self.__tail = newLink end
+					self.__current = newLink
+					self.__size = self.__size + 1
 				end
 				return self
 			end,
