@@ -42,7 +42,76 @@ local link = {
 
 local createLinkedList = function()
 	return {
-		-- Some implementation
+		__head    = nil,
+		__tail    = nil,
+		__size    = 0,
+		__current = nil,
+
+		head = function(self) return __head end,
+		tail = function(self) return __tail end,
+		size = function(self) return __size end,
+
+		add = function(self, data)
+			local newLink = link:create(data)
+			if self.__tail ~= nil then self.__tail:addAfter(newLink) end
+			self.__tail = newLink
+			if self.__head    == nil then 
+				self.__head    = newLink
+				self.__current = newLink
+			end
+			self.__size = self.__size + 1
+			return self
+		end,
+
+		insert = function(self, data)
+			if self.__current == nil then 
+				return self:add(data)
+			else
+				local newLink = link:create(data)
+				self.__current:addAfter(newLink)
+				if self.__tail == self.__current then self.__tail = newLink end
+			end
+			return self
+		end,
+
+		get = function(self)
+			if self.__current == nil then return nil
+			else                          return self.__current:data() end
+		end,
+
+		next = function(self)
+			if self.__current == nil then
+				self.__current = self.__head
+				return nil
+			else
+				self.__current = self.__current:next()
+				return self:get()
+			end
+		end,
+
+		prev = function(self)
+			if self.__current == nil then
+				self.__current = self.__tail
+				return nil
+			else
+				self.__current = self.__current:prev()
+				return self:get()
+			end
+		end,
+
+		remove = function(self)
+			if self.__current == nil then
+				return nil
+			else
+				if self.__tail == self.__current then self.__tail = self.__current:prev() end
+				if self.__head == self.__current then self.__head = self.__current:next() end
+				local linkAfterCurrent = self.__current:next()
+				local removedLink = self.__current:remove()
+				self.__current = linkAfterCurrent
+				self.__size = self.__size - 1
+				return removedLink
+			end
+		end,
 	}
 end
 
