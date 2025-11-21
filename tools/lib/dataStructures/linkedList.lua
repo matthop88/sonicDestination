@@ -47,8 +47,16 @@ local createLinkedList = function()
 		__size    = 0,
 		__current = nil,
 
-		head = function(self) return self.__head end,
-		tail = function(self) return self.__tail end,
+		head = function(self) 
+			self.__current = self.__head
+			return not self:isEnd()
+		end,
+
+		tail = function(self) 
+			self.__current = self.__tail 
+			return not self:isEnd()
+		end,
+
 		size = function(self) return self.__size end,
 
 		add = function(self, data)
@@ -80,23 +88,17 @@ local createLinkedList = function()
 		end,
 
 		next = function(self)
-			if self.__current == nil then
-				self.__current = self.__head
-				return nil
-			else
-				self.__current = self.__current:next()
-				return self:get()
-			end
+			if self.__current == nil then self.__current = self.__head
+			else                          self.__current = self.__current:next() end
+			
+			return self
 		end,
 
 		prev = function(self)
-			if self.__current == nil then
-				self.__current = self.__tail
-				return nil
-			else
-				self.__current = self.__current:prev()
-				return self:get()
-			end
+			if self.__current == nil then self.__current = self.__tail
+			else                          self.__current = self.__current:prev() end
+			
+			return self
 		end,
 
 		remove = function(self)
@@ -112,6 +114,8 @@ local createLinkedList = function()
 				return removedLink
 			end
 		end,
+
+		isEnd = function(self) return self.__current == nil end,
 	}
 end
 
