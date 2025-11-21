@@ -47,9 +47,9 @@ local createLinkedList = function()
 		__size    = 0,
 		__current = nil,
 
-		head = function(self) return __head end,
-		tail = function(self) return __tail end,
-		size = function(self) return __size end,
+		head = function(self) return self.__head end,
+		tail = function(self) return self.__tail end,
+		size = function(self) return self.__size end,
 
 		add = function(self, data)
 			local newLink = link:create(data)
