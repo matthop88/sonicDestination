@@ -11,11 +11,11 @@ return {
     end,
 
     before = function(self)
-        self.LINKED_LIST = require("tools/lib/dataStructures/linkedList")
+        self.LINKED_LIST = require("tools/lib/dataStructures/linkedList"):create()
     end,
 
     testEmptyListAttributes = function(self)
-        local name = "Empty List Test: head = false, tail = false, get = nil, next = self, prev = self, remove = self, isEnd = true, size = 0"
+        local name = "Empty List Test"
 
         return TESTING:assertTrue(name, self.LINKED_LIST:head()   == false
                                     and self.LINKED_LIST:tail()   == false
@@ -28,7 +28,6 @@ return {
     end,
 
     testSingleListElement = function(self)
-
         local name = "Single List Element Test",
 
         self.LINKED_LIST:add(3)
@@ -36,14 +35,39 @@ return {
         return TESTING:assertTrue(name, self.LINKED_LIST:head()   == true
                                     and self.LINKED_LIST:tail()   == true
                                     and self.LINKED_LIST:get()    == 3
-                                    and self.LINKED_LIST:next()   == self.LINKED_LIST
-                                    and self.LINKED_LIST:prev()   == self.LINKED_LIST
                                     and self.LINKED_LIST:isEnd()  == false
                                     and self.LINKED_LIST:size()   == 1
                                     and self.LINKED_LIST:remove() == 3
                                     and self.LINKED_LIST:isEnd()  == true
                                     and self.LINKED_LIST:size()   == 0)
     end,
-                                    
+    
+    testMultiElementListTraversal = function(self)
+        local name = "Multiple List Element Test",
+
+        self.LINKED_LIST:add(3)
+        self.LINKED_LIST:add(5)
+        self.LINKED_LIST:add(8)
+        self.LINKED_LIST:add(13)
+
+        return TESTING:assertTrue(name, self.LINKED_LIST:size()       == 4
+                                    and self.LINKED_LIST:isEnd()      == false
+                                    and self.LINKED_LIST:get()        == 3
+                                    and self.LINKED_LIST:next():get() == 5
+                                    and self.LINKED_LIST:next():get() == 8
+                                    and self.LINKED_LIST:next():get() == 13
+                                    and self.LINKED_LIST:next():get() == nil
+                                    and self.LINKED_LIST:isEnd()      == true
+                                    and self.LINKED_LIST:tail()       == true
+                                    and self.LINKED_LIST:get()        == 13
+                                    and self.LINKED_LIST:isEnd()      == false
+                                    and self.LINKED_LIST:prev():get() == 8
+                                    and self.LINKED_LIST:prev():get() == 5
+                                    and self.LINKED_LIST:prev():get() == 3
+                                    and self.LINKED_LIST:prev():get() == nil
+                                    and self.LINKED_LIST:isEnd()      == true
+                                    and self.LINKED_LIST:size()       == 4)
+
+    end,                              
 
 }
