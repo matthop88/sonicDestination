@@ -15,14 +15,15 @@ return {
     end,
 
     testEmptyListAttributes = function(self)
-        local name = "Empty List Test: head = nil, tail = nil, get = nil, next = nil, prev = nil, remove = nil, size = 0"
+        local name = "Empty List Test: head = false, tail = false, get = nil, next = self, prev = self, remove = self, isEnd = true, size = 0"
 
-        return TESTING:assertTrue(name, self.LINKED_LIST:head()   == nil
-                                    and self.LINKED_LIST:tail()   == nil
+        return TESTING:assertTrue(name, self.LINKED_LIST:head()   == false
+                                    and self.LINKED_LIST:tail()   == false
                                     and self.LINKED_LIST:get()    == nil
-                                    and self.LINKED_LIST:next()   == nil
-                                    and self.LINKED_LIST:prev()   == nil
+                                    and self.LINKED_LIST:next()   == self.LINKED_LIST
+                                    and self.LINKED_LIST:prev()   == self.LINKED_LIST
                                     and self.LINKED_LIST:remove() == nil
+                                    and self.LINKED_LIST:isEnd()  == true
                                     and self.LINKED_LIST:size()   == 0)
     end,
 
