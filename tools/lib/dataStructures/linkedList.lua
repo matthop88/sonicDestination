@@ -96,6 +96,12 @@ return {
 				return self
 			end,
 
+			getNext = function(self)
+				local result = self:get()
+				self:next()
+				return result
+			end,
+
 			prev = function(self)
 				if self.__current ~= nil then self.__current = self.__current:prev() end
 				
