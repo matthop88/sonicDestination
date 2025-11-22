@@ -17,6 +17,8 @@ return {
 						self.graphics:setColor(1, 1, 1, 0.9)
 						self.graphics:setLineWidth(3)
 						self.graphics:rectangle("line", x, 725, 50, 50)
+						self.graphics:setFontSize(24)
+						self.graphics:printf("" .. sprite:getID(), x, 735, 50, "center")
 						x = x + 100
 					end
 				end
