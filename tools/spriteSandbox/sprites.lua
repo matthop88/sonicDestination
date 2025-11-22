@@ -114,7 +114,14 @@ return ({
         end
     end,
 
+    selectSprite = function(self, sprite)
+        if self.selectedSprite then self.selectedSprite.selected = false end
+        sprite.selected = true
+        self.selectedSprite = sprite
+    end,
+
     deselectSprite = function(self)
+        if self.selectedSprite then self.selectedSprite.selected = false end
         self.selectedSprite = nil
         self.rotatingBorder = nil
         self.coordinateBox  = nil
@@ -123,7 +130,7 @@ return ({
     onSpriteHeld = function(self, GRAFX)
         if self.mouseoverSprite then 
             self:holdSprite(GRAFX)
-            self.selectedSprite = self.mouseoverSprite   
+            self:selectSprite(self.mouseoverSprite) 
             local sprite = self.selectedSprite
             local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
             self.rotatingBorder = require("tools/spriteSandbox/rotatingBorder"):create(x, y, w, h)
