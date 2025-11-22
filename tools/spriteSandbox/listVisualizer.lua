@@ -13,8 +13,7 @@ return {
 					self.list:head()
 					local x = 50
 					while not self.list:isEnd() do
-						local sprite = self.list:get()
-						self.list:next()
+						local sprite = self.list:getNext()
 						self.graphics:setColor(1, 1, 1, 0.9)
 						self.graphics:setLineWidth(3)
 						self.graphics:rectangle("line", x, 725, 50, 50)
