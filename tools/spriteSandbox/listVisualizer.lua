@@ -25,7 +25,12 @@ return {
 						self.graphics:setColor(1, 1, 1, 0.9)
 						if n < self.list:size() then
 							self.graphics:line(x + 50, 740, x + 100, 740)
+							self.graphics:line(x + 90, 735, x + 100, 740)
+							self.graphics:line(x + 90, 745, x + 100, 740)
 							self.graphics:line(x + 50, 760, x + 100, 760)
+							self.graphics:line(x + 60, 755, x +  50, 760)
+							self.graphics:line(x + 60, 765, x +  50, 760)
+							
 						end
 						x = x + 100
 						n = n + 1
