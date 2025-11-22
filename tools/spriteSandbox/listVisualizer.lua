@@ -14,7 +14,8 @@ return {
 					local x = 50
 					while not self.list:isEnd() do
 						local sprite = self.list:getNext()
-						self.graphics:setColor(1, 1, 1, 0.9)
+						if sprite.selected then self.graphics:setColor(1, 0.5, 0.5, 0.9)
+						else                    self.graphics:setColor(1, 1,   1,   0.9)  end
 						self.graphics:setLineWidth(3)
 						self.graphics:rectangle("line", x, 725, 50, 50)
 						self.graphics:setFontSize(24)
