@@ -12,6 +12,7 @@ return {
 
 					self.list:head()
 					local x = 50
+					local n = 1
 					while not self.list:isEnd() do
 						local sprite = self.list:getNext()
 						if sprite.selected then self.graphics:setColor(1, 0.5, 0.5, 0.9)
@@ -20,7 +21,14 @@ return {
 						self.graphics:rectangle("line", x, 725, 50, 50)
 						self.graphics:setFontSize(24)
 						self.graphics:printf("" .. sprite:getID(), x, 735, 50, "center")
+
+						self.graphics:setColor(1, 1, 1, 0.9)
+						if n < self.list:size() then
+							self.graphics:line(x + 50, 740, x + 100, 740)
+							self.graphics:line(x + 50, 760, x + 100, 760)
+						end
 						x = x + 100
+						n = n + 1
 					end
 				end
 			end,
