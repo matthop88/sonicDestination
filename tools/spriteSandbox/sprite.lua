@@ -1,3 +1,5 @@
+local SPRITE_ID = 0
+
 return {
 	getDefaultAnimation = function(self, animations)
 		local animationName
@@ -24,7 +26,11 @@ return {
 		local animationName, currentAnimation = self:getDefaultAnimation(data.animations)
 		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
 
+		SPRITE_ID = SPRITE_ID + 1
+
 		return ({
+			id   = SPRITE_ID,
+
 			init = function(self)
 				self.animations       = data.animations
 				self.currentAnimation = currentAnimation
@@ -38,12 +44,13 @@ return {
 				return self
 			end,
 
-			getX = function(self) return self.x                  end,
-			getY = function(self) return self.y                  end,
-			getW = function(self) return self.currentAnimation.w end,
-			getH = function(self) return self.currentAnimation.h end,
+			getID = function(self) return self.id                 end,
+			getX  = function(self) return self.x                  end,
+			getY  = function(self) return self.y                  end,
+			getW  = function(self) return self.currentAnimation.w end,
+			getH  = function(self) return self.currentAnimation.h end,
 
-			draw = function(self, GRAFX)
+			draw  = function(self, GRAFX)
 				local frame = self.currentFrame:get()
 				
 				GRAFX:setColor(1, 1, 1)
