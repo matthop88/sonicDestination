@@ -17,8 +17,7 @@ return ({
     draw = function(self, GRAFX)
         self.sprites:head()
         while not self.sprites:isEnd() do 
-            self.sprites:get():draw(GRAFX)
-            self.sprites:next()
+            self.sprites:getNext():draw(GRAFX)
         end
         self.visualizedList:draw()
     end,
@@ -74,8 +73,7 @@ return ({
     updateSprites = function(self, dt)
         self.sprites:head()
         while not self.sprites:isEnd() do 
-            self.sprites:get():update(dt)
-            self.sprites:next()
+            self.sprites:getNext():update(dt)
         end
     end,
 
@@ -83,9 +81,8 @@ return ({
         self.mouseoverSprite = nil
         self.sprites:head()
         while not self.sprites:isEnd() do 
-            local sprite = self.sprites:get()
+            local sprite = self.sprites:getNext()
             if sprite:isInside(px, py) then self.mouseoverSprite = sprite end
-            self.sprites:next()
         end
     end,
 
