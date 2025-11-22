@@ -6,9 +6,11 @@ return ({
     selectedSprite  = nil,
     heldSprite      = nil,
     mouseoverSprite = nil,
+    visualizedList  = nil,
 
     init = function(self)
         self:initCurrentSprite(0, 0)
+        self.visualizedList = require("tools/spriteSandbox/listVisualizer"):create(self.sprites)
         return self
     end,
 
@@ -18,6 +20,7 @@ return ({
             self.sprites:get():draw(GRAFX)
             self.sprites:next()
         end
+        self.visualizedList:draw()
     end,
 
     drawCurrentSprite = function(self, GRAFX)
