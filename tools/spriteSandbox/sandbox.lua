@@ -52,6 +52,8 @@ return ({
             self.sprites:deselectSprite()
         elseif key == "shiftleft" or key == "shiftup" or key == "shiftdown" or key == "shiftright" then
             self.sprites:shiftSelectedSprite(key)
+        elseif key == "backspace" then
+            self.sprites:deleteSelectedSprite()
         end
     end,
 
