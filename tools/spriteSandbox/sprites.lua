@@ -73,7 +73,10 @@ return ({
     updateSprites = function(self, dt)
         self.sprites:head()
         while not self.sprites:isEnd() do 
-            self.sprites:getNext():update(dt)
+            local sprite = self.sprites:get()
+            sprite:update(dt)
+            if sprite.deleted then self.sprites:remove() 
+            else                   self.sprites:next()   end
         end
     end,
 
@@ -166,6 +169,13 @@ return ({
             elseif key == "shiftright" then sprite.x = sprite.x + 1
             elseif key == "shiftup"    then sprite.y = sprite.y - 1
             elseif key == "shiftdown"  then sprite.y = sprite.y + 1 end
+        end
+    end,
+
+    deleteSelectedSprite = function(self)
+        if self.selectedSprite then 
+            self.selectedSprite.deleted = true 
+            self:deselectSprite()
         end
     end,
 
