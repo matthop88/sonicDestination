@@ -7,6 +7,11 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 local RING_INFO     = require("tools/ringMaster/ringInfo")
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
+if __PARAMS["mapIn"] == "_" then 
+    require("tools/ringMaster/mapFinder"):execute()
+    return 
+end
+
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
 local MAP_IMG_OUT   = "resources/zones/maps/" .. (__PARAMS["mapOut"] or "sampleRingMapImage")
 local MAP_SAVER     = require("tools/ringMaster/savableMap"):create(MAP_IMG_PATH, (__PARAMS["ringDataOut"] or "sampleRingData") .. ".lua")
