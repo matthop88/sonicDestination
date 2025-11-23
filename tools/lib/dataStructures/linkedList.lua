@@ -1,4 +1,4 @@
-local link = {
+local cell = {
 	create = function(self, data)
 		return {
 			__next = nil,
@@ -21,20 +21,20 @@ local link = {
 				return self
 			end,
 
-			addBefore = function(self, newLink)
-				if self.__prev then self.__prev:setNext(newLink) end
-				newLink:setPrev(self.__prev)
-				newLink:setNext(self)
-				self.__prev = newLink
-				return newLink
+			addBefore = function(self, newCell)
+				if self.__prev then self.__prev:setNext(newCell) end
+				newCell:setPrev(self.__prev)
+				newCell:setNext(self)
+				self.__prev = newCell
+				return newCell
 			end,
 
-			addAfter = function(self, newLink)
-				if self.__next then self.__next:setPrev(newLink) end
-				newLink:setNext(self.__next)
-				newLink:setPrev(self)
-				self.__next = newLink
-				return newLink
+			addAfter = function(self, newCell)
+				if self.__next then self.__next:setPrev(newCell) end
+				newCell:setNext(self.__next)
+				newCell:setPrev(self)
+				self.__next = newCell
+				return newCell
 			end,
 		}
 	end,
@@ -61,12 +61,12 @@ return {
 			size = function(self) return self.__size end,
 
 			add = function(self, data)
-				local newLink = link:create(data)
-				if self.__tail ~= nil then self.__tail:addAfter(newLink) end
-				self.__tail = newLink
+				local newCell = cell:create(data)
+				if self.__tail ~= nil then self.__tail:addAfter(newCell) end
+				self.__tail = newCell
 				if self.__head    == nil then 
-					self.__head    = newLink
-					self.__current = newLink
+					self.__head    = newCell
+					self.__current = newCell
 				end
 				self.__size = self.__size + 1
 				return self
@@ -76,10 +76,10 @@ return {
 				if self.__current == nil then 
 					return self:add(data)
 				else
-					local newLink = link:create(data)
-					self.__current:addAfter(newLink)
-					if self.__tail == self.__current then self.__tail = newLink end
-					self.__current = newLink
+					local newCell = cell:create(data)
+					self.__current:addAfter(newCell)
+					if self.__tail == self.__current then self.__tail = newCell end
+					self.__current = newCell
 					self.__size = self.__size + 1
 				end
 				return self
@@ -114,11 +114,11 @@ return {
 				else
 					if self.__tail == self.__current then self.__tail = self.__current:prev() end
 					if self.__head == self.__current then self.__head = self.__current:next() end
-					local linkAfterCurrent = self.__current:next()
-					local removedLink = self.__current:remove()
-					self.__current = linkAfterCurrent
+					local cellAfterCurrent = self.__current:next()
+					local removedCell = self.__current:remove()
+					self.__current = cellAfterCurrent
 					self.__size = self.__size - 1
-					return removedLink:data()
+					return removedCell:data()
 				end
 			end,
 
