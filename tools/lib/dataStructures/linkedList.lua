@@ -10,6 +10,12 @@ local cell = {
 			__prev = nil,
 			__data = data,
 
+			init = function(self, data)
+				self.__next = nil
+				self.__prev = nil
+				self.__data = data
+			end,
+
 			next = function(self) return self.__next end,
 			prev = function(self) return self.__prev end,
 			data = function(self) return self.__data end,
@@ -49,6 +55,7 @@ local cell = {
 return {
 	create = function(self)
 		return {
+			__stack   = require("tools/lib/dataStructures/stack"):create(),
 			__head    = nil,
 			__tail    = nil,
 			__size    = 0,
@@ -66,8 +73,16 @@ return {
 
 			size = function(self) return self.__size end,
 
+			newCell = function(self, data)
+				local newCell = self.__stack:pop()
+				if newCell == nil then newCell = cell:create(data)
+				else                   newCell:init(data)      end
+				return newCell
+			end,
+
 			add = function(self, data)
-				local newCell = cell:create(data)
+				local newCell = self:newCell(data)
+
 				if self.__tail ~= nil then self.__tail:addAfter(newCell) end
 				self.__tail = newCell
 				if self.__head    == nil then 
@@ -82,7 +97,7 @@ return {
 				if self.__current == nil then 
 					return self:add(data)
 				else
-					local newCell = cell:create(data)
+					local newCell = self:newCell(data)
 					self.__current:addAfter(newCell)
 					if self.__tail == self.__current then self.__tail = newCell end
 					self.__current = newCell
@@ -129,6 +144,7 @@ return {
 					local removedCell = self.__current:remove()
 					self.__current = cellAfterCurrent
 					self.__size = self.__size - 1
+					self.__stack:push(removedCell)
 					return removedCell:data()
 				end
 			end,
