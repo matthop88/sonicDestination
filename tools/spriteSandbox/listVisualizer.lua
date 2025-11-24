@@ -14,7 +14,17 @@ return {
 					local x = 50
 					local n = 1
 					while not self.list:isEnd() do
-						local sprite = self.list:getNext()
+						local sprite = self.list:get()
+						local cellID = self.list:getCellID()
+
+						self.graphics:setColor(0.5, 0.5, 0.5)
+						self.graphics:rectangle("fill", x + 5, 775, 40, 18)
+						self.graphics:setColor(1, 1, 1)
+						self.graphics:setLineWidth(2)
+						self.graphics:rectangle("line", x + 5, 775, 40, 18)
+						self.graphics:setFontSize(12)
+						self.graphics:printf("" .. cellID, x + 5, 777, 40, "center")
+
 						if sprite.selected then 
 							self.graphics:setColor(1, 0.5, 0.5, 0.9)
 							self.graphics:rectangle("fill", x, 725, 50, 50)
@@ -37,8 +47,10 @@ return {
 							self.graphics:line(x + 90, 749, x + 100, 744)
 							self.graphics:line(x + 60, 751, x +  50, 756)
 							self.graphics:line(x + 60, 761, x +  50, 756)
-							
 						end
+
+						
+						self.list:next()
 						x = x + 100
 						n = n + 1
 					end
