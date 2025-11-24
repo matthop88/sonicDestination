@@ -90,6 +90,9 @@ return {
     testCellReuse = function(self)
         local name = "Cell Reuse Test (100 insertions, 50 deletions)"
 
+        self.LINKED_LIST:add(99999)
+        local cellID = self.LINKED_LIST:getCellID()
+
         for j = 1, 5 do
             for i = 1, 20 do
                 self.LINKED_LIST:add(math.random(1000))
@@ -109,7 +112,7 @@ return {
             self.LINKED_LIST:next()
         end
 
-        return TESTING:assertEquals(name, 20, highestCellID)
+        return TESTING:assertEquals(name, 60 + cellID, highestCellID)
     end,
 
 
