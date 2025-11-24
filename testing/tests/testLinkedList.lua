@@ -85,5 +85,32 @@ return {
                                     and self.LINKED_LIST:head():remove()        == 3
                                     and self.LINKED_LIST:size()                 == 3)
 
-    end,     
+    end,   
+
+    testCellReuse = function(self)
+        local name = "Cell Reuse Test (100 insertions, 50 deletions)"
+
+        for j = 1, 5 do
+            for i = 1, 20 do
+                self.LINKED_LIST:add(math.random(1000))
+            end
+
+            self.LINKED_LIST:head()
+
+            for i = 1, 10 do 
+                self.LINKED_LIST:next():remove()
+            end
+        end
+
+        local highestCellID = 0
+        self.LINKED_LIST:head()
+        while not self.LINKED_LIST:isEnd() do
+            highestCellID = math.max(highestCellID, self.LINKED_LIST:getCellID())
+            self.LINKED_LIST:next()
+        end
+
+        return TESTING:assertEquals(name, 20, highestCellID)
+    end,
+
+
 }
