@@ -1,6 +1,11 @@
+local CELL_ID = 0
+
 local cell = {
 	create = function(self, data)
+		CELL_ID = CELL_ID + 1
+
 		return {
+			__id   = CELL_ID,
 			__next = nil,
 			__prev = nil,
 			__data = data,
@@ -8,6 +13,7 @@ local cell = {
 			next = function(self) return self.__next end,
 			prev = function(self) return self.__prev end,
 			data = function(self) return self.__data end,
+			id   = function(self) return self.__id   end,
 
 			setNext = function(self, next) self.__next = next end,
 			setPrev = function(self, prev) self.__prev = prev end,
@@ -94,6 +100,11 @@ return {
 				if self.__current ~= nil then self.__current = self.__current:next() end
 				
 				return self
+			end,
+
+			getCellID = function(self)
+				if self.__current == nil then return nil
+				else                          return self.__current:id() end
 			end,
 
 			getNext = function(self)
