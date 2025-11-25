@@ -1,3 +1,5 @@
+local NO_BUMP_ID = true
+
 return ({
 	spriteList = {},
 	index      = 1,
@@ -12,12 +14,21 @@ return ({
 		local directoryItems = love.filesystem.getDirectoryItems(directory)
     	for _, v in ipairs(directoryItems) do
         	local fileName = string.sub(v, 1, -5)
-        	table.insert(self.spriteList, fileName)
+        	table.insert(self.spriteList, { name = fileName, sprite = nil })
         end
     end,
 
+    getFromCache = function(self, x, y)
+    	local spriteInfo = self.spriteList[self.index]
+    	if not spriteInfo.sprite then
+    		spriteInfo.sprite = require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y, NO_BUMP_ID)
+    	end
+    	return spriteInfo.sprite
+    end,
+
     create = function(self, x, y)
-    	return require("tools/spriteSandbox/sprite"):create("objects/" .. self.spriteList[self.index], x, y)
+    	local spriteInfo = self.spriteList[self.index]
+    	return require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y)
     end,
 
     next = function(self)
