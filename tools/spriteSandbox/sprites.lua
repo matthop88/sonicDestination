@@ -1,3 +1,5 @@
+local SPRITE_FACTORY = require("tools/spriteSandbox/spriteFactory")
+
 return ({
     rotatingBorder  = nil,
     coordinateBox   = nil,
@@ -156,7 +158,7 @@ return ({
     end,
 
     initCurrentSprite = function(self, px, py)
-        self.currentSprite = require("tools/spriteSandbox/sprite"):create("objects/ring", px, py)
+        self.currentSprite = SPRITE_FACTORY:create(px, py)
     end,
 
     placeCurrentSprite = function(self, GRAFX)
@@ -193,6 +195,18 @@ return ({
         if self.selectedSprite then
             self.selectedSprite:regressAnimation()
         end
+    end,
+
+    advanceCurrent = function(self, GRAFX)
+        SPRITE_FACTORY:next()
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        self:initCurrentSprite(math.floor(px), math.floor(py))
+    end,
+
+    regressCurrent = function(self, GRAFX)
+        SPRITE_FACTORY:prev()
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        self:initCurrentSprite(math.floor(px), math.floor(py))
     end,
 
 }):init()
