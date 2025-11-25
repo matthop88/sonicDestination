@@ -1,5 +1,6 @@
-local SELECT   = "select"
-local SPRITE   = "sprite"
+local SELECT         = "select"
+local SPRITE         = "sprite"
+local SPRITE_FACTORY = require("tools/spriteSandbox/spriteFactory")
 
 return ({
     graphics         = require("tools/lib/graphics"):create(), 
@@ -56,9 +57,11 @@ return ({
         elseif key == "backspace" then
             self.sprites:deleteSelectedSprite()
         elseif key == "tab" then
-            self.sprites:advanceSelectedSprite()
+            if self.mode == SPRITE then self.sprites:advanceCurrent(self.graphics)
+            else                        self.sprites:advanceSelectedSprite()   end
         elseif key == "shifttab" then
-            self.sprites:regressSelectedSprite()
+            if self.mode == SPRITE then self.sprites:regressCurrent(self.graphics)
+            else                        self.sprites:regressSelectedSprite()   end
         end
     end,
 
