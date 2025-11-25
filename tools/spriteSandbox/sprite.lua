@@ -43,6 +43,8 @@ return {
 			SPRITE_ID = SPRITE_ID + 1
 		end
 
+		local IS_PLAYER = data.player
+
 		return ({
 			id   = SPRITE_ID,
 
@@ -105,6 +107,8 @@ return {
 				if self.currentAnimation.synchronized then syncName = anim.name end
 				self.currentFrame = require("tools/spriteSandbox/frame"):create(self.currentAnimation, syncName)
 			end,
+
+			isPlayer = function(self) return IS_PLAYER end,
 
 			regressAnimation = function(self)
 				self.animationList.index = self.animationList.index - 1
