@@ -19,6 +19,7 @@ return ({
     draw = function(self, GRAFX)
         self:drawNonPlayer(GRAFX)
         self:drawPlayer(GRAFX)
+        self:drawForeground(GRAFX)
         self.visualizedList:draw()
     end,
 
@@ -26,7 +27,7 @@ return ({
         self.sprites:head()
         while not self.sprites:isEnd() do 
             local sprite = self.sprites:getNext()
-            if not sprite:isPlayer() then sprite:draw(GRAFX) end
+            if not sprite:isPlayer() and not sprite:isForeground() then sprite:draw(GRAFX) end
         end
     end,
 
@@ -35,6 +36,14 @@ return ({
         while not self.sprites:isEnd() do 
             local sprite = self.sprites:getNext()
             if sprite:isPlayer() then sprite:draw(GRAFX) end
+        end
+    end,
+
+    drawForeground = function(self, GRAFX)
+        self.sprites:head()
+        while not self.sprites:isEnd() do 
+            local sprite = self.sprites:getNext()
+            if sprite:isForeground() then sprite:draw(GRAFX) end
         end
     end,
 
