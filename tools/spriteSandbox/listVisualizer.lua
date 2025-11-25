@@ -53,7 +53,7 @@ return {
 
 			drawCell = function(self, sprite, x)
 				if sprite.selected then 
-					self:drawSelectedRect(x)
+					self.graphics:setColor(1, 1, 0.3, 0.9)
 				else                    
 					if sprite.mousedOver then self.graphics:setColor(0, 1, 1, 0.7)
 					else                      self.graphics:setColor(1, 1, 1, 0.9) end
@@ -63,11 +63,12 @@ return {
 				self.graphics:rectangle("line", x, 725, 50, 50)
 				
 				if sprite.selected then
-					self.graphics:setColor(1, 1, 1, 0.3)
+					self.graphics:setColor(1, 1, 1, 0.4)
 					self:drawThumbnail(sprite, x)
 					self.graphics:setColor(1, 1, 1)
 					self:drawSpriteID(sprite, x)
 				else
+					self.graphics:setColor(1, 1, 1)
 					self:drawThumbnail(sprite, x)
 				end
 			end,
@@ -76,12 +77,6 @@ return {
 				local sX = math.min(1.5, 48 / sprite:getW())
 				local sY = math.min(1.5, 48 / sprite:getH())
 				sprite:drawThumbnail(self.graphics, x + 25, 750, math.min(sX, sY), math.min(sX, sY))
-			end,
-
-			drawSelectedRect = function(self, x)
-				self.graphics:setColor(1, 0.5, 0.5, 0.9)
-				self.graphics:rectangle("fill", x, 725, 50, 50)
-				self.graphics:setColor(1, 1,   0.3, 0.9)
 			end,
 
 			drawSpriteID = function(self, sprite, x)
