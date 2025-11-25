@@ -30,7 +30,7 @@ return {
 		end
 	end,
 
-	create = function(self, path, x, y)
+	create = function(self, path, x, y, noBumpID)
 		local data        = require("tools/spriteSandbox/data/" .. path)
 		local SHEET_IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
 		SHEET_IMAGE:setFilter("nearest", "nearest")
@@ -39,7 +39,9 @@ return {
 		local animationList                   = self:createAnimationList(data.animations)
 		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
 
-		SPRITE_ID = SPRITE_ID + 1
+		if not noBumpID then
+			SPRITE_ID = SPRITE_ID + 1
+		end
 
 		return ({
 			id   = SPRITE_ID,
