@@ -30,8 +30,10 @@ return {
 							self.graphics:rectangle("fill", x, 725, 50, 50)
 							self.graphics:setColor(1,   1,   0.3, 0.9)
 						else                    
-							self.graphics:setColor(1,   1,   1,   0.9)  
+							if sprite.mousedOver then self.graphics:setColor(0, 1, 1, 0.7)
+							else                      self.graphics:setColor(1, 1, 1, 0.9) end
 						end
+						
 						self.graphics:setLineWidth(3)
 						self.graphics:rectangle("line", x, 725, 50, 50)
 						self.graphics:setFontSize(24)
