@@ -1,11 +1,23 @@
 local SPRITE_ID = 0
 
 return {
+	createAnimationList = function(self, animations)
+		local animationList = {}
+		animationList.index = 1
+		local n = 1
+		for name, animation in pairs(animations) do
+			table.insert(animationList, { name = name, animation = animation })
+			if animation.isDefault then animationList.index = n end
+			n = n + 1
+		end
+		return animationList
+	end,
+
 	getDefaultAnimation = function(self, animations)
 		local animationName
 		for name, animation in pairs(animations) do
 			if animationName == nil then animationName = name end
-			if animation.isDefault     then animationName = name end
+			if animation.isDefault  then animationName = name end
 		end
 		return animationName, animations[animationName]
 	end,
@@ -24,6 +36,7 @@ return {
 		SHEET_IMAGE:setFilter("nearest", "nearest")
 
 		local animationName, currentAnimation = self:getDefaultAnimation(data.animations)
+		local animationList                   = self:createAnimationList(data.animations)
 		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
 
 		SPRITE_ID = SPRITE_ID + 1
@@ -34,6 +47,7 @@ return {
 			init = function(self)
 				self.animations       = data.animations
 				self.currentAnimation = currentAnimation
+				self.animationList    = animationList
 				local syncName = nil
 				if self.currentAnimation.synchronized then
 					syncName = animationName
@@ -67,6 +81,31 @@ return {
 			update = function(self, dt)
 				self.currentFrame:update(dt)
 			end,
+
+			advanceAnimation = function(self)
+				self.animationList.index = self.animationList.index + 1
+				if self.animationList.index > #self.animationList then
+					self.animationList.index = 1
+				end
+				self:updateAnimation()
+			end,
+
+			updateAnimation = function(self)
+				local anim = self.animationList[self.animationList.index]
+				self.currentAnimation = anim.animation
+				local syncName = nil
+				if self.currentAnimation.synchronized then syncName = anim.name end
+				self.currentFrame = require("tools/spriteSandbox/frame"):create(self.currentAnimation, syncName)
+			end,
+
+			regressAnimation = function(self)
+				self.animationList.index = self.animationList.index - 1
+				if self.animationList.index < 1 then
+					self.animationList.index = #self.animationList
+				end
+				self:updateAnimation()
+			end,
+				
 
 		}):init()
 	end,
