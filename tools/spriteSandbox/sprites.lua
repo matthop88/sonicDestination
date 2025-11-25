@@ -183,4 +183,16 @@ return ({
         end
     end,
 
+    advanceSelectedSprite = function(self)
+        if self.selectedSprite then
+            self.selectedSprite:advanceAnimation()
+        end
+    end,
+
+    regressSelectedSprite = function(self)
+        if self.selectedSprite then
+            self.selectedSprite:regressAnimation()
+        end
+    end,
+
 }):init()
