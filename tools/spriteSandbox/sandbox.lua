@@ -45,6 +45,7 @@ return ({
 
     handleKeypressed = function(self, key)
         if     key == "s"      then
+            self.sprites:deselectSprite()
             if self.mode ~= SPRITE then self:setSpriteMode()
             else                        self:setSelectMode() end
         elseif key == "escape" then     
