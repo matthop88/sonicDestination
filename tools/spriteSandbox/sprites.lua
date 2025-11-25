@@ -17,11 +17,25 @@ return ({
     end,
 
     draw = function(self, GRAFX)
+        self:drawNonPlayer(GRAFX)
+        self:drawPlayer(GRAFX)
+        self.visualizedList:draw()
+    end,
+
+    drawNonPlayer = function(self, GRAFX)
         self.sprites:head()
         while not self.sprites:isEnd() do 
-            self.sprites:getNext():draw(GRAFX)
+            local sprite = self.sprites:getNext()
+            if not sprite:isPlayer() then sprite:draw(GRAFX) end
         end
-        self.visualizedList:draw()
+    end,
+
+    drawPlayer = function(self, GRAFX)
+        self.sprites:head()
+        while not self.sprites:isEnd() do 
+            local sprite = self.sprites:getNext()
+            if sprite:isPlayer() then sprite:draw(GRAFX) end
+        end
     end,
 
     drawCurrentSprite = function(self, GRAFX)
