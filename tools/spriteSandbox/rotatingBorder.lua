@@ -25,8 +25,11 @@ return {
             end,
 
             updateCoordinates = function(self, x, y)
-                self.x = x
-                self.y = y
+                self.x, self.y = x, y
+            end,
+
+            updateDimensions = function(self, w, h)
+                self.w, self.h = w, h
             end,
 
         }):init(x, y, w, h)
