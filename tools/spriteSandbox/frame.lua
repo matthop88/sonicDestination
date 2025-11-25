@@ -26,6 +26,10 @@ return {
 			get = function(self)
 				return self.animation[math.floor(self.frameNumber)]
 			end,
+
+			getFirst = function(self)
+				return self.animation[1]
+			end,
 		}
 	end,
 }
