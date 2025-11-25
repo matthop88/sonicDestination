@@ -81,11 +81,15 @@ return ({
     end,
 
     updateMouseoverSprite = function(self, dt, px, py)
+        if self.mouseoverSprite then self.mouseoverSprite.mousedOver = false end
         self.mouseoverSprite = nil
         self.sprites:head()
         while not self.sprites:isEnd() do 
             local sprite = self.sprites:getNext()
-            if sprite:isInside(px, py) then self.mouseoverSprite = sprite end
+            if sprite:isInside(px, py) then 
+                self.mouseoverSprite = sprite 
+                self.mouseoverSprite.mousedOver = true
+            end
         end
     end,
 
