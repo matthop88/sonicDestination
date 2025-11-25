@@ -86,7 +86,7 @@ return ({
         self.sprites:head()
         while not self.sprites:isEnd() do 
             local sprite = self.sprites:getNext()
-            if sprite:isInside(px, py) then 
+            if sprite:isInside(px, py) or sprite.mousedOverInVisualizer then 
                 self.mouseoverSprite = sprite 
                 self.mouseoverSprite.mousedOver = true
             end
