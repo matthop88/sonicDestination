@@ -1,5 +1,5 @@
 return {
-    imagePath = "tools/ringMaster/resources/commonObj.png",
+    imagePath = "resources/images/spriteSheets/commonObj.png",
 
     MARGIN_BG_COLOR = { r = 0.15, g = 0.40, b = 0.10 },
     SPRITE_BG_COLOR = { r = 0, g = 0, b = 0, a = 0 },
