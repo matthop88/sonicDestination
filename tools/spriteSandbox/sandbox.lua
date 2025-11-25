@@ -54,6 +54,10 @@ return ({
             self.sprites:shiftSelectedSprite(key)
         elseif key == "backspace" then
             self.sprites:deleteSelectedSprite()
+        elseif key == "tab" then
+            self.sprites:advanceSelectedSprite()
+        elseif key == "shifttab" then
+            self.sprites:regressSelectedSprite()
         end
     end,
 
