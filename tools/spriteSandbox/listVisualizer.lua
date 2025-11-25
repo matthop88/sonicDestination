@@ -7,6 +7,8 @@ return {
     
 			draw = function(self)
 				if self.list:size() > 0 then
+					local mx, my = love.mouse.getPosition()
+
 					self.graphics:setColor(0.5, 0.5, 0.5, 0.8)
 					self.graphics:rectangle("fill", 0, 700, 1200, 100)
 
@@ -17,6 +19,8 @@ return {
 						local sprite = self.list:get()
 						local cellID = self.list:getCellID()
 
+						sprite.mousedOverInVisualizer = (mx >= x and mx < x + 50 and my >= 725 and my < 775)
+						
 						self.graphics:setColor(0.5, 0.5, 0.5)
 						self.graphics:rectangle("fill", x + 5, 775, 40, 18)
 						self.graphics:setColor(1, 1, 1)
