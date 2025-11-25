@@ -59,7 +59,23 @@ return {
 					else                      self.graphics:setColor(1, 1, 1, 0.9) end
 				end
 				
-				self:drawSpriteID(sprite, x)
+				self.graphics:setLineWidth(3)
+				self.graphics:rectangle("line", x, 725, 50, 50)
+				
+				if sprite.selected then
+					self.graphics:setColor(1, 1, 1, 0.3)
+					self:drawThumbnail(sprite, x)
+					self.graphics:setColor(1, 1, 1)
+					self:drawSpriteID(sprite, x)
+				else
+					self:drawThumbnail(sprite, x)
+				end
+			end,
+
+			drawThumbnail = function(self, sprite, x)
+				local sX = math.min(1.5, 48 / sprite:getW())
+				local sY = math.min(1.5, 48 / sprite:getH())
+				sprite:drawThumbnail(self.graphics, x + 25, 750, math.min(sX, sY), math.min(sX, sY))
 			end,
 
 			drawSelectedRect = function(self, x)
@@ -69,8 +85,6 @@ return {
 			end,
 
 			drawSpriteID = function(self, sprite, x)
-				self.graphics:setLineWidth(3)
-				self.graphics:rectangle("line", x, 725, 50, 50)
 				self.graphics:setFontSize(24)
 				self.graphics:printf("" .. sprite:getID(), x, 735, 50, "center")
 			end,
