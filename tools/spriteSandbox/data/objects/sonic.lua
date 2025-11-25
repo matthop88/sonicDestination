@@ -1,5 +1,6 @@
 return {
     imageName  = "sonic1Transparent",
+    player     = true,
     animations = {
         standing    = { fps = 1,  offset = { x = 14, y = 20 }, w = 32, h = 40, isDefault = true,
             -------------------------------------------------------------------
