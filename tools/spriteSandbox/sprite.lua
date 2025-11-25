@@ -71,6 +71,12 @@ return {
 				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
 			end,
 
+			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
+				local frame = self.currentFrame:getFirst()
+
+				GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX), y - (frame.offset.y * sY), 0, sX, sY)
+			end,
+
 			isInside = function(self, px, py)
 				return px >= self.x - self.currentAnimation.offset.x 
 				   and px <= self.x - self.currentAnimation.offset.x + self.currentAnimation.w
