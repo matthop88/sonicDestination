@@ -158,11 +158,11 @@ return ({
     end,
 
     initCurrentSprite = function(self, px, py)
-        self.currentSprite = SPRITE_FACTORY:create(px, py)
+        self.currentSprite = SPRITE_FACTORY:getFromCache(px, py)
     end,
 
     placeCurrentSprite = function(self, GRAFX)
-        self.sprites:add(self.currentSprite)
+        self.sprites:add(SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY()))
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
         self:initCurrentSprite(math.floor(px), math.floor(py))
@@ -188,23 +188,28 @@ return ({
     advanceSelectedSprite = function(self)
         if self.selectedSprite then
             self.selectedSprite:advanceAnimation()
+            self.rotatingBorder:updateDimensions(self.selectedSprite:getW(), self.selectedSprite:getH())
         end
     end,
 
     regressSelectedSprite = function(self)
         if self.selectedSprite then
             self.selectedSprite:regressAnimation()
+            self.rotatingBorder:updateDimensions(self.selectedSprite:getW(), self.selectedSprite:getH())
         end
     end,
 
     advanceCurrent = function(self, GRAFX)
         SPRITE_FACTORY:next()
-        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-        self:initCurrentSprite(math.floor(px), math.floor(py))
+        self:updateCurrent(GRAFX)
     end,
 
     regressCurrent = function(self, GRAFX)
         SPRITE_FACTORY:prev()
+        self:updateCurrent(GRAFX)
+    end,
+
+    updateCurrent = function(self, GRAFX)
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
         self:initCurrentSprite(math.floor(px), math.floor(py))
     end,
