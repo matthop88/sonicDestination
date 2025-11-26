@@ -41,6 +41,7 @@ PROP_LOADER:notifyOnChange(SONIC)
 function love.draw()
     WORLD:draw()
     SONIC:draw()
+    WORLD:drawForeground()
 end
 
 -- Function Name: love.update(dt)
