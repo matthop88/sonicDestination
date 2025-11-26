@@ -3,6 +3,8 @@ local TERRAIN
 local WORKSPACE
 
 return {
+    collisionHandler = requireRelative("collision/collisionHandler"),
+
     objects = requireRelative("util/dataStructures/linkedList"):create(),  
     
     init = function(self, params)
@@ -49,12 +51,14 @@ return {
         end
     end,
 
-    checkCollisions = function(self, otherHitBox)
+    checkCollisions = function(self, otherObject)
+        local otherHitBox = otherObject:getHitBox()
         self.objects:head()
         while not self.objects:isEnd() do
             local object = self.objects:getNext()
             local hitBox = object:getHitBox()
-            if hitBox and hitBox:intersects(otherHitBox) then
+            if hitBox and hitBox:intersects(otherHitBox) and otherObject:isPlayer() then
+                self.collisionHandler:handleCollisionWithPlayer(object, otherObject)
                 return object
             end
         end
