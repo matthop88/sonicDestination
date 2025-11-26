@@ -14,6 +14,10 @@ return {
             update = function(self, dt)
                 SPRITE:update(dt)
             end,
+
+            isForeground = function(self)
+                return SPRITE:isForeground()
+            end,
         }
     end,
 }
