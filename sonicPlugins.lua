@@ -22,6 +22,8 @@ local GRAVITY = {
     end,
 }
 
+local SHOW_HITBOXES = false
+
 return {
     init = function(self, params)
         self.SONIC      = params.SONIC
@@ -32,6 +34,10 @@ return {
         self.DRAWING_FN = function()   
             self.SONIC:draw()
             self.WORLD:drawForeground()
+            if SHOW_HITBOXES then 
+                self.SONIC:drawHitBox() 
+                self.WORLD:drawHitBoxes()
+            end
         end
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
@@ -59,6 +65,7 @@ return {
                     {   key = "s", fn = function() self.SONIC:toggleShowSensors()           end, },
                     {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
                     {   key = "U", fn = function() self.SONIC:moveTo(self.SONIC:getX(), 0)  end, },
+                    {   key = "h", fn = function() SHOW_HITBOXES = not SHOW_HITBOXES        end, },
                 },
             })
             :add("grid3D",         { 
