@@ -47,6 +47,11 @@ return {
 	            	end
 	            end,
 
+	            setLastIntersectionWith = function(self, object)
+	            	if object == nil then self.lastIntersection = nil
+	            	else                  self.lastIntersection = object:getHitBox() end
+	            end,
+
 			}
 		end
 	end,
