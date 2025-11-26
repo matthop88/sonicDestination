@@ -8,6 +8,7 @@ return {
             y        = y,
             graphics = graphics,
             HITBOX   = nil,
+            name     = spriteName,
 
             draw = function(self)
                 SPRITE:draw(self.x, self.y)
@@ -37,8 +38,20 @@ return {
                 if hitBox then hitBox:update(self.x, self.y) end
             end,
 
+            setAnimation = function(self, name)
+                SPRITE:setCurrentAnimation(name)
+            end,
+
             isForeground = function(self)
                 return SPRITE:isForeground()
+            end,
+
+            isPlayer = function(self) return false end,
+
+            onTerminalCollisionWithPlayer = function(self, player)
+                if self.name == "objects/ring" then
+                    self:setAnimation("dissolving")
+                end
             end,
         }
     end,
