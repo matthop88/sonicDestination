@@ -72,7 +72,7 @@ return {
     drawHitBox = function(self)
         local hitBox = self.sprite:getHitBox()
         if hitBox then
-            hitBox:draw(GRAPHICS, self:getX(), self:getY(), { 1, 0, 1, 0.5 }, 3)
+            hitBox:draw(GRAPHICS, self:getX(), self:getY(), { 1, 0, 1, 0.7 }, 3)
         end
     end,
 
