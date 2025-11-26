@@ -21,6 +21,13 @@ return {
 	            update = function(self, x, y)
 	            	self.x, self.y = x, y
 	            end,
+
+	            intersects = function(self, otherHitBox)
+	            	return self.x + self.width  > otherHitBox.x 
+	            	   and self.x               < otherHitBox.x + otherHitBox.width
+	            	   and self.y + self.height > otherHitBox.y
+	            	   and self.y               < otherHitBox.y + otherHitBox.height
+	            end,
 			}
 		end
 	end,
