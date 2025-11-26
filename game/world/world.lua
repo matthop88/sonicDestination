@@ -54,7 +54,7 @@ return {
         while not self.objects:isEnd() do
             local hitBox = self.objects:getNext():getHitBox()
             if hitBox and hitBox:intersects(otherHitBox) then
-                print("Hitbox intersects with x = " .. hitBox.x .. ", y = " .. hitBox.y .. ", w = " .. hitBox.width .. ", h = " .. hitBox.height)
+                return hitBox
             end
         end
     end,
