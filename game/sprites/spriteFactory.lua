@@ -36,6 +36,10 @@ return {
                 return self.animations:getCurrentAnimName()
             end,
 
+            isForeground = function(self)
+                return self.animations:isForeground()
+            end,
+
             getFPS = function(self)      return self.animations:getFPS() end,
             setFPS = function(self, fps) self.animations:setFPS(fps)     end,
 
