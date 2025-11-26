@@ -105,11 +105,11 @@ return {
     end,
 
     checkCollisions = function(self)
-        self.HITBOX.lastIntersection = WORLD:checkCollisions(self:getHitBox())
+        self.HITBOX:setLastIntersectionWith(WORLD:checkCollisions(self:getHitBox()))
     end,
 
     keypressed = function(self, key)
-       self.state:keypressed(key)                
+       self.state:keypressed(key)
     end,
 
     keyreleased = function(self, key)
