@@ -35,7 +35,9 @@ return {
     -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
     ------------------------------------------------------------------
     GROUND_LEVEL            = 940,
-    
+
+    HITBOX                  = nil,
+
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
         
@@ -70,10 +72,15 @@ return {
     end,
 
     drawHitBox = function(self)
-        local hitBox = self.sprite:getHitBox()
-        if hitBox then
-            hitBox:draw(GRAPHICS, self:getX(), self:getY(), { 1, 0, 1, 0.7 }, 3)
+        local hitBox = self:getHitBox()
+        if hitBox then hitBox:draw(GRAPHICS, { 1, 0, 1, 0.7 }, 3) end
+    end,
+
+    getHitBox = function(self)
+        if self.HITBOX == nil then
+            self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox())
         end
+        return self.HITBOX
     end,
 
     drawSensors = function(self)
@@ -88,6 +95,12 @@ return {
         self:applyAirDrag(dt)
         self:updatePosition(dt)
         self:updateSensors(dt)
+        self:updateHitBox(dt)
+    end,
+
+    updateHitBox = function(self, dt)
+        local hitBox = self:getHitBox()
+        if hitBox then hitBox:update(self:getX(), self:getY()) end
     end,
 
     keypressed = function(self, key)
