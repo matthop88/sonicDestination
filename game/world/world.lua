@@ -49,6 +49,16 @@ return {
         end
     end,
 
+    checkCollisions = function(self, otherHitBox)
+        self.objects:head()
+        while not self.objects:isEnd() do
+            local hitBox = self.objects:getNext():getHitBox()
+            if hitBox and hitBox:intersects(otherHitBox) then
+                print("Hitbox intersects with x = " .. hitBox.x .. ", y = " .. hitBox.y .. ", w = " .. hitBox.width .. ", h = " .. hitBox.height)
+            end
+        end
+    end,
+
     refresh     = function(self)       TERRAIN:refresh()                  end,
     getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
     getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
