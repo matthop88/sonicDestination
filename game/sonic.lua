@@ -96,11 +96,16 @@ return {
         self:updatePosition(dt)
         self:updateSensors(dt)
         self:updateHitBox(dt)
+        self:checkCollisions()
     end,
 
     updateHitBox = function(self, dt)
         local hitBox = self:getHitBox()
         if hitBox then hitBox:update(self:getX(), self:getY()) end
+    end,
+
+    checkCollisions = function(self)
+        WORLD:checkCollisions(self:getHitBox())
     end,
 
     keypressed = function(self, key)
