@@ -83,15 +83,7 @@ return {
             end,
         
             getHitBox = function(self)
-                if self.currentAnimation.HITBOX == nil then self:initHitBox() end
-                return self.currentAnimation.HITBOX
-            end,
-
-            initHitBox = function(self)
-                local hitBox = self.currentAnimation.hitBox
-                if hitBox then
-                    self.currentAnimation.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(hitBox.rX, hitBox.rY)
-                end
+                return self.currentAnimation.hitBox
             end,
 
             getImage           = function(self)      return self.image                                           end,
