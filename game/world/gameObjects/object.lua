@@ -15,7 +15,7 @@ return {
             drawHitBox = function(self)
                 local hitBox = SPRITE:getHitBox()
                 if hitBox then
-                    hitBox:draw(self.graphics, self.x, self.y, { 1, 0, 0, 0.5 }, 2)
+                    hitBox:draw(self.graphics, self.x, self.y, { 1, 0, 0, 0.8 }, 2)
                 end
             end,
 
