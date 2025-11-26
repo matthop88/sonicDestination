@@ -30,7 +30,8 @@ return {
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
         self.DRAWING_FN = function()   
-            self.SONIC:draw()  
+            self.SONIC:draw()
+            self.WORLD:drawForeground()
         end
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
