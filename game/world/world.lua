@@ -52,9 +52,10 @@ return {
     checkCollisions = function(self, otherHitBox)
         self.objects:head()
         while not self.objects:isEnd() do
-            local hitBox = self.objects:getNext():getHitBox()
+            local object = self.objects:getNext()
+            local hitBox = object:getHitBox()
             if hitBox and hitBox:intersects(otherHitBox) then
-                return hitBox
+                return object
             end
         end
     end,
