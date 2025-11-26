@@ -12,6 +12,10 @@ return {
             draw = function(self, x, y)
                 self.animations:draw(x, y, self.scale.x, self.scale.y)
             end,
+
+            drawHitBox = function(self, x, y)
+                self.animations:drawHitBox(x, y, self.scale.x, self.scale.y)
+            end,
         
             update = function(self, dt)
                 self.animations:update(dt)
