@@ -55,13 +55,6 @@ return {
                 self.graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
             end,
 
-            drawHitBox = function(self, x, y, scaleX, scaleY)
-                local hitBox = self:getHitBox()
-                if hitBox then
-                    self.graphics:rectangle("line", x - (hitBox.rX * scaleX), y - (hitBox.rY * scaleY), hitBox.rX * 2 * scaleX, hitBox.rY * 2 * scaleY)
-                end
-            end,
-        
             update = function(self, dt)
                 self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
                 if math.floor(self.currentFrameIndex) > #self.currentAnimation then
@@ -90,7 +83,15 @@ return {
             end,
         
             getHitBox = function(self)
-                return self.currentAnimation.hitBox
+                if self.currentAnimation.HITBOX == nil then self:initHitBox() end
+                return self.currentAnimation.HITBOX
+            end,
+
+            initHitBox = function(self)
+                local hitBox = self.currentAnimation.hitBox
+                if hitBox then
+                    self.currentAnimation.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(hitBox.rX, hitBox.rY)
+                end
             end,
 
             getImage           = function(self)      return self.image                                           end,
