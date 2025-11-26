@@ -105,7 +105,7 @@ return {
     end,
 
     checkCollisions = function(self)
-        self.HITBOX:setLastIntersectionWith(WORLD:checkCollisions(self:getHitBox()))
+        self.HITBOX:setLastIntersectionWith(WORLD:checkCollisions(self))
     end,
 
     keypressed = function(self, key)
@@ -227,4 +227,6 @@ return {
     end,
 
     getWorld = function(self) return WORLD end,
+
+    isPlayer = function(self) return true end,
 }
