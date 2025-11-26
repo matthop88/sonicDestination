@@ -70,9 +70,10 @@ return {
     end,
 
     drawHitBox = function(self)
-        GRAPHICS:setColor(1, 0, 1, 0.5)
-        GRAPHICS:setLineWidth(3)
-        self.sprite:drawHitBox(self:getX(), self:getY())
+        local hitBox = self.sprite:getHitBox()
+        if hitBox then
+            hitBox:draw(GRAPHICS, self:getX(), self:getY(), { 1, 0, 1, 0.5 }, 3)
+        end
     end,
 
     drawSensors = function(self)
