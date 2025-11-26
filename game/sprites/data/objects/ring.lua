@@ -2,6 +2,7 @@ return {
     imageName  = "commonObj",
     animations  = {
         spinning = { fps = 8, offset = { x = 8, y = 8 }, w = 16, h = 16, synchronized = true, isDefault = true,
+            hitBox = { rX = 5, rY = 5 },
             ---------------------------------------------------------------------------------------------------
             { x =  24, y = 198, w = 16, h = 16, offset = { x =  8, y =  8 }, },
             { x =  48, y = 198, w = 16, h = 16, offset = { x =  8, y =  8 }, },
