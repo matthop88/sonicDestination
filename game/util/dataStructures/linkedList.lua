@@ -55,7 +55,7 @@ local cell = {
 return {
 	create = function(self)
 		return {
-			__stack   = require("tools/lib/dataStructures/stack"):create(),
+			__stack   = requireRelative("util/dataStructures/stack"):create(),
 			__head    = nil,
 			__tail    = nil,
 			__size    = 0,
