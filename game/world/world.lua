@@ -31,7 +31,14 @@ return {
         self.objects:head()
         while not self.objects:isEnd() do
             local object = self.objects:getNext()
-            if object:isForeground() then object:draw() end
+            if object:isForeground() then object:draw(SHOW_HITBOXES) end
+        end
+    end,
+
+    drawHitBoxes = function(self)
+        self.objects:head()
+        while not self.objects:isEnd() do
+            self.objects:getNext():drawHitBox()
         end
     end,
 
@@ -42,9 +49,9 @@ return {
         end
     end,
 
-    refresh     = function(self)       TERRAIN:refresh()                end,
-    getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y) end,
-    getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)  end,
+    refresh     = function(self)       TERRAIN:refresh()                  end,
+    getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
+    getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
 
-    toggleShowSolids = function(self) TERRAIN:toggleShowSolids() end,
+    toggleShowSolids   = function(self) TERRAIN:toggleShowSolids()        end,
 }
