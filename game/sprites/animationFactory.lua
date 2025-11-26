@@ -54,6 +54,13 @@ return {
                 self.graphics:setColor(COLOR_PURE_WHITE)
                 self.graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
             end,
+
+            drawHitBox = function(self, x, y, scaleX, scaleY)
+                local hitBox = self:getHitBox()
+                if hitBox then
+                    self.graphics:rectangle("line", x - (hitBox.rX * scaleX), y - (hitBox.rY * scaleY), hitBox.rX * 2 * scaleX, hitBox.rY * 2 * scaleY)
+                end
+            end,
         
             update = function(self, dt)
                 self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
@@ -82,6 +89,10 @@ return {
                 return self.currentAnimation.foreground
             end,
         
+            getHitBox = function(self)
+                return self.currentAnimation.hitBox
+            end,
+
             getImage           = function(self)      return self.image                                           end,
             getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
             getCurrentFrame    = function(self)      return self.currentAnimation[self:getCurrentFrameIndex()]   end,
