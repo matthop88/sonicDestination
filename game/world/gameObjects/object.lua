@@ -13,9 +13,10 @@ return {
             end,
 
             drawHitBox = function(self)
-                self.graphics:setColor(1, 0, 0, 0.5)
-                self.graphics:setLineWidth(2)
-                SPRITE:drawHitBox(self.x, self.y)
+                local hitBox = SPRITE:getHitBox()
+                if hitBox then
+                    hitBox:draw(self.graphics, self.x, self.y, { 1, 0, 0, 0.5 }, 2)
+                end
             end,
 
             update = function(self, dt)
