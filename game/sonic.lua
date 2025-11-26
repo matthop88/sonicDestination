@@ -1,5 +1,6 @@
 local WORLD
 local STATES
+local GRAPHICS
 
 local sonic1Sprite, sonic2Sprite
 
@@ -39,7 +40,8 @@ return {
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        WORLD = params.WORLD
+        WORLD    = params.WORLD
+        GRAPHICS = params.GRAPHICS
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
@@ -65,6 +67,12 @@ return {
     draw = function(self)
         self.sprite:draw(self:getX(), self:getY())
         self:drawSensors()
+    end,
+
+    drawHitBox = function(self)
+        GRAPHICS:setColor(1, 0, 1, 0.5)
+        GRAPHICS:setLineWidth(3)
+        self.sprite:drawHitBox(self:getX(), self:getY())
     end,
 
     drawSensors = function(self)
