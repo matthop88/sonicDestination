@@ -77,6 +77,10 @@ return {
                     self.currentFrameIndex     = 1
                 end
             end,
+
+            isForeground = function(self)
+                return self.currentAnimation.foreground
+            end,
         
             getImage           = function(self)      return self.image                                           end,
             getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
