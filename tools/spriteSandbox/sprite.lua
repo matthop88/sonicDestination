@@ -73,10 +73,8 @@ return {
 			draw  = function(self, GRAFX)
 				local frame = self.currentFrame:get()
 				
-				if self.visible then
-					GRAFX:setColor(1, 1, 1)
-					GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
-				end
+				GRAFX:setColor(1, 1, 1)
+				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
@@ -97,7 +95,7 @@ return {
 				if self.currentFrame:isRolledOver() then
 					self.repCount = self.repCount + 1
 					if self.currentAnimation.reps and self.repCount >= self.currentAnimation.reps then
-						self.visible = false
+						self.deleted = true
 					end
 				end
 			end,
