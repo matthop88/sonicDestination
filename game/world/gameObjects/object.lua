@@ -1,7 +1,7 @@
 return {
     create = function(self, spriteName, x, y, graphics)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
-        local SPRITE = spriteFactory:create(spriteName)
+        local SPRITE = spriteFactory:create("objects/" .. spriteName)
 
         return {
             x        = x,
@@ -49,7 +49,7 @@ return {
             isPlayer = function(self) return false end,
 
             onTerminalCollisionWithPlayer = function(self, player)
-                if self.name == "objects/ring" then
+                if self.name == "ring" then
                     self:setAnimation("dissolving")
                 end
             end,
