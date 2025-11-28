@@ -100,8 +100,14 @@ return ({
         while not self.sprites:isEnd() do 
             local sprite = self.sprites:get()
             sprite:update(dt)
-            if sprite.deleted then self.sprites:remove() 
-            else                   self.sprites:next()   end
+            if sprite.deleted then
+                if self.selectedSprite  and self.selectedSprite.deleted  then self.selectedSprite  = nil end
+                if self.mouseoverSprite and self.mouseoverSprite.deleted then self.mouseoverSprite = nil end
+                if self.heldSprite      and self.heldSprite.deleted      then self.heldSprite      = nil end
+                self.sprites:remove() 
+            else                   
+                self.sprites:next()   
+            end
         end
     end,
 
