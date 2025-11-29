@@ -56,7 +56,7 @@ function love.keyreleased(key)
     SIDEBAR_PANEL:handleKeyreleased(key)
 end
 
-function love.mousepressed(mx, my)
+function love.mousepressed(mx, my, p)
     if mx <= 700 then MAIN_PANEL:handleMousepressed(mx, my)
     else              SIDEBAR_PANEL:handleMousepressed(mx, my) end
     CHUNK_HELPER:saveChunkData(CHUNKS_OUT_NAME)
@@ -88,6 +88,10 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
     :add("keyRepeat", {
         interval    = 0.1,
         delay       = 0.5,
@@ -96,4 +100,25 @@ PLUGINS = require("plugins/engine")
             SIDEBAR_PANEL:onKeyRepeat()
         end,
     })
-
+    :add("questionBox",
+    {   x = 1150,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            { "Click on tile in side panel", 325, "to copy it."  },
+            { "Click on tile in main panel", 325, "to paste it." },
+            "",
+            { "Arrow Keys",    "- Scroll chunks in side panel or main panel"      },
+            { "Shift",         "- Paint tiles"        },
+            { "Command-Shift", "- Smart-Paint tiles"  },
+            "",
+            { "s",             "- Toggle solids mode" },
+            { "Shift",         "- In solids mode, constrain horizontally" },
+            "",
+            { "Command-z",     "- Undo" },
+            { "Command-Z",     "- Redo" },
+            "",
+            "Saving occurs automatically.",
+        },
+    })

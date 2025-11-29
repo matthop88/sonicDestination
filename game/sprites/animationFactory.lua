@@ -9,6 +9,7 @@ return {
     create = function(self, spriteDataName)
         return ({
             graphics = self.GRAPHICS,
+            repCount = 0,
             
             init = function(self, spriteDataName)
                 self:initSpriteData()
@@ -54,11 +55,15 @@ return {
                 self.graphics:setColor(COLOR_PURE_WHITE)
                 self.graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
             end,
-        
+
             update = function(self, dt)
+                local prevFrameIndex = math.floor(self.currentFrameIndex)
                 self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
-                if math.floor(self.currentFrameIndex) > #self.currentAnimation then
-                    self.currentFrameIndex = self.currentFrameIndex - #self.currentAnimation
+                if math.floor(self.currentFrameIndex) > prevFrameIndex then
+                    self.repCount = self.repCount + (1 / #self.currentAnimation)
+                    if math.floor(self.currentFrameIndex) > #self.currentAnimation then
+                        self.currentFrameIndex = self.currentFrameIndex - #self.currentAnimation
+                    end
                 end
             end,
 
@@ -75,9 +80,23 @@ return {
                     self.currentAnimation      = self.data[animationName]
                     self.currentAnimation.name = animationName
                     self.currentFrameIndex     = 1
+                    self.repCount              = 0
                 end
             end,
+
+            isForeground = function(self)
+                return self.currentAnimation.foreground
+            end,
         
+            getHitBox = function(self)
+                return self.currentAnimation.hitBox
+            end,
+
+            deletable          = function(self)      
+                return  self.currentAnimation.reps ~= nil
+                    and self.currentAnimation.reps <= self.repCount
+            end,
+
             getImage           = function(self)      return self.image                                           end,
             getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
             getCurrentFrame    = function(self)      return self.currentAnimation[self:getCurrentFrameIndex()]   end,

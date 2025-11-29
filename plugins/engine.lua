@@ -21,7 +21,7 @@ return ({
         love.keyreleased      = function(key) self:keyreleased(key)         end
 
         self.oldMousepressed  = love.mousepressed or self.oldMousepressed
-        love.mousepressed     = function(mx, my) self:mousepressed(mx, my)  end
+        love.mousepressed     = function(mx, my, p) self:mousepressed(mx, my, p)  end
             
         self.oldMousereleased = love.mousereleased or self.oldMousereleased
         love.mousereleased    = function(mx, my) self:mousereleased(mx, my) end
@@ -60,10 +60,12 @@ return ({
     end,
 
     mousepressed = function(self, mx, my)
+        local params = {}
         for _, plugin in ipairs(self) do
-            if plugin.handleMousepressed ~= nil and plugin:handleMousepressed(mx, my) then return true end
+            if plugin.prehandleMousepressed ~= nil then plugin:prehandleMousepressed(mx, my, params)               end
+            if plugin.handleMousepressed    ~= nil and  plugin:handleMousepressed(mx, my, params) then return true end
         end
-        self.oldMousepressed(mx, my)
+        self.oldMousepressed(mx, my, params)
     end,
 
     mousereleased = function(self, mx, my)

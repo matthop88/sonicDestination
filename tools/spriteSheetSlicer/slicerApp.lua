@@ -248,6 +248,10 @@ PLUGINS = require("plugins/engine")
         pixelated      = true,
         accessorFnName = "getImageViewer"
     })
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
     :add("modKeyEnabler")
     :add("scrolling",    { 
         imageViewer = getImageViewer(),
@@ -262,6 +266,27 @@ PLUGINS = require("plugins/engine")
     {
         printFnName    = "printToReadout",
         echoToConsole  = true,
+    })
+    :add("questionBox",
+    {   x = 974, destX = 62, w = 900,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 500,
+            { "Shift-Arrow Keys:",                   "Scroll Image"                },
+            { "z/a:",                                "Zoom in/out"                 },
+            "",
+            { "Click on Sprite:",                    "Show coordinates and size",  },
+            { "Click on Sprite Group:",              "Open Gallery"                },
+            { "Click on Gallery thumbnail:",         "Open Editor"                 },
+            "",
+            { "In Editor, right / left arrow keys:", "Iterate through frames"      },
+            { "In Editor, up / down arrow keys:",    "Iterate through animations"  },
+            { "On offset fields, up/down arrows:",   "Modify Sprite offsets"       },
+            "",
+            { "Option-A:",                           "Show Animation in real time" },
+            { "On FPS field, up/down arrows:",       "Modify FPS"                  },
+        },
     })
 
 --------------------------------------------------------------

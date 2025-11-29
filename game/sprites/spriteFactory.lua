@@ -8,13 +8,19 @@ return {
         return {
             animations = requireRelative("sprites/animationFactory", { GRAPHICS = self.GRAPHICS }):create(name),
             scale      = { x =  1, y =  1 },
+            deleted    = false,
         
             draw = function(self, x, y)
                 self.animations:draw(x, y, self.scale.x, self.scale.y)
             end,
+
+            getHitBox = function(self)
+                return self.animations:getHitBox()
+            end,
         
             update = function(self, dt)
                 self.animations:update(dt)
+                self.deleted = self.animations:deletable()
             end,
         
             --------------------------------------------------------------
@@ -34,6 +40,10 @@ return {
 
             getCurrentAnimationName = function(self)
                 return self.animations:getCurrentAnimName()
+            end,
+
+            isForeground = function(self)
+                return self.animations:isForeground()
             end,
 
             getFPS = function(self)      return self.animations:getFPS() end,

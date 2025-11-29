@@ -1,9 +1,14 @@
 local LabelFont = love.graphics.newFont(36)
 
 return {
-    create = function(self, x, y, w, h, textLabel, updateModelFn)
+    create = function(self, x, y, w, h, textLabel, updateModelFn, params)
+        params = params or {}
+
         local textValue = nil
         
+        local UP_KEY   = params.up   or "up"
+        local DOWN_KEY = params.down or "down"
+
         return {
             draw = function(self)
                 self:drawField()
@@ -36,10 +41,10 @@ return {
 
             handleKeypressed = function(self, key)
                 if self:isInsideRect(love.mouse.getPosition()) then
-                    if     key == "up"   then 
+                    if     key == UP_KEY   then 
                         self:incValue()
                         return true
-                    elseif key == "down" then 
+                    elseif key == DOWN_KEY then 
                         self:decValue()
                         return true
                     end

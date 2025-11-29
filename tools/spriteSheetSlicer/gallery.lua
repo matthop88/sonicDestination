@@ -172,7 +172,7 @@ return {
 
     keypressed = function(self, key)
         if     key == "escape"                then self.editor:setActive(false)
-        elseif key == "optiona" then 
+        elseif key == "optionA" then 
             self.animationPane:enable()
             self.animationPane:setSpriteData(self.slots:getSpriteData())
         elseif self.animationPane:keypressed(key) then
@@ -182,7 +182,7 @@ return {
     end,
 
     keyreleased = function(self, key)
-        if key == "optiona" then self.animationPane:disable() end
+        if key == "optionA" then self.animationPane:disable() end
     end,
 
     handleKeypressedInEditor = function(self, key)

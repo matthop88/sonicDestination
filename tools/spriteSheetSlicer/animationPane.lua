@@ -6,7 +6,7 @@ return {
 
         local ANIMATION_PANE
 
-        local fpsField = TextField:create(600, 118, 168, 48, "FPS: ", function(value) ANIMATION_PANE.fps = value end)
+        local fpsField = TextField:create(600, 118, 168, 48, "FPS: ", function(value) ANIMATION_PANE.fps = value end, { up = "optionshiftup", down = "optionshiftdown" })
         
 		ANIMATION_PANE = {
 			spriteData = {},

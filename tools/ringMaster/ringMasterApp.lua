@@ -7,6 +7,11 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 local RING_INFO     = require("tools/ringMaster/ringInfo")
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
+if __PARAMS["mapIn"] == "_" then 
+    require("tools/ringMaster/mapFinder"):execute()
+    return 
+end
+
 local MAP_IMG_PATH  = "resources/zones/maps/" .. __PARAMS["mapIn"] .. ".png"
 local MAP_IMG_OUT   = "resources/zones/maps/" .. (__PARAMS["mapOut"] or "sampleRingMapImage")
 local MAP_SAVER     = require("tools/ringMaster/savableMap"):create(MAP_IMG_PATH, (__PARAMS["ringDataOut"] or "sampleRingData") .. ".lua")
@@ -27,7 +32,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
-    RING_SCANNER:getObjectsFound():update(dt, RING_SCANNER:isComplete())
+    RING_SCANNER:getObjectsFound():update(dt, getImageViewer(), RING_SCANNER:isComplete())
     if not RING_SCANNER:isComplete() then
         setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
@@ -61,12 +66,18 @@ function love.keypressed(key)
 
 end
 
-function love.mousepressed(mx, my)
+function love.mousepressed(mx, my, p)
     if RING_MODE then
         local x, y = getImageViewer():screenToImageCoordinates(mx, my)
         table.insert(RING_SCANNER:getObjectsFound(), { x = math.floor(x), y = math.floor(y) })
         RING_MODE = false
+    else
+        --QUESTION_BOX:handleMousepressed(mx, my, p)
     end
+end
+
+function love.mousereleased(mx, my)
+    --QUESTION_BOX:handleMousereleased(mx, my)
 end
 
 --------------------------------------------------------------
@@ -107,6 +118,14 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
+    :add("keyRepeat", {
+        interval    = 0.05,
+        delay       = 0.5,
+    })
     :add("imageViewer",
     {
         imagePath       = MAP_IMG_PATH,
@@ -127,3 +146,26 @@ PLUGINS = require("plugins/engine")
         setTextFnName = "setProgressBarText",
     })
     :add("readout",      { printFnName = "printToReadout" })
+    :add("questionBox",
+    {   x = 1150,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            { "Arrow Keys",       "- Scroll map"      },
+            { "z/a",              "- Zoom in/out"     },
+            "",
+            { "Space",            "- Scan for Rings"  },
+            { "c",                "- Show number of rings found"          },
+            { "r",                "- Enter / Exit Ring Placement mode"    },
+            "",
+            "Ring Selection Mode_",
+            "(Rings are selected upon mouse over)",
+            "",
+            { "Shift-Arrow Keys", "- Move a selected ring one pixel"      },
+            { "x",                "- Erase selected ring (visually)" },
+            "",
+            { "Return",       "- Save Ring placement data"            },
+            { "Shift-Return", "- Save updated map image",             },
+        },
+    })

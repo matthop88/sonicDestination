@@ -1,5 +1,6 @@
 local WORLD
 local STATES
+local GRAPHICS
 
 local sonic1Sprite, sonic2Sprite
 
@@ -34,12 +35,15 @@ return {
     -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
     ------------------------------------------------------------------
     GROUND_LEVEL            = 940,
-    
+
+    HITBOX                  = nil,
+
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
         
     init = function(self, params)
-        WORLD = params.WORLD
+        WORLD    = params.WORLD
+        GRAPHICS = params.GRAPHICS
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
         sonic1Sprite = spriteFactory:create("sonic1")
         sonic2Sprite = spriteFactory:create("sonic2")
@@ -67,6 +71,18 @@ return {
         self:drawSensors()
     end,
 
+    drawHitBox = function(self)
+        local hitBox = self:getHitBox()
+        if hitBox then hitBox:draw(GRAPHICS, { 1, 0, 1, 0.7 }, 3) end
+    end,
+
+    getHitBox = function(self)
+        if self.HITBOX == nil then
+            self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox())
+        end
+        return self.HITBOX
+    end,
+
     drawSensors = function(self)
         for _, sensor in ipairs(self.sensors) do sensor:draw() end
     end,
@@ -79,10 +95,21 @@ return {
         self:applyAirDrag(dt)
         self:updatePosition(dt)
         self:updateSensors(dt)
+        self:updateHitBox(dt)
+        self:checkCollisions()
+    end,
+
+    updateHitBox = function(self, dt)
+        local hitBox = self:getHitBox()
+        if hitBox then hitBox:update(self:getX(), self:getY()) end
+    end,
+
+    checkCollisions = function(self)
+        self.HITBOX:setLastIntersectionWith(WORLD:checkCollisions(self))
     end,
 
     keypressed = function(self, key)
-       self.state:keypressed(key)                
+       self.state:keypressed(key)
     end,
 
     keyreleased = function(self, key)
@@ -200,4 +227,6 @@ return {
     end,
 
     getWorld = function(self) return WORLD end,
+
+    isPlayer = function(self) return true end,
 }
