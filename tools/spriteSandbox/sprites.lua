@@ -101,7 +101,7 @@ return ({
             local sprite = self.sprites:get()
             sprite:update(dt)
             if sprite.deleted then
-                if self.selectedSprite  and self.selectedSprite.deleted  then self.selectedSprite  = nil end
+                if self.selectedSprite  and self.selectedSprite.deleted  then self:deselectSprite()      end
                 if self.mouseoverSprite and self.mouseoverSprite.deleted then self.mouseoverSprite = nil end
                 if self.heldSprite      and self.heldSprite.deleted      then self.heldSprite      = nil end
                 self.sprites:remove() 
