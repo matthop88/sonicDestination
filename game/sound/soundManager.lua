@@ -18,19 +18,24 @@ return ({
 
     initSoundData = function(self)
         for name, element in pairs(self.data) do
+            element.soundIndex = 1
             element.load = function(self)
-                if self.sound ~= nil then
-                    love.audio.stop(self.sound)
-                else
-                    self.sound = love.audio.newSource(relativePath("resources/sounds/") .. self.filename, "static")
-                end
+                if self:getSound() == nil then self:setSound(love.audio.newSource(relativePath("resources/sounds/") .. self.filename, "static"))
+                else                      love.audio.stop(self:getSound())                                                                   end
             end
             element.play = function(self)
                 self:load()
-                self.sound:setVolume(self.volume or 1)
-                self.sound:play()
-                if self.startPoint then self.sound:seek(self.startPoint, "samples") end
+                self:getSound():setVolume(self.volume or 1)
+                self:getSound():play()
+                if self.startPoint then self:getSound():seek(self.startPoint, "samples") end
             end
+            element.getSound = function(self) return self.sounds[self.soundIndex]         end
+            element.setSound = function(self, sound) self.sounds[self.soundIndex] = sound end
+            element.next     = function(self)
+                self.soundIndex = self.soundIndex + 1
+                if self.soundIndex > #self.sounds then self.soundIndex = 1 end
+            end
+            element.sounds = { nil, nil, nil }
         end
     end,
         
