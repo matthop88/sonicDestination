@@ -9,6 +9,7 @@ return {
     create = function(self, spriteDataName)
         return ({
             graphics = self.GRAPHICS,
+            repCount = 0,
             
             init = function(self, spriteDataName)
                 self:initSpriteData()
@@ -59,6 +60,7 @@ return {
                 self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
                 if math.floor(self.currentFrameIndex) > #self.currentAnimation then
                     self.currentFrameIndex = self.currentFrameIndex - #self.currentAnimation
+                    self.repCount = self.repCount + 1
                 end
             end,
 
@@ -75,6 +77,7 @@ return {
                     self.currentAnimation      = self.data[animationName]
                     self.currentAnimation.name = animationName
                     self.currentFrameIndex     = 1
+                    self.repCount              = 0
                 end
             end,
 
@@ -84,6 +87,11 @@ return {
         
             getHitBox = function(self)
                 return self.currentAnimation.hitBox
+            end,
+
+            deletable          = function(self)      
+                return  self.currentAnimation.reps ~= nil
+                    and self.currentAnimation.reps <= self.repCount
             end,
 
             getImage           = function(self)      return self.image                                           end,
