@@ -19,7 +19,9 @@ return ({
     initSoundData = function(self)
         for name, element in pairs(self.data) do
             element.load = function(self)
-                if self.sound == nil then
+                if self.sound ~= nil then
+                    love.audio.stop(self.sound)
+                else
                     self.sound = love.audio.newSource(relativePath("resources/sounds/") .. self.filename, "static")
                 end
             end
