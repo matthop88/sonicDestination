@@ -47,7 +47,10 @@ return {
     update = function(self, dt)
         self.objects:head()
         while not self.objects:isEnd() do
-            self.objects:getNext():update(dt)
+            local sprite = self.objects:get()
+            sprite:update(dt)
+            if sprite.deleted then self.objects:remove()
+            else                   self.objects:next()   end
         end
     end,
 
