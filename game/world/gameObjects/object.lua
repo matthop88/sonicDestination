@@ -9,6 +9,7 @@ return {
             graphics = graphics,
             HITBOX   = nil,
             name     = spriteName,
+            deleted  = false,
 
             draw = function(self)
                 SPRITE:draw(self.x, self.y)
@@ -31,6 +32,7 @@ return {
             update = function(self, dt)
                 SPRITE:update(dt)
                 self:updateHitBox(dt)
+                self.deleted = SPRITE.deleted
             end,
 
             updateHitBox = function(self, dt)
