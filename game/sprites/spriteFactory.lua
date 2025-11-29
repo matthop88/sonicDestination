@@ -8,6 +8,7 @@ return {
         return {
             animations = requireRelative("sprites/animationFactory", { GRAPHICS = self.GRAPHICS }):create(name),
             scale      = { x =  1, y =  1 },
+            deleted    = false,
         
             draw = function(self, x, y)
                 self.animations:draw(x, y, self.scale.x, self.scale.y)
@@ -19,6 +20,7 @@ return {
         
             update = function(self, dt)
                 self.animations:update(dt)
+                self.deleted = self.animations:deletable()
             end,
         
             --------------------------------------------------------------
