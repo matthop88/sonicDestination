@@ -9,9 +9,11 @@ return ({
     end,
 
     data = {
-        sonicBraking   = { filename = "brake.ogg",       volume     = 0.2, },
-        sonicJumping   = { filename = "jump.ogg",        volume     = 0.2, },
-        sonicCDJumping = { filename = "sonicCDJump.mp3", volume     = 0.9,  startPoint = 19520, },
+        sonicBraking   = { filename = "brake.ogg",          volume     = 0.2, },
+        sonicJumping   = { filename = "jump.ogg",           volume     = 0.2, },
+        sonicCDJumping = { filename = "sonicCDJump.mp3",    volume     = 0.9,  startPoint = 19520, },
+        ringCollectL   = { filename = "ring-collect-L.mp3", volume     = 0.4, },
+        ringCollectR   = { filename = "ring-collect-R.mp3", volume     = 0.4, },
     },
 
     initSoundData = function(self)
