@@ -13,10 +13,11 @@ return {
             name     = object.obj,
             deleted  = false,
             active   = not object.inactive,
+            sprite   = SPRITE,
 
             draw = function(self) 
                 if self.active then
-                    SPRITE:draw(self.x, self.y) 
+                    self.sprite:draw(self.x, self.y) 
                 end
             end,
 
@@ -27,17 +28,17 @@ return {
 
             getHitBox = function(self)
                 if self.active then
-                    if     SPRITE:getHitBox() == nil then self.HITBOX = nil
-                    elseif self.HITBOX        == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(SPRITE:getHitBox()) end
+                    if     self.sprite:getHitBox() == nil then self.HITBOX = nil
+                    elseif self.HITBOX             == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox()) end
                     return self.HITBOX
                 end
             end,
 
             update = function(self, dt)
                 if self.active then
-                    SPRITE:update(dt)
+                    self.sprite:update(dt)
                     self:updateHitBox(dt)
-                    self.deleted = SPRITE.deleted
+                    self.deleted = self.sprite.deleted
                 end
             end,
 
@@ -46,15 +47,12 @@ return {
                 if hitBox then hitBox:update(self.x, self.y) end
             end,
 
-            setAnimation = function(self, name) SPRITE:setCurrentAnimation(name) end,
-            isForeground = function(self)       return SPRITE:isForeground()     end,
-            isPlayer     = function(self)       return false                     end,
+            setAnimation = function(self, name) self.sprite:setCurrentAnimation(name) end,
+            isForeground = function(self)       return self.sprite:isForeground()     end,
+            isPlayer     = function(self)       return false                          end,
 
             onTerminalCollisionWithPlayer = function(self, player)
-                if self.name == "ring" then
-                    self:setAnimation("dissolving")
-                    player:collectRing(1)
-                end
+                -- do nothing
             end,
         }
     end,
