@@ -4,7 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local SANDBOX = require("tools/spriteSandbox/sandbox")
+local SANDBOX = require("tools/spriteSandbox/sandbox"):create()
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
