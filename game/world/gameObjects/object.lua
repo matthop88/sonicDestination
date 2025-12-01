@@ -1,5 +1,4 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
-local ringPanRight  = true
 
 return {
     create = function(self, object, graphics)
@@ -11,7 +10,7 @@ return {
             y        = object.y,
             graphics = graphics,
             HITBOX   = nil,
-            name     = spriteName,
+            name     = object.obj,
             deleted  = false,
             active   = not object.inactive,
 
@@ -54,9 +53,7 @@ return {
             onTerminalCollisionWithPlayer = function(self, player)
                 if self.name == "ring" then
                     self:setAnimation("dissolving")
-                    if ringPanRight then SOUND_MANAGER:play("ringCollectR")
-                    else                 SOUND_MANAGER:play("ringCollectL") end
-                    ringPanRight = not ringPanRight
+                    player:collectRing(1)
                 end
             end,
         }
