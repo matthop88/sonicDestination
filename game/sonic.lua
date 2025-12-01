@@ -4,9 +4,10 @@ local GRAPHICS
 
 local sonic1Sprite, sonic2Sprite
 
-local SOUND_MANAGER = requireRelative("sound/soundManager")
+local SOUND_MANAGER  = requireRelative("sound/soundManager")
 
-local JUMP_SOUND = "sonicJumping"
+local JUMP_SOUND     = "sonicJumping"
+local ringPanRight   = true
 
 return {
     ------------------------------------------------------------------
@@ -37,6 +38,7 @@ return {
     GROUND_LEVEL            = 940,
 
     HITBOX                  = nil,
+    ringCount               = 0,
 
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -229,4 +231,11 @@ return {
     getWorld = function(self) return WORLD end,
 
     isPlayer = function(self) return true end,
+
+    collectRing = function(self, ringCount)
+        if ringPanRight then SOUND_MANAGER:play("ringCollectR")
+        else                 SOUND_MANAGER:play("ringCollectL") end
+        ringPanRight = not ringPanRight
+        self.ringCount = self.ringCount + ringCount
+    end,
 }
