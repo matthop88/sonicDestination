@@ -46,7 +46,7 @@ return {
         local offsetY = topY  % gridSize
         local startY  = topY  - offsetY
         
-        for i = startX, rightX + gridSize, gridSize do GRAFX:line(i, topY, i, bottomY) end
-        for i = startY, rightX + gridSize, gridSize do GRAFX:line(leftX, i, rightX, i) end
+        for i = startX, rightX  + gridSize, gridSize do GRAFX:line(i, topY, i, bottomY) end
+        for i = startY, bottomY + gridSize, gridSize do GRAFX:line(leftX, i, rightX, i) end
 	end,
 }
