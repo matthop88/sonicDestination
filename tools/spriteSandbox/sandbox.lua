@@ -9,8 +9,10 @@ return {
             sprites          = require("tools/spriteSandbox/sprites"),
             grid             = require("tools/spriteSandbox/grid"),
             mode             = nil,
+            backgroundImage  = nil,
 
-            init = function(self)
+            init = function(self, params)
+                self.backgroundImage = params.backgroundImage
                 self:setSelectMode()
                 return self
             end,
@@ -19,10 +21,18 @@ return {
                 love.graphics.setColor(0.1, 0.1, 0.1)
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
 
+                self:drawBackgroundImage()
                 self:drawGrid()
                 self:drawSprites()
                 self:drawMode()
                 self:drawSelectedSprite()
+            end,
+
+            drawBackgroundImage = function(self)
+                if self.backgroundImage then
+                    self.graphics:setColor(1, 1, 1)
+                    self.graphics:draw(self.backgroundImage, 0, 0)
+                end
             end,
 
             drawGrid = function(self)
