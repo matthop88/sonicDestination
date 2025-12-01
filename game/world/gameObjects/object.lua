@@ -2,19 +2,24 @@ local SOUND_MANAGER = requireRelative("sound/soundManager")
 local ringPanRight  = true
 
 return {
-    create = function(self, spriteName, x, y, graphics)
+    create = function(self, object, graphics)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
-        local SPRITE        = spriteFactory:create("objects/" .. spriteName)
+        local SPRITE        = spriteFactory:create("objects/" .. object.obj)
 
         return {
-            x        = x,
-            y        = y,
+            x        = object.x,
+            y        = object.y,
             graphics = graphics,
             HITBOX   = nil,
             name     = spriteName,
             deleted  = false,
+            active   = not object.inactive,
 
-            draw = function(self) SPRITE:draw(self.x, self.y) end,
+            draw = function(self) 
+                if self.active then
+                    SPRITE:draw(self.x, self.y) 
+                end
+            end,
 
             drawHitBox = function(self)
                 local hitBox = self:getHitBox()
@@ -22,15 +27,19 @@ return {
             end,
 
             getHitBox = function(self)
-                if     SPRITE:getHitBox() == nil then self.HITBOX = nil
-                elseif self.HITBOX        == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(SPRITE:getHitBox()) end
-                return self.HITBOX
+                if self.active then
+                    if     SPRITE:getHitBox() == nil then self.HITBOX = nil
+                    elseif self.HITBOX        == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(SPRITE:getHitBox()) end
+                    return self.HITBOX
+                end
             end,
 
             update = function(self, dt)
-                SPRITE:update(dt)
-                self:updateHitBox(dt)
-                self.deleted = SPRITE.deleted
+                if self.active then
+                    SPRITE:update(dt)
+                    self:updateHitBox(dt)
+                    self.deleted = SPRITE.deleted
+                end
             end,
 
             updateHitBox = function(self, dt)
