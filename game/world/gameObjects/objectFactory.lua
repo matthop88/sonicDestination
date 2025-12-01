@@ -13,6 +13,7 @@ return {
 				specificObj[k] = v
 			end
 		end
+		specificObj.super = generalObj
 	end,
         
 }
