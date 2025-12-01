@@ -153,5 +153,5 @@ return {
   { obj = "ring",      x = 6536, y = 116,  },
   { obj = "ring",      x = 9274, y = 1206, },
   { obj = "ring",      x = 1728, y = 932,  },
-  { obj = "giantRing", x = 9640, y = 1104, },
+  { obj = "giantRing", x = 9640, y = 1104, inactive = true },
 }
