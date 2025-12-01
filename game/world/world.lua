@@ -14,7 +14,7 @@ return {
         
         local ringMap = requireRelative("resources/zones/maps/ringMap")
         for _, object in ipairs(ringMap) do
-            self.objects:add(requireRelative("world/gameObjects/object"):create(object.obj, object.x, object.y, GRAPHICS))
+            self.objects:add(requireRelative("world/gameObjects/object"):create(object, GRAPHICS))
         end
         return self
     end,
