@@ -16,6 +16,7 @@ return {
         for _, ring in ipairs(ringMap) do
             self.objects:add(requireRelative("world/gameObjects/object"):create("ring", ring.x, ring.y, GRAPHICS))
         end
+        self.objects:add(requireRelative("world/gameObjects/object"):create("giantRing", 9640, 1104, GRAPHICS))
         return self
     end,
 
