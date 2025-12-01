@@ -1,11 +1,13 @@
 local GRAPHICS
 local TERRAIN
 local WORKSPACE
+local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
 
-    objects = requireRelative("util/dataStructures/linkedList"):create(),  
+    objects = requireRelative("util/dataStructures/linkedList"):create(),
+
     
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
@@ -13,8 +15,8 @@ return {
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
         local ringMap = requireRelative("resources/zones/maps/ringMap")
-        for _, object in ipairs(ringMap) do
-            self.objects:add(requireRelative("world/gameObjects/object"):create(object, GRAPHICS))
+        for _, objectData in ipairs(ringMap) do
+            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS))
         end
         return self
     end,
@@ -47,9 +49,9 @@ return {
     update = function(self, dt)
         self.objects:head()
         while not self.objects:isEnd() do
-            local sprite = self.objects:get()
-            sprite:update(dt)
-            if sprite.deleted then self.objects:remove()
+            local object = self.objects:get()
+            object:update(dt)
+            if object.deleted then self.objects:remove()
             else                   self.objects:next()   end
         end
     end,
