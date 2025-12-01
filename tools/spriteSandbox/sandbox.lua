@@ -74,6 +74,8 @@ return {
                 elseif key == "shifttab" then
                     if self.mode == SPRITE then self.sprites:regressCurrent(self.graphics)
                     else                        self.sprites:regressSelectedSprite()   end
+                elseif key == "space" then
+                    if self.mode == SELECT then self.sprites:toggleFreeze()            end
                 end
             end,
 
