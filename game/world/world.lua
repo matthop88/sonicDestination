@@ -13,10 +13,9 @@ return {
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
         local ringMap = requireRelative("resources/zones/maps/ringMap")
-        for _, ring in ipairs(ringMap) do
-            self.objects:add(requireRelative("world/gameObjects/object"):create("ring", ring.x, ring.y, GRAPHICS))
+        for _, object in ipairs(ringMap) do
+            self.objects:add(requireRelative("world/gameObjects/object"):create(object.obj, object.x, object.y, GRAPHICS))
         end
-        self.objects:add(requireRelative("world/gameObjects/object"):create("giantRing", 9640, 1104, GRAPHICS))
         return self
     end,
 
