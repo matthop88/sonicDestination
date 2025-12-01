@@ -9,7 +9,7 @@ return ({
     heldSprite      = nil,
     mouseoverSprite = nil,
     visualizedList  = nil,
-
+    
     init = function(self)
         self:initCurrentSprite(0, 0)
         self.visualizedList = require("tools/spriteSandbox/listVisualizer"):create(self.sprites)
@@ -125,7 +125,7 @@ return ({
     end,
 
     updateCurrentSprite = function(self, dt, px, py)
-        if self.currentSprite then
+        if self.currentSprite and not self.selectedSprite then
             self.currentSprite.x, self.currentSprite.y = px, py
             self.currentSprite:update(dt)
         end
@@ -241,6 +241,10 @@ return ({
     updateCurrent = function(self, GRAFX)
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
         self:initCurrentSprite(math.floor(px), math.floor(py))
+    end,
+
+    toggleFreeze = function(self)
+        if self.selectedSprite then self.selectedSprite:toggleFreeze() end
     end,
 
 }):init()
