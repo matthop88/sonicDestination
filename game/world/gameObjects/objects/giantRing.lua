@@ -7,10 +7,8 @@ return {
 			end,
 
 			updateGiantRingActivity = function(self, dt)
-				print("Updating Giant Ring Activity...")
+				self.active = GLOBALS:getPlayer():getRingCount() >= 50
 			end,
-
 		}
-	end,
-                
+	end,            
 }
