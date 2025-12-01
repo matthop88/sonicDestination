@@ -14,9 +14,7 @@ love.window.setTitle("Sprite Sandbox")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 if __PARAMS["background"] then
-    local BACKGROUND_IMG_PATH = "resources/" .. __PARAMS["background"] .. ".png"
-    BACKGROUND_IMG = love.graphics.newImage(BACKGROUND_IMG_PATH)
-    BACKGROUND_IMG:setFilter("nearest", "nearest")
+    BACKGROUND_IMG = require("tools/spriteSandbox/smartImageLoader"):loadImage(__PARAMS["background"])
 end
 
 local SANDBOX = require("tools/spriteSandbox/sandbox"):create { backgroundImage = BACKGROUND_IMG }
