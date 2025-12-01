@@ -3,7 +3,7 @@ return {
 		return {
 			onTerminalCollisionWithPlayer = function(self, player)
 				self:setAnimation("dissolving")
-				player:collectRing(1)
+				player:collectRings(1)
 			end,
 		}
 	end,
