@@ -232,10 +232,15 @@ return {
 
     isPlayer = function(self) return true end,
 
-    collectRing = function(self, ringCount)
+    collectRings = function(self, ringCount)
         if ringPanRight then SOUND_MANAGER:play("ringCollectR")
         else                 SOUND_MANAGER:play("ringCollectL") end
         ringPanRight = not ringPanRight
         self.ringCount = self.ringCount + ringCount
+        print("Total Number of Rings:", self.ringCount)
+    end,
+
+    getRingCount = function(self)
+        return self.ringCount
     end,
 }
