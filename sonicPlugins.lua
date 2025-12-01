@@ -66,6 +66,11 @@ return {
                     {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
                     {   key = "U", fn = function() self.SONIC:moveTo(self.SONIC:getX(), 0)  end, },
                     {   key = "h", fn = function() SHOW_HITBOXES = not SHOW_HITBOXES        end, },
+                    {   key = "r", fn = function() self.SONIC:collectRings(10)              end, },
+                    {   key = "R", fn = function() self.SONIC:collectRings(-10)             end, },
+                    {   key = ">", fn = function() self.SONIC:moveTo(self.SONIC:getX() + 1000, self.SONIC:getY()) end, },
+                    {   key = "<", fn = function() self.SONIC:moveTo(self.SONIC:getX() - 1000, self.SONIC:getY()) end, },
+                    
                 },
             })
             :add("grid3D",         { 
