@@ -1,3 +1,5 @@
+local SOUND_MANAGER = requireRelative("sound/soundManager")
+
 return {
 	create = function(self)
 		return {
@@ -33,6 +35,7 @@ return {
             onTerminalCollisionWithPlayer = function(self, player)
 				self:setAnimation("giantDissolving")
 				player:deactivate()
+				SOUND_MANAGER:play("giantRing")
 				GLOBALS:getWorld():teleport()
 			end,
 		}
