@@ -70,7 +70,7 @@ return {
                     {   key = "R", fn = function() self.SONIC:collectRings(-10)             end, },
                     {   key = ">", fn = function() self.SONIC:moveTo(self.SONIC:getX() + 1000, self.SONIC:getY()) end, },
                     {   key = "<", fn = function() self.SONIC:moveTo(self.SONIC:getX() - 1000, self.SONIC:getY()) end, },
-                    
+                    {   key = "#", fn = function() self.SONIC:getWorld():reset()            end, },
                 },
             })
             :add("grid3D",         { 
