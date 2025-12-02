@@ -2,7 +2,7 @@ local WORLD
 local STAGE_BUILDER = requireRelative("world/events/stageBuilder")
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
-local READY =      { duration =  0,                                                 }
+local READY =      { duration =  60,                                                }
 
 local FADING_OUT = { 
 	duration = 60, 
