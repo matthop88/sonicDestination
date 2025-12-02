@@ -8,6 +8,27 @@ return {
 
     objects = nil,
 
+    fadeLayer = { 
+        color    = { r = 1, g = 1, b = 1 }, 
+        alpha    = 0,
+        speed    = 1,
+        velocity = 0,
+
+        draw = function(self)
+            GRAPHICS:setColor(self.color.r, self.color.g, self.color.b, self.alpha)
+            GRAPHICS:rectangle("fill", GRAPHICS:calculateViewport())
+        end,
+
+        update = function(self, dt)
+            self.alpha = self.alpha + (self.velocity * dt)
+            if     self.alpha > 1 then self.alpha = 1
+            elseif self.alpha < 0 then self.alpha = 0 end
+        end,
+
+        fadeOut = function(self) self.velocity =  self.speed end,
+        fadeIn  = function(self) self.velocity = -self.speed end,
+    },
+
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
@@ -48,6 +69,7 @@ return {
             local object = self.objects:getNext()
             if object:isForeground() then object:draw(SHOW_HITBOXES) end
         end
+        self.fadeLayer:draw()
     end,
 
     drawHitBoxes = function(self)
@@ -65,6 +87,7 @@ return {
             if object.deleted then self.objects:remove()
             else                   self.objects:next()   end
         end
+        self.fadeLayer:update(dt)
     end,
 
     checkCollisions = function(self, otherObject)
@@ -85,4 +108,7 @@ return {
     getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
 
     toggleShowSolids   = function(self) TERRAIN:toggleShowSolids()        end,
+
+    fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
+    fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
 }
