@@ -1,7 +1,7 @@
 return {
 	create = function(self)
 		return {
-			scale         = 0.1,
+			scale          = 0.1,
 			
 			update = function(self, dt)
                 if self.active then
@@ -32,7 +32,7 @@ return {
 
             onTerminalCollisionWithPlayer = function(self, player)
 				self:setAnimation("giantDissolving")
-				player:freeze()
+				player:deactivate()
 			end,
 		}
 	end,            
