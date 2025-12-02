@@ -1,4 +1,5 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
+local IMAGE_LOADER     = requireRelative("util/imageLoader")
 
 return {
     init   = function(self, params)
@@ -23,8 +24,7 @@ return {
             initSpriteData  = function(self)
                 local spriteData = requireRelative("sprites/data/" .. spriteDataName)
                 self.data = spriteData.animations
-                self.image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. spriteData.imageName .. ".png"))
-                self.image:setFilter("nearest", "nearest")
+                self.image = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
             end,
                 
             initFrames = function(self)
