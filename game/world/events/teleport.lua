@@ -38,6 +38,10 @@ return {
 			isComplete = function(self)
 				return STAGES:isComplete()
 			end,
+
+			getName = function(self)
+				return "teleport"
+			end,
 		}
 	end,
 }
