@@ -2,7 +2,7 @@ return {
     imageName  = "commonObj",
     animations  = {
         giantSpinning = { fps = 8, offset = { x = 32, y = 32 }, w = 64, h = 64, isDefault = true, synchronized = true,
-            hitBox = { rX = 10, rY = 10 },
+            hitBox = { rX = 5, rY = 5 },
             ----------------------------------------------------------------------------------------------------------
             { x =  24, y = 239, w = 64, h = 64, offset = { x = 32, y = 32 }, },
             { x =  96, y = 239, w = 48, h = 64, offset = { x = 24, y = 32 }, },
@@ -10,6 +10,7 @@ return {
             { x = 184, y = 239, w = 48, h = 64, offset = { x = 24, y = 32 }, },
         },
         giantDissolving = { fps = 8, offset = { x = 32, y = 32 }, w = 64, h = 64, foreground = true,
+            reps = 1,
             { x =  24, y = 311, w = 64, h = 64, offset = { x = 32, y = 32 }, },
             { x = 114, y = 311, w = 46, h = 64, offset = { x = 14, y = 32 }, },
             { x = 176, y = 311, w = 56, h = 64, offset = { x = 24, y = 32 }, },
