@@ -10,6 +10,7 @@ return {
         return ({
             graphics = self.GRAPHICS,
             repCount = 0,
+            name     = spriteDataName,
             
             init = function(self, spriteDataName)
                 self:initSpriteData()
@@ -113,7 +114,14 @@ return {
             getGeneralX        = function(self, x, scaleX)  return x - (self.currentAnimation.offset.x * math.abs(scaleX)) end,
             getGeneralY        = function(self, y, scaleY)  return y - (self.currentAnimation.offset.y * math.abs(scaleY)) end,
                 
-            getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                     end,
+            getCurrentFrameIndex = function(self)
+                if math.floor(self.currentFrameIndex) > #self.currentAnimation then
+                    self.currentFrameIndex = 1
+                    -- XXX: The reason for this necessity is UNKNOWN
+                    --      but if this isn't done, game will crash when resetting world
+                end
+                return math.floor(self.currentFrameIndex)
+            end,
 
             setCurrentFrameIndex = function(self, frameIndex)
                 if     frameIndex < 1                      then frameIndex = #self.currentAnimation
