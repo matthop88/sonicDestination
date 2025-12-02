@@ -27,9 +27,8 @@ return {
     end,
 
 	drawBackground = function(self)
-        local viewportRect = self.graphics:calculateViewportRect()
-		self.graphics:setColor(0, 0, 0)
-		self.graphics:rectangle("fill", viewportRect.x, viewportRect.y, viewportRect.w, viewportRect.h)
+        self.graphics:setColor(0, 0, 0)
+		self.graphics:rectangle("fill", self.graphics:calculateViewport())
 	end,
 
 	drawTerrain = function(self)
