@@ -41,6 +41,7 @@ return {
     ringCount               = 0,
 
     frozen                  = false,
+    active                  = true,
 
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -71,8 +72,10 @@ return {
     end,
 
     draw = function(self)
-        self.sprite:draw(self:getX(), self:getY())
-        self:drawSensors()
+        if self.active then
+            self.sprite:draw(self:getX(), self:getY())
+            self:drawSensors()
+        end
     end,
 
     drawHitBox = function(self)
@@ -246,4 +249,6 @@ return {
     getRingCount = function(self) return self.ringCount end,
     freeze       = function(self) self.frozen = true    end,
     unfreeze     = function(self) self.frozen = false   end,
+    deactivate   = function(self) self.active = false   end,
+    activate     = function(self) self.active = true    end,
 }
