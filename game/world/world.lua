@@ -6,19 +6,30 @@ local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
 
-    objects = requireRelative("util/dataStructures/linkedList"):create(),
+    objects = nil,
 
-    
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
+        self:refreshRingMap()
+        return self
+    end,
+
+    refreshRingMap = function(self)
         local ringMap = requireRelative("resources/zones/maps/ringMap")
+        self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
         for _, objectData in ipairs(ringMap) do
             self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS))
         end
-        return self
+    end,
+
+    reset = function(self)
+        self:refreshRingMap()
+        GLOBALS:getPlayer():initPosition()
+        GRAPHICS:setX(0)
+        GRAPHICS:setY(-384)
     end,
 
     draw = function(self)
