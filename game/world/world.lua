@@ -8,6 +8,8 @@ return {
 
     objects = nil,
 
+    events  = {},
+
     fadeLayer = { 
         color    = { r = 1, g = 1, b = 1 }, 
         alpha    = 0,
@@ -88,6 +90,13 @@ return {
             else                   self.objects:next()   end
         end
         self.fadeLayer:update(dt)
+        self:updateEvents(dt)
+    end,
+
+    updateEvents = function(self, dt)
+        for _, evt in ipairs(self.events) do
+            evt:update(dt)
+        end
     end,
 
     checkCollisions = function(self, otherObject)
@@ -111,4 +120,8 @@ return {
 
     fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
     fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
+
+    teleport    = function(self)
+        table.insert(self.events, requireRelative("world/events/teleport"):create(self))
+    end,
 }
