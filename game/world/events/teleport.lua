@@ -2,7 +2,7 @@ local WORLD
 
 local READY =      { duration =  0,                                                 }
 local FADING_OUT = { duration = 60, activate = function(self) WORLD:fadeOut()  end, } 
-local RESETTING  = { duration = 60, activate = function(self) WORLD:reset()    end, }
+local RESETTING  = { duration =  0, activate = function(self) WORLD:reset()    end, }
 local FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()   end, }
 local DONE       = {}
 
