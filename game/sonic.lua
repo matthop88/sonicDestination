@@ -95,17 +95,19 @@ return {
     end,
 
     update = function(self, dt)
-        self.sprite:update(dt)
-        self:updateState(dt)
-        self:updateFrameRate(dt)
-        if not self.frozen then
-            self:applyGravity(dt)
-            self:applyAirDrag(dt)
-            self:updatePosition(dt)
+        if self.active then
+            self.sprite:update(dt)
+            self:updateState(dt)
+            self:updateFrameRate(dt)
+            if not self.frozen then
+                self:applyGravity(dt)
+                self:applyAirDrag(dt)
+                self:updatePosition(dt)
+            end
+            self:updateSensors(dt)
+            self:updateHitBox(dt)
+            self:checkCollisions()
         end
-        self:updateSensors(dt)
-        self:updateHitBox(dt)
-        self:checkCollisions()
     end,
 
     updateHitBox = function(self, dt)
