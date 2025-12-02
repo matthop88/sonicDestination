@@ -40,6 +40,8 @@ return {
     HITBOX                  = nil,
     ringCount               = 0,
 
+    frozen                  = false,
+
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
         
@@ -93,9 +95,11 @@ return {
         self.sprite:update(dt)
         self:updateState(dt)
         self:updateFrameRate(dt)
-        self:applyGravity(dt)
-        self:applyAirDrag(dt)
-        self:updatePosition(dt)
+        if not self.frozen then
+            self:applyGravity(dt)
+            self:applyAirDrag(dt)
+            self:updatePosition(dt)
+        end
         self:updateSensors(dt)
         self:updateHitBox(dt)
         self:checkCollisions()
@@ -229,9 +233,7 @@ return {
     end,
 
     getWorld = function(self) return WORLD end,
-
-    isPlayer = function(self) return true end,
-
+    
     collectRings = function(self, ringCount)
         if ringPanRight then SOUND_MANAGER:play("ringCollectR")
         else                 SOUND_MANAGER:play("ringCollectL") end
@@ -240,7 +242,8 @@ return {
         print("Total Number of Rings:", self.ringCount)
     end,
 
-    getRingCount = function(self)
-        return self.ringCount
-    end,
+    isPlayer     = function(self) return true           end,
+    getRingCount = function(self) return self.ringCount end,
+    freeze       = function(self) self.frozen = true    end,
+    unfreeze     = function(self) self.frozen = false   end,
 }
