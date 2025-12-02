@@ -1,4 +1,5 @@
 local WORLD
+local STAGE_BUILDER = requireRelative("world/events/stageBuilder")
 
 local READY =      { duration =  0,                                                 }
 local FADING_OUT = { duration = 60, activate = function(self) WORLD:fadeOut()  end, } 
@@ -6,28 +7,7 @@ local RESETTING  = { duration =  0, activate = function(self) WORLD:reset()    e
 local FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()   end, }
 local DONE       = {}
 
-local STAGES = { 
-	READY,
-	FADING_OUT,
-	RESETTING,
-	FADING_IN,
-	DONE,
-
-	index           = 1,
-
-	get             = function(self) return self[self.index]                           end,
-	next            = function(self) self.index = math.min(self.index + 1, #self)      end,
-	completed       = function(self) return self.index == #self                        end,
-	
-	readyForNext    = function(self, timer)
-		local stage = self:get()
-		return stage.duration and timer > stage.duration
-	end,
-
-	activateCurrent = function(self) 
-		if self:get().activate then self:get():activate() end
-	end,
-}
+local STAGES = STAGE_BUILDER:build { READY, FADING_OUT, RESETTING, FADING_IN, DONE  }
 
 return {
 	create = function(self, world)
