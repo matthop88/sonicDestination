@@ -57,8 +57,6 @@ return {
         self:initSensors(params.GRAPHICS)
         
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
-        self.nextState  = STATES.STAND_RIGHT
-
         self:initPosition()
 
         return self
@@ -71,7 +69,12 @@ return {
     end,
 
     initPosition = function(self)
+        self.GROUND_LEVEL = 940
         self:moveTo(512, self.GROUND_LEVEL)
+        self.nextState  = STATES.STAND_RIGHT
+        self:activate()
+        self.velocity.x = 0
+        self.velocity.y = 0
     end,
 
     draw = function(self)
