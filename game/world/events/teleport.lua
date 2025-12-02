@@ -1,8 +1,17 @@
 local WORLD
 local STAGE_BUILDER = requireRelative("world/events/stageBuilder")
+local SOUND_MANAGER = requireRelative("sound/soundManager")
 
 local READY =      { duration =  0,                                                 }
-local FADING_OUT = { duration = 60, activate = function(self) WORLD:fadeOut()  end, } 
+
+local FADING_OUT = { 
+	duration = 60, 
+	activate = function(self) 
+		WORLD:fadeOut()
+		SOUND_MANAGER:play("vanish")  
+	end, 
+} 
+
 local RESETTING  = { duration =  0, activate = function(self) WORLD:reset()    end, }
 local FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()   end, }
 local DONE       = {}
