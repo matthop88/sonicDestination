@@ -1,13 +1,20 @@
 local WORLD
 
+local READY =      { duration =  0,                                                 }
+local FADING_OUT = { duration = 60, activate = function(self) WORLD:fadeOut()  end, } 
+local RESETTING  = { duration = 60, activate = function(self) WORLD:reset()    end, }
+local FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()   end, }
+local DONE       = {}
+
 local STAGES = { 
-	READY =      { duration =  0,                                                 },
-	FADING_OUT = { duration = 60, activate = function(self) WORLD:fadeOut()  end, }, 
-	RESETTING  = { duration = 60, activate = function(self) WORLD:reset()    end, }, 
-	FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()   end, },
-	DONE       = {},
+	READY,
+	FADING_OUT,
+	RESETTING,
+	FADING_IN,
+	DONE,
 
 	index           = 1,
+
 	get             = function(self) return self[self.index]                           end,
 	next            = function(self) self.index = math.min(self.index + 1, #self)      end,
 	completed       = function(self) return self.index == #self                        end,
@@ -29,7 +36,7 @@ return {
 			timer      = 0,
 			
 			update = function(self, dt)
-				self.timer = self.timer + dt
+				self.timer = self.timer + (60 * dt)
 				if STAGES:readyForNext(self.timer) then self:nextStage() end
 			end,
 
