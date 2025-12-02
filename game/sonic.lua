@@ -59,7 +59,7 @@ return {
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
 
-        self:moveTo(512, self.GROUND_LEVEL)
+        self:initPosition()
 
         return self
     end,
@@ -68,7 +68,10 @@ return {
         self.sensors = {
             requireRelative("collision/sensors/groundFront", { OWNER = self, WORLD = WORLD, GRAPHICS = graphics })
         }
+    end,
 
+    initPosition = function(self)
+        self:moveTo(512, self.GROUND_LEVEL)
     end,
 
     draw = function(self)
