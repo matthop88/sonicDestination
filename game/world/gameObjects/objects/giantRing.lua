@@ -33,6 +33,7 @@ return {
             onTerminalCollisionWithPlayer = function(self, player)
 				self:setAnimation("giantDissolving")
 				player:deactivate()
+				GLOBALS:getWorld():teleport()
 			end,
 		}
 	end,            
