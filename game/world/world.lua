@@ -122,6 +122,9 @@ return {
     fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
 
     teleport    = function(self)
+        for _, evt in ipairs(self.events) do
+            if evt:getName() == "teleport" then return end
+        end
         table.insert(self.events, requireRelative("world/events/teleport"):create(self))
     end,
 }
