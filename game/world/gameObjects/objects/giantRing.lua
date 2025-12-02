@@ -15,12 +15,12 @@ return {
             end,
 
             updateGiantRingActivity = function(self, dt)
-				local active       = GLOBALS:getPlayer():getRingCount() >= 50
+				local active = GLOBALS:getPlayer():getRingCount() >= 50
 				
 				if   active then self.scale = math.min(1,   self.scale + (dt * 3))
 				else             self.scale = math.max(0.1, self.scale - (dt * 3)) end
 
-				self.active       = self.scale > 0.1
+				self.active  = self.scale > 0.1
 			end,
 
 			drawHitBox = function(self)
@@ -29,6 +29,11 @@ return {
                 	hitBox:draw(self.graphics, { 1, 0, 0, 0.8 }, 2) 
                 end
             end,
+
+            onTerminalCollisionWithPlayer = function(self, player)
+				self:setAnimation("giantDissolving")
+				player:freeze()
+			end,
 		}
 	end,            
 }
