@@ -14,6 +14,7 @@ return ({
         sonicCDJumping = { filename = "sonicCDJump.mp3",    volume     = 0.9,  startPoint = 19520, },
         ringCollectL   = { filename = "ring-collect-L.mp3", volume     = 0.4, },
         ringCollectR   = { filename = "ring-collect-R.mp3", volume     = 0.4, },
+        vanish         = { filename = "vanish.mp3",         volume     = 0.5,  startPoint =  3968, },
     },
 
     initSoundData = function(self)
