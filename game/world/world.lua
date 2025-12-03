@@ -34,7 +34,7 @@ return {
 
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
-        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
+        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "ghz1Map", chunks = "ghzChunks" })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
         return self
@@ -53,7 +53,10 @@ return {
         end
     end,
 
-    reset = function(self)
+    reset = function(self, map, chunks)
+        if map and chunks then
+            TERRAIN:init { GRAPHICS = GRAPHICS, map = map, chunks = chunks }
+        end
         self:refreshObjectsMap()
     end,
 
