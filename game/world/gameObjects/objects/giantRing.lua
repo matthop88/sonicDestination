@@ -4,6 +4,7 @@ return {
 	create = function(self)
 		return {
 			scale          = 0.1,
+			isArriving     = false,
 			
 			update = function(self, dt)
                 if self.active then
@@ -33,13 +34,21 @@ return {
             end,
 
             onTerminalCollisionWithPlayer = function(self, player)
-				self:setAnimation("giantDissolving")
-				player:deactivate()
-				SOUND_MANAGER:play("giantRing")
-				local map = self.object.destination.map
-				local x   = self.object.destination.coordinates.x
-				local y   = self.object.destination.coordinates.y
-				GLOBALS:getWorld():teleport(map, x, y)
+				if not self.isArriving then
+					self:setAnimation("giantDissolving")
+					player:deactivate()
+					SOUND_MANAGER:play("giantRing")
+					local map = self.object.destination.map
+					local x   = self.object.destination.coordinates.x
+					local y   = self.object.destination.coordinates.y
+					GLOBALS:getWorld():teleport(map, x, y, self)
+				end
+			end,
+
+			arriving = function(self, x, y)
+				self.isArriving = true
+				self:setAnimation("giantSpinning")
+				self.x, self.y = x, y
 			end,
 		}
 	end,            
