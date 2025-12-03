@@ -128,11 +128,11 @@ return {
     fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
     fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
 
-    teleport    = function(self, map, x, y)
+    teleport    = function(self, map, x, y, giantRing)
         for _, evt in ipairs(self.events) do
             if evt:getName() == "teleport" then return end
         end
-        table.insert(self.events, requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y }))
+        table.insert(self.events, requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing }))
     end,
 
     addPreexistingObject = function(self, object)
