@@ -53,9 +53,9 @@ return {
         end
     end,
 
-    reset = function(self, map, chunks)
-        if map and chunks then
-            TERRAIN:init { GRAPHICS = GRAPHICS, map = map, chunks = chunks }
+    reset = function(self, map)
+        if map then
+            TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
         end
         self:refreshObjectsMap()
     end,
