@@ -11,12 +11,11 @@ return {
 
     init = function(self, params)
         self.map    = params.map
-        self.chunks = params.chunks
-
-        MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map    .. ".lua")
-        CHUNKS_PATH = relativePath("resources/zones/chunks/" .. self.chunks .. ".lua")
-
+        
+        MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map                .. ".lua")
         MAP_DATA    = dofile(MAP_PATH)
+
+        CHUNKS_PATH = relativePath("resources/zones/chunks/" .. MAP_DATA.chunksDataName .. ".lua")
 
         self.pageWidth  = #MAP_DATA[1] * 256
         self.pageHeight = #MAP_DATA    * 256
@@ -91,7 +90,7 @@ return {
     end,
 
     refresh = function(self)
-        self:init { GRAPHICS = self.graphics, map = self.map, chunks = self.chunks }
+        self:init { GRAPHICS = self.graphics, map = self.map }
     end,
 
     toggleShowSolids = function(self)
