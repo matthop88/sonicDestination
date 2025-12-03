@@ -89,4 +89,8 @@ return {
     toggleShowSolids = function(self)
         self.showSolids = not self.showSolids
     end,
+
+	getObjectsDataName = function(self)
+		return MAP_DATA.objectsDataName
+	end,
 }
