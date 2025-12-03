@@ -68,13 +68,15 @@ return {
         }
     end,
 
-    initPosition = function(self, x, y)
-        self.GROUND_LEVEL = y
+    initPosition = function(self, x, y, standing)
         self:moveTo(x, y)
-        self.nextState  = STATES.STAND_RIGHT
         self:activate()
-        self.velocity.x = 0
-        self.velocity.y = 0
+        if standing then
+            self.GROUND_LEVEL = y
+            self.nextState  = STATES.STAND_RIGHT
+            self.velocity.x = 0
+            self.velocity.y = 0
+        end
     end,
 
     draw = function(self)
