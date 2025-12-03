@@ -1,7 +1,7 @@
-local MAP_PATH    = relativePath("resources/zones/maps/scdPtp1Map.lua")
-local CHUNKS_PATH = relativePath("resources/zones/chunks/scdPtpChunks.lua")
+local MAP_PATH
+local CHUNKS_PATH
 
-local MAP_DATA    = dofile(MAP_PATH)
+local MAP_DATA
 local CHUNKS_IMG
 local CHUNKS_DATA
 local SOLIDS
@@ -10,6 +10,14 @@ return {
     showSolids = false,
 
     init = function(self, params)
+        self.map    = params.map
+        self.chunks = params.chunks
+
+        MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map    .. ".lua")
+        CHUNKS_PATH = relativePath("resources/zones/chunks/" .. self.chunks .. ".lua")
+
+        MAP_DATA    = dofile(MAP_PATH)
+
         self.pageWidth  = #MAP_DATA[1] * 256
         self.pageHeight = #MAP_DATA    * 256
         self.graphics   = params.GRAPHICS
@@ -83,7 +91,7 @@ return {
     end,
 
     refresh = function(self)
-        self:init({ GRAPHICS = self.graphics })
+        self:init { GRAPHICS = self.graphics, map = self.map, chunks = self.chunks }
     end,
 
     toggleShowSolids = function(self)
