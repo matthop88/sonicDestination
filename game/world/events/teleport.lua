@@ -12,7 +12,7 @@ local FADING_OUT = {
 	end, 
 } 
 
-local RESETTING  = { duration =  0, activate = function(self) WORLD:reset()    end, }
+local RESETTING  = { duration =  0, activate = function(self) WORLD:reset("scdPtp1Map", "scdPtpChunks") end, }
 local FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()   end, }
 local DONE       = {}
 
