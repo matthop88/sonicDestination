@@ -8,6 +8,7 @@ return {
         return {
             x        = object.x,
             y        = object.y,
+            object   = object,
             graphics = graphics,
             HITBOX   = nil,
             name     = object.obj,
