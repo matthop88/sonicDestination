@@ -12,14 +12,20 @@ local FADING_OUT = {
 	end, 
 } 
 
-local RESETTING  = { duration =  0, activate = function(self) WORLD:reset("scdPtp1Map") end, }
+local RESETTING  = { 
+	duration =  0, 
+	activate = function(self, params) 
+		WORLD:reset(params.map, params.x, params.y)
+	end,
+}
+
 local FADING_IN  = { duration = 60, activate = function(self) WORLD:fadeIn()            end, }
 local DONE       = {}
 
 local STAGES = STAGE_BUILDER:build { READY, FADING_OUT, RESETTING, FADING_IN, DONE  }
 
 return {
-	create = function(self, world)
+	create = function(self, world, params)
 		WORLD = world
 		return {
 			timer      = 0,
@@ -32,7 +38,7 @@ return {
 			nextStage = function(self)
 				self.timer = 0
 				STAGES:next()
-				STAGES:activateCurrent()
+				STAGES:activateCurrent(params)
 			end,
 
 			isComplete = function(self)
