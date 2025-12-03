@@ -36,7 +36,10 @@ return {
 				self:setAnimation("giantDissolving")
 				player:deactivate()
 				SOUND_MANAGER:play("giantRing")
-				GLOBALS:getWorld():teleport()
+				local map = self.object.destination.map
+				local x   = self.object.destination.coordinates.x
+				local y   = self.object.destination.coordinates.y
+				GLOBALS:getWorld():teleport(map, x, y)
 			end,
 		}
 	end,            
