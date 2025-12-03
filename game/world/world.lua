@@ -45,7 +45,7 @@ return {
         if not x then
             x, y = objectsMap.origin.x, objectsMap.origin.y
         end
-        GLOBALS:getPlayer():initPosition(x, y)
+        GLOBALS:getPlayer():initPosition(x, y, false)
         GRAPHICS:setX(math.min(0, -x + 200))
         GRAPHICS:setY(-y + 500)
 
