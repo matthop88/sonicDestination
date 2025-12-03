@@ -134,4 +134,8 @@ return {
         end
         table.insert(self.events, requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y }))
     end,
+
+    addPreexistingObject = function(self, object)
+        self.objects:add(object)
+    end,
 }
