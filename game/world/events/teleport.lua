@@ -16,6 +16,8 @@ local RESETTING  = {
 	duration =  0, 
 	activate = function(self, params) 
 		WORLD:reset(params.map, params.x, params.y)
+		params.giantRing:arriving(params.x, params.y)
+		WORLD:addPreexistingObject(params.giantRing)
 	end,
 }
 
