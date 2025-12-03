@@ -14,8 +14,6 @@ if __DEV_MODE == true then
     GRAPHICS = require("tools/lib/bufferedGraphics"):create(GRAPHICS, 1024, 768)
 end
 
-GRAPHICS:setY(-384)
-
 local WORLD     = requireRelative("world/world", { GRAPHICS = GRAPHICS })
 local SONIC     = requireRelative("sonic",       { GRAPHICS = GRAPHICS, WORLD = WORLD })
 
@@ -36,6 +34,8 @@ love.window.setTitle("Sonic Destination")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 PROP_LOADER:notifyOnChange(SONIC)
+
+WORLD:reset()
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
