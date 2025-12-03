@@ -40,12 +40,14 @@ return {
         return self
     end,
 
-    refreshObjectsMap = function(self)
+    refreshObjectsMap = function(self, x, y)
         local objectsMap = requireRelative("resources/zones/objects/" .. TERRAIN:getObjectsDataName())
-        ORIGIN = objectsMap.origin
-        GLOBALS:getPlayer():initPosition(ORIGIN.x, ORIGIN.y)
-        GRAPHICS:setX(math.min(0, -ORIGIN.x + 200))
-        GRAPHICS:setY(-ORIGIN.y + 500)
+        if not x then
+            x, y = objectsMap.origin.x, objectsMap.origin.y
+        end
+        GLOBALS:getPlayer():initPosition(x, y)
+        GRAPHICS:setX(math.min(0, -x + 200))
+        GRAPHICS:setY(-y + 500)
 
         self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
         for _, objectData in ipairs(objectsMap) do
@@ -53,11 +55,11 @@ return {
         end
     end,
 
-    reset = function(self, map)
+    reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
         end
-        self:refreshObjectsMap()
+        self:refreshObjectsMap(x, y)
     end,
 
     draw = function(self)
@@ -126,10 +128,10 @@ return {
     fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
     fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
 
-    teleport    = function(self)
+    teleport    = function(self, map, x, y)
         for _, evt in ipairs(self.events) do
             if evt:getName() == "teleport" then return end
         end
-        table.insert(self.events, requireRelative("world/events/teleport"):create(self))
+        table.insert(self.events, requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y }))
     end,
 }
