@@ -11,8 +11,8 @@ return {
 			return stage.duration and timer > stage.duration
 		end
 
-		stages.activateCurrent = function(self) 
-			if self:get().activate then self:get():activate() end
+		stages.activateCurrent = function(self, params) 
+			if self:get().activate then self:get():activate(params) end
 		end
 
 		return stages
