@@ -1,12 +1,10 @@
 local TILES = {
+	tiles = {},
+
     init = function(self, tilesImg)
-    	if not self.tilesImg then
-	    	self.tilesImg = tilesImg
-
-	        local tileCount = self:calculateTileCount()
-	        self:constructTiles(tileCount)
-	    end
-
+    	self.tilesImg = tilesImg
+	    self:constructTiles(self:calculateTileCount())
+	    
         return self
     end,
 
@@ -18,11 +16,12 @@ local TILES = {
     end,
 
     constructTiles = function(self, tileCount)
+    	self.tiles = {}
     	local x, y, baseX = 0, 0, 0
 
 		for i = 1, tileCount do
 			local quad = love.graphics.newQuad(x, y, 16, 16, self.tilesImg:getWidth(), self.tilesImg:getHeight())
-			table.insert(self, quad)
+			table.insert(self.tiles, quad)
 			
 			x, y, baseX = self:moveTileCursor(x, y, baseX)
 		end
@@ -38,7 +37,7 @@ local TILES = {
 	end,
 
     get = function(self, tileID)
-    	return self[tileID]
+    	return self.tiles[tileID]
     end,
 
     draw = function(self, x, y, tileID)
