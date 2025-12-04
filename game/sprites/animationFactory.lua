@@ -1,4 +1,5 @@
 local COLOR_PURE_WHITE = { 1, 1, 1 }
+local IMAGE_LOADER     = requireRelative("util/imageLoader")
 
 return {
     init   = function(self, params)
@@ -10,6 +11,7 @@ return {
         return ({
             graphics = self.GRAPHICS,
             repCount = 0,
+            name     = spriteDataName,
             
             init = function(self, spriteDataName)
                 self:initSpriteData()
@@ -22,8 +24,7 @@ return {
             initSpriteData  = function(self)
                 local spriteData = requireRelative("sprites/data/" .. spriteDataName)
                 self.data = spriteData.animations
-                self.image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. spriteData.imageName .. ".png"))
-                self.image:setFilter("nearest", "nearest")
+                self.image = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
             end,
                 
             initFrames = function(self)
@@ -85,7 +86,7 @@ return {
             end,
 
             isForeground = function(self)
-                return self.currentAnimation.foreground
+                return self.currentAnimation.foreground or self:getCurrentFrame().foreground
             end,
         
             getHitBox = function(self)
@@ -113,7 +114,14 @@ return {
             getGeneralX        = function(self, x, scaleX)  return x - (self.currentAnimation.offset.x * math.abs(scaleX)) end,
             getGeneralY        = function(self, y, scaleY)  return y - (self.currentAnimation.offset.y * math.abs(scaleY)) end,
                 
-            getCurrentFrameIndex = function(self)  return math.floor(self.currentFrameIndex)                     end,
+            getCurrentFrameIndex = function(self)
+                if math.floor(self.currentFrameIndex) > #self.currentAnimation then
+                    self.currentFrameIndex = 1
+                    -- XXX: The reason for this necessity is UNKNOWN
+                    --      but if this isn't done, game will crash when resetting world
+                end
+                return math.floor(self.currentFrameIndex)
+            end,
 
             setCurrentFrameIndex = function(self, frameIndex)
                 if     frameIndex < 1                      then frameIndex = #self.currentAnimation

@@ -3,8 +3,8 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
-
-local SANDBOX = require("tools/spriteSandbox/sandbox")
+local BACKGROUND_IMG
+local SANDBOX
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -12,6 +12,12 @@ local SANDBOX = require("tools/spriteSandbox/sandbox")
 
 love.window.setTitle("Sprite Sandbox")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+if __PARAMS["background"] then
+    BACKGROUND_IMG = require("tools/spriteSandbox/smartImageLoader"):loadImage(__PARAMS["background"])
+end
+
+local SANDBOX = require("tools/spriteSandbox/sandbox"):create { backgroundImage = BACKGROUND_IMG }
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --

@@ -5,8 +5,9 @@ return {
     destDegrees = 90,
     
     init = function(self, params)
-        self.GFX1 = params.GFX1
-        self.GFX2 = params.GFX2
+        self.GFX1     = params.GFX1
+        self.GFX2     = params.GFX2
+        self.callback = params.callback
 
         return self
     end,
@@ -36,5 +37,6 @@ return {
             elseif self.destDegrees == 60 then self.destDegrees = 42
             else                               self.destDegrees = 0   end
         end
+        if self.callback then self.callback(self.destDegrees) end
     end,
 }

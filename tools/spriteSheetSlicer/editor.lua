@@ -13,6 +13,8 @@ return {
         local offsetXField = TextField:create(x + 83, y + 449, 402, 42, "Offset X:", function(value) spriteRect.offset.x = value end)
         local offsetYField = TextField:create(x + 83, y + 504, 402, 42, "Offset Y:", function(value) spriteRect.offset.y = value end)
 
+        local TRANSPARENCY = 1.0
+        
         return {
             draw = function(self)
                 if isActive then
@@ -74,6 +76,7 @@ return {
                       or offsetYField:handleKeypressed(key)
                       or self:isInsideInnerRect(mx, my)     
                     then
+                        if key == "t" then TRANSPARENCY = 1.5 - TRANSPARENCY end
                         return true
                     end
                 end
@@ -92,7 +95,7 @@ return {
 
             drawSprite = function(self)
                 if image ~= nil then
-                    love.graphics.setColor(1, 1, 1)
+                    love.graphics.setColor(1, 1, 1, TRANSPARENCY)
                     love.graphics.draw(image, spriteRect.quad, x + 284 - (spriteRect.offset.x * scale),
                                                                y + 234 - (spriteRect.offset.y * scale), 0, scale, scale)
                 end

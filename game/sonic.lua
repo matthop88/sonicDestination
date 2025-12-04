@@ -4,9 +4,10 @@ local GRAPHICS
 
 local sonic1Sprite, sonic2Sprite
 
-local SOUND_MANAGER = requireRelative("sound/soundManager")
+local SOUND_MANAGER  = requireRelative("sound/soundManager")
 
-local JUMP_SOUND = "sonicJumping"
+local JUMP_SOUND     = "sonicJumping"
+local ringPanRight   = true
 
 return {
     ------------------------------------------------------------------
@@ -37,6 +38,11 @@ return {
     GROUND_LEVEL            = 940,
 
     HITBOX                  = nil,
+    ringCount               = 0,
+
+    frozen                  = false,
+    active                  = true,
+    airDrag                 = true,
 
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -54,8 +60,6 @@ return {
         STATES          = requireRelative("states/sonic/sonic", { SONIC = self })
         self.nextState  = STATES.STAND_RIGHT
 
-        self:moveTo(512, self.GROUND_LEVEL)
-
         return self
     end,
 
@@ -63,12 +67,24 @@ return {
         self.sensors = {
             requireRelative("collision/sensors/groundFront", { OWNER = self, WORLD = WORLD, GRAPHICS = graphics })
         }
+    end,
 
+    initPosition = function(self, x, y, standing)
+        self:moveTo(x, y)
+        self:activate()
+        if standing then
+            self.GROUND_LEVEL = y
+            self.nextState  = STATES.STAND_RIGHT
+            self.velocity.x = 0
+            self.velocity.y = 0
+        end
     end,
 
     draw = function(self)
-        self.sprite:draw(self:getX(), self:getY())
-        self:drawSensors()
+        if self.active then
+            self.sprite:draw(self:getX(), self:getY())
+            self:drawSensors()
+        end
     end,
 
     drawHitBox = function(self)
@@ -88,15 +104,19 @@ return {
     end,
 
     update = function(self, dt)
-        self.sprite:update(dt)
-        self:updateState(dt)
-        self:updateFrameRate(dt)
-        self:applyGravity(dt)
-        self:applyAirDrag(dt)
-        self:updatePosition(dt)
-        self:updateSensors(dt)
-        self:updateHitBox(dt)
-        self:checkCollisions()
+        if self.active then
+            self.sprite:update(dt)
+            if not self.frozen then
+                self:updateState(dt)
+                self:updateFrameRate(dt)
+                self:applyGravity(dt)
+                self:applyAirDrag(dt)
+                self:updatePosition(dt)
+            end
+            self:updateSensors(dt)
+            self:updateHitBox(dt)
+            self:checkCollisions()
+        end
     end,
 
     updateHitBox = function(self, dt)
@@ -147,11 +167,17 @@ return {
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
+    setScale      = function(self, scale)                       
+        self.sprite.scale.x = scale
+        self.sprite.scale.y = scale
+    end,
+
     startJump     = function(self)
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
             SOUND_MANAGER:play(JUMP_SOUND)
             self.sprite:setCurrentAnimation("jumping")
+            self.airDrag = true
         end
     end,
 
@@ -206,7 +232,7 @@ return {
     end,
 
     applyAirDrag = function(self, dt)
-        if self.velocity.y < 0 and self.velocity.y > -240 then
+        if self.airDrag and self.velocity.y < 0 and self.velocity.y > -240 then
             self.velocity.x = self.velocity.x - (self.velocity.x * self.AIR_DRAG_VALUE * dt)
         end
     end,
@@ -227,6 +253,30 @@ return {
     end,
 
     getWorld = function(self) return WORLD end,
+    
+    collectRings = function(self, ringCount)
+        if ringPanRight then SOUND_MANAGER:play("ringCollectR")
+        else                 SOUND_MANAGER:play("ringCollectL") end
+        ringPanRight = not ringPanRight
+        self.ringCount = self.ringCount + ringCount
+        print("Total Number of Rings:", self.ringCount)
+    end,
 
-    isPlayer = function(self) return true end,
+    isPlayer     = function(self) return true            end,
+    getRingCount = function(self) return self.ringCount  end,
+    freeze       = function(self) self.frozen  = true    end,
+    unfreeze     = function(self) self.frozen  = false   end,
+    deactivate   = function(self) self.active  = false   end,
+    activate     = function(self) self.active  = true    end,
+    airDragOff   = function(self) self.airDrag = false   end,
+
+    setStanding  = function(self)
+        if self:isFacingRight() then self:setState(STATES.STAND_RIGHT)
+        else                         self:setState(STATES.STAND_LEFT)  end
+    end,
+
+    setBraking   = function(self)
+        if self:isFacingRight() then self:setState(STATES.BRAKE_RIGHT)
+        else                         self:setState(STATES.BRAKE_LEFT)  end
+    end,
 }

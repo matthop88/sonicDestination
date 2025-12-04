@@ -36,11 +36,14 @@ else
             return { x = 0, y = -self.y, w = self:getScreenWidth(), h = self:getScreenHeight() }
         end,
 
+        calculateViewport = function(self)
+            return 0, -self.y, self:getScreenWidth(), self:getScreenHeight()
+        end,
+
         getX = function(self) return self.x end,
         getY = function(self) return self.y end,
             
         setX = function(self, x) self.x = x end,
         setY = function(self, y) self.y = y end,
-        
     }
 end

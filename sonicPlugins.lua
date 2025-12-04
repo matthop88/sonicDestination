@@ -24,6 +24,8 @@ local GRAVITY = {
 
 local SHOW_HITBOXES = false
 
+local SPLIT_SCREEN  = false
+
 return {
     init = function(self, params)
         self.SONIC      = params.SONIC
@@ -59,13 +61,25 @@ return {
         require("plugins/engine")
             :add("modKeyEnabler")
             :add("debugCmds",      {
-                onDebugOn  = function() printMessage("Debug Mode On") end,
-                onDebugOff = function() printMessage("Debug Mode Off") end,
+                onDebugOn  = function() 
+                    printMessage("Debug Mode On") 
+                end,
+                onDebugOff = function() 
+                    printMessage("Debug Mode Off") 
+                end,
                 cmds = { 
                     {   key = "s", fn = function() self.SONIC:toggleShowSensors()           end, },
                     {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
                     {   key = "U", fn = function() self.SONIC:moveTo(self.SONIC:getX(), 0)  end, },
                     {   key = "h", fn = function() SHOW_HITBOXES = not SHOW_HITBOXES        end, },
+                    {   key = "r", fn = function() self.SONIC:collectRings(10)              end, },
+                    {   key = "R", fn = function() self.SONIC:collectRings(-10)             end, },
+                    {   key = ">", fn = function() self.SONIC:moveTo(self.SONIC:getX() + 1000, self.SONIC:getY()) end, },
+                    {   key = "<", fn = function() self.SONIC:moveTo(self.SONIC:getX() - 1000, self.SONIC:getY()) end, },
+                    {   key = "#", fn = function() self.SONIC:getWorld():reset()            end, },
+                    {   key = "f", fn = function() self.SONIC:getWorld():fadeOut()          end, },
+                    {   key = "F", fn = function() self.SONIC:getWorld():fadeIn()           end, },
+                    {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
                 },
             })
             :add("grid3D",         { 
@@ -115,6 +129,7 @@ return {
             :add("cameraTracking", {
                 graphics        = self.GRAPHICS,
                 toggleCameraKey = "g",
+                vertical        = true,
                 positionFn      = function() return self.SONIC:getX(), self.SONIC:getY() end,
             })
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
@@ -135,11 +150,16 @@ return {
                     landKey      = nil,
                     zeroSpeedKey = nil,
                 },
+                printMessage = function(msg)
+                    if SPLIT_SCREEN then printMessage(msg) end
+                end,
+
                 accessorFnName = "getStateMachineViewer",
             })
             :add("splitScreen", {
-                GFX1 = self.GRAPHICS,
-                GFX2 = getStateMachineViewer():getGraphics(),
+                GFX1     = self.GRAPHICS,
+                GFX2     = getStateMachineViewer():getGraphics(),
+                callback = function(degrees) SPLIT_SCREEN = (degrees ~= 90) end,
             })
             :add("tweakAttributes", {
                 incAttributeKey = ">",

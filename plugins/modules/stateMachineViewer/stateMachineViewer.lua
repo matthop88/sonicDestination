@@ -21,7 +21,7 @@ return {
         WIDGET_FACTORY = require("plugins/modules/stateMachineViewer/widgetFactory"):init(GRID_SIZE, LABEL_FONT_SIZE, self.graphics, params.customKeys)
         WIDGETS        = require("plugins/modules/stateMachineViewer/widgets"):init(WIDGET_FACTORY, params.states)
 
-        printMessage   = printMessage or function(msg) print(msg) end
+        self.printMessage   = params.printMessage or printMessage or function(msg) print(msg) end
         self:refreshView()
         
         return self
@@ -106,7 +106,7 @@ return {
         if self.targetBox.scrollY then
             self.targetScrollY = self.targetBox.scrollY
         end
-        printMessage(widget.label)
+        self.printMessage(widget.label)
     end,
 
     handleKeyreleased = function(self, key)

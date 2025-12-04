@@ -32,6 +32,9 @@ return {
 
     update = function(self, dt)
         SONIC.velocity.x = math.min(0, SONIC.velocity.x + (SONIC.BRAKING_ACCELERATION * dt))
-        if SONIC.velocity.x == 0 then SONIC:setState(STATES.ACCELERATE_RIGHT) end
+        if SONIC.velocity.x == 0 then 
+            if love.keyboard.isDown("right") then SONIC:setState(STATES.ACCELERATE_RIGHT) 
+            else                                  SONIC:setState(STATES.STAND_LEFT)    end
+        end
     end,
 }

@@ -91,11 +91,13 @@ return {
 			end,
 
 			update = function(self, dt)
-				self.currentFrame:update(dt)
-				if self.currentFrame:isRolledOver() then
-					self.repCount = self.repCount + 1
-					if self.currentAnimation.reps and self.repCount >= self.currentAnimation.reps then
-						self.deleted = true
+				if not self.frozen then
+					self.currentFrame:update(dt)
+					if self.currentFrame:isRolledOver() then
+						self.repCount = self.repCount + 1
+						if self.currentAnimation.reps and self.repCount >= self.currentAnimation.reps then
+							self.deleted = true
+						end
 					end
 				end
 			end,
@@ -129,8 +131,9 @@ return {
 				end
 				self:updateAnimation()
 			end,
-				
 
+			toggleFreeze = function(self) self.frozen = not self.frozen end,
+				
 		}):init()
 	end,
 }

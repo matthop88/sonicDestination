@@ -1,7 +1,7 @@
-local MAP_PATH    = relativePath("resources/zones/maps/ghz1Map.lua")
-local CHUNKS_PATH = relativePath("resources/zones/chunks/ghzChunks.lua")
+local MAP_PATH
+local CHUNKS_PATH
 
-local MAP_DATA    = dofile(MAP_PATH)
+local MAP_DATA
 local CHUNKS_IMG
 local CHUNKS_DATA
 local SOLIDS
@@ -10,6 +10,13 @@ return {
     showSolids = false,
 
     init = function(self, params)
+        self.map    = params.map
+        
+        MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map                .. ".lua")
+        MAP_DATA    = dofile(MAP_PATH)
+
+        CHUNKS_PATH = relativePath("resources/zones/chunks/" .. MAP_DATA.chunksDataName .. ".lua")
+
         self.pageWidth  = #MAP_DATA[1] * 256
         self.pageHeight = #MAP_DATA    * 256
         self.graphics   = params.GRAPHICS
@@ -27,9 +34,8 @@ return {
     end,
 
 	drawBackground = function(self)
-        local viewportRect = self.graphics:calculateViewportRect()
-		self.graphics:setColor(0, 0, 0)
-		self.graphics:rectangle("fill", viewportRect.x, viewportRect.y, viewportRect.w, viewportRect.h)
+        self.graphics:setColor(0, 0.57, 1.0)
+		self.graphics:rectangle("fill", self.graphics:calculateViewport())
 	end,
 
 	drawTerrain = function(self)
@@ -84,10 +90,14 @@ return {
     end,
 
     refresh = function(self)
-        self:init({ GRAPHICS = self.graphics })
+        self:init { GRAPHICS = self.graphics, map = self.map }
     end,
 
     toggleShowSolids = function(self)
         self.showSolids = not self.showSolids
     end,
+
+	getObjectsDataName = function(self)
+		return MAP_DATA.objectsDataName
+	end,
 }

@@ -1,20 +1,26 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
-local ringPanRight  = true
 
 return {
-    create = function(self, spriteName, x, y, graphics)
+    create = function(self, object, graphics)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
-        local SPRITE        = spriteFactory:create("objects/" .. spriteName)
+        local SPRITE        = spriteFactory:create("objects/" .. object.obj)
 
         return {
-            x        = x,
-            y        = y,
+            x        = object.x,
+            y        = object.y,
+            object   = object,
             graphics = graphics,
             HITBOX   = nil,
-            name     = spriteName,
+            name     = object.obj,
             deleted  = false,
+            active   = not object.inactive,
+            sprite   = SPRITE,
 
-            draw = function(self) SPRITE:draw(self.x, self.y) end,
+            draw = function(self) 
+                if self.active then
+                    self.sprite:draw(self.x, self.y) 
+                end
+            end,
 
             drawHitBox = function(self)
                 local hitBox = self:getHitBox()
@@ -22,15 +28,19 @@ return {
             end,
 
             getHitBox = function(self)
-                if     SPRITE:getHitBox() == nil then self.HITBOX = nil
-                elseif self.HITBOX        == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(SPRITE:getHitBox()) end
-                return self.HITBOX
+                if self.active then
+                    if     self.sprite:getHitBox() == nil then self.HITBOX = nil
+                    elseif self.HITBOX             == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox()) end
+                    return self.HITBOX
+                end
             end,
 
             update = function(self, dt)
-                SPRITE:update(dt)
-                self:updateHitBox(dt)
-                self.deleted = SPRITE.deleted
+                if self.active then
+                    self.sprite:update(dt)
+                    self:updateHitBox(dt)
+                    self.deleted = self.sprite.deleted
+                end
             end,
 
             updateHitBox = function(self, dt)
@@ -38,17 +48,12 @@ return {
                 if hitBox then hitBox:update(self.x, self.y) end
             end,
 
-            setAnimation = function(self, name) SPRITE:setCurrentAnimation(name) end,
-            isForeground = function(self)       return SPRITE:isForeground()     end,
-            isPlayer     = function(self)       return false                     end,
+            setAnimation = function(self, name) self.sprite:setCurrentAnimation(name) end,
+            isForeground = function(self)       return self.sprite:isForeground()     end,
+            isPlayer     = function(self)       return false                          end,
 
             onTerminalCollisionWithPlayer = function(self, player)
-                if self.name == "ring" then
-                    self:setAnimation("dissolving")
-                    if ringPanRight then SOUND_MANAGER:play("ringCollectR")
-                    else                 SOUND_MANAGER:play("ringCollectL") end
-                    ringPanRight = not ringPanRight
-                end
+                -- do nothing
             end,
         }
     end,

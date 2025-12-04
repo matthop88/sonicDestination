@@ -1,22 +1,65 @@
 local GRAPHICS
 local TERRAIN
 local WORKSPACE
+local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
+local ORIGIN
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
 
-    objects = requireRelative("util/dataStructures/linkedList"):create(),  
-    
+    objects = nil,
+
+    events  = {},
+
+    fadeLayer = { 
+        color    = { r = 1, g = 1, b = 1 }, 
+        alpha    = 0,
+        speed    = 1,
+        velocity = 0,
+
+        draw = function(self)
+            GRAPHICS:setColor(self.color.r, self.color.g, self.color.b, self.alpha)
+            GRAPHICS:rectangle("fill", GRAPHICS:calculateViewport())
+        end,
+
+        update = function(self, dt)
+            self.alpha = self.alpha + (self.velocity * dt)
+            if     self.alpha > 1 then self.alpha = 1
+            elseif self.alpha < 0 then self.alpha = 0 end
+        end,
+
+        fadeOut = function(self) self.velocity =  self.speed end,
+        fadeIn  = function(self) self.velocity = -self.speed end,
+    },
+
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
-        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS })
+        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "ghz1Map", chunks = "ghzChunks" })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
-        local ringMap = requireRelative("resources/zones/maps/ringMap")
-        for _, ring in ipairs(ringMap) do
-            self.objects:add(requireRelative("world/gameObjects/object"):create("ring", ring.x, ring.y, GRAPHICS))
-        end
         return self
+    end,
+
+    refreshObjectsMap = function(self, x, y)
+        local objectsMap = requireRelative("resources/zones/objects/" .. TERRAIN:getObjectsDataName())
+        if not x then
+            x, y = objectsMap.origin.x, objectsMap.origin.y
+        end
+        GLOBALS:getPlayer():initPosition(x, y, false)
+        GRAPHICS:setX(math.min(0, -x + 200))
+        GRAPHICS:setY(-y + 200)
+
+        self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+        for _, objectData in ipairs(objectsMap) do
+            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS))
+        end
+    end,
+
+    reset = function(self, map, x, y)
+        if map then
+            TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
+        end
+        self:refreshObjectsMap(x, y)
     end,
 
     draw = function(self)
@@ -35,6 +78,7 @@ return {
             local object = self.objects:getNext()
             if object:isForeground() then object:draw(SHOW_HITBOXES) end
         end
+        self.fadeLayer:draw()
     end,
 
     drawHitBoxes = function(self)
@@ -47,10 +91,18 @@ return {
     update = function(self, dt)
         self.objects:head()
         while not self.objects:isEnd() do
-            local sprite = self.objects:get()
-            sprite:update(dt)
-            if sprite.deleted then self.objects:remove()
+            local object = self.objects:get()
+            object:update(dt)
+            if object.deleted then self.objects:remove()
             else                   self.objects:next()   end
+        end
+        self.fadeLayer:update(dt)
+        self:updateEvents(dt)
+    end,
+
+    updateEvents = function(self, dt)
+        for _, evt in ipairs(self.events) do
+            evt:update(dt)
         end
     end,
 
@@ -72,4 +124,26 @@ return {
     getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
 
     toggleShowSolids   = function(self) TERRAIN:toggleShowSolids()        end,
+
+    fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
+    fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
+
+    teleport    = function(self, map, x, y, giantRing, player)
+        local teleportObject = requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing, player = player })
+        for n, evt in ipairs(self.events) do
+            if evt:getName() == "teleport" then 
+                if evt:isComplete() then 
+                    self.events[n] = teleportObject
+                    return 
+                else
+                    return
+                end
+            end
+        end
+        table.insert(self.events, teleportObject)
+    end,
+
+    addPreexistingObject = function(self, object)
+        self.objects:add(object)
+    end,
 }
