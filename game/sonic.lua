@@ -42,6 +42,7 @@ return {
 
     frozen                  = false,
     active                  = true,
+    airDrag                 = true,
 
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
@@ -105,9 +106,9 @@ return {
     update = function(self, dt)
         if self.active then
             self.sprite:update(dt)
-            self:updateState(dt)
-            self:updateFrameRate(dt)
             if not self.frozen then
+                self:updateState(dt)
+                self:updateFrameRate(dt)
                 self:applyGravity(dt)
                 self:applyAirDrag(dt)
                 self:updatePosition(dt)
@@ -166,11 +167,17 @@ return {
     faceRight     = function(self) if self:isFacingLeft()  then self.sprite:flipX() end end,
     faceLeft      = function(self) if self:isFacingRight() then self.sprite:flipX() end end,
 
+    setScale      = function(self, scale)                       
+        self.sprite.scale.x = scale
+        self.sprite.scale.y = scale
+    end,
+
     startJump     = function(self)
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
             SOUND_MANAGER:play(JUMP_SOUND)
             self.sprite:setCurrentAnimation("jumping")
+            self.airDrag = true
         end
     end,
 
@@ -225,7 +232,7 @@ return {
     end,
 
     applyAirDrag = function(self, dt)
-        if self.velocity.y < 0 and self.velocity.y > -240 then
+        if self.airDrag and self.velocity.y < 0 and self.velocity.y > -240 then
             self.velocity.x = self.velocity.x - (self.velocity.x * self.AIR_DRAG_VALUE * dt)
         end
     end,
@@ -255,10 +262,21 @@ return {
         print("Total Number of Rings:", self.ringCount)
     end,
 
-    isPlayer     = function(self) return true           end,
-    getRingCount = function(self) return self.ringCount end,
-    freeze       = function(self) self.frozen = true    end,
-    unfreeze     = function(self) self.frozen = false   end,
-    deactivate   = function(self) self.active = false   end,
-    activate     = function(self) self.active = true    end,
+    isPlayer     = function(self) return true            end,
+    getRingCount = function(self) return self.ringCount  end,
+    freeze       = function(self) self.frozen  = true    end,
+    unfreeze     = function(self) self.frozen  = false   end,
+    deactivate   = function(self) self.active  = false   end,
+    activate     = function(self) self.active  = true    end,
+    airDragOff   = function(self) self.airDrag = false   end,
+
+    setStanding  = function(self)
+        if self:isFacingRight() then self:setState(STATES.STAND_RIGHT)
+        else                         self:setState(STATES.STAND_LEFT)  end
+    end,
+
+    setBraking   = function(self)
+        if self:isFacingRight() then self:setState(STATES.BRAKE_RIGHT)
+        else                         self:setState(STATES.BRAKE_LEFT)  end
+    end,
 }
