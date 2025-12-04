@@ -62,11 +62,9 @@ return {
             :add("modKeyEnabler")
             :add("debugCmds",      {
                 onDebugOn  = function() 
-                    love.mouse.setVisible(true)
                     printMessage("Debug Mode On") 
                 end,
                 onDebugOff = function() 
-                    love.mouse.setVisible(false)
                     printMessage("Debug Mode Off") 
                 end,
                 cmds = { 
