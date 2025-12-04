@@ -24,6 +24,8 @@ local GRAVITY = {
 
 local SHOW_HITBOXES = false
 
+local SPLIT_SCREEN  = false
+
 return {
     init = function(self, params)
         self.SONIC      = params.SONIC
@@ -150,11 +152,16 @@ return {
                     landKey      = nil,
                     zeroSpeedKey = nil,
                 },
+                printMessage = function(msg)
+                    if SPLIT_SCREEN then printMessage(msg) end
+                end,
+
                 accessorFnName = "getStateMachineViewer",
             })
             :add("splitScreen", {
-                GFX1 = self.GRAPHICS,
-                GFX2 = getStateMachineViewer():getGraphics(),
+                GFX1     = self.GRAPHICS,
+                GFX2     = getStateMachineViewer():getGraphics(),
+                callback = function(degrees) SPLIT_SCREEN = (degrees ~= 90) end,
             })
             :add("tweakAttributes", {
                 incAttributeKey = ">",
