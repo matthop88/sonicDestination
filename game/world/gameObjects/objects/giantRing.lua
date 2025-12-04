@@ -24,7 +24,7 @@ return {
             	local active
             	if     self.isDeparting then active = false
             	elseif self.isArriving  then active = true
-            	else                         active = GLOBALS:getPlayer():getRingCount() >= 50 end
+            	else                         active = GLOBALS:getPlayer():getRingCount() >= self:getRingThreshold() end
 				
 				if   active then self.scale = math.min(1,   self.scale + (dt * self.speed))
 				else             self.scale = math.max(0.1, self.scale - (dt * self.speed)) end
@@ -39,6 +39,10 @@ return {
 					self.player:setBraking()
 					self.player.airDrag = true
 				end
+			end,
+
+			getRingThreshold = function(self)
+				return self.object.threshold or 50
 			end,
 
 			drawHitBox = function(self)
