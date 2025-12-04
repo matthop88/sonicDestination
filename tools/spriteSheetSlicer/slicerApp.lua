@@ -282,6 +282,7 @@ PLUGINS = require("plugins/engine")
             "",
             { "In Editor, right / left arrow keys:", "Iterate through frames"      },
             { "In Editor, up / down arrow keys:",    "Iterate through animations"  },
+            { "In Editor, pressing 't':",            "Toggle Sprite Transparency"  },  
             { "On offset fields, up/down arrows:",   "Modify Sprite offsets"       },
             "",
             { "Option-A:",                           "Show Animation in real time" },
