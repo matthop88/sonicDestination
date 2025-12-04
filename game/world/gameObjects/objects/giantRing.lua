@@ -53,10 +53,20 @@ return {
 					self:setAnimation("giantDissolving")
 					SOUND_MANAGER:play("giantRing")
 					player:airDragOff()
-					local map = self.object.destination.map
-					local x   = self.object.destination.coordinates.x
-					local y   = self.object.destination.coordinates.y
+					local destination = self:getDestination()
+					local map = destination.map
+					local x   = destination.coordinates.x
+					local y   = destination.coordinates.y
 					GLOBALS:getWorld():teleport(map, x, y, self, player)
+				end
+			end,
+
+			getDestination = function(self)
+				local destination = self.object.destination
+				if #destination > 0 then
+					return destination[love.math.random(1, #destination)]
+				else
+					return destination
 				end
 			end,
 
