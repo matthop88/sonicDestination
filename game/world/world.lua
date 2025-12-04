@@ -47,7 +47,7 @@ return {
         end
         GLOBALS:getPlayer():initPosition(x, y, false)
         GRAPHICS:setX(math.min(0, -x + 200))
-        GRAPHICS:setY(-y + 500)
+        GRAPHICS:setY(-y + 200)
 
         self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
         for _, objectData in ipairs(objectsMap) do
@@ -128,11 +128,19 @@ return {
     fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
     fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
 
-    teleport    = function(self, map, x, y, giantRing)
-        for _, evt in ipairs(self.events) do
-            if evt:getName() == "teleport" then return end
+    teleport    = function(self, map, x, y, giantRing, player)
+        local teleportObject = requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing, player = player })
+        for n, evt in ipairs(self.events) do
+            if evt:getName() == "teleport" then 
+                if evt:isComplete() then 
+                    self.events[n] = teleportObject
+                    return 
+                else
+                    return
+                end
+            end
         end
-        table.insert(self.events, requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing }))
+        table.insert(self.events, teleportObject)
     end,
 
     addPreexistingObject = function(self, object)
