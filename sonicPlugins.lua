@@ -59,8 +59,14 @@ return {
         require("plugins/engine")
             :add("modKeyEnabler")
             :add("debugCmds",      {
-                onDebugOn  = function() printMessage("Debug Mode On") end,
-                onDebugOff = function() printMessage("Debug Mode Off") end,
+                onDebugOn  = function() 
+                    love.mouse.setVisible(true)
+                    printMessage("Debug Mode On") 
+                end,
+                onDebugOff = function() 
+                    love.mouse.setVisible(false)
+                    printMessage("Debug Mode Off") 
+                end,
                 cmds = { 
                     {   key = "s", fn = function() self.SONIC:toggleShowSensors()           end, },
                     {   key = "S", fn = function() self.SONIC:getWorld():toggleShowSolids() end, },
