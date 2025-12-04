@@ -86,7 +86,7 @@ return {
             end,
 
             isForeground = function(self)
-                return self.currentAnimation.foreground
+                return self.currentAnimation.foreground or self:getCurrentFrame().foreground
             end,
         
             getHitBox = function(self)
