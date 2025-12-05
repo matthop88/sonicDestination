@@ -1,18 +1,18 @@
 
 return {
-    imagePath = "resources/images/spriteSheets/sonic1Badniks.png",
+    imagePath = "resources/images/spriteSheets/sonic1BadniksTransparent.png",
 
     MARGIN_BG_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 }, 
-    SPRITE_BG_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 },
+    SPRITE_BG_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 },
 
     animations  = {
         motobugRoving = { fps = 4,
             rect    = { x = 174,  y = 276, w = 103, h = 68 },
             sprites = {
                 { x = 174, y = 276, w = 47, h = 29, offset = { x = 24, y = 14 }, },
-				{ x = 229, y = 276, w = 48, h = 29, offset = { x = 24, y = 14 }, },
+				{ x = 229, y = 276, w = 48, h = 29, offset = { x = 25, y = 14 }, },
 				{ x = 174, y = 316, w = 47, h = 28, offset = { x = 24, y = 14 }, },
-				{ x = 229, y = 316, w = 48, h = 28, offset = { x = 24, y = 14 }, },
+				{ x = 229, y = 316, w = 48, h = 28, offset = { x = 25, y = 14 }, },
             },
         },
         motobugPutt = { fps = 4,
