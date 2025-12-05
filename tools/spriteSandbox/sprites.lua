@@ -251,4 +251,8 @@ return ({
         if self.selectedSprite then self.selectedSprite:flipX() end
     end,
 
+    flipCurrentSpriteX = function(self)
+        if self.currentSprite then self.currentSprite:flipX() end
+    end,
+
 }):init()
