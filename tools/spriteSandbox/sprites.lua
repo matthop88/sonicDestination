@@ -191,7 +191,9 @@ return ({
     end,
 
     placeCurrentSprite = function(self, GRAFX)
-        self.sprites:add(SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY()))
+        local newSprite = SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY())
+        if self.currentSprite.xScale < 0 then newSprite:flipX() end
+        self.sprites:add(newSprite))
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
         self:initCurrentSprite(math.floor(px), math.floor(py))
