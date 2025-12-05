@@ -196,7 +196,7 @@ return ({
         self.sprites:add(newSprite))
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-        self:initCurrentSprite(math.floor(px), math.floor(py))
+        self:initCurrentSprite(math.floor(px), math.floor(py)
     end,
 
     shiftSelectedSprite = function(self, key)
