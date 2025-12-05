@@ -28,7 +28,18 @@ return ({
 
     create = function(self, x, y)
     	local spriteInfo = self.spriteList[self.index]
-    	return require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y)
+    	if spriteInfo.name == "motobug" then return self:createMotobug(x, y)
+    	else 
+    		return require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y)
+    	end
+    end,
+
+    createMotobug = function(self, x, y)
+    	local motobugSprite = require("tools/spriteSandbox/sprite"):create("objects/motobug", x, y)
+    	local puffSprite    = require("tools/spriteSandbox/sprite"):create("objects/motobug", x, y)
+    	puffSprite:advanceAnimation()
+    	local sprites = { motobugSprite, puffSprite }
+    	return require("tools/spriteSandbox/complexSprite"):create(sprites, x, y, 40, 28, { x = 20, y = 14 })
     end,
 
     next = function(self)
