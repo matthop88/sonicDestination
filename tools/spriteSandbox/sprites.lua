@@ -126,7 +126,8 @@ return ({
 
     updateCurrentSprite = function(self, dt, px, py)
         if self.currentSprite and not self.selectedSprite then
-            self.currentSprite.x, self.currentSprite.y = px, py
+            self.currentSprite:setX(px) 
+            self.currentSprite:setY(py)
             self.currentSprite:update(dt)
         end
     end,
@@ -134,8 +135,8 @@ return ({
     updateHeldSprite = function(self, dt, px, py)
         if self.heldSprite then
             local sprite, dx, dy = self.heldSprite.sprite, self.heldSprite.dx, self.heldSprite.dy
-            sprite.x = math.floor(px + dx)
-            sprite.y = math.floor(py + dy)
+            sprite:setX(math.floor(px + dx))
+            sprite:setY(math.floor(py + dy))
         end
     end,
 
@@ -202,10 +203,10 @@ return ({
     shiftSelectedSprite = function(self, key)
         if self.selectedSprite then
             local sprite = self.selectedSprite
-            if     key == "shiftleft"  then sprite.x = sprite.x - 1
-            elseif key == "shiftright" then sprite.x = sprite.x + 1
-            elseif key == "shiftup"    then sprite.y = sprite.y - 1
-            elseif key == "shiftdown"  then sprite.y = sprite.y + 1 end
+            if     key == "shiftleft"  then sprite:setX(sprite.x - 1)
+            elseif key == "shiftright" then sprite:setX(sprite.x + 1)
+            elseif key == "shiftup"    then sprite:setY(sprite.y - 1)
+            elseif key == "shiftdown"  then sprite:setY(sprite.y + 1) end
         end
     end,
 
