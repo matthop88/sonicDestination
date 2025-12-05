@@ -49,6 +49,7 @@ return {
 			id       = SPRITE_ID,
 			repCount = 0,
 			visible  = true,
+			xScale   = 1,
 
 			init = function(self)
 				self.animations       = data.animations
@@ -74,7 +75,7 @@ return {
 				local frame = self.currentFrame:get()
 				
 				GRAFX:setColor(1, 1, 1)
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
+				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, self.xScale, 1)
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
@@ -132,7 +133,8 @@ return {
 				self:updateAnimation()
 			end,
 
-			toggleFreeze = function(self) self.frozen = not self.frozen end,
+			toggleFreeze = function(self) self.frozen = not self.frozen  end,
+			flipX        = function(self) self.xScale = self.xScale * -1 end,
 				
 		}):init()
 	end,
