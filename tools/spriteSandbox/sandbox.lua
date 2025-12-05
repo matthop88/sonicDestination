@@ -76,6 +76,8 @@ return {
                     else                        self.sprites:regressSelectedSprite()   end
                 elseif key == "space" then
                     if self.mode == SELECT then self.sprites:toggleFreeze()            end
+                elseif key == "x"     then
+                    if self.mode == SELECT then self.sprites:flipSelectedSpriteX()     end
                 end
             end,
 
