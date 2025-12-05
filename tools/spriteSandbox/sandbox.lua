@@ -77,7 +77,8 @@ return {
                 elseif key == "space" then
                     if self.mode == SELECT then self.sprites:toggleFreeze()            end
                 elseif key == "x"     then
-                    if self.mode == SELECT then self.sprites:flipSelectedSpriteX()     end
+                    if self.mode == SPRITE then self.sprites:flipCurrentSpriteX()
+                    else                        self.sprites:flipSelectedSpriteX()     end
                 end
             end,
 
