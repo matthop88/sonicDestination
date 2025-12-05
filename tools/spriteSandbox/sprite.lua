@@ -71,6 +71,9 @@ return {
 			getW  = function(self) return self.currentAnimation.w end,
 			getH  = function(self) return self.currentAnimation.h end,
 
+			setX  = function(self, x)     self.x = x              end,
+			setY  = function(self, y)     self.y = y              end,
+			
 			draw  = function(self, GRAFX)
 				local frame = self.currentFrame:get()
 				
