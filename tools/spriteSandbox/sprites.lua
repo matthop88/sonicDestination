@@ -247,4 +247,8 @@ return ({
         if self.selectedSprite then self.selectedSprite:toggleFreeze() end
     end,
 
+    flipSelectedSpriteX = function(self)
+        if self.selectedSprite then self.selectedSprite:flipX() end
+    end,
+
 }):init()
