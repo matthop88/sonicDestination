@@ -193,10 +193,10 @@ return ({
     placeCurrentSprite = function(self, GRAFX)
         local newSprite = SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY())
         if self.currentSprite.xScale < 0 then newSprite:flipX() end
-        self.sprites:add(newSprite))
+        self.sprites:add(newSprite)
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-        self:initCurrentSprite(math.floor(px), math.floor(py)
+        self:initCurrentSprite(math.floor(px), math.floor(py))
     end,
 
     shiftSelectedSprite = function(self, key)
