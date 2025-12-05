@@ -60,13 +60,21 @@ return {
     end,
 
     findEnclosingRect = function(self, imageX, imageY, whereFn)
+        local smallestRect = nil
+        local smallestArea = 250000
         for _, rect in self:elements() do
             if  imageX >= rect.x and imageX <= rect.x + rect.w - 1
             and imageY >= rect.y and imageY <= rect.y + rect.h - 1 then
                 if not whereFn or whereFn(rect) then
-                    return rect
+                    local area = rect.w * rect.h
+                    if area < smallestArea then
+                        smallestArea = area
+                        smallestRect = rect
+                    end
                 end
             end
         end
+
+        return smallestRect
     end,
 }
