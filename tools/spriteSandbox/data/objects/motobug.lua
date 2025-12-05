@@ -2,12 +2,12 @@
 return {
     imageName = "sonic1BadniksTransparent",
     animations  = {
-        motobugRoving = { fps = 4, isDefault = true, offset = { x = 24, y = 14 }, w = 48, h = 28,
+        motobugRoving = { fps = 4, isDefault = true, offset = { x = 20, y = 14 }, w = 40, h = 28,
             ---------------------------------------------------------------------------------------------------
-            { x = 174, y = 276, w = 47, h = 29, offset = { x = 24, y = 14 }, },
-			{ x = 229, y = 276, w = 48, h = 29, offset = { x = 25, y = 14 }, },
-			{ x = 174, y = 316, w = 47, h = 28, offset = { x = 24, y = 14 }, },
-			{ x = 229, y = 316, w = 48, h = 28, offset = { x = 25, y = 14 }, },
+            { x = 174, y = 276, w = 39, h = 29, offset = { x = 20, y = 14 }, },
+			{ x = 229, y = 276, w = 40, h = 29, offset = { x = 21, y = 14 }, },
+			{ x = 174, y = 316, w = 39, h = 28, offset = { x = 20, y = 14 }, },
+			{ x = 229, y = 316, w = 40, h = 28, offset = { x = 21, y = 14 }, },
         },
         motobugPutt = { fps = 4, offset = { x = 4, y = 4 }, w = 8, h = 8,
             { x = 287, y = 277, w =  4, h =  4, offset = { x =  2, y =  2 }, },
