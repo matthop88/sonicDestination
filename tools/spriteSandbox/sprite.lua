@@ -75,13 +75,13 @@ return {
 				local frame = self.currentFrame:get()
 				
 				GRAFX:setColor(1, 1, 1)
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, self.xScale, 1)
+				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - (frame.offset.x * self.xScale), self.y - frame.offset.y, 0, self.xScale, 1)
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
 				local frame = self.currentFrame:getFirst()
 
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX), y - (frame.offset.y * sY), 0, sX, sY)
+				GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX * self.xScale), y - (frame.offset.y * sY), 0, sX * self.xScale, sY)
 			end,
 
 			isInside = function(self, px, py)
