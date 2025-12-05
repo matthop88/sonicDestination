@@ -122,7 +122,7 @@ return {
 
 			isPlayer = function(self) return IS_PLAYER end,
 
-			isForeground = function(self) return self.currentAnimation.foreground end,
+			isForeground = function(self) return self.currentAnimation.foreground or self.currentFrame:isForeground() end,
 			
 			regressAnimation = function(self)
 				self.animationList.index = self.animationList.index - 1
