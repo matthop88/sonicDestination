@@ -25,7 +25,9 @@ return {
 	enhanceWithQuads = function(self, animations, sheetImage)
 		for _, animation in pairs(animations) do
 			for _, frame in ipairs(animation) do
-				frame.QUAD = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h, sheetImage:getWidth(), sheetImage:getHeight())
+				if frame.x then
+					frame.QUAD = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h, sheetImage:getWidth(), sheetImage:getHeight())
+				end
 			end
 		end
 	end,
@@ -76,15 +78,17 @@ return {
 			
 			draw  = function(self, GRAFX)
 				local frame = self.currentFrame:get()
-				
-				GRAFX:setColor(1, 1, 1)
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - (frame.offset.x * self.xScale), self.y - frame.offset.y, 0, self.xScale, 1)
+				if frame.QUAD then
+					GRAFX:setColor(1, 1, 1)
+					GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - (frame.offset.x * self.xScale), self.y - frame.offset.y, 0, self.xScale, 1)
+				end
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
 				local frame = self.currentFrame:getFirst()
-
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX * self.xScale), y - (frame.offset.y * sY), 0, sX * self.xScale, sY)
+				if frame.QUAD then
+					GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX * self.xScale), y - (frame.offset.y * sY), 0, sX * self.xScale, sY)
+				end
 			end,
 
 			isInside = function(self, px, py)
