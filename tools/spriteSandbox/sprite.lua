@@ -1,6 +1,14 @@
 local SPRITE_ID = 0
 
 return {
+	createAnimations = function(self, animationData)
+		local animationObjects = {}
+		for name, animDataElement in pairs(animationData) do
+			animationObjects[name] = require("tools/spriteSandbox/animation"):create(animDataElement)
+		end
+		return animationObjects
+	end,
+
 	createAnimationList = function(self, animations)
 		local animationList = {}
 		animationList.index = 1
@@ -37,9 +45,10 @@ return {
 		local SHEET_IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
 		SHEET_IMAGE:setFilter("nearest", "nearest")
 
-		local animationName, currentAnimation = self:getDefaultAnimation(data.animations)
-		local animationList                   = self:createAnimationList(data.animations)
-		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
+		local animations = self:createAnimations(data.animations)
+		local animationName, currentAnimation = self:getDefaultAnimation(animations)
+		local animationList                   = self:createAnimationList(animations)
+		self:enhanceWithQuads(animations, SHEET_IMAGE)
 
 		if not noBumpID then
 			SPRITE_ID = SPRITE_ID + 1
@@ -54,7 +63,7 @@ return {
 			xScale   = 1,
 
 			init = function(self)
-				self.animations       = data.animations
+				self.animations       = animations
 				self.currentAnimation = currentAnimation
 				self.animationList    = animationList
 				local syncName = nil
