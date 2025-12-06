@@ -13,8 +13,10 @@ return ({
 		local directory = "tools/spriteSandbox/data/objects"
 		local directoryItems = love.filesystem.getDirectoryItems(directory)
     	for _, v in ipairs(directoryItems) do
-        	local fileName = string.sub(v, 1, -5)
-        	table.insert(self.spriteList, { name = fileName, sprite = nil })
+        	if string.sub(v, -3, -1) == "lua" then
+                local fileName = string.sub(v, 1, -5)
+                table.insert(self.spriteList, { name = fileName, sprite = nil })
+            end
         end
     end,
 
@@ -28,7 +30,7 @@ return ({
 
     create = function(self, x, y)
     	local spriteInfo = self.spriteList[self.index]
-    	if spriteInfo.name == "motobug" then return self:createMotobug(x, y)
+        if spriteInfo.name == "motobug" then return self:createMotobug(x, y)
     	else 
     		return require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y)
     	end
