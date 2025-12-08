@@ -32,16 +32,6 @@ return {
 		return animationName, animations[animationName]
 	end,
 
-	enhanceWithQuads = function(self, animations, sheetImage)
-		for _, animation in pairs(animations) do
-			for _, frame in ipairs(animation:frames()) do
-				if frame.x then
-					frame.QUAD = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h, sheetImage:getWidth(), sheetImage:getHeight())
-				end
-			end
-		end
-	end,
-
 	create = function(self, path, x, y, noBumpID)
 		local data        = require("tools/spriteSandbox/data/" .. path)
 		local SHEET_IMAGE = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
@@ -49,8 +39,7 @@ return {
 		local animations = self:createAnimations(data.animations, SHEET_IMAGE)
 		local animationName, currentAnimation = self:getDefaultAnimation(animations)
 		local animationList                   = self:createAnimationList(animations)
-		self:enhanceWithQuads(animations, SHEET_IMAGE)
-
+		
 		if not noBumpID then
 			SPRITE_ID = SPRITE_ID + 1
 		end
