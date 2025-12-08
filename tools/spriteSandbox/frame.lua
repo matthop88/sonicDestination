@@ -22,12 +22,12 @@ return {
 			update = function(self, dt)
 				local time = love.timer.getTime() - self.creationTime
 				local prevFrameNumber = self.frameNumber
-				self.frameNumber = (math.floor(time * self.animation:getFPS()) % self.animation:size()) + 1
+				self.frameNumber = (math.floor(time * self.animation.fps) % #self.animation) + 1
 				if self.frameNumber < prevFrameNumber then self.rolledOver = true end
 			end,
 
 			get = function(self)
-				return self.animation:get(math.floor(self.frameNumber))
+				return self.animation[math.floor(self.frameNumber)]
 			end,
 
 			isRolledOver = function(self)
@@ -37,7 +37,7 @@ return {
 				end
 			end,
 
-			getFirst     = function(self) return self.animation:get(1) end,
+			getFirst     = function(self) return self.animation[1]     end,
 			isForeground = function(self) return self:get().foreground end,
 		}
 	end,
