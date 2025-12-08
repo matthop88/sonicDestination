@@ -15,7 +15,7 @@ return {
 		local n = 1
 		for name, animation in pairs(animations) do
 			table.insert(animationList, { name = name, animation = animation })
-			if animation.isDefault then animationList.index = n end
+			if animation:isDefault() then animationList.index = n end
 			n = n + 1
 		end
 		return animationList
@@ -24,15 +24,15 @@ return {
 	getDefaultAnimation = function(self, animations)
 		local animationName
 		for name, animation in pairs(animations) do
-			if animationName == nil then animationName = name end
-			if animation.isDefault  then animationName = name end
+			if animationName == nil  then animationName = name end
+			if animation:isDefault() then animationName = name end
 		end
 		return animationName, animations[animationName]
 	end,
 
 	enhanceWithQuads = function(self, animations, sheetImage)
 		for _, animation in pairs(animations) do
-			for _, frame in ipairs(animation) do
+			for _, frame in ipairs(animation:frames()) do
 				if frame.x then
 					frame.QUAD = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h, sheetImage:getWidth(), sheetImage:getHeight())
 				end
@@ -76,14 +76,14 @@ return {
 				return self
 			end,
 
-			getID = function(self) return self.id                 end,
-			getX  = function(self) return self.x                  end,
-			getY  = function(self) return self.y                  end,
-			getW  = function(self) return self.currentAnimation.w end,
-			getH  = function(self) return self.currentAnimation.h end,
+			getID = function(self) return self.id                        end,
+			getX  = function(self) return self.x                         end,
+			getY  = function(self) return self.y                         end,
+			getW  = function(self) return self.currentAnimation:width()  end,
+			getH  = function(self) return self.currentAnimation:height() end,
 
-			setX  = function(self, x)     self.x = x              end,
-			setY  = function(self, y)     self.y = y              end,
+			setX  = function(self, x)     self.x = x                     end,
+			setY  = function(self, y)     self.y = y                     end,
 			
 			draw  = function(self, GRAFX)
 				local frame = self.currentFrame:get()
@@ -101,10 +101,10 @@ return {
 			end,
 
 			isInside = function(self, px, py)
-				return px >= self.x - self.currentAnimation.offset.x 
-				   and px <= self.x - self.currentAnimation.offset.x + self.currentAnimation.w
-				   and py >= self.y - self.currentAnimation.offset.y
-				   and py <= self.y - self.currentAnimation.offset.y + self.currentAnimation.h
+				return px >= self.x - self.currentAnimation:offsetX() 
+				   and px <= self.x - self.currentAnimation:offsetX() + self.currentAnimation:width()
+				   and py >= self.y - self.currentAnimation:offsetY()
+				   and py <= self.y - self.currentAnimation:offsetY() + self.currentAnimation:height()
 			end,
 
 			update = function(self, dt)
@@ -112,7 +112,7 @@ return {
 					self.currentFrame:update(dt)
 					if self.currentFrame:isRolledOver() then
 						self.repCount = self.repCount + 1
-						if self.currentAnimation.reps and self.repCount >= self.currentAnimation.reps then
+						if self.currentAnimation:reps() and self.repCount >= self.currentAnimation:reps() then
 							self.deleted = true
 						end
 					end
@@ -131,7 +131,7 @@ return {
 				local anim = self.animationList[self.animationList.index]
 				self.currentAnimation = anim.animation
 				local syncName = nil
-				if self.currentAnimation.synchronized then syncName = anim.name end
+				if self.currentAnimation:synchronized() then syncName = anim.name end
 				self.repCount = 0
 				self.visible = true
 				self.currentFrame = require("tools/spriteSandbox/frame"):create(self.currentAnimation, syncName)
@@ -139,7 +139,7 @@ return {
 
 			isPlayer = function(self) return IS_PLAYER end,
 
-			isForeground = function(self) return self.currentAnimation.foreground or self.currentFrame:isForeground() end,
+			isForeground = function(self) return self.currentAnimation:foreground() or self.currentFrame:isForeground() end,
 			
 			regressAnimation = function(self)
 				self.animationList.index = self.animationList.index - 1
