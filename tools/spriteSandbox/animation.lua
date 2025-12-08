@@ -1,9 +1,19 @@
 return {
+	enhanceWithQuads = function(self, animationData, image)
+		for _, frame in ipairs(animationData) do
+			if frame.x then
+				frame.QUAD = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h, image:getWidth(), image:getHeight())
+			end
+		end
+	end,
+
 	create = function(self, name, animationData, image)
+		self:enhanceWithQuads(animationData, image)
+
 		local syncName = nil
 		if animationData.synchronized then syncName = name end
 		local currentFrame = require("tools/spriteSandbox/frame"):create(animationData, syncName)
-				
+			
 		return {
 			name          = name,
 			data          = animationData,
