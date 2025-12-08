@@ -4,7 +4,7 @@ return {
 	createAnimations = function(self, animationData)
 		local animationObjects = {}
 		for name, animDataElement in pairs(animationData) do
-			animationObjects[name] = require("tools/spriteSandbox/animation"):create(animDataElement)
+			animationObjects[name] = require("tools/spriteSandbox/animation"):create(name, animDataElement)
 		end
 		return animationObjects
 	end,
@@ -66,11 +66,6 @@ return {
 				self.animations       = animations
 				self.currentAnimation = currentAnimation
 				self.animationList    = animationList
-				local syncName = nil
-				if self.currentAnimation.synchronized then
-					syncName = animationName
-				end
-				self.currentFrame     = require("tools/spriteSandbox/frame"):create(currentAnimation, syncName)
 				self.x, self.y        = x,  y
 
 				return self
@@ -86,18 +81,11 @@ return {
 			setY  = function(self, y)     self.y = y                     end,
 			
 			draw  = function(self, GRAFX)
-				local frame = self.currentFrame:get()
-				if frame.QUAD then
-					GRAFX:setColor(1, 1, 1)
-					GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - (frame.offset.x * self.xScale), self.y - frame.offset.y, 0, self.xScale, 1)
-				end
+				self.currentAnimation:draw(GRAFX, SHEET_IMAGE, self.x, self.y, self.xScale)
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
-				local frame = self.currentFrame:getFirst()
-				if frame.QUAD then
-					GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX * self.xScale), y - (frame.offset.y * sY), 0, sX * self.xScale, sY)
-				end
+				self.currentAnimation:draw(GRAFX, SHEET_IMAGE, x, y, sX, sY, self.xScale)
 			end,
 
 			isInside = function(self, px, py)
@@ -109,13 +97,8 @@ return {
 
 			update = function(self, dt)
 				if not self.frozen then
-					self.currentFrame:update(dt)
-					if self.currentFrame:isRolledOver() then
-						self.repCount = self.repCount + 1
-						if self.currentAnimation:reps() and self.repCount >= self.currentAnimation:reps() then
-							self.deleted = true
-						end
-					end
+					self.currentAnimation:update(dt)
+					self.deleted = self.deleted or self.currentAnimation:isTerminated()
 				end
 			end,
 
@@ -124,29 +107,25 @@ return {
 				if self.animationList.index > #self.animationList then
 					self.animationList.index = 1
 				end
-				self:updateAnimation()
+				self:refreshAnimation()
 			end,
 
-			updateAnimation = function(self)
+			refreshAnimation = function(self)
 				local anim = self.animationList[self.animationList.index]
 				self.currentAnimation = anim.animation
-				local syncName = nil
-				if self.currentAnimation:synchronized() then syncName = anim.name end
-				self.repCount = 0
-				self.visible = true
-				self.currentFrame = require("tools/spriteSandbox/frame"):create(self.currentAnimation, syncName)
+				self.currentAnimation:refresh()
 			end,
 
 			isPlayer = function(self) return IS_PLAYER end,
 
-			isForeground = function(self) return self.currentAnimation:foreground() or self.currentFrame:isForeground() end,
+			isForeground = function(self) return self.currentAnimation:isForeground() end,
 			
 			regressAnimation = function(self)
 				self.animationList.index = self.animationList.index - 1
 				if self.animationList.index < 1 then
 					self.animationList.index = #self.animationList
 				end
-				self:updateAnimation()
+				self:refreshAnimation()
 			end,
 
 			toggleFreeze = function(self) self.frozen = not self.frozen  end,
