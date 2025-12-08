@@ -1,10 +1,12 @@
-local SPRITE_ID = 0
+local IMAGE_LOADER = require("tools/lib/util/imageLoader")
+
+local SPRITE_ID    = 0
 
 return {
-	createAnimations = function(self, animationData)
+	createAnimations = function(self, animationData, image)
 		local animationObjects = {}
 		for name, animDataElement in pairs(animationData) do
-			animationObjects[name] = require("tools/spriteSandbox/animation"):create(name, animDataElement)
+			animationObjects[name] = require("tools/spriteSandbox/animation"):create(name, animDataElement, image)
 		end
 		return animationObjects
 	end,
@@ -42,10 +44,9 @@ return {
 
 	create = function(self, path, x, y, noBumpID)
 		local data        = require("tools/spriteSandbox/data/" .. path)
-		local SHEET_IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
-		SHEET_IMAGE:setFilter("nearest", "nearest")
-
-		local animations = self:createAnimations(data.animations)
+		local SHEET_IMAGE = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
+		
+		local animations = self:createAnimations(data.animations, SHEET_IMAGE)
 		local animationName, currentAnimation = self:getDefaultAnimation(animations)
 		local animationList                   = self:createAnimationList(animations)
 		self:enhanceWithQuads(animations, SHEET_IMAGE)
@@ -81,11 +82,11 @@ return {
 			setY  = function(self, y)     self.y = y                     end,
 			
 			draw  = function(self, GRAFX)
-				self.currentAnimation:draw(GRAFX, SHEET_IMAGE, self.x, self.y, self.xScale)
+				self.currentAnimation:draw(GRAFX, self.x, self.y, self.xScale)
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
-				self.currentAnimation:draw(GRAFX, SHEET_IMAGE, x, y, sX, sY, self.xScale)
+				self.currentAnimation:draw(GRAFX, x, y, sX, sY, self.xScale)
 			end,
 
 			isInside = function(self, px, py)
