@@ -1,29 +1,31 @@
 return {
-	create = function(self, name, animationData)
+	create = function(self, name, animationData, image)
 		local syncName = nil
 		if animationData.synchronized then syncName = name end
 		local currentFrame = require("tools/spriteSandbox/frame"):create(animationData, syncName)
 				
 		return {
-			name         = name,
-			data         = animationData,
-			currentFrame = currentFrame,
-			repCount     = 0,
-			visible      = true,
-			terminated   = false,
+			name          = name,
+			data          = animationData,
+			image         = image,
+			currentFrame  = currentFrame,
+			repCount      = 0,
+			visible       = true,
+			terminated    = false,
+			subAnimations = nil,
 
-			draw = function(self, GRAFX, SHEET_IMAGE, x, y, xScale)
+			draw = function(self, GRAFX, x, y, xScale)
 				local frame = self.currentFrame:get()
 				if frame.QUAD then
 					GRAFX:setColor(1, 1, 1)
-					GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * xScale), y - frame.offset.y, 0, xScale, 1)
+					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * xScale), y - frame.offset.y, 0, xScale, 1)
 				end
 			end,
 
-			drawThumbnail = function(self, GRAFX, SHEET_IMAGE, x, y, sX, sY, xScale)
+			drawThumbnail = function(self, GRAFX, x, y, sX, sY, xScale)
 				local frame = self.currentFrame:getFirst()
 				if frame.QUAD then
-					GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX * xScale), y - (frame.offset.y * sY), 0, sX * xScale, sY)
+					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * sX * xScale), y - (frame.offset.y * sY), 0, sX * xScale, sY)
 				end
 			end,
 
