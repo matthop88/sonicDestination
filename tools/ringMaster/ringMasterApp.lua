@@ -45,7 +45,7 @@ end
 function love.keypressed(key)
     if     key == "space"       then scanForRings()
     elseif key == "return"      then 
-        MAP_SAVER:save(RING_SCANNER:getObjectsFound()) 
+        MAP_SAVER:save(RING_SCANNER:getObjectsFound(), RING_INFO) 
         printToReadout("Ring Map Saved.")
     elseif key == "shiftreturn" then saveMapImage()
     elseif key == "r"           then RING_MODE = not RING_MODE
