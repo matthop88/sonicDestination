@@ -6,7 +6,7 @@ local STRING_UTIL = require("tools/lib/stringUtil")
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local OBJECT_TYPE   = "motobug"
+local OBJECT_TYPE   = __PARAMS["objectType"] or "ring"
 
 local RING_INFO     = require("tools/ringMaster/ringInfo"):create(OBJECT_TYPE)
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
