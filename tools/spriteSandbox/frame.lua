@@ -38,7 +38,9 @@ return {
 			end,
 
 			getFirst     = function(self) return self.animation[1]     end,
-			isForeground = function(self) return self:get().foreground end,
+			isForeground = function(self) 
+				if #self.animation > 0 then return self:get().foreground end
+			end,
 		}
 	end,
 }
