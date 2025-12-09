@@ -75,7 +75,7 @@ return {
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
-				self.currentAnimation:draw(GRAFX, x, y, sX, sY, self.xScale)
+				self.currentAnimation:drawThumbnail(GRAFX, x, y, sX, sY, self.xScale)
 			end,
 
 			isInside = function(self, px, py)
