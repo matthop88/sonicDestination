@@ -12,7 +12,10 @@ return {
 			getName           = function(self) return self.name end,
 
 			draw = function(self, GRAPHICS, x, y, scaleX, scaleY)
-                GRAPHICS:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
+                local currentQuad = self:getCurrentQuad()
+                if currentQuad then
+                    GRAPHICS:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
+                end
             end,
 
             update = function(self, dt)
