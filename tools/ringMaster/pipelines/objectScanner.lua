@@ -76,7 +76,7 @@ scanForObjectsAtVLine = function(params, nextParams)
 			end
 		end
 		if scanForObjectAt(x, y) then
-			table.insert(OBJECTS_FOUND, { x = x + math.floor(OBJECT_WIDTH / 2), y = y + math.floor(OBJECT_HEIGHT / 2) })
+			table.insert(OBJECTS_FOUND, { x = x + (OBJECT_WIDTH / 2), y = y + (OBJECT_HEIGHT / 2) })
 			y = y + 16
 		else
 			y = y + 1
