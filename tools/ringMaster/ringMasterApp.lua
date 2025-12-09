@@ -4,7 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local RING_INFO     = require("tools/ringMaster/ringInfo"):create("ring")
+local RING_INFO     = require("tools/ringMaster/ringInfo"):create("motobug")
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
 if __PARAMS["mapIn"] == "_" then 
