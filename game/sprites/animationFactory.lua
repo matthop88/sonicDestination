@@ -24,19 +24,47 @@ return {
         }
     end,
 
+    createSingle = function(self, spriteDataName, animationName)
+        local spriteData       = requireRelative("sprites/data/" .. spriteDataName)
+        local animationData    = spriteData.animations
+        local image            = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
+    
+        local animation        = self:createSpecificAnimationObject(animationData, animationName, image)
+        
+        return self:createSpriteAnimations {
+            GRAPHICS         = self.GRAPHICS, 
+            spriteDataName   = spriteDataName,
+            image            = image,
+            animations       = { animation },
+            defaultAnimation = animation,
+        }
+    end,
+
     createAnimationObjects = function(self, animationData, image)
         local animations = {}
 
         for name, animEntry in pairs(animationData) do
-            if animEntry.parts then animations[name] = self:createCompositeAnimation(name, animEntry, image)
-            else                    animations[name] = self:createSimpleAnimation(name, animEntry, image) end
+            animations[name] = self:createAnimObject(name, animEntry, image)
         end
 
         return animations
     end,
 
+    createSpecificAnimationObject = function(self, animationData, animationName, image)
+        for name, animEntry in pairs(animationData) do
+            if name == animationName then
+                return self:createAnimObject(name, animEntry, image)
+            end
+        end
+    end,
+
+    createAnimObject = function(self, name, animEntry, image)
+        if animEntry.parts then return self:createCompositeAnimation(name, animEntry, image)
+        else                    return self:createSimpleAnimation(name, animEntry, image) end
+    end,    
+
     createCompositeAnimation = function(self, name, animationEntry, image)
-        return requireRelative("sprites/compositeAnimation"):create(name, animationEntry, image)
+        return requireRelative("sprites/compositeAnimation"):create(name, animationEntry, image, self)
     end,
 
     createSimpleAnimation = function(self, name, animationEntry, image)
