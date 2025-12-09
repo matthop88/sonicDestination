@@ -17,5 +17,10 @@ return {
 			description = "map image file to write out",
 			shortcut = "m",
 		},
+
+		objectType = {
+			description = "type of object to find (ring or motobug)",
+			shortcut = "t",
+		},
 	},
 }
