@@ -1,10 +1,14 @@
+local STRING_UTIL = require("tools/lib/stringUtil")
+
 --------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local RING_INFO     = require("tools/ringMaster/ringInfo"):create("motobug")
+local OBJECT_TYPE   = "motobug"
+
+local RING_INFO     = require("tools/ringMaster/ringInfo"):create(OBJECT_TYPE)
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
 if __PARAMS["mapIn"] == "_" then 
@@ -34,7 +38,7 @@ function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
     RING_SCANNER:getObjectsFound():update(dt, getImageViewer(), RING_SCANNER:isComplete())
     if not RING_SCANNER:isComplete() then
-        setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
+        setProgressBarText("Scanning for " .. RING_INFO.objectsName .. "... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
 end
 
