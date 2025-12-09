@@ -3,6 +3,7 @@
 --------------------------------------------------------------
 
 local PIXEL_UTIL    = require("tools/lib/pixelUtil")
+local STRING_UTIL   = require("tools/lib/stringUtil")
 
 local RING_PARAMS = {
     imageName    = "commonObj",
@@ -56,13 +57,15 @@ return {
         end
 
         return {
-            data       = OBJECT_DATA, 
-            width      = params.w,
-            height     = params.h, 
-            startX     = params.startX, 
-            startY     = params.startY,
-            keyColor   = COLOR_FREQ[bestKey],
-            maxStrikes = math.ceil(COLOR_FREQ[bestKey].frequency * (100 - MATCH_PERCENT) / 100),
+            name        = objectType,
+            objectsName = STRING_UTIL:capitalize(objectType) .. "s",
+            data        = OBJECT_DATA, 
+            width       = params.w,
+            height      = params.h, 
+            startX      = params.startX, 
+            startY      = params.startY,
+            keyColor    = COLOR_FREQ[bestKey],
+            maxStrikes  = math.ceil(COLOR_FREQ[bestKey].frequency * (100 - MATCH_PERCENT) / 100),
 
             draw = function(self, x, y, scale, color)
                 love.graphics.setColor(color)
