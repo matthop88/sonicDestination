@@ -1,5 +1,3 @@
-local ANIMATION_FACTORY = require("tools/spriteSandbox/animationFactory")
-
 return {
 	enhanceWithQuads = function(self, animationData, image)
 		for _, frame in ipairs(animationData) do
@@ -10,11 +8,8 @@ return {
 	end,
 
 	create = function(self, name, animationData, image)
-		local subAnimations = {}
 		if animationData.parts then
-			for _, part in ipairs(animationData.parts) do
-				table.insert(subAnimations, ANIMATION_FACTORY:create("parts/", part.name, part.animation))
-			end
+			return require("tools/spriteSandbox/compositeAnimation"):create(name, animationData, image)
 		end
 
 		self:enhanceWithQuads(animationData, image)
@@ -31,46 +26,27 @@ return {
 			repCount      = 0,
 			visible       = true,
 			terminated    = false,
-			subAnimations = subAnimations,
-
+			
 			draw = function(self, GRAFX, x, y, xScale)
-				if #self.subAnimations > 0 then
-					for _, subAnim in ipairs(self.subAnimations) do
-						subAnim:draw(GRAFX, x, y, xScale)
-					end
-				else
-					local frame = self.currentFrame:get()
-					if frame.QUAD then
-						GRAFX:setColor(1, 1, 1)
-						GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * xScale), y - frame.offset.y, 0, xScale, 1)
-					end
+				local frame = self.currentFrame:get()
+				if frame.QUAD then
+					GRAFX:setColor(1, 1, 1)
+					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * xScale), y - frame.offset.y, 0, xScale, 1)
 				end
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY, xScale)
-				if #self.subAnimations > 0 then
-					for _, subAnim in ipairs(self.subAnimations) do
-						subAnim:drawThumbnail(GRAFX, x, y, sX, sY, xScale)
-					end
-				else
-					local frame = self.currentFrame:getFirst()
-					if frame.QUAD then
-						GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * sX * xScale), y - (frame.offset.y * sY), 0, sX * xScale, sY)
-					end
+				local frame = self.currentFrame:getFirst()
+				if frame.QUAD then
+					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * sX * xScale), y - (frame.offset.y * sY), 0, sX * xScale, sY)
 				end
 			end,
 
 			update = function(self, dt)
-				if #self.subAnimations > 0 then
-					for _, subAnim in ipairs(self.subAnimations) do
-						subAnim:update(dt)
-					end
-				else
-					self.currentFrame:update(dt)
-					if self.currentFrame:isRolledOver() then
-						self.repCount = self.repCount + 1
-						if self:reps() and self.repCount >= self:reps() then self.terminated = true end
-					end
+				self.currentFrame:update(dt)
+				if self.currentFrame:isRolledOver() then
+					self.repCount = self.repCount + 1
+					if self:reps() and self.repCount >= self:reps() then self.terminated = true end
 				end
 			end,
 
