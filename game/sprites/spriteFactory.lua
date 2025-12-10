@@ -14,6 +14,10 @@ return {
                 self.animations:draw(x, y, self.scale.x, self.scale.y)
             end,
 
+            drawBorder = function(self, x, y)
+                self.animations:drawBorder(x, y, self.scale.x, self.scale.y)
+            end,
+
             drawScaled = function(self, GRAPHICS, x, y, sX, sY)
                 self.animations:draw(x, y, sX, sY, GRAPHICS)
             end,
