@@ -1,5 +1,7 @@
 return {
-	topY = 700,
+	topY    = 700,
+	xSpeed  = 0,
+	xOffset = 0,
 
 	init = function(self, params)
 		self.listFn = params.listFn
@@ -15,12 +17,23 @@ return {
 	end,
 
 	update = function(self, dt)
-		self.list = self.listFn()
+		self.list    = self.listFn()
+		self.xOffset = self.xOffset + (self.xSpeed * dt)
+	end,
+
+	handleKeypressed = function(self, key)
+		if     key == "optionright" then self.xSpeed = -2000
+		elseif key == "optionleft"  then self.xSpeed =  2000 end
+	end,
+
+	handleKeyreleased = function(self, key)
+		if     key == "optionright" and self.xSpeed < 0 then self.xSpeed = 0
+		elseif key == "optionleft"  and self.xSpeed > 0 then self.xSpeed = 0 end
 	end,
 
 	handleMousepressed = function(self, mx, my)
 		self.list:head()
-		local n, x = 1, 50
+		local n, x = 1, 50 + self.xOffset
 		while not self.list:isEnd() do
 			local elem = self.list:getNext()
 			elem.selectedInVisualizer = false
@@ -40,7 +53,7 @@ return {
 	drawList = function(self)
 		self.list:head()
 
-		local n, x = 1, 50
+		local n, x = 1, 50 + self.xOffset
 		while not self.list:isEnd() do
 			self:drawListElement(n, x)
 			n, x = n + 1, x + 100
