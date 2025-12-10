@@ -13,6 +13,19 @@ return {
 		end
 	end,
 
+	handleMousepressed = function(self, mx, my)
+		self.list:head()
+		local n, x = 1, 50
+		while not self.list:isEnd() do
+			local elem = self.list:getNext()
+			elem.selectedInVisualizer = false
+			if self:isInside(mx, my, x) then
+				elem.selectedInVisualizer = true
+			end
+			n, x = n + 1, x + 100
+		end
+	end,
+
 	drawBackground = function(self)
 		self.topY = self.graphics:getScreenHeight() - 100
 		self.graphics:setColor(0.5, 0.5, 0.5, 0.8)
@@ -40,9 +53,13 @@ return {
 		if n < self.list:size() then self:drawArrows(x) end
 	end,
 
+	isInside = function(self, mx, my, x)
+		return (mx >= x and mx < x + 50 and my >= self.topY + 25 and my < self.topY + 75)
+	end,
+
 	checkMousedOver = function(self, element, x)
 		local mx, my = love.mouse.getPosition()
-		element.mousedOverInVisualizer = (mx >= x and mx < x + 50 and my >= self.topY + 25 and my < self.topY + 75)
+		element.mousedOverInVisualizer = self:isInside(mx, my, x)
 	end,
 
 	drawCellID = function(self, x)
@@ -57,17 +74,20 @@ return {
 	end,
 
 	drawCell = function(self, element, x)
-		if element.selected then 
+		if element.selected 
+		or element.selectedInVisualizer then 
 			self.graphics:setColor(1, 1, 0.3, 0.9)
 		else                    
-			if element.mousedOver then self.graphics:setColor(0, 1, 1, 0.7)
-			else                       self.graphics:setColor(1, 1, 1, 0.9) end
+			if element.mousedOver 
+			or element.mousedOverInVisualizer then self.graphics:setColor(0, 1, 1, 0.7)
+			else                                   self.graphics:setColor(1, 1, 1, 0.9) end
 		end
 		
 		self.graphics:setLineWidth(3)
 		self.graphics:rectangle("line", x, self.topY + 25, 50, 50)
 		
-		if element.selected then
+		if element.selected 
+		or element.selectedInVisualizer then
 			self.graphics:setColor(1, 1, 1, 0.4)
 			self:drawThumbnail(element, x)
 			self.graphics:setColor(1, 1, 1)
