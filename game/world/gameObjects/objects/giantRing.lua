@@ -92,6 +92,8 @@ return {
 				self.active      = false
 			end,
 
+			getW = function(self) return 48 end,
+            getH = function(self) return 64 end,
 		}
 	end,            
 }
