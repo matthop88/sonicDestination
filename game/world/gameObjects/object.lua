@@ -22,6 +22,10 @@ return {
                 end
             end,
 
+            drawThumbnail = function(self, GRAPHICS, x, y, sX, sY)
+                self.sprite:drawScaled(GRAPHICS, x, y, sX, sY)
+            end,
+
             drawHitBox = function(self)
                 local hitBox = self:getHitBox()
                 if hitBox then hitBox:draw(self.graphics, { 1, 0, 0, 0.8 }, 2) end
@@ -55,6 +59,9 @@ return {
             onTerminalCollisionWithPlayer = function(self, player)
                 -- do nothing
             end,
+
+            getW = function(self) return self.sprite:getImageW() end,
+            getH = function(self) return self.sprite:getImageH() end,
         }
     end,
 }
