@@ -14,6 +14,10 @@ return {
                 self.animations:draw(x, y, self.scale.x, self.scale.y)
             end,
 
+            drawScaled = function(self, GRAPHICS, x, y, sX, sY)
+                self.animations:draw(x, y, sX, sY, GRAPHICS)
+            end,
+
             getHitBox = function(self)
                 return self.animations:getHitBox()
             end,
