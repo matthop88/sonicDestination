@@ -15,7 +15,7 @@ return {
 
 			draw = function(self, GRAPHICS, x, y, scaleX, scaleY)
                 for _, subAnim in ipairs(self.subAnimations) do
-                    subAnim:draw(x, y, scaleX, scaleY)
+                    subAnim:draw(x, y, scaleX, scaleY, GRAPHICS)
                 end
             end,
 
