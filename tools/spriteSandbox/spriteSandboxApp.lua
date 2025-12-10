@@ -88,4 +88,4 @@ PLUGINS = require("plugins/engine")
             { "Tab, Shift-Tab",   "- Walk through Animations", },
         },
     })
-    :add("listVisualizer", { listFn = function() return self.SONIC:getWorld():getObjectsList() end })
+    :add("listVisualizer", { listFn = function() return SANDBOX:getSpriteList() end })
