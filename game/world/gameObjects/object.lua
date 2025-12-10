@@ -26,6 +26,9 @@ return {
             draw = function(self) 
                 if self.active then
                     self.sprite:draw(self.x, self.y) 
+                    if self.selectedInVisualizer then
+                        self.sprite:drawBorder(self.x, self.y)
+                    end
                 end
             end,
 
