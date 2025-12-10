@@ -91,9 +91,10 @@ return {
             animations        = params.animations,
             currentAnimation  = params.defaultAnimation,
             
-            draw = function(self, x, y, scaleX, scaleY)
-                self.graphics:setColor(COLOR_PURE_WHITE)
-                self.currentAnimation:draw(self.graphics, x, y, scaleX, scaleY)
+            draw = function(self, x, y, scaleX, scaleY, GRAPHICS)
+                GRAPHICS = GRAPHICS or self.graphics
+                GRAPHICS:setColor(COLOR_PURE_WHITE)
+                self.currentAnimation:draw(GRAPHICS, x, y, scaleX, scaleY)
             end,
 
             update = function(self, dt)
@@ -132,8 +133,8 @@ return {
         
             getImageX          = function(self, x, scaleX)  return self.currentAnimation:getImageX()             end,
             getImageY          = function(self, y, scaleY)  return self.currentAnimation:getImageY()             end,
-            getImageW          = function(self,    scaleX)  return self.currentAnimation:getImageW()             end,
-            getImageH          = function(self,    scaleY)  return self.currentAnimation:getImageH()             end,
+            getImageW          = function(self,    scaleX)  return self.currentAnimation:getImageW(scaleX)       end,
+            getImageH          = function(self,    scaleY)  return self.currentAnimation:getImageH(scaleY)       end,
 
             getGeneralX        = function(self, x, scaleX)  return self.currentAnimation:getGeneralX()           end,
             getGeneralY        = function(self, y, scaleY)  return self.currentAnimation:getGeneralY()           end,
