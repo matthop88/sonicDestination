@@ -8,11 +8,9 @@ return ({
     selectedSprite  = nil,
     heldSprite      = nil,
     mouseoverSprite = nil,
-    visualizedList  = nil,
     
     init = function(self)
         self:initCurrentSprite(0, 0)
-        self.visualizedList = require("tools/spriteSandbox/listVisualizer"):create(self.sprites)
         return self
     end,
 
@@ -20,7 +18,6 @@ return ({
         self:drawNonPlayer(GRAFX)
         self:drawPlayer(GRAFX)
         self:drawForeground(GRAFX)
-        self.visualizedList:draw()
     end,
 
     drawNonPlayer = function(self, GRAFX)
@@ -256,6 +253,10 @@ return ({
 
     flipCurrentSpriteX = function(self)
         if self.currentSprite then self.currentSprite:flipX() end
+    end,
+
+    getSpriteList = function(self)
+        return self.sprites
     end,
 
 }):init()
