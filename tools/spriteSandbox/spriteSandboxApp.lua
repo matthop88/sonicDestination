@@ -88,3 +88,4 @@ PLUGINS = require("plugins/engine")
             { "Tab, Shift-Tab",   "- Walk through Animations", },
         },
     })
+    :add("listVisualizer", { list = SANDBOX:getSpriteList() })
