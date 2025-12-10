@@ -18,7 +18,10 @@ return {
 
 	update = function(self, dt)
 		self.list    = self.listFn()
-		self.xOffset = self.xOffset + (self.xSpeed * dt)
+		self.xOffset = math.min(0, self.xOffset + (self.xSpeed * dt))
+		local coordinatesOfLast = ((self.list:size()) * 100) + 50
+		local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
+		self.xOffset = math.max(minXOffset, self.xOffset)
 	end,
 
 	handleKeypressed = function(self, key)
