@@ -25,7 +25,8 @@ return {
 	end,
 
 	handleKeypressed = function(self, key)
-		if     key == "optionright" then self.xSpeed = -2000
+		if     key == "backspace"   then self:deleteSelected()
+		elseif key == "optionright" then self.xSpeed = -2000
 		elseif key == "optionleft"  then self.xSpeed =  2000 end
 	end,
 
@@ -44,6 +45,15 @@ return {
 				elem.selectedInVisualizer = true
 			end
 			n, x = n + 1, x + 100
+		end
+	end,
+
+	deleteSelected = function(self)
+		self.list:head()
+		while not self.list:isEnd() do
+			local elem = self.list:get()
+			if elem.selectedInVisualizer then self.list:remove()
+			else                              self.list:next()  end
 		end
 	end,
 
