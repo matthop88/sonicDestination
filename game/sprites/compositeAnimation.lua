@@ -65,9 +65,9 @@ return {
             getImageW          = function(self,    scaleX)  return self.data.w  end,
             getImageH          = function(self,    scaleY)  return self.data.h  end,
 
-            getGeneralX        = function(self, x, scaleX)  return nil          end,
-            getGeneralY        = function(self, y, scaleY)  return nil          end,
-                
+            getGeneralX        = function(self, x, scaleX)  return x - (self.data.offset.x * math.abs(scaleX))   end,
+            getGeneralY        = function(self, y, scaleY)  return y - (self.data.offset.y * math.abs(scaleY))   end,
+                 
             getCurrentFrameIndex = function(self)
                 return nil
             end,
