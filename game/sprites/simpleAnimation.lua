@@ -18,6 +18,12 @@ return {
                 end
             end,
 
+			drawBorder = function(self, GRAPHICS, x, y, scaleX, scaleY)
+                GRAPHICS:setColor(1, 1, 1)
+                GRAPHICS:setLineWidth(2)
+                GRAPHICS:rectangle("line", self:getGeneralX(x, scaleX), self:getGeneralY(y, scaleY), self.data.w, self.data.h)
+            end,
+
             update = function(self, dt)
                 local prevFrameIndex = math.floor(self.currentFrameIndex)
                 self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
