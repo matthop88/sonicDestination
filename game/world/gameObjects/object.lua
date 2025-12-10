@@ -70,8 +70,10 @@ return {
                 -- do nothing
             end,
 
-            getW = function(self) return self.sprite:getImageW() end,
-            getH = function(self) return self.sprite:getImageH() end,
+            getW         = function(self) return self.sprite:getImageW() end,
+            getH         = function(self) return self.sprite:getImageH() end,
+
+            getSortValue = function(self) return self.x                  end,
         }
     end,
 }
