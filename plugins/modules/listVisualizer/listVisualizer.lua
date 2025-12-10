@@ -1,4 +1,6 @@
 return {
+	topY = 700,
+
 	init = function(self, params)
 		self.list = params.list
 		self.graphics = require("tools/lib/graphics"):create()
@@ -12,8 +14,9 @@ return {
 	end,
 
 	drawBackground = function(self)
+		self.topY = self.graphics:getScreenHeight() - 100
 		self.graphics:setColor(0.5, 0.5, 0.5, 0.8)
-		self.graphics:rectangle("fill", 0, 700, 1200, 100)
+		self.graphics:rectangle("fill", 0, self.topY, 1200, 100)
 	end,
 
 	drawList = function(self)
@@ -39,18 +42,18 @@ return {
 
 	checkMousedOver = function(self, element, x)
 		local mx, my = love.mouse.getPosition()
-		element.mousedOverInVisualizer = (mx >= x and mx < x + 50 and my >= 725 and my < 775)
+		element.mousedOverInVisualizer = (mx >= x and mx < x + 50 and my >= self.topY + 25 and my < self.topY + 75)
 	end,
 
 	drawCellID = function(self, x)
 		local cellID = self.list:getCellID()
 		self.graphics:setColor(0.5, 0.5, 0.5)
-		self.graphics:rectangle("fill", x + 5, 775, 40, 18)
+		self.graphics:rectangle("fill", x + 5, self.topY + 75, 40, 18)
 		self.graphics:setColor(1, 1, 1)
 		self.graphics:setLineWidth(2)
-		self.graphics:rectangle("line", x + 5, 775, 40, 18)
+		self.graphics:rectangle("line", x + 5, self.topY + 75, 40, 18)
 		self.graphics:setFontSize(12)
-		self.graphics:printf("" .. cellID, x + 5, 777, 40, "center")
+		self.graphics:printf("" .. cellID, x + 5, self.topY + 77, 40, "center")
 	end,
 
 	drawCell = function(self, element, x)
@@ -62,7 +65,7 @@ return {
 		end
 		
 		self.graphics:setLineWidth(3)
-		self.graphics:rectangle("line", x, 725, 50, 50)
+		self.graphics:rectangle("line", x, self.topY + 25, 50, 50)
 		
 		if element.selected then
 			self.graphics:setColor(1, 1, 1, 0.4)
@@ -78,28 +81,28 @@ return {
 	drawThumbnail = function(self, element, x)
 		local sX = math.min(1.5, 48 / element:getW())
 		local sY = math.min(1.5, 48 / element:getH())
-		element:drawThumbnail(self.graphics, x + 25, 750, math.min(sX, sY), math.min(sX, sY))
+		element:drawThumbnail(self.graphics, x + 25, self.topY + 50, math.min(sX, sY), math.min(sX, sY))
 	end,
 
 	drawElementID = function(self, element, x)
 		self.graphics:setFontSize(24)
-		self.graphics:printf("" .. element:getID(), x, 735, 50, "center")
+		self.graphics:printf("" .. element:getID(), x, self.topY + 35, 50, "center")
 	end,
 
 	drawArrows = function(self, x)
 		self.graphics:setColor(1, 1, 1, 0.9)
 		self.graphics:setLineWidth(1)
-		self.graphics:line(x + 50, 744, x + 100, 744)
-		self.graphics:line(x + 50, 756, x + 100, 756)
+		self.graphics:line(x + 50, self.topY + 44, x + 100, self.topY + 44)
+		self.graphics:line(x + 50, self.topY + 56, x + 100, self.topY + 56)
 		self:drawArrowHeads(x)
 	end,
 
 	drawArrowHeads = function(self, x)
 		self.graphics:setLineWidth(2)
-		self.graphics:line(x + 90, 739, x + 100, 744)
-		self.graphics:line(x + 90, 749, x + 100, 744)
-		self.graphics:line(x + 60, 751, x +  50, 756)
-		self.graphics:line(x + 60, 761, x +  50, 756)
+		self.graphics:line(x + 90, self.topY + 39, x + 100, self.topY + 44)
+		self.graphics:line(x + 90, self.topY + 49, x + 100, self.topY + 44)
+		self.graphics:line(x + 60, self.topY + 51, x +  50, self.topY + 56)
+		self.graphics:line(x + 60, self.topY + 61, x +  50, self.topY + 56)
 	end,
 
 }
