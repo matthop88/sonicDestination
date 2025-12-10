@@ -267,6 +267,7 @@ return {
                     },
                 }
             })
-            :add("readout", { printFnName = "printMessage" })
+            :add("listVisualizer", { list = self.SONIC:getWorld():getObjectsList() })
+            :add("readout",        { printFnName = "printMessage"                  })
     end,
 }
