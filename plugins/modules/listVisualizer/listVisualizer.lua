@@ -2,7 +2,8 @@ return {
 	topY = 700,
 
 	init = function(self, params)
-		self.list = params.list
+		self.listFn = params.listFn
+		self.list   = self.listFn()
 		self.graphics = require("tools/lib/graphics"):create()
 	end,
 
@@ -11,6 +12,10 @@ return {
 			self:drawBackground()
 			self:drawList()
 		end
+	end,
+
+	update = function(self, dt)
+		self.list = self.listFn()
 	end,
 
 	handleMousepressed = function(self, mx, my)
