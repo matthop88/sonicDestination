@@ -48,6 +48,14 @@ local cell = {
 				self.__next = newCell
 				return newCell
 			end,
+
+			getSortValue = function(self)
+				if type(__data) == "table" and __data.getSortValue then
+					return __data:getSortValue()
+				else
+					return 0
+				end
+			end,
 		}
 	end,
 }
@@ -83,14 +91,41 @@ return {
 			add = function(self, data)
 				local newCell = self:newCell(data)
 
+				if type(data) == "table" and data.getSortValue and self.__size > 0 then
+					self:addSorted(newCell)
+				else
+					self:addUnsorted(newCell)
+				end
+
+				self.__size = self.__size + 1
+				return self
+			end,
+
+			addUnsorted = function(self, newCell)
 				if self.__tail ~= nil then self.__tail:addAfter(newCell) end
 				self.__tail = newCell
 				if self.__head    == nil then 
 					self.__head    = newCell
 					self.__current = newCell
 				end
-				self.__size = self.__size + 1
-				return self
+			end,
+
+			addSorted = function(self, newCell)
+				local myCell = self.__head
+
+				while (myCell ~= nil) do
+					if myCell:data():getSortValue() > newCell:data():getSortValue() then
+						myCell:addBefore(newCell)
+						if self.__head == myCell then self.__head = newCell end
+						break
+					end
+					myCell = myCell:next()
+				end
+
+				if myCell == nil then
+					self.__tail:addAfter(newCell)
+					self.__tail = newCell
+				end
 			end,
 
 			insert = function(self, data)
