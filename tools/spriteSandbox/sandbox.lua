@@ -125,6 +125,10 @@ return {
             syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
                 self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
             end,
+
+            getSpriteList = function(self)
+                return self.sprites:getSpriteList()
+            end,
         }):init(params)
     end,
 }
