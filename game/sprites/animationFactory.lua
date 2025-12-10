@@ -97,6 +97,11 @@ return {
                 self.currentAnimation:draw(GRAPHICS, x, y, scaleX, scaleY)
             end,
 
+            drawBorder = function(self, x, y, scaleX, scaleY, GRAPHICS)
+                GRAPHICS = GRAPHICS or self.graphics
+                self.currentAnimation:drawBorder(GRAPHICS, x, y, scaleX, scaleY)
+            end,
+
             update = function(self, dt)
                 self.currentAnimation:update(dt)
             end,
