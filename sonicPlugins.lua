@@ -267,7 +267,7 @@ return {
                     },
                 }
             })
-            :add("listVisualizer", { list = self.SONIC:getWorld():getObjectsList() })
+            :add("listVisualizer", { listFn = function() return self.SONIC:getWorld():getObjectsList() end })
             :add("readout",        { printFnName = "printMessage"                  })
     end,
 }
