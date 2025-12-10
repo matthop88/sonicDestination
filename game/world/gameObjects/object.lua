@@ -1,9 +1,13 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
+local OBJECT_ID    = 0
+
 return {
     create = function(self, object, graphics)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
         local SPRITE        = spriteFactory:create("objects/" .. object.obj)
+
+        OBJECT_ID = OBJECT_ID + 1
 
         return {
             x        = object.x,
@@ -15,6 +19,9 @@ return {
             deleted  = false,
             active   = not object.inactive,
             sprite   = SPRITE,
+            id       = OBJECT_ID,
+
+            getID    = function(self) return self.id end,
 
             draw = function(self) 
                 if self.active then
