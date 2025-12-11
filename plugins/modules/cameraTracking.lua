@@ -4,13 +4,13 @@ return {
     active          = true,
     toggleCameraKey = nil,
     vertical        = nil,
-
+    
     init = function(self, parameters)
         self.graphics   = parameters.graphics
         self.positionFn = parameters.positionFn
         if parameters.toggleCameraKey then
             self.toggleCameraKey = parameters.toggleCameraKey
-            self.active = false
+            self.active = parameters.active
         end
         self.vertical = parameters.vertical
         return self
