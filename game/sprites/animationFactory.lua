@@ -151,6 +151,8 @@ return {
             setCurrentFrameIndex = function(self, frameIndex)
                 self.currentAnimation:setCurrentFrameIndex(frameIndex)
             end,
+
+            getGraphics = function(self) return self.graphics end,
         }
     end,
 }
