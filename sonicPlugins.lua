@@ -83,6 +83,12 @@ return {
                     {   key = "F", fn = function() self.SONIC:getWorld():fadeIn()           end, },
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
                     {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
+                    {   key = "P", fn = function() 
+                            local message = "x = " .. math.floor(self.SONIC:getX()) .. ", y = " .. math.floor(self.SONIC:getY())
+                            printMessage(message)
+                            print(message)
+                        end, 
+                    },
                 },
             })
             :add("grid3D",         { 
