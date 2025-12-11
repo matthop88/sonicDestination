@@ -284,4 +284,10 @@ return {
         local animationName = self.sprite:getCurrentAnimationName()
         return animationName == "jumping" or animationName == "fastJumping"
     end,
+
+    reboundIfPossible = function(self, targetY)
+        if self:getY() < targetY and self.velocity.y > 0 then
+            self.velocity.y = self.velocity.y * -1
+        end
+    end,
 }
