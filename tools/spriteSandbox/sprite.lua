@@ -118,9 +118,11 @@ return {
 				self:refreshAnimation()
 			end,
 
-			toggleFreeze = function(self) self.frozen = not self.frozen  end,
-			flipX        = function(self) self.xScale = self.xScale * -1 end,
-				
+			toggleFreeze = function(self) self.frozen = not self.frozen     end,
+			flipX        = function(self) self.xScale = self.xScale * -1    end,
+			prevFrame    = function(self) self.currentAnimation:prevFrame() end,
+			nextFrame    = function(self) self.currentAnimation:nextFrame() end,	
+		
 		}):init()
 	end,
 }
