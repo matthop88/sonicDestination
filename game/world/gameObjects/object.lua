@@ -66,7 +66,7 @@ return {
             isForeground = function(self)       return self.sprite:isForeground()     end,
             isPlayer     = function(self)       return false                          end,
 
-            onTerminalCollisionWithPlayer = function(self, player)
+            onCollisionWithPlayer = function(self, player)
                 -- do nothing
             end,
 
