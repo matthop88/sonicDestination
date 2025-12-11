@@ -122,8 +122,7 @@ return {
             end,
 
             deletable          = function(self)      
-                return  self.currentAnimation.reps ~= nil
-                    and self.currentAnimation.reps <= self.repCount
+                return  self.currentAnimation:deletable()
             end,
 
             isForeground       = function(self)      return self.currentAnimation:isForeground()                 end,
@@ -141,8 +140,8 @@ return {
             getImageW          = function(self,    scaleX)  return self.currentAnimation:getImageW(scaleX)       end,
             getImageH          = function(self,    scaleY)  return self.currentAnimation:getImageH(scaleY)       end,
 
-            getGeneralX        = function(self, x, scaleX)  return self.currentAnimation:getGeneralX()           end,
-            getGeneralY        = function(self, y, scaleY)  return self.currentAnimation:getGeneralY()           end,
+            getGeneralX        = function(self, x, scaleX)  return self.currentAnimation:getGeneralX(x, scaleX)           end,
+            getGeneralY        = function(self, y, scaleY)  return self.currentAnimation:getGeneralY(y, scaleY)           end,
                 
             getCurrentFrameIndex = function(self)
                 return self.currentAnimation:getCurrentFrameIndex()
