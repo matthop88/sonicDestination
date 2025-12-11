@@ -1,5 +1,5 @@
 return {
 	handleCollisionWithPlayer = function(self, object, player)
-		object:onTerminalCollisionWithPlayer(player)
+		object:onCollisionWithPlayer(player)
 	end,
 }
