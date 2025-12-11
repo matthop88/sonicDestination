@@ -43,7 +43,7 @@ return {
 			elem.selectedInVisualizer = false
 			if self:isInside(mx, my, x) then
 				elem.selectedInVisualizer = true
-				if elem.locateVisually then elem:locateVisually() end
+				if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
 			end
 			n, x = n + 1, x + 100
 		end
