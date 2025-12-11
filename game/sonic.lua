@@ -279,4 +279,9 @@ return {
         if self:isFacingRight() then self:setState(STATES.BRAKE_RIGHT)
         else                         self:setState(STATES.BRAKE_LEFT)  end
     end,
+
+    isSpinning = function(self)
+        local animationName = self.sprite:getCurrentAnimationName()
+        return animationName == "jumping" or animationName == "fastJumping"
+    end,
 }
