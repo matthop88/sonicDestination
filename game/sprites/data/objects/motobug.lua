@@ -5,14 +5,16 @@ return {
             hitBox = { rX = 15, rY = 10 },
             ----------------------------------------------------------------------------
             parts = {
-				{	name = "motobugBody", animation = "roving",  },
-				{   name = "puffOfSmoke", animation = "puffing", },
-			}
+                {   name = "motobugBody", animation = "roving",  },
+                {   name = "puffOfSmoke", animation = "puffing", },
+            }
         },
-        motobugDying = { fps = 2, offset = { x = 20, y = 14 }, w = 40, h = 28,
+        motobugDying = { offset = { x = 20, y = 14 }, w = 40, h = 28,
             reps = 1,
-            {},
-            {},
+            parts = {
+                {   name = "motobugBody", animation = "dying",  },
+                {   name = "explosion",   animation = "poof",   },
+            },
         },
     },
 }
