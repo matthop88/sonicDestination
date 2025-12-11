@@ -48,6 +48,18 @@ return {
 			synchronized = function(self)    return self.data.synchronized end,
 			isForeground = function(self)    return self.data.foreground   end,
 			isTerminated = function(self)    return self.terminated        end,
+		
+			prevFrame    = function(self)
+				for _, subAnim in ipairs(self.subAnimations) do
+					subAnim:prevFrame()
+				end
+			end,
+
+			nextFrame    = function(self)
+				for _, subAnim in ipairs(self.subAnimations) do
+					subAnim:nextFrame()
+				end
+			end,
 		}
 	end,
 }
