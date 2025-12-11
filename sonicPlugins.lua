@@ -80,6 +80,7 @@ return {
                     {   key = "f", fn = function() self.SONIC:getWorld():fadeOut()          end, },
                     {   key = "F", fn = function() self.SONIC:getWorld():fadeIn()           end, },
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
+                    {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
                 },
             })
             :add("grid3D",         { 
@@ -267,7 +268,11 @@ return {
                     },
                 }
             })
-            :add("listVisualizer", { listFn = function() return self.SONIC:getWorld():getObjectsList() end })
+            :add("listVisualizer", { 
+                listFn = function() return self.SONIC:getWorld():getObjectsList() end,
+                active = false,
+                accessorFnName = "getListVisualizer",
+            })
             :add("readout",        { printFnName = "printMessage"                  })
     end,
 }
