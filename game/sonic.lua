@@ -289,7 +289,6 @@ return {
         if self:getY() < targetY and self.velocity.y > 0 then
             self.velocity.y = self.velocity.y * -1
         else
-            print("Velocity.y = " .. self.velocity.y)
             if self.velocity.y > 0 then self.velocity.y = self.velocity.y - 180
             else                        self.velocity.y = self.velocity.y + 180 end
         end
