@@ -288,6 +288,9 @@ return {
     reboundIfPossible = function(self, targetY)
         if self:getY() < targetY and self.velocity.y > 0 then
             self.velocity.y = self.velocity.y * -1
+        else
+            if self.velocity.y > 0 then self.velocity.y = self.velocity.y - 1
+            else                        self.velocity.y = self.velocity.y + 1 end
         end
     end,
 }
