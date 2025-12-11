@@ -90,6 +90,7 @@ return {
                 topLineYOffset = 0,
                 standingLine   = 1262,
                 toggleGridKey  = "g",
+                showGrid       = true,
             })
             :add("tracer", {
                 toggleShowKey      = "t",
@@ -133,6 +134,7 @@ return {
                 graphics        = self.GRAPHICS,
                 toggleCameraKey = "g",
                 vertical        = true,
+                active          = true,
                 positionFn      = function() return self.SONIC:getX(), self.SONIC:getY() end,
             })
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
