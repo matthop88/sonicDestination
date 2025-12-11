@@ -71,6 +71,8 @@ return {
                 if xFlipped then self.scale.x = -math.abs(self.scale.x)
                 else             self.scale.x =  math.abs(self.scale.x) end
             end,
+
+            getGraphics = function(self)    return self.animations:getGraphics()                end,
         }
     end,      
 }
