@@ -247,6 +247,14 @@ return ({
         if self.selectedSprite then self.selectedSprite:toggleFreeze() end
     end,
 
+    prevFrame = function(self)
+        if self.selectedSprite then self.selectedSprite:prevFrame() end
+    end,
+
+    nextFrame = function(self)
+        if self.selectedSprite then self.selectedSprite:nextFrame() end
+    end,
+
     flipSelectedSpriteX = function(self)
         if self.selectedSprite then self.selectedSprite:flipX() end
     end,
