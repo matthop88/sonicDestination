@@ -69,7 +69,9 @@ return {
 
 		local n, x = 1, 50 + self.xOffset
 		while not self.list:isEnd() do
-			self:drawListElement(n, x)
+			if x > -100 and x < self.graphics:getScreenWidth() then
+				self:drawListElement(n, x)
+			end
 			n, x = n + 1, x + 100
 			self.list:next()
 		end
