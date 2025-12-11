@@ -2,6 +2,7 @@ return {
     imageName = "commonObj",
     animations = {
         poof = { fps = 5, isDefault = true, offset = { x = 19, y = 19 }, w = 38, h = 38,
+            reps = 1,
             ----------------------------------------------------------------------------
             { x =  26, y = 706, w = 19, h = 16, offset = { x =  9, y =  8 }, },
             { x =  59, y = 679, w = 27, h = 30, offset = { x = 13, y = 15 }, },
