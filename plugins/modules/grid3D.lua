@@ -9,7 +9,7 @@ return {
 
         if parameters.toggleGridKey then
             self.toggleGridKey = parameters.toggleGridKey
-            self.showGrid      = false
+            self.showGrid      = parameters.showGrid
         else
             self.showGrid = true
         end
