@@ -9,6 +9,11 @@ return {
 				{   name = "puffOfSmoke", animation = "puffing", },
 			}
         },
+        motobugDying = { fps = 2, offset = { x = 20, y = 14 }, w = 40, h = 28,
+            reps = 1,
+            {},
+            {},
+        },
     },
 }
 
