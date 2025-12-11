@@ -1,33 +1,44 @@
 return {
-	topY    = 700,
-	xSpeed  = 0,
-	xOffset = 0,
-
+	topY                = 700,
+	xSpeed              = 0,
+	xOffset             = 0,
+	active              = true,
+	
 	init = function(self, params)
-		self.listFn = params.listFn
-		self.list   = self.listFn()
+		self.listFn   = params.listFn
+		self.list     = self.listFn()
 		self.graphics = require("tools/lib/graphics"):create()
+		if params.active ~= nil then self.active = params.active end
+	end,
+
+	toggleActive = function(self)
+		self.active = not self.active
 	end,
 
 	draw = function(self)
-		if self.list:size() > 0 then
+		if self.list:size() > 0 and self.active then
 			self:drawBackground()
 			self:drawList()
 		end
 	end,
 
 	update = function(self, dt)
-		self.list    = self.listFn()
-		self.xOffset = self.xOffset + (self.xSpeed * dt)
-		local coordinatesOfLast = ((self.list:size()) * 100) + 50
-		local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
-		self.xOffset = math.min(0, math.max(minXOffset, self.xOffset))
+		if self.active then
+			self.list    = self.listFn()
+			self.xOffset = self.xOffset + (self.xSpeed * dt)
+			local coordinatesOfLast = ((self.list:size()) * 100) + 50
+			local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
+			self.xOffset = math.min(0, math.max(minXOffset, self.xOffset))
+		end
 	end,
 
 	handleKeypressed = function(self, key)
-		if     key == "backspace"   then self:deleteSelected()
-		elseif key == "optionright" then self.xSpeed = -2000
-		elseif key == "optionleft"  then self.xSpeed =  2000 end
+		if self.active then
+			if     key == "escape"      then self:deselect()
+			elseif key == "backspace"   then self:deleteSelected()
+			elseif key == "optionright" then self.xSpeed = -2000
+			elseif key == "optionleft"  then self.xSpeed =  2000 end
+		end
 	end,
 
 	handleKeyreleased = function(self, key)
@@ -36,16 +47,26 @@ return {
 	end,
 
 	handleMousepressed = function(self, mx, my)
+		if self.active then
+			self.list:head()
+			local n, x = 1, 50 + self.xOffset
+			while not self.list:isEnd() do
+				local elem = self.list:getNext()
+				elem.selectedInVisualizer = false
+				if self:isInside(mx, my, x) then
+					elem.selectedInVisualizer = true
+					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
+				end
+				n, x = n + 1, x + 100
+			end
+		end
+	end,
+
+	deselect = function(self)
 		self.list:head()
-		local n, x = 1, 50 + self.xOffset
 		while not self.list:isEnd() do
 			local elem = self.list:getNext()
 			elem.selectedInVisualizer = false
-			if self:isInside(mx, my, x) then
-				elem.selectedInVisualizer = true
-				if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
-			end
-			n, x = n + 1, x + 100
 		end
 	end,
 
