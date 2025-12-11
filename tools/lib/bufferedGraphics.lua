@@ -79,6 +79,10 @@ return {
                 return graphics:screenToImageCoordinates(mx, my)
             end,
 
+            imageToScreenCoordinates = function(self, x, y)
+                return graphics:imageToScreenCoordinates(x, y)
+            end,
+
             adjustScaleGeometrically = function(self, delta)
                 graphics:adjustScaleGeometrically(delta)
             end,
