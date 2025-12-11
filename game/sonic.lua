@@ -285,12 +285,13 @@ return {
         return animationName == "jumping" or animationName == "fastJumping"
     end,
 
-    reboundIfPossible = function(self, targetY)
+    reboundIfPossible = function(self, targetY, speedDelta)
         if self:getY() < targetY and self.velocity.y > 0 then
             self.velocity.y = self.velocity.y * -1
         else
-            if self.velocity.y > 0 then self.velocity.y = self.velocity.y - 180
-            else                        self.velocity.y = self.velocity.y + 180 end
+            speedDelta = speedDelta or 180
+            if self.velocity.y > 0 then self.velocity.y = self.velocity.y - speedDelta
+            else                        self.velocity.y = self.velocity.y + speedDelta end
         end
     end,
 }
