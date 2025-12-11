@@ -33,6 +33,8 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
+        self.GRAPHICS:setScale(3)
+        
         self.DRAWING_FN = function()   
             self.SONIC:draw()
             self.WORLD:drawForeground()
