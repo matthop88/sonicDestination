@@ -77,6 +77,9 @@ return {
 			end,
 
 			isTerminated = function(self)    return self.terminated        end,
+		
+			prevFrame    = function(self)    self.currentFrame:prevFrame() end,
+			nextFrame    = function(self)    self.currentFrame:nextFrame() end,
 		}
 	end,
 }
