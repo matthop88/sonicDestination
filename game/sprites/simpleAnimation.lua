@@ -63,8 +63,8 @@ return {
         
             getImageX          = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
             getImageY          = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
-            getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX             end,
-            getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY             end,
+            getImageW          = function(self,    scaleX)  return self.data.w * scaleX             end,
+            getImageH          = function(self,    scaleY)  return self.data.h * scaleY             end,
 
             getGeneralX        = function(self, x, scaleX)  return x - (self.data.offset.x * math.abs(scaleX))   end,
             getGeneralY        = function(self, y, scaleY)  return y - (self.data.offset.y * math.abs(scaleY))   end,
