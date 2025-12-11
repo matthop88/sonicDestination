@@ -121,6 +121,10 @@ return {
                 end
             end,
 
+            reset = function(self)
+                self.currentAnimation:reset()
+            end,
+
             deletable          = function(self)      
                 return  self.currentAnimation:deletable()
             end,
