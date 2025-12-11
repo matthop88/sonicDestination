@@ -7,7 +7,7 @@ return {
 				if player:isSpinning() then
 					self:setAnimation("motobugDying")
 					SOUND_MANAGER:play("badnikDeath")
-        			player:reboundIfPossible(self.y)
+        			player:reboundIfPossible(self.y, 180)
 				end
 			end,
 		}
