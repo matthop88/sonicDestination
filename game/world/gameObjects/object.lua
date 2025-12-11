@@ -70,10 +70,15 @@ return {
                 -- do nothing
             end,
 
-            getW         = function(self) return self.sprite:getImageW() end,
-            getH         = function(self) return self.sprite:getImageH() end,
+            getW           = function(self) return self.sprite:getImageW() end,
+            getH           = function(self) return self.sprite:getImageH() end,
 
-            getSortValue = function(self) return self.x                  end,
+            getSortValue   = function(self) return self.x                  end,
+            locateVisually = function(self)
+                local graphics = self.sprite:getGraphics()
+                local centerX, centerY = graphics:getScreenWidth() / 2, graphics:getScreenHeight() / 2
+                graphics:syncImageCoordinatesWithScreen(self.x, self.y, centerX, centerY)
+            end,
         }
     end,
 }
