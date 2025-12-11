@@ -2,8 +2,9 @@ if __DEV_MODE then
     return require("tools/lib/graphics"):create()
 else
     return {
-        x = 0,
-        y = 0,
+        x     = 0,
+        y     = 0,
+        scale = 1,
 
         setColor     = function(self, arg1, arg2, arg3, arg4)
             love.graphics.setColor(arg1, arg2, arg3, arg4)
@@ -45,5 +46,8 @@ else
             
         setX = function(self, x) self.x = x end,
         setY = function(self, y) self.y = y end,
+
+        setScale = function(self, scale) self.scale = scale end,
+        getScale = function(self)        return self.scale  end,
     }
 end
