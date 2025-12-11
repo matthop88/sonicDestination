@@ -79,6 +79,15 @@ return {
                 local centerX, centerY = graphics:getScreenWidth() / 2, graphics:getScreenHeight() / 2
                 graphics:syncImageCoordinatesWithScreen(self.x, self.y, centerX, centerY)
             end,
+
+            isOnScreen = function(self)
+                local graphics = self.sprite:getGraphics()
+                local sX, sY = graphics:imageToScreenCoordinates(self.x, self.y)
+                return sX > 50 
+                   and sY > 50 
+                   and sX < graphics:getScreenWidth()  - 50
+                   and sY < graphics:getScreenHeight() - 50
+            end,
         }
     end,
 }
