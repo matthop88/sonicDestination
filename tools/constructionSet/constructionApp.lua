@@ -45,5 +45,8 @@ PLUGINS = require("plugins/engine")
     })
     :add("scrolling",      { imageViewer = GRAFX })
     :add("zooming",        { imageViewer = GRAFX })    
-    :add("grid2d",         { graphics    = GRAFX })
+    :add("grid2d",         { 
+        graphics    = GRAFX,
+        bounds      = { x = 0, y = 0, w = 256, h = 256 },
+    })
     
