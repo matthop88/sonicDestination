@@ -2,6 +2,7 @@ return {
   sourceImage      = "resources/zones/maps/SCD_PTP_Map_Act1.png",
   origin           = { x = 56,  y = 238,  },
   -------------------------------------------
+  { obj = "patabata", x = 300, y = 200,  },
   { obj = "giantRing", x = 963, y = 128, inactive = true, threshold = 100,
     destination = { 
       { map = "ghz1Map", coordinates = { x = 256,  y = 500, } },

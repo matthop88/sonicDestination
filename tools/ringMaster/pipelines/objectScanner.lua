@@ -6,6 +6,7 @@ local PIXEL_UTIL = require("tools/lib/pixelUtil")
 local TASK_SLICE_TIME_IN_MS = 3
 
 local OBJECT_DATA
+local OBJECTS_NAME
 local OBJECT_WIDTH,   OBJECT_HEIGHT
 local OBJECT_START_X, OBJECT_START_Y
 local OBJECT_END_X,   OBJECT_END_Y
@@ -33,7 +34,7 @@ local doPrefiltering, doScanning, scanForObjectsAtLine, scanForObjectAt, pixelsM
 doScanning = function(params, nextParams)
 	if params.MAP_VLINES:isComplete() then
 		print("Scanning complete in " .. PREFILTER_PIPELINE:getTotalElapsedTime() + PIPELINE:getTotalElapsedTime() .. " seconds.")
-		printToReadout("Scanning Complete. " .. #OBJECTS_FOUND .. " rings found.")
+		printToReadout("Scanning Complete. " .. #OBJECTS_FOUND .. " " .. OBJECTS_NAME .. " found.")
     
 		MAP_VLINE = MAP_WIDTH
 		return true
@@ -76,7 +77,7 @@ scanForObjectsAtVLine = function(params, nextParams)
 			end
 		end
 		if scanForObjectAt(x, y) then
-			table.insert(OBJECTS_FOUND, { x = x + 8, y = y + 8 })
+			table.insert(OBJECTS_FOUND, { x = x + (OBJECT_WIDTH / 2), y = y + (OBJECT_HEIGHT / 2) })
 			y = y + 16
 		else
 			y = y + 1
@@ -119,6 +120,7 @@ return {
 	setup = function(self, objectInfo, mapInfo)
 		PREFILTER_PIPELINE:setup(objectInfo, mapInfo)
 
+		OBJECTS_NAME                   = objectInfo.objectsName
 		OBJECT_DATA                    = objectInfo.data
 		OBJECT_WIDTH,   OBJECT_HEIGHT  = objectInfo.width,  objectInfo.height
   		OBJECT_START_X, OBJECT_START_Y = objectInfo.startX, objectInfo.startY

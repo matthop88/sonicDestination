@@ -76,6 +76,13 @@ return {
                     else                        self.sprites:regressSelectedSprite()   end
                 elseif key == "space" then
                     if self.mode == SELECT then self.sprites:toggleFreeze()            end
+                elseif key == "<" then
+                    if self.mode == SELECT then self.sprites:prevFrame()               end
+                elseif key == ">" then
+                    if self.mode == SELECT then self.sprites:nextFrame()               end
+                elseif key == "x"     then
+                    if self.mode == SPRITE then self.sprites:flipCurrentSpriteX()
+                    else                        self.sprites:flipSelectedSpriteX()     end
                 end
             end,
 
@@ -121,6 +128,10 @@ return {
 
             syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
                 self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+            end,
+
+            getSpriteList = function(self)
+                return self.sprites:getSpriteList()
             end,
         }):init(params)
     end,

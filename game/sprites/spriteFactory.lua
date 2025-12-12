@@ -14,6 +14,14 @@ return {
                 self.animations:draw(x, y, self.scale.x, self.scale.y)
             end,
 
+            drawBorder = function(self, x, y)
+                self.animations:drawBorder(x, y, self.scale.x, self.scale.y)
+            end,
+
+            drawScaled = function(self, GRAPHICS, x, y, sX, sY)
+                self.animations:draw(x, y, sX, sY, GRAPHICS)
+            end,
+
             getHitBox = function(self)
                 return self.animations:getHitBox()
             end,
@@ -63,6 +71,8 @@ return {
                 if xFlipped then self.scale.x = -math.abs(self.scale.x)
                 else             self.scale.x =  math.abs(self.scale.x) end
             end,
+
+            getGraphics = function(self)    return self.animations:getGraphics()                end,
         }
     end,      
 }

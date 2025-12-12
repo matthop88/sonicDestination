@@ -8,11 +8,9 @@ return ({
     selectedSprite  = nil,
     heldSprite      = nil,
     mouseoverSprite = nil,
-    visualizedList  = nil,
     
     init = function(self)
         self:initCurrentSprite(0, 0)
-        self.visualizedList = require("tools/spriteSandbox/listVisualizer"):create(self.sprites)
         return self
     end,
 
@@ -20,7 +18,6 @@ return ({
         self:drawNonPlayer(GRAFX)
         self:drawPlayer(GRAFX)
         self:drawForeground(GRAFX)
-        self.visualizedList:draw()
     end,
 
     drawNonPlayer = function(self, GRAFX)
@@ -126,7 +123,8 @@ return ({
 
     updateCurrentSprite = function(self, dt, px, py)
         if self.currentSprite and not self.selectedSprite then
-            self.currentSprite.x, self.currentSprite.y = px, py
+            self.currentSprite:setX(px) 
+            self.currentSprite:setY(py)
             self.currentSprite:update(dt)
         end
     end,
@@ -134,8 +132,8 @@ return ({
     updateHeldSprite = function(self, dt, px, py)
         if self.heldSprite then
             local sprite, dx, dy = self.heldSprite.sprite, self.heldSprite.dx, self.heldSprite.dy
-            sprite.x = math.floor(px + dx)
-            sprite.y = math.floor(py + dy)
+            sprite:setX(math.floor(px + dx))
+            sprite:setY(math.floor(py + dy))
         end
     end,
 
@@ -191,7 +189,9 @@ return ({
     end,
 
     placeCurrentSprite = function(self, GRAFX)
-        self.sprites:add(SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY()))
+        local newSprite = SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY())
+        if self.currentSprite.xScale < 0 then newSprite:flipX() end
+        self.sprites:add(newSprite)
         
         local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
         self:initCurrentSprite(math.floor(px), math.floor(py))
@@ -200,10 +200,10 @@ return ({
     shiftSelectedSprite = function(self, key)
         if self.selectedSprite then
             local sprite = self.selectedSprite
-            if     key == "shiftleft"  then sprite.x = sprite.x - 1
-            elseif key == "shiftright" then sprite.x = sprite.x + 1
-            elseif key == "shiftup"    then sprite.y = sprite.y - 1
-            elseif key == "shiftdown"  then sprite.y = sprite.y + 1 end
+            if     key == "shiftleft"  then sprite:setX(sprite.x - 1)
+            elseif key == "shiftright" then sprite:setX(sprite.x + 1)
+            elseif key == "shiftup"    then sprite:setY(sprite.y - 1)
+            elseif key == "shiftdown"  then sprite:setY(sprite.y + 1) end
         end
     end,
 
@@ -245,6 +245,26 @@ return ({
 
     toggleFreeze = function(self)
         if self.selectedSprite then self.selectedSprite:toggleFreeze() end
+    end,
+
+    prevFrame = function(self)
+        if self.selectedSprite then self.selectedSprite:prevFrame() end
+    end,
+
+    nextFrame = function(self)
+        if self.selectedSprite then self.selectedSprite:nextFrame() end
+    end,
+
+    flipSelectedSpriteX = function(self)
+        if self.selectedSprite then self.selectedSprite:flipX() end
+    end,
+
+    flipCurrentSpriteX = function(self)
+        if self.currentSprite then self.currentSprite:flipX() end
+    end,
+
+    getSpriteList = function(self)
+        return self.sprites
     end,
 
 }):init()

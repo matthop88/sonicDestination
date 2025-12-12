@@ -1,9 +1,13 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
+local OBJECT_ID    = 0
+
 return {
     create = function(self, object, graphics)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
         local SPRITE        = spriteFactory:create("objects/" .. object.obj)
+
+        OBJECT_ID = OBJECT_ID + 1
 
         return {
             x        = object.x,
@@ -15,11 +19,21 @@ return {
             deleted  = false,
             active   = not object.inactive,
             sprite   = SPRITE,
+            id       = OBJECT_ID,
+
+            getID    = function(self) return self.id end,
 
             draw = function(self) 
                 if self.active then
                     self.sprite:draw(self.x, self.y) 
                 end
+                if self.selectedInVisualizer then
+                    self.sprite:drawBorder(self.x, self.y)
+                end
+            end,
+
+            drawThumbnail = function(self, GRAPHICS, x, y, sX, sY)
+                self.sprite:drawScaled(GRAPHICS, x, y, sX, sY)
             end,
 
             drawHitBox = function(self)
@@ -52,8 +66,27 @@ return {
             isForeground = function(self)       return self.sprite:isForeground()     end,
             isPlayer     = function(self)       return false                          end,
 
-            onTerminalCollisionWithPlayer = function(self, player)
+            onCollisionWithPlayer = function(self, player)
                 -- do nothing
+            end,
+
+            getW           = function(self) return self.sprite:getImageW() end,
+            getH           = function(self) return self.sprite:getImageH() end,
+
+            getSortValue   = function(self) return self.x                  end,
+            locateVisually = function(self)
+                local graphics = self.sprite:getGraphics()
+                local centerX, centerY = graphics:getScreenWidth() / 2, graphics:getScreenHeight() / 2
+                graphics:syncImageCoordinatesWithScreen(self.x, self.y, centerX, centerY)
+            end,
+
+            isOnScreen = function(self)
+                local graphics = self.sprite:getGraphics()
+                local sX, sY = graphics:imageToScreenCoordinates(self.x, self.y)
+                return sX > 50 
+                   and sY > 50 
+                   and sX < graphics:getScreenWidth()  - 50
+                   and sY < graphics:getScreenHeight() - 50
             end,
         }
     end,

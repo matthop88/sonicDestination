@@ -1,13 +1,23 @@
-local SPRITE_ID = 0
+local IMAGE_LOADER = require("tools/lib/util/imageLoader")
+
+local SPRITE_ID    = 0
 
 return {
+	createAnimations = function(self, animationData, image)
+		local animationObjects = {}
+		for name, animDataElement in pairs(animationData) do
+			animationObjects[name] = require("tools/spriteSandbox/animation"):create(name, animDataElement, image)
+		end
+		return animationObjects
+	end,
+
 	createAnimationList = function(self, animations)
 		local animationList = {}
 		animationList.index = 1
 		local n = 1
 		for name, animation in pairs(animations) do
 			table.insert(animationList, { name = name, animation = animation })
-			if animation.isDefault then animationList.index = n end
+			if animation:isDefault() then animationList.index = n end
 			n = n + 1
 		end
 		return animationList
@@ -16,29 +26,20 @@ return {
 	getDefaultAnimation = function(self, animations)
 		local animationName
 		for name, animation in pairs(animations) do
-			if animationName == nil then animationName = name end
-			if animation.isDefault  then animationName = name end
+			if animationName == nil  then animationName = name end
+			if animation:isDefault() then animationName = name end
 		end
 		return animationName, animations[animationName]
 	end,
 
-	enhanceWithQuads = function(self, animations, sheetImage)
-		for _, animation in pairs(animations) do
-			for _, frame in ipairs(animation) do
-				frame.QUAD = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h, sheetImage:getWidth(), sheetImage:getHeight())
-			end
-		end
-	end,
-
 	create = function(self, path, x, y, noBumpID)
 		local data        = require("tools/spriteSandbox/data/" .. path)
-		local SHEET_IMAGE = love.graphics.newImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
-		SHEET_IMAGE:setFilter("nearest", "nearest")
-
-		local animationName, currentAnimation = self:getDefaultAnimation(data.animations)
-		local animationList                   = self:createAnimationList(data.animations)
-		self:enhanceWithQuads(data.animations, SHEET_IMAGE)
-
+		local SHEET_IMAGE = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
+		
+		local animations = self:createAnimations(data.animations, SHEET_IMAGE)
+		local animationName, currentAnimation = self:getDefaultAnimation(animations)
+		local animationList                   = self:createAnimationList(animations)
+		
 		if not noBumpID then
 			SPRITE_ID = SPRITE_ID + 1
 		end
@@ -49,56 +50,45 @@ return {
 			id       = SPRITE_ID,
 			repCount = 0,
 			visible  = true,
+			xScale   = 1,
 
 			init = function(self)
-				self.animations       = data.animations
+				self.animations       = animations
 				self.currentAnimation = currentAnimation
 				self.animationList    = animationList
-				local syncName = nil
-				if self.currentAnimation.synchronized then
-					syncName = animationName
-				end
-				self.currentFrame     = require("tools/spriteSandbox/frame"):create(currentAnimation, syncName)
 				self.x, self.y        = x,  y
 
 				return self
 			end,
 
-			getID = function(self) return self.id                 end,
-			getX  = function(self) return self.x                  end,
-			getY  = function(self) return self.y                  end,
-			getW  = function(self) return self.currentAnimation.w end,
-			getH  = function(self) return self.currentAnimation.h end,
+			getID = function(self) return self.id                        end,
+			getX  = function(self) return self.x                         end,
+			getY  = function(self) return self.y                         end,
+			getW  = function(self) return self.currentAnimation:width()  end,
+			getH  = function(self) return self.currentAnimation:height() end,
 
+			setX  = function(self, x)     self.x = x                     end,
+			setY  = function(self, y)     self.y = y                     end,
+			
 			draw  = function(self, GRAFX)
-				local frame = self.currentFrame:get()
-				
-				GRAFX:setColor(1, 1, 1)
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, self.x - frame.offset.x, self.y - frame.offset.y, 0, 1, 1)
+				self.currentAnimation:draw(GRAFX, self.x, self.y, self.xScale)
 			end,
 
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY)
-				local frame = self.currentFrame:getFirst()
-
-				GRAFX:draw(SHEET_IMAGE, frame.QUAD, x - (frame.offset.x * sX), y - (frame.offset.y * sY), 0, sX, sY)
+				self.currentAnimation:drawThumbnail(GRAFX, x, y, sX, sY, self.xScale)
 			end,
 
 			isInside = function(self, px, py)
-				return px >= self.x - self.currentAnimation.offset.x 
-				   and px <= self.x - self.currentAnimation.offset.x + self.currentAnimation.w
-				   and py >= self.y - self.currentAnimation.offset.y
-				   and py <= self.y - self.currentAnimation.offset.y + self.currentAnimation.h
+				return px >= self.x - self.currentAnimation:offsetX() 
+				   and px <= self.x - self.currentAnimation:offsetX() + self.currentAnimation:width()
+				   and py >= self.y - self.currentAnimation:offsetY()
+				   and py <= self.y - self.currentAnimation:offsetY() + self.currentAnimation:height()
 			end,
 
 			update = function(self, dt)
 				if not self.frozen then
-					self.currentFrame:update(dt)
-					if self.currentFrame:isRolledOver() then
-						self.repCount = self.repCount + 1
-						if self.currentAnimation.reps and self.repCount >= self.currentAnimation.reps then
-							self.deleted = true
-						end
-					end
+					self.currentAnimation:update(dt)
+					self.deleted = self.deleted or self.currentAnimation:isTerminated()
 				end
 			end,
 
@@ -107,33 +97,32 @@ return {
 				if self.animationList.index > #self.animationList then
 					self.animationList.index = 1
 				end
-				self:updateAnimation()
+				self:refreshAnimation()
 			end,
 
-			updateAnimation = function(self)
+			refreshAnimation = function(self)
 				local anim = self.animationList[self.animationList.index]
 				self.currentAnimation = anim.animation
-				local syncName = nil
-				if self.currentAnimation.synchronized then syncName = anim.name end
-				self.repCount = 0
-				self.visible = true
-				self.currentFrame = require("tools/spriteSandbox/frame"):create(self.currentAnimation, syncName)
+				self.currentAnimation:refresh()
 			end,
 
 			isPlayer = function(self) return IS_PLAYER end,
 
-			isForeground = function(self) return self.currentAnimation.foreground end,
+			isForeground = function(self) return self.currentAnimation:isForeground() end,
 			
 			regressAnimation = function(self)
 				self.animationList.index = self.animationList.index - 1
 				if self.animationList.index < 1 then
 					self.animationList.index = #self.animationList
 				end
-				self:updateAnimation()
+				self:refreshAnimation()
 			end,
 
-			toggleFreeze = function(self) self.frozen = not self.frozen end,
-				
+			toggleFreeze = function(self) self.frozen = not self.frozen     end,
+			flipX        = function(self) self.xScale = self.xScale * -1    end,
+			prevFrame    = function(self) self.currentAnimation:prevFrame() end,
+			nextFrame    = function(self) self.currentAnimation:nextFrame() end,	
+		
 		}):init()
 	end,
 }

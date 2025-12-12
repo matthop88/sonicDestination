@@ -16,6 +16,7 @@ return ({
         ringCollectR   = { filename = "ring-collect-R.mp3", volume     = 0.4, },
         giantRing      = { filename = "giantRing.mp3",      volume     = 0.5,  startPoint =  4352, },
         vanish         = { filename = "vanish.mp3",         volume     = 0.5,  startPoint =  3968, },
+        badnikDeath    = { filename = "badnik-death.ogg",   volume     = 0.5, },
     },
 
     initSoundData = function(self)

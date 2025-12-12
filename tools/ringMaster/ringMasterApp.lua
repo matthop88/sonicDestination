@@ -1,10 +1,14 @@
+local STRING_UTIL = require("tools/lib/stringUtil")
+
 --------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local RING_INFO     = require("tools/ringMaster/ringInfo")
+local OBJECT_TYPE   = __PARAMS["objectType"] or "ring"
+
+local RING_INFO     = require("tools/ringMaster/ringInfo"):create(OBJECT_TYPE)
 local RING_SCANNER  = require("tools/ringMaster/pipelines/objectScanner")
 
 if __PARAMS["mapIn"] == "_" then 
@@ -34,14 +38,14 @@ function love.update(dt)
     if RING_SCANNER:isReady()    then RING_SCANNER:execute()               end
     RING_SCANNER:getObjectsFound():update(dt, getImageViewer(), RING_SCANNER:isComplete())
     if not RING_SCANNER:isComplete() then
-        setProgressBarText("Scanning for Rings... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
+        setProgressBarText("Scanning for " .. RING_INFO.objectsName .. "... (" .. #RING_SCANNER:getObjectsFound() .. " found)")
     end
 end
 
 function love.keypressed(key)
     if     key == "space"       then scanForRings()
     elseif key == "return"      then 
-        MAP_SAVER:save(RING_SCANNER:getObjectsFound()) 
+        MAP_SAVER:save(RING_SCANNER:getObjectsFound(), RING_INFO) 
         printToReadout("Ring Map Saved.")
     elseif key == "shiftreturn" then saveMapImage()
     elseif key == "r"           then RING_MODE = not RING_MODE

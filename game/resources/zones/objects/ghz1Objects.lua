@@ -3,6 +3,10 @@ return {
   origin           = { x = 512,  y = 940,  },
   -------------------------------------------
   { obj = "ring",      x = 324,  y = 864,  },
+  { obj = "motobug",   x = 832,  y = 939,  },
+  { obj = "motobug",   x = 2793, y = 1196, },
+  { obj = "motobug",   x = 3152, y = 843,  },
+  { obj = "motobug",   x = 5192, y = 771,  },
   { obj = "ring",      x = 348,  y = 864,  },
   { obj = "ring",      x = 372,  y = 864,  },
   { obj = "ring",      x = 820,  y = 556,  },

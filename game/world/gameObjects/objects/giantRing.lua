@@ -52,7 +52,7 @@ return {
                 end
             end,
 
-            onTerminalCollisionWithPlayer = function(self, player)
+            onCollisionWithPlayer = function(self, player)
 				if not self.isArriving and self.active then
 					self:setAnimation("giantDissolving")
 					SOUND_MANAGER:play("giantRing")
@@ -92,6 +92,8 @@ return {
 				self.active      = false
 			end,
 
+			getW = function(self) return 48 end,
+            getH = function(self) return 64 end,
 		}
 	end,            
 }

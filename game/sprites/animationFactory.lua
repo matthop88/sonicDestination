@@ -6,70 +6,108 @@ return {
         self.GRAPHICS = params.GRAPHICS
         return self
     end,
-    
+
     create = function(self, spriteDataName)
-        return ({
-            graphics = self.GRAPHICS,
-            repCount = 0,
-            name     = spriteDataName,
+        local spriteData       = requireRelative("sprites/data/" .. spriteDataName)
+        local animationData    = spriteData.animations
+        local image            = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
+    
+        local animations       = self:createAnimationObjects(animationData, image)
+        local defaultAnimation = self:setUpDefaultAnimation(animations)
+
+        return self:createSpriteAnimations {
+            GRAPHICS         = self.GRAPHICS, 
+            spriteDataName   = spriteDataName,
+            image            = image,
+            animations       = animations,
+            defaultAnimation = defaultAnimation,
+        }
+    end,
+
+    createSingle = function(self, spriteDataName, animationName)
+        local spriteData       = requireRelative("sprites/data/" .. spriteDataName)
+        local animationData    = spriteData.animations
+        local image            = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
+    
+        local animation        = self:createSpecificAnimationObject(animationData, animationName, image)
+        
+        return self:createSpriteAnimations {
+            GRAPHICS         = self.GRAPHICS, 
+            spriteDataName   = spriteDataName,
+            image            = image,
+            animations       = { animation },
+            defaultAnimation = animation,
+        }
+    end,
+
+    createAnimationObjects = function(self, animationData, image)
+        local animations = {}
+
+        for name, animEntry in pairs(animationData) do
+            animations[name] = self:createAnimObject(name, animEntry, image)
+        end
+
+        return animations
+    end,
+
+    createSpecificAnimationObject = function(self, animationData, animationName, image)
+        for name, animEntry in pairs(animationData) do
+            if name == animationName then
+                return self:createAnimObject(name, animEntry, image)
+            end
+        end
+    end,
+
+    createAnimObject = function(self, name, animEntry, image)
+        if animEntry.parts then return self:createCompositeAnimation(name, animEntry, image)
+        else                    return self:createSimpleAnimation(name, animEntry, image) end
+    end,    
+
+    createCompositeAnimation = function(self, name, animationEntry, image)
+        return requireRelative("sprites/compositeAnimation"):create(name, animationEntry, image, self)
+    end,
+
+    createSimpleAnimation = function(self, name, animationEntry, image)
+        return requireRelative("sprites/simpleAnimation"):create(name, animationEntry, image)
+    end,
+
+    setUpDefaultAnimation = function(self, animations)
+        local defaultAnimation = nil
+
+        for name, anim in pairs(animations) do
+            if anim:isDefault() or defaultAnimation == nil then
+                anim.name        = name
+                defaultAnimation = anim
+            end
+        end
+        
+        return defaultAnimation
+    end,
+
+    createSpriteAnimations = function(self, params)
+        return {
+            graphics          = params.GRAPHICS,
+            name              = params.spriteDataName,
+            animations        = params.animations,
+            currentAnimation  = params.defaultAnimation,
             
-            init = function(self, spriteDataName)
-                self:initSpriteData()
-                self:initFrames()
-                self:initAnimations()
-                
-                return self
+            draw = function(self, x, y, scaleX, scaleY, GRAPHICS)
+                GRAPHICS = GRAPHICS or self.graphics
+                GRAPHICS:setColor(COLOR_PURE_WHITE)
+                self.currentAnimation:draw(GRAPHICS, x, y, scaleX, scaleY)
             end,
 
-            initSpriteData  = function(self)
-                local spriteData = requireRelative("sprites/data/" .. spriteDataName)
-                self.data = spriteData.animations
-                self.image = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
-            end,
-                
-            initFrames = function(self)
-                for _, anim in pairs(self.data) do
-                    for _, frame in ipairs(anim) do
-                        frame.quad = love.graphics.newQuad(frame.x, frame.y, frame.w, frame.h,
-                                                           self.image:getWidth(), self.image:getHeight())
-                    end
-                end
-            end,
-
-            initAnimations = function(self)
-                self.currentAnimation  = nil
-                self.currentFrameIndex = 1
-                
-                self:setUpDefaultAnimation()
-            end,
-        
-            setUpDefaultAnimation = function(self)
-                for name, anim in pairs(self.data) do
-                    if anim.isDefault or self.currentAnimation == nil then
-                        anim.name             = name
-                        self.currentAnimation = anim
-                    end
-                end
-            end,
-        
-            draw = function(self, x, y, scaleX, scaleY)
-                self.graphics:setColor(COLOR_PURE_WHITE)
-                self.graphics:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
+            drawBorder = function(self, x, y, scaleX, scaleY, GRAPHICS)
+                GRAPHICS = GRAPHICS or self.graphics
+                self.currentAnimation:drawBorder(GRAPHICS, x, y, scaleX, scaleY)
             end,
 
             update = function(self, dt)
-                local prevFrameIndex = math.floor(self.currentFrameIndex)
-                self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
-                if math.floor(self.currentFrameIndex) > prevFrameIndex then
-                    self.repCount = self.repCount + (1 / #self.currentAnimation)
-                    if math.floor(self.currentFrameIndex) > #self.currentAnimation then
-                        self.currentFrameIndex = self.currentFrameIndex - #self.currentAnimation
-                    end
-                end
+                self.currentAnimation:update(dt)
             end,
 
             setCurrentAnimation = function(self, animationName)
-                if self.data[animationName] == nil then
+                if self.animations[animationName] == nil then
                     print("ERROR: Cannot switch to animation \"" .. animationName .. "\"")
                 else
                     self:setCurrentAnimationIntern(animationName)
@@ -77,58 +115,47 @@ return {
             end,
 
             setCurrentAnimationIntern = function(self, animationName)
-                if self.currentAnimation.name ~= animationName then
-                    self.currentAnimation      = self.data[animationName]
-                    self.currentAnimation.name = animationName
-                    self.currentFrameIndex     = 1
-                    self.repCount              = 0
+                if self.currentAnimation:getName() ~= animationName then
+                    self.currentAnimation = self.animations[animationName]
+                    self.currentAnimation:reset()
                 end
             end,
 
-            isForeground = function(self)
-                return self.currentAnimation.foreground or self:getCurrentFrame().foreground
-            end,
-        
-            getHitBox = function(self)
-                return self.currentAnimation.hitBox
+            reset = function(self)
+                self.currentAnimation:reset()
             end,
 
             deletable          = function(self)      
-                return  self.currentAnimation.reps ~= nil
-                    and self.currentAnimation.reps <= self.repCount
+                return  self.currentAnimation:deletable()
             end,
 
-            getImage           = function(self)      return self.image                                           end,
-            getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
-            getCurrentFrame    = function(self)      return self.currentAnimation[self:getCurrentFrameIndex()]   end,
-            getCurrentAnimName = function(self)      return self.currentAnimation.name                           end,
-            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                        end,
-            getFPS             = function(self)      return self.currentAnimation.fps                            end,   
-            setFPS             = function(self, fps) self.currentAnimation.fps = fps                             end,
+            isForeground       = function(self)      return self.currentAnimation:isForeground()                 end,
+            getHitBox          = function(self)      return self.currentAnimation:getHitBox()                    end,
+            getImage           = function(self)      return self.currentAnimation:getImage()                     end,
+            getCurrentQuad     = function(self)      return self.currentAnimation:getCurrentQuad()               end,
+            getCurrentFrame    = function(self)      return self.currentAnimation:getCurrentFrame()              end,
+            getCurrentAnimName = function(self)      return self.currentAnimation:getName()                      end,
+            getCurrentOffset   = function(self)      return self.currentAnimation:getCurrentOffset()             end,
+            getFPS             = function(self)      return self.currentAnimation:getFPS()                       end,   
+            setFPS             = function(self, fps)        self.currentAnimation:setFPS(fps)                    end,
         
-            getImageX          = function(self, x, scaleX)  return x - (self:getCurrentOffset().x * scaleX)      end,
-            getImageY          = function(self, y, scaleY)  return y - (self:getCurrentOffset().y * scaleY)      end,
-            getImageW          = function(self,    scaleX)  return self:getCurrentFrame().w * scaleX             end,
-            getImageH          = function(self,    scaleY)  return self:getCurrentFrame().h * scaleY             end,
+            getImageX          = function(self, x, scaleX)  return self.currentAnimation:getImageX()             end,
+            getImageY          = function(self, y, scaleY)  return self.currentAnimation:getImageY()             end,
+            getImageW          = function(self,    scaleX)  return self.currentAnimation:getImageW(scaleX)       end,
+            getImageH          = function(self,    scaleY)  return self.currentAnimation:getImageH(scaleY)       end,
 
-            getGeneralX        = function(self, x, scaleX)  return x - (self.currentAnimation.offset.x * math.abs(scaleX)) end,
-            getGeneralY        = function(self, y, scaleY)  return y - (self.currentAnimation.offset.y * math.abs(scaleY)) end,
+            getGeneralX        = function(self, x, scaleX)  return self.currentAnimation:getGeneralX(x, scaleX)           end,
+            getGeneralY        = function(self, y, scaleY)  return self.currentAnimation:getGeneralY(y, scaleY)           end,
                 
             getCurrentFrameIndex = function(self)
-                if math.floor(self.currentFrameIndex) > #self.currentAnimation then
-                    self.currentFrameIndex = 1
-                    -- XXX: The reason for this necessity is UNKNOWN
-                    --      but if this isn't done, game will crash when resetting world
-                end
-                return math.floor(self.currentFrameIndex)
+                return self.currentAnimation:getCurrentFrameIndex()
+            end,
+            
+            setCurrentFrameIndex = function(self, frameIndex)
+                self.currentAnimation:setCurrentFrameIndex(frameIndex)
             end,
 
-            setCurrentFrameIndex = function(self, frameIndex)
-                if     frameIndex < 1                      then frameIndex = #self.currentAnimation
-                elseif frameIndex > #self.currentAnimation then frameIndex = 1                  end
-                    
-                self.currentFrameIndex = frameIndex
-            end,
-        }):init(spriteDataName)
+            getGraphics = function(self) return self.graphics end,
+        }
     end,
 }

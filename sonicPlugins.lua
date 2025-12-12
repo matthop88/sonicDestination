@@ -33,6 +33,8 @@ return {
         self.SPRITE     = self.SONIC.sprite
         self.ANIMATIONS = self.SPRITE.animations
         self.GRAPHICS   = params.GRAPHICS
+        self.GRAPHICS:setScale(3)
+        
         self.DRAWING_FN = function()   
             self.SONIC:draw()
             self.WORLD:drawForeground()
@@ -80,6 +82,13 @@ return {
                     {   key = "f", fn = function() self.SONIC:getWorld():fadeOut()          end, },
                     {   key = "F", fn = function() self.SONIC:getWorld():fadeIn()           end, },
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
+                    {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
+                    {   key = "P", fn = function() 
+                            local message = "x = " .. math.floor(self.SONIC:getX()) .. ", y = " .. math.floor(self.SONIC:getY())
+                            printMessage(message)
+                            print(message)
+                        end, 
+                    },
                 },
             })
             :add("grid3D",         { 
@@ -87,6 +96,7 @@ return {
                 topLineYOffset = 0,
                 standingLine   = 1262,
                 toggleGridKey  = "g",
+                showGrid       = true,
             })
             :add("tracer", {
                 toggleShowKey      = "t",
@@ -130,6 +140,7 @@ return {
                 graphics        = self.GRAPHICS,
                 toggleCameraKey = "g",
                 vertical        = true,
+                active          = true,
                 positionFn      = function() return self.SONIC:getX(), self.SONIC:getY() end,
             })
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
@@ -267,6 +278,11 @@ return {
                     },
                 }
             })
-            :add("readout", { printFnName = "printMessage" })
+            :add("listVisualizer", { 
+                listFn = function() return self.SONIC:getWorld():getObjectsList() end,
+                active = false,
+                accessorFnName = "getListVisualizer",
+            })
+            :add("readout",        { printFnName = "printMessage"                  })
     end,
 }

@@ -113,12 +113,6 @@ return {
         self:processWidgetKeyreleasedEvent(key)
     end,
 
-    handleMousepressed = function(self, mx, my)
-        WIDGETS:deselectAll()
-        WIDGETS:mousepressed(mx, my)
-        self:updateTargetBox()
-    end,
-
     updateTargetBox = function(self)
         for _, widget in ipairs(WIDGETS:get()) do
             if widget:getType() == "BOX" and widget:isSelected() then

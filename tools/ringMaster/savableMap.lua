@@ -4,8 +4,8 @@ return {
 			srcImg   = srcImg,
 			filename = filename,
 
-			save = function(self, objList)
-				local dataString = self:construct(objList)
+			save = function(self, objList, objInfo)
+				local dataString = self:construct(objList, objInfo)
 				love.filesystem.createDirectory("resources/zones/maps")
 				love.filesystem.write("resources/zones/maps/" .. self.filename, dataString)
 			end,
@@ -15,12 +15,12 @@ return {
 				return imgData:encode("png", imgName .. ".png")
 			end,
 
-			construct = function(self, objList)
+			construct = function(self, objList, objInfo)
 				local dataString = "return {\n"
 				dataString = dataString .. "  sourceImage = \"" .. self.srcImg .. "\",\n"
 
 				for _, obj in ipairs(objList) do
-		        	dataString = dataString .. "  { obj = \"ring\", x = " .. obj.x .. ", y = " .. obj.y .. ", },\n"
+		        	dataString = dataString .. "  { obj = \"" .. objInfo.name .. "\", x = " .. obj.x .. ", y = " .. obj.y .. ", },\n"
 		        end
 
 		    	return dataString .. "}\n"

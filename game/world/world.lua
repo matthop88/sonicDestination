@@ -146,4 +146,8 @@ return {
     addPreexistingObject = function(self, object)
         self.objects:add(object)
     end,
+
+    getObjectsList = function(self)
+        return self.objects
+    end,
 }
