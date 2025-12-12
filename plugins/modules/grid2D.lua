@@ -5,6 +5,7 @@ local PIXEL_SIZE = 1
 return {
 	init = function(self, params)
 		self.graphics = params.graphics
+		self.bounds   = params.bounds
 
 		return self
 	end,
@@ -52,7 +53,27 @@ return {
         local offsetY = topY  % gridSize
         local startY  = topY  - offsetY
         
-        for i = startX, rightX  + gridSize, gridSize do self.graphics:line(i, topY, i, bottomY) end
-        for i = startY, bottomY + gridSize, gridSize do self.graphics:line(leftX, i, rightX, i) end
+        for i = startX, rightX  + gridSize, gridSize do self:drawLine(i, topY, i, bottomY) end
+        for i = startY, bottomY + gridSize, gridSize do self:drawLine(leftX, i, rightX, i) end
+	end,
+
+	drawLine = function(self, x1, y1, x2, y2)
+		if self.bounds == nil then
+			self:drawUnboundedLine(x1, y1, x2, y2)
+		else
+			self:drawBoundedLine(x1, y1, x2, y2)
+		end
+	end,
+
+	drawUnboundedLine = function(self, x1, y1, x2, y2)
+		self.graphics:line(x1, y1, x2, y2)
+	end,
+
+	drawBoundedLine = function(self, x1, y1, x2, y2)
+		if     x1 == x2 and (x1 >= (self.bounds.x * 256) and x1 <= ((self.bounds.x + self.bounds.w) * 256)) then
+			self.graphics:line(x1, self.bounds.y * 256, x2, (self.bounds.y + self.bounds.h) * 256)
+		elseif y1 == y2 and (y1 >= (self.bounds.y * 256) and y1 <= ((self.bounds.y + self.bounds.h) * 256)) then
+	    	self.graphics:line(self.bounds.x * 256, y1, (self.bounds.x + self.bounds.w) * 256, y2)
+	    end
 	end,
 }
