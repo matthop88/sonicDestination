@@ -7,7 +7,6 @@ return {
         return ({
             graphics         = require("tools/lib/graphics"):create(), 
             sprites          = require("tools/spriteSandbox/sprites"),
-            grid             = require("tools/spriteSandbox/grid"),
             mode             = nil,
             backgroundImage  = nil,
 
@@ -22,7 +21,6 @@ return {
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
 
                 self:drawBackgroundImage()
-                self:drawGrid()
                 self:drawSprites()
                 self:drawMode()
                 self:drawSelectedSprite()
@@ -35,10 +33,6 @@ return {
                 end
             end,
 
-            drawGrid = function(self)
-                self.grid:draw(self.graphics)
-            end,
-            
             drawSprites = function(self)
                 self.sprites:draw(self.graphics)
             end,
