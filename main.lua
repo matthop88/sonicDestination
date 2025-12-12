@@ -21,15 +21,15 @@ local launchSoundGraph           = function(args)
     require "tools/soundGraph/soundGraphApp"
 end
 
-local launchColorInspector = function(args) require "tools/colorInspector/inspector"       end
-local launchSlicer         = function(args) require "tools/spriteSheetSlicer/slicerApp"    end
-local launchChunkalyzer    = function(args) require "tools/chunkalyzer/chunkalyzerApp"     end
-local launchMapViewer      = function(args) require "tools/mapViewer/mapViewerApp"         end
-local launchTileinator     = function(args) require "tools/tileinator/tileinatorApp"       end
-local launchChunkDoctor    = function(args) require "tools/chunkDoctor/chunkDoctorApp"     end
-local launchRingMaster     = function(args) require "tools/ringMaster/ringMasterApp"       end
-local launchSpriteSandbox  = function(args) require "tools/spriteSandBox/spriteSandboxApp" end
-
+local launchColorInspector  = function(args) require "tools/colorInspector/inspector"        end
+local launchSlicer          = function(args) require "tools/spriteSheetSlicer/slicerApp"     end
+local launchChunkalyzer     = function(args) require "tools/chunkalyzer/chunkalyzerApp"      end
+local launchMapViewer       = function(args) require "tools/mapViewer/mapViewerApp"          end
+local launchTileinator      = function(args) require "tools/tileinator/tileinatorApp"        end
+local launchChunkDoctor     = function(args) require "tools/chunkDoctor/chunkDoctorApp"      end
+local launchRingMaster      = function(args) require "tools/ringMaster/ringMasterApp"        end
+local launchSpriteSandbox   = function(args) require "tools/spriteSandBox/spriteSandboxApp"  end
+local launchConstructionSet = function(args) require "tools/constructionSet/constructionApp" end
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
 end
@@ -56,6 +56,7 @@ local APP_LAUNCHER = {
     chunkDoctor  = launchChunkDoctor,
     ringMaster   = launchRingMaster,
     sandbox      = launchSpriteSandbox,
+    construction = launchConstructionSet,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
