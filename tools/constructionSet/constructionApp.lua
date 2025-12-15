@@ -5,6 +5,11 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local GRAFX = require("tools/lib/graphics"):create()
+
+GRAFX.moveImageOld = GRAFX.moveImage
+GRAFX.moveImage = function(self, deltaX, deltaY)
+    self:moveImageOld(deltaX / self:getScale(), deltaY / self:getScale())
+end
             
 --------------------------------------------------------------
 --              Static code - is executed first             --
