@@ -3,7 +3,7 @@ local TILES_BUILDER = require("tools/constructionSet/terrain/tilesBuilder")
 return {
 	create = function(self, chunksDataPath)
         local chunksData = dofile(chunksDataPath)
-        local tilesImgPath = "game/resources/zones/tiles/" .. chunksData.tilesImageName .. ".png")
+        local tilesImgPath = "game/resources/zones/tiles/" .. chunksData.tilesImageName .. ".png"
         
         local tiles = TILES_BUILDER:create(tilesImgPath)
 
