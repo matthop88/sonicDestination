@@ -11,9 +11,9 @@ GRAFX.moveImage = function(self, deltaX, deltaY)
     self:moveImageOld(deltaX / self:getScale(), deltaY / self:getScale())
 end
 
-local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks.lua"
-local CHUNKS_IMG, CHUNKS_DATA = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-local CHUNKS                  = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_IMG)
+local CHUNKS_PATH = "game/resources/zones/chunks/ghzChunks.lua"
+local CHUNKS_INFO = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+local CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNK_INFO.image)
             
 --------------------------------------------------------------
 --              Static code - is executed first             --
