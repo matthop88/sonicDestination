@@ -13,7 +13,7 @@ end
 
 local CHUNKS_PATH = "game/resources/zones/chunks/ghzChunks.lua"
 local CHUNKS_INFO = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-local CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNK_INFO.image)
+local CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_INFO.image)
             
 --------------------------------------------------------------
 --              Static code - is executed first             --
