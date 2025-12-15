@@ -7,6 +7,8 @@ return {
             init = function(self, tilesImg)
                 self.tilesImg = tilesImg
                 self:constructTiles(self:calculateTileCount())
+
+				return self
             end,
 
             calculateTileCount = function(self)
