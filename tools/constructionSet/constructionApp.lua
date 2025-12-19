@@ -20,6 +20,16 @@ local chunkIndex = 1
 local chunkIDs = { 10, 19, 17 }
 
 local chunkMap = {}
+
+local MODE = {
+    CHUNK  = "chunk",
+    OBJECT = "object",
+    EDIT   = "edit",
+    BADNIK = "badnik",
+    SONIC  = "sonic",
+}
+
+local mode = MODE.EDIT
     
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -51,30 +61,39 @@ function love.draw()
         end
     end
 
-    local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-    GRAFX:rectangle("line", x - 128, y - 128, 256, 256)
-    if CHUNKS then
-        GRAFX:setColor(1, 1, 1, 0.5)
-        CHUNKS:drawAt(GRAFX, chunkIDs[chunkIndex], x - 128, y - 128)
+    if mode == MODE.CHUNK then
+        local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        GRAFX:rectangle("line", x - 128, y - 128, 256, 256)
+        if CHUNKS then
+            GRAFX:setColor(1, 1, 1, 0.8)
+            CHUNKS:drawAt(GRAFX, chunkIDs[chunkIndex], x - 128, y - 128)
+        end
     end
 end
 
 function love.keypressed(key)
-    if     key == "tab" then
+    if     key == "tab" and mode == MODE.CHUNK then
         chunkIndex = chunkIndex + 1
         if chunkIndex > #chunkIDs then chunkIndex = 1 end
-    elseif key == "shifttab" then
+    elseif key == "shifttab" and mode == MODE.CHUNK then
         chunkIndex = chunkIndex - 1
         if chunkIndex < 1 then chunkIndex = #chunkIDs end
-    elseif key == "space" then
+    elseif key == "space" and mode == MODE.CHUNK then
         print(chunkIndex)
+    elseif key == "c" then
+        if mode == MODE.CHUNK then mode = MODE.EDIT
+        else                       mode = MODE.CHUNK end
+    elseif key == "escape" then
+        mode = MODE.EDIT
     end
 end
 
 function love.mousepressed(mx, my)
-    local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-    local j, i = math.floor(x / 256) + 1, math.floor(y / 256) + 1
-    chunkMap[i][j] = chunkIDs[chunkIndex]
+    if mode == MODE.CHUNK then
+        local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        local j, i = math.floor(x / 256) + 1, math.floor(y / 256) + 1
+        chunkMap[i][j] = chunkIDs[chunkIndex]
+    end
 end
 
 --------------------------------------------------------------
