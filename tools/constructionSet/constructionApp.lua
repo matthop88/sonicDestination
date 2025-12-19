@@ -15,11 +15,7 @@ local CHUNKS_PATH = "game/resources/zones/chunks/ghzChunks.lua"
 local CHUNKS_INFO
 local CHUNKS
 
-local chunkIndex = 1
-
-local chunkIDs = { 10, 19, 17 }
-
-local chunkMap = {}
+local CHUNK_MAP
 
 local MODE = {
     CHUNK  = "chunk",
@@ -38,48 +34,26 @@ local mode = MODE.EDIT
 love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-for i = 1, 256 do
-    local c = {}
-    for j = 1, 256 do
-        table.insert(c, 0)
-    end
-    table.insert(chunkMap, c)
-end
-
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
-    GRAFX:setColor(1, 1, 1)
-    for i = 1, 256 do
-        local c = chunkMap[i]
-        for j = 1, 256 do
-            if c[j] ~= 0 then
-                CHUNKS:drawAt(GRAFX, c[j], (j - 1) * 256, (i - 1) * 256)
-            end
-        end
-    end
-
-    if mode == MODE.CHUNK then
-        local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-        GRAFX:rectangle("line", x - 128, y - 128, 256, 256)
-        if CHUNKS then
-            GRAFX:setColor(1, 1, 1, 0.8)
-            CHUNKS:drawAt(GRAFX, chunkIDs[chunkIndex], x - 128, y - 128)
+    if CHUNK_MAP then 
+        CHUNK_MAP:draw(GRAFX)
+        if mode == MODE.CHUNK then 
+            CHUNK_MAP:drawMouseChunk(GRAFX) 
         end
     end
 end
 
 function love.keypressed(key)
     if     key == "tab" and mode == MODE.CHUNK then
-        chunkIndex = chunkIndex + 1
-        if chunkIndex > #chunkIDs then chunkIndex = 1 end
+        CHUNK_MAP:incrementChunk()
     elseif key == "shifttab" and mode == MODE.CHUNK then
-        chunkIndex = chunkIndex - 1
-        if chunkIndex < 1 then chunkIndex = #chunkIDs end
+        CHUNK_MAP:decrementChunk()
     elseif key == "space" and mode == MODE.CHUNK then
-        print(chunkIndex)
+        CHUNK_MAP:printChunkIndex()
     elseif key == "c" then
         if mode == MODE.CHUNK then mode = MODE.EDIT
         else                       mode = MODE.CHUNK end
@@ -89,10 +63,8 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(mx, my)
-    if mode == MODE.CHUNK then
-        local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
-        local j, i = math.floor(x / 256) + 1, math.floor(y / 256) + 1
-        chunkMap[i][j] = chunkIDs[chunkIndex]
+    if mode == MODE.CHUNK and CHUNK_MAP then
+        CHUNK_MAP:placeChunk(GRAFX, mx, my)
     end
 end
 
@@ -129,7 +101,8 @@ PLUGINS = require("plugins/engine")
         {   secondsWait = 0.25, 
             callback = function() 
                 CHUNKS_INFO = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-                CHUNKS = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_INFO.image) 
+                CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_INFO.image) 
+                CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 10, 19, 17 } }
             end,
         },
     }) 
