@@ -16,16 +16,8 @@ local CHUNKS_INFO
 local CHUNKS
 
 local CHUNK_MAP
-
-local MODE = {
-    CHUNK  = "chunk",
-    OBJECT = "object",
-    EDIT   = "edit",
-    BADNIK = "badnik",
-    SONIC  = "sonic",
-}
-
-local mode = MODE.EDIT
+local MODE
+local mode
     
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -41,31 +33,28 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 function love.draw()
     if CHUNK_MAP then 
         CHUNK_MAP:draw(GRAFX)
-        if mode == MODE.CHUNK then 
-            CHUNK_MAP:drawMouseChunk(GRAFX) 
+        if mode then 
+            mode:draw(GRAFX)
         end
     end
 end
 
 function love.keypressed(key)
-    if     key == "tab" and mode == MODE.CHUNK then
-        CHUNK_MAP:incrementChunk()
-    elseif key == "shifttab" and mode == MODE.CHUNK then
-        CHUNK_MAP:decrementChunk()
-    elseif key == "space" and mode == MODE.CHUNK then
-        CHUNK_MAP:printChunkIndex()
-    elseif key == "c" then
-        if mode == MODE.CHUNK then mode = MODE.EDIT
-        else                       mode = MODE.CHUNK end
-    elseif key == "escape" then
-        mode = MODE.EDIT
+    if mode then
+        if mode:isModeKey(key) then
+            mode = MODE.EDIT
+        else
+            for k, v in pairs(MODE) do
+                if v:isModeKey(key) then mode = v end
+            end
+        end
+
+        mode:handleKeypressed(key)
     end
 end
 
 function love.mousepressed(mx, my)
-    if mode == MODE.CHUNK and CHUNK_MAP then
-        CHUNK_MAP:placeChunk(GRAFX, mx, my)
-    end
+    if mode then mode:handleMousepressed(GRAFX, mx, my) end
 end
 
 --------------------------------------------------------------
@@ -103,6 +92,13 @@ PLUGINS = require("plugins/engine")
                 CHUNKS_INFO = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
                 CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_INFO.image) 
                 CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 10, 19, 17 } }
+            
+                MODE        = {
+                    CHUNK  = require("tools/constructionSet/modes/chunkMode"):create(CHUNK_MAP),
+                    EDIT   = require("tools/constructionSet/modes/editMode"):create(CHUNK_MAP),
+                }
+
+                mode = MODE.EDIT
             end,
         },
     }) 
