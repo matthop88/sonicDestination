@@ -91,7 +91,7 @@ PLUGINS = require("plugins/engine")
             callback = function() 
                 CHUNKS_INFO = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
                 CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_INFO.image) 
-                CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 1, 2, 3 } }
+                CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } }
             
                 MODE        = {
                     CHUNK  = require("tools/constructionSet/modes/chunkMode"):create(CHUNK_MAP),
