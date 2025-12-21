@@ -11,7 +11,7 @@ GRAFX.moveImage = function(self, deltaX, deltaY)
     self:moveImageOld(deltaX / self:getScale(), deltaY / self:getScale())
 end
 
-local CHUNKS_PATH = "game/resources/zones/chunks/ghzChunks.lua"
+local CHUNKS_PATH = "game/resources/zones/chunks/ghzChunks_2.lua"
 local CHUNKS_INFO
 local CHUNKS
 
@@ -91,7 +91,7 @@ PLUGINS = require("plugins/engine")
             callback = function() 
                 CHUNKS_INFO = require("tools/constructionSet/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
                 CHUNKS      = require("tools/constructionSet/terrain/chunksBuilder"):create(CHUNKS_INFO.image) 
-                CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 10, 19, 17 } }
+                CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 1, 2, 3 } }
             
                 MODE        = {
                     CHUNK  = require("tools/constructionSet/modes/chunkMode"):create(CHUNK_MAP),
