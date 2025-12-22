@@ -62,7 +62,7 @@ function love.keypressed(key)
                 elseif key == "shiftup"    then ring.y = ring.y - 1
                 elseif key == "shiftdown"  then ring.y = ring.y + 1 
                 elseif key == "x"          then 
-                    RING_INFO:eraseRing(ring, RING_SCANNER:getMapData()) 
+                    RING_INFO:erase(ring, RING_SCANNER:getMapData()) 
                     getImageViewer():refresh()
                 end
             end
