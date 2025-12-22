@@ -20,6 +20,10 @@ local index = function(self)
 	return self.ndx
 end
 
+local add = function(self, elt)
+	table.insert(self.list, elt)
+end
+
 return {
 	create = function(self, baseList)
 		return {
@@ -31,6 +35,7 @@ return {
 			size  = size,
 			get   = get,
 			index = index,
+			add   = add,
 		}
 	end,
 }
