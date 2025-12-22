@@ -15,8 +15,7 @@ return {
 			chunkWidth  = chunkWidth,
 			chunkHeight = chunkHeight,
 			CHUNKS      = chunks,
-			chunkIDs    = chunkIDs,
-			chunkIndex  = 1,
+			chunkIDs    = require("tools/lib/dataStructures/navigableList"):create(chunkIDs),
 			chunkMap    = chunkMap,
 
 			draw = function(self, GRAFX)
@@ -36,28 +35,26 @@ return {
         		GRAFX:rectangle("line", 
         			x - (self.chunkWidth / 2), y - (self.chunkHeight / 2), self.chunkWidth, self.chunkHeight)
         		GRAFX:setColor(1, 1, 1, 0.8)
-            	self.CHUNKS:drawAt(GRAFX, self.chunkIDs[self.chunkIndex], 
+            	self.CHUNKS:drawAt(GRAFX, self.chunkIDs:get(), 
             		x - (self.chunkWidth / 2), y - (self.chunkHeight / 2))
     		end,
 
     		placeChunk = function(self, GRAFX, mx, my)
     			local x, y = GRAFX:screenToImageCoordinates(mx, my)
         		local j, i = math.floor(x / self.chunkWidth) + 1, math.floor(y / self.chunkHeight) + 1
-        		self.chunkMap[i][j] = self.chunkIDs[self.chunkIndex]
+        		self.chunkMap[i][j] = self.chunkIDs:get()
         	end,
 
         	incrementChunk = function(self)
-        		self.chunkIndex = self.chunkIndex + 1
-        		if self.chunkIndex > #self.chunkIDs then self.chunkIndex = 1 end
+        		self.chunkIDs:next()
         	end,
 
         	decrementChunk = function(self)
-        		self.chunkIndex = self.chunkIndex - 1
-        		if self.chunkIndex < 1              then self.chunkIndex = #self.chunkIDs end
+        		self.chunkIDs:prev()
         	end,
 
         	printChunkIndex = function(self)
-        		print(self.chunkIndex)
+        		print(self.chunkIDs:index())
         	end,
 		}
 	end,
