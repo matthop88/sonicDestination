@@ -13,6 +13,7 @@ return {
         return {
             image = chunksImg, 
             data  = chunksData,
+            size  = #chunksData,
         }
 	end,
 
