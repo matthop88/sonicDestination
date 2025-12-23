@@ -17,7 +17,7 @@ return {
 				elseif key == "shifttab"       then CHUNKS_MANAGER:prevChunk()
 				elseif key == "space"          then print(CHUNKS_MANAGER:chunkIndex())
 				elseif key == "optiontab"      then CHUNKS_MANAGER:nextBank()
-				elseif key == "shiftoptiontab" then CHUNKS_MANAGER:prevBank()
+				elseif key == "optionshifttab" then CHUNKS_MANAGER:prevBank()
 				end
 			end,
 
