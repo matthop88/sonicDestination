@@ -1,6 +1,7 @@
 return {
-	create = function(self, chunkMap)
-		local CHUNK_MAP = chunkMap
+	create = function(self, chunksManager, chunkMap)
+		local CHUNKS_MANAGER = chunksManager
+		local CHUNK_MAP      = chunkMap
 
 		return {
 			draw = function(self, GRAFX)
@@ -12,9 +13,11 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if     key == "tab"      then CHUNK_MAP:incrementChunk()
-				elseif key == "shifttab" then CHUNK_MAP:decrementChunk()
-				elseif key == "space"    then CHUNK_MAP:printChunkIndex()
+				if     key == "tab"            then CHUNKS_MANAGER:nextChunk()
+				elseif key == "shifttab"       then CHUNKS_MANAGER:prevChunk()
+				elseif key == "space"          then print(CHUNKS_MANAGER:chunkIndex())
+				elseif key == "optiontab"      then CHUNKS_MANAGER:nextBank()
+				elseif key == "shiftoptiontab" then CHUNKS_MANAGER:prevBank()
 				end
 			end,
 
