@@ -1,11 +1,10 @@
 return {
-    create = function(self, chunksImage)
+    create = function(self, chunksImage, chunkCount)
         return ({
             init = function(self, chunksImage)
     	        self.image = chunksImage
                 self.data  = {}
 
-	            local chunkCount = self:calculateChunkCount()
 	            for i = 1, chunkCount do
 	                local chunkX = ((i - 1) % 9)           * 256
 	                local chunkY = math.floor((i - 1) / 9) * 256
@@ -14,12 +13,6 @@ return {
 	            end
 	    
                 return self
-            end,
-
-            calculateChunkCount = function(self)
-                local width, height = self.image:getWidth(), self.image:getHeight()
-
-                return math.floor(width / 256) * math.floor(height / 256)
             end,
 
             get = function(self, chunkID)
