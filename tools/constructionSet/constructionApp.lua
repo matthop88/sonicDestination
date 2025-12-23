@@ -87,11 +87,11 @@ PLUGINS = require("plugins/engine")
     {
         {   secondsWait = 0.25, 
             callback = function() 
-                CHUNKS      = require("tools/constructionSet/terrain/chunksManager"):register("scdPtpChunks") 
-                CHUNK_MAP   = require("tools/constructionSet/map"):create { w = 256, h = 256, chunks = CHUNKS, chunkIDs = { 1, 2, 3, 4, 5 } }
+                CHUNKS_MANAGER = require("tools/constructionSet/terrain/chunksManager"):register("ghzChunks_2"):register("scdPtpChunks") 
+                CHUNK_MAP      = require("tools/constructionSet/map"):create { w = 256, h = 256, manager = CHUNKS_MANAGER, }
             
                 MODE        = {
-                    CHUNK  = require("tools/constructionSet/modes/chunkMode"):create(CHUNK_MAP),
+                    CHUNK  = require("tools/constructionSet/modes/chunkMode"):create(CHUNKS_MANAGER, CHUNK_MAP),
                     EDIT   = require("tools/constructionSet/modes/editMode"):create(CHUNK_MAP),
                 }
 
