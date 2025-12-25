@@ -1,9 +1,10 @@
 return {
-    create = function(self, chunksImage, chunkCount)
+    create = function(self, chunksImage, chunkCount, path)
         return ({
-            init = function(self, chunksImage)
-    	        self.image = chunksImage
-                self.data  = {}
+            init = function(self)
+    	        self.image      = chunksImage
+                self.data       = {}
+                self.chunksPath = path
 
 	            for i = 1, chunkCount do
 	                local chunkX = ((i - 1) % 9)           * 256
@@ -35,6 +36,10 @@ return {
                 graphics:draw(self.image, self:get(chunkID), x, y, 0, 1, 1)
             end,
 
-        }):init(chunksImage)
+            path = function(self)
+                return self.chunksPath
+            end,
+
+        }):init()
     end,
 }
