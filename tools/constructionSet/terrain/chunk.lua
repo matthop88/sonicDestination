@@ -8,6 +8,8 @@ return {
 			chunks = chunks,
 			id     = id,
 			draw   = draw,
+
+			name   = chunks:path(),
 		}
 	end,
 }
