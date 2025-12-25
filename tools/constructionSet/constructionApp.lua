@@ -41,6 +41,8 @@ function love.keypressed(key)
     if mode then
         if mode:isModeKey(key) then
             mode = MODE.EDIT
+        elseif key == "return" then
+            CHUNK_MAP:printAsTable()
         else
             for k, v in pairs(MODE) do
                 if v:isModeKey(key) then mode = v end
