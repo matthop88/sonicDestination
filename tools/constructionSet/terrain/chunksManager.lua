@@ -1,16 +1,13 @@
+local CHUNKS_REPO = require("tools/constructionSet/terrain/chunksRepo")
+
 return {
 	chunkBanks = require("tools/lib/dataStructures/navigableList"):create {},
-	chunksRepo = {},
-
+	
 	register = function(self, path)
-		local fullPath   = "game/resources/zones/chunks/" .. path .. ".lua"
-		local chunksInfo = require("tools/constructionSet/terrain/chunkImageBuilder"):create(fullPath)
-        local chunks     = require("tools/constructionSet/terrain/chunksBuilder"):create(chunksInfo.image, chunksInfo.size, path) 
-        local chunkList  = require("tools/constructionSet/terrain/chunkList"):create(chunks)
+		local chunkList  = require("tools/constructionSet/terrain/chunkList"):create(CHUNKS_REPO:get(path))
 
         self.chunkBanks:add(chunkList)
-        table.insert(self.chunksRepo, chunks)
-
+        
         return self 
 	end,
 
@@ -25,7 +22,5 @@ return {
 		if n then return self.chunkBanks:get():get(n)
 		else      return self.chunkBanks:get():get()  end
 	end,
-
-	getChunksRepo = function(self) return self.chunksRepo end,
 
 }
