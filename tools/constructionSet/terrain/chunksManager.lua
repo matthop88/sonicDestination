@@ -5,7 +5,7 @@ return {
 	register = function(self, path)
 		local fullPath   = "game/resources/zones/chunks/" .. path .. ".lua"
 		local chunksInfo = require("tools/constructionSet/terrain/chunkImageBuilder"):create(fullPath)
-        local chunks     = require("tools/constructionSet/terrain/chunksBuilder"):create(chunksInfo.image, chunksInfo.size) 
+        local chunks     = require("tools/constructionSet/terrain/chunksBuilder"):create(chunksInfo.image, chunksInfo.size, path) 
         local chunkList  = require("tools/constructionSet/terrain/chunkList"):create(chunks)
 
         self.chunkBanks:add(chunkList)
