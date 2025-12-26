@@ -1,5 +1,6 @@
 local STRING_UTIL = require("tools/lib/stringUtil")
 local CHUNK       = require("tools/constructionSet/terrain/chunk")
+local CHUNKS_REPO = require("tools/constructionSet/terrain/chunksRepo")
 
 return {
 	create = function(self, params)
@@ -55,7 +56,12 @@ return {
         	end,
 
         	printAsTable = function(self)
-        		print("return {")
+        		local varMap = CHUNKS_REPO:getVarMap()
+        		for k, v in pairs(varMap) do
+        			print("local " .. v .. " = \"" .. k .. "\"")
+        		end
+
+        		print("\nreturn {")
         		for rowNum, chunkRow in ipairs(self.chunkMap) do
         			if rowNum <= self.maxRow then
         				if chunkRow.hasData then
@@ -73,7 +79,9 @@ return {
         		for n, v in ipairs(chunkRow) do
         			if n <= chunkRow.maxCell then
         				if v == 0 then table.insert(results, "0")
-        				else           table.insert(results, "{ \"" .. v.name .. "\", " .. v.id .. " }") end
+        				else           
+        					table.insert(results, v:serialize()) 
+        				end
         			end
         		end
         		return "{ " .. (STRING_UTIL:join(results, ", ") or "") .. " }"
