@@ -1,5 +1,9 @@
+local KEYS = { "A", "B", "C", "D", "E", "F", "G", "H" }
+
 return {
-	chunks = {},
+	chunks    = {},
+	count     = 0,
+	chunkVars = {},
 
 	get = function(self, name)
 		local result = self.chunks[name]
@@ -17,6 +21,16 @@ return {
         local chunks     = require("tools/constructionSet/terrain/chunksBuilder"):create(chunksInfo.image, chunksInfo.size, name) 
         
         self.chunks[name] = chunks
+        self.count = self.count + 1
+        self.chunkVars[name] = KEYS[self.count]
         return chunks
+	end,
+
+	getVar = function(self, chunkName)
+		return self.chunkVars[chunkName]
+	end,
+
+	getVarMap = function(self)
+		return self.chunkVars
 	end,
 }
