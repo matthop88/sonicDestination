@@ -98,6 +98,8 @@ PLUGINS = require("plugins/engine")
                 }
 
                 mode = MODE.EDIT
+
+                CHUNK_MAP:read("sampleData")
             end,
         },
     }) 
