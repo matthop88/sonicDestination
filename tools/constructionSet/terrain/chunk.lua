@@ -7,11 +7,15 @@ end
 return {
 	create = function(self, chunks, id)
 		return {
-			chunks = chunks,
-			id     = id,
-			draw   = draw,
+			chunks    = chunks,
+			id        = id,
+			draw      = draw,
 
-			name   = chunks:path(),
+			name      = chunks:path(),
+
+			serialize = function(self)
+				return "{ " .. CHUNKS_REPO:getVar(self.name) .. ", " .. self.id .. " }" 
+	        end,
 		}
 	end,
 
