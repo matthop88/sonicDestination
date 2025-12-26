@@ -1,4 +1,5 @@
 local STRING_UTIL = require("tools/lib/stringUtil")
+local CHUNK       = require("tools/constructionSet/terrain/chunk")
 
 return {
 	create = function(self, params)
@@ -44,13 +45,17 @@ return {
     			local x, y = GRAFX:screenToImageCoordinates(mx, my)
         		local j, i = math.floor(x / self.chunkWidth) + 1, math.floor(y / self.chunkHeight) + 1
         		self.chunkMap[i][j] = self.CHUNKS_MANAGER:get()
+        		self:updateChunkMeta(i, j)
+        	end,
+
+        	updateChunkMeta = function(self, i, j)
         		self.chunkMap[i].hasData = true
         		self.maxRow = math.max(self.maxRow, i)
         		self.chunkMap[i].maxCell = math.max(self.chunkMap[i].maxCell, j)
         	end,
 
         	printAsTable = function(self)
-        		print("{")
+        		print("return {")
         		for rowNum, chunkRow in ipairs(self.chunkMap) do
         			if rowNum <= self.maxRow then
         				if chunkRow.hasData then
@@ -72,6 +77,18 @@ return {
         			end
         		end
         		return "{ " .. (STRING_UTIL:join(results, ", ") or "") .. " }"
+        	end,
+
+        	read = function(self, name)
+        		local chunkData = require("tools/constructionSet/" .. name)
+        		for _, chunkRow in ipairs(chunkData) do
+        			for n, c in ipairs(chunkRow.data) do
+        				if c ~= 0 then
+        					self.chunkMap[chunkRow.row][n] = CHUNK:deserialize(c)
+        					self:updateChunkMeta(chunkRow.row, n)
+        				end
+        			end
+        		end
         	end,
 		}
 	end,
