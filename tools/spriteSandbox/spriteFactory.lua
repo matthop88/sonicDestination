@@ -28,14 +28,14 @@ return ({
     getFromCache = function(self, x, y)
     	local spriteInfo = self.spriteList[self.index]
     	if not spriteInfo.sprite then
-    		spriteInfo.sprite = require("tools/spriteSandbox/sprite"):create(spriteInfo.name, x, y, NO_BUMP_ID)
+    		spriteInfo.sprite = require("tools/lib/sprites/sprite"):create(spriteInfo.name, x, y, NO_BUMP_ID)
     	end
     	return spriteInfo.sprite
     end,
 
     create = function(self, x, y)
     	local spriteInfo = self.spriteList[self.index]
-        return require("tools/spriteSandbox/sprite"):create(spriteInfo.name, x, y)
+        return require("tools/lib/sprites/sprite"):create(spriteInfo.name, x, y)
     end,
 
     next = function(self)
