@@ -6,6 +6,6 @@ return {
         local animation = object.animations[animationName]
         local image     = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. object.imageName .. ".png")
         
-        return require("tools/spriteSandbox/animation"):create(animationName, animation, image)
+        return require("tools/lib/sprites/animation"):create(animationName, animation, image)
     end,
 }
