@@ -3,9 +3,8 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
-local GRAPHICS                    = require("tools/lib/graphics"):create(), 
+local BADNIK_UNIVERSITY_ENGINE    = require("tools/badnikUniversity/badnikUniversityEngine"):create { }
             
-
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -17,7 +16,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+function love.draw()
+    BADNIK_UNIVERSITY_ENGINE:draw()
+end
+
 -- ...
 -- ...
 
@@ -43,7 +45,7 @@ require("plugins/engine")
         interval    = 0.05,
         delay       = 0.5,
     })
-    :add("scrolling",      { imageViewer = GRAPHICS })
-    :add("zooming",        { imageViewer = GRAPHICS })    
-    :add("grid2d",         { graphics    = GRAPHICS })
+    :add("scrolling",      { imageViewer = BADNIK_UNIVERSITY_ENGINE          })
+    :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
+    :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
     
