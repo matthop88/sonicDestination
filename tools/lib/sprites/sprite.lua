@@ -6,7 +6,7 @@ return {
 	createAnimations = function(self, animationData, image)
 		local animationObjects = {}
 		for name, animDataElement in pairs(animationData) do
-			animationObjects[name] = require("tools/spriteSandbox/animation"):create(name, animDataElement, image)
+			animationObjects[name] = require("tools/lib/sprites/animation"):create(name, animDataElement, image)
 		end
 		return animationObjects
 	end,
