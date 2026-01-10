@@ -35,6 +35,8 @@ return {
             handleKeypressed = function(self, key)
                 if key == "b" then
                     self.badnikMode = not self.badnikMode
+                elseif key == "x" and self.badnikMode then
+                    self.badnikSprite:flipX()
                 end
             end,
 
