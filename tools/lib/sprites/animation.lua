@@ -9,14 +9,14 @@ return {
 
 	create = function(self, name, animationData, image)
 		if animationData.parts then
-			return require("tools/spriteSandbox/compositeAnimation"):create(name, animationData, image)
+			return require("tools/lib/sprites/compositeAnimation"):create(name, animationData, image)
 		end
 
 		self:enhanceWithQuads(animationData, image)
 
 		local syncName = nil
 		if animationData.synchronized then syncName = name end
-		local currentFrame = require("tools/spriteSandbox/frame"):create(animationData, syncName)
+		local currentFrame = require("tools/lib/sprites/frame"):create(animationData, syncName)
 			
 		return {
 			name          = name,
@@ -55,7 +55,7 @@ return {
 				if self:synchronized() then syncName = self.name end
 				self.repCount = 0
 				self.visible = true
-				self.currentFrame = require("tools/spriteSandbox/frame"):create(self.data, syncName)
+				self.currentFrame = require("tools/lib/sprites/frame"):create(self.data, syncName)
 			end,
 			
 
