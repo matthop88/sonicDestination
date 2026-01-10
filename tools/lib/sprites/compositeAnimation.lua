@@ -1,4 +1,4 @@
-local ANIMATION_FACTORY = require("tools/spriteSandbox/animationFactory")
+local ANIMATION_FACTORY = require("tools/lib/sprites/animationFactory")
 
 return {
 	create = function(self, name, animationData, image)
