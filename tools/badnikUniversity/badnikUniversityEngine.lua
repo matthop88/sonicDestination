@@ -4,13 +4,14 @@ return {
             graphics = require("tools/lib/graphics"):create(), 
             
             init = function(self, params)
-                -- Do something with params
+                self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", 500, 300)
                 return self
             end,
 
             draw = function(self)
                 love.graphics.setColor(0.24, 0.1, 0.1)
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
+                self.badnikSprite:draw(self.graphics)
             end,
 
             update = function(self, dt)
