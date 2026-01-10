@@ -3,7 +3,7 @@ return {
         return ({
             graphics   = require("tools/lib/graphics"):create(), 
             badnikMode = false,
-            badniks    = require("tools/badnikUniversity/badniks"),
+            badniks    = require("tools/badnikUniversity/badnikList"),
 
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
