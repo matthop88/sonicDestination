@@ -1,11 +1,13 @@
 return {
     create = function(self, params)
         return ({
-            graphics = require("tools/lib/graphics"):create(), 
+            graphics   = require("tools/lib/graphics"):create(), 
             badnikMode = false,
+            badniks    = require("tools/badnikUniversity/badniks"),
 
             init = function(self, params)
-                self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", 500, 300)
+                local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
+                self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", x, y)
                 return self
             end,
 
@@ -13,6 +15,8 @@ return {
                 love.graphics.setColor(0.24, 0.1, 0.1)
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
                 
+                self.badniks:draw(self.graphics)
+
                 if self.badnikMode then
                     love.mouse.setVisible(false)
                     local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
@@ -35,7 +39,12 @@ return {
             end,
 
             handleMousepressed = function(self, mx, my)
-                -- mouse pressed functionality goes here
+                if self.badnikMode then
+                    self.badniks:placeBadnik(self.badnikSprite, self.graphics)
+                    local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
+                    self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", x, y)
+                    self.badnikMode = false
+                end
             end,
 
             handleMousereleased = function(self, mx, my)
