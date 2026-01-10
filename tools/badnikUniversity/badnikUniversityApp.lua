@@ -24,7 +24,9 @@ function love.keypressed(key)
     BADNIK_UNIVERSITY_ENGINE:handleKeypressed(key)
 end
 
--- ...
+function love.mousepressed(mx, my)
+    BADNIK_UNIVERSITY_ENGINE:handleMousepressed(mx, my)
+end
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
@@ -34,6 +36,24 @@ end
 -- ...
 -- ...
 
+--------------------------------------------------------------
+--                          Plugins                         --
+--------------------------------------------------------------
+
+require("plugins/engine")
+    :add("modKeyEnabler")
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
+    :add("keyRepeat", {
+        interval    = 0.05,
+        delay       = 0.5,
+    })
+    :add("scrolling",      { imageViewer = BADNIK_UNIVERSITY_ENGINE          })
+    :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
+    :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
+    
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
