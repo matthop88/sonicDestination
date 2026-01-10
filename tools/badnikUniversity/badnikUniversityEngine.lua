@@ -2,7 +2,8 @@ return {
     create = function(self, params)
         return ({
             graphics = require("tools/lib/graphics"):create(), 
-            
+            badnikMode = false,
+
             init = function(self, params)
                 self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", 500, 300)
                 return self
@@ -11,7 +12,16 @@ return {
             draw = function(self)
                 love.graphics.setColor(0.24, 0.1, 0.1)
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
-                self.badnikSprite:draw(self.graphics)
+                
+                if self.badnikMode then
+                    love.mouse.setVisible(false)
+                    local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
+                    self.badnikSprite:setX(math.floor(x))
+                    self.badnikSprite:setY(math.floor(y))
+                    self.badnikSprite:draw(self.graphics)
+                else
+                    love.mouse.setVisible(true)
+                end
             end,
 
             update = function(self, dt)
@@ -19,7 +29,9 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                -- key pressed functionality goes here
+                if key == "b" then
+                    self.badnikMode = not self.badnikMode
+                end
             end,
 
             handleMousepressed = function(self, mx, my)
