@@ -1,13 +1,14 @@
+
 return {
     create = function(self, params)
         return ({
             graphics   = require("tools/lib/graphics"):create(), 
             badnikMode = false,
             badniks    = require("tools/badnikUniversity/badnikList"),
+            badnikTemplate = require("tools/badnikUniversity/badniks/badnikTemplateFactory"):createTemplate("motobug", "objects/motobug"),
 
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", x, y)
                 return self
             end,
 
@@ -20,9 +21,7 @@ return {
                 if self.badnikMode then
                     love.mouse.setVisible(false)
                     local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                    self.badnikSprite:setX(math.floor(x))
-                    self.badnikSprite:setY(math.floor(y))
-                    self.badnikSprite:draw(self.graphics)
+                    self.badnikTemplate:drawPreviewSprite(self.graphics, math.floor(x), math.floor(y))
                 else
                     love.mouse.setVisible(true)
                 end
@@ -36,15 +35,14 @@ return {
                 if key == "b" then
                     self.badnikMode = not self.badnikMode
                 elseif key == "x" and self.badnikMode then
-                    self.badnikSprite:flipX()
+                    self.badnikTemplate:flipX()
                 end
             end,
 
             handleMousepressed = function(self, mx, my)
                 if self.badnikMode then
-                    self.badniks:placeBadnik(self.badnikSprite, self.graphics)
-                    local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                    self.badnikSprite = require("tools/lib/sprites/sprite"):create("objects/motobug", x, y)
+                    local x, y = self:screenToImageCoordinates(mx, my)
+                    self.badniks:placeBadnik(self.badnikTemplate:create(math.floor(x), math.floor(y)), self.graphics)
                     self.badnikMode = false
                 end
             end,
