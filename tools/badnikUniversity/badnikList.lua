@@ -1,15 +1,15 @@
 return {
-    sprites = require("tools/lib/dataStructures/linkedList"):create(),  
+    badniks = require("tools/lib/dataStructures/linkedList"):create(),  
      
     draw = function(self, GRAFX)
-        self.sprites:head()
-        while not self.sprites:isEnd() do 
-            local sprite = self.sprites:getNext()
-            sprite:draw(GRAFX)
+        self.badniks:head()
+        while not self.badniks:isEnd() do 
+            local badnik = self.badniks:getNext()
+            badnik:draw(GRAFX)
         end
     end,
     
     placeBadnik = function(self, newBadnik, GRAFX)
-        self.sprites:add(newBadnik)
+        self.badniks:add(newBadnik)
     end,
 }
