@@ -54,21 +54,3 @@ require("plugins/engine")
     :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
     :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
     
---------------------------------------------------------------
---                          Plugins                         --
---------------------------------------------------------------
-
-require("plugins/engine")
-    :add("modKeyEnabler")
-    :add("doubleClick",
-    {
-        accessorFnName = "getDoubleClick",
-    })
-    :add("keyRepeat", {
-        interval    = 0.05,
-        delay       = 0.5,
-    })
-    :add("scrolling",      { imageViewer = BADNIK_UNIVERSITY_ENGINE          })
-    :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
-    :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
-    
