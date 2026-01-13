@@ -52,6 +52,8 @@ return {
                            and y >= self.y - self.sprite:getH() / 2
                            and y <  self.y + self.sprite:getH() / 2
                     end,
+
+                    flipX = function(self) self.sprite:flipX() end,
                 }
             end,
         }
