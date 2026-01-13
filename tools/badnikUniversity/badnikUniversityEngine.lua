@@ -38,7 +38,7 @@ return {
             end,
 
             update = function(self, dt)
-                -- update functionality goes here
+                self.badniks:update(dt)
             end,
 
             handleKeypressed = function(self, key)
@@ -53,6 +53,8 @@ return {
                 elseif key == "escape" then
                     if   self.badnikMode then self.badnikMode = false
                     else                      self.badniks:deselect() end
+                elseif key == "backspace" and not self.badnikMode then
+                    self.badniks:deleteSelected()
                 end
             end,
 
