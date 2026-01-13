@@ -5,7 +5,7 @@ return {
             graphics   = require("tools/lib/graphics"):create(), 
             badnikMode = false,
             badniks    = require("tools/badnikUniversity/badnikList"),
-            badnikTemplate = require("tools/badnikUniversity/badniks/badnikTemplateFactory"):createTemplate("motobug", "objects/motobug"),
+            badnikTemplate = require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate("motobug", "objects/motobug"),
 
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
