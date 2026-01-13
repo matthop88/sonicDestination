@@ -9,23 +9,12 @@ return {
                 "motobug",
                 "patabata",
             },
-            badnikTemplates = {
-                index = 1,
-                get  = function(self) return self[self.index] end,
-                next = function(self)
-                    self.index = self.index + 1
-                    if self.index > #self then self.index = 1 end
-                end,
-                prev = function(self)
-                    self.index = self.index - 1
-                    if self.index < 1 then self.index = #self end
-                end,
-            },
+            badnikTemplates = require("tools/lib/dataStructures/navigableList"):create {},
             
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                 for _, badnikName in ipairs(self.badnikRoster) do
-                    table.insert(self.badnikTemplates, require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName))
+                    self.badnikTemplates:add(require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName)))
                 end
                 return self
             end,
