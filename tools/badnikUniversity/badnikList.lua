@@ -25,6 +25,19 @@ return {
         end
     end,
 
+    update = function(self, dt)
+        self.badniks:head()
+        while not self.badniks:isEnd() do 
+            local badnik = self.badniks:get()
+            if badnik.deleted then
+                if self.selectedBadnik  and self.selectedBadnik.deleted  then self:deselect()      end
+                self.badniks:remove() 
+            else                   
+                self.badniks:next()   
+            end
+        end
+    end,
+
     selectBadnikAt = function(self, mx, my, GRAFX)
         local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
 
@@ -40,6 +53,12 @@ return {
 
     deselect = function(self)
         self.selectedBadnik = nil
+    end,
+
+    deleteSelected = function(self)
+        if self.selectedBadnik then
+            self.selectedBadnik.deleted = true
+        end
     end,
 
     drawSelected = function(self, GRAFX)
