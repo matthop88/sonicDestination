@@ -30,6 +30,7 @@ return {
                     local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                     self.badnikTemplates:get():drawPreviewSprite(self.graphics, math.floor(x), math.floor(y))
                 else
+                    self.badniks:drawMouseOver(self.graphics)
                     love.mouse.setVisible(true)
                 end
             end,
