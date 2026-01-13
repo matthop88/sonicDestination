@@ -55,6 +55,10 @@ return {
                     else                      self.badniks:deselect() end
                 elseif key == "backspace" and not self.badnikMode then
                     self.badniks:deleteSelected()
+                elseif key == "shiftleft"  and not self.badnikMode then self.badniks:nudgeSelected(-1,  0)
+                elseif key == "shiftright" and not self.badnikMode then self.badniks:nudgeSelected( 1,  0)
+                elseif key == "shiftup"    and not self.badnikMode then self.badniks:nudgeSelected( 0, -1)
+                elseif key == "shiftdown"  and not self.badnikMode then self.badniks:nudgeSelected( 0,  1)
                 end
             end,
 
