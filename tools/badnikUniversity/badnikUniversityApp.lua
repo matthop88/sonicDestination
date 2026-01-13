@@ -20,6 +20,10 @@ function love.draw()
     BADNIK_UNIVERSITY_ENGINE:draw()
 end
 
+function love.update(dt)
+    BADNIK_UNIVERSITY_ENGINE:update(dt)
+end
+
 function love.keypressed(key)
     BADNIK_UNIVERSITY_ENGINE:handleKeypressed(key)
 end
