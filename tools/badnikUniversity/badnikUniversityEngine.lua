@@ -50,6 +50,9 @@ return {
                     self.badnikTemplates:next()
                 elseif key == "shifttab" and self.badnikMode then
                     self.badnikTemplates:prev()
+                elseif key == "escape" then
+                    if   self.badnikMode then self.badnikMode = false
+                    else                      self.badniks:deselect() end
                 end
             end,
 
