@@ -35,8 +35,17 @@ return {
                     setX  = function(self, x)     self.x = x end,
                     setY  = function(self, y)     self.y = y end,
 
+                    getW  = function(self) return self.sprite:getW() end,
+                    getH  = function(self) return self.sprite:getH() end,
                     draw  = function(self, GRAFX)
                         self.sprite:draw(GRAFX)
+                    end,
+
+                    isInside = function(self, x, y)
+                        return x >= self.x - self.sprite:getW() / 2
+                           and x <  self.x + self.sprite:getW() / 2
+                           and y >= self.y - self.sprite:getH() / 2
+                           and y <  self.y + self.sprite:getH() / 2
                     end,
                 }
             end,
