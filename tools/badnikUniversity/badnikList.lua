@@ -63,9 +63,7 @@ return {
     end,
 
     deleteSelected = function(self)
-        if self.selectedBadnik then
-            self.selectedBadnik.deleted = true
-        end
+        if self.selectedBadnik then self.selectedBadnik.deleted = true end
     end,
 
     drawSelected = function(self, GRAFX)
@@ -75,6 +73,10 @@ return {
             GRAFX:setLineWidth(2)
             GRAFX:rectangle("line", badnik:getX() - (badnik:getW() / 2) - 2, badnik:getY() - (badnik:getH() / 2) - 2, badnik:getW() + 4, badnik:getH() + 4)
         end
+    end,
+
+    flipSelected = function(self)
+        if self.selectedBadnik then self.selectedBadnik:flipX() end
     end,
     
     placeBadnik = function(self, newBadnik, GRAFX)
