@@ -28,7 +28,7 @@ return {
     selectBadnikAt = function(self, mx, my, GRAFX)
         local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
 
-        self.selectedBadnik = nil
+        self:deselect()
         self.badniks:head()
         while not self.badniks:isEnd() do 
             local badnik = self.badniks:getNext()
@@ -36,6 +36,10 @@ return {
                 self.selectedBadnik = badnik
             end
         end
+    end,
+
+    deselect = function(self)
+        self.selectedBadnik = nil
     end,
 
     drawSelected = function(self, GRAFX)
