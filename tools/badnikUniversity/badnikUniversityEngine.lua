@@ -44,8 +44,9 @@ return {
             handleKeypressed = function(self, key)
                 if key == "b" then
                     self.badnikMode = not self.badnikMode
-                elseif key == "x" and self.badnikMode then
-                    self.badnikTemplates:get():flipX()
+                elseif key == "x" then
+                    if self.badnikMode then self.badnikTemplates:get():flipX()
+                    else                    self.badniks:flipSelected()    end
                 elseif key == "tab" and self.badnikMode then
                     self.badnikTemplates:next()
                 elseif key == "shifttab" and self.badnikMode then
