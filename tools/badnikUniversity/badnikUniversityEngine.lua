@@ -33,6 +33,8 @@ return {
                     self.badniks:drawMouseOver(self.graphics)
                     love.mouse.setVisible(true)
                 end
+
+                self.badniks:drawSelected(self.graphics)
             end,
 
             update = function(self, dt)
@@ -56,6 +58,8 @@ return {
                     local x, y = self:screenToImageCoordinates(mx, my)
                     self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
                     self.badnikMode = false
+                else
+                    self.badniks:selectBadnikAt(mx, my, self.graphics)
                 end
             end,
 
