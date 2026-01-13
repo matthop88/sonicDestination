@@ -14,7 +14,7 @@ return {
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                 for _, badnikName in ipairs(self.badnikRoster) do
-                    self.badnikTemplates:add(require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName)))
+                    self.badnikTemplates:add(require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName))
                 end
                 return self
             end,
