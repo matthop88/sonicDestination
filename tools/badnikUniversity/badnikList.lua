@@ -38,6 +38,13 @@ return {
         end
     end,
 
+    nudgeSelected = function(self, dx, dy)
+        if self.selectedBadnik then
+            self.selectedBadnik:setX(self.selectedBadnik:getX() + dx)
+            self.selectedBadnik:setY(self.selectedBadnik:getY() + dy)
+        end
+    end,
+
     selectBadnikAt = function(self, mx, my, GRAFX)
         local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
 
