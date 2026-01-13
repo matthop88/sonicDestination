@@ -1,11 +1,13 @@
 local NO_BUMP_ID = true
 
 return {
-    createTemplate = function(self, name, path)
+    createTemplate = function(self, name)
+        local badnikData = require("tools/badnikUniversity/factories/badniks/" .. name)
+
         return {
-            name  = name,
-            path  = path,
-            spritePreview = require("tools/lib/sprites/sprite"):create(path, 0, 0, NO_BUMP_ID),
+            name  = badnikData.name,
+            path  = badnikData.path,
+            spritePreview = require("tools/lib/sprites/sprite"):create(badnikData.path, 0, 0, NO_BUMP_ID),
             xFlip = false,
             
             drawPreviewSprite = function(self, GRAFX, x, y)
