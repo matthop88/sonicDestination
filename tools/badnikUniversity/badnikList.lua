@@ -1,6 +1,8 @@
 return {
     badniks = require("tools/lib/dataStructures/linkedList"):create(),  
      
+    selectedBadnik = nil,
+
     draw = function(self, GRAFX)
         self.badniks:head()
         while not self.badniks:isEnd() do 
@@ -22,9 +24,32 @@ return {
             end
         end
     end,
+
+    selectBadnikAt = function(self, mx, my, GRAFX)
+        local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+
+        self.selectedBadnik = nil
+        self.badniks:head()
+        while not self.badniks:isEnd() do 
+            local badnik = self.badniks:getNext()
+            if badnik:isInside(x, y) then
+                self.selectedBadnik = badnik
+            end
+        end
+    end,
+
+    drawSelected = function(self, GRAFX)
+        local badnik = self.selectedBadnik
+        if badnik ~= nil then
+            GRAFX:setColor(1, 1, 1)
+            GRAFX:setLineWidth(2)
+            GRAFX:rectangle("line", badnik:getX() - (badnik:getW() / 2) - 2, badnik:getY() - (badnik:getH() / 2) - 2, badnik:getW() + 4, badnik:getH() + 4)
+        end
+    end,
     
     placeBadnik = function(self, newBadnik, GRAFX)
         self.badniks:add(newBadnik)
+        self.selectedBadnik = newBadnik
     end,
 
 }
