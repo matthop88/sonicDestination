@@ -77,6 +77,10 @@ return {
                 -- mouse released functionality goes here
             end,
 
+            getBadnikList = function(self)
+                return self.badniks:getList()
+            end,
+
             ---------------------- Graphics Object Methods ------------------------
 
             moveImage = function(self, deltaX, deltaY)
