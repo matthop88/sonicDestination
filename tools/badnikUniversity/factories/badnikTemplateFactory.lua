@@ -54,6 +54,12 @@ return {
                     end,
 
                     flipX = function(self) self.sprite:flipX() end,
+
+                    drawThumbnail = function(self, GRAFX, x, y, sX, sY)
+                        self.sprite:drawThumbnail(GRAFX, x, y, sX, sY)
+                    end,
+
+                    getID = function(self) return self.sprite:getID() end,
                 }
             end,
         }
