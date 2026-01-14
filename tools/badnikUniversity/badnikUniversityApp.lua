@@ -57,4 +57,5 @@ require("plugins/engine")
     :add("scrolling",      { imageViewer = BADNIK_UNIVERSITY_ENGINE          })
     :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
     :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
+    :add("listVisualizer", { listFn      = function() return BADNIK_UNIVERSITY_ENGINE:getBadnikList() end })
     
