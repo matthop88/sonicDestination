@@ -84,4 +84,6 @@ return {
         self.selectedBadnik = newBadnik
     end,
 
+    getList = function(self) return self.badniks end,
+
 }
