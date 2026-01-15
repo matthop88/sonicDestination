@@ -20,16 +20,7 @@ return {
     end,
 
     update = function(self, dt)
-        self.badniks:head()
-        while not self.badniks:isEnd() do 
-            local badnik = self.badniks:get()
-            if badnik.deleted then
-                if self.selectedBadnik  and self.selectedBadnik.deleted  then self:deselect()      end
-                self.badniks:remove() 
-            else                   
-                self.badniks:next()   
-            end
-        end
+        -- Do nothing
     end,
 
     nudgeSelected = function(self, dx, dy)
@@ -56,7 +47,13 @@ return {
     end,
 
     deleteSelected = function(self)
-        if self.selectedBadnik then self.selectedBadnik.deleted = true end
+        self.badniks:forEach(function(badnik)
+            if self.selectedBadnik == badnik then
+                self:deselect()
+                self.badniks:remove()
+                return true
+            end
+        end)
     end,
 
     drawSelected = function(self, GRAFX)
