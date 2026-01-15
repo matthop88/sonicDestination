@@ -74,6 +74,7 @@ return {
         self.selectedBadnik = newBadnik
     end,
 
-    getList = function(self) return self.badniks end,
-
+    size    = function(self)     return self.badniks:size()      end,
+    remove  = function(self)     return self.badniks:remove()    end,
+    forEach = function(self, fn) return self.badniks:forEach(fn) end,
 }
