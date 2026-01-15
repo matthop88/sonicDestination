@@ -125,7 +125,7 @@ return {
             end,
 
             getSpriteList = function(self)
-                return self.sprites:getSpriteList()
+                return self.sprites
             end,
         }):init(params)
     end,
