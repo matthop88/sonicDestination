@@ -78,7 +78,7 @@ return {
             end,
 
             getBadnikList = function(self)
-                return self.badniks:getList()
+                return self.badniks
             end,
 
             ---------------------- Graphics Object Methods ------------------------
