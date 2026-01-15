@@ -4,11 +4,7 @@ return {
     selectedBadnik = nil,
 
     draw = function(self, GRAFX)
-        self.badniks:head()
-        while not self.badniks:isEnd() do 
-            local badnik = self.badniks:getNext()
-            badnik:draw(GRAFX)
-        end
+        self.badniks:forEach(function(badnik) badnik:draw(GRAFX) end)
     end,
 
     drawMouseOver = function(self, GRAFX)
