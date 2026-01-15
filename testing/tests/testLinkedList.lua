@@ -115,5 +115,18 @@ return {
         return TESTING:assertEquals(name, 60 + cellID, highestCellID)
     end,
 
+    testForEach = function(self)
+        local name = "For Each Test: increment list of five elements"
+
+        for i = 1, 5 do self.LINKED_LIST:add { value = i } end
+
+        self.LINKED_LIST:forEach(function(element) element.value = element.value + 1 end)
+
+        local resultString = ""
+        self.LINKED_LIST:forEach(function(element) resultString = resultString .. element.value end)
+
+        return TESTING:assertEquals(name, "23456", resultString)
+    end,
+
 
 }
