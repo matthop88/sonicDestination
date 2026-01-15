@@ -36,13 +36,20 @@ return {
         self:deselect()
         self.badniks:forEach(function(badnik)
             if badnik:isInside(x, y) then
-                self.selectedBadnik = badnik
+                self:selectBadnik(badnik)
                 return true
             end
         end)
     end,
 
+    selectBadnik = function(self, badnik)
+        self:deselect()
+        badnik.selected     = true
+        self.selectedBadnik = badnik
+    end,
+
     deselect = function(self)
+        if self.selectedBadnik then self.selectedBadnik.selected = false end
         self.selectedBadnik = nil
     end,
 
@@ -71,7 +78,7 @@ return {
     
     placeBadnik = function(self, newBadnik, GRAFX)
         self.badniks:add(newBadnik)
-        self.selectedBadnik = newBadnik
+        self:selectBadnik(newBadnik)
     end,
 
     size    = function(self)     return self.badniks:size()      end,
