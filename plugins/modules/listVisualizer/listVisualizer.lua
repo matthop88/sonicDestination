@@ -29,6 +29,7 @@ return {
 			local coordinatesOfLast = ((self.list:size()) * 100) + 50
 			local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
 			self.xOffset = math.min(0, math.max(minXOffset, self.xOffset))
+			self.selected = self.list:getSelected()
 		end
 	end,
 
@@ -120,7 +121,7 @@ return {
 	end,
 
 	drawCell = function(self, element, x)
-		if element.selected 
+		if element == self.selected
 		or element.selectedInVisualizer then 
 			self.graphics:setColor(1, 1, 0.3, 0.9)
 		else                    
@@ -132,7 +133,7 @@ return {
 		self.graphics:setLineWidth(3)
 		self.graphics:rectangle("line", x, self.topY + 25, 50, 50)
 		
-		if element.selected 
+		if element == self.selected
 		or element.selectedInVisualizer then
 			self.graphics:setColor(1, 1, 1, 0.4)
 			self:drawThumbnail(element, x)
