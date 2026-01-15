@@ -151,8 +151,6 @@ return ({
     end,
 
     selectSprite = function(self, sprite)
-        if self.selectedSprite then self.selectedSprite.selected = false end
-        sprite.selected = true
         self.selectedSprite = sprite
         local sprite = self.selectedSprite
         local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
@@ -161,7 +159,6 @@ return ({
     end,
 
     deselectSprite = function(self)
-        if self.selectedSprite then self.selectedSprite.selected = false end
         self.selectedSprite = nil
         self.rotatingBorder = nil
         self.coordinateBox  = nil
@@ -266,5 +263,10 @@ return ({
     getSpriteList = function(self)
         return self.sprites
     end,
+
+    getSelected = function(self)     return self.selectedSprite      end,
+    size        = function(self)     return self.sprites:size()      end,
+    forEach     = function(self, fn) return self.sprites:forEach(fn) end,
+    remove      = function(self)     return self.sprites:remove()    end,
 
 }):init()
