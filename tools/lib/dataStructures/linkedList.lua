@@ -150,6 +150,19 @@ return {
 			end,
 
 			isEnd = function(self) return self.__current == nil end,
+
+			forEach = function(self, func)
+				local oldCurrent = self.__current
+
+				self:head()
+        		while not self:isEnd() do 
+            		local element  = self:getNext()
+            		local finished = func(element)
+            		if finished then break end
+            	end
+
+            	self.__current = oldCurrent
+            end,
 		}
 	end,
 }
