@@ -48,35 +48,29 @@ return {
 
 	handleMousepressed = function(self, mx, my)
 		if self.active then
-			self.list:head()
 			local n, x = 1, 50 + self.xOffset
-			while not self.list:isEnd() do
-				local elem = self.list:getNext()
+			self.list:forEach(function(elem)
 				elem.selectedInVisualizer = false
 				if self:isInside(mx, my, x) then
 					elem.selectedInVisualizer = true
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
 				end
 				n, x = n + 1, x + 100
-			end
+			end)
 		end
 	end,
 
 	deselect = function(self)
-		self.list:head()
-		while not self.list:isEnd() do
-			local elem = self.list:getNext()
-			elem.selectedInVisualizer = false
-		end
+		self.list:forEach(function(elem) elem.selectedInVisualizer = false end)
 	end,
 
 	deleteSelected = function(self)
-		self.list:head()
-		while not self.list:isEnd() do
-			local elem = self.list:get()
-			if elem.selectedInVisualizer then self.list:remove()
-			else                              self.list:next()  end
-		end
+		self.list:forEach(function(elem)
+			if elem.selectedInVisualizer then 
+				self.list:remove()
+				return true
+			end
+		end)
 	end,
 
 	drawBackground = function(self)
@@ -86,23 +80,19 @@ return {
 	end,
 
 	drawList = function(self)
-		self.list:head()
-
 		local n, x = 1, 50 + self.xOffset
-		while not self.list:isEnd() do
+		self.list:forEach(function(elem, cellID)
 			if x > -100 and x < self.graphics:getScreenWidth() then
-				self:drawListElement(n, x)
+				self:drawListElement(elem, cellID, n, x)
 			end
 			n, x = n + 1, x + 100
-			self.list:next()
-		end
+		end)
 	end,
 
-	drawListElement = function(self, n, x)
-		local element = self.list:get()
+	drawListElement = function(self, element, cellID, n, x)
 		self:checkMousedOver(element, x)
 
-		self:drawCellID(x)
+		self:drawCellID(cellID, x)
 		self:drawCell(element, x)
 
 		if n < self.list:size() then self:drawArrows(x) end
@@ -117,15 +107,16 @@ return {
 		element.mousedOverInVisualizer = self:isInside(mx, my, x)
 	end,
 
-	drawCellID = function(self, x)
-		local cellID = self.list:getCellID()
-		self.graphics:setColor(0.5, 0.5, 0.5)
-		self.graphics:rectangle("fill", x + 5, self.topY + 75, 40, 18)
-		self.graphics:setColor(1, 1, 1)
-		self.graphics:setLineWidth(2)
-		self.graphics:rectangle("line", x + 5, self.topY + 75, 40, 18)
-		self.graphics:setFontSize(12)
-		self.graphics:printf("" .. cellID, x + 5, self.topY + 77, 40, "center")
+	drawCellID = function(self, cellID, x)
+		if cellID then
+			self.graphics:setColor(0.5, 0.5, 0.5)
+			self.graphics:rectangle("fill", x + 5, self.topY + 75, 40, 18)
+			self.graphics:setColor(1, 1, 1)
+			self.graphics:setLineWidth(2)
+			self.graphics:rectangle("line", x + 5, self.topY + 75, 40, 18)
+			self.graphics:setFontSize(12)
+			self.graphics:printf("" .. cellID, x + 5, self.topY + 77, 40, "center")
+		end
 	end,
 
 	drawCell = function(self, element, x)
