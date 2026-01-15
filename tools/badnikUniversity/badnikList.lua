@@ -43,13 +43,12 @@ return {
         local x, y = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
 
         self:deselect()
-        self.badniks:head()
-        while not self.badniks:isEnd() do 
-            local badnik = self.badniks:getNext()
+        self.badniks:forEach(function(badnik)
             if badnik:isInside(x, y) then
                 self.selectedBadnik = badnik
+                return true
             end
-        end
+        end)
     end,
 
     deselect = function(self)
