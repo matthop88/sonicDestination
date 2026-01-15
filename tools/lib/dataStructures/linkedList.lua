@@ -156,13 +156,16 @@ return {
 
 				self:head()
         		while not self:isEnd() do 
-            		local element  = self:getNext()
-            		local finished = func(element)
-            		if finished then break end
+        			local cellID   = self:getCellID()
+            		local element  = self:get()
+            		local finished = func(element, cellID)
+            		if finished then break 
+            		else             self:next()       end
             	end
 
             	self.__current = oldCurrent
             end,
+
 		}
 	end,
 }
