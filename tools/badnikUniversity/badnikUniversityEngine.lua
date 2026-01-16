@@ -38,7 +38,7 @@ return {
             end,
 
             update = function(self, dt)
-                self.badniks:update(dt)
+                self.badniks:update(dt, self.graphics)
             end,
 
             handleKeypressed = function(self, key)
