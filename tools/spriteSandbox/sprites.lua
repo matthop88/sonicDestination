@@ -1,133 +1,267 @@
-local SELECT         = "select"
-local SPRITE         = "sprite"
 local SPRITE_FACTORY = require("tools/spriteSandbox/spriteFactory")
 
-return {
-    create = function(self, params)
-        return ({
-            graphics         = require("tools/lib/graphics"):create(), 
-            sprites          = require("tools/spriteSandbox/sprites"),
-            mode             = nil,
-            backgroundImage  = nil,
-
-            init = function(self, params)
-                self.backgroundImage = params.backgroundImage
-                self:setSelectMode()
-                return self
-            end,
-
-            draw = function(self)
-                love.graphics.setColor(0.1, 0.1, 0.1)
-                love.graphics.rectangle("fill", 0, 0, 1200, 800)
-
-                self:drawBackgroundImage()
-                self:drawSprites()
-                self:drawMode()
-                self:drawSelectedSprite()
-            end,
-
-            drawBackgroundImage = function(self)
-                if self.backgroundImage then
-                    self.graphics:setColor(1, 1, 1)
-                    self.graphics:draw(self.backgroundImage, 0, 0)
-                end
-            end,
-
-            drawSprites = function(self)
-                self.sprites:draw(self.graphics)
-            end,
-
-            drawMode = function(self)
-                if   self.mode == SPRITE then self.sprites:drawCurrentSprite(self.graphics)
-                else                          self.sprites:drawMouseoverSprite(self.graphics) end
-            end,
-
-            drawSelectedSprite = function(self)
-                self.sprites:drawSelectedSprite(self.graphics)
-            end,
-                    
-            update = function(self, dt)
-                self.sprites:update(dt, self.graphics)
-            end,
-
-            handleKeypressed = function(self, key)
-                if     key == "s"      then
-                    self.sprites:deselectSprite()
-                    if self.mode ~= SPRITE then self:setSpriteMode()
-                    else                        self:setSelectMode() end
-                elseif key == "escape" then     
-                    self:setSelectMode()
-                    self.sprites:deselectSprite()
-                elseif key == "shiftleft" or key == "shiftup" or key == "shiftdown" or key == "shiftright" then
-                    self.sprites:shiftSelectedSprite(key)
-                elseif key == "backspace" then
-                    self.sprites:deleteSelectedSprite()
-                elseif key == "tab" then
-                    if self.mode == SPRITE then self.sprites:advanceCurrent(self.graphics)
-                    else                        self.sprites:advanceSelectedSprite()   end
-                elseif key == "shifttab" then
-                    if self.mode == SPRITE then self.sprites:regressCurrent(self.graphics)
-                    else                        self.sprites:regressSelectedSprite()   end
-                elseif key == "space" then
-                    if self.mode == SELECT then self.sprites:toggleFreeze()            end
-                elseif key == "<" then
-                    if self.mode == SELECT then self.sprites:prevFrame()               end
-                elseif key == ">" then
-                    if self.mode == SELECT then self.sprites:nextFrame()               end
-                elseif key == "x"     then
-                    if self.mode == SPRITE then self.sprites:flipCurrentSpriteX()
-                    else                        self.sprites:flipSelectedSpriteX()     end
-                end
-            end,
-
-            handleMousepressed = function(self, mx, my)
-                if self.mode == SPRITE then
-                    self.sprites:placeCurrentSprite(self.graphics)
-                    
-                    if not love.keyboard.isDown("lalt", "ralt") then self:setSelectMode() end
-                else
-                    self.sprites:onSpriteHeld(self.graphics)
-                end
-            end,
-
-            handleMousereleased = function(self, mx, my)
-                self.sprites:onSpriteReleased()
-            end,
-
-            setSelectMode = function(self)
-                self.mode = SELECT
-                love.mouse.setVisible(true)
-            end,
-
-            setSpriteMode = function(self)
-                self.mode = SPRITE
-                love.mouse.setVisible(false)
-            end,
-
-            moveImage = function(self, deltaX, deltaY)
-                self.graphics:moveImage(deltaX / self.graphics:getScale(), deltaY / self.graphics:getScale())
-            end,
-
-            screenToImageCoordinates = function(self, screenX, screenY)
-                return self.graphics:screenToImageCoordinates(screenX, screenY)
-            end,
-
-            imageToScreenCoordinates = function(self, imageX, imageY)
-                return self.graphics:imageToScreenCoordinates(imageX, imageY)
-            end,
-
-            adjustScaleGeometrically = function(self, deltaScale)
-                self.graphics:adjustScaleGeometrically(deltaScale)
-            end,
-
-            syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
-                self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
-            end,
-
-            getSpriteList = function(self)
-                return self.sprites
-            end,
-        }):init(params)
+return ({
+    rotatingBorder  = nil,
+    coordinateBox   = nil,
+    sprites         = require("tools/lib/dataStructures/linkedList"):create(),  
+    currentSprite   = nil,
+    selectedSprite  = nil,
+    heldSprite      = nil,
+    mouseoverSprite = nil,
+    
+    init = function(self)
+        self:initCurrentSprite(0, 0)
+        return self
     end,
-}
 
+    draw = function(self, GRAFX)
+        self:drawNonPlayer(GRAFX)
+        self:drawPlayer(GRAFX)
+        self:drawForeground(GRAFX)
+    end,
+
+    drawNonPlayer = function(self, GRAFX)
+        self.sprites:forEach(function(sprite)
+            if not sprite:isPlayer() and not sprite:isForeground() then sprite:draw(GRAFX) end
+        end)
+    end,
+
+    drawPlayer = function(self, GRAFX)
+        self.sprites:forEach(function(sprite)
+            if sprite:isPlayer() then sprite:draw(GRAFX) end
+        end)
+    end,
+
+    drawForeground = function(self, GRAFX)
+        self.sprites:forEach(function(sprite)
+            if sprite:isForeground() then sprite:draw(GRAFX) end
+        end)
+    end,
+
+    drawCurrentSprite = function(self, GRAFX)
+        self.currentSprite:draw(GRAFX)
+    end,
+
+    drawMouseoverSprite = function(self, GRAFX)
+        local sprite = self.mouseoverSprite or self.externallyConsidered
+        if     sprite == self.selectedSprite then self:drawMouseoverSelectedRect(GRAFX)
+        elseif sprite                        then self:drawMouseoverRect(GRAFX)     end
+    end,
+
+    drawMouseoverSelectedRect = function(self, GRAFX)
+        if love.mouse.isDown(1) then self:drawMousepressedRect(GRAFX) end
+    end,
+
+    drawMousepressedRect = function(self, GRAFX)
+        local sprite = self.mouseoverSprite or self.externallyConsidered
+        local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+        
+        GRAFX:setColor(1, 1, 1, 0.8)
+        GRAFX:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+    end, 
+
+    drawMouseoverRect = function(self, GRAFX)    
+        local sprite = self.mouseoverSprite or self.externallyConsidered
+        local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+        
+        GRAFX:setColor(0, 1, 1, 0.7)
+        GRAFX:setLineWidth(1)
+        GRAFX:rectangle("line", x - (w / 2) - 1, y - (h / 2) - 1, w + 2, h + 2)
+    end,
+
+    drawSelectedSprite = function(self, GRAFX)
+        if self.rotatingBorder then self.rotatingBorder:draw(GRAFX) end
+        if self.coordinateBox  then self.coordinateBox:draw(GRAFX)  end
+    end,
+
+    update = function(self, dt, GRAFX)
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        
+        self:updateSprites(dt)
+        self:updateMouseoverSprite(dt, px, py)
+        self:updateCurrentSprite(dt, px, py)
+        self:updateHeldSprite(dt, px, py)
+        self:updateSelectedSprite(dt)
+    end,
+
+    updateSprites = function(self, dt)
+        self.sprites:forEach(function(sprite)
+            sprite:update(dt)
+            if sprite.deleted then
+                if self.selectedSprite  and self.selectedSprite.deleted  then self:deselectSprite()      end
+                if self.mouseoverSprite and self.mouseoverSprite.deleted then self.mouseoverSprite = nil end
+                if self.heldSprite      and self.heldSprite.deleted      then self.heldSprite      = nil end
+                self.sprites:remove() 
+                return true
+            end
+        end)
+    end,
+
+    updateMouseoverSprite = function(self, dt, px, py)
+        self.mouseoverSprite = nil
+        self.sprites:forEach(function(sprite)
+            if sprite:isInside(px, py) then 
+                self.mouseoverSprite = sprite 
+                self.externallyConsidered = nil
+                return true
+            end
+        end)
+    end,
+
+    updateCurrentSprite = function(self, dt, px, py)
+        if self.currentSprite and not self.selectedSprite then
+            self.currentSprite:setX(px) 
+            self.currentSprite:setY(py)
+            self.currentSprite:update(dt)
+        end
+    end,
+
+    updateHeldSprite = function(self, dt, px, py)
+        if self.heldSprite then
+            local sprite, dx, dy = self.heldSprite.sprite, self.heldSprite.dx, self.heldSprite.dy
+            sprite:setX(math.floor(px + dx))
+            sprite:setY(math.floor(py + dy))
+        end
+    end,
+
+    updateSelectedSprite = function(self, dt)
+        if self.selectedSprite then
+            if self.rotatingBorder then
+                self.rotatingBorder:update(dt) 
+                self.rotatingBorder:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+            end
+            if self.coordinateBox  then
+                self.coordinateBox:update(dt)
+                self.coordinateBox:updateCoordinates(self.selectedSprite.x, self.selectedSprite.y)
+            end
+        end
+    end,
+
+    selectSprite = function(self, sprite)
+        self.selectedSprite = sprite
+        local sprite = self.selectedSprite
+        local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+        self.rotatingBorder = require("tools/spriteSandbox/rotatingBorder"):create(x, y, w, h)
+        self.coordinateBox  = require("tools/spriteSandbox/coordinateBox"):create(x, y)
+    end,
+
+    deselectSprite = function(self)
+        self.selectedSprite = nil
+        self.rotatingBorder = nil
+        self.coordinateBox  = nil
+    end,
+
+    onSpriteHeld = function(self, GRAFX)
+        if self.mouseoverSprite then 
+            self:holdSprite(GRAFX)
+            self:selectSprite(self.mouseoverSprite) 
+        end
+    end,
+
+    holdSprite = function(self, GRAFX)
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        local sprite = self.mouseoverSprite
+        self.heldSprite = { sprite = sprite, dx = sprite.x - px, dy = sprite.y - py }
+    end,
+
+    onSpriteReleased = function(self)
+        self.heldSprite = nil
+    end,
+
+    initCurrentSprite = function(self, px, py)
+        self.currentSprite = SPRITE_FACTORY:getFromCache(px, py)
+    end,
+
+    placeCurrentSprite = function(self, GRAFX)
+        local newSprite = SPRITE_FACTORY:create(self.currentSprite:getX(), self.currentSprite:getY())
+        if self.currentSprite.xScale < 0 then newSprite:flipX() end
+        self.sprites:add(newSprite)
+        
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        self:initCurrentSprite(math.floor(px), math.floor(py))
+    end,
+
+    shiftSelectedSprite = function(self, key)
+        if self.selectedSprite then
+            local sprite = self.selectedSprite
+            if     key == "shiftleft"  then sprite:setX(sprite.x - 1)
+            elseif key == "shiftright" then sprite:setX(sprite.x + 1)
+            elseif key == "shiftup"    then sprite:setY(sprite.y - 1)
+            elseif key == "shiftdown"  then sprite:setY(sprite.y + 1) end
+        end
+    end,
+
+    deleteSelectedSprite = function(self)
+        if self.selectedSprite then 
+            self.selectedSprite.deleted = true 
+            self:deselectSprite()
+        end
+    end,
+
+    advanceSelectedSprite = function(self)
+        if self.selectedSprite then
+            self.selectedSprite:advanceAnimation()
+            self.rotatingBorder:updateDimensions(self.selectedSprite:getW(), self.selectedSprite:getH())
+        end
+    end,
+
+    regressSelectedSprite = function(self)
+        if self.selectedSprite then
+            self.selectedSprite:regressAnimation()
+            self.rotatingBorder:updateDimensions(self.selectedSprite:getW(), self.selectedSprite:getH())
+        end
+    end,
+
+    advanceCurrent = function(self, GRAFX)
+        SPRITE_FACTORY:next()
+        self:updateCurrent(GRAFX)
+    end,
+
+    regressCurrent = function(self, GRAFX)
+        SPRITE_FACTORY:prev()
+        self:updateCurrent(GRAFX)
+    end,
+
+    updateCurrent = function(self, GRAFX)
+        local px, py = GRAFX:screenToImageCoordinates(love.mouse.getPosition())
+        self:initCurrentSprite(math.floor(px), math.floor(py))
+    end,
+
+    toggleFreeze = function(self)
+        if self.selectedSprite then self.selectedSprite:toggleFreeze() end
+    end,
+
+    prevFrame = function(self)
+        if self.selectedSprite then self.selectedSprite:prevFrame() end
+    end,
+
+    nextFrame = function(self)
+        if self.selectedSprite then self.selectedSprite:nextFrame() end
+    end,
+
+    flipSelectedSpriteX = function(self)
+        if self.selectedSprite then self.selectedSprite:flipX() end
+    end,
+
+    flipCurrentSpriteX = function(self)
+        if self.currentSprite then self.currentSprite:flipX() end
+    end,
+
+    getSpriteList = function(self)
+        return self.sprites
+    end,
+
+    getSelected   = function(self)     return self.selectedSprite           end,
+    setSelected   = function(self, s)         self:selectSprite(s)          end,
+    getConsidered = function(self)     return self.mouseoverSprite          end,
+    setConsidered = function(self, s)         self.externallyConsidered = s end,
+    size          = function(self)     return self.sprites:size()           end,
+    forEach       = function(self, fn) return self.sprites:forEach(fn)      end,
+    remove        = function(self)     
+        self.sprites:remove() 
+        self:deselectSprite()
+        self.mouseoverSprite = nil 
+        self.externallyConsidered = nil       
+    end,
+
+}):init()
