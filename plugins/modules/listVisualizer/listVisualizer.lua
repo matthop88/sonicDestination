@@ -29,13 +29,24 @@ return {
 			local coordinatesOfLast = ((self.list:size()) * 100) + 50
 			local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
 			self.xOffset = math.min(0, math.max(minXOffset, self.xOffset))
-			self.selected = self.list:getSelected()
+			self.selected   = self.list:getSelected()
+			self.considered = self.list:getConsidered()
+
+			local n, x = 1, 50 + self.xOffset
+			self.list:forEach(function(elem)
+				if self:checkMousedOver(elem, x) then
+					return true
+				end
+				n, x = n + 1, x + 100
+			end)
+			self.list:setConsidered(self.considered)
+
 		end
 	end,
 
 	handleKeypressed = function(self, key)
 		if self.active then
-			if     key == "escape"      then self:deselect()
+			if     key == "escape"      then self.selected = nil
 			elseif key == "backspace"   then self:deleteSelected()
 			elseif key == "optionright" then self.xSpeed = -2000
 			elseif key == "optionleft"  then self.xSpeed =  2000 end
@@ -49,25 +60,26 @@ return {
 
 	handleMousepressed = function(self, mx, my)
 		if self.active then
+			self.selected = nil
 			local n, x = 1, 50 + self.xOffset
 			self.list:forEach(function(elem)
-				elem.selectedInVisualizer = false
 				if self:isInside(mx, my, x) then
-					elem.selectedInVisualizer = true
+					if self.list.setSelected then self.list:setSelected(elem) end
+					self.selected = elem
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
+					return true
 				end
 				n, x = n + 1, x + 100
 			end)
+
+			if self.selected then return true end
 		end
 	end,
 
-	deselect = function(self)
-		self.list:forEach(function(elem) elem.selectedInVisualizer = false end)
-	end,
-
+	
 	deleteSelected = function(self)
 		self.list:forEach(function(elem)
-			if elem.selectedInVisualizer then 
+			if self.selected == elem then 
 				self.list:remove()
 				return true
 			end
@@ -91,8 +103,6 @@ return {
 	end,
 
 	drawListElement = function(self, element, cellID, n, x)
-		self:checkMousedOver(element, x)
-
 		self:drawCellID(cellID, x)
 		self:drawCell(element, x)
 
@@ -105,7 +115,10 @@ return {
 
 	checkMousedOver = function(self, element, x)
 		local mx, my = love.mouse.getPosition()
-		element.mousedOverInVisualizer = self:isInside(mx, my, x)
+		if self:isInside(mx, my, x) then
+			self.considered = element
+			return true
+		end
 	end,
 
 	drawCellID = function(self, cellID, x)
@@ -121,20 +134,14 @@ return {
 	end,
 
 	drawCell = function(self, element, x)
-		if element == self.selected
-		or element.selectedInVisualizer then 
-			self.graphics:setColor(1, 1, 0.3, 0.9)
-		else                    
-			if element.mousedOver 
-			or element.mousedOverInVisualizer then self.graphics:setColor(0, 1, 1, 0.7)
-			else                                   self.graphics:setColor(1, 1, 1, 0.9) end
-		end
+		if     element == self.selected   then self.graphics:setColor(1, 1, 0.3, 0.9)
+		elseif element == self.considered then self.graphics:setColor(0, 1, 1,   0.7)
+		else                                   self.graphics:setColor(1, 1, 1, 0.9)   end
 		
 		self.graphics:setLineWidth(3)
 		self.graphics:rectangle("line", x, self.topY + 25, 50, 50)
 		
-		if element == self.selected
-		or element.selectedInVisualizer then
+		if element == self.selected then
 			self.graphics:setColor(1, 1, 1, 0.4)
 			self:drawThumbnail(element, x)
 			self.graphics:setColor(1, 1, 1)
