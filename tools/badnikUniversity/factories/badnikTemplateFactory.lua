@@ -60,6 +60,16 @@ return {
                     end,
 
                     getID = function(self) return self.sprite:getID() end,
+
+                    getPublicAttributes = function(self)
+                        -- Can either return a field or a function.
+                        -- Functions can be repeatedly called for refreshing values.
+                        return {
+                            name = self.name,
+                            x    = self.getX,
+                            y    = self.getY,
+                        }
+                    end,
                 }
             end,
         }
