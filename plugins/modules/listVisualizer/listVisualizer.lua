@@ -58,7 +58,7 @@ return {
 		elseif key == "optionleft"  and self.xSpeed > 0 then self.xSpeed = 0 end
 	end,
 
-	handleMousepressed = function(self, mx, my)
+	handleMousepressed = function(self, mx, my, params)
 		if self.active then
 			self.selected = nil
 			local n, x = 1, 50 + self.xOffset
@@ -72,11 +72,18 @@ return {
 				n, x = n + 1, x + 100
 			end)
 
+			if params and params.doubleClicked then self:handleDoubleClicked() end
+
 			if self.selected then return true end
 		end
 	end,
 
-	
+	handleDoubleClicked = function(self)
+		if self.selected and self.selected.getPublicAttributes then
+			print("Bringing up a property box!")
+		end
+	end,
+
 	deleteSelected = function(self)
 		self.list:forEach(function(elem)
 			if self.selected == elem then 
