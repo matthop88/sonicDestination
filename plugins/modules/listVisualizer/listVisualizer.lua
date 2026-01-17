@@ -3,6 +3,7 @@ return {
 	xSpeed              = 0,
 	xOffset             = 0,
 	active              = true,
+	propertyBox         = false,
 	
 	init = function(self, params)
 		self.listFn   = params.listFn
@@ -19,6 +20,7 @@ return {
 		if self.list:size() > 0 and self.active then
 			self:drawBackground()
 			self:drawList()
+			self:drawPropertyBox()
 		end
 	end,
 
@@ -80,7 +82,7 @@ return {
 
 	handleDoubleClicked = function(self)
 		if self.selected and self.selected.getPublicAttributes then
-			print("Bringing up a property box!")
+			self.propertyBox = true
 		end
 	end,
 
@@ -114,6 +116,15 @@ return {
 		self:drawCell(element, x)
 
 		if n < self.list:size() then self:drawArrows(x) end
+	end,
+
+	drawPropertyBox = function(self)
+		if self.propertyBox and self.selected then
+			self.graphics:setColor(0, 0, 0, 0.7)
+			self.graphics:rectangle("fill", (self.graphics:getScreenWidth() - 500) / 2, self.topY - 250, 500, 200)
+			self.graphics:setColor(1, 1, 1)
+			self.graphics:rectangle("line", (self.graphics:getScreenWidth() - 500) / 2, self.topY - 250, 500, 200)
+		end
 	end,
 
 	isInside = function(self, mx, my, x)
