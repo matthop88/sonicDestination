@@ -84,7 +84,7 @@ return {
 
 	handleDoubleClicked = function(self, x)
 		if self.selected and self.selected.getPublicAttributes then
-			self.propertyBox = { element = self.selected, x = x }
+			self.propertyBox = { element = self.selected, x = x - self.xOffset }
 		end
 	end,
 
@@ -126,6 +126,8 @@ return {
 			self.graphics:rectangle("fill", (self.graphics:getScreenWidth() - 500) / 2, self.topY - 250, 500, 200)
 			self.graphics:setColor(1, 1, 1)
 			self.graphics:rectangle("line", (self.graphics:getScreenWidth() - 500) / 2, self.topY - 250, 500, 200)
+		
+			self.graphics:line(self.propertyBox.x + 25 + self.xOffset, self.topY + 25, self.graphics:getScreenWidth() / 2, self.topY - 50)
 		end
 	end,
 
