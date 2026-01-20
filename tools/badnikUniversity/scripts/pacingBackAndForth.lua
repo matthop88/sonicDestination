@@ -1,18 +1,7 @@
-local SET_X_SPEED = function(xSpeed)
-	-- do nothing
-end
-
-local MOVE        = function(numSeconds)
-	-- do nothing
-end
-
-local WAIT        = function(numSeconds)
-	-- do nothing
-end
-
-local FLIPX       = function()
-	-- do nothing
-end
+local SET_X_SPEED = require("tools/badnikUniversity/scripts/commands/setXSpeed")
+local MOVE        = require("tools/badnikUniversity/scripts/commands/move")
+local WAIT        = require("tools/badnikUniversity/scripts/commands/wait")
+local FLIPX       = require("tools/badnikUniversity/scripts/commands/flipX")
 
 return {
 	name         = "pacingBackAndForth",
