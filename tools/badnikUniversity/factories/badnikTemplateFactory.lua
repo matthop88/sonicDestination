@@ -1,3 +1,4 @@
+local STRING_UTIL = require("tools/lib/stringUtil")
 local NO_BUMP_ID = true
 
 return {
@@ -5,10 +6,10 @@ return {
         local badnikData = require("tools/badnikUniversity/factories/badniks/" .. name)
 
         return {
-            name  = badnikData.name,
-            path  = badnikData.path,
+            name          = badnikData.name,
+            path          = badnikData.path,
             spritePreview = require("tools/lib/sprites/sprite"):create(badnikData.path, 0, 0, NO_BUMP_ID),
-            xFlip = false,
+            xFlip         = false,
             
             drawPreviewSprite = function(self, GRAFX, x, y)
                 GRAFX:setColor(1, 1, 1)
@@ -25,10 +26,11 @@ return {
                 if self.xFlip then sprite:flipX() end
 
                 return {
-                    name  = self.name,
-                    x     = x,
-                    y     = y,
-                    sprite = sprite,
+                    name            = self.name,
+                    capitalizedName = STRING_UTIL:capitalize(self.name),
+                    x               = x,
+                    y               = y,
+                    sprite          = sprite,
 
                     getX  = function(self) return self.x     end,
                     getY  = function(self) return self.y     end,
@@ -65,9 +67,9 @@ return {
                         -- Can either return a field or a function.
                         -- Functions can be repeatedly called for refreshing values.
                         return {
-                            name = self.name,
-                            x    = self.getX,
-                            y    = self.getY,
+                            { name = self.capitalizedName, },
+                            { x    = self.getX, },
+                            { y    = self.getY, },
                         }
                     end,
                 }
