@@ -1,3 +1,3 @@
-return function(numSeconds)
+return function(xSpeed, numSeconds)
     -- do nothing
 end
