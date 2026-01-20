@@ -4,6 +4,7 @@ return {
 	xOffset             = 0,
 	active              = true,
 	propertyBox         = nil,
+	propertyBoxDial     = require("plugins/libraries/tweenableValue"):create(0, { speed = 6 }),
 	
 	init = function(self, params)
 		self.listFn   = params.listFn
@@ -43,8 +44,11 @@ return {
 			end)
 			self.list:setConsidered(self.considered)
 			if self.propertyBox and self.propertyBox.element ~= self.selected then
-				self.propertyBox = nil
+				--self.propertyBox = nil
+				self.propertyBoxDial:setDestination(0)
 			end
+
+			self.propertyBoxDial:update(dt)
 		end
 	end,
 
@@ -85,6 +89,7 @@ return {
 	handleDoubleClicked = function(self, x)
 		if self.selected and self.selected.getPublicAttributes then
 			self.propertyBox = { element = self.selected, x = x - self.xOffset }
+			self.propertyBoxDial:setDestination(100)
 		end
 	end,
 
@@ -121,14 +126,35 @@ return {
 	end,
 
 	drawPropertyBox = function(self)
-		if self.propertyBox then
+		if self.propertyBoxDial:get() > 0 then
 			self.graphics:setColor(0, 0, 0, 0.7)
-			self.graphics:rectangle("fill", (self.graphics:getScreenWidth() - 500) / 2, self.topY - 250, 500, 200)
+			self.graphics:rectangle("fill", self:getPropBoxLeft(), self:getPropBoxTop(), self:getPropBoxWidth(), self:getPropBoxHeight())
 			self.graphics:setColor(1, 1, 1)
-			self.graphics:rectangle("line", (self.graphics:getScreenWidth() - 500) / 2, self.topY - 250, 500, 200)
+			self.graphics:rectangle("line", self:getPropBoxLeft(), self:getPropBoxTop(), self:getPropBoxWidth(), self:getPropBoxHeight())
 		
-			self.graphics:line(self.propertyBox.x + 25 + self.xOffset, self.topY + 25, self.graphics:getScreenWidth() / 2, self.topY - 50)
+			self.graphics:setColor(1, 1, 1, self.propertyBoxDial:get() / 100)
+			self.graphics:line(self.propertyBox.x + 25 + self.xOffset, self.topY + 25, self.graphics:getScreenWidth() / 2, self:getPropBoxBottom())
 		end
+	end,
+
+	getPropBoxWidth = function(self)
+		return self.propertyBoxDial:get() * 5
+	end,
+
+	getPropBoxHeight = function(self)
+		return self.propertyBoxDial:get() * 2.5
+	end,
+
+	getPropBoxLeft = function(self)
+		return (self.graphics:getScreenWidth() - self:getPropBoxWidth()) / 2
+	end,
+
+	getPropBoxTop = function(self)
+		return self.topY - 150 - (self:getPropBoxHeight() / 2)
+	end,
+
+	getPropBoxBottom = function(self)
+		return self.topY - 150 + (self:getPropBoxHeight() / 2)
 	end,
 
 	isInside = function(self, mx, my, x)
