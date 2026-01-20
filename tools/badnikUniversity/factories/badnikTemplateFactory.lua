@@ -31,6 +31,7 @@ return {
                     x               = x,
                     y               = y,
                     sprite          = sprite,
+                    xSpeed          = 0,
 
                     getX  = function(self) return self.x     end,
                     getY  = function(self) return self.y     end,
@@ -48,6 +49,8 @@ return {
                         self.sprite:draw(GRAFX)
                     end,
 
+                    setXSpeed = function(self, xSpeed) self.xSpeed = xSpeed end,
+                    
                     isInside = function(self, x, y)
                         return x >= self.x - self.sprite:getW() / 2
                            and x <  self.x + self.sprite:getW() / 2
@@ -59,6 +62,10 @@ return {
 
                     drawThumbnail = function(self, GRAFX, x, y, sX, sY)
                         self.sprite:drawThumbnail(GRAFX, x, y, sX, sY)
+                    end,
+
+                    update = function(self, dt)
+                        self:setX(self:getX() + (self:getXSpeed() * dt))
                     end,
 
                     getID = function(self) return self.sprite:getID() end,
