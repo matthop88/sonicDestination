@@ -4,7 +4,7 @@ return {
 	xOffset             = 0,
 	active              = true,
 	propertyBox         = nil,
-	propertyBoxDial     = require("plugins/libraries/tweenableValue"):create(0, { speed = 6 }),
+	propertyBoxDial     = require("plugins/libraries/tweenableValue"):create(0, { speed = 3 }),
 	
 	init = function(self, params)
 		self.listFn   = params.listFn
@@ -89,7 +89,7 @@ return {
 	handleDoubleClicked = function(self, x)
 		if self.selected and self.selected.getPublicAttributes then
 			self.propertyBox = { element = self.selected, x = x - self.xOffset }
-			self.propertyBoxDial:setDestination(100)
+			self.propertyBoxDial:setDestination(200)
 		end
 	end,
 
@@ -138,11 +138,11 @@ return {
 	end,
 
 	getPropBoxWidth = function(self)
-		return self.propertyBoxDial:get() * 5
+		return math.min(500, self.propertyBoxDial:get() * 5)
 	end,
 
 	getPropBoxHeight = function(self)
-		return self.propertyBoxDial:get() * 2.5
+		return math.min(200, self.propertyBoxDial:get() * 2.5)
 	end,
 
 	getPropBoxLeft = function(self)
