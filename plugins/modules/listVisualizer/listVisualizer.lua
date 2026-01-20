@@ -135,6 +135,25 @@ return {
 			self.graphics:setColor(1, 1, 0.3, self.propertyBoxDial:get() / 100)
 			self.graphics:line(self.propertyBox.x + 25 + self.xOffset, self.topY + 25, self.graphics:getScreenWidth() / 2, self:getPropBoxBottom())
 		end
+
+		if self.propertyBoxDial:get() >= 100 and self.selected then
+			self.graphics:setColor(1, 1, 1)
+			self.graphics:setFontSize(24)
+			local x = self:getPropBoxLeft() + 50
+			local y = self:getPropBoxTop()  + 30
+
+			for _, kv in ipairs(self.selected:getPublicAttributes()) do
+				for k, v in pairs(kv) do
+					self.graphics:printf(k .. ":", x,       y, self:getPropBoxWidth() - 100, "left")
+					local value = v
+					if type(v) == "function" then value = v(self.selected) end
+					self.graphics:printf(value,    x + 100, y, self:getPropBoxWidth() - 200, "left")
+					y = y + 30
+				end
+			end
+
+
+		end
 	end,
 
 	getPropBoxWidth = function(self)
