@@ -129,10 +129,10 @@ return {
 		if self.propertyBoxDial:get() > 0 then
 			self.graphics:setColor(0, 0, 0, 0.7)
 			self.graphics:rectangle("fill", self:getPropBoxLeft(), self:getPropBoxTop(), self:getPropBoxWidth(), self:getPropBoxHeight())
-			self.graphics:setColor(1, 1, 1)
+			self.graphics:setColor(1, 1, 0.3)
 			self.graphics:rectangle("line", self:getPropBoxLeft(), self:getPropBoxTop(), self:getPropBoxWidth(), self:getPropBoxHeight())
 		
-			self.graphics:setColor(1, 1, 1, self.propertyBoxDial:get() / 100)
+			self.graphics:setColor(1, 1, 0.3, self.propertyBoxDial:get() / 100)
 			self.graphics:line(self.propertyBox.x + 25 + self.xOffset, self.topY + 25, self.graphics:getScreenWidth() / 2, self:getPropBoxBottom())
 		end
 	end,
