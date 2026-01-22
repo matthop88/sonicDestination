@@ -1,4 +1,5 @@
 return {
-	name = "motobug",
-	path = "objects/motobug",
+	name   = "motobug",
+	path   = "objects/motobug",
+	script = "pacingBackAndForth",
 }
