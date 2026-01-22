@@ -1,4 +1,5 @@
 return {
-	name = "patabata",
-	path = "objects/patabata",
+	name   = "patabata",
+	path   = "objects/patabata",
+	script = "sineWaveBackAndForth",
 }
