@@ -24,6 +24,14 @@ return {
 		end
 	end,
 
+	forEachInList = function(self, fn)
+		local n, x = 1, 50 + self.xOffset
+		self.list:forEach(function(elem, cellID)
+			if fn(elem, x, n, cellID) then return true end
+			n, x = n + 1, x + 100
+		end)
+	end,
+
 	update = function(self, dt)
 		if self.active then
 			self.list    = self.listFn()
@@ -36,13 +44,10 @@ return {
 			end
 			self.considered = self.list:getConsidered()
 
-			local n, x = 1, 50 + self.xOffset
-			self.list:forEach(function(elem)
-				if self:checkMousedOver(elem, x) then
-					return true
-				end
-				n, x = n + 1, x + 100
+			self:forEachInList(function(elem, x)
+				if self:checkMousedOver(elem, x) then return true end
 			end)
+
 			self.list:setConsidered(self.considered)
 			if self.selected == nil then
 				self.propertyBox:hide()
@@ -54,12 +59,10 @@ return {
 
 	onSelected = function(self, selected)
 		self.selected = selected
-		local n, x = 1, 50 + self.xOffset
-		self.list:forEach(function(elem)
+		self:forEachInList(function(elem, x)
 			if self.selected == elem and self.propertyBox:isVisible() and self.selected.getPublicAttributes then
 				self.propertyBox:show { element = self.selected, x = x - self.xOffset }
 			end
-			n, x = n + 1, x + 100
 		end)
 	end,
 
@@ -80,8 +83,7 @@ return {
 	handleMousepressed = function(self, mx, my, params)
 		if self.active then
 			self.selected = nil
-			local n, x = 1, 50 + self.xOffset
-			self.list:forEach(function(elem)
+			self:forEachInList(function(elem, x)
 				if self:isInside(mx, my, x) then
 					if self.list.setSelected then self.list:setSelected(elem) end
 					self.selected = elem
@@ -89,12 +91,10 @@ return {
 						self.propertyBox:show { element = self.selected, x = x - self.xOffset }
 					end
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
+					if params and params.doubleClicked then self:handleDoubleClicked(x) end
 					return true
 				end
-				n, x = n + 1, x + 100
 			end)
-
-			if params and params.doubleClicked then self:handleDoubleClicked(x) end
 
 			if self.selected then return true end
 		end
@@ -122,12 +122,10 @@ return {
 	end,
 
 	drawList = function(self)
-		local n, x = 1, 50 + self.xOffset
-		self.list:forEach(function(elem, cellID)
+		self:forEachInList(function(elem, x, n, cellID)
 			if x > -100 and x < self.graphics:getScreenWidth() then
 				self:drawListElement(elem, cellID, n, x)
 			end
-			n, x = n + 1, x + 100
 		end)
 	end,
 
