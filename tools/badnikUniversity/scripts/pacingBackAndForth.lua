@@ -5,7 +5,7 @@ local FLIPX = require("tools/badnikUniversity/scripts/commands/flipX")
 return {
 	name    = "pacingBackAndForth",
 	title   = "Pacing Back and Forth",
-	program = require("tools/lib/dataStructures/navigableList"):create {
+	program = {
 		MOVE { numSeconds = 3, xSpeed = 100, },
 		WAIT { numSeconds = 1,               },
 		FLIPX(),
