@@ -2,6 +2,7 @@ local STRING_UTIL   = require("tools/lib/stringUtil")
 local NO_BUMP_ID    = true
 
 local SCRIPT_ENGINE = require("tools/badnikUniversity/scriptEngine")
+local SCRIPT_REPO   = require("tools/badnikUniversity/scriptRepo")
 
 return {
     createTemplate = function(self, name)
@@ -36,7 +37,7 @@ return {
                     sprite          = sprite,
                     xSpeed          = 0,
 
-                    script          = dofile("tools/badnikUniversity/scripts/pacingBackAndForth.lua"),
+                    script          = SCRIPT_REPO:get("pacingBackAndForth"),
 
                     getX    = function(self) return self.x                  end,
                     getY    = function(self) return self.y                  end,
