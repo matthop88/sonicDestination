@@ -1,6 +1,6 @@
 return function(params)
     return {
-        duration = (params.numSeconds or 1) * 60,
+        duration =  params.numSeconds or 1,
         elapsed  =  0,
 
         reset = function(self)
