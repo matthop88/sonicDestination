@@ -34,7 +34,7 @@ return {
 
     update = function(self, dt, GRAFX)
         self:calculateMouseOver(GRAFX)
-        self:badniks:forEach(function(badnik) badnik:update(dt) end)
+        self.badniks:forEach(function(badnik) badnik:update(dt) end)
     end,
 
     nudgeSelected = function(self, dx, dy)
