@@ -3,14 +3,13 @@ return {
 	xSpeed              = 0,
 	xOffset             = 0,
 	active              = true,
-	propertyBox         = nil,
-	propertyBoxDial     = require("plugins/libraries/tweenableValue"):create(0, { speed = 3 }),
 	
 	init = function(self, params)
 		self.listFn   = params.listFn
 		self.list     = self.listFn()
 		self.graphics = require("tools/lib/graphics"):create()
 		if params.active ~= nil then self.active = params.active end
+		self.propertyBox = require("plugins/modules/listVisualizer/propertyBox"):init(self)
 	end,
 
 	toggleActive = function(self)
@@ -21,7 +20,7 @@ return {
 		if self.list:size() > 0 and self.active then
 			self:drawBackground()
 			self:drawList()
-			self:drawPropertyBox()
+			self.propertyBox:draw()
 		end
 	end,
 
@@ -44,10 +43,10 @@ return {
 			end)
 			self.list:setConsidered(self.considered)
 			if self.selected == nil then
-				self.propertyBoxDial:setDestination(0)
+				self.propertyBox:hide()
 			end
 
-			self.propertyBoxDial:update(dt)
+			self.propertyBox:update(dt)
 		end
 	end,
 
@@ -73,8 +72,8 @@ return {
 				if self:isInside(mx, my, x) then
 					if self.list.setSelected then self.list:setSelected(elem) end
 					self.selected = elem
-					if self.propertyBox ~= nil and self.selected.getPublicAttributes then
-						self.propertyBox = { element = self.selected, x = x - self.xOffset }
+					if self.propertyBox:isVisible() and self.selected.getPublicAttributes then
+						self.propertyBox:show { element = self.selected, x = x - self.xOffset }
 					end
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
 					return true
@@ -90,8 +89,7 @@ return {
 
 	handleDoubleClicked = function(self, x)
 		if self.selected and self.selected.getPublicAttributes then
-			self.propertyBox = { element = self.selected, x = x - self.xOffset }
-			self.propertyBoxDial:setDestination(200)
+			self.propertyBox:show { element = self.selected, x = x - self.xOffset }
 		end
 	end,
 
@@ -125,61 +123,6 @@ return {
 		self:drawCell(element, x)
 
 		if n < self.list:size() then self:drawArrows(x) end
-	end,
-
-	drawPropertyBox = function(self)
-		if self.propertyBoxDial:get() > 0 then
-			self.graphics:setColor(0, 0, 0, 0.4)
-			self.graphics:rectangle("fill", self:getPropBoxLeft(), self:getPropBoxTop(), self:getPropBoxWidth(), self:getPropBoxHeight())
-			self.graphics:setColor(1, 1, 0.3, 0.6)
-			self.graphics:rectangle("line", self:getPropBoxLeft(), self:getPropBoxTop(), self:getPropBoxWidth(), self:getPropBoxHeight())
-		
-			self.graphics:setColor(1, 1, 0.3, 0.6 * (self.propertyBoxDial:get() / 200))
-			self.graphics:line(self.propertyBox.x + 25 + self.xOffset, self.topY + 25, self.graphics:getScreenWidth() / 2, self:getPropBoxBottom() + 2)
-		end
-
-		if self.propertyBoxDial:get() >= 100 and self.selected then
-			self.graphics:setColor(1, 1, 1)
-			self.graphics:setFontSize(24)
-			local x = self:getPropBoxLeft() + 50
-			local y = self:getPropBoxTop()  + 30
-
-			for _, kv in ipairs(self.selected:getPublicAttributes()) do
-				for k, v in pairs(kv) do
-					self:drawProperty(k, v, x, y)
-					y = y + 30
-				end
-			end
-		end
-	end,
-
-	drawProperty = function(self, k, v, x, y)
-		self.graphics:printf(k .. ":", x,       y, self:getPropBoxWidth() - 100, "left")
-		local value = v
-		if     type(v) == "function" then value = v(self.selected)
-		elseif type(v) == "table"    then value = v.selected      end
-		
-		self.graphics:printf(value,    x + 100, y, self:getPropBoxWidth() - 200, "left")
-	end,
-
-	getPropBoxWidth = function(self)
-		return math.min(500, self.propertyBoxDial:get() * 5)
-	end,
-
-	getPropBoxHeight = function(self)
-		return math.min(200, self.propertyBoxDial:get() * 2.5)
-	end,
-
-	getPropBoxLeft = function(self)
-		return (self.graphics:getScreenWidth() - self:getPropBoxWidth()) / 2
-	end,
-
-	getPropBoxTop = function(self)
-		return self.topY - 150 - (self:getPropBoxHeight() / 2)
-	end,
-
-	getPropBoxBottom = function(self)
-		return self.topY - 150 + (self:getPropBoxHeight() / 2)
 	end,
 
 	isInside = function(self, mx, my, x)
