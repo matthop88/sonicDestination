@@ -11,6 +11,7 @@ return {
         return {
             name          = badnikData.name,
             path          = badnikData.path,
+            scriptName    = badnikData.script,
             spritePreview = require("tools/lib/sprites/sprite"):create(badnikData.path, 0, 0, NO_BUMP_ID),
             xFlip         = false,
             
@@ -36,8 +37,9 @@ return {
                     xFlip           = self.xFlip,
                     sprite          = sprite,
                     xSpeed          = 0,
+                    ySpeed          = 0,
 
-                    script          = SCRIPT_REPO:get("pacingBackAndForth"),
+                    script          = SCRIPT_REPO:get(self.scriptName),
 
                     getX    = function(self) return self.x                  end,
                     getY    = function(self) return self.y                  end,
@@ -65,8 +67,11 @@ return {
                         else                 return -self.xSpeed end
                     end,
 
-                    setXSpeed    = function(self, xSpeed) self.xSpeed = xSpeed end,
+                    setXSpeed = function(self, xSpeed) self.xSpeed = xSpeed end,
                     
+                    getYSpeed = function(self)         return self.ySpeed   end,
+                    setYSpeed = function(self, ySpeed) self.ySpeed = ySpeed end,
+
                     isInside = function(self, x, y)
                         return x >= self.x - self.sprite:getW() / 2
                            and x <  self.x + self.sprite:getW() / 2
@@ -89,6 +94,7 @@ return {
                             self.sprite:update(dt)
                         end
                         self:setX(self:getX() + (self:getXVelocity() * dt))
+                        self:setY(self:getY() + (self:getYSpeed()    * dt))
                     end,
 
                     getID = function(self) return self.sprite:getID() end,
