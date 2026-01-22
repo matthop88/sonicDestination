@@ -1,7 +1,7 @@
 return function(params)
 	return {
 		execute = function(self, dt, actor)
-			-- flip actor horizontally
+			actor:flipX()
 			return true
 		end,
 	}
