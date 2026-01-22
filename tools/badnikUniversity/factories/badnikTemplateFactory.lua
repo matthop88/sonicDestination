@@ -83,6 +83,7 @@ return {
                     update = function(self, dt)
                         if self.script then
                             SCRIPT_ENGINE:execute(dt, self.script.program, self)
+                            self.sprite:update(dt)
                         end
                         self:setX(self:getX() + (self:getXVelocity() * dt))
                     end,
