@@ -16,7 +16,7 @@ return ({
     end,
         
     get = function(self, scriptName)
-        local script = dofile("tools/badnikUniversity/scripts" .. scriptName .. ".lua")
+        local script = dofile("tools/badnikUniversity/scripts/" .. scriptName .. ".lua")
         script.program = require("tools/lib/dataStructures/navigableList"):create(script.program)
 
         return script
