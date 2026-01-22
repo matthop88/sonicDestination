@@ -43,26 +43,28 @@ return {
                     getY    = function(self) return self.y                  end,
                     getXInt = function(self) return math.floor(self:getX()) end,
                     getYInt = function(self) return math.floor(self:getY()) end,
-                    
+
                     setX  = function(self, x)     
                         self.x = x 
                         self.sprite:setX(x)
                     end,
+
                     setY  = function(self, y)     
                         self.y = y 
                         self.sprite:setY(y)
                     end,
+
                     getW  = function(self) return self.sprite:getW() end,
                     getH  = function(self) return self.sprite:getH() end,
                     draw  = function(self, GRAFX)
                         self.sprite:draw(GRAFX)
                     end,
 
-                    getXVelocity = function(self)
-                        if self.xFlip then return  self.xSpeed
-                        else               return -self.xSpeed end
+                    getXVelocity = function(self)         
+                        if   self.xFlip then return  self.xSpeed   
+                        else                 return -self.xSpeed end
                     end,
-                    
+
                     setXSpeed    = function(self, xSpeed) self.xSpeed = xSpeed end,
                     
                     isInside = function(self, x, y)
@@ -98,7 +100,11 @@ return {
                             { name   = self.capitalizedName, },
                             { x      = self.getXInt, },
                             { y      = self.getYInt, },
-                            { script = self.script.title, },
+                            { script = {
+                                    selected = self.script.name,
+                                    options  = SCRIPT_REPO.scriptNames,
+                                }
+                            },
                         }
                     end,
                 }
