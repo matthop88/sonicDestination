@@ -36,7 +36,7 @@ return {
                     sprite          = sprite,
                     xSpeed          = 0,
 
-                    script          = require("tools/badnikUniversity/scripts/pacingBackAndForth"),
+                    script          = dofile("tools/badnikUniversity/scripts/pacingBackAndForth.lua"),
 
                     getX    = function(self) return self.x                  end,
                     getY    = function(self) return self.y                  end,
