@@ -1,5 +1,7 @@
-local STRING_UTIL = require("tools/lib/stringUtil")
-local NO_BUMP_ID = true
+local STRING_UTIL   = require("tools/lib/stringUtil")
+local NO_BUMP_ID    = true
+
+local SCRIPT_ENGINE = require("tools/badnikUniversity/scriptEngine")
 
 return {
     createTemplate = function(self, name)
@@ -33,6 +35,8 @@ return {
                     sprite          = sprite,
                     xSpeed          = 0,
 
+                    script          = require("tools/badnikUniversity/scripts/pacingBackAndForth"),
+
                     getX  = function(self) return self.x     end,
                     getY  = function(self) return self.y     end,
                     setX  = function(self, x)     
@@ -49,6 +53,7 @@ return {
                         self.sprite:draw(GRAFX)
                     end,
 
+                    getXSpeed = function(self)         return self.xSpeed   end,
                     setXSpeed = function(self, xSpeed) self.xSpeed = xSpeed end,
                     
                     isInside = function(self, x, y)
@@ -65,6 +70,9 @@ return {
                     end,
 
                     update = function(self, dt)
+                        if self.script then
+                            SCRIPT_ENGINE:execute(dt, self.script.program, self)
+                        end
                         self:setX(self:getX() + (self:getXSpeed() * dt))
                     end,
 
