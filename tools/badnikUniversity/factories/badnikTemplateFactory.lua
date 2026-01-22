@@ -94,9 +94,10 @@ return {
                         -- Can either return a field or a function.
                         -- Functions can be repeatedly called for refreshing values.
                         return {
-                            { name = self.capitalizedName, },
-                            { x    = self.getXInt, },
-                            { y    = self.getYInt, },
+                            { name   = self.capitalizedName, },
+                            { x      = self.getXInt, },
+                            { y      = self.getYInt, },
+                            { script = self.script.title, },
                         }
                     end,
                 }
