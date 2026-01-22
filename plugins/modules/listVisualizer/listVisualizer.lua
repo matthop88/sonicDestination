@@ -31,7 +31,9 @@ return {
 			local coordinatesOfLast = ((self.list:size()) * 100) + 50
 			local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
 			self.xOffset = math.min(0, math.max(minXOffset, self.xOffset))
-			self.selected   = self.list:getSelected()
+			if self.list:getSelected() ~= self.selected then
+				self:onSelected(self.list:getSelected())
+			end
 			self.considered = self.list:getConsidered()
 
 			local n, x = 1, 50 + self.xOffset
@@ -48,6 +50,17 @@ return {
 
 			self.propertyBox:update(dt)
 		end
+	end,
+
+	onSelected = function(self, selected)
+		self.selected = selected
+		local n, x = 1, 50 + self.xOffset
+		self.list:forEach(function(elem)
+			if self.selected == elem and self.propertyBox:isVisible() and self.selected.getPublicAttributes then
+				self.propertyBox:show { element = self.selected, x = x - self.xOffset }
+			end
+			n, x = n + 1, x + 100
+		end)
 	end,
 
 	handleKeypressed = function(self, key)
