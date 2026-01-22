@@ -73,9 +73,9 @@ return {
 				if self:isInside(mx, my, x) then
 					if self.list.setSelected then self.list:setSelected(elem) end
 					self.selected = elem
-						if self.propertyBox ~= nil and self.selected.getPublicAttributes then
-							self.propertyBox = { element = self.selected, x = x - self.xOffset }
-						end
+					if self.propertyBox ~= nil and self.selected.getPublicAttributes then
+						self.propertyBox = { element = self.selected, x = x - self.xOffset }
+					end
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
 					return true
 				end
@@ -146,16 +146,20 @@ return {
 
 			for _, kv in ipairs(self.selected:getPublicAttributes()) do
 				for k, v in pairs(kv) do
-					self.graphics:printf(k .. ":", x,       y, self:getPropBoxWidth() - 100, "left")
-					local value = v
-					if type(v) == "function" then value = v(self.selected) end
-					self.graphics:printf(value,    x + 100, y, self:getPropBoxWidth() - 200, "left")
+					self:drawProperty(k, v, x, y)
 					y = y + 30
 				end
 			end
-
-
 		end
+	end,
+
+	drawProperty = function(self, k, v, x, y)
+		self.graphics:printf(k .. ":", x,       y, self:getPropBoxWidth() - 100, "left")
+		local value = v
+		if     type(v) == "function" then value = v(self.selected)
+		elseif type(v) == "table"    then value = v.selected      end
+		
+		self.graphics:printf(value,    x + 100, y, self:getPropBoxWidth() - 200, "left")
 	end,
 
 	getPropBoxWidth = function(self)
