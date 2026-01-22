@@ -38,8 +38,11 @@ return {
 
                     script          = require("tools/badnikUniversity/scripts/pacingBackAndForth"),
 
-                    getX  = function(self) return self.x     end,
-                    getY  = function(self) return self.y     end,
+                    getX    = function(self) return self.x                  end,
+                    getY    = function(self) return self.y                  end,
+                    getXInt = function(self) return math.floor(self:getX()) end,
+                    getYInt = function(self) return math.floor(self:getY()) end,
+                    
                     setX  = function(self, x)     
                         self.x = x 
                         self.sprite:setX(x)
@@ -91,8 +94,8 @@ return {
                         -- Functions can be repeatedly called for refreshing values.
                         return {
                             { name = self.capitalizedName, },
-                            { x    = self.getX, },
-                            { y    = self.getY, },
+                            { x    = self.getXInt, },
+                            { y    = self.getYInt, },
                         }
                     end,
                 }
