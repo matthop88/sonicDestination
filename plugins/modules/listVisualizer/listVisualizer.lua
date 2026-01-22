@@ -43,8 +43,7 @@ return {
 				n, x = n + 1, x + 100
 			end)
 			self.list:setConsidered(self.considered)
-			if self.propertyBox and self.propertyBox.element ~= self.selected then
-				--self.propertyBox = nil
+			if self.selected == nil then
 				self.propertyBoxDial:setDestination(0)
 			end
 
@@ -74,6 +73,9 @@ return {
 				if self:isInside(mx, my, x) then
 					if self.list.setSelected then self.list:setSelected(elem) end
 					self.selected = elem
+						if self.propertyBox ~= nil and self.selected.getPublicAttributes then
+							self.propertyBox = { element = self.selected, x = x - self.xOffset }
+						end
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
 					return true
 				end
