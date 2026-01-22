@@ -11,7 +11,10 @@ return function(params)
         execute = function(self, dt, actor)
             actor:setXSpeed(self.xSpeed)
             self.elapsed = self.elapsed + dt
-            return self.elapsed > self.duration
+            if self.elapsed > self.duration then
+                self:reset()
+                return true
+            end
         end,
     }
 end
