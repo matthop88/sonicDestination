@@ -32,6 +32,7 @@ return {
                     capitalizedName = STRING_UTIL:capitalize(self.name),
                     x               = x,
                     y               = y,
+                    xFlip           = self.xFlip,
                     sprite          = sprite,
                     xSpeed          = 0,
 
@@ -53,8 +54,12 @@ return {
                         self.sprite:draw(GRAFX)
                     end,
 
-                    getXSpeed = function(self)         return self.xSpeed   end,
-                    setXSpeed = function(self, xSpeed) self.xSpeed = xSpeed end,
+                    getXVelocity = function(self)
+                        if self.xFlip then return  self.xSpeed
+                        else               return -self.xSpeed end
+                    end,
+                    
+                    setXSpeed    = function(self, xSpeed) self.xSpeed = xSpeed end,
                     
                     isInside = function(self, x, y)
                         return x >= self.x - self.sprite:getW() / 2
@@ -63,7 +68,10 @@ return {
                            and y <  self.y + self.sprite:getH() / 2
                     end,
 
-                    flipX = function(self) self.sprite:flipX() end,
+                    flipX = function(self) 
+                        self.sprite:flipX() 
+                        self.xFlip = not self.xFlip
+                    end,
 
                     drawThumbnail = function(self, GRAFX, x, y, sX, sY)
                         self.sprite:drawThumbnail(GRAFX, x, y, sX, sY)
@@ -73,7 +81,7 @@ return {
                         if self.script then
                             SCRIPT_ENGINE:execute(dt, self.script.program, self)
                         end
-                        self:setX(self:getX() + (self:getXSpeed() * dt))
+                        self:setX(self:getX() + (self:getXVelocity() * dt))
                     end,
 
                     getID = function(self) return self.sprite:getID() end,
