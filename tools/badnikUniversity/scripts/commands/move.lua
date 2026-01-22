@@ -1,7 +1,7 @@
 return function(params)
     return {
         xSpeed   =  params.xSpeed     or 100,
-        duration = (params.numSeconds or 1)   * 60,
+        duration =  params.numSeconds or 1,
         elapsed  =  0,
 
         reset = function(self)
