@@ -6,7 +6,7 @@ return {
 	name    = "sineWaveBackAndForth",
 	title   = "Sine Wave Back and Forth",
 	program = {
-		SINE_WAVE { numSeconds = 3, speed = 1, amplitude = 50, wavelength = 100 },
+		SINE_WAVE { numSeconds = 3, speed = 5, amplitude = 100 },
 		FLIPX(),
 	},
 }
