@@ -1,6 +1,6 @@
-local SINE_WAVE  = require("tools/badnikUniversity/scripts/commands/sineWave")
-local WAIT       = require("tools/badnikUniversity/scripts/commands/wait")
-local FLIPX      = require("tools/badnikUniversity/scripts/commands/flipX")
+local SINE_WAVE  = requireRelative("world/badniks/scripts/commands/sineWave")
+local WAIT       = requireRelative("world/badniks/scripts/commands/wait")
+local FLIPX      = requireRelative("world/badniks/scripts/commands/flipX")
 
 return {
 	name    = "sineWaveBackAndForth",
