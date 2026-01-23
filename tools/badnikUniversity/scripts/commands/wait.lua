@@ -9,6 +9,7 @@ return function(params)
 
         execute = function(self, dt, actor)
             actor:setXSpeed(0)
+            actor:setYSpeed(0)
             self.elapsed = self.elapsed + dt
             if self.elapsed > self.duration then
                 self:reset()
