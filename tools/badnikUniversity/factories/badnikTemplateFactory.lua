@@ -1,8 +1,8 @@
 local STRING_UTIL   = require("tools/lib/stringUtil")
 local NO_BUMP_ID    = true
 
-local SCRIPT_ENGINE = require("tools/badnikUniversity/scriptEngine")
-local SCRIPT_REPO   = require("tools/badnikUniversity/scriptRepo")
+local SCRIPT_ENGINE = require("game/world/badniks/scripts/lib/scriptEngine")
+local SCRIPT_REPO   = require("game/world/badniks/scripts/lib/scriptRepo")
 
 return {
     createTemplate = function(self, name)
