@@ -1,6 +1,6 @@
-local MOVE  = require("tools/badnikUniversity/scripts/commands/move")
-local WAIT  = require("tools/badnikUniversity/scripts/commands/wait")
-local FLIPX = require("tools/badnikUniversity/scripts/commands/flipX")
+local MOVE  = requireRelative("world/badniks/scripts/commands/move")
+local WAIT  = requireRelative("world/badniks/scripts/commands/wait")
+local FLIPX = requireRelative("world/badniks/scripts/commands/flipX")
 
 return {
 	name    = "pacingBackAndForth",
