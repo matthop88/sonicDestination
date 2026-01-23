@@ -102,3 +102,8 @@ function love.load(args)
 end
 
 function relativePath(path) return "game/" .. path end
+
+function requireRelative(path, params)
+    if params then return require(relativePath(path)):init(params)
+    else           return require(relativePath(path))          end
+end
