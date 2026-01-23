@@ -12,6 +12,9 @@ return {
         return {
             x        = object.x,
             y        = object.y,
+            xFlip    = false,
+            xSpeed   = 0,
+            ySpeed   = 0,
             object   = object,
             graphics = graphics,
             HITBOX   = nil,
@@ -54,6 +57,8 @@ return {
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
+                    self:setX(self:getX() + (self:getXVelocity() * dt))
+                    self:setY(self:getY() + (self:getYSpeed()    * dt))
                 end
             end,
 
@@ -70,10 +75,30 @@ return {
                 -- do nothing
             end,
 
-            getW           = function(self) return self.sprite:getImageW() end,
-            getH           = function(self) return self.sprite:getImageH() end,
+            getW = function(self) return self.sprite:getImageW() end,
+            getH = function(self) return self.sprite:getImageH() end,
 
-            getSortValue   = function(self) return self.x                  end,
+            getX = function(self) return self.x                  end,
+            getY = function(self) return self.y                  end,
+            setX = function(self, x)     self.x = x              end,
+            setY = function(self, y)     self.y = y              end,
+
+            getXVelocity = function(self)         
+                if self.xFlip then return  self.xSpeed   
+                else               return -self.xSpeed end
+            end,
+
+            setXSpeed    = function(self, xSpeed) self.xSpeed = xSpeed end,
+                    
+            getYSpeed    = function(self)         return self.ySpeed   end,
+            setYSpeed    = function(self, ySpeed) self.ySpeed = ySpeed end,
+
+            flipX        = function(self) 
+                self.sprite:flipX() 
+                self.xFlip = not self.xFlip
+            end,
+
+            getSortValue   = function(self) return self.x        end,
             locateVisually = function(self)
                 local graphics = self.sprite:getGraphics()
                 local centerX, centerY = graphics:getScreenWidth() / 2, graphics:getScreenHeight() / 2
