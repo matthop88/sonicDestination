@@ -1,4 +1,5 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
+local SCRIPT_ENGINE = requireRelative("world/badniks/scripts/lib/scriptEngine")
 
 local OBJECT_ID    = 0
 
@@ -23,7 +24,7 @@ return {
             active   = not object.inactive,
             sprite   = SPRITE,
             id       = OBJECT_ID,
-
+            
             getID    = function(self) return self.id end,
 
             draw = function(self) 
@@ -54,6 +55,7 @@ return {
 
             update = function(self, dt)
                 if self.active then
+                    if self.script then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
