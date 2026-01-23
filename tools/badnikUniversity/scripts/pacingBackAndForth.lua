@@ -6,7 +6,7 @@ return {
 	name    = "pacingBackAndForth",
 	title   = "Pacing Back and Forth",
 	program = {
-		MOVE { numSeconds = 3, xSpeed = 100, },
+		MOVE { numSeconds = 3, xSpeed = 50, },
 		WAIT { numSeconds = 1,               },
 		FLIPX(),
 		WAIT { numSeconds = 1,               },
