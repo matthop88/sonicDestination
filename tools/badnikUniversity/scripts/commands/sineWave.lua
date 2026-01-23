@@ -1,7 +1,7 @@
 return function(params)
     return {
         speed      = params.speed      or 1,
-        xSpeed     = params.xSpeed     or 100,
+        wavelength = params.wavelength or 100,
         duration   = params.numSeconds or 1,
         amplitude  = params.amplitude  or 100,
         elapsed    = 0,
@@ -13,7 +13,7 @@ return function(params)
 
         execute = function(self, dt, actor)
             self.radians = self.radians + (self.speed * dt)
-            actor:setXSpeed(self.xSpeed)
+            actor:setXSpeed(self.wavelength * self.speed)
             actor:setYSpeed(math.sin(self.radians) * self.amplitude * self.speed)
             
             self.elapsed = self.elapsed + dt
