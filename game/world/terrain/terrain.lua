@@ -42,11 +42,20 @@ return {
         for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkID in ipairs(row) do
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
-                if self.showSolids then SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) end
+                if self.showSolids then 
+                    SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
+                    if self.highlightedSolid then self:drawHighlightedSolid() end
+                end
             end
         end
         self.graphics:setColor(1, 1, 1)
 	end,
+
+    drawHighlightedSolid = function(self)
+        self.graphics:setColor(0.4, 0.4, 0.4)
+        self.graphics:setLineWidth(4)
+        self.graphics:line(self.highlightedSolid.x, self.highlightedSolid.y + 2, self.highlightedSolid.x + 16, self.highlightedSolid.y + 2)
+    end,
 
     getTileIDAt = function(self, x, y)
         local chunk = self:getChunkAt(x, y)
@@ -82,6 +91,10 @@ return {
             local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
             return SOLIDS:getSolidAt(chunkID, xInChunk, yInChunk)
         end
+    end,
+
+    highlightSolidAt = function(self, x, y)
+        self.highlightedSolid = { x = math.floor(x / 16) * 16, y = math.floor(y / 16) * 16 }
     end,
 
     screenToChunkCoordinates = function(self, x, y)
