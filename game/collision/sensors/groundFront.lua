@@ -28,18 +28,24 @@ return {
 				if self.owner:isFacingLeft() then xOffset = xOffset * -1 end
 				self.x = self.owner:getX() + xOffset
 				self.y = self.owner:getY() + 20
-				self:scan()
+				self:scan(dt)
 			end,
 
-			scan = function(self)
-				if WORLD:getSolidAt(self.x, self.y + 1) == 1 then
-					self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 20
-					WORLD:highlightSolidAt(self.x, self.y + 1)
-				elseif WORLD:getSolidAt(self.x, self.y + 17) == 1 then
-					self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 4
-					WORLD:highlightSolidAt(self.x, self.y + 17)
-				else
-					self.owner.GROUND_LEVEL = 1262
+			scan = function(self, dt)
+				self.owner.GROUND_LEVEL = 1262
+				local rayLength = (self.owner.velocity.y * dt) + 16
+				if rayLength > 0 then
+					local scanY = 1
+					while rayLength > 0 do
+						if WORLD:getSolidAt(self.x, self.y + scanY) == 1 then
+							self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 21 + scanY
+							WORLD:highlightSolidAt(self.x, self.y + scanY)
+							break
+						else
+							rayLength = rayLength - 16
+							scanY = scanY + 16
+						end
+					end
 				end
 			end,
 
