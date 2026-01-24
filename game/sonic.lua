@@ -111,9 +111,9 @@ return {
                 self:updateFrameRate(dt)
                 self:applyGravity(dt)
                 self:applyAirDrag(dt)
+                self:updateSensors(dt)
                 self:updatePosition(dt)
             end
-            self:updateSensors(dt)
             self:updateHitBox(dt)
             self:checkCollisions()
         end
