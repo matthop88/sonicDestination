@@ -119,14 +119,14 @@ return {
         end
     end,
 
-    refresh     = function(self)       TERRAIN:refresh()                  end,
-    getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
-    getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
+    refresh          = function(self)       TERRAIN:refresh()                  end,
+    getTileIDAt      = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
+    getSolidAt       = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
+    highlightSolidAt = function(self, x, y) TERRAIN:highlightSolidAt(x, y)     end,
+    toggleShowSolids = function(self)       TERRAIN:toggleShowSolids()         end,
 
-    toggleShowSolids   = function(self) TERRAIN:toggleShowSolids()        end,
-
-    fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
-    fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
+    fadeOut          = function(self)       self.fadeLayer:fadeOut()           end,
+    fadeIn           = function(self)       self.fadeLayer:fadeIn()            end,
 
     teleport    = function(self, map, x, y, giantRing, player)
         local teleportObject = requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing, player = player })
