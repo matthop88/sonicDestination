@@ -89,6 +89,7 @@ return {
     end,
 
     update = function(self, dt)
+        TERRAIN:update(dt)
         self.objects:head()
         while not self.objects:isEnd() do
             local object = self.objects:get()
