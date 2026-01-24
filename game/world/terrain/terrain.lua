@@ -8,6 +8,8 @@ local SOLIDS
 local CHUNKS
 return {
     showSolids = false,
+    highlightedCounter = 0,
+    highlightedSolid   = nil,
 
     init = function(self, params)
         self.map    = params.map
@@ -33,6 +35,10 @@ return {
 		self:drawTerrain()
     end,
 
+    update = function(self, dt)
+        self.highlightedCounter = self.highlightedCounter - (60 * dt)
+    end,
+
 	drawBackground = function(self)
         self.graphics:setColor(0, 0.57, 1.0)
 		self.graphics:rectangle("fill", self.graphics:calculateViewport())
@@ -52,7 +58,7 @@ return {
 	end,
 
     drawHighlightedSolid = function(self)
-        self.graphics:setColor(0.4, 0.4, 0.4)
+        self.graphics:setColor(0.4, 0.4, 0.4, self.highlightedCounter / 10)
         self.graphics:setLineWidth(4)
         self.graphics:line(self.highlightedSolid.x, self.highlightedSolid.y + 2, self.highlightedSolid.x + 16, self.highlightedSolid.y + 2)
     end,
@@ -95,6 +101,7 @@ return {
 
     highlightSolidAt = function(self, x, y)
         self.highlightedSolid = { x = math.floor(x / 16) * 16, y = math.floor(y / 16) * 16 }
+        self.highlightedCounter = 10
     end,
 
     screenToChunkCoordinates = function(self, x, y)
