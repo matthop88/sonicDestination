@@ -54,6 +54,8 @@ return {
                 return true
             end
         end)
+
+        return self.selectedBadnik ~= nil
     end,
 
     selectBadnik = function(self, badnik)
