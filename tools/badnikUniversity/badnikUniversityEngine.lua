@@ -45,25 +45,39 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                if key == "b" then
-                    if   self.mode == BADNIK then self.mode = SELECT
-                    else                          self.mode = BADNIK end
-                elseif key == "x" then
-                    if self.mode == BADNIK then self.badnikTemplates:get():flipX()
-                    else                        self.badniks:flipSelected()    end
-                elseif key == "tab" and self.mode == BADNIK then
-                    self.badnikTemplates:next()
-                elseif key == "shifttab" and self.mode == BADNIK then
-                    self.badnikTemplates:prev()
-                elseif key == "escape" then
-                    if   self.mode == SELECT then self.badniks:deselect()
-                    else                          self.mode = SELECT  end 
-                elseif key == "backspace" and self.mode == SELECT then
-                    self.badniks:deleteSelected()
-                elseif key == "shiftleft"  and self.mode == SELECT then self.badniks:nudgeSelected(-1,  0)
-                elseif key == "shiftright" and self.mode == SELECT then self.badniks:nudgeSelected( 1,  0)
-                elseif key == "shiftup"    and self.mode == SELECT then self.badniks:nudgeSelected( 0, -1)
-                elseif key == "shiftdown"  and self.mode == SELECT then self.badniks:nudgeSelected( 0,  1)
+                if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
+                elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
+                elseif self.mode == SOLIDS then self:handleKeypressedSolidsMode(key)
+                end
+            end,
+
+            handleKeypressedSelectMode = function(self, key)
+                if     key == "b"          then self.mode = BADNIK
+                elseif key == "s"          then self.mode = SOLIDS
+                elseif key == "x"          then self.badniks:flipSelected()
+                elseif key == "escape"     then self.badniks:deselect()
+                elseif key == "backspace"  then self.badniks:deleteSelected()
+                elseif key == "shiftleft"  then self.badniks:nudgeSelected(-1,  0)
+                elseif key == "shiftright" then self.badniks:nudgeSelected( 1,  0)
+                elseif key == "shiftup"    then self.badniks:nudgeSelected( 0, -1)
+                elseif key == "shiftdown"  then self.badniks:nudgeSelected( 0,  1)
+                end
+            end,
+
+            handleKeypressedBadnikMode = function(self, key)
+                if     key == "b"        then self.mode = SELECT
+                elseif key == "s"        then self.mode = SOLIDS
+                elseif key == "x"        then self.badnikTemplates:get():flipX()
+                elseif key == "tab"      then self.badnikTemplates:next()
+                elseif key == "shifttab" then self.badnikTemplates:prev()
+                elseif key == "escape"   then self.mode = SELECT
+                end
+            end,
+
+            handleKeypressedSolidsMode = function(self, key)
+                if     key == "b"        then self.mode = BADNIK
+                elseif key == "s"        then self.mode = SELECT
+                elseif key == "escape"   then self.mode = SELECT
                 end
             end,
 
@@ -74,6 +88,7 @@ return {
                     self.mode = SELECT
                 else
                     self.badniks:selectBadnikAt(mx, my, self.graphics)
+                    self.mode = SELECT
                 end
             end,
 
