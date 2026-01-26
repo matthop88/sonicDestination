@@ -58,4 +58,45 @@ require("plugins/engine")
     :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
     :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
     :add("listVisualizer", { listFn      = function() return BADNIK_UNIVERSITY_ENGINE:getBadnikList() end })
+    :add("questionBox",
+    {   x = 1150,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            { "B", "Enters Badnik placement mode",  },
+            { "Tab", "Pages through badniks", },
+            { "Escape", "Enters Selection mode", },
+            { "Click",  "Selects badnik",  },
+            { "Delete", "Deletes selected badnik", },
+            { "Double Click",  "Shows Badnik Properties in Visualizer", },
+            { "Shift-arrow", "Nudges selected badnik", },
+            { "X", "Flips selected badnik horizontally", },
+        },
+    })
+    
+--------------------------------------------------------------
+
+-- ...
+-- ...
+-- ...
+
+--------------------------------------------------------------
+--                          Plugins                         --
+--------------------------------------------------------------
+
+require("plugins/engine")
+    :add("modKeyEnabler")
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
+    :add("keyRepeat", {
+        interval    = 0.05,
+        delay       = 0.5,
+    })
+    :add("scrolling",      { imageViewer = BADNIK_UNIVERSITY_ENGINE          })
+    :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
+    :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
+    :add("listVisualizer", { listFn      = function() return BADNIK_UNIVERSITY_ENGINE:getBadnikList() end })
     
