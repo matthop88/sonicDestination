@@ -8,12 +8,12 @@ return {
             graphics   = require("tools/lib/graphics"):create(), 
             mode       = SELECT,
             badniks    = require("tools/badnikUniversity/badnikList"),
+            solids     = require("tools/badnikUniversity/solidsList"),
             badnikRoster = {
                 "motobug",
                 "patabata",
             },
             badnikTemplates = require("tools/lib/dataStructures/navigableList"):create {},
-            solids          = require("tools/lib/dataStructures/linkedList"):create(),
             
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
@@ -28,7 +28,7 @@ return {
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
                 
                 self.badniks:draw(self.graphics)
-                self.solids:forEach(function(s) self:drawSolidAt(s.x, s.y) end)
+                self.solids:draw(self.graphics)
 
                 if     self.mode == SELECT then self:drawSelectMode()
                 elseif self.mode == BADNIK then self:drawBadnikMode()
@@ -36,11 +36,13 @@ return {
                 end
                 
                 self.badniks:drawSelected(self.graphics)
+                self.solids:drawSelected(self.graphics)
             end,
 
             drawSelectMode = function(self)
                 love.mouse.setVisible(true)
                 self.badniks:drawMouseOver(self.graphics)
+                self.solids:drawMouseOver(self.graphics)
             end,
 
             drawBadnikMode = function(self)
@@ -50,23 +52,12 @@ return {
             end,
 
             drawSolidsMode = function(self)
-                love.mouse.setVisible(false)
-                local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                self.graphics:setColor(1, 1, 0, 0.7)
-                self.graphics:setLineWidth(2)
-                x = math.floor((x + 8) / 16) * 16
-                y = math.floor((y + 8) / 16) * 16
-                self.graphics:line(x, y, x + 16, y)
-            end,
-
-            drawSolidAt = function(self, x, y)
-                self.graphics:setColor(1, 1, 1)
-                self.graphics:setLineWidth(2)
-                self.graphics:line(x, y, x + 16, y)
+                self.solids:drawCursor(self.graphics)
             end,
 
             update = function(self, dt)
                 self.badniks:update(dt, self.graphics)
+                self.solids:update(dt, self.graphics)
             end,
 
             handleKeypressed = function(self, key)
@@ -77,11 +68,18 @@ return {
             end,
 
             handleKeypressedSelectMode = function(self, key)
-                if     key == "b"          then self.mode = BADNIK
+                if     key == "b"          then 
+                    self.mode = BADNIK
+                    self.solids:deselect()
                 elseif key == "s"          then self.mode = SOLIDS
+                    self.solids:deselect()
                 elseif key == "x"          then self.badniks:flipSelected()
-                elseif key == "escape"     then self.badniks:deselect()
-                elseif key == "backspace"  then self.badniks:deleteSelected()
+                elseif key == "escape"     then 
+                    self.badniks:deselect()
+                    self.solids:deselect()
+                elseif key == "backspace"  then 
+                    self.badniks:deleteSelected()
+                    self.solids:deleteSelected()
                 elseif key == "shiftleft"  then self.badniks:nudgeSelected(-1,  0)
                 elseif key == "shiftright" then self.badniks:nudgeSelected( 1,  0)
                 elseif key == "shiftup"    then self.badniks:nudgeSelected( 0, -1)
@@ -112,10 +110,12 @@ return {
                     self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
                     self.mode = SELECT
                 elseif self.mode == SOLIDS then
-                    local x, y = self:screenToImageCoordinates(mx, my)
-                    self.solids:add({ x = math.floor((x + 8) / 16) * 16, y = math.floor((y + 8) / 16) * 16 })
+                    self.solids:add(self:screenToImageCoordinates(mx, my))
                 else
-                    self.badniks:selectBadnikAt(mx, my, self.graphics)
+                    self.solids:deselect()
+                    if not self.badniks:selectBadnikAt(mx, my, self.graphics) then
+                        self.solids:selectSolidAt(mx, my, self.graphics)
+                    end
                     self.mode = SELECT
                 end
             end,
