@@ -28,25 +28,33 @@ return {
                 
                 self.badniks:draw(self.graphics)
 
-                if self.mode == BADNIK then
-                    love.mouse.setVisible(false)
-                    local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                    self.badnikTemplates:get():drawPreviewSprite(self.graphics, math.floor(x), math.floor(y))
-                elseif self.mode == SOLIDS then
-                    love.mouse.setVisible(false)
-                    local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                    self.graphics:setColor(1, 1, 1, 0.7)
-                    self.graphics:setLineWidth(2)
-                    x = math.floor(x / 16) * 16
-                    y = math.floor(y / 16) * 16
-
-                    self.graphics:line(x, y, x + 16, y)
-                else
-                    self.badniks:drawMouseOver(self.graphics)
-                    love.mouse.setVisible(true)
+                if     self.mode == SELECT then self:drawSelectMode()
+                elseif self.mode == BADNIK then self:drawBadnikMode()
+                elseif self.mode == SOLIDS then self:drawSolidsMode()
                 end
-
+                
                 self.badniks:drawSelected(self.graphics)
+            end,
+
+            drawSelectMode = function(self)
+                love.mouse.setVisible(true)
+                self.badniks:drawMouseOver(self.graphics)
+            end,
+
+            drawBadnikMode = function(self)
+                love.mouse.setVisible(false)
+                local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
+                self.badnikTemplates:get():drawPreviewSprite(self.graphics, math.floor(x), math.floor(y))
+            end,
+
+            drawSolidsMode = function(self)
+                love.mouse.setVisible(false)
+                local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
+                self.graphics:setColor(1, 1, 1, 0.7)
+                self.graphics:setLineWidth(2)
+                x = math.floor(x / 16) * 16
+                y = math.floor(y / 16) * 16
+                self.graphics:line(x, y, x + 16, y)
             end,
 
             update = function(self, dt)
