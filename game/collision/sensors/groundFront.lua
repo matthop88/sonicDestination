@@ -5,11 +5,13 @@ return {
 		WORLD    = params.WORLD
 		
 		return {
-			owner    = params.OWNER,
-			graphics = params.GRAPHICS,
-			x        = nil,
-			y        = nil,
-			visible  = false,
+			owner     = params.OWNER,
+			graphics  = params.GRAPHICS,
+			x         = nil,
+			y         = nil,
+			visible   = false,
+			hlCounter = 0,
+			hlSolid   = nil,
 
 			draw = function(self)
 				if self.visible then
@@ -20,6 +22,7 @@ return {
 					self.graphics:line(self.x, self.y - 20, self.x, self.y)
 					self.graphics:setColor(1,    1,    1)
 					self.graphics:line(self.x, self.y -  1, self.x, self.y)
+					if self.hlSolid and self.hlCounter > 0 then WORLD:drawSolidAt(self.hlSolid.x, self.hlSolid.y, { 1, 1, 0, self.hlCounter }) end
 				end
 			end,
 
@@ -29,6 +32,7 @@ return {
 				self.x = self.owner:getX() + xOffset
 				self.y = self.owner:getY() + 20
 				self:scan(dt)
+				self.hlCounter = math.max(self.hlCounter - (dt * 3), 0)
 			end,
 
 			scan = function(self, dt)
@@ -39,7 +43,8 @@ return {
 					while rayLength > 0 do
 						if WORLD:getSolidAt(self.x, self.y + scanY) == 1 then
 							self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 21 + scanY
-							WORLD:highlightSolidAt(self.x, self.y + scanY)
+							self.hlSolid = { x = math.floor(self.x / 16) * 16, y = math.floor((self.y + scanY) / 16) * 16 }
+							self.hlCounter = 1
 							break
 						else
 							rayLength = rayLength - 16
