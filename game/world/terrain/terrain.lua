@@ -8,9 +8,7 @@ local SOLIDS
 local CHUNKS
 return {
     showSolids = false,
-    highlightedCounter = 0,
-    highlightedSolid   = nil,
-
+    
     init = function(self, params)
         self.map    = params.map
         
@@ -36,7 +34,7 @@ return {
     end,
 
     update = function(self, dt)
-        self.highlightedCounter = self.highlightedCounter - (60 * dt)
+        -- do nothing
     end,
 
 	drawBackground = function(self)
@@ -50,17 +48,17 @@ return {
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
                 if self.showSolids then 
                     SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
-                    if self.highlightedSolid then self:drawHighlightedSolid() end
                 end
             end
         end
         self.graphics:setColor(1, 1, 1)
 	end,
 
-    drawHighlightedSolid = function(self)
-        self.graphics:setColor(0.4, 0.4, 0.4, self.highlightedCounter / 10)
+    drawSolidAt = function(self, x, y, color)
+        self.graphics:setColor(color)
         self.graphics:setLineWidth(4)
-        self.graphics:line(self.highlightedSolid.x, self.highlightedSolid.y + 2, self.highlightedSolid.x + 16, self.highlightedSolid.y + 2)
+        
+        self.graphics:line(x, y + 2, x + 16, y + 2)
     end,
 
     getTileIDAt = function(self, x, y)
@@ -97,11 +95,6 @@ return {
             local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
             return SOLIDS:getSolidAt(chunkID, xInChunk, yInChunk)
         end
-    end,
-
-    highlightSolidAt = function(self, x, y)
-        self.highlightedSolid = { x = math.floor(x / 16) * 16, y = math.floor(y / 16) * 16 }
-        self.highlightedCounter = 10
     end,
 
     screenToChunkCoordinates = function(self, x, y)
