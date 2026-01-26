@@ -32,6 +32,15 @@ return {
                     love.mouse.setVisible(false)
                     local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                     self.badnikTemplates:get():drawPreviewSprite(self.graphics, math.floor(x), math.floor(y))
+                elseif self.mode == SOLIDS then
+                    love.mouse.setVisible(false)
+                    local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
+                    self.graphics:setColor(1, 1, 1, 0.7)
+                    self.graphics:setLineWidth(2)
+                    x = math.floor(x / 16) * 16
+                    y = math.floor(y / 16) * 16
+
+                    self.graphics:line(x, y, x + 16, y)
                 else
                     self.badniks:drawMouseOver(self.graphics)
                     love.mouse.setVisible(true)
