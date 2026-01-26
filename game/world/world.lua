@@ -88,6 +88,8 @@ return {
         end
     end,
 
+    drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
+
     update = function(self, dt)
         TERRAIN:update(dt)
         self.objects:head()
@@ -123,7 +125,6 @@ return {
     refresh          = function(self)       TERRAIN:refresh()                  end,
     getTileIDAt      = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
     getSolidAt       = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
-    highlightSolidAt = function(self, x, y) TERRAIN:highlightSolidAt(x, y)     end,
     toggleShowSolids = function(self)       TERRAIN:toggleShowSolids()         end,
 
     fadeOut          = function(self)       self.fadeLayer:fadeOut()           end,
