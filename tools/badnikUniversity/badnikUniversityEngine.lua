@@ -1,9 +1,12 @@
+local BADNIK = "BADNIK"
+local SELECT = "SELECT"
+local SOLIDS = "SOLIDS"
 
 return {
     create = function(self, params)
         return ({
             graphics   = require("tools/lib/graphics"):create(), 
-            badnikMode = false,
+            mode       = SELECT,
             badniks    = require("tools/badnikUniversity/badnikList"),
             badnikRoster = {
                 "motobug",
@@ -25,7 +28,7 @@ return {
                 
                 self.badniks:draw(self.graphics)
 
-                if self.badnikMode then
+                if self.mode == BADNIK then
                     love.mouse.setVisible(false)
                     local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                     self.badnikTemplates:get():drawPreviewSprite(self.graphics, math.floor(x), math.floor(y))
@@ -43,31 +46,32 @@ return {
 
             handleKeypressed = function(self, key)
                 if key == "b" then
-                    self.badnikMode = not self.badnikMode
+                    if   self.mode == BADNIK then self.mode = SELECT
+                    else                          self.mode = BADNIK end
                 elseif key == "x" then
-                    if self.badnikMode then self.badnikTemplates:get():flipX()
-                    else                    self.badniks:flipSelected()    end
-                elseif key == "tab" and self.badnikMode then
+                    if self.mode == BADNIK then self.badnikTemplates:get():flipX()
+                    else                        self.badniks:flipSelected()    end
+                elseif key == "tab" and self.mode == BADNIK then
                     self.badnikTemplates:next()
-                elseif key == "shifttab" and self.badnikMode then
+                elseif key == "shifttab" and self.mode == BADNIK then
                     self.badnikTemplates:prev()
                 elseif key == "escape" then
-                    if   self.badnikMode then self.badnikMode = false
-                    else                      self.badniks:deselect() end
-                elseif key == "backspace" and not self.badnikMode then
+                    if   self.mode == SELECT then self.badniks:deselect()
+                    else                          self.mode = SELECT  end 
+                elseif key == "backspace" and self.mode == SELECT then
                     self.badniks:deleteSelected()
-                elseif key == "shiftleft"  and not self.badnikMode then self.badniks:nudgeSelected(-1,  0)
-                elseif key == "shiftright" and not self.badnikMode then self.badniks:nudgeSelected( 1,  0)
-                elseif key == "shiftup"    and not self.badnikMode then self.badniks:nudgeSelected( 0, -1)
-                elseif key == "shiftdown"  and not self.badnikMode then self.badniks:nudgeSelected( 0,  1)
+                elseif key == "shiftleft"  and self.mode == SELECT then self.badniks:nudgeSelected(-1,  0)
+                elseif key == "shiftright" and self.mode == SELECT then self.badniks:nudgeSelected( 1,  0)
+                elseif key == "shiftup"    and self.mode == SELECT then self.badniks:nudgeSelected( 0, -1)
+                elseif key == "shiftdown"  and self.mode == SELECT then self.badniks:nudgeSelected( 0,  1)
                 end
             end,
 
             handleMousepressed = function(self, mx, my)
-                if self.badnikMode then
+                if self.mode == BADNIK then
                     local x, y = self:screenToImageCoordinates(mx, my)
                     self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
-                    self.badnikMode = false
+                    self.mode = SELECT
                 else
                     self.badniks:selectBadnikAt(mx, my, self.graphics)
                 end
