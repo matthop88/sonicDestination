@@ -13,6 +13,7 @@ return {
                 "patabata",
             },
             badnikTemplates = require("tools/lib/dataStructures/navigableList"):create {},
+            solids          = require("tools/lib/dataStructures/linkedList"):create(),
             
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
@@ -27,6 +28,7 @@ return {
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
                 
                 self.badniks:draw(self.graphics)
+                self.solids:forEach(function(s) self:drawSolidAt(s.x, s.y) end)
 
                 if     self.mode == SELECT then self:drawSelectMode()
                 elseif self.mode == BADNIK then self:drawBadnikMode()
@@ -50,10 +52,16 @@ return {
             drawSolidsMode = function(self)
                 love.mouse.setVisible(false)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
-                self.graphics:setColor(1, 1, 1, 0.7)
+                self.graphics:setColor(1, 1, 0, 0.7)
                 self.graphics:setLineWidth(2)
-                x = math.floor(x / 16) * 16
-                y = math.floor(y / 16) * 16
+                x = math.floor((x + 8) / 16) * 16
+                y = math.floor((y + 8) / 16) * 16
+                self.graphics:line(x, y, x + 16, y)
+            end,
+
+            drawSolidAt = function(self, x, y)
+                self.graphics:setColor(1, 1, 1)
+                self.graphics:setLineWidth(2)
                 self.graphics:line(x, y, x + 16, y)
             end,
 
@@ -99,10 +107,13 @@ return {
             end,
 
             handleMousepressed = function(self, mx, my)
-                if self.mode == BADNIK then
+                if     self.mode == BADNIK then
                     local x, y = self:screenToImageCoordinates(mx, my)
                     self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
                     self.mode = SELECT
+                elseif self.mode == SOLIDS then
+                    local x, y = self:screenToImageCoordinates(mx, my)
+                    self.solids:add({ x = math.floor((x + 8) / 16) * 16, y = math.floor((y + 8) / 16) * 16 })
                 else
                     self.badniks:selectBadnikAt(mx, my, self.graphics)
                     self.mode = SELECT
