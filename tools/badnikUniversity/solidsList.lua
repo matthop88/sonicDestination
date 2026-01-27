@@ -117,4 +117,15 @@ return {
         end)
         return stringData .. "  },\n"
     end,
+
+    clear         = function(self)         
+        self.solids = require("tools/lib/dataStructures/linkedList"):create()
+    end,
+
+    refreshFromData = function(self, solidsData)
+        self:clear()
+        for _, solid in ipairs(solidsData) do
+            self:add(solid.x, solid.y)
+        end
+    end,
 }
