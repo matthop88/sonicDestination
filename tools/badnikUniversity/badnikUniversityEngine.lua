@@ -18,7 +18,9 @@ return {
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                 for _, badnikName in ipairs(self.badnikRoster) do
-                    self.badnikTemplates:add(require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName))
+                    local badnikTemplate = require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName)
+                    self.badnikTemplates:add(badnikTemplate)
+                    self.badnikTemplates[badnikName] = badnikTemplate
                 end
                 return self
             end,
@@ -154,11 +156,9 @@ return {
             end,
 
             placeBadnikFromData = function(self, badnikData)
-                for _, template in ipairs(self.badnikTemplates.list) do
-                    if template.name == badnikData.name then
-                        self.badniks:placeBadnik(template:fromBadnikData(badnikData), self.graphics)
-                        break
-                    end
+                local badnikTemplate = self.badnikTemplates[badnikData.name]
+                if badnikTemplate then
+                    self.badniks:placeBadnik(badnikTemplate:fromBadnikData(badnikData), self.graphics)
                 end
             end,
 
