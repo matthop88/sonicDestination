@@ -62,11 +62,7 @@ return {
 
             handleKeypressed = function(self, key)
                 if key == "space" then
-                    local stringData = "return {\n"
-                    stringData = stringData .. self.badniks:getStringData()
-                    stringData = stringData .. self.solids:getStringData()
-                    stringData = stringData .. "}"
-                    print(stringData)
+                    self:writeToFile("untitled")
                 else
                     if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
                     elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
@@ -133,6 +129,19 @@ return {
 
             getBadnikList = function(self)
                 return self.badniks
+            end,
+
+            writeToFile = function(self, filename)
+                love.filesystem.createDirectory("tools/badnikUniversity/labs")
+                love.filesystem.write("tools/badnikUniversity/labs/" .. filename .. ".lua", self:encodeData())
+                print("Saved to " .. love.filesystem.getSaveDirectory())
+            end,
+
+            encodeData = function(self)
+                local stringData = "return {\n"
+                stringData = stringData .. self.badniks:getStringData()
+                stringData = stringData .. self.solids:getStringData()
+                return stringData .. "}"
             end,
 
             ---------------------- Graphics Object Methods ------------------------
