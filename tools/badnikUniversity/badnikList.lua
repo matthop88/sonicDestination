@@ -109,4 +109,12 @@ return {
     setSelected   = function(self, badnik) self.selectedBadnik = badnik        end,
     getConsidered = function(self)         return self.consideredBadnik        end,
     setConsidered = function(self, badnik) self.externallyConsidered = badnik  end,
+
+    getStringData = function(self)
+        local stringData = "  badniks = {\n"
+        self.badniks:forEach(function(badnik)
+            stringData = stringData .. "    " .. badnik:getStringData() .. ",\n"
+        end)
+        return stringData .. "  },\n"
+    end,
 }
