@@ -96,4 +96,13 @@ return {
     quantizeLineCoordinates = function(self, x, y)
         return math.floor((x + 8) / 16) * 16, math.floor((y + 8) / 16) * 16
     end,
+
+    getStringData = function(self)
+        local stringData = "{\n"
+        self.solids:forEach(function(solid)
+            stringData = stringData .. "  { x = " .. solid.x .. ", y = " .. solid.y .. " },\n"
+        end)
+
+        return stringData .. "}\n"
+    end,
 }
