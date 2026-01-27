@@ -25,6 +25,10 @@ return {
                 self.xFlip = not self.xFlip
             end,
 
+            fromBadnikData = function(self, data)
+                return self:create(data.x, data.y, data.xFlip)
+            end,
+            
             create = function(self, x, y, xFlip)
                 local sprite = require("tools/lib/sprites/sprite"):create(self.path, x, y)
                 if xFlip or self.xFlip then sprite:flipX() end
