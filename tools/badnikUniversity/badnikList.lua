@@ -121,4 +121,14 @@ return {
         end)
         return stringData .. "  },\n"
     end,
+
+    refreshFromData = function(self, badniksData, badnikTemplates, GRAFX)
+        self:clear()
+        for _, badnik in ipairs(badniksData) do
+            local badnikTemplate = badnikTemplates[badnik.name]
+            if badnikTemplate then
+                self:placeBadnik(badnikTemplate:fromBadnikData(badnik), GRAFX)
+            end
+        end
+    end,
 }
