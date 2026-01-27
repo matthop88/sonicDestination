@@ -150,6 +150,7 @@ return {
                 for _, badnikData in ipairs(labData.badniks) do
                     self:placeBadnikFromData(badnikData)
                 end
+                self.solids:refreshFromData(labData.solids)
             end,
 
             placeBadnikFromData = function(self, badnikData)
