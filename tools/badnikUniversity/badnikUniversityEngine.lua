@@ -148,18 +148,8 @@ return {
 
             refreshFromFile = function(self, filename)
                 local labData = require("tools/badnikUniversity/labs/" .. filename)
-                self.badniks:clear()
-                for _, badnikData in ipairs(labData.badniks) do
-                    self:placeBadnikFromData(badnikData)
-                end
+                self.badniks:refreshFromData(labData.badniks, self.badnikTemplates, self.graphics)
                 self.solids:refreshFromData(labData.solids)
-            end,
-
-            placeBadnikFromData = function(self, badnikData)
-                local badnikTemplate = self.badnikTemplates[badnikData.name]
-                if badnikTemplate then
-                    self.badniks:placeBadnik(badnikTemplate:fromBadnikData(badnikData), self.graphics)
-                end
             end,
 
             ---------------------- Graphics Object Methods ------------------------
