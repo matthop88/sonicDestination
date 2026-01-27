@@ -111,11 +111,10 @@ return {
     end,
 
     getStringData = function(self)
-        local stringData = "{\n"
+        local stringData = "  solids = {\n"
         self.solids:forEach(function(solid)
-            stringData = stringData .. "  { x = " .. solid.x .. ", y = " .. solid.y .. " },\n"
+            stringData = stringData .. "    { x = " .. solid.x .. ", y = " .. solid.y .. " },\n"
         end)
-
-        return stringData .. "}\n"
+        return stringData .. "  },\n"
     end,
 }
