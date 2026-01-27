@@ -61,8 +61,8 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                if key == "space" then
-                    self:writeToFile("untitled")
+                if     key == "space" then self:writeToFile("untitled")
+                elseif key == "R"     then self:refreshFromFile("untitled")
                 else
                     if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
                     elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
@@ -142,6 +142,23 @@ return {
                 stringData = stringData .. self.badniks:getStringData()
                 stringData = stringData .. self.solids:getStringData()
                 return stringData .. "}"
+            end,
+
+            refreshFromFile = function(self, filename)
+                local labData = require("tools/badnikUniversity/labs/" .. filename)
+                self.badniks:clear()
+                for _, badnikData in ipairs(labData.badniks) do
+                    self:placeBadnikFromData(badnikData)
+                end
+            end,
+
+            placeBadnikFromData = function(self, badnikData)
+                for _, template in ipairs(self.badnikTemplates.list) do
+                    if template.name == badnikData.name then
+                        self.badniks:placeBadnik(template:fromBadnikData(badnikData), self.graphics)
+                        break
+                    end
+                end
             end,
 
             ---------------------- Graphics Object Methods ------------------------
