@@ -110,6 +110,10 @@ return {
     getConsidered = function(self)         return self.consideredBadnik        end,
     setConsidered = function(self, badnik) self.externallyConsidered = badnik  end,
 
+    clear         = function(self)         
+        self.badniks = require("tools/lib/dataStructures/linkedList"):create()
+    end,
+    
     getStringData = function(self)
         local stringData = "  badniks = {\n"
         self.badniks:forEach(function(badnik)
