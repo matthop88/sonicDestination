@@ -4,6 +4,7 @@ return {
     selectedBadnik       = nil,
     consideredBadnik     = nil,
     externallyConsidered = nil,
+    running              = false,
 
     draw = function(self, GRAFX)
         self.badniks:forEach(function(badnik) badnik:draw(GRAFX) end)
@@ -34,7 +35,9 @@ return {
 
     update = function(self, dt, GRAFX)
         self:calculateMouseOver(GRAFX)
-        self.badniks:forEach(function(badnik) badnik:update(dt) end)
+        if self.running then
+            self.badniks:forEach(function(badnik) badnik:update(dt) end)
+        end
     end,
 
     nudgeSelected = function(self, dx, dy)
@@ -130,5 +133,11 @@ return {
                 self:placeBadnik(badnikTemplate:fromBadnikData(badnik), GRAFX)
             end
         end
+        self.running = false
+        self.selectedBadnik       = nil
+        self.consideredBadnik     = nil
+        self.externallyConsidered = nil
     end,
+
+    toggleRunning = function(self) self.running = not self.running end,
 }
