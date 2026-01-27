@@ -25,16 +25,16 @@ return {
                 self.xFlip = not self.xFlip
             end,
 
-            create = function(self, x, y)
+            create = function(self, x, y, xFlip)
                 local sprite = require("tools/lib/sprites/sprite"):create(self.path, x, y)
-                if self.xFlip then sprite:flipX() end
+                if xFlip or self.xFlip then sprite:flipX() end
 
                 return {
                     name            = self.name,
                     capitalizedName = STRING_UTIL:capitalize(self.name),
                     x               = x,
                     y               = y,
-                    xFlip           = self.xFlip,
+                    xFlip           = xFlip or self.xFlip,
                     sprite          = sprite,
                     xSpeed          = 0,
                     ySpeed          = 0,
