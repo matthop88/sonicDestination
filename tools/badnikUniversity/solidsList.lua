@@ -62,7 +62,20 @@ return {
 
     add = function(self, x, y)
         x, y = self:quantizeLineCoordinates(x, y)
-        self.solids:add({ x = x, y = y })
+        if not self:findSolid(x, y) then
+            self.solids:add({ x = x, y = y })
+        end
+    end,
+
+    findSolid = function(self, x, y)
+        local preexistingSolid = nil
+        self.solids:forEach(function(solid)
+            if solid.x == x and solid.y == y then
+                preexistingSolid = solid
+                return true
+            end
+        end)
+        return preexistingSolid
     end,
 
     selectSolidAt = function(self, mx, my, GRAFX)
