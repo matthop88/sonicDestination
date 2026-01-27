@@ -113,6 +113,12 @@ return {
                             },
                         }
                     end,
+
+                    getStringData = function(self)
+                        local xFlipString = "false"
+                        if self.xFlip then xFlipString = "true" end
+                        return "{ name = \"" .. self.name .. "\", x = " .. x .. ", y = " .. y .. ", xFlip = " .. xFlipString .. " }"
+                    end,
                 }
             end,
         }
