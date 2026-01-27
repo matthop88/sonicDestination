@@ -61,9 +61,12 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
-                elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
-                elseif self.mode == SOLIDS then self:handleKeypressedSolidsMode(key)
+                if key == "space" then
+                    print(self.solids:getStringData())
+                else
+                    if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
+                    elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
+                    elseif self.mode == SOLIDS then self:handleKeypressedSolidsMode(key) end
                 end
             end,
 
