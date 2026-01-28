@@ -7,7 +7,6 @@ return ({
         local scriptFilenames = love.filesystem.getDirectoryItems(relativePath("world/badniks/scripts"))
         for _, scriptFilename in ipairs(scriptFilenames) do
             if STRING_UTIL:endsWith(scriptFilename, ".lua") then
-                print(scriptFilename)
                 table.insert(self.scriptNames, string.sub(scriptFilename, 1, string.len(scriptFilename) - 4))
             end
         end
