@@ -5,13 +5,17 @@ return {
     consideredSolid     = nil,
    
     draw = function(self, GRAFX)
-        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, GRAFX) end)
+        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, solid.redAlpha, GRAFX) end)
     end,
 
-    drawSolidAt = function(self, x, y, GRAFX)
+    drawSolidAt = function(self, x, y, redAlpha, GRAFX)
         GRAFX:setColor(0.5, 1, 1)
         GRAFX:setLineWidth(2)
         GRAFX:line(x, y, x + 16, y)
+        if redAlpha then
+            GRAFX:setColor(1, 0, 0, redAlpha)
+            GRAFX:line(x, y, x + 16, y)
+        end
     end,
 
     drawMouseOver = function(self, GRAFX)
@@ -54,6 +58,11 @@ return {
 
     update = function(self, dt, GRAFX)
         self:calculateMouseOver(GRAFX)
+        self.solids:forEach(function(solid)
+            if solid.redAlpha ~= nil then
+                solid.redAlpha = solid.redAlpha - dt
+            end
+        end)
     end,
 
     isInside = function(self, x, y, solid)
@@ -129,5 +138,17 @@ return {
         end
         self.selectedSolid   = nil
         self.consideredSolid = nil
+    end,
+
+    getSolidAt = function(self, x, y)
+        local sX, sY = self:quantizeLineCoordinates(x, y)
+        local foundSolid = nil
+        self.solids:forEach(function(solid)
+            if solid.x == sX and solid.y == sY then
+                foundSolid = solid
+                return true
+            end
+        end)
+        return foundSolid
     end,
 }
