@@ -2,5 +2,5 @@ return {
 	name   = "motobug",
 	path   = "objects/motobug",
 	script = "pacingBackAndForth",
-	groundSensor = { x = 0, y = 16 },
+	groundSensor = { x = 10, y = 16 },
 }
