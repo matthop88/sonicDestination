@@ -42,6 +42,11 @@ return {
                     sprite          = sprite,
                     xSpeed          = 0,
                     ySpeed          = 0,
+                    original        = {
+                        x     = x,
+                        y     = y,
+                        xFlip = xFlip or self.xFlip,
+                    },
 
                     script          = SCRIPT_REPO:get(self.scriptName),
 
@@ -58,6 +63,15 @@ return {
                     setY  = function(self, y)     
                         self.y = y 
                         self.sprite:setY(y)
+                    end,
+
+                    nudgeOriginal = function(self, dx, dy)
+                        self.original.x = self.original.x + dx
+                        self.original.y = self.original.y + dy
+                    end,
+
+                    flipOriginal = function(self)
+                        self.original.xFlip = not self.original.xFlip
                     end,
 
                     getW  = function(self) return self.sprite:getW() end,
@@ -120,8 +134,8 @@ return {
 
                     getStringData = function(self)
                         local xFlipString = "false"
-                        if self.xFlip then xFlipString = "true" end
-                        return "{ name = \"" .. self.name .. "\", x = " .. x .. ", y = " .. y .. ", xFlip = " .. xFlipString .. " }"
+                        if self.original.xFlip then xFlipString = "true" end
+                        return "{ name = \"" .. self.name .. "\", x = " .. self.original.x .. ", y = " .. self.original.y .. ", xFlip = " .. xFlipString .. " }"
                     end,
                 }
             end,
