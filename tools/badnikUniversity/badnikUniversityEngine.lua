@@ -62,7 +62,7 @@ return {
             end,
 
             update = function(self, dt)
-                self.badniks:update(dt, self.graphics)
+                self.badniks:update(dt, self.solids, self.graphics)
                 self.solids:update(dt, self.graphics)
             end,
 
