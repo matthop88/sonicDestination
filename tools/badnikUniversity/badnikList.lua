@@ -33,12 +33,11 @@ return {
         end)
     end,
 
-    update = function(self, dt, solids, GRAFX)
+    update = function(self, dt, GRAFX)
         self:calculateMouseOver(GRAFX)
         if self.running then
             self.badniks:forEach(function(badnik) 
                 badnik:update(dt) 
-                badnik:scan(solids)
             end)
         end
     end,
