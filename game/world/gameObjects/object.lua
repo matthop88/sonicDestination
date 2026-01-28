@@ -4,7 +4,7 @@ local SCRIPT_ENGINE = requireRelative("world/badniks/scripts/lib/scriptEngine")
 local OBJECT_ID    = 0
 
 return {
-    create = function(self, object, graphics)
+    create = function(self, object, graphics, WORLD)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
         local SPRITE        = spriteFactory:create("objects/" .. object.obj)
 
@@ -23,6 +23,7 @@ return {
             deleted  = false,
             active   = not object.inactive,
             sprite   = SPRITE,
+            world    = WORLD,
             id       = OBJECT_ID,
             
             getID    = function(self) return self.id end,
@@ -100,7 +101,9 @@ return {
                 self.xFlip = not self.xFlip
             end,
 
-            getSortValue   = function(self) return self.x        end,
+            getXFlip     = function(self) return self.xFlip      end,
+            getSortValue = function(self) return self.x          end,
+
             locateVisually = function(self)
                 local graphics = self.sprite:getGraphics()
                 local centerX, centerY = graphics:getScreenWidth() / 2, graphics:getScreenHeight() / 2
