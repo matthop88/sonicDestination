@@ -13,7 +13,7 @@ return {
     end,
 
     drawScanTrail = function(self, GRAFX)
-        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, { 1, 0, 0, solid.redAlpha }, GRAFX) end)
+        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, { 1, 0, 0, solid.redAlpha or 0 }, GRAFX) end)
     end,
 
     drawSolidAt = function(self, x, y, color, GRAFX)
