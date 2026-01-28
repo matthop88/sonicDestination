@@ -5,9 +5,13 @@ return {
     consideredBadnik     = nil,
     externallyConsidered = nil,
     running              = false,
-
+    
     draw = function(self, GRAFX)
         self.badniks:forEach(function(badnik) badnik:draw(GRAFX) end)
+    end,
+
+    drawSensors = function(self, GRAFX)
+        self.badniks:forEach(function(badnik) badnik:drawSensors(GRAFX) end)
     end,
 
     drawMouseOver = function(self, GRAFX)
