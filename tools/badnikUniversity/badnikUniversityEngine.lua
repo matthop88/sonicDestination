@@ -90,6 +90,7 @@ return {
             handleKeypressed = function(self, key)
                 if     key == "R" then self:refreshFromFile(FILENAME)
                 elseif key == "G" then self.badniks:toggleRunning()
+                elseif key == "S" then self:toggleSensors()
                 else
                     if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
                     elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
@@ -104,7 +105,6 @@ return {
                 elseif key == "s"          then 
                     self.mode = SOLIDS
                     self.solids:deselect()
-                elseif key == "S"          then self:toggleSensors()
                 elseif key == "x"          then self:flipSelectedBadnik()
                 elseif key == "escape"     then 
                     self.badniks:deselect()
@@ -190,7 +190,6 @@ return {
             writeToFile = function(self, filename)
                 love.filesystem.createDirectory("tools/badnikUniversity/labs")
                 local data = self:encodeData()
-                print(data)
                 love.filesystem.write("tools/badnikUniversity/labs/" .. filename .. ".lua", data)
                 print("Saved to " .. love.filesystem.getSaveDirectory())
             end,
