@@ -4,7 +4,7 @@ local SCRIPT_REPO    = requireRelative("world/badniks/scripts/lib/scriptRepo")
 return {
 	create = function(self)
 		local SENSOR_DX = 10
-		local SENSOR_DY = 20
+		local SENSOR_DY = 21
 
 		return {
 			script   = SCRIPT_REPO:get("pacingBackAndForth"),
