@@ -51,7 +51,7 @@ return {
 
         self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
         for _, objectData in ipairs(objectsMap) do
-            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS))
+            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS, self))
         end
     end,
 
