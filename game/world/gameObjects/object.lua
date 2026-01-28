@@ -21,6 +21,7 @@ return {
             HITBOX   = nil,
             name     = object.obj,
             deleted  = false,
+            alive    = true,
             active   = not object.inactive,
             sprite   = SPRITE,
             world    = WORLD,
@@ -56,7 +57,7 @@ return {
 
             update = function(self, dt)
                 if self.active then
-                    if self.script then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
+                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
@@ -73,6 +74,13 @@ return {
             setAnimation = function(self, name) self.sprite:setCurrentAnimation(name) end,
             isForeground = function(self)       return self.sprite:isForeground()     end,
             isPlayer     = function(self)       return false                          end,
+
+            isAlive      = function(self)       return self.alive                     end,
+            setAlive     = function(self)       self.alive = true                     end,
+            setDead      = function(self)       
+                self.alive = false 
+                self.xSpeed, self.ySpeed = 0, 0                   
+            end,
 
             onCollisionWithPlayer = function(self, player)
                 -- do nothing
