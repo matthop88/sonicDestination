@@ -65,9 +65,8 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                if     key == "space" then self:writeToFile("untitled")
-                elseif key == "R"     then self:refreshFromFile("untitled")
-                elseif key == "G"     then self.badniks:toggleRunning()
+                if     key == "R" then self:refreshFromFile("untitled")
+                elseif key == "G" then self.badniks:toggleRunning()
                 else
                     if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
                     elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
@@ -81,18 +80,33 @@ return {
                     self.solids:deselect()
                 elseif key == "s"          then self.mode = SOLIDS
                     self.solids:deselect()
-                elseif key == "x"          then self.badniks:flipSelected()
+                elseif key == "x"          then self:flipSelectedBadnik()
                 elseif key == "escape"     then 
                     self.badniks:deselect()
                     self.solids:deselect()
                 elseif key == "backspace"  then 
-                    self.badniks:deleteSelected()
-                    self.solids:deleteSelected()
-                elseif key == "shiftleft"  then self.badniks:nudgeSelected(-1,  0)
-                elseif key == "shiftright" then self.badniks:nudgeSelected( 1,  0)
-                elseif key == "shiftup"    then self.badniks:nudgeSelected( 0, -1)
-                elseif key == "shiftdown"  then self.badniks:nudgeSelected( 0,  1)
+                    self:deleteSelected()
+                elseif key == "shiftleft"  then self:nudgeSelectedBadnik(-1,  0)
+                elseif key == "shiftright" then self:nudgeSelectedBadnik( 1,  0)
+                elseif key == "shiftup"    then self:nudgeSelectedBadnik( 0, -1)
+                elseif key == "shiftdown"  then self:nudgeSelectedBadnik( 0,  1)
                 end
+            end,
+
+            flipSelectedBadnik = function(self)
+                self.badniks:flipSelected()
+                self:writeToFile("untitled")
+            end,
+
+            deleteSelected = function(self)
+                self.badniks:deleteSelected()
+                self.solids:deleteSelected()
+                self:writeToFile("untitled")
+            end,
+
+            nudgeSelectedBadnik = function(self, dx, dy)
+                self.badniks:nudgeSelected(dx, dy)
+                self:writeToFile("untitled")
             end,
 
             handleKeypressedBadnikMode = function(self, key)
@@ -114,11 +128,10 @@ return {
 
             handleMousepressed = function(self, mx, my)
                 if     self.mode == BADNIK then
-                    local x, y = self:screenToImageCoordinates(mx, my)
-                    self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
+                    self:placeBadnik(self:screenToImageCoordinates(mx, my))
                     self.mode = SELECT
                 elseif self.mode == SOLIDS then
-                    self.solids:add(self:screenToImageCoordinates(mx, my))
+                    self:addSolid(self:screenToImageCoordinates(mx, my))
                 else
                     self.solids:deselect()
                     if not self.badniks:selectBadnikAt(mx, my, self.graphics) then
@@ -126,6 +139,16 @@ return {
                     end
                     self.mode = SELECT
                 end
+            end,
+
+            placeBadnik = function(self, x, y)
+                self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
+                self:writeToFile("untitled")
+            end,
+
+            addSolid = function(self, x, y)
+                self.solids:add(x, y)
+                self:writeToFile("untitled")
             end,
 
             handleMousereleased = function(self, mx, my)
