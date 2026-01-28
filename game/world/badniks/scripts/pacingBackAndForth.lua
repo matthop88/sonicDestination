@@ -1,14 +1,14 @@
-local MOVE  = requireRelative("world/badniks/scripts/commands/move")
-local WAIT  = requireRelative("world/badniks/scripts/commands/wait")
-local FLIPX = requireRelative("world/badniks/scripts/commands/flipX")
+local MOVE_TOWARDS_EDGE  = requireRelative("world/badniks/scripts/commands/moveTowardsEdge")
+local WAIT               = requireRelative("world/badniks/scripts/commands/wait")
+local FLIPX              = requireRelative("world/badniks/scripts/commands/flipX")
 
 return {
 	name    = "pacingBackAndForth",
 	title   = "Pacing Back and Forth",
 	program = {
-		MOVE { numSeconds = 3, xSpeed = 50, },
-		WAIT { numSeconds = 1,               },
+		MOVE_TOWARDS_EDGE { xSpeed     = 50, },
+		WAIT              { numSeconds =  1, },
 		FLIPX(),
-		WAIT { numSeconds = 1,               },
+		WAIT              { numSeconds =  1, },
 	},
 }
