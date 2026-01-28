@@ -21,7 +21,7 @@ return {
             init = function(self, params)
                 local x, y = self:screenToImageCoordinates(love.mouse.getPosition())
                 for _, badnikName in ipairs(self.badnikRoster) do
-                    local badnikTemplate = require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName)
+                    local badnikTemplate = require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName, self.solids)
                     self.badnikTemplates:add(badnikTemplate)
                     self.badnikTemplates[badnikName] = badnikTemplate
                     self:refreshFromFile(FILENAME)
@@ -62,7 +62,7 @@ return {
             end,
 
             update = function(self, dt)
-                self.badniks:update(dt, self.solids, self.graphics)
+                self.badniks:update(dt, self.graphics)
                 self.solids:update(dt, self.graphics)
             end,
 
