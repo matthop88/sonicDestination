@@ -4,6 +4,12 @@ local NO_BUMP_ID    = true
 local SCRIPT_ENGINE = require("game/world/badniks/scripts/lib/scriptEngine")
 local SCRIPT_REPO   = require("game/world/badniks/scripts/lib/scriptRepo")
 
+local createGroundSensor = function(data)
+    if data.groundSensor then
+        return require("tools/badnikUniversity/factories/badnikGroundSensor"):create(data.groundSensor.x, data.groundSensor.y)
+    end
+end
+
 return {
     createTemplate = function(self, name)
         local badnikData = require("tools/badnikUniversity/factories/badniks/" .. name)
@@ -42,6 +48,8 @@ return {
                     sprite          = sprite,
                     xSpeed          = 0,
                     ySpeed          = 0,
+                    groundSensor    = createGroundSensor(badnikData),
+                    
                     original        = {
                         x     = x,
                         y     = y,
@@ -78,6 +86,7 @@ return {
                     getH  = function(self) return self.sprite:getH() end,
                     draw  = function(self, GRAFX)
                         self.sprite:draw(GRAFX)
+                        if self.groundSensor then self.groundSensor:draw(GRAFX, self.x, self.y) end
                     end,
 
                     getXVelocity = function(self)         
