@@ -4,6 +4,8 @@ local SOLIDS = "SOLIDS"
 
 return {
     create = function(self, params)
+        local FILENAME = "untitled"
+
         return ({
             graphics   = require("tools/lib/graphics"):create(), 
             mode       = SELECT,
@@ -22,7 +24,7 @@ return {
                     local badnikTemplate = require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName)
                     self.badnikTemplates:add(badnikTemplate)
                     self.badnikTemplates[badnikName] = badnikTemplate
-                    self:refreshFromFile("untitled")
+                    self:refreshFromFile(FILENAME)
                 end
                 return self
             end,
@@ -65,7 +67,7 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                if     key == "R" then self:refreshFromFile("untitled")
+                if     key == "R" then self:refreshFromFile(FILENAME)
                 elseif key == "G" then self.badniks:toggleRunning()
                 else
                     if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
@@ -95,18 +97,18 @@ return {
 
             flipSelectedBadnik = function(self)
                 self.badniks:flipSelected()
-                self:writeToFile("untitled")
+                self:writeToFile(FILENAME)
             end,
 
             deleteSelected = function(self)
                 self.badniks:deleteSelected()
                 self.solids:deleteSelected()
-                self:writeToFile("untitled")
+                self:writeToFile(FILENAME)
             end,
 
             nudgeSelectedBadnik = function(self, dx, dy)
                 self.badniks:nudgeSelected(dx, dy)
-                self:writeToFile("untitled")
+                self:writeToFile(FILENAME)
             end,
 
             handleKeypressedBadnikMode = function(self, key)
@@ -143,12 +145,12 @@ return {
 
             placeBadnik = function(self, x, y)
                 self.badniks:placeBadnik(self.badnikTemplates:get():create(math.floor(x), math.floor(y)), self.graphics)
-                self:writeToFile("untitled")
+                self:writeToFile(FILENAME)
             end,
 
             addSolid = function(self, x, y)
                 self.solids:add(x, y)
-                self:writeToFile("untitled")
+                self:writeToFile(FILENAME)
             end,
 
             handleMousereleased = function(self, mx, my)
