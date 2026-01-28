@@ -44,6 +44,7 @@ return {
         if self.selectedBadnik then
             self.selectedBadnik:setX(self.selectedBadnik:getX() + dx)
             self.selectedBadnik:setY(self.selectedBadnik:getY() + dy)
+            self.selectedBadnik:nudgeOriginal(dx, dy)
         end
     end,
 
@@ -92,7 +93,10 @@ return {
     end,
 
     flipSelected = function(self)
-        if self.selectedBadnik then self.selectedBadnik:flipX() end
+        if self.selectedBadnik then 
+            self.selectedBadnik:flipX() 
+            self.selectedBadnik:flipOriginal()
+        end
     end,
     
     placeBadnik = function(self, newBadnik, GRAFX)
