@@ -54,7 +54,7 @@ return {
 		local CELL_ID = 0
 		
 		return {
-			__stack   = require("tools/lib/dataStructures/stack"):create(),
+			__stack   = requireRelative("util/dataStructures/stack"):create(),
 			__head    = nil,
 			__tail    = nil,
 			__size    = 0,
