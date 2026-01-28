@@ -9,6 +9,7 @@ return {
             mode       = SELECT,
             badniks    = require("tools/badnikUniversity/badnikList"),
             solids     = require("tools/badnikUniversity/solidsList"),
+
             badnikRoster = {
                 "motobug",
                 "patabata",
@@ -65,6 +66,7 @@ return {
             handleKeypressed = function(self, key)
                 if     key == "space" then self:writeToFile("untitled")
                 elseif key == "R"     then self:refreshFromFile("untitled")
+                elseif key == "G"     then self.badniks:toggleRunning()
                 else
                     if     self.mode == SELECT then self:handleKeypressedSelectMode(key)
                     elseif self.mode == BADNIK then self:handleKeypressedBadnikMode(key)
@@ -150,6 +152,7 @@ return {
                 local labData = require("tools/badnikUniversity/labs/" .. filename)
                 self.badniks:refreshFromData(labData.badniks, self.badnikTemplates, self.graphics)
                 self.solids:refreshFromData(labData.solids)
+                self.mode = SELECT
             end,
 
             ---------------------- Graphics Object Methods ------------------------
