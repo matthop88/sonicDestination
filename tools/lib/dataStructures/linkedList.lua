@@ -1,9 +1,6 @@
-local CELL_ID = 0
-
 local cell = {
-	create = function(self, data)
-		CELL_ID = CELL_ID + 1
-
+	create = function(self, data, CELL_ID)
+		
 		return {
 			__id   = CELL_ID,
 			__next = nil,
@@ -54,12 +51,19 @@ local cell = {
 
 return {
 	create = function(self)
+		local CELL_ID = 0
+		
 		return {
 			__stack   = require("tools/lib/dataStructures/stack"):create(),
 			__head    = nil,
 			__tail    = nil,
 			__size    = 0,
 			__current = nil,
+
+			incrementCellID = function(self)
+				CELL_ID = CELL_ID + 1
+				return CELL_ID
+			end,
 
 			head = function(self) 
 				self.__current = self.__head
@@ -75,7 +79,7 @@ return {
 
 			newCell = function(self, data)
 				local newCell = self.__stack:pop()
-				if newCell == nil then newCell = cell:create(data)
+				if newCell == nil then newCell = cell:create(data, self:incrementCellID())
 				else                   newCell:init(data)      end
 				return newCell
 			end,
