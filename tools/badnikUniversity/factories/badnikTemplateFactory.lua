@@ -86,6 +86,9 @@ return {
                     getH  = function(self) return self.sprite:getH() end,
                     draw  = function(self, GRAFX)
                         self.sprite:draw(GRAFX)
+                    end,
+
+                    drawSensors = function(self, GRAFX)
                         if self.groundSensor then self.groundSensor:draw(GRAFX, self.x, self.y, self.xFlip) end
                     end,
 
