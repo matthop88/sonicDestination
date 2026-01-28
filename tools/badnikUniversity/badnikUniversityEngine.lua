@@ -22,6 +22,7 @@ return {
                     local badnikTemplate = require("tools/badnikUniversity/factories/badnikTemplateFactory"):createTemplate(badnikName)
                     self.badnikTemplates:add(badnikTemplate)
                     self.badnikTemplates[badnikName] = badnikTemplate
+                    self:refreshFromFile("untitled")
                 end
                 return self
             end,
@@ -137,7 +138,9 @@ return {
 
             writeToFile = function(self, filename)
                 love.filesystem.createDirectory("tools/badnikUniversity/labs")
-                love.filesystem.write("tools/badnikUniversity/labs/" .. filename .. ".lua", self:encodeData())
+                local data = self:encodeData()
+                print(data)
+                love.filesystem.write("tools/badnikUniversity/labs/" .. filename .. ".lua", data)
                 print("Saved to " .. love.filesystem.getSaveDirectory())
             end,
 
@@ -149,7 +152,7 @@ return {
             end,
 
             refreshFromFile = function(self, filename)
-                local labData = require("tools/badnikUniversity/labs/" .. filename)
+                local labData = dofile(love.filesystem.getSaveDirectory() .. "/tools/badnikUniversity/labs/" .. filename .. ".lua")
                 self.badniks:refreshFromData(labData.badniks, self.badnikTemplates, self.graphics)
                 self.solids:refreshFromData(labData.solids)
                 self.mode = SELECT
