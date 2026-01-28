@@ -1,3 +1,7 @@
+local SOLID_COLOR     = { 0.5, 1,   1 }
+local MOUSEOVER_COLOR = { 0.5, 0.5, 1 }
+local SELECTED_COLOR  = { 1,   1,   1 }
+
 return {
     solids = require("tools/lib/dataStructures/linkedList"):create(),  
      
@@ -5,23 +9,23 @@ return {
     consideredSolid     = nil,
    
     draw = function(self, GRAFX)
-        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, solid.redAlpha, GRAFX) end)
+        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, SOLID_COLOR, GRAFX) end)
     end,
 
-    drawSolidAt = function(self, x, y, redAlpha, GRAFX)
-        GRAFX:setColor(0.5, 1, 1)
+    drawScanTrail = function(self, GRAFX)
+        self.solids:forEach(function(solid) self:drawSolidAt(solid.x, solid.y, { 1, 0, 0, solid.redAlpha }, GRAFX) end)
+    end,
+
+    drawSolidAt = function(self, x, y, color, GRAFX)
+        GRAFX:setColor(color)
         GRAFX:setLineWidth(2)
         GRAFX:line(x, y, x + 16, y)
-        if redAlpha then
-            GRAFX:setColor(1, 0, 0, redAlpha)
-            GRAFX:line(x, y, x + 16, y)
-        end
     end,
 
     drawMouseOver = function(self, GRAFX)
         local c = self.consideredSolid
         if c then
-            GRAFX:setColor(0.5, 0.5, 1)
+            GRAFX:setColor(MOUSEOVER_COLOR)
             GRAFX:setLineWidth(2)
             GRAFX:rectangle("line", c.x - 1, c.y - 2, 18, 4)
         end
@@ -30,7 +34,7 @@ return {
     drawSelected = function(self, GRAFX)
         local s = self.selectedSolid
         if s then
-            GRAFX:setColor(1, 1, 1)
+            GRAFX:setColor(SELECTED_COLOR)
             GRAFX:setLineWidth(2)
             GRAFX:rectangle("line", s.x - 1, s.y - 2, 18, 4)
         end
