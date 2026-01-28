@@ -124,6 +124,10 @@ return {
                         self:setY(self:getY() + (self:getYSpeed()    * dt))
                     end,
 
+                    scan = function(self, world)
+                        if self.groundSensor then self.groundSensor:scan(self.x, self.y, world) end
+                    end,
+
                     getID = function(self) return self.sprite:getID() end,
 
                     getPublicAttributes = function(self)
