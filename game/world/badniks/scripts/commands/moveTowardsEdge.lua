@@ -7,10 +7,11 @@ return function(params)
         end,
 
         execute = function(self, dt, actor)
-            actor:setXSpeed(self.xSpeed)
             if actor.scanGround and not actor:scanGround() then
                 self:reset()
                 return true
+            else
+                actor:setXSpeed(self.xSpeed)
             end
         end,
     }
