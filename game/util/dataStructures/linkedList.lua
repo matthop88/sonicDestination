@@ -1,9 +1,6 @@
-local CELL_ID = 0
-
 local cell = {
-	create = function(self, data)
-		CELL_ID = CELL_ID + 1
-
+	create = function(self, data, CELL_ID)
+		
 		return {
 			__id   = CELL_ID,
 			__next = nil,
@@ -48,26 +45,25 @@ local cell = {
 				self.__next = newCell
 				return newCell
 			end,
-
-			getSortValue = function(self)
-				if type(__data) == "table" and __data.getSortValue then
-					return __data:getSortValue()
-				else
-					return 0
-				end
-			end,
 		}
 	end,
 }
 
 return {
 	create = function(self)
+		local CELL_ID = 0
+		
 		return {
-			__stack   = requireRelative("util/dataStructures/stack"):create(),
+			__stack   = require("tools/lib/dataStructures/stack"):create(),
 			__head    = nil,
 			__tail    = nil,
 			__size    = 0,
 			__current = nil,
+
+			incrementCellID = function(self)
+				CELL_ID = CELL_ID + 1
+				return CELL_ID
+			end,
 
 			head = function(self) 
 				self.__current = self.__head
@@ -83,7 +79,7 @@ return {
 
 			newCell = function(self, data)
 				local newCell = self.__stack:pop()
-				if newCell == nil then newCell = cell:create(data)
+				if newCell == nil then newCell = cell:create(data, self:incrementCellID())
 				else                   newCell:init(data)      end
 				return newCell
 			end,
@@ -91,41 +87,14 @@ return {
 			add = function(self, data)
 				local newCell = self:newCell(data)
 
-				if type(data) == "table" and data.getSortValue and self.__size > 0 then
-					self:addSorted(newCell)
-				else
-					self:addUnsorted(newCell)
-				end
-
-				self.__size = self.__size + 1
-				return self
-			end,
-
-			addUnsorted = function(self, newCell)
 				if self.__tail ~= nil then self.__tail:addAfter(newCell) end
 				self.__tail = newCell
 				if self.__head    == nil then 
 					self.__head    = newCell
 					self.__current = newCell
 				end
-			end,
-
-			addSorted = function(self, newCell)
-				local myCell = self.__head
-
-				while (myCell ~= nil) do
-					if myCell:data():getSortValue() > newCell:data():getSortValue() then
-						myCell:addBefore(newCell)
-						if self.__head == myCell then self.__head = newCell end
-						break
-					end
-					myCell = myCell:next()
-				end
-
-				if myCell == nil then
-					self.__tail:addAfter(newCell)
-					self.__tail = newCell
-				end
+				self.__size = self.__size + 1
+				return self
 			end,
 
 			insert = function(self, data)
@@ -185,6 +154,22 @@ return {
 			end,
 
 			isEnd = function(self) return self.__current == nil end,
+
+			forEach = function(self, func)
+				local oldCurrent = self.__current
+
+				self:head()
+        		while not self:isEnd() do 
+        			local cellID   = self:getCellID()
+            		local element  = self:get()
+            		local finished = func(element, cellID)
+            		if finished then break 
+            		else             self:next()       end
+            	end
+
+            	self.__current = oldCurrent
+            end,
+
 		}
 	end,
 }
