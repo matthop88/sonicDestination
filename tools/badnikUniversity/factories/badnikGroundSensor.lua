@@ -1,8 +1,9 @@
 return {
-	create = function(self, dx, dy)
+	create = function(self, dx, dy, world)
 		return {
-			dx = dx,
-			dy = dy,
+			dx    = dx,
+			dy    = dy,
+			world = world,
 
 			getDx = function(self, xFlip)
 				if xFlip then return  self.dx
@@ -14,10 +15,11 @@ return {
 				GRAFX:rectangle("fill", x + self:getDx(xFlip) - 2, y + self.dy - 2, 4, 4)
 			end,
 
-			scan = function(self, x, y, world, xFlip)
-				local solid = world:getSolidAt(x + self:getDx(xFlip), y + self.dy)
+			scan = function(self, x, y, xFlip)
+				local solid = self.world:getSolidAt(x + self:getDx(xFlip), y + self.dy)
 				if solid then
 					solid.redAlpha = 1
+					return true
 				end
 			end,
 		}
