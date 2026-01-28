@@ -18,7 +18,7 @@ return {
         local c = self.consideredSolid
         if c then
             GRAFX:setColor(0.5, 0.5, 1)
-            GRAFX:setLineWidth(1)
+            GRAFX:setLineWidth(2)
             GRAFX:rectangle("line", c.x - 1, c.y - 2, 18, 4)
         end
     end,
@@ -57,7 +57,7 @@ return {
     end,
 
     isInside = function(self, x, y, solid)
-        return solid.x <= x and solid.x + 16 > x and solid.y - 2 <= y and solid.y + 3 > y
+        return solid.x <= x and solid.x + 16 > x and solid.y - 4 <= y and solid.y + 5 > y
     end,
 
     add = function(self, x, y)
@@ -127,5 +127,7 @@ return {
         for _, solid in ipairs(solidsData) do
             self:add(solid.x, solid.y)
         end
+        self.selectedSolid   = nil
+        self.consideredSolid = nil
     end,
 }
