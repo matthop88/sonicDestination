@@ -2,6 +2,8 @@ local BADNIK = "BADNIK"
 local SELECT = "SELECT"
 local SOLIDS = "SOLIDS"
 
+local BACKGROUND_COLOR = { 0.24, 0.1, 0.1 }
+
 return {
     create = function(self, params)
         local FILENAME = "untitled"
@@ -11,6 +13,7 @@ return {
             mode       = SELECT,
             badniks    = require("tools/badnikUniversity/badnikList"),
             solids     = require("tools/badnikUniversity/solidsList"),
+            sensorsOn  = false,
 
             badnikRoster = {
                 "motobug",
@@ -30,19 +33,27 @@ return {
             end,
 
             draw = function(self)
-                love.graphics.setColor(0.24, 0.1, 0.1)
+                self:drawBackground()
+                self:drawWorld()
+                self:drawMode()
+                self:drawSelectedElements()
+                if self.sensorsOn then self:drawSensors() end
+            end,
+
+            drawBackground = function(self)
+                love.graphics.setColor(BACKGROUND_COLOR)
                 love.graphics.rectangle("fill", 0, 0, 1200, 800)
-                
+            end,
+
+            drawWorld = function(self)
                 self.badniks:draw(self.graphics)
                 self.solids:draw(self.graphics)
+            end,
 
+            drawMode = function(self)
                 if     self.mode == SELECT then self:drawSelectMode()
                 elseif self.mode == BADNIK then self:drawBadnikMode()
-                elseif self.mode == SOLIDS then self:drawSolidsMode()
-                end
-                
-                self.badniks:drawSelected(self.graphics)
-                self.solids:drawSelected(self.graphics)
+                elseif self.mode == SOLIDS then self:drawSolidsMode() end
             end,
 
             drawSelectMode = function(self)
@@ -59,6 +70,16 @@ return {
 
             drawSolidsMode = function(self)
                 self.solids:drawCursor(self.graphics)
+            end,
+
+            drawSelectedElements = function(self)
+                self.badniks:drawSelected(self.graphics)
+                self.solids:drawSelected(self.graphics)
+            end,
+
+            drawSensors = function(self)
+                self.badniks:drawSensors(self.graphics)
+                self.solids:drawScanTrail(self.graphics)
             end,
 
             update = function(self, dt)
@@ -80,14 +101,15 @@ return {
                 if     key == "b"          then 
                     self.mode = BADNIK
                     self.solids:deselect()
-                elseif key == "s"          then self.mode = SOLIDS
+                elseif key == "s"          then 
+                    self.mode = SOLIDS
                     self.solids:deselect()
+                elseif key == "S"          then self:toggleSensors()
                 elseif key == "x"          then self:flipSelectedBadnik()
                 elseif key == "escape"     then 
                     self.badniks:deselect()
                     self.solids:deselect()
-                elseif key == "backspace"  then 
-                    self:deleteSelected()
+                elseif key == "backspace"  then self:deleteSelected()
                 elseif key == "shiftleft"  then self:nudgeSelectedBadnik(-1,  0)
                 elseif key == "shiftright" then self:nudgeSelectedBadnik( 1,  0)
                 elseif key == "shiftup"    then self:nudgeSelectedBadnik( 0, -1)
@@ -155,6 +177,10 @@ return {
 
             handleMousereleased = function(self, mx, my)
                 -- mouse released functionality goes here
+            end,
+
+            toggleSensors = function(self)
+                self.sensorsOn = not self.sensorsOn
             end,
 
             getBadnikList = function(self)
