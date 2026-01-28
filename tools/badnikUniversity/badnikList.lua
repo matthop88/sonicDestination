@@ -1,3 +1,6 @@
+local MOUSEOVER_COLOR = { 0.5, 0.5, 1 }
+local SELECTED_COLOR  = { 1,   1,   1 }
+
 return {
     badniks = require("tools/lib/dataStructures/linkedList"):create(),  
      
@@ -17,7 +20,7 @@ return {
     drawMouseOver = function(self, GRAFX)
         local c = self.consideredBadnik or self.externallyConsidered
         if c then
-            GRAFX:setColor(0.5, 0.5, 1)
+            GRAFX:setColor(MOUSEOVER_COLOR)
             GRAFX:setLineWidth(2)
             GRAFX:rectangle("line", c:getX() - (c:getW() / 2) - 2, c:getY() - (c:getH() / 2) - 2, c:getW() + 4, c:getH() + 4)
         end
@@ -92,7 +95,7 @@ return {
     drawSelected = function(self, GRAFX)
         local badnik = self.selectedBadnik
         if badnik ~= nil then
-            GRAFX:setColor(1, 1, 1)
+            GRAFX:setColor(SELECTED_COLOR)
             GRAFX:setLineWidth(2)
             GRAFX:rectangle("line", badnik:getX() - (badnik:getW() / 2) - 2, badnik:getY() - (badnik:getH() / 2) - 2, badnik:getW() + 4, badnik:getH() + 4)
         end
