@@ -86,7 +86,7 @@ return {
                     getH  = function(self) return self.sprite:getH() end,
                     draw  = function(self, GRAFX)
                         self.sprite:draw(GRAFX)
-                        if self.groundSensor then self.groundSensor:draw(GRAFX, self.x, self.y) end
+                        if self.groundSensor then self.groundSensor:draw(GRAFX, self.x, self.y, self.xFlip) end
                     end,
 
                     getXVelocity = function(self)         
@@ -125,7 +125,7 @@ return {
                     end,
 
                     scan = function(self, world)
-                        if self.groundSensor then self.groundSensor:scan(self.x, self.y, world) end
+                        if self.groundSensor then self.groundSensor:scan(self.x, self.y, world, self.xFlip) end
                     end,
 
                     getID = function(self) return self.sprite:getID() end,
