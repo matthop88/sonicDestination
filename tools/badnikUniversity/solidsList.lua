@@ -116,7 +116,7 @@ return {
     end,
 
     quantizeLineCoordinates = function(self, x, y)
-        return math.floor((x + 8) / 16) * 16, math.floor((y + 8) / 16) * 16
+        return math.floor(x / 16) * 16, math.floor((y + 8) / 16) * 16
     end,
 
     getStringData = function(self)
