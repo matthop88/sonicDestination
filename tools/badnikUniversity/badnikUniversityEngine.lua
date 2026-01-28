@@ -191,7 +191,6 @@ return {
                 love.filesystem.createDirectory("tools/badnikUniversity/labs")
                 local data = self:encodeData()
                 love.filesystem.write("tools/badnikUniversity/labs/" .. filename .. ".lua", data)
-                print("Saved to " .. love.filesystem.getSaveDirectory())
             end,
 
             encodeData = function(self)
