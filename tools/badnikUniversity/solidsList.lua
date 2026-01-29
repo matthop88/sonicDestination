@@ -3,7 +3,7 @@ local MOUSEOVER_COLOR = { 0.5, 0.5, 1 }
 local SELECTED_COLOR  = { 1,   1,   1 }
 
 return {
-    solids = require("tools/lib/dataStructures/linkedList"):create(),  
+    solids = require("game/util/dataStructures/linkedList"):create(),  
      
     selectedSolid       = nil,
     consideredSolid     = nil,
@@ -132,7 +132,7 @@ return {
     end,
 
     clear         = function(self)         
-        self.solids = require("tools/lib/dataStructures/linkedList"):create()
+        self.solids = require("game/util/dataStructures/linkedList"):create()
     end,
 
     refreshFromData = function(self, solidsData)
