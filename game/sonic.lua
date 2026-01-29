@@ -131,7 +131,11 @@ return {
     end,
 
     checkCollisions = function(self)
-        self.HITBOX:setLastIntersectionWith(WORLD:checkCollisions(self))
+        local otherHitBox = WORLD:checkCollisions(self)
+        self.HITBOX:setLastIntersectionWith(otherHitBox)
+        if otherHitBox and otherHitBox.danger > 0 then
+            print("OUCH!")
+        end
     end,
 
     keypressed = function(self, key)
