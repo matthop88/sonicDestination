@@ -1,3 +1,5 @@
+local INTERSECTION_COLOR = { 1, 1, 1 }
+
 return {
 	create = function(self, hitBoxData)
 		if hitBoxData == nil then 
@@ -15,7 +17,7 @@ return {
 
 				draw = function(self, GRAFX, color, thickness, scaleX, scaleY)
 					scaleX, scaleY = (scaleX or 1), (scaleY or 1)
-					if self:intersectsLast() then GRAFX:setColor(1, 1, 1)
+					if self:intersectsLast() then GRAFX:setColor(INTERSECTION_COLOR)
 					else                          GRAFX:setColor(color)  end
 					GRAFX:setLineWidth(thickness)
 					GRAFX:rectangle("line", self.x - (self.radiusX * scaleX), self.y - (self.radiusY * scaleY), self.width * scaleX, self.height * scaleY)
