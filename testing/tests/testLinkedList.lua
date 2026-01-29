@@ -11,7 +11,7 @@ return {
     end,
 
     before = function(self)
-        self.LINKED_LIST = require("tools/lib/dataStructures/linkedList"):create()
+        self.LINKED_LIST = require("game/util/dataStructures/linkedList"):create()
     end,
 
     testEmptyListAttributes = function(self)
