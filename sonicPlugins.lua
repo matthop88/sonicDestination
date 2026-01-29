@@ -107,8 +107,7 @@ return {
                     {   key = ">", fn = function() self.SONIC:moveTo(self.SONIC:getX() + 1000, self.SONIC:getY()) end, },
                     {   key = "<", fn = function() self.SONIC:moveTo(self.SONIC:getX() - 1000, self.SONIC:getY()) end, },
                     {   key = "#", fn = function() self.SONIC:getWorld():reset()            end, },
-                    {   key = "f", fn = function() self.SONIC:getWorld():fadeOut()          end, },
-                    {   key = "F", fn = function() self.SONIC:getWorld():fadeIn()           end, },
+                    {   key = "f", fn = function() self.SONIC:toggleFlash()                 end, },
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
                     {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
                     {   key = "P", fn = function() 
