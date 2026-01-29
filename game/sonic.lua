@@ -124,16 +124,13 @@ return {
 
     updateHitBox = function(self, dt)
         local hitBox = self:getHitBox()
-        if hitBox then 
-            hitBox:setActive(not self.flashEngine:isFlashing())
-            hitBox:update(self:getX(), self:getY()) 
-        end
+        if hitBox then hitBox:update(self:getX(), self:getY()) end
     end,
 
     checkCollisions = function(self)
         local otherHitBox = WORLD:checkCollisions(self)
         self.HITBOX:setLastIntersectionWith(otherHitBox)
-        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() then
+        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self.flashEngine:isFlashing() then
             print("OUCH!")
         end
     end,
