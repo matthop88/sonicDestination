@@ -133,7 +133,7 @@ return {
     checkCollisions = function(self)
         local otherHitBox = WORLD:checkCollisions(self)
         self.HITBOX:setLastIntersectionWith(otherHitBox)
-        if otherHitBox and otherHitBox.danger > 0 then
+        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() then
             print("OUCH!")
         end
     end,
