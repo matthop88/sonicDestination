@@ -1,7 +1,7 @@
 local INTERSECTION_COLOR = { 1, 1, 1 }
 
 return {
-	create = function(self, hitBoxData)
+	create = function(self, hitBoxData, source)
 		if hitBoxData == nil then 
 			return nil
 		else
@@ -12,6 +12,7 @@ return {
 				height           = hitBoxData.rY * 2,
 				x                = 0,
 				y                = 0,
+				source           = source,
 
 				lastIntersection = nil,
 				active           = true,
@@ -57,6 +58,7 @@ return {
 	            	else                  self.lastIntersection = object:getHitBox() end
 	            end,
 
+	            getSource = function(self)         return self.source   end,
 	            isActive  = function(self)         return self.active   end,
 	            setActive = function(self, active) self.active = active end,
 
