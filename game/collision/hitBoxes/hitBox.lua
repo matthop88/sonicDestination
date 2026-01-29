@@ -14,6 +14,7 @@ return {
 				y                = 0,
 
 				lastIntersection = nil,
+				active           = true,
 
 				draw = function(self, GRAFX, color, thickness, scaleX, scaleY)
 					scaleX, scaleY = (scaleX or 1), (scaleY or 1)
@@ -35,9 +36,11 @@ return {
 	            end,
 
 	            intersects = function(self, otherHitBox)
-	            	local result = self:intersectsIntern(otherHitBox)
-	            	if result then self.lastIntersection = otherHitBox end
-	            	return result
+	            	if self:isActive() and otherHitBox:isActive() then
+	            		local result = self:intersectsIntern(otherHitBox)
+		            	if result then self.lastIntersection = otherHitBox end
+		            	return result
+		            end
 	            end,
 
 	            intersectsLast = function(self)
@@ -53,6 +56,9 @@ return {
 	            	if object == nil then self.lastIntersection = nil
 	            	else                  self.lastIntersection = object:getHitBox() end
 	            end,
+
+	            isActive  = function(self)         return self.active   end,
+	            setActive = function(self, active) self.active = active end,
 
 			}
 		end
