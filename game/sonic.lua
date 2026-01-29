@@ -46,6 +46,8 @@ return {
 
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
+
+    flashEngine = requireRelative("collision/flashing/flashEngine"):create { frameCount = 4},
         
     init = function(self, params)
         WORLD    = params.WORLD
@@ -82,7 +84,7 @@ return {
 
     draw = function(self)
         if self.active then
-            self.sprite:draw(self:getX(), self:getY())
+            if self.flashEngine:isVisible() then self.sprite:draw(self:getX(), self:getY()) end
             self:drawSensors()
         end
     end,
@@ -117,6 +119,7 @@ return {
             self:updateHitBox(dt)
             self:checkCollisions()
         end
+        self.flashEngine:update(dt)
     end,
 
     updateHitBox = function(self, dt)
@@ -294,4 +297,6 @@ return {
             else                        self.velocity.y = self.velocity.y + speedDelta end
         end
     end,
+
+    toggleFlash = function(self) self.flashEngine:toggleFlash() end,
 }
