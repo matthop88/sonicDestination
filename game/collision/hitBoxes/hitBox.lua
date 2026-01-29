@@ -10,6 +10,7 @@ return {
 				radiusY          = hitBoxData.rY,
 				width            = hitBoxData.rX * 2,
 				height           = hitBoxData.rY * 2,
+				danger           = hitBoxData.danger or 0,
 				x                = 0,
 				y                = 0,
 				source           = source,
@@ -53,9 +54,9 @@ return {
 	            	end
 	            end,
 
-	            setLastIntersectionWith = function(self, object)
-	            	if object == nil then self.lastIntersection = nil
-	            	else                  self.lastIntersection = object:getHitBox() end
+	            setLastIntersectionWith = function(self, otherHitBox)
+	            	if otherHitBox == nil then self.lastIntersection = nil
+	            	else                  self.lastIntersection = otherHitBox end
 	            end,
 
 	            getSource = function(self)         return self.source   end,
