@@ -11,7 +11,7 @@ return {
     end,
 
     before = function(self)
-        self.STACK = require("tools/lib/dataStructures/stack"):create()
+        self.STACK = require("game/util/dataStructures/stack"):create()
     end,
 
     testEmptyListAttributes = function(self)
