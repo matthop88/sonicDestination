@@ -2,7 +2,7 @@ local MOUSEOVER_COLOR = { 0.5, 0.5, 1 }
 local SELECTED_COLOR  = { 1,   1,   1 }
 
 return {
-    badniks = require("tools/lib/dataStructures/linkedList"):create(),  
+    badniks = require("game/util/dataStructures/linkedList"):create(),  
      
     selectedBadnik       = nil,
     consideredBadnik     = nil,
@@ -127,7 +127,7 @@ return {
     setConsidered = function(self, badnik) self.externallyConsidered = badnik  end,
 
     clear         = function(self)         
-        self.badniks = require("tools/lib/dataStructures/linkedList"):create()
+        self.badniks = require("game/util/dataStructures/linkedList"):create()
     end,
     
     getStringData = function(self)
