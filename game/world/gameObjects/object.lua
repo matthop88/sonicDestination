@@ -50,7 +50,7 @@ return {
             getHitBox = function(self)
                 if self.active then
                     if     self.sprite:getHitBox() == nil then self.HITBOX = nil
-                    elseif self.HITBOX             == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox()) end
+                    elseif self.HITBOX             == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox(), self) end
                     return self.HITBOX
                 end
             end,
