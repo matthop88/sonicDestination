@@ -3,7 +3,7 @@ local SPRITE_FACTORY = require("tools/spriteSandbox/spriteFactory")
 return ({
     rotatingBorder  = nil,
     coordinateBox   = nil,
-    sprites         = require("tools/lib/dataStructures/linkedList"):create(),  
+    sprites         = require("game/util/dataStructures/linkedList"):create(),  
     currentSprite   = nil,
     selectedSprite  = nil,
     heldSprite      = nil,
