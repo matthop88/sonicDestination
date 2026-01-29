@@ -117,7 +117,7 @@ return {
             local hitBox = object:getHitBox()
             if hitBox and hitBox:intersects(otherHitBox) and otherObject:isPlayer() then
                 self.collisionHandler:handleCollisionWithPlayer(object, otherObject)
-                return object
+                return hitBox
             end
         end
     end,
