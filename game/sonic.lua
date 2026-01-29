@@ -130,7 +130,7 @@ return {
     checkCollisions = function(self)
         local otherHitBox = WORLD:checkCollisions(self)
         self.HITBOX:setLastIntersectionWith(otherHitBox)
-        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self.flashEngine:isFlashing() then
+        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
             print("OUCH!")
         end
     end,
@@ -302,5 +302,6 @@ return {
         end
     end,
 
-    toggleFlash = function(self) self.flashEngine:toggleFlash() end,
+    toggleFlash  = function(self) self.flashEngine:toggleFlash()       end,
+    isInvincible = function(self) return self.flashEngine:isFlashing() end,
 }
