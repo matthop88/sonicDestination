@@ -47,7 +47,7 @@ return {
         hurt = { fps = 1,
             rect    = { x = 24, y = 789, w = 66, h = 66 },
             sprites = { 
-                {   x =  39, y = 811, w = 40, h = 28, offset = { x = 20, y = 14 }, },
+                {   x =  39, y = 811, w = 40, h = 28, offset = { x = 20, y = 16 }, },
             },
         },
     },
