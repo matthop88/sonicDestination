@@ -10,8 +10,8 @@ return {
     onEnter    = function(self) 
         SONIC.sprite:setCurrentAnimation("hurt")
         SONIC.velocity.y = -240
-        if SONIC:isFacingRight() then SONIC.velocity.x = -120
-        else                          SONIC.velocity.x =  120 end
+        if SONIC:isFacingRight() then SONIC.velocity.x = -240
+        else                          SONIC.velocity.x =  240 end
     end,
 
     update     = function(self, dt)
