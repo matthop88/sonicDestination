@@ -254,9 +254,8 @@ return {
         elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
             self:changeSonicSprite(sonic1Sprite)
         end
-        if propData.jumpSound then
-            SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)
-        end
+        if propData.jumpSound     then SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)     end
+        if propData.sonicHitSound then SOUND_MANAGER:setOverride("sonicHit",     propData.sonicHitSound) end
     end,
 
     toggleShowSensors = function(self)
