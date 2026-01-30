@@ -131,7 +131,7 @@ return {
         local otherHitBox = WORLD:checkCollisions(self)
         self.HITBOX:setLastIntersectionWith(otherHitBox)
         if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
-            print("OUCH!")
+            self:setHurt()
         end
     end,
 
@@ -266,7 +266,6 @@ return {
         else                 SOUND_MANAGER:play("ringCollectL") end
         ringPanRight = not ringPanRight
         self.ringCount = self.ringCount + ringCount
-        print("Total Number of Rings:", self.ringCount)
     end,
 
     isPlayer     = function(self) return true            end,
