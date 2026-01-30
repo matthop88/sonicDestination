@@ -24,6 +24,7 @@ return {
     JUMP_VELOCITY           = 390,            -- 6.5      pixels/frame
     THROTTLED_JUMP_VELOCITY = 240,            -- 4        pixels/frame
     GRAVITY_FORCE           = 787.5,          -- 0.21875  pixels/frame
+    HURT_GRAVITY_FORCE      = 675.0,          -- 0.1875   pixels/frame
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ------------------------------------------------------------------
@@ -196,9 +197,8 @@ return {
         return self.position.y == self.GROUND_LEVEL and self.velocity.y >= 0
     end,
     
-    setState      = function(self, state)
-        self.nextState = state
-    end,
+    getState      = function(self)        return self.nextState   end,
+    setState      = function(self, state) self.nextState = state  end,
 
     updateState = function(self, dt)
         if self.nextState ~= self.state then
@@ -232,10 +232,15 @@ return {
 
     applyGravity = function(self, dt)
         if not self:isGrounded() then
-            self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
+            self.velocity.y = self.velocity.y + (self:getGravityForce() * dt)
         else
             self.velocity.y = 0
         end
+    end,
+
+    getGravityForce = function(self)
+        if self:isHurt() then return self.HURT_GRAVITY_FORCE
+        else                  return self.GRAVITY_FORCE      end
     end,
 
     applyAirDrag = function(self, dt)
@@ -286,7 +291,8 @@ return {
         else                         self:setState(STATES.BRAKE_LEFT)  end
     end,
 
-    setHurt = function(self) self:setState(STATES.HURT) end,
+    setHurt = function(self) self:setState(STATES.HURT)                end,
+    isHurt  = function(self) return self:getState() == STATES.HURT     end,
 
     isSpinning = function(self)
         local animationName = self.sprite:getCurrentAnimationName()
