@@ -24,7 +24,7 @@ return {
     JUMP_VELOCITY           = 390,            -- 6.5      pixels/frame
     THROTTLED_JUMP_VELOCITY = 240,            -- 4        pixels/frame
     GRAVITY_FORCE           = 787.5,          -- 0.21875  pixels/frame
-    HURT_GRAVITY_FORCE      = 675.0,          -- 0.1875   pixels/frame
+    HURT_GRAVITY_FORCE      = 600.0,          -- 0.16667  pixels/frame
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ------------------------------------------------------------------
