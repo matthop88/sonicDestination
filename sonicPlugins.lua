@@ -116,6 +116,7 @@ return {
                             print(message)
                         end, 
                     },
+                    {   key = "@", fn = function() self.SONIC:setHurt()                     end, },
                 },
             })
             :add("grid3D",         { 
