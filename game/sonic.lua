@@ -287,6 +287,8 @@ return {
         else                         self:setState(STATES.BRAKE_LEFT)  end
     end,
 
+    setHurt = function(self) self:setState(STATES.HURT) end,
+
     isSpinning = function(self)
         local animationName = self.sprite:getCurrentAnimationName()
         return animationName == "jumping" or animationName == "fastJumping"
