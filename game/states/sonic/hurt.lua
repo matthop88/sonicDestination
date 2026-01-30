@@ -8,6 +8,7 @@ return {
     end,
 
     onEnter    = function(self) 
+        SONIC.sprite:setCurrentAnimation("hurt")
         SONIC.velocity.y = -240
         if SONIC:isFacingRight() then SONIC.velocity.x = -120
         else                          SONIC.velocity.x =  120 end
@@ -24,4 +25,3 @@ return {
         -- When hurt, no key press works
     end,
 }
-    
