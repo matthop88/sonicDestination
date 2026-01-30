@@ -23,7 +23,7 @@ return {
 
 			isVisible   = function(self) return self.visible           end,
 			isFlashing  = function(self) return self.active            end,
-			toggleFlash = function(self) self.active = not self.active end,
+			setFlashing = function(self) self.active = true            end,
 		}
 	end,
 }
