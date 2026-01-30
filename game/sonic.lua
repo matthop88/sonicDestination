@@ -304,6 +304,6 @@ return {
         end
     end,
 
-    toggleFlash  = function(self) self.flashEngine:toggleFlash()       end,
+    setFlashing  = function(self) self.flashEngine:setFlashing()       end,
     isInvincible = function(self) return self.flashEngine:isFlashing() end,
 }
