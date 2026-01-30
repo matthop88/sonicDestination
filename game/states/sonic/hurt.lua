@@ -1,5 +1,7 @@
 local SONIC, STATES
 
+local SOUND_MANAGER = requireRelative("sound/soundManager")
+
 return {
     init = function(self, params)
         SONIC  = params.SONIC
@@ -12,6 +14,7 @@ return {
         SONIC.velocity.y = -240
         if SONIC:isFacingRight() then SONIC.velocity.x = -240
         else                          SONIC.velocity.x =  240 end
+        SOUND_MANAGER:play("sonicHit")
     end,
 
     update     = function(self, dt)
