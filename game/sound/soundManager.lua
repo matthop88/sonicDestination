@@ -1,13 +1,18 @@
 return ({
+    overrides = {},
+
     init = function(self)
         self:initSoundData()
         return self
     end,
 
     play = function(self, soundName)
+        if self.overrides[soundName] then soundName = self.overrides[soundName] end
         self.data[soundName]:play()
     end,
 
+    setOverride    = function(self, key, value) self.overrides[key] = value end,
+    
     data = {
         sonicBraking   = { filename = "brake.ogg",          volume     = 0.2, },
         sonicJumping   = { filename = "jump.ogg",           volume     = 0.2, },
