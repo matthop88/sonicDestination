@@ -14,7 +14,10 @@ return {
     end,
 
     update     = function(self, dt)
-        if SONIC:isGrounded() then SONIC:setStanding() end
+        if SONIC:isGrounded() then 
+            SONIC:setStanding()
+            SONIC:setFlashing()
+        end
     end,
     
     keypressed = function(self, key)
