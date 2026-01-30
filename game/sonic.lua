@@ -6,7 +6,6 @@ local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
 
-local JUMP_SOUND     = "sonicJumping"
 local ringPanRight   = true
 
 return {
@@ -183,7 +182,7 @@ return {
     startJump     = function(self)
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
-            SOUND_MANAGER:play(JUMP_SOUND)
+            SOUND_MANAGER:play("sonicJumping")
             self.sprite:setCurrentAnimation("jumping")
             self.airDrag = true
         end
@@ -256,7 +255,7 @@ return {
             self:changeSonicSprite(sonic1Sprite)
         end
         if propData.jumpSound then
-            JUMP_SOUND = propData.jumpSound
+            SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)
         end
     end,
 
