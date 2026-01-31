@@ -2,6 +2,7 @@ local GRAPHICS
 local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
+local SOUND_MANAGER  = requireRelative("sound/soundManager")
 local ORIGIN
 
 return {
@@ -101,6 +102,7 @@ return {
         end
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
+        SOUND_MANAGER:update(dt)
     end,
 
     updateEvents = function(self, dt)
