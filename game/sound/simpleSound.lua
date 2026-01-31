@@ -4,6 +4,7 @@ return {
 			filename   = params.filename,
 			volume     = params.volume or 1,
 			startPoint = params.startPoint,
+            delay      = params.delay,
             
             tracks     = { nil, nil, nil },
            	trackIndex = 1,
