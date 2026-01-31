@@ -1,8 +1,8 @@
 return {
-    imagePath = "game/resources/images/spriteSheets/PTPBadniks.png",
+    imagePath = "game/resources/images/spriteSheets/PTPBadniksTransparent.png",
 
     MARGIN_BG_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 },
-    SPRITE_BG_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 },
+    SPRITE_BG_COLOR = { r = 0,    g = 0,    b = 0,    a = 0 },
 
     animations  = {
         patabataFlying = { fps = 8,
