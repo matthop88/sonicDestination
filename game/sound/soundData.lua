@@ -10,5 +10,9 @@ return {
     sonicHit       = { filename = "sonicHit.ogg",          volume = 0.8, },
     iceExplode     = { filename = "extra/IceExplode1.wav", volume = 0.8, },
     klank          = { filename = "extra/AnvilDing.wav",   volume = 0.8, },
-    delayedOuch    = { filename = "extra/Ooouuucchh.wav",  volume = 0.8, delay = 0.3 },
+    ouch           = { filename = "extra/Ooouuucchh.wav",  volume = 0.8, },
+    klankOuch      = {
+        { filename = "extra/AnvilDing.wav",   volume = 0.8, },
+        { filename = "extra/Ooouuucchh.wav",  volume = 0.8, delay = 0.3 },
+    },
 }
