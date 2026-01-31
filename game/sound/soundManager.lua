@@ -12,7 +12,8 @@ return ({
 
     initSoundData = function(self)
         for name, element in pairs(requireRelative("sound/soundData")) do
-            self.sounds[name] = requireRelative("sound/simpleSound"):create(element)
+            if #element > 0 then self.sounds[name] = requireRelative("sound/complexSound"):create(element)
+            else                 self.sounds[name] = requireRelative("sound/simpleSound"):create(element) end
         end
     end,
 
@@ -20,7 +21,7 @@ return ({
         if self.overrides[soundName] then soundName = self.overrides[soundName] end
         local sound = self.sounds[soundName]
         if sound.delay then self:addToQueue(sound)
-        else                sound:play()       end
+        else                sound:play(self)    end
     end,
 
     addToQueue = function(self, sound)
