@@ -14,9 +14,7 @@ return {
         SONIC.velocity.y = -240
         if SONIC:isFacingRight() then SONIC.velocity.x = -240
         else                          SONIC.velocity.x =  240 end
-        --SOUND_MANAGER:play("sonicHit")
-        SOUND_MANAGER:play("klank")
-        SOUND_MANAGER:play("delayedOuch")
+        SOUND_MANAGER:play("sonicHit")
     end,
 
     update     = function(self, dt)
