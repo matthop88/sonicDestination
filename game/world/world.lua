@@ -2,6 +2,7 @@ local GRAPHICS
 local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
+local SOUND_MANAGER  = requireRelative("sound/soundManager")
 local ORIGIN
 
 return {
@@ -51,7 +52,7 @@ return {
 
         self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
         for _, objectData in ipairs(objectsMap) do
-            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS))
+            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS, self))
         end
     end,
 
@@ -88,7 +89,10 @@ return {
         end
     end,
 
+    drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
+
     update = function(self, dt)
+        TERRAIN:update(dt)
         self.objects:head()
         while not self.objects:isEnd() do
             local object = self.objects:get()
@@ -98,6 +102,7 @@ return {
         end
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
+        SOUND_MANAGER:update(dt)
     end,
 
     updateEvents = function(self, dt)
@@ -114,19 +119,18 @@ return {
             local hitBox = object:getHitBox()
             if hitBox and hitBox:intersects(otherHitBox) and otherObject:isPlayer() then
                 self.collisionHandler:handleCollisionWithPlayer(object, otherObject)
-                return object
+                return hitBox
             end
         end
     end,
 
-    refresh     = function(self)       TERRAIN:refresh()                  end,
-    getTileIDAt = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
-    getSolidAt  = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
+    refresh          = function(self)       TERRAIN:refresh()                  end,
+    getTileIDAt      = function(self, x, y) return TERRAIN:getTileIDAt(x, y)   end,
+    getSolidAt       = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
+    toggleShowSolids = function(self)       TERRAIN:toggleShowSolids()         end,
 
-    toggleShowSolids   = function(self) TERRAIN:toggleShowSolids()        end,
-
-    fadeOut     = function(self) self.fadeLayer:fadeOut()                 end,
-    fadeIn      = function(self) self.fadeLayer:fadeIn()                  end,
+    fadeOut          = function(self)       self.fadeLayer:fadeOut()           end,
+    fadeIn           = function(self)       self.fadeLayer:fadeIn()            end,
 
     teleport    = function(self, map, x, y, giantRing, player)
         local teleportObject = requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing, player = player })

@@ -6,7 +6,7 @@ return {
 	createAnimations = function(self, animationData, image)
 		local animationObjects = {}
 		for name, animDataElement in pairs(animationData) do
-			animationObjects[name] = require("tools/spriteSandbox/animation"):create(name, animDataElement, image)
+			animationObjects[name] = require("tools/lib/sprites/animation"):create(name, animDataElement, image)
 		end
 		return animationObjects
 	end,
@@ -33,7 +33,7 @@ return {
 	end,
 
 	create = function(self, path, x, y, noBumpID)
-		local data        = require("tools/spriteSandbox/data/" .. path)
+		local data        = require("game/sprites/data/" .. path)
 		local SHEET_IMAGE = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
 		
 		local animations = self:createAnimations(data.animations, SHEET_IMAGE)

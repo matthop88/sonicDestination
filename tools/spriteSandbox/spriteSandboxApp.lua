@@ -88,4 +88,5 @@ PLUGINS = require("plugins/engine")
             { "Tab, Shift-Tab",   "- Walk through Animations", },
         },
     })
+    :add("grid2d",         { graphics = SANDBOX.graphics })
     :add("listVisualizer", { listFn = function() return SANDBOX:getSpriteList() end })

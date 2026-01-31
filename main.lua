@@ -21,14 +21,15 @@ local launchSoundGraph           = function(args)
     require "tools/soundGraph/soundGraphApp"
 end
 
-local launchColorInspector = function(args) require "tools/colorInspector/inspector"       end
-local launchSlicer         = function(args) require "tools/spriteSheetSlicer/slicerApp"    end
-local launchChunkalyzer    = function(args) require "tools/chunkalyzer/chunkalyzerApp"     end
-local launchMapViewer      = function(args) require "tools/mapViewer/mapViewerApp"         end
-local launchTileinator     = function(args) require "tools/tileinator/tileinatorApp"       end
-local launchChunkDoctor    = function(args) require "tools/chunkDoctor/chunkDoctorApp"     end
-local launchRingMaster     = function(args) require "tools/ringMaster/ringMasterApp"       end
-local launchSpriteSandbox  = function(args) require "tools/spriteSandBox/spriteSandboxApp" end
+local launchColorInspector   = function(args) require "tools/colorInspector/inspector"             end
+local launchSlicer           = function(args) require "tools/spriteSheetSlicer/slicerApp"          end
+local launchChunkalyzer      = function(args) require "tools/chunkalyzer/chunkalyzerApp"           end
+local launchMapViewer        = function(args) require "tools/mapViewer/mapViewerApp"               end
+local launchTileinator       = function(args) require "tools/tileinator/tileinatorApp"             end
+local launchChunkDoctor      = function(args) require "tools/chunkDoctor/chunkDoctorApp"           end
+local launchRingMaster       = function(args) require "tools/ringMaster/ringMasterApp"             end
+local launchSpriteSandbox    = function(args) require "tools/spriteSandBox/spriteSandboxApp"       end
+local launchBadnikUniversity = function(args) require "tools/badnikUniversity/badnikUniversityApp" end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -56,6 +57,7 @@ local APP_LAUNCHER = {
     chunkDoctor  = launchChunkDoctor,
     ringMaster   = launchRingMaster,
     sandbox      = launchSpriteSandbox,
+    badnikU      = launchBadnikUniversity,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
@@ -100,3 +102,8 @@ function love.load(args)
 end
 
 function relativePath(path) return "game/" .. path end
+
+function requireRelative(path, params)
+    if params then return require(relativePath(path)):init(params)
+    else           return require(relativePath(path))          end
+end

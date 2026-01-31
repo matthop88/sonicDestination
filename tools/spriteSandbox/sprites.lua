@@ -3,7 +3,7 @@ local SPRITE_FACTORY = require("tools/spriteSandbox/spriteFactory")
 return ({
     rotatingBorder  = nil,
     coordinateBox   = nil,
-    sprites         = require("tools/lib/dataStructures/linkedList"):create(),  
+    sprites         = require("game/util/dataStructures/linkedList"):create(),  
     currentSprite   = nil,
     selectedSprite  = nil,
     heldSprite      = nil,
@@ -21,27 +21,21 @@ return ({
     end,
 
     drawNonPlayer = function(self, GRAFX)
-        self.sprites:head()
-        while not self.sprites:isEnd() do 
-            local sprite = self.sprites:getNext()
+        self.sprites:forEach(function(sprite)
             if not sprite:isPlayer() and not sprite:isForeground() then sprite:draw(GRAFX) end
-        end
+        end)
     end,
 
     drawPlayer = function(self, GRAFX)
-        self.sprites:head()
-        while not self.sprites:isEnd() do 
-            local sprite = self.sprites:getNext()
+        self.sprites:forEach(function(sprite)
             if sprite:isPlayer() then sprite:draw(GRAFX) end
-        end
+        end)
     end,
 
     drawForeground = function(self, GRAFX)
-        self.sprites:head()
-        while not self.sprites:isEnd() do 
-            local sprite = self.sprites:getNext()
+        self.sprites:forEach(function(sprite)
             if sprite:isForeground() then sprite:draw(GRAFX) end
-        end
+        end)
     end,
 
     drawCurrentSprite = function(self, GRAFX)
@@ -49,11 +43,9 @@ return ({
     end,
 
     drawMouseoverSprite = function(self, GRAFX)
-        if self.mouseoverSprite then
-            local sprite = self.mouseoverSprite
-            if sprite == self.selectedSprite then self:drawMouseoverSelectedRect(GRAFX)
-            else                                  self:drawMouseoverRect(GRAFX)     end
-        end
+        local sprite = self.mouseoverSprite or self.externallyConsidered
+        if     sprite == self.selectedSprite then self:drawMouseoverSelectedRect(GRAFX)
+        elseif sprite                        then self:drawMouseoverRect(GRAFX)     end
     end,
 
     drawMouseoverSelectedRect = function(self, GRAFX)
@@ -61,7 +53,7 @@ return ({
     end,
 
     drawMousepressedRect = function(self, GRAFX)
-        local sprite = self.mouseoverSprite
+        local sprite = self.mouseoverSprite or self.externallyConsidered
         local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
         
         GRAFX:setColor(1, 1, 1, 0.8)
@@ -69,7 +61,7 @@ return ({
     end, 
 
     drawMouseoverRect = function(self, GRAFX)    
-        local sprite = self.mouseoverSprite
+        local sprite = self.mouseoverSprite or self.externallyConsidered
         local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
         
         GRAFX:setColor(0, 1, 1, 0.7)
@@ -93,32 +85,27 @@ return ({
     end,
 
     updateSprites = function(self, dt)
-        self.sprites:head()
-        while not self.sprites:isEnd() do 
-            local sprite = self.sprites:get()
+        self.sprites:forEach(function(sprite)
             sprite:update(dt)
             if sprite.deleted then
                 if self.selectedSprite  and self.selectedSprite.deleted  then self:deselectSprite()      end
                 if self.mouseoverSprite and self.mouseoverSprite.deleted then self.mouseoverSprite = nil end
                 if self.heldSprite      and self.heldSprite.deleted      then self.heldSprite      = nil end
                 self.sprites:remove() 
-            else                   
-                self.sprites:next()   
+                return true
             end
-        end
+        end)
     end,
 
     updateMouseoverSprite = function(self, dt, px, py)
-        if self.mouseoverSprite then self.mouseoverSprite.mousedOver = false end
         self.mouseoverSprite = nil
-        self.sprites:head()
-        while not self.sprites:isEnd() do 
-            local sprite = self.sprites:getNext()
-            if sprite:isInside(px, py) or sprite.mousedOverInVisualizer then 
+        self.sprites:forEach(function(sprite)
+            if sprite:isInside(px, py) then 
                 self.mouseoverSprite = sprite 
-                self.mouseoverSprite.mousedOver = true
+                self.externallyConsidered = nil
+                return true
             end
-        end
+        end)
     end,
 
     updateCurrentSprite = function(self, dt, px, py)
@@ -151,8 +138,6 @@ return ({
     end,
 
     selectSprite = function(self, sprite)
-        if self.selectedSprite then self.selectedSprite.selected = false end
-        sprite.selected = true
         self.selectedSprite = sprite
         local sprite = self.selectedSprite
         local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
@@ -161,7 +146,6 @@ return ({
     end,
 
     deselectSprite = function(self)
-        if self.selectedSprite then self.selectedSprite.selected = false end
         self.selectedSprite = nil
         self.rotatingBorder = nil
         self.coordinateBox  = nil
@@ -265,6 +249,19 @@ return ({
 
     getSpriteList = function(self)
         return self.sprites
+    end,
+
+    getSelected   = function(self)     return self.selectedSprite           end,
+    setSelected   = function(self, s)         self:selectSprite(s)          end,
+    getConsidered = function(self)     return self.mouseoverSprite          end,
+    setConsidered = function(self, s)         self.externallyConsidered = s end,
+    size          = function(self)     return self.sprites:size()           end,
+    forEach       = function(self, fn) return self.sprites:forEach(fn)      end,
+    remove        = function(self)     
+        self.sprites:remove() 
+        self:deselectSprite()
+        self.mouseoverSprite = nil 
+        self.externallyConsidered = nil       
     end,
 
 }):init()

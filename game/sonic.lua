@@ -6,7 +6,6 @@ local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
 
-local JUMP_SOUND     = "sonicJumping"
 local ringPanRight   = true
 
 return {
@@ -24,6 +23,7 @@ return {
     JUMP_VELOCITY           = 390,            -- 6.5      pixels/frame
     THROTTLED_JUMP_VELOCITY = 240,            -- 4        pixels/frame
     GRAVITY_FORCE           = 787.5,          -- 0.21875  pixels/frame
+    HURT_GRAVITY_FORCE      = 600.0,          -- 0.16667  pixels/frame
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Jumping#Constants
     ------------------------------------------------------------------
@@ -46,6 +46,8 @@ return {
 
     position = { x = 0, y = 0 },
     velocity = { x = 0, y = 0 },
+
+    flashEngine = requireRelative("collision/flashing/flashEngine"):create { frameCount = 4},
         
     init = function(self, params)
         WORLD    = params.WORLD
@@ -82,7 +84,7 @@ return {
 
     draw = function(self)
         if self.active then
-            self.sprite:draw(self:getX(), self:getY())
+            if self.flashEngine:isVisible() then self.sprite:draw(self:getX(), self:getY()) end
             self:drawSensors()
         end
     end,
@@ -94,7 +96,7 @@ return {
 
     getHitBox = function(self)
         if self.HITBOX == nil then
-            self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox())
+            self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox(), self)
         end
         return self.HITBOX
     end,
@@ -111,12 +113,13 @@ return {
                 self:updateFrameRate(dt)
                 self:applyGravity(dt)
                 self:applyAirDrag(dt)
+                self:updateSensors(dt)
                 self:updatePosition(dt)
             end
-            self:updateSensors(dt)
             self:updateHitBox(dt)
             self:checkCollisions()
         end
+        self.flashEngine:update(dt)
     end,
 
     updateHitBox = function(self, dt)
@@ -125,7 +128,11 @@ return {
     end,
 
     checkCollisions = function(self)
-        self.HITBOX:setLastIntersectionWith(WORLD:checkCollisions(self))
+        local otherHitBox = WORLD:checkCollisions(self)
+        self.HITBOX:setLastIntersectionWith(otherHitBox)
+        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
+            self:setHurt()
+        end
     end,
 
     keypressed = function(self, key)
@@ -175,7 +182,7 @@ return {
     startJump     = function(self)
         if self:isGrounded() then 
             self.velocity.y = -self.JUMP_VELOCITY
-            SOUND_MANAGER:play(JUMP_SOUND)
+            SOUND_MANAGER:play("sonicJumping")
             self.sprite:setCurrentAnimation("jumping")
             self.airDrag = true
         end
@@ -189,9 +196,8 @@ return {
         return self.position.y == self.GROUND_LEVEL and self.velocity.y >= 0
     end,
     
-    setState      = function(self, state)
-        self.nextState = state
-    end,
+    getState      = function(self)        return self.nextState   end,
+    setState      = function(self, state) self.nextState = state  end,
 
     updateState = function(self, dt)
         if self.nextState ~= self.state then
@@ -225,10 +231,15 @@ return {
 
     applyGravity = function(self, dt)
         if not self:isGrounded() then
-            self.velocity.y = self.velocity.y + (self.GRAVITY_FORCE * dt)
+            self.velocity.y = self.velocity.y + (self:getGravityForce() * dt)
         else
             self.velocity.y = 0
         end
+    end,
+
+    getGravityForce = function(self)
+        if self:isHurt() then return self.HURT_GRAVITY_FORCE
+        else                  return self.GRAVITY_FORCE      end
     end,
 
     applyAirDrag = function(self, dt)
@@ -243,9 +254,8 @@ return {
         elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
             self:changeSonicSprite(sonic1Sprite)
         end
-        if propData.jumpSound then
-            JUMP_SOUND = propData.jumpSound
-        end
+        if propData.jumpSound     then SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)     end
+        if propData.sonicHitSound then SOUND_MANAGER:setOverride("sonicHit",     propData.sonicHitSound) end
     end,
 
     toggleShowSensors = function(self)
@@ -259,7 +269,6 @@ return {
         else                 SOUND_MANAGER:play("ringCollectL") end
         ringPanRight = not ringPanRight
         self.ringCount = self.ringCount + ringCount
-        print("Total Number of Rings:", self.ringCount)
     end,
 
     isPlayer     = function(self) return true            end,
@@ -280,6 +289,9 @@ return {
         else                         self:setState(STATES.BRAKE_LEFT)  end
     end,
 
+    setHurt = function(self) self:setState(STATES.HURT)                end,
+    isHurt  = function(self) return self:getState() == STATES.HURT     end,
+
     isSpinning = function(self)
         local animationName = self.sprite:getCurrentAnimationName()
         return animationName == "jumping" or animationName == "fastJumping"
@@ -294,4 +306,7 @@ return {
             else                        self.velocity.y = self.velocity.y + speedDelta end
         end
     end,
+
+    setFlashing  = function(self) self.flashEngine:setFlashing()       end,
+    isInvincible = function(self) return self.flashEngine:isFlashing() end,
 }

@@ -1,9 +1,10 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
+local SCRIPT_ENGINE = requireRelative("world/badniks/scripts/lib/scriptEngine")
 
 local OBJECT_ID    = 0
 
 return {
-    create = function(self, object, graphics)
+    create = function(self, object, graphics, WORLD)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
         local SPRITE        = spriteFactory:create("objects/" .. object.obj)
 
@@ -12,15 +13,20 @@ return {
         return {
             x        = object.x,
             y        = object.y,
+            xFlip    = false,
+            xSpeed   = 0,
+            ySpeed   = 0,
             object   = object,
             graphics = graphics,
             HITBOX   = nil,
             name     = object.obj,
             deleted  = false,
+            alive    = true,
             active   = not object.inactive,
             sprite   = SPRITE,
+            world    = WORLD,
             id       = OBJECT_ID,
-
+            
             getID    = function(self) return self.id end,
 
             draw = function(self) 
@@ -44,16 +50,19 @@ return {
             getHitBox = function(self)
                 if self.active then
                     if     self.sprite:getHitBox() == nil then self.HITBOX = nil
-                    elseif self.HITBOX             == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox()) end
+                    elseif self.HITBOX             == nil then self.HITBOX = requireRelative("collision/hitBoxes/hitBox"):create(self.sprite:getHitBox(), self) end
                     return self.HITBOX
                 end
             end,
 
             update = function(self, dt)
                 if self.active then
+                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
+                    self:setX(self:getX() + (self:getXVelocity() * dt))
+                    self:setY(self:getY() + (self:getYSpeed()    * dt))
                 end
             end,
 
@@ -66,14 +75,43 @@ return {
             isForeground = function(self)       return self.sprite:isForeground()     end,
             isPlayer     = function(self)       return false                          end,
 
+            isAlive      = function(self)       return self.alive                     end,
+            setAlive     = function(self)       self.alive = true                     end,
+            setDead      = function(self)       
+                self.alive = false 
+                self.xSpeed, self.ySpeed = 0, 0                   
+            end,
+
             onCollisionWithPlayer = function(self, player)
                 -- do nothing
             end,
 
-            getW           = function(self) return self.sprite:getImageW() end,
-            getH           = function(self) return self.sprite:getImageH() end,
+            getW = function(self) return self.sprite:getImageW() end,
+            getH = function(self) return self.sprite:getImageH() end,
 
-            getSortValue   = function(self) return self.x                  end,
+            getX = function(self) return self.x                  end,
+            getY = function(self) return self.y                  end,
+            setX = function(self, x)     self.x = x              end,
+            setY = function(self, y)     self.y = y              end,
+
+            getXVelocity = function(self)         
+                if self.xFlip then return  self.xSpeed   
+                else               return -self.xSpeed end
+            end,
+
+            setXSpeed    = function(self, xSpeed) self.xSpeed = xSpeed end,
+                    
+            getYSpeed    = function(self)         return self.ySpeed   end,
+            setYSpeed    = function(self, ySpeed) self.ySpeed = ySpeed end,
+
+            flipX        = function(self) 
+                self.sprite:flipX() 
+                self.xFlip = not self.xFlip
+            end,
+
+            getXFlip     = function(self) return self.xFlip      end,
+            getSortValue = function(self) return self.x          end,
+
             locateVisually = function(self)
                 local graphics = self.sprite:getGraphics()
                 local centerX, centerY = graphics:getScreenWidth() / 2, graphics:getScreenHeight() / 2

@@ -11,7 +11,7 @@ return {
     end,
 
     before = function(self)
-        self.LINKED_LIST = require("tools/lib/dataStructures/linkedList"):create()
+        self.LINKED_LIST = require("game/util/dataStructures/linkedList"):create()
     end,
 
     testEmptyListAttributes = function(self)
@@ -113,6 +113,37 @@ return {
         end
 
         return TESTING:assertEquals(name, 60 + cellID, highestCellID)
+    end,
+
+    testForEach = function(self)
+        local name = "For Each Test: increment list of five elements"
+
+        for i = 1, 5 do self.LINKED_LIST:add { value = i } end
+
+        self.LINKED_LIST:forEach(function(element) element.value = element.value + 1 end)
+
+        local resultString = ""
+        self.LINKED_LIST:forEach(function(element) resultString = resultString .. element.value end)
+
+        return TESTING:assertEquals(name, "23456", resultString)
+    end,
+
+    testForEachEarlyTermination = function(self)
+        local name = "For Each Test: increment first three elements in list of five"
+
+        for i = 1, 5 do self.LINKED_LIST:add { value = i } end
+
+        self.LINKED_LIST:forEach(function(element) 
+            element.value = element.value + 1 
+            if element.value > 3 then 
+                return true 
+            end
+        end)
+
+        local resultString = ""
+        self.LINKED_LIST:forEach(function(element) resultString = resultString .. element.value end)
+
+        return TESTING:assertEquals(name, "23445", resultString)
     end,
 
 

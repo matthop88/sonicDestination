@@ -1,5 +1,7 @@
+local INTERSECTION_COLOR = { 1, 1, 1 }
+
 return {
-	create = function(self, hitBoxData)
+	create = function(self, hitBoxData, source)
 		if hitBoxData == nil then 
 			return nil
 		else
@@ -8,14 +10,17 @@ return {
 				radiusY          = hitBoxData.rY,
 				width            = hitBoxData.rX * 2,
 				height           = hitBoxData.rY * 2,
+				danger           = hitBoxData.danger or 0,
 				x                = 0,
 				y                = 0,
+				source           = source,
 
 				lastIntersection = nil,
+				active           = true,
 
 				draw = function(self, GRAFX, color, thickness, scaleX, scaleY)
 					scaleX, scaleY = (scaleX or 1), (scaleY or 1)
-					if self:intersectsLast() then GRAFX:setColor(1, 1, 1)
+					if self:intersectsLast() then GRAFX:setColor(INTERSECTION_COLOR)
 					else                          GRAFX:setColor(color)  end
 					GRAFX:setLineWidth(thickness)
 					GRAFX:rectangle("line", self.x - (self.radiusX * scaleX), self.y - (self.radiusY * scaleY), self.width * scaleX, self.height * scaleY)
@@ -33,9 +38,11 @@ return {
 	            end,
 
 	            intersects = function(self, otherHitBox)
-	            	local result = self:intersectsIntern(otherHitBox)
-	            	if result then self.lastIntersection = otherHitBox end
-	            	return result
+	            	if self:isActive() and otherHitBox:isActive() then
+	            		local result = self:intersectsIntern(otherHitBox)
+		            	if result then self.lastIntersection = otherHitBox end
+		            	return result
+		            end
 	            end,
 
 	            intersectsLast = function(self)
@@ -47,10 +54,14 @@ return {
 	            	end
 	            end,
 
-	            setLastIntersectionWith = function(self, object)
-	            	if object == nil then self.lastIntersection = nil
-	            	else                  self.lastIntersection = object:getHitBox() end
+	            setLastIntersectionWith = function(self, otherHitBox)
+	            	if otherHitBox == nil then self.lastIntersection = nil
+	            	else                  self.lastIntersection = otherHitBox end
 	            end,
+
+	            getSource = function(self)         return self.source   end,
+	            isActive  = function(self)         return self.active   end,
+	            setActive = function(self, active) self.active = active end,
 
 			}
 		end

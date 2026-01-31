@@ -10,12 +10,17 @@ return ({
 	end,
 
 	loadSprites = function(self)
-		local directory = "tools/spriteSandbox/data/objects"
-		local directoryItems = love.filesystem.getDirectoryItems(directory)
-    	for _, v in ipairs(directoryItems) do
-        	if string.sub(v, -3, -1) == "lua" then
+        self:loadSpritesFromDirectory("game/sprites/data/objects", "objects/")
+        self:loadSpritesFromDirectory("game/sprites/data")
+    end,
+
+    loadSpritesFromDirectory = function(self, directory, prefix)
+        prefix = prefix or ""
+        local directoryItems = love.filesystem.getDirectoryItems(directory)
+        for _, v in ipairs(directoryItems) do
+            if string.sub(v, -3, -1) == "lua" then
                 local fileName = string.sub(v, 1, -5)
-                table.insert(self.spriteList, { name = fileName, sprite = nil })
+                table.insert(self.spriteList, { name = prefix .. fileName, sprite = nil })
             end
         end
     end,
@@ -23,14 +28,14 @@ return ({
     getFromCache = function(self, x, y)
     	local spriteInfo = self.spriteList[self.index]
     	if not spriteInfo.sprite then
-    		spriteInfo.sprite = require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y, NO_BUMP_ID)
+    		spriteInfo.sprite = require("tools/lib/sprites/sprite"):create(spriteInfo.name, x, y, NO_BUMP_ID)
     	end
     	return spriteInfo.sprite
     end,
 
     create = function(self, x, y)
     	local spriteInfo = self.spriteList[self.index]
-        return require("tools/spriteSandbox/sprite"):create("objects/" .. spriteInfo.name, x, y)
+        return require("tools/lib/sprites/sprite"):create(spriteInfo.name, x, y)
     end,
 
     next = function(self)

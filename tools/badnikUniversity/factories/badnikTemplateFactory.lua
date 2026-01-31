@@ -1,0 +1,160 @@
+local STRING_UTIL   = require("tools/lib/stringUtil")
+local NO_BUMP_ID    = true
+
+local SCRIPT_ENGINE = require("game/world/badniks/scripts/lib/scriptEngine")
+local SCRIPT_REPO   = require("game/world/badniks/scripts/lib/scriptRepo")
+
+local createGroundSensor = function(data, world)
+    if data.groundSensor then
+        return require("tools/badnikUniversity/factories/badnikGroundSensor"):create(data.groundSensor.x, data.groundSensor.y, world)
+    end
+end
+
+return {
+    createTemplate = function(self, name, world)
+        local badnikData = require("tools/badnikUniversity/factories/badniks/" .. name)
+
+        return {
+            name          = badnikData.name,
+            path          = badnikData.path,
+            scriptName    = badnikData.script,
+            spritePreview = require("tools/lib/sprites/sprite"):create(badnikData.path, 0, 0, NO_BUMP_ID),
+            xFlip         = false,
+            
+            drawPreviewSprite = function(self, GRAFX, x, y)
+                GRAFX:setColor(1, 1, 1)
+                self.spritePreview:drawThumbnail(GRAFX, x, y, 1, 1)
+            end,
+
+            flipX = function(self) 
+                self.spritePreview:flipX() 
+                self.xFlip = not self.xFlip
+            end,
+
+            fromBadnikData = function(self, data)
+                return self:create(data.x, data.y, data.xFlip)
+            end,
+            
+            create = function(self, x, y, xFlip)
+                local sprite = require("tools/lib/sprites/sprite"):create(self.path, x, y)
+                if xFlip or self.xFlip then sprite:flipX() end
+
+                return {
+                    name            = self.name,
+                    capitalizedName = STRING_UTIL:capitalize(self.name),
+                    x               = x,
+                    y               = y,
+                    xFlip           = xFlip or self.xFlip,
+                    sprite          = sprite,
+                    xSpeed          = 0,
+                    ySpeed          = 0,
+                    groundSensor    = createGroundSensor(badnikData, world),
+                    
+                    original        = {
+                        x     = x,
+                        y     = y,
+                        xFlip = xFlip or self.xFlip,
+                    },
+
+                    script          = SCRIPT_REPO:get(self.scriptName),
+
+                    getX    = function(self) return self.x                  end,
+                    getY    = function(self) return self.y                  end,
+                    getXInt = function(self) return math.floor(self:getX()) end,
+                    getYInt = function(self) return math.floor(self:getY()) end,
+
+                    setX  = function(self, x)     
+                        self.x = x 
+                        self.sprite:setX(x)
+                    end,
+
+                    setY  = function(self, y)     
+                        self.y = y 
+                        self.sprite:setY(y)
+                    end,
+
+                    nudgeOriginal = function(self, dx, dy)
+                        self.original.x = self.original.x + dx
+                        self.original.y = self.original.y + dy
+                    end,
+
+                    flipOriginal = function(self)
+                        self.original.xFlip = not self.original.xFlip
+                    end,
+
+                    getW  = function(self) return self.sprite:getW() end,
+                    getH  = function(self) return self.sprite:getH() end,
+                    draw  = function(self, GRAFX)
+                        self.sprite:draw(GRAFX)
+                    end,
+
+                    drawSensors = function(self, GRAFX)
+                        if self.groundSensor then self.groundSensor:draw(GRAFX, self.x, self.y, self.xFlip) end
+                    end,
+
+                    getXVelocity = function(self)         
+                        if   self.xFlip then return  self.xSpeed   
+                        else                 return -self.xSpeed end
+                    end,
+
+                    setXSpeed = function(self, xSpeed) self.xSpeed = xSpeed end,
+                    
+                    getYSpeed = function(self)         return self.ySpeed   end,
+                    setYSpeed = function(self, ySpeed) self.ySpeed = ySpeed end,
+
+                    isInside = function(self, x, y)
+                        return x >= self.x - self.sprite:getW() / 2
+                           and x <  self.x + self.sprite:getW() / 2
+                           and y >= self.y - self.sprite:getH() / 2
+                           and y <  self.y + self.sprite:getH() / 2
+                    end,
+
+                    flipX = function(self) 
+                        self.sprite:flipX() 
+                        self.xFlip = not self.xFlip
+                    end,
+
+                    drawThumbnail = function(self, GRAFX, x, y, sX, sY)
+                        self.sprite:drawThumbnail(GRAFX, x, y, sX, sY)
+                    end,
+
+                    update = function(self, dt)
+                        if self.script then
+                            SCRIPT_ENGINE:execute(dt, self.script.program, self)
+                            self.sprite:update(dt)
+                        end
+                        self:setX(self:getX() + (self:getXVelocity() * dt))
+                        self:setY(self:getY() + (self:getYSpeed()    * dt))
+                    end,
+
+                    scanGround = function(self)
+                        if self.groundSensor then return self.groundSensor:scan(self.x, self.y, self.xFlip) end
+                    end,
+
+                    getID = function(self) return self.sprite:getID() end,
+
+                    getPublicAttributes = function(self)
+                        -- Can either return a field or a function.
+                        -- Functions can be repeatedly called for refreshing values.
+                        return {
+                            { name   = self.capitalizedName, },
+                            { x      = self.getXInt, },
+                            { y      = self.getYInt, },
+                            { script = {
+                                    selected = self.script.name,
+                                    options  = SCRIPT_REPO.scriptNames,
+                                }
+                            },
+                        }
+                    end,
+
+                    getStringData = function(self)
+                        local xFlipString = "false"
+                        if self.original.xFlip then xFlipString = "true" end
+                        return "{ name = \"" .. self.name .. "\", x = " .. self.original.x .. ", y = " .. self.original.y .. ", xFlip = " .. xFlipString .. " }"
+                    end,
+                }
+            end,
+        }
+    end,
+}

@@ -1,0 +1,89 @@
+--------------------------------------------------------------
+--                     Local Variables                      --
+--------------------------------------------------------------
+
+local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
+local BADNIK_UNIVERSITY_ENGINE    = require("tools/badnikUniversity/badnikUniversityEngine"):create { }
+            
+--------------------------------------------------------------
+--              Static code - is executed first             --
+--------------------------------------------------------------
+
+love.window.setTitle("Badnik University")
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+
+--------------------------------------------------------------
+--                     LOVE2D Functions                     --
+--------------------------------------------------------------
+
+function love.draw()
+    BADNIK_UNIVERSITY_ENGINE:draw()
+end
+
+function love.update(dt)
+    BADNIK_UNIVERSITY_ENGINE:update(dt)
+end
+
+function love.keypressed(key)
+    BADNIK_UNIVERSITY_ENGINE:handleKeypressed(key)
+end
+
+function love.mousepressed(mx, my)
+    BADNIK_UNIVERSITY_ENGINE:handleMousepressed(mx, my)
+end
+
+--------------------------------------------------------------
+--                   Specialized Functions                  --
+--------------------------------------------------------------
+
+-- ...
+-- ...
+-- ...
+
+--------------------------------------------------------------
+--                          Plugins                         --
+--------------------------------------------------------------
+
+require("plugins/engine")
+    :add("modKeyEnabler")
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
+    :add("keyRepeat", {
+        interval    = 0.05,
+        delay       = 0.5,
+    })
+    :add("scrolling",      { imageViewer = BADNIK_UNIVERSITY_ENGINE          })
+    :add("zooming",        { imageViewer = BADNIK_UNIVERSITY_ENGINE          })    
+    :add("grid2d",         { graphics    = BADNIK_UNIVERSITY_ENGINE.graphics })
+    :add("listVisualizer", { listFn      = function() return BADNIK_UNIVERSITY_ENGINE:getBadnikList() end })
+    :add("questionBox",
+    {   x = 1150,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            { "R", "Refresh from file", },
+            { "G", "Toggle Badnik activity", },
+            { "S", "Toggle Badnik sensor visibility", },
+            "",
+            "Badnik Placement Mode_",
+            { "b", "Enters Badnik Placement mode",  },
+            { "Tab", "Pages through badniks", },
+            { "Escape", "Enters Selection mode", },
+            "",
+            "Selection Mode_",
+            { "Click",  "Selects badnik or solid",  },
+            { "Delete", "Deletes selected badnik or solid", },
+            { "Double Click",  "Shows Badnik Properties in Visualizer", },
+            { "Shift-arrow", "Nudges selected badnik", },
+            { "x", "Flips selected badnik horizontally", },
+            "",
+            "Solids Placement Mode_",
+            { "s", "Enters/Exits Solids Placement mode", },
+            { "Escape", "Enters Selection mode", },
+
+        },
+    })
+ 

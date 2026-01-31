@@ -26,6 +26,34 @@ local SHOW_HITBOXES = false
 
 local SPLIT_SCREEN  = false
 
+local smartList = nil
+local createSmartList = function(list)
+    if smartList == nil then
+        smartList = {
+            list = list,
+            selected   = nil,
+            considered = nil,
+
+            size          = function(self)     return self.list:size()      end,
+            forEach       = function(self, fn) return self.list:forEach(fn) end,
+            getSelected   = function(self)     return self.selected         end,
+            getConsidered = function(self)     return self.considered       end,
+            setSelected   = function(self, s)  
+                if self.selected then
+
+                    self.selected.selectedInVisualizer = false
+                end
+                self.selected = s            
+                self.selected.selectedInVisualizer = true
+            end,
+            setConsidered = function(self, c)  self.considered = c          end,
+            remove        = function(self)     return self.list:remove()    end,
+        }
+    end
+
+    return smartList
+end
+
 return {
     init = function(self, params)
         self.SONIC      = params.SONIC
@@ -79,8 +107,7 @@ return {
                     {   key = ">", fn = function() self.SONIC:moveTo(self.SONIC:getX() + 1000, self.SONIC:getY()) end, },
                     {   key = "<", fn = function() self.SONIC:moveTo(self.SONIC:getX() - 1000, self.SONIC:getY()) end, },
                     {   key = "#", fn = function() self.SONIC:getWorld():reset()            end, },
-                    {   key = "f", fn = function() self.SONIC:getWorld():fadeOut()          end, },
-                    {   key = "F", fn = function() self.SONIC:getWorld():fadeIn()           end, },
+                    {   key = "f", fn = function() self.SONIC:setFlashing()                 end, },
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
                     {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
                     {   key = "P", fn = function() 
@@ -89,6 +116,7 @@ return {
                             print(message)
                         end, 
                     },
+                    {   key = "@", fn = function() self.SONIC:setHurt()                     end, },
                 },
             })
             :add("grid3D",         { 
@@ -279,7 +307,7 @@ return {
                 }
             })
             :add("listVisualizer", { 
-                listFn = function() return self.SONIC:getWorld():getObjectsList() end,
+                listFn = function() return createSmartList(self.SONIC:getWorld():getObjectsList()) end,
                 active = false,
                 accessorFnName = "getListVisualizer",
             })

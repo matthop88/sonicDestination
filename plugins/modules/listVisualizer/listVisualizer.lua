@@ -9,6 +9,7 @@ return {
 		self.list     = self.listFn()
 		self.graphics = require("tools/lib/graphics"):create()
 		if params.active ~= nil then self.active = params.active end
+		self.propertyBox = require("plugins/modules/listVisualizer/propertyBox"):init(self)
 	end,
 
 	toggleActive = function(self)
@@ -19,7 +20,16 @@ return {
 		if self.list:size() > 0 and self.active then
 			self:drawBackground()
 			self:drawList()
+			self.propertyBox:draw()
 		end
+	end,
+
+	forEachInList = function(self, fn)
+		local n, x = 1, 50 + self.xOffset
+		self.list:forEach(function(elem, cellID)
+			if fn(elem, x, n, cellID) then return true end
+			n, x = n + 1, x + 100
+		end)
 	end,
 
 	update = function(self, dt)
@@ -29,12 +39,36 @@ return {
 			local coordinatesOfLast = ((self.list:size()) * 100) + 50
 			local minXOffset = -coordinatesOfLast + self.graphics:getScreenWidth()
 			self.xOffset = math.min(0, math.max(minXOffset, self.xOffset))
+			if self.list:getSelected() ~= self.selected then
+				self:onSelected(self.list:getSelected())
+			end
+			self.considered = self.list:getConsidered()
+
+			self:forEachInList(function(elem, x)
+				if self:checkMousedOver(elem, x) then return true end
+			end)
+
+			self.list:setConsidered(self.considered)
+			if self.selected == nil then
+				self.propertyBox:hide()
+			end
+
+			self.propertyBox:update(dt)
 		end
+	end,
+
+	onSelected = function(self, selected)
+		self.selected = selected
+		self:forEachInList(function(elem, x)
+			if self.selected == elem and self.propertyBox:isVisible() and self.selected.getPublicAttributes then
+				self.propertyBox:show { element = self.selected, x = x - self.xOffset }
+			end
+		end)
 	end,
 
 	handleKeypressed = function(self, key)
 		if self.active then
-			if     key == "escape"      then self:deselect()
+			if     key == "escape"      then self.selected = nil
 			elseif key == "backspace"   then self:deleteSelected()
 			elseif key == "optionright" then self.xSpeed = -2000
 			elseif key == "optionleft"  then self.xSpeed =  2000 end
@@ -46,37 +80,39 @@ return {
 		elseif key == "optionleft"  and self.xSpeed > 0 then self.xSpeed = 0 end
 	end,
 
-	handleMousepressed = function(self, mx, my)
+	handleMousepressed = function(self, mx, my, params)
 		if self.active then
-			self.list:head()
-			local n, x = 1, 50 + self.xOffset
-			while not self.list:isEnd() do
-				local elem = self.list:getNext()
-				elem.selectedInVisualizer = false
+			self.selected = nil
+			self:forEachInList(function(elem, x)
 				if self:isInside(mx, my, x) then
-					elem.selectedInVisualizer = true
+					if self.list.setSelected then self.list:setSelected(elem) end
+					self.selected = elem
+					if self.propertyBox:isVisible() and self.selected.getPublicAttributes then
+						self.propertyBox:show { element = self.selected, x = x - self.xOffset }
+					end
 					if elem.locateVisually and (elem.isOnScreen == nil or not elem:isOnScreen()) then elem:locateVisually() end
+					if params and params.doubleClicked then self:handleDoubleClicked(x) end
+					return true
 				end
-				n, x = n + 1, x + 100
-			end
+			end)
+
+			if self.selected then return true end
 		end
 	end,
 
-	deselect = function(self)
-		self.list:head()
-		while not self.list:isEnd() do
-			local elem = self.list:getNext()
-			elem.selectedInVisualizer = false
+	handleDoubleClicked = function(self, x)
+		if self.selected and self.selected.getPublicAttributes then
+			self.propertyBox:show { element = self.selected, x = x - self.xOffset }
 		end
 	end,
 
 	deleteSelected = function(self)
-		self.list:head()
-		while not self.list:isEnd() do
-			local elem = self.list:get()
-			if elem.selectedInVisualizer then self.list:remove()
-			else                              self.list:next()  end
-		end
+		self.list:forEach(function(elem)
+			if self.selected == elem then 
+				self.list:remove()
+				return true
+			end
+		end)
 	end,
 
 	drawBackground = function(self)
@@ -86,23 +122,15 @@ return {
 	end,
 
 	drawList = function(self)
-		self.list:head()
-
-		local n, x = 1, 50 + self.xOffset
-		while not self.list:isEnd() do
+		self:forEachInList(function(elem, x, n, cellID)
 			if x > -100 and x < self.graphics:getScreenWidth() then
-				self:drawListElement(n, x)
+				self:drawListElement(elem, cellID, n, x)
 			end
-			n, x = n + 1, x + 100
-			self.list:next()
-		end
+		end)
 	end,
 
-	drawListElement = function(self, n, x)
-		local element = self.list:get()
-		self:checkMousedOver(element, x)
-
-		self:drawCellID(x)
+	drawListElement = function(self, element, cellID, n, x)
+		self:drawCellID(cellID, x)
 		self:drawCell(element, x)
 
 		if n < self.list:size() then self:drawArrows(x) end
@@ -114,35 +142,33 @@ return {
 
 	checkMousedOver = function(self, element, x)
 		local mx, my = love.mouse.getPosition()
-		element.mousedOverInVisualizer = self:isInside(mx, my, x)
+		if self:isInside(mx, my, x) then
+			self.considered = element
+			return true
+		end
 	end,
 
-	drawCellID = function(self, x)
-		local cellID = self.list:getCellID()
-		self.graphics:setColor(0.5, 0.5, 0.5)
-		self.graphics:rectangle("fill", x + 5, self.topY + 75, 40, 18)
-		self.graphics:setColor(1, 1, 1)
-		self.graphics:setLineWidth(2)
-		self.graphics:rectangle("line", x + 5, self.topY + 75, 40, 18)
-		self.graphics:setFontSize(12)
-		self.graphics:printf("" .. cellID, x + 5, self.topY + 77, 40, "center")
+	drawCellID = function(self, cellID, x)
+		if cellID then
+			self.graphics:setColor(0.5, 0.5, 0.5)
+			self.graphics:rectangle("fill", x + 5, self.topY + 75, 40, 18)
+			self.graphics:setColor(1, 1, 1)
+			self.graphics:setLineWidth(2)
+			self.graphics:rectangle("line", x + 5, self.topY + 75, 40, 18)
+			self.graphics:setFontSize(12)
+			self.graphics:printf("" .. cellID, x + 5, self.topY + 77, 40, "center")
+		end
 	end,
 
 	drawCell = function(self, element, x)
-		if element.selected 
-		or element.selectedInVisualizer then 
-			self.graphics:setColor(1, 1, 0.3, 0.9)
-		else                    
-			if element.mousedOver 
-			or element.mousedOverInVisualizer then self.graphics:setColor(0, 1, 1, 0.7)
-			else                                   self.graphics:setColor(1, 1, 1, 0.9) end
-		end
+		if     element == self.selected   then self.graphics:setColor(1, 1, 0.3, 0.9)
+		elseif element == self.considered then self.graphics:setColor(0, 1, 1,   0.7)
+		else                                   self.graphics:setColor(1, 1, 1, 0.9)   end
 		
 		self.graphics:setLineWidth(3)
 		self.graphics:rectangle("line", x, self.topY + 25, 50, 50)
 		
-		if element.selected 
-		or element.selectedInVisualizer then
+		if element == self.selected then
 			self.graphics:setColor(1, 1, 1, 0.4)
 			self:drawThumbnail(element, x)
 			self.graphics:setColor(1, 1, 1)

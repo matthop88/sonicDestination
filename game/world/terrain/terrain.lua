@@ -8,7 +8,7 @@ local SOLIDS
 local CHUNKS
 return {
     showSolids = false,
-
+    
     init = function(self, params)
         self.map    = params.map
         
@@ -33,6 +33,10 @@ return {
 		self:drawTerrain()
     end,
 
+    update = function(self, dt)
+        -- do nothing
+    end,
+
 	drawBackground = function(self)
         self.graphics:setColor(0, 0.57, 1.0)
 		self.graphics:rectangle("fill", self.graphics:calculateViewport())
@@ -42,11 +46,20 @@ return {
         for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkID in ipairs(row) do
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
-                if self.showSolids then SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) end
+                if self.showSolids then 
+                    SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
+                end
             end
         end
         self.graphics:setColor(1, 1, 1)
 	end,
+
+    drawSolidAt = function(self, x, y, color)
+        self.graphics:setColor(color)
+        self.graphics:setLineWidth(4)
+        
+        self.graphics:line(x, y + 2, x + 16, y + 2)
+    end,
 
     getTileIDAt = function(self, x, y)
         local chunk = self:getChunkAt(x, y)
