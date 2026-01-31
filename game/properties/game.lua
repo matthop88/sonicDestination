@@ -8,5 +8,5 @@ return {
     jumpSound     = "sonicJumping",
 
     -- For sonicHitSound, default is "sonicHit", and alternates are "iceExplode" and "klankOuch".
-    sonicHitSound = "klankOuch",
+    sonicHitSound = "sonicHit",
 }
