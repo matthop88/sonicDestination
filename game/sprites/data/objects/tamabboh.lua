@@ -13,5 +13,12 @@ return {
             hitBox = { rX = 10, rY = 8, danger = 1 },
             { x = 405, y = 236, w = 32, h = 31, offset = { x = 15, y = 15 }, },
         },
+        dying  = { fps = 5, offset = { x = 15, y = 15 }, w = 31, h = 31,
+            reps = 1,
+            parts = {
+                {   name = "tamabbohBody", animation = "dying",  },
+                {   name = "explosion",    animation = "poof",   },
+            },
+        },
     },
 }
