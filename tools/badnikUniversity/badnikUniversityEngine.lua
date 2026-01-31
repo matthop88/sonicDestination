@@ -18,6 +18,7 @@ return {
             badnikRoster = {
                 "motobug",
                 "patabata",
+                "tamabboh",
             },
             badnikTemplates = require("tools/lib/dataStructures/navigableList"):create {},
             
