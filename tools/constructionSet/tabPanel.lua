@@ -84,16 +84,6 @@ return {
 					end
 				end
 			end,
-
-			next = function(self)
-				self.TAB_INDEX = self.TAB_INDEX + 1
-				if self.TAB_INDEX > #self.TABS then self.TAB_INDEX = 1 end
-			end,
-
-			prev = function(self)
-				self.TAB_INDEX = self.TAB_INDEX - 1
-				if self.TAB_INDEX < 1 then self.TAB_INDEX = #self.TABS end
-			end,
 		}
 	end,
 }
