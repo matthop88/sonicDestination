@@ -176,6 +176,26 @@ The following inputs are optional:
 
 The map image file is expected to reside in the `resources/zones/maps/` directory.
 
+To execute the Sprite Sandbox application, use the command
+
+    love . sandbox
+
+The following inputs are optional:
+
+`--background,        -b`, background image to read in. Resides in `resources/zones/maps` directory.
+
+To execute the Badnik University application, use the command
+
+    love . badnikU
+
+Currently, there are no required or optional inputs for the Badnik University application.
+
+To execute the Construction Set application, use the command
+
+    love . construction
+
+Currently, there are no required or optional inputs for the Construction Set application.
+
 To execute the TestSuite application, use the command
 
     love . test
