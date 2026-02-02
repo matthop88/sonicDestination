@@ -23,8 +23,9 @@ return {
 		local TAB_SPACING = params.TAB_SPACING or 25
 
 		return {
-			TABS      = calculateTabData(params.TABS, { TAB_MARGIN = TAB_MARGIN, TAB_SPACING = TAB_SPACING, FONT = FONT }),
-			TAB_INDEX = 1,
+			TABS              = calculateTabData(params.TABS, { TAB_MARGIN = TAB_MARGIN, TAB_SPACING = TAB_SPACING, FONT = FONT }),
+			TAB_INDEX         = 1,
+			HIGHLIGHTED_INDEX = 0,
 
 			draw = function(self)
     			self:drawTabFrame()
@@ -42,23 +43,46 @@ return {
 			drawTabs = function(self)
 				local x = 0
 			    for n, t in ipairs(self.TABS) do
-			    	self:drawTab(t, n == self.TAB_INDEX)
+			    	self:drawTab(t, { isSelected = (n == self.TAB_INDEX), isHighlighted = (n == self.HIGHLIGHTED_INDEX) })
 			    	x = t.x + t.w + TAB_SPACING
 			    end
 			    love.graphics.setColor(COLOR.PURE_WHITE)
 			    love.graphics.line(x + 1, 500, 1195, 500)
 			end,
 
-			drawTab = function(self, t, isSelected)
+			drawTab = function(self, t, params)
 				love.graphics.setColor(COLOR.PURE_WHITE)
 				love.graphics.setFont(FONT)
 			    love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
 			    love.graphics.line(t.x,       t.y, t.x,       t.y + t.h - 1)
 			    love.graphics.line(t.x + t.w, t.y, t.x + t.w, t.y + t.h - 1)
-			    if not isSelected then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
+			    if not params.isSelected then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
 			    love.graphics.line(t.x + t.w, 500, t.x + t.w + TAB_SPACING, 500)
-			    if not isSelected then love.graphics.setColor(COLOR.LIGHT_GREY) end
+			    if not params.isSelected then 
+			    	if params.isHighlighted then love.graphics.setColor(COLOR.LIGHT_YELLOW)
+			        else                         love.graphics.setColor(COLOR.LIGHT_GREY) end
+			    end
 			    love.graphics.printf(t.title, t.x + TAB_MARGIN, 470, 500, "left")
+			end,
+
+			update = function(self, dt)
+				local mx, my = love.mouse.getPosition()
+
+				self.HIGHLIGHTED_INDEX = nil
+				
+				for n, t in ipairs(self.TABS) do
+					if mx >= t.x and mx <= t.x + t.w and my >= t.y and my <= t.y + t.h then
+						self.HIGHLIGHTED_INDEX = n
+					end
+				end
+			end,
+
+			handleMousepressed = function(self, mx, my)
+				for n, t in ipairs(self.TABS) do
+					if mx >= t.x and mx <= t.x + t.w and my >= t.y and my <= t.y + t.h then
+						self.TAB_INDEX = n
+					end
+				end
 			end,
 
 			next = function(self)
