@@ -91,6 +91,7 @@ To execute the MapViewer application, use the command
     love . mapViewer
 
 with three possible inputs:
+
 `--mapIn,        -m`  A map data file to read in, which links to a chunks image or chunk data image
 
 `--chunkDataIn,  -c`  A chunk data file to read in; an impromptu map will be constructed from it
