@@ -5,7 +5,7 @@ local calculateTabData = function(tabs, attrs)
 	local x = 100 - attrs.TAB_MARGIN
 	for _, t in ipairs(tabs) do
 		local w = attrs.FONT:getWidth(t) + (attrs.TAB_MARGIN * 2)
-		local tabWithMeta = { title = t, x = x, y = 470, w = w, h = 30 }
+		local tabWithMeta = { label = t, x = x, y = 470, w = w, h = 30 }
 		table.insert(tabsWithMeta, tabWithMeta)
 		x = x + w + attrs.TAB_SPACING
 	end
@@ -19,7 +19,7 @@ return {
 		local FONT_SIZE      = 24
 		local FONT           = love.graphics.newFont(FONT_SIZE)
 
-		local TAB_MARGIN  = params.TAB_MARGIN  or 15
+		local TAB_MARGIN  = params.TAB_MARGIN  or 20
 		local TAB_SPACING = params.TAB_SPACING or 15
 
 		return {
@@ -53,22 +53,29 @@ return {
 			end,
 
 			drawTab = function(self, t, params)
-				if     params.isSelected    then love.graphics.setColor(COLOR.DARK_GREY)
-				elseif params.isHighlighted then love.graphics.setColor(COLOR.DARK_YELLOW)
-				else                             love.graphics.setColor(COLOR.VERY_DARK_GREY) end
+				self:drawTabBackground(t, params)
+				self:drawTabOutline(t, params)
+			    self:drawTabLabel(t, params)
+			end,
+
+			drawTabBackground = function(self, t, params)
+				love.graphics.setColor(self:getBGColor(params))
 				love.graphics.rectangle("fill", t.x, t.y, t.w, t.h)
+			end,
+
+			drawTabOutline = function(self, t, params)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-				love.graphics.setFont(FONT)
-			    love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
+				love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
 			    love.graphics.line(t.x,       t.y, t.x,       t.y + t.h - 1)
 			    love.graphics.line(t.x + t.w, t.y, t.x + t.w, t.y + t.h - 1)
 			    if not params.isSelected then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
 			    love.graphics.line(t.x + t.w, 500, t.x + t.w + TAB_SPACING, 500)
-			    if not params.isSelected then 
-			    	if params.isHighlighted then love.graphics.setColor(COLOR.LIGHT_YELLOW)
-			        else                         love.graphics.setColor(COLOR.LIGHT_GREY) end
-			    end
-			    love.graphics.printf(t.title, t.x + TAB_MARGIN, 470, 500, "left")
+			end,
+
+			drawTabLabel = function(self, t, params)
+				love.graphics.setFont(FONT)
+				love.graphics.setColor(self:getLabelColor(params))
+			    love.graphics.printf(t.label, t.x + TAB_MARGIN, 470, 500, "left")
 			end,
 
 			update = function(self, dt)
@@ -89,6 +96,18 @@ return {
 						self.TAB_INDEX = n
 					end
 				end
+			end,
+
+			getBGColor = function(self, params)
+				if     params.isSelected    then return COLOR.DARK_GREY
+				elseif params.isHighlighted then return COLOR.DARK_YELLOW
+				else                             return COLOR.VERY_DARK_GREY  end
+			end,
+
+			getLabelColor = function(self, params)
+				if     params.isSelected    then return COLOR.PURE_WHITE
+				elseif params.isHighlighted then return COLOR.LIGHT_YELLOW
+				else                             return COLOR.LIGHT_GREY      end
 			end,
 		}
 	end,
