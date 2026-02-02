@@ -124,8 +124,10 @@ and with these two outputs:
 
 `--chunkFileOut,  -c`,  A chunk data file to write out; will refer to the tiles image file that is created.
                       If unspecified, this will default to `sampleChunkLayout.lua`
+                      
 `--tileImageOut,  -t`   A tiles image to write based upon compression from chunk.
                       If unspecified, this will default to `sampleTileImage.png`
+                      
 
 Chunk layout file is expected to be located in the `resources/zones/chunks/` directory.
 Tile image   file will be written to the           `resources/zones/tiles/`  directory.
@@ -145,6 +147,7 @@ To execute the ChunkDoctor application, use the command
 with these inputs:
 
 `--chunkDataIn,  -i`,  A data file consisting of references to tiles that compose various chunks
+
 `--chunkDataOut, -o`,  A data file to write out. Defaults to same file as chunkDataIn.
 
 Chunk data file is expected to be located in the `resources/zones/chunks/` directory, and the output file will be written to the same directory.
@@ -156,11 +159,13 @@ To execute the RingMaster application, use the command
 with these inputs:
 
 `--mapIn,        -i`, a map image file to locate rings in
+
 `--ringDataOut,  -o`, a data file to write locations of rings in
 
 The following inputs are optional:
 
 `--mapOut,        -m`, map image file to write out (in case you wish to modify the image in RingMaster)
+
 `--objectType,    -t`, type of object to find (either ring or motobug. Defaults to ring)
 
 The map image file is expected to reside in the `resources/zones/maps/` directory.
