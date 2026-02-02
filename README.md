@@ -92,11 +92,14 @@ To execute the MapViewer application, use the command
 
 with three possible inputs:
 `--mapIn,        -m`  A map data file to read in, which links to a chunks image or chunk data image
+
 `--chunkDataIn,  -c`  A chunk data file to read in; an impromptu map will be constructed from it
+
 `--chunkImageIn, -C`  A chunk image file to read in; an impromptu map will be constructed from it. (Not a useful option)
 
+
 If desired, a map image file can be specified to rewrite out
---mapOut,       -o  Raw map image to write out. 
+`--mapOut,       -o`  Raw map image to write out. 
 
 Do NOT specify the exception for any of these.
 
@@ -118,7 +121,9 @@ To execute the Tileinator application, use the command
 with these inputs:
 
 `--chunkImageIn,  -i`,  An image file with chunks derived from a world map; a tiles image will be created from it
+
 `--mapFileIn,     -m`,  An optional map data file containing chunk references; a new reference will be added pointing to the new chunk data
+
 
 and with these two outputs:
 
