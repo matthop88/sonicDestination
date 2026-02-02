@@ -30,6 +30,7 @@ local launchChunkDoctor      = function(args) require "tools/chunkDoctor/chunkDo
 local launchRingMaster       = function(args) require "tools/ringMaster/ringMasterApp"             end
 local launchSpriteSandbox    = function(args) require "tools/spriteSandBox/spriteSandboxApp"       end
 local launchBadnikUniversity = function(args) require "tools/badnikUniversity/badnikUniversityApp" end
+local launchConstructionSet  = function(args) require "tools/constructionSet/constructionSetApp"   end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -58,6 +59,7 @@ local APP_LAUNCHER = {
     ringMaster   = launchRingMaster,
     sandbox      = launchSpriteSandbox,
     badnikU      = launchBadnikUniversity,
+    construction = launchConstructionSet,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
