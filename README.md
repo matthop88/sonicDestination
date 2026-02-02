@@ -91,9 +91,9 @@ To execute the MapViewer application, use the command
     love . mapViewer
 
 with three possible inputs:
---mapIn,        -m  A map data file to read in, which links to a chunks image or chunk data image
---chunkDataIn,  -c  A chunk data file to read in; an impromptu map will be constructed from it
---chunkImageIn, -C  A chunk image file to read in; an impromptu map will be constructed from it. (Not a useful option)
+`--mapIn,        -m`  A map data file to read in, which links to a chunks image or chunk data image
+`--chunkDataIn,  -c`  A chunk data file to read in; an impromptu map will be constructed from it
+`--chunkImageIn, -C`  A chunk image file to read in; an impromptu map will be constructed from it. (Not a useful option)
 
 If desired, a map image file can be specified to rewrite out
 --mapOut,       -o  Raw map image to write out. 
@@ -117,14 +117,14 @@ To execute the Tileinator application, use the command
 
 with these inputs:
 
---chunkImageIn,  -i,  An image file with chunks derived from a world map; a tiles image will be created from it
---mapFileIn,     -m,  An optional map data file containing chunk references; a new reference will be added pointing to the new chunk data
+`--chunkImageIn,  -i`,  An image file with chunks derived from a world map; a tiles image will be created from it
+`--mapFileIn,     -m`,  An optional map data file containing chunk references; a new reference will be added pointing to the new chunk data
 
 and with these two outputs:
 
---chunkFileOut,  -c,  A chunk data file to write out; will refer to the tiles image file that is created.
+`--chunkFileOut,  -c`,  A chunk data file to write out; will refer to the tiles image file that is created.
                       If unspecified, this will default to `sampleChunkLayout.lua`
---tileImageOut,  -t   A tiles image to write based upon compression from chunk.
+`--tileImageOut,  -t`   A tiles image to write based upon compression from chunk.
                       If unspecified, this will default to `sampleTileImage.png`
 
 Chunk layout file is expected to be located in the `resources/zones/chunks/` directory.
@@ -144,8 +144,8 @@ To execute the ChunkDoctor application, use the command
 
 with these inputs:
 
---chunkDataIn,  -i,  A data file consisting of references to tiles that compose various chunks
---chunkDataOut, -o,  A data file to write out. Defaults to same file as chunkDataIn.
+`--chunkDataIn,  -i`,  A data file consisting of references to tiles that compose various chunks
+`--chunkDataOut, -o`,  A data file to write out. Defaults to same file as chunkDataIn.
 
 Chunk data file is expected to be located in the `resources/zones/chunks/` directory, and the output file will be written to the same directory.
 
@@ -155,13 +155,13 @@ To execute the RingMaster application, use the command
 
 with these inputs:
 
---mapIn,        -i, a map image file to locate rings in
---ringDataOut,  -o, a data file to write locations of rings in
+`--mapIn,        -i`, a map image file to locate rings in
+`--ringDataOut,  -o`, a data file to write locations of rings in
 
 The following inputs are optional:
 
---mapOut,        -m, map image file to write out (in case you wish to modify the image in RingMaster)
---objectType,    -t, type of object to find (either ring or motobug. Defaults to ring)
+`--mapOut,        -m`, map image file to write out (in case you wish to modify the image in RingMaster)
+`--objectType,    -t`, type of object to find (either ring or motobug. Defaults to ring)
 
 The map image file is expected to reside in the `resources/zones/maps/` directory.
 
