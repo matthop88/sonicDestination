@@ -1,3 +1,5 @@
+local COLOR = require("tools/lib/colors")
+
 local calculateTabData = function(tabs, attrs)
 	local tabsWithMeta = {}
 	local x = 100 - attrs.TAB_MARGIN
@@ -30,7 +32,7 @@ return {
 			end,
 
 			drawTabFrame = function(self)
-				love.graphics.setColor(1, 1, 1)
+				love.graphics.setColor(COLOR.PURE_WHITE)
 			    love.graphics.line(  5,  795, 1195, 795)
 			    love.graphics.line(1195, 795, 1195, 500)
 			    love.graphics.line(  5,  500,    5, 795)
@@ -43,16 +45,19 @@ return {
 			    	self:drawTab(t, n == self.TAB_INDEX)
 			    	x = t.x + t.w + TAB_SPACING
 			    end
+			    love.graphics.setColor(COLOR.PURE_WHITE)
 			    love.graphics.line(x + 1, 500, 1195, 500)
 			end,
 
 			drawTab = function(self, t, isSelected)
+				love.graphics.setColor(COLOR.PURE_WHITE)
 				love.graphics.setFont(FONT)
 			    love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
 			    love.graphics.line(t.x,       t.y, t.x,       t.y + t.h - 1)
 			    love.graphics.line(t.x + t.w, t.y, t.x + t.w, t.y + t.h - 1)
 			    if not isSelected then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
 			    love.graphics.line(t.x + t.w, 500, t.x + t.w + TAB_SPACING, 500)
+			    if not isSelected then love.graphics.setColor(COLOR.LIGHT_GREY) end
 			    love.graphics.printf(t.title, t.x + TAB_MARGIN, 470, 500, "left")
 			end,
 
