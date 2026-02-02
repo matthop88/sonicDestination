@@ -24,11 +24,6 @@ function love.update(dt)
     TAB_PANEL:update(dt)
 end
 
-function love.keypressed(key)
-    if     key == "tab"      then TAB_PANEL:next()
-    elseif key == "shifttab" then TAB_PANEL:prev() end
-end
-
 function love.mousepressed(mx, my)
     TAB_PANEL:handleMousepressed(mx, my)
 end
