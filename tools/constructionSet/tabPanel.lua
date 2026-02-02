@@ -25,26 +25,35 @@ return {
 			TAB_INDEX = 1,
 
 			draw = function(self)
-    			love.graphics.setColor(1, 1, 1)
+    			self:drawTabFrame()
+    			self:drawTabs()
+			end,
+
+			drawTabFrame = function(self)
+				love.graphics.setColor(1, 1, 1)
 			    love.graphics.line(  5,  795, 1195, 795)
 			    love.graphics.line(1195, 795, 1195, 500)
 			    love.graphics.line(  5,  500,    5, 795)
 			    love.graphics.line(  5,  500,  self.TABS[1].x, 500)
+			end,
 
-			    love.graphics.setFont(FONT)
-			    local index = 1
-			    local x = 0
-			    for _, t in ipairs(self.TABS) do
-			    	love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
-			        love.graphics.line(t.x,       t.y, t.x,       t.y + t.h - 1)
-			        love.graphics.line(t.x + t.w, t.y, t.x + t.w, t.y + t.h - 1)
-			        if index ~= self.TAB_INDEX then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
-			        love.graphics.line(t.x + t.w, 500, t.x + t.w + TAB_SPACING, 500)
-			        love.graphics.printf(t.title, t.x + TAB_MARGIN, 470, 500, "left")
-			        x = t.x + t.w + TAB_SPACING
-			        index = index + 1
+			drawTabs = function(self)
+				local x = 0
+			    for n, t in ipairs(self.TABS) do
+			    	self:drawTab(t, n == self.TAB_INDEX)
+			    	x = t.x + t.w + TAB_SPACING
 			    end
 			    love.graphics.line(x + 1, 500, 1195, 500)
+			end,
+
+			drawTab = function(self, t, isSelected)
+				love.graphics.setFont(FONT)
+			    love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
+			    love.graphics.line(t.x,       t.y, t.x,       t.y + t.h - 1)
+			    love.graphics.line(t.x + t.w, t.y, t.x + t.w, t.y + t.h - 1)
+			    if not isSelected then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
+			    love.graphics.line(t.x + t.w, 500, t.x + t.w + TAB_SPACING, 500)
+			    love.graphics.printf(t.title, t.x + TAB_MARGIN, 470, 500, "left")
 			end,
 
 			next = function(self)
