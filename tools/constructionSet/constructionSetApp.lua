@@ -15,7 +15,11 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+function love.draw()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", 5, 500, 1190, 295)
+end
+
 -- ...
 -- ...
 
