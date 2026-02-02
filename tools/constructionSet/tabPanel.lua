@@ -20,7 +20,7 @@ return {
 		local FONT           = love.graphics.newFont(FONT_SIZE)
 
 		local TAB_MARGIN  = params.TAB_MARGIN  or 15
-		local TAB_SPACING = params.TAB_SPACING or 25
+		local TAB_SPACING = params.TAB_SPACING or 15
 
 		return {
 			TABS              = calculateTabData(params.TABS, { TAB_MARGIN = TAB_MARGIN, TAB_SPACING = TAB_SPACING, FONT = FONT }),
@@ -33,6 +33,8 @@ return {
 			end,
 
 			drawTabFrame = function(self)
+				love.graphics.setColor(COLOR.DARK_GREY)
+				love.graphics.rectangle("fill", 5, 500, 1190, 295)
 				love.graphics.setColor(COLOR.PURE_WHITE)
 			    love.graphics.line(  5,  795, 1195, 795)
 			    love.graphics.line(1195, 795, 1195, 500)
@@ -51,6 +53,10 @@ return {
 			end,
 
 			drawTab = function(self, t, params)
+				if     params.isSelected    then love.graphics.setColor(COLOR.DARK_GREY)
+				elseif params.isHighlighted then love.graphics.setColor(COLOR.DARK_YELLOW)
+				else                             love.graphics.setColor(COLOR.VERY_DARK_GREY) end
+				love.graphics.rectangle("fill", t.x, t.y, t.w, t.h)
 				love.graphics.setColor(COLOR.PURE_WHITE)
 				love.graphics.setFont(FONT)
 			    love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
