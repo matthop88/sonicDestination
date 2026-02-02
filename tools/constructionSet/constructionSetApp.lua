@@ -47,7 +47,11 @@ function love.draw()
     love.graphics.line(x - TAB_MARGIN + 1, 500, 1195, 500)
 end
 
--- ...
+function love.keypressed(key)
+    TAB_INDEX = TAB_INDEX + 1
+    if TAB_INDEX > #TABS then TAB_INDEX = 1 end
+end
+
 -- ...
 
 --------------------------------------------------------------
