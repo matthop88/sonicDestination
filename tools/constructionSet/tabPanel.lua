@@ -41,7 +41,7 @@ return {
 			end,
 
 			drawTabFrame = function(self)
-				love.graphics.setColor(COLOR.DARK_GREY)
+				love.graphics.setColor(self:getBGColor({ isSelected = true }))
 				love.graphics.rectangle("fill", 5, self:getTabsBottom(), 1190, 295)
 				love.graphics.setColor(COLOR.PURE_WHITE)
 			    love.graphics.line(  5,  self:getTabsBottom() + 295, 1195,              self:getTabsBottom() + 295)
@@ -91,9 +91,11 @@ return {
 
 				self.HIGHLIGHTED_INDEX = nil
 				
-				for n, t in ipairs(self.TABS) do
-					if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
-						self.HIGHLIGHTED_INDEX = n
+				if self.TABS.opened then
+					for n, t in ipairs(self.TABS) do
+						if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
+							self.HIGHLIGHTED_INDEX = n
+						end
 					end
 				end
 
@@ -101,9 +103,11 @@ return {
 			end,
 
 			handleMousepressed = function(self, mx, my, params)
-				for n, t in ipairs(self.TABS) do
-					if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
-						self.TAB_INDEX = n
+				if self.TABS.opened then
+					for n, t in ipairs(self.TABS) do
+						if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
+							self.TAB_INDEX = n
+						end
 					end
 				end
 				if params.doubleClicked then
@@ -114,16 +118,19 @@ return {
 			end,
 
 			getBGColor = function(self, params)
-				if     params.isSelected    then return COLOR.DARK_GREY
+				if not self.TABS.opened     then return COLOR.JET_BLACK
+				elseif params.isSelected    then return COLOR.DARK_GREY
 				elseif params.isHighlighted then return COLOR.DARK_YELLOW
 				else                             return COLOR.VERY_DARK_GREY  end
 			end,
 
 			getLabelColor = function(self, params)
-				if     params.isSelected    then return COLOR.PURE_WHITE
+				if not self.TABS.opened     then return COLOR.MEDIUM_GREY
+				elseif params.isSelected    then return COLOR.PURE_WHITE
 				elseif params.isHighlighted then return COLOR.LIGHT_YELLOW
 				else                             return COLOR.LIGHT_GREY      end
 			end,
+
 		}
 	end,
 }
