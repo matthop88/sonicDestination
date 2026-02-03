@@ -12,8 +12,9 @@ local calculateTabData = function(tabs, attrs)
 	local xOffsetToCenter = 600 - (x / 2)
 	for _, t in ipairs(tabsWithMeta) do t.x = t.x + xOffsetToCenter end
 
-	tabsWithMeta.y = 760
+	tabsWithMeta.y = require("tools/lib/tweenableValue"):create(760, { speed = 12 })
 	tabsWithMeta.h = 30
+	tabsWithMeta.opened = false
 	return tabsWithMeta
 end
 
@@ -31,6 +32,9 @@ return {
 			TAB_INDEX         = 1,
 			HIGHLIGHTED_INDEX = 0,
 
+			getTabsY      = function(self) return self.TABS.y:get()             end,
+			getTabsBottom = function(self) return self:getTabsY() + self.TABS.h end,
+
 			draw = function(self)
     			self:drawTabFrame()
     			self:drawTabs()
@@ -38,12 +42,12 @@ return {
 
 			drawTabFrame = function(self)
 				love.graphics.setColor(COLOR.DARK_GREY)
-				love.graphics.rectangle("fill", 5, self.TABS.y + self.TABS.h, 1190, 295)
+				love.graphics.rectangle("fill", 5, self:getTabsBottom(), 1190, 295)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-			    love.graphics.line(  5,  self.TABS.y + self.TABS.h + 295, 1195, self.TABS.y + self.TABS.h + 295)
-			    love.graphics.line(1195, self.TABS.y + self.TABS.h + 295, 1195, self.TABS.y + self.TABS.h)
-			    love.graphics.line(  5,  self.TABS.y + self.TABS.h,    5, self.TABS.y + self.TABS.h + 295)
-			    love.graphics.line(  5,  self.TABS.y + self.TABS.h,  self.TABS[1].x, self.TABS.y + self.TABS.h)
+			    love.graphics.line(  5,  self:getTabsBottom() + 295, 1195,              self:getTabsBottom() + 295)
+			    love.graphics.line(1195, self:getTabsBottom() + 295, 1195,              self:getTabsBottom())
+			    love.graphics.line(  5,  self:getTabsBottom(),          5,              self:getTabsBottom() + 295)
+			    love.graphics.line(  5,  self:getTabsBottom(),          self.TABS[1].x, self:getTabsBottom())
 			end,
 
 			drawTabs = function(self)
@@ -53,7 +57,7 @@ return {
 			    	x = t.x + t.w + TAB_SPACING
 			    end
 			    love.graphics.setColor(COLOR.PURE_WHITE)
-			    love.graphics.line(x + 1, self.TABS.y + self.TABS.h, 1195, self.TABS.y + self.TABS.h)
+			    love.graphics.line(x + 1, self:getTabsBottom(), 1195, self:getTabsBottom())
 			end,
 
 			drawTab = function(self, t, params)
@@ -64,22 +68,22 @@ return {
 
 			drawTabBackground = function(self, t, params)
 				love.graphics.setColor(self:getBGColor(params))
-				love.graphics.rectangle("fill", t.x, self.TABS.y, t.w, self.TABS.h)
+				love.graphics.rectangle("fill", t.x, self:getTabsY(), t.w, self.TABS.h)
 			end,
 
 			drawTabOutline = function(self, t, params)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-				love.graphics.line(t.x,       self.TABS.y, t.x + t.w, self.TABS.y)
-			    love.graphics.line(t.x,       self.TABS.y, t.x,       self.TABS.y + self.TABS.h - 1)
-			    love.graphics.line(t.x + t.w, self.TABS.y, t.x + t.w, self.TABS.y + self.TABS.h - 1)
-			    if not params.isSelected then love.graphics.line(t.x + 1, self.TABS.y + self.TABS.h, t.x + t.w - 1, self.TABS.y + self.TABS.h) end
-			    love.graphics.line(t.x + t.w, self.TABS.y + self.TABS.h, t.x + t.w + TAB_SPACING, self.TABS.y + self.TABS.h)
+				love.graphics.line(t.x,       self:getTabsY(), t.x + t.w, self:getTabsY())
+			    love.graphics.line(t.x,       self:getTabsY(), t.x,       self:getTabsBottom() - 1)
+			    love.graphics.line(t.x + t.w, self:getTabsY(), t.x + t.w, self:getTabsBottom() - 1)
+			    if not params.isSelected then love.graphics.line(t.x + 1, self:getTabsBottom(), t.x + t.w - 1, self:getTabsBottom()) end
+			    love.graphics.line(t.x + t.w, self:getTabsBottom(), t.x + t.w + TAB_SPACING, self:getTabsBottom())
 			end,
 
 			drawTabLabel = function(self, t, params)
 				love.graphics.setFont(FONT)
 				love.graphics.setColor(self:getLabelColor(params))
-			    love.graphics.printf(t.label, t.x + TAB_MARGIN, self.TABS.y, 500, "left")
+			    love.graphics.printf(t.label, t.x + TAB_MARGIN, self:getTabsY(), 500, "left")
 			end,
 
 			update = function(self, dt)
@@ -88,20 +92,24 @@ return {
 				self.HIGHLIGHTED_INDEX = nil
 				
 				for n, t in ipairs(self.TABS) do
-					if mx >= t.x and mx <= t.x + t.w and my >= self.TABS.y and my <= self.TABS.y + self.TABS.h then
+					if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
 						self.HIGHLIGHTED_INDEX = n
 					end
 				end
+
+				self.TABS.y:update(dt)
 			end,
 
 			handleMousepressed = function(self, mx, my, params)
 				for n, t in ipairs(self.TABS) do
-					if mx >= t.x and mx <= t.x + t.w and my >= self.TABS.y and my <= self.TABS.y + self.TABS.h then
+					if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
 						self.TAB_INDEX = n
 					end
 				end
 				if params.doubleClicked then
-					self.TABS.y = 1230 - self.TABS.y
+					if self.TABS.opened then self.TABS.y:setDestination(760)
+					else                     self.TABS.y:setDestination(470) end
+					self.TABS.opened = not self.TABS.opened
 				end
 			end,
 
