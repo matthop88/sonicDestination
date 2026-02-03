@@ -2,13 +2,15 @@ local COLOR = require("tools/lib/colors")
 
 local calculateTabData = function(tabs, attrs)
 	local tabsWithMeta = {}
-	local x = 100 - attrs.TAB_MARGIN
+	local x = 0
 	for _, t in ipairs(tabs) do
 		local w = attrs.FONT:getWidth(t) + (attrs.TAB_MARGIN * 2)
 		local tabWithMeta = { label = t, x = x, y = 470, w = w, h = 30 }
 		table.insert(tabsWithMeta, tabWithMeta)
 		x = x + w + attrs.TAB_SPACING
 	end
+	local xOffsetToCenter = 600 - (x / 2)
+	for _, t in ipairs(tabsWithMeta) do t.x = t.x + xOffsetToCenter end
 
 	return tabsWithMeta
 end
