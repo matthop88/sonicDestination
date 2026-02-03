@@ -5,13 +5,15 @@ local calculateTabData = function(tabs, attrs)
 	local x = 0
 	for _, t in ipairs(tabs) do
 		local w = attrs.FONT:getWidth(t) + (attrs.TAB_MARGIN * 2)
-		local tabWithMeta = { label = t, x = x, y = 470, w = w, h = 30 }
+		local tabWithMeta = { label = t, x = x, w = w }
 		table.insert(tabsWithMeta, tabWithMeta)
 		x = x + w + attrs.TAB_SPACING
 	end
 	local xOffsetToCenter = 600 - (x / 2)
 	for _, t in ipairs(tabsWithMeta) do t.x = t.x + xOffsetToCenter end
 
+	tabsWithMeta.y = 470
+	tabsWithMeta.h = 30
 	return tabsWithMeta
 end
 
@@ -36,12 +38,12 @@ return {
 
 			drawTabFrame = function(self)
 				love.graphics.setColor(COLOR.DARK_GREY)
-				love.graphics.rectangle("fill", 5, 500, 1190, 295)
+				love.graphics.rectangle("fill", 5, self.TABS.y + self.TABS.h, 1190, 295)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-			    love.graphics.line(  5,  795, 1195, 795)
-			    love.graphics.line(1195, 795, 1195, 500)
-			    love.graphics.line(  5,  500,    5, 795)
-			    love.graphics.line(  5,  500,  self.TABS[1].x, 500)
+			    love.graphics.line(  5,  self.TABS.y + self.TABS.h + 295, 1195, self.TABS.y + self.TABS.h + 295)
+			    love.graphics.line(1195, self.TABS.y + self.TABS.h + 295, 1195, self.TABS.y + self.TABS.h)
+			    love.graphics.line(  5,  self.TABS.y + self.TABS.h,    5, self.TABS.y + self.TABS.h + 295)
+			    love.graphics.line(  5,  self.TABS.y + self.TABS.h,  self.TABS[1].x, self.TABS.y + self.TABS.h)
 			end,
 
 			drawTabs = function(self)
@@ -51,7 +53,7 @@ return {
 			    	x = t.x + t.w + TAB_SPACING
 			    end
 			    love.graphics.setColor(COLOR.PURE_WHITE)
-			    love.graphics.line(x + 1, 500, 1195, 500)
+			    love.graphics.line(x + 1, self.TABS.y + self.TABS.h, 1195, self.TABS.y + self.TABS.h)
 			end,
 
 			drawTab = function(self, t, params)
@@ -62,22 +64,22 @@ return {
 
 			drawTabBackground = function(self, t, params)
 				love.graphics.setColor(self:getBGColor(params))
-				love.graphics.rectangle("fill", t.x, t.y, t.w, t.h)
+				love.graphics.rectangle("fill", t.x, self.TABS.y, t.w, self.TABS.h)
 			end,
 
 			drawTabOutline = function(self, t, params)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-				love.graphics.line(t.x,       t.y, t.x + t.w, t.y)
-			    love.graphics.line(t.x,       t.y, t.x,       t.y + t.h - 1)
-			    love.graphics.line(t.x + t.w, t.y, t.x + t.w, t.y + t.h - 1)
-			    if not params.isSelected then love.graphics.line(t.x + 1, 500, t.x + t.w - 1, 500) end
-			    love.graphics.line(t.x + t.w, 500, t.x + t.w + TAB_SPACING, 500)
+				love.graphics.line(t.x,       self.TABS.y, t.x + t.w, self.TABS.y)
+			    love.graphics.line(t.x,       self.TABS.y, t.x,       self.TABS.y + self.TABS.h - 1)
+			    love.graphics.line(t.x + t.w, self.TABS.y, t.x + t.w, self.TABS.y + self.TABS.h - 1)
+			    if not params.isSelected then love.graphics.line(t.x + 1, self.TABS.y + self.TABS.h, t.x + t.w - 1, self.TABS.y + self.TABS.h) end
+			    love.graphics.line(t.x + t.w, self.TABS.y + self.TABS.h, t.x + t.w + TAB_SPACING, self.TABS.y + self.TABS.h)
 			end,
 
 			drawTabLabel = function(self, t, params)
 				love.graphics.setFont(FONT)
 				love.graphics.setColor(self:getLabelColor(params))
-			    love.graphics.printf(t.label, t.x + TAB_MARGIN, 470, 500, "left")
+			    love.graphics.printf(t.label, t.x + TAB_MARGIN, self.TABS.y, 500, "left")
 			end,
 
 			update = function(self, dt)
@@ -86,7 +88,7 @@ return {
 				self.HIGHLIGHTED_INDEX = nil
 				
 				for n, t in ipairs(self.TABS) do
-					if mx >= t.x and mx <= t.x + t.w and my >= t.y and my <= t.y + t.h then
+					if mx >= t.x and mx <= t.x + t.w and my >= self.TABS.y and my <= self.TABS.y + self.TABS.h then
 						self.HIGHLIGHTED_INDEX = n
 					end
 				end
@@ -94,7 +96,7 @@ return {
 
 			handleMousepressed = function(self, mx, my)
 				for n, t in ipairs(self.TABS) do
-					if mx >= t.x and mx <= t.x + t.w and my >= t.y and my <= t.y + t.h then
+					if mx >= t.x and mx <= t.x + t.w and my >= self.TABS.y and my <= self.TABS.y + self.TABS.h then
 						self.TAB_INDEX = n
 					end
 				end
