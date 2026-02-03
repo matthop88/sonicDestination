@@ -3,7 +3,14 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
-local TAB_PANEL = require("tools/constructionSet/tabPanel"):create { TABS = { "Chunks", "Badniks", "Items" } }
+local TAB_PANEL = require("tools/constructionSet/tabPanel"):create 
+{ 
+    TABS = { 
+             { label = "Chunks",  panel = nil, },
+             { label = "Badniks", panel = nil, },
+             { label = "Items",   panel = nil, },
+    }
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
