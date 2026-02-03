@@ -24,8 +24,8 @@ function love.update(dt)
     TAB_PANEL:update(dt)
 end
 
-function love.mousepressed(mx, my)
-    TAB_PANEL:handleMousepressed(mx, my)
+function love.mousepressed(mx, my, params)
+    TAB_PANEL:handleMousepressed(mx, my, params)
 end
 
 --------------------------------------------------------------
@@ -34,6 +34,8 @@ end
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
+    :add("doubleClick")
+    
 --        ...
 --        ...
 
