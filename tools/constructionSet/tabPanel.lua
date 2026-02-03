@@ -3,9 +3,10 @@ local COLOR = require("tools/lib/colors")
 local calculateTabData = function(tabs, attrs)
 	local tabsWithMeta = {}
 	local x = 0
-	for _, t in ipairs(tabs) do
+	for _, tab in ipairs(tabs) do
+		local t = tab.label
 		local w = attrs.FONT:getWidth(t) + (attrs.TAB_MARGIN * 2)
-		local tabWithMeta = { label = t, x = x, w = w }
+		local tabWithMeta = { label = t, x = x, w = w, panel = tab.panel }
 		table.insert(tabsWithMeta, tabWithMeta)
 		x = x + w + attrs.TAB_SPACING
 	end
