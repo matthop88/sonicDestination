@@ -76,7 +76,7 @@ return {
 				love.graphics.line(t.x,       self:getTabsY(), t.x + t.w, self:getTabsY())
 			    love.graphics.line(t.x,       self:getTabsY(), t.x,       self:getTabsBottom() - 1)
 			    love.graphics.line(t.x + t.w, self:getTabsY(), t.x + t.w, self:getTabsBottom() - 1)
-			    if not params.isSelected then love.graphics.line(t.x + 1, self:getTabsBottom(), t.x + t.w - 1, self:getTabsBottom()) end
+			    if not params.isSelected or not self.TABS.opened then love.graphics.line(t.x + 1, self:getTabsBottom(), t.x + t.w - 1, self:getTabsBottom()) end
 			    love.graphics.line(t.x + t.w, self:getTabsBottom(), t.x + t.w + TAB_SPACING, self:getTabsBottom())
 			end,
 
