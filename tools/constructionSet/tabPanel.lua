@@ -12,7 +12,7 @@ local calculateTabData = function(tabs, attrs)
 	local xOffsetToCenter = 600 - (x / 2)
 	for _, t in ipairs(tabsWithMeta) do t.x = t.x + xOffsetToCenter end
 
-	tabsWithMeta.y = 470
+	tabsWithMeta.y = 760
 	tabsWithMeta.h = 30
 	return tabsWithMeta
 end
@@ -94,11 +94,14 @@ return {
 				end
 			end,
 
-			handleMousepressed = function(self, mx, my)
+			handleMousepressed = function(self, mx, my, params)
 				for n, t in ipairs(self.TABS) do
 					if mx >= t.x and mx <= t.x + t.w and my >= self.TABS.y and my <= self.TABS.y + self.TABS.h then
 						self.TAB_INDEX = n
 					end
+				end
+				if params.doubleClicked then
+					self.TABS.y = 1230 - self.TABS.y
 				end
 			end,
 
