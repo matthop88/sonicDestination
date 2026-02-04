@@ -1,15 +1,36 @@
+local COLOR = require("tools/lib/colors")
+
 local CONTAINER = {
     create = function(self, x, y, w, h)
         return {
-            x = x,
-            y = y,
-            w = w,
-            h = h,
+            x        = x,
+            y        = y,
+            w        = w,
+            h        = h,
+            hasFocus = false,
 
             draw = function(self, graphics)
-                graphics:setColor(1, 1, 1)
-                graphics:setLineWidth(1)
+                graphics:setColor(self:getOutlineColor())
+                graphics:setLineWidth(self:getOutlineWidth())
                 graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 2, self.h + 2)
+                graphics:setLineWidth(1)
+            end,
+
+            isInside = function(self, x, y)
+                return x >= self.x and x <= self.x + self.w and y >= self.y and y <= self.y + self.h
+            end,
+
+            gainFocus = function(self) self.hasFocus = true  end,
+            loseFocus = function(self) self.hasFocus = false end,
+
+            getOutlineColor = function(self)
+                if self.hasFocus then return COLOR.LIGHT_YELLOW
+                else                  return COLOR.PURE_WHITE   end
+            end,
+
+            getOutlineWidth = function(self)
+                if self.hasFocus then return 3
+                else                  return 1 end
             end,
         }
     end,
@@ -27,8 +48,16 @@ return {
 
         return {
             draw = function(self, graphics)
+                graphics:clear(COLOR.DARK_GREY)
                 for _, c in ipairs(containers) do
                     c:draw(graphics)
+                end
+            end,
+
+            update = function(self, dt, mx, my)
+                for _, c in ipairs(containers) do
+                    if c:isInside(mx, my) then c:gainFocus()
+                    else                       c:loseFocus() end
                 end
             end,
         }
