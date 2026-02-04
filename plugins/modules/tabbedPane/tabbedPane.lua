@@ -45,4 +45,132 @@ return {
 
 		return self
     end,
+
+    TAB_INDEX         = 1,
+	HIGHLIGHTED_INDEX = 0,
+
+	getTabsY      = function(self) return self.TABS.y:get()             end,
+	getTabsBottom = function(self) return self:getTabsY() + self.TABS.h end,
+
+	draw = function(self)
+    	self:drawTabFrame()
+    	self:drawTabs()
+    	if self.TABS[self.TAB_INDEX].panel then self.graphics:blitToScreen(5, self.TABS.y:get() + 30) end
+	end,
+
+	drawTabFrame = function(self)
+		love.graphics.setColor(self:getBGColor({ isSelected = true }))
+		love.graphics.rectangle("fill", 5, self:getTabsBottom(), self.WIDTH - 10, self.PANE_HEIGHT)
+		love.graphics.setColor(COLOR.PURE_WHITE)
+	    love.graphics.line(             5,  self:getTabsBottom() + self.PANE_HEIGHT, self.WIDTH - 5, self:getTabsBottom() + self.PANE_HEIGHT)
+	    love.graphics.line(self.WIDTH - 5,  self:getTabsBottom() + self.PANE_HEIGHT, self.WIDTH - 5, self:getTabsBottom())
+	    love.graphics.line(             5,  self:getTabsBottom(),                                 5, self:getTabsBottom() + self.PANE_HEIGHT)
+	    love.graphics.line(             5,  self:getTabsBottom(),                    self.TABS[1].x, self:getTabsBottom())
+	end,
+
+	drawTabs = function(self)
+		local x = 0
+	    for n, t in ipairs(self.TABS) do
+	    	self:drawTab(t, { isSelected = (n == self.TAB_INDEX), isHighlighted = (n == self.HIGHLIGHTED_INDEX) })
+	    	x = t.x + t.w + self.TAB_SPACING
+	    end
+	    love.graphics.setColor(COLOR.PURE_WHITE)
+	    love.graphics.line(x + 1, self:getTabsBottom(), 1195, self:getTabsBottom())
+	end,
+
+	drawTab = function(self, t, params)
+		self:drawTabBackground(t, params)
+		self:drawTabOutline(t, params)
+	    self:drawTabLabel(t, params)
+	    if t.panel then self:drawPanel(t.panel) end
+	end,
+
+	drawTabBackground = function(self, t, params)
+		love.graphics.setColor(self:getBGColor(params))
+		love.graphics.rectangle("fill", t.x, self:getTabsY(), t.w, self.TABS.h)
+	end,
+
+	drawTabOutline = function(self, t, params)
+		love.graphics.setColor(COLOR.PURE_WHITE)
+		love.graphics.setLineWidth(1)
+		love.graphics.line(t.x,       self:getTabsY(), t.x + t.w, self:getTabsY())
+	    love.graphics.line(t.x,       self:getTabsY(), t.x,       self:getTabsBottom() - 1)
+	    love.graphics.line(t.x + t.w, self:getTabsY(), t.x + t.w, self:getTabsBottom() - 1)
+	    if not params.isSelected or not self.TABS.opened then love.graphics.line(t.x + 1, self:getTabsBottom(), t.x + t.w - 1, self:getTabsBottom()) end
+	    love.graphics.line(t.x + t.w, self:getTabsBottom(), t.x + t.w + self.TAB_SPACING, self:getTabsBottom())
+	end,
+
+	drawTabLabel = function(self, t, params)
+		love.graphics.setFont(self.FONT)
+		love.graphics.setColor(self:getLabelColor(params))
+	    love.graphics.printf(t.label, t.x + self.TAB_MARGIN, self:getTabsY(), 500, "left")
+	end,
+
+	drawPanel = function(self, panel)
+		panel:draw(self.graphics)
+	end,
+
+	update = function(self, dt)
+		local mx, my = love.mouse.getPosition()
+
+		self.HIGHLIGHTED_INDEX = nil
+		
+		if self.TABS.opened then
+			for n, t in ipairs(self.TABS) do
+				if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
+					self.HIGHLIGHTED_INDEX = n
+				end
+			end
+		end
+
+		self.TABS.y:update(dt)
+
+		self:updateCurrentTab(dt)
+	end,
+
+	updateCurrentTab = function(self, dt)
+		local currentTab = self.TABS[self.TAB_INDEX]
+		if currentTab.panel then
+			local mx, my = love.mouse.getPosition()
+			currentTab.panel:update(dt, mx, my - self:getTabsBottom())
+		end
+	end,
+
+	handleMousepressed = function(self, mx, my, params)
+		if params.doubleClicked then
+			if self.TABS.opened then self.TABS.y:setDestination(self.HEIGHT - 40)
+			else                     self.TABS.y:setDestination(self.HEIGHT - 35 - self.PANE_HEIGHT) end
+			self.TABS.opened = not self.TABS.opened
+		elseif self.TABS.opened then
+			for n, t in ipairs(self.TABS) do
+				if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
+					self.TAB_INDEX = n
+					return
+				end
+			end
+
+			self:handleMousepressedCurrentTab(mx, my - self:getTabsBottom()) 
+		end
+	end,
+
+	handleMousepressedCurrentTab = function(self, mx, my)
+		local currentTab = self.TABS[self.TAB_INDEX]
+		if currentTab.panel then
+			currentTab.panel:handleMousepressed(mx, my)
+		end
+	end,
+
+	getBGColor = function(self, params)
+		if not self.TABS.opened     then return COLOR.JET_BLACK
+		elseif params.isSelected    then return COLOR.DARK_GREY
+		elseif params.isHighlighted then return COLOR.DARK_YELLOW
+		else                             return COLOR.VERY_DARK_GREY  end
+	end,
+
+	getLabelColor = function(self, params)
+		if not self.TABS.opened     then return COLOR.MEDIUM_GREY
+		elseif params.isSelected    then return COLOR.PURE_WHITE
+		elseif params.isHighlighted then return COLOR.LIGHT_YELLOW
+		else                             return COLOR.LIGHT_GREY      end
+	end,
 }
