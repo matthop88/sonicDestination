@@ -24,9 +24,10 @@ return {
 		local FONT_SIZE      = 24
 		local FONT           = love.graphics.newFont(FONT_SIZE)
 		local GRAFX          = require("tools/lib/graphics"):create()
-		local BUFFERED_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 1190, 295)
+		local BUFFERED_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 1190, 300)
 		local TAB_MARGIN     = params.TAB_MARGIN  or 20
 		local TAB_SPACING    = params.TAB_SPACING or 15
+		local PANEL_HEIGHT   = 300
 
 		return {
 			TABS              = calculateTabData(params.TABS, { TAB_MARGIN = TAB_MARGIN, TAB_SPACING = TAB_SPACING, FONT = FONT }),
@@ -41,16 +42,17 @@ return {
 			draw = function(self)
     			self:drawTabFrame()
     			self:drawTabs()
+    			if self.TABS[self.TAB_INDEX].panel then self.graphics:blitToScreen(5, self.TABS.y:get() + 30) end
 			end,
 
 			drawTabFrame = function(self)
 				love.graphics.setColor(self:getBGColor({ isSelected = true }))
-				love.graphics.rectangle("fill", 5, self:getTabsBottom(), 1190, 295)
+				love.graphics.rectangle("fill", 5, self:getTabsBottom(), 1190, PANEL_HEIGHT)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-			    love.graphics.line(  5,  self:getTabsBottom() + 295, 1195,              self:getTabsBottom() + 295)
-			    love.graphics.line(1195, self:getTabsBottom() + 295, 1195,              self:getTabsBottom())
-			    love.graphics.line(  5,  self:getTabsBottom(),          5,              self:getTabsBottom() + 295)
-			    love.graphics.line(  5,  self:getTabsBottom(),          self.TABS[1].x, self:getTabsBottom())
+			    love.graphics.line(  5,  self:getTabsBottom() + PANEL_HEIGHT,           1195, self:getTabsBottom() + PANEL_HEIGHT)
+			    love.graphics.line(1195, self:getTabsBottom() + PANEL_HEIGHT,           1195, self:getTabsBottom())
+			    love.graphics.line(  5,  self:getTabsBottom(),                             5, self:getTabsBottom() + PANEL_HEIGHT)
+			    love.graphics.line(  5,  self:getTabsBottom(),                self.TABS[1].x, self:getTabsBottom())
 			end,
 
 			drawTabs = function(self)
@@ -120,7 +122,7 @@ return {
 				end
 				if params.doubleClicked then
 					if self.TABS.opened then self.TABS.y:setDestination(760)
-					else                     self.TABS.y:setDestination(470) end
+					else                     self.TABS.y:setDestination(765 - PANEL_HEIGHT) end
 					self.TABS.opened = not self.TABS.opened
 				end
 			end,
