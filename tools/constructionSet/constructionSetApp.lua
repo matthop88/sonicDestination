@@ -5,8 +5,7 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local CHUNKS_PANEL = require("tools/constructionSet/chunksPanel"):create()
-
-local TAB_PANE = require("tools/constructionSet/tabPane"):create 
+local TABBED_PANE  = require("tools/constructionSet/tabbedPane"):create 
 { 
     TABS = { 
              { label = "Chunks",  panel = CHUNKS_PANEL, },
@@ -27,15 +26,15 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --------------------------------------------------------------
 
 function love.draw()
-    TAB_PANE:draw()
+    TABBED_PANE:draw()
 end
 
 function love.update(dt)
-    TAB_PANE:update(dt)
+    TABBED_PANE:update(dt)
 end
 
 function love.mousepressed(mx, my, params)
-    TAB_PANE:handleMousepressed(mx, my, params)
+    TABBED_PANE:handleMousepressed(mx, my, params)
 end
 
 --------------------------------------------------------------
