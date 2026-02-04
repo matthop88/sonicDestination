@@ -1,16 +1,21 @@
 local COLOR = require("tools/lib/colors")
 
+local CHUNKS
+        
 local CONTAINER = {
-    create = function(self, x, y, w, h)
+    create = function(self, chunkID, x, y, w, h)
         return {
+            chunkID    = chunkID,
             x          = x,
             y          = y,
             w          = w,
             h          = h,
             hasFocus   = false,
             isSelected = false,
+            
 
             draw = function(self, graphics)
+                if CHUNKS then CHUNKS:drawAt(graphics, self.x, self.y, self.chunkID, 0.5, 0.5) end
                 graphics:setColor(self:getOutlineColor())
                 graphics:setLineWidth(self:getOutlineWidth())
                 graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 2, self.h + 2)
@@ -43,15 +48,24 @@ local CONTAINER = {
 
 return {
     create = function(self)
+        
         local containers = {}
 
+        local chunkID = 2
         for y = 16, 290, 143 do
             for x = 31, 1080, 143 do
-                table.insert(containers, CONTAINER:create(x, y, 128, 128))
+                table.insert(containers, CONTAINER:create(chunkID, x, y, 128, 128))
+                chunkID = chunkID + 1
             end
         end
 
         return {
+            initChunkInfo = function(self)
+                local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks.lua"
+                local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+                CHUNKS                  = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
+            end,
+
             draw = function(self, graphics)
                 graphics:clear(COLOR.DARK_GREY)
                 for _, c in ipairs(containers) do
