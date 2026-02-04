@@ -125,18 +125,18 @@ return {
 			end,
 
 			handleMousepressed = function(self, mx, my, params)
-				if self.TABS.opened then
-					for n, t in ipairs(self.TABS) do
-						if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
-							self.TAB_INDEX = n
-						end
-					end
-				end
 				if params.doubleClicked then
 					if self.TABS.opened then self.TABS.y:setDestination(760)
 					else                     self.TABS.y:setDestination(765 - PANE_HEIGHT) end
 					self.TABS.opened = not self.TABS.opened
-				else 
+				elseif self.TABS.opened then
+					for n, t in ipairs(self.TABS) do
+						if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
+							self.TAB_INDEX = n
+							return
+						end
+					end
+
 					self:handleMousepressedCurrentTab(mx, my - self:getTabsBottom()) 
 				end
 			end,
