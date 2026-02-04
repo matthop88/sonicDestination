@@ -10,7 +10,7 @@ local createTabData = function(tabs, attrs)
 		table.insert(tabData, tabWithMeta)
 		x = x + w + attrs.TAB_SPACING
 	end
-	local xOffsetToCenter = attrs.WIDTH - (x / 2)
+	local xOffsetToCenter = (attrs.WIDTH / 2) - (x / 2)
 	for _, t in ipairs(tabData) do t.x = t.x + xOffsetToCenter end
 
 	tabData.y = require("tools/lib/tweenableValue"):create(attrs.HEIGHT - 40, { speed = 12 })
