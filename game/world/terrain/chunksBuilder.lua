@@ -30,9 +30,13 @@ local CHUNKS = {
     	local y = (rowNum - 1) * 256
         local x = (colNum - 1) * 256
 
-		graphics:setColor(1, 1, 1)
-    	graphics:draw(self.chunksImg, self:get(chunkID), x, y, 0, 1, 1)
+		self:drawAt(graphics, x, y, chunkID, 1, 1)
 	end,
+
+	drawAt = function(self, graphics, x, y, chunkID, sX, sY)
+		graphics:setColor(1, 1, 1)
+    	graphics:draw(self.chunksImg, self:get(chunkID), x, y, 0, sX, sY)
+    end,
 
 }
 
