@@ -80,6 +80,7 @@ return {
 
 			drawTabOutline = function(self, t, params)
 				love.graphics.setColor(COLOR.PURE_WHITE)
+				love.graphics.setLineWidth(1)
 				love.graphics.line(t.x,       self:getTabsY(), t.x + t.w, self:getTabsY())
 			    love.graphics.line(t.x,       self:getTabsY(), t.x,       self:getTabsBottom() - 1)
 			    love.graphics.line(t.x + t.w, self:getTabsY(), t.x + t.w, self:getTabsBottom() - 1)
@@ -111,6 +112,16 @@ return {
 				end
 
 				self.TABS.y:update(dt)
+
+				self:updateCurrentTab(dt)
+			end,
+
+			updateCurrentTab = function(self, dt)
+				local currentTab = self.TABS[self.TAB_INDEX]
+				if currentTab.panel then
+					local mx, my = love.mouse.getPosition()
+					currentTab.panel:update(dt, mx, my - self:getTabsBottom())
+				end
 			end,
 
 			handleMousepressed = function(self, mx, my, params)
