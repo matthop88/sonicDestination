@@ -3,11 +3,12 @@ local COLOR = require("tools/lib/colors")
 local CONTAINER = {
     create = function(self, x, y, w, h)
         return {
-            x        = x,
-            y        = y,
-            w        = w,
-            h        = h,
-            hasFocus = false,
+            x          = x,
+            y          = y,
+            w          = w,
+            h          = h,
+            hasFocus   = false,
+            isSelected = false,
 
             draw = function(self, graphics)
                 graphics:setColor(self:getOutlineColor())
@@ -24,14 +25,18 @@ local CONTAINER = {
             loseFocus = function(self) self.hasFocus = false end,
 
             getOutlineColor = function(self)
-                if self.hasFocus then return COLOR.LIGHT_YELLOW
-                else                  return COLOR.PURE_WHITE   end
+                if     self.isSelected then return COLOR.PURE_WHITE
+                elseif self.hasFocus   then return COLOR.LIGHT_YELLOW
+                else                        return COLOR.LIGHT_GREY end
             end,
 
             getOutlineWidth = function(self)
-                if self.hasFocus then return 3
-                else                  return 1 end
+                if self.hasFocus or self.isSelected then return 3
+                else                                     return 1 end
             end,
+
+            select   = function(self) self.isSelected = true  end,
+            unselect = function(self) self.isSelected = false end,
         }
     end,
 }
@@ -58,6 +63,13 @@ return {
                 for _, c in ipairs(containers) do
                     if c:isInside(mx, my) then c:gainFocus()
                     else                       c:loseFocus() end
+                end
+            end,
+
+            handleMousepressed = function(self, mx, my)
+                for _, c in ipairs(containers) do
+                    if c:isInside(mx, my) then c:select()
+                    else                       c:unselect() end
                 end
             end,
         }
