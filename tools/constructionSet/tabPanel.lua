@@ -19,16 +19,17 @@ local calculateTabData = function(tabs, attrs)
 	return tabsWithMeta
 end
 
+local PANEL_HEIGHT = 300
+
 return {
 	create = function(self, params)
 		local FONT_SIZE      = 24
 		local FONT           = love.graphics.newFont(FONT_SIZE)
 		local GRAFX          = require("tools/lib/graphics"):create()
-		local BUFFERED_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 1190, 300)
+		local BUFFERED_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 1190, PANEL_HEIGHT)
 		local TAB_MARGIN     = params.TAB_MARGIN  or 20
 		local TAB_SPACING    = params.TAB_SPACING or 15
-		local PANEL_HEIGHT   = 300
-
+		
 		return {
 			TABS              = calculateTabData(params.TABS, { TAB_MARGIN = TAB_MARGIN, TAB_SPACING = TAB_SPACING, FONT = FONT }),
 			TAB_INDEX         = 1,
