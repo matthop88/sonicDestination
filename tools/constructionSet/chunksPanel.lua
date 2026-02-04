@@ -69,9 +69,9 @@ return {
 
         return {
             initChunkInfo = function(self)
-                local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks.lua"
-                local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-                CHUNKS                  = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
+                local CHUNKS_PATH   = "game/resources/zones/chunks/ghzChunks.lua"
+                local CHUNKS_IMG, _ = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+                CHUNKS              = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
             end,
 
             draw = function(self, graphics)
