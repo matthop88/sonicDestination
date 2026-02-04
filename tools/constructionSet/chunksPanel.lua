@@ -16,6 +16,8 @@ local CONTAINER = {
 
             draw = function(self, graphics)
                 if CHUNKS then CHUNKS:drawAt(graphics, self.x, self.y, self.chunkID, 0.5, 0.5) end
+                graphics:setColor(self:getOverlayColor())
+                graphics:rectangle("fill", self.x, self.y, self.w, self.h)
                 graphics:setColor(self:getOutlineColor())
                 graphics:setLineWidth(self:getOutlineWidth())
                 graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 2, self.h + 2)
@@ -33,6 +35,12 @@ local CONTAINER = {
                 if     self.isSelected then return COLOR.PURE_WHITE
                 elseif self.hasFocus   then return COLOR.LIGHT_YELLOW
                 else                        return COLOR.LIGHT_GREY end
+            end,
+
+            getOverlayColor = function(self)
+                if     self.isSelected then return { 0, 0, 0, 0   }
+                elseif self.hasFocus   then return { 1, 1, 0, 0.5 }
+                else                        return { 0, 0, 0, 0.5 } end
             end,
 
             getOutlineWidth = function(self)
