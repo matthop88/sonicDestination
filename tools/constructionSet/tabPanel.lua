@@ -65,6 +65,7 @@ return {
 				self:drawTabBackground(t, params)
 				self:drawTabOutline(t, params)
 			    self:drawTabLabel(t, params)
+			    if t.panel then self:drawTabPanel(t.panel) end
 			end,
 
 			drawTabBackground = function(self, t, params)
@@ -85,6 +86,10 @@ return {
 				love.graphics.setFont(FONT)
 				love.graphics.setColor(self:getLabelColor(params))
 			    love.graphics.printf(t.label, t.x + TAB_MARGIN, self:getTabsY(), 500, "left")
+			end,
+
+			drawTabPanel = function(self, panel)
+				panel:draw()
 			end,
 
 			update = function(self, dt)
