@@ -44,6 +44,14 @@ end
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
     :add("doubleClick")
+    :add("timedFunctions",
+    {
+        {   secondsWait = 1, 
+            callback = function() 
+                CHUNKS_PANEL:initChunkInfo()
+            end,
+        },
+    })    
     
 --        ...
 --        ...
