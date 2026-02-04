@@ -19,14 +19,14 @@ local calculateTabData = function(tabs, attrs)
 	return tabsWithMeta
 end
 
-local PANEL_HEIGHT = 300
+local PANE_HEIGHT = 300
 
 return {
 	create = function(self, params)
 		local FONT_SIZE      = 24
 		local FONT           = love.graphics.newFont(FONT_SIZE)
 		local GRAFX          = require("tools/lib/graphics"):create()
-		local BUFFERED_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 1190, PANEL_HEIGHT)
+		local BUFFERED_GRAFX = require("tools/lib/bufferedGraphics"):create(GRAFX, 1190, PANE_HEIGHT)
 		local TAB_MARGIN     = params.TAB_MARGIN  or 20
 		local TAB_SPACING    = params.TAB_SPACING or 15
 		
@@ -48,11 +48,11 @@ return {
 
 			drawTabFrame = function(self)
 				love.graphics.setColor(self:getBGColor({ isSelected = true }))
-				love.graphics.rectangle("fill", 5, self:getTabsBottom(), 1190, PANEL_HEIGHT)
+				love.graphics.rectangle("fill", 5, self:getTabsBottom(), 1190, PANE_HEIGHT)
 				love.graphics.setColor(COLOR.PURE_WHITE)
-			    love.graphics.line(  5,  self:getTabsBottom() + PANEL_HEIGHT,           1195, self:getTabsBottom() + PANEL_HEIGHT)
-			    love.graphics.line(1195, self:getTabsBottom() + PANEL_HEIGHT,           1195, self:getTabsBottom())
-			    love.graphics.line(  5,  self:getTabsBottom(),                             5, self:getTabsBottom() + PANEL_HEIGHT)
+			    love.graphics.line(  5,  self:getTabsBottom() + PANE_HEIGHT,           1195, self:getTabsBottom() + PANE_HEIGHT)
+			    love.graphics.line(1195, self:getTabsBottom() + PANE_HEIGHT,           1195, self:getTabsBottom())
+			    love.graphics.line(  5,  self:getTabsBottom(),                             5, self:getTabsBottom() + PANE_HEIGHT)
 			    love.graphics.line(  5,  self:getTabsBottom(),                self.TABS[1].x, self:getTabsBottom())
 			end,
 
@@ -70,7 +70,7 @@ return {
 				self:drawTabBackground(t, params)
 				self:drawTabOutline(t, params)
 			    self:drawTabLabel(t, params)
-			    if t.panel then self:drawTabPanel(t.panel) end
+			    if t.panel then self:drawPanel(t.panel) end
 			end,
 
 			drawTabBackground = function(self, t, params)
@@ -93,7 +93,7 @@ return {
 			    love.graphics.printf(t.label, t.x + TAB_MARGIN, self:getTabsY(), 500, "left")
 			end,
 
-			drawTabPanel = function(self, panel)
+			drawPanel = function(self, panel)
 				panel:draw(self.graphics)
 			end,
 
@@ -123,7 +123,7 @@ return {
 				end
 				if params.doubleClicked then
 					if self.TABS.opened then self.TABS.y:setDestination(760)
-					else                     self.TABS.y:setDestination(765 - PANEL_HEIGHT) end
+					else                     self.TABS.y:setDestination(765 - PANE_HEIGHT) end
 					self.TABS.opened = not self.TABS.opened
 				end
 			end,
