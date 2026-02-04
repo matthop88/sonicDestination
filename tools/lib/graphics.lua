@@ -54,6 +54,10 @@ return {
             
             ----------------------- Shape Drawing Functions --------------------
             
+            clear     = function(self, arg1, arg2, arg3, arg4)
+                love.graphics.clear(arg1, arg2, arg3, arg4)
+            end,
+            
             rectangle = function(self, mode, x, y, w, h)
                 love.graphics.setLineWidth(self.lineWidth * self.scale)
                 love.graphics.rectangle(mode, (x + self.x) * self.scale,
