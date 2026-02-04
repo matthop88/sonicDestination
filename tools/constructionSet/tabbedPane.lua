@@ -136,6 +136,15 @@ return {
 					if self.TABS.opened then self.TABS.y:setDestination(760)
 					else                     self.TABS.y:setDestination(765 - PANE_HEIGHT) end
 					self.TABS.opened = not self.TABS.opened
+				else 
+					self:handleMousepressedCurrentTab(mx, my - self:getTabsBottom()) 
+				end
+			end,
+
+			handleMousepressedCurrentTab = function(self, mx, my)
+				local currentTab = self.TABS[self.TAB_INDEX]
+				if currentTab.panel then
+					currentTab.panel:handleMousepressed(mx, my)
 				end
 			end,
 
