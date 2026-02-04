@@ -26,6 +26,12 @@ return {
                 graphics:setFontSize(fontSize)
             end,
 
+            clear = function(self, arg1, arg2, arg3, arg4)
+                love.graphics.setCanvas(self.buffer)
+                graphics:clear(arg1, arg2, arg3, arg4)
+                love.graphics.setCanvas()
+            end,
+
             rectangle = function(self, mode, x, y, w, h)
                 love.graphics.setCanvas(self.buffer)
                 graphics:rectangle(mode, x, y, w, h)
