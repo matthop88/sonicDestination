@@ -19,10 +19,10 @@ local calculateTabData = function(tabs, attrs)
 	return tabsWithMeta
 end
 
-local PANE_HEIGHT = 300
 
 return {
 	create = function(self, params)
+		local PANE_HEIGHT    = params.PANE_HEIGHT or 300
 		local FONT_SIZE      = 24
 		local FONT           = love.graphics.newFont(FONT_SIZE)
 		local GRAFX          = require("tools/lib/graphics"):create()
