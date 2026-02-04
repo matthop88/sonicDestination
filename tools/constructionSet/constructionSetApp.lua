@@ -4,7 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local CHUNKS_PANEL = require("tools/constructionSet/chunksPanel")
+local CHUNKS_PANEL = require("tools/constructionSet/chunksPanel"):create()
 
 local TAB_PANEL = require("tools/constructionSet/tabPanel"):create 
 { 
