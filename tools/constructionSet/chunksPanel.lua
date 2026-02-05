@@ -2,18 +2,30 @@ local COLOR = require("tools/lib/colors")
 
 local CHUNKS
 
--- TODO: Make a generic container, which can store an object.
 -- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
 
--- Also we need a generic palette.
--- We add objects to the palette. The palette ensconces them in containers.
--- When an element is selected, a callback (which can be registered) is notified, and it is passed the object.
--- This will be used for the mouse.
+local CHUNK = {
+    create = function(self, chunkID)
+        return {
+            chunkID = chunkID,
+
+            draw = function(self, graphics, x, y, w, h)
+                w = w or 256
+                h = h or 256
+
+                if CHUNKS then 
+                    graphics:setColor(COLOR.PURE_WHITE)
+                    CHUNKS:drawAt(graphics, x, y, self.chunkID, w / 256, h / 256) 
+                end
+            end,     
+        }
+    end,
+}
         
 local CONTAINER = {
-    create = function(self, chunkID, x, y, w, h)
+    create = function(self, object, x, y, w, h)
         return {
-            chunkID    = chunkID,
+            object     = object,
             x          = x,
             y          = y,
             w          = w,
@@ -23,7 +35,7 @@ local CONTAINER = {
             
 
             draw = function(self, graphics)
-                if CHUNKS then CHUNKS:drawAt(graphics, self.x, self.y, self.chunkID, 0.5, 0.5) end
+                object:draw(graphics, self.x, self.y, self.w, self.h)
                 graphics:setColor(self:getOverlayColor())
                 graphics:rectangle("fill", self.x, self.y, self.w, self.h)
                 graphics:setColor(self:getOutlineColor())
@@ -70,7 +82,7 @@ return {
         local chunkID = 2
         for y = 16, 290, 143 do
             for x = 31, 1080, 143 do
-                table.insert(containers, CONTAINER:create(chunkID, x, y, 128, 128))
+                table.insert(containers, CONTAINER:create(CHUNK:create(chunkID), x, y, 128, 128))
                 chunkID = chunkID + 1
             end
         end
@@ -105,3 +117,9 @@ return {
         }
     end,
 }
+
+-- Also we need a generic palette.
+-- We add objects to the palette. The palette ensconces them in containers.
+-- When an element is selected, a callback (which can be registered) is notified, and it is passed the object.
+-- This will be used for the mouse.
+
