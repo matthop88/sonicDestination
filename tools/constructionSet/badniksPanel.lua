@@ -31,7 +31,7 @@ return {
         local badnikList = {}
         table.insert(badnikList, BADNIK:create("motobug", "objects/motobug"))
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = badnikList }
+        local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = 96, CONTAINER_HEIGHT = 96 }
 
         return {
             draw               = function(self, graphics)   palette:draw(graphics)             end,
