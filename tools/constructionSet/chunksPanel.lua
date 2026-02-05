@@ -1,6 +1,14 @@
 local COLOR = require("tools/lib/colors")
 
 local CHUNKS
+
+-- TODO: Make a generic container, which can store an object.
+-- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
+
+-- Also we need a generic palette.
+-- We add objects to the palette. The palette ensconces them in containers.
+-- When an element is selected, a callback (which can be registered) is notified, and it is passed the object.
+-- This will be used for the mouse.
         
 local CONTAINER = {
     create = function(self, chunkID, x, y, w, h)
