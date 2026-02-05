@@ -62,6 +62,7 @@ return {
 		love.graphics.setColor(self:getBGColor({ isSelected = true }))
 		love.graphics.rectangle("fill", 5, self:getTabsBottom(), self.WIDTH - 10, self.PANE_HEIGHT)
 		love.graphics.setColor(COLOR.PURE_WHITE)
+		love.graphics.setLineWidth(1)
 	    love.graphics.line(             5,  self:getTabsBottom() + self.PANE_HEIGHT, self.WIDTH - 5, self:getTabsBottom() + self.PANE_HEIGHT)
 	    love.graphics.line(self.WIDTH - 5,  self:getTabsBottom() + self.PANE_HEIGHT, self.WIDTH - 5, self:getTabsBottom())
 	    love.graphics.line(             5,  self:getTabsBottom(),                                 5, self:getTabsBottom() + self.PANE_HEIGHT)
@@ -75,6 +76,7 @@ return {
 	    	x = t.x + t.w + self.TAB_SPACING
 	    end
 	    love.graphics.setColor(COLOR.PURE_WHITE)
+	    love.graphics.setLineWidth(1)
 	    love.graphics.line(x + 1, self:getTabsBottom(), 1195, self:getTabsBottom())
 	end,
 
