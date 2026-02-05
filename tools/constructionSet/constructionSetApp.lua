@@ -6,6 +6,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local CHUNKS_PANEL  = require("tools/constructionSet/chunksPanel"):create()
 local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create()
+local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create()
 
 
 --------------------------------------------------------------
@@ -43,7 +44,7 @@ PLUGINS = require("plugins/engine")
         TABS = { 
              { label = "Chunks",  panel = CHUNKS_PANEL,  },
              { label = "Badniks", panel = BADNIKS_PANEL, },
-             { label = "Items",   panel = nil, },
+             { label = "Items",   panel = ITEMS_PANEL, },
         }
     })
 
