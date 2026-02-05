@@ -31,7 +31,7 @@ PLUGINS = require("plugins/engine")
     :add("doubleClick")
     :add("timedFunctions",
     {
-        {   secondsWait = 1, 
+        {   secondsWait = 0.25, 
             callback = function() 
                 CHUNKS_PANEL:initChunkInfo()
             end,
