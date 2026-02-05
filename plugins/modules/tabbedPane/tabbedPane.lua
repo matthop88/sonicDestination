@@ -82,7 +82,7 @@ return {
 		self:drawTabBackground(t, params)
 		self:drawTabOutline(t, params)
 	    self:drawTabLabel(t, params)
-	    if t.panel then self:drawPanel(t.panel) end
+	    if t.panel and params.isSelected then self:drawPanel(t.panel) end
 	end,
 
 	drawTabBackground = function(self, t, params)
