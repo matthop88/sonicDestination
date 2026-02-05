@@ -5,6 +5,8 @@ return {
     create = function(self, params)
         local LEFTMOST = 31
         local TOPMOST  = 16
+        local CONTAINER_WIDTH  = params.CONTAINER_WIDTH  or 128
+        local CONTAINER_HEIGHT = params.CONTAINER_HEIGHT or 128
 
         local containers = {}
 
@@ -12,11 +14,11 @@ return {
             init = function(self, objects)
                 local x, y = LEFTMOST, TOPMOST
                 for _, obj in ipairs(objects) do
-                    table.insert(containers, CONTAINER:create(obj, x, y, 128, 128))
-                    x = x + 143
+                    table.insert(containers, CONTAINER:create(obj, x, y, CONTAINER_WIDTH, CONTAINER_HEIGHT))
+                    x = x + CONTAINER_WIDTH + 15
                     if x > 1080 then
                         x = LEFTMOST
-                        y = y + 143
+                        y = y + CONTAINER_HEIGHT + 15
                     end
                 end
 
