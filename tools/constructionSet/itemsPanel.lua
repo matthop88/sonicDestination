@@ -32,7 +32,7 @@ return {
         table.insert(itemList, ITEM:create("ring", "objects/ring"))
         table.insert(itemList, ITEM:create("giantRing", "objects/giantRing"))
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = itemList }
+        local palette   = require("tools/constructionSet/palette"):create { objects = itemList, CONTAINER_WIDTH = 64, CONTAINER_HEIGHT = 64 }
 
         return {
             draw               = function(self, graphics)   palette:draw(graphics)             end,
