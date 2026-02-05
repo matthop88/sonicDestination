@@ -1,7 +1,4 @@
-local COLOR     = require("tools/lib/colors")
-
-local CONTAINER = require("tools/constructionSet/container")
-
+local COLOR = require("tools/lib/colors")
 local CHUNKS
 
 -- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
@@ -24,19 +21,12 @@ local CHUNK = {
     end,
 }
         
-
 return {
     create = function(self)
-        
-        local containers = {}
+        local chunkList = {}
+        for id = 2, 17 do table.insert(chunkList, CHUNK:create(id)) end
 
-        local chunkID = 2
-        for y = 16, 290, 143 do
-            for x = 31, 1080, 143 do
-                table.insert(containers, CONTAINER:create(CHUNK:create(chunkID), x, y, 128, 128))
-                chunkID = chunkID + 1
-            end
-        end
+        local palette   = require("tools/constructionSet/palette"):create { objects = chunkList }
 
         return {
             initChunkInfo = function(self)
@@ -45,31 +35,14 @@ return {
                 CHUNKS              = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
             end,
 
-            draw = function(self, graphics)
-                graphics:clear(COLOR.DARK_GREY)
-                for _, c in ipairs(containers) do
-                    c:draw(graphics)
-                end
-            end,
-
-            update = function(self, dt, mx, my)
-                for _, c in ipairs(containers) do
-                    if c:isInside(mx, my) then c:gainFocus()
-                    else                       c:loseFocus() end
-                end
-            end,
-
-            handleMousepressed = function(self, mx, my)
-                for _, c in ipairs(containers) do
-                    if c:isInside(mx, my) then c:select()
-                    else                       c:unselect() end
-                end
-            end,
+            draw               = function(self, graphics)   palette:draw(graphics)             end,
+            update             = function(self, dt, mx, my) palette:update(dt, mx, my)         end,
+            handleMousepressed = function(self, mx, my)     palette:handleMousepressed(mx, my) end,
+        
         }
     end,
 }
 
--- Also we need a generic palette.
 -- We add objects to the palette. The palette ensconces them in containers.
 -- When an element is selected, a callback (which can be registered) is notified, and it is passed the object.
 -- This will be used for the mouse.
