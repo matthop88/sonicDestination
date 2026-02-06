@@ -45,7 +45,7 @@ local CHUNK_TEMPLATE = {
             loseFocus = function(self) self.hasFocus = false   end, 
 
             select    = function(self) self.isSelected = true  end,
-            unselect  = function(self) self.isSelected = false end,
+            deselect  = function(self) self.isSelected = false end,
 
             newObject = function(self)
                 return CHUNK:create(self.chunkID)
@@ -57,12 +57,12 @@ local CHUNK_TEMPLATE = {
 
         
 return {
-    create = function(self)
+    create = function(self, stickyMouse)
         local chunkList = {}
         for id = 2, 17 do table.insert(chunkList, CHUNK_TEMPLATE:create(id)) end
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = chunkList }
-
+        local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, STICKY_MOUSE = stickyMouse }
+        
         return {
             initChunkInfo = function(self)
                 local CHUNKS_PATH   = "game/resources/zones/chunks/ghzChunks.lua"
