@@ -59,7 +59,7 @@ local BADNIK_TEMPLATE = {
             loseFocus = function(self) self.hasFocus = false   end, 
 
             select    = function(self) self.isSelected = true  end,
-            unselect  = function(self) self.isSelected = false end,
+            deselect  = function(self) self.isSelected = false end,
    
             newObject = function(self) return BADNIK:create(self.name, self.spritePath) end,
         }
@@ -67,12 +67,12 @@ local BADNIK_TEMPLATE = {
 }
         
 return {
-    create = function(self)
+    create = function(self, stickyMouse)
         local badnikList = {}
         local WIDTH, HEIGHT = 96, 96
         table.insert(badnikList, BADNIK_TEMPLATE:create("motobug", "objects/motobug", WIDTH, HEIGHT))
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT }
+        local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
 
         return {
             draw               = function(self, graphics)   palette:draw(graphics)             end,
