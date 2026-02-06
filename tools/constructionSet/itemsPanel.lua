@@ -11,20 +11,17 @@ local ITEM = {
             hasFocus   = false,
             isSelected = false,
             
-            draw = function(self, graphics, x, y, w, h)
+            drawInContainer = function(self, graphics, x, y, w, h)
                 local scale = 1
-                local offX, offY = 0, 0
                 if w and h then 
                     scale = 8 / math.sqrt(math.max(self.sprite:getW(), self.sprite:getH()))
-                    offX = w / 2
-                    offY = h / 2
                 end
                 
                 graphics:setColor(COLOR.PURE_WHITE)
                 if self.hasFocus or self.isSelected then
-                    self.sprite:drawAt(graphics, x + offX, y + offY, scale, scale)
+                    self.sprite:drawAt(graphics, x, y, scale, scale)
                 else
-                    self.sprite:drawThumbnail(graphics, x + offX, y + offY, scale, scale)
+                    self.sprite:drawThumbnail(graphics, x, y, scale, scale)
                 end
                 
             end,  
