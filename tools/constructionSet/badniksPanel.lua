@@ -6,9 +6,10 @@ local BADNIKS
 local BADNIK = {
     create = function(self, name, spritePath)
         return {
-            name     = name,
-            sprite   = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0),
-            hasFocus = false,
+            name       = name,
+            sprite     = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0),
+            hasFocus   = false,
+            isSelected = false,
             
             draw = function(self, graphics, x, y, w, h)
                 local scale = 1
@@ -25,13 +26,16 @@ local BADNIK = {
             end,  
 
             updateInContainer = function(self, dt)
-                if self.hasFocus then
+                if self.hasFocus or self.isSelected then
                     self.sprite:update(dt)
                 end
             end,
 
             gainFocus = function(self) self.hasFocus = true    end,
             loseFocus = function(self) self.hasFocus = false   end, 
+
+            select    = function(self) self.isSelected = true  end,
+            unselect  = function(self) self.isSelected = false end,
    
         }
     end,
