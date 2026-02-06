@@ -29,7 +29,7 @@ local CHUNK_TEMPLATE = {
         return {
             hasFocus   = false,
             isSelected = false,
-            chunkID    = chunkID
+            chunkID    = chunkID,
 
             drawInContainer = function(self, graphics, x, y, w, h)
                 x, y = x - (w / 2), y - (h / 2)
