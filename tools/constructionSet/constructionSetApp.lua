@@ -4,10 +4,12 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local CHUNKS_PANEL  = require("tools/constructionSet/chunksPanel"):create()
-local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create()
-local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create()
+local STICKY_MOUSE  = require("tools/constructionSet/stickyMouse"):create()
+local CHUNKS_PANEL  = require("tools/constructionSet/chunksPanel"):create(STICKY_MOUSE)
+local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create(STICKY_MOUSE)
+local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
 
+local graphics      = require("tools/lib/graphics"):create()
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -20,7 +22,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
+function love.draw()
+    STICKY_MOUSE:draw(graphics, love.mouse.getPosition())
+end
+
 -- ...
 -- ...
 
