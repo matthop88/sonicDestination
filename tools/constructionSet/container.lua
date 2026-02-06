@@ -47,9 +47,9 @@ return {
                 if self.object.select then self.object:select() end
             end,
 
-            unselect = function(self) 
+            deselect = function(self) 
                 self.isSelected = false 
-                if self.object.unselect then self.object:unselect() end
+                if self.object.deselect then self.object:deselect() end
             end,
 
             getOutlineColor = function(self)
@@ -68,7 +68,9 @@ return {
                 else                                     return 1 end
             end,
 
-            
+            newObject = function(self)
+                return self.object:newObject()
+            end,
         }
     end,
 }
