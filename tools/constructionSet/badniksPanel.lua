@@ -4,37 +4,39 @@ local BADNIKS
 -- A BADNIK is an object. It contains a sprite, and can draw itself into a space of optionally specified dimensions.
 
 local BADNIK = {
-    create = function(self, name, spritePath)
-        return {
-            name       = name,
-            sprite     = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0),
-            
+    create = function(self, name, spritePath, containerWidth, containerHeight)
+        return ({
+            init = function(self, name, spritePath, containerWidth, containerHeight)
+                self.name   = name
+                self.sprite = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0)
+                self.scale  = 1
+                if containerWidth and containerHeight then
+                    self.scale = math.min((containerWidth / self.sprite:getW()), (containerHeight / self.sprite:getH())) * 0.9
+                end
+
+                return self
+            end,
+
             draw = function(self, graphics, x, y, w, h)
-                local scale = 1
-                if w and h then scale = math.min((w / self.sprite:getW()), (h / self.sprite:getH())) * 0.9 end
-                
                 graphics:setColor(COLOR.PURE_WHITE)
-                self.sprite:drawAt(graphics, x, y, scale, scale)
+                self.sprite:drawAt(graphics, x, y, self.scale, self.scale)
             end,
 
             drawThumbnail = function(self, graphics, x, y, w, h)
-                local scale = 1
-                if w and h then scale = math.min((w / self.sprite:getW()), (h / self.sprite:getH())) * 0.9 end
-                
                 graphics:setColor(COLOR.PURE_WHITE)
-                self.sprite:drawThumbnail(graphics, x, y, scale, scale)
+                self.sprite:drawThumbnail(graphics, x, y, self.scale, self.scale)
             end,  
 
             update = function(self, dt)
                 self.sprite:update(dt)
             end,
-        }
+        }):init(name, spritePath, containerWidth, containerHeight)
     end,
 }
 
 local BADNIK_TEMPLATE = {
-    create = function(self, name, spritePath)
-        local coreBadnik = BADNIK:create(name, spritePath)
+    create = function(self, name, spritePath, containerWidth, containerHeight)
+        local coreBadnik = BADNIK:create(name, spritePath, containerWidth, containerHeight)
         
         return {
             name       = name,
@@ -67,9 +69,10 @@ local BADNIK_TEMPLATE = {
 return {
     create = function(self)
         local badnikList = {}
-        table.insert(badnikList, BADNIK_TEMPLATE:create("motobug", "objects/motobug"))
+        local WIDTH, HEIGHT = 96, 96
+        table.insert(badnikList, BADNIK_TEMPLATE:create("motobug", "objects/motobug", WIDTH, HEIGHT))
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = 96, CONTAINER_HEIGHT = 96 }
+        local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT }
 
         return {
             draw               = function(self, graphics)   palette:draw(graphics)             end,
