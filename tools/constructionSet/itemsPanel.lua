@@ -8,6 +8,8 @@ local ITEM = {
         return {
             name   = name,
             sprite = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0),
+            hasFocus   = false,
+            isSelected = false,
             
             draw = function(self, graphics, x, y, w, h)
                 local scale = 1
@@ -19,9 +21,26 @@ local ITEM = {
                 end
                 
                 graphics:setColor(COLOR.PURE_WHITE)
-                self.sprite:drawThumbnail(graphics, x + offX, y + offY, scale, scale)
+                if self.hasFocus or self.isSelected then
+                    self.sprite:drawAt(graphics, x + offX, y + offY, scale, scale)
+                else
+                    self.sprite:drawThumbnail(graphics, x + offX, y + offY, scale, scale)
+                end
                 
-            end,     
+            end,  
+
+            updateInContainer = function(self, dt)
+                if self.hasFocus or self.isSelected then
+                    self.sprite:update(dt)
+                end
+            end,
+
+            gainFocus = function(self) self.hasFocus = true    end,
+            loseFocus = function(self) self.hasFocus = false   end, 
+
+            select    = function(self) self.isSelected = true  end,
+            unselect  = function(self) self.isSelected = false end,
+      
         }
     end,
 }
