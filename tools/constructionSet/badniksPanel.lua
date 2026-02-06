@@ -8,27 +8,48 @@ local BADNIK = {
         return {
             name       = name,
             sprite     = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0),
+            
+            draw = function(self, graphics, x, y, w, h)
+                local scale = 1
+                if w and h then scale = math.min((w / self.sprite:getW()), (h / self.sprite:getH())) * 0.9 end
+                
+                graphics:setColor(COLOR.PURE_WHITE)
+                self.sprite:drawAt(graphics, x, y, scale, scale)
+            end,
+
+            drawThumbnail = function(self, graphics, x, y, w, h)
+                local scale = 1
+                if w and h then scale = math.min((w / self.sprite:getW()), (h / self.sprite:getH())) * 0.9 end
+                
+                graphics:setColor(COLOR.PURE_WHITE)
+                self.sprite:drawThumbnail(graphics, x, y, scale, scale)
+            end,  
+
+            update = function(self, dt)
+                self.sprite:update(dt)
+            end,
+        }
+    end,
+}
+
+local BADNIK_TEMPLATE = {
+    create = function(self, name, spritePath)
+        local coreBadnik = BADNIK:create(name, spritePath)
+        
+        return {
+            name       = name,
+            spritePath = spritePath,
             hasFocus   = false,
             isSelected = false,
             
             drawInContainer = function(self, graphics, x, y, w, h)
-                local scale = 1
-                if w and h then 
-                    scale = math.min((w / self.sprite:getW()), (h / self.sprite:getH())) * 0.9
-                end
-                
-                graphics:setColor(COLOR.PURE_WHITE)
-                if self.hasFocus or self.isSelected then
-                    self.sprite:drawAt(graphics, x, y, scale, scale)
-                else
-                    self.sprite:drawThumbnail(graphics, x, y, scale, scale)
-                end
-                
+                if self.isSelected or self.hasFocus then coreBadnik:draw(graphics, x, y, w, h)
+                else                                     coreBadnik:drawThumbnail(graphics, x, y, w, h) end
             end,  
 
             updateInContainer = function(self, dt)
                 if self.hasFocus or self.isSelected then
-                    self.sprite:update(dt)
+                    coreBadnik:update(dt)
                 end
             end,
 
@@ -38,6 +59,7 @@ local BADNIK = {
             select    = function(self) self.isSelected = true  end,
             unselect  = function(self) self.isSelected = false end,
    
+            newObject = function(self) return BADNIK:create(self.name, self.spritePath) end,
         }
     end,
 }
@@ -45,7 +67,7 @@ local BADNIK = {
 return {
     create = function(self)
         local badnikList = {}
-        table.insert(badnikList, BADNIK:create("motobug", "objects/motobug"))
+        table.insert(badnikList, BADNIK_TEMPLATE:create("motobug", "objects/motobug"))
 
         local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = 96, CONTAINER_HEIGHT = 96 }
 
