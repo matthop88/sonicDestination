@@ -24,6 +24,11 @@ return {
                 graphics:setLineWidth(1)
             end,
 
+            update = function(self, dt)
+                if     object.updateInContainer then object:updateInContainer(dt)
+                elseif object.update            then object:update(dt)        end
+            end,
+
             isInside = function(self, x, y)
                 return x >= self.x and x <= self.x + self.w and y >= self.y and y <= self.y + self.h
             end,
