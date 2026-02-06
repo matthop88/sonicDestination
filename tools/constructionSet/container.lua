@@ -26,8 +26,15 @@ return {
                 return x >= self.x and x <= self.x + self.w and y >= self.y and y <= self.y + self.h
             end,
 
-            gainFocus = function(self) self.hasFocus = true  end,
-            loseFocus = function(self) self.hasFocus = false end,
+            gainFocus = function(self) 
+                self.hasFocus = true 
+                if self.object.gainFocus then self.object:gainFocus() end 
+            end,
+
+            loseFocus = function(self) 
+                self.hasFocus = false 
+                if self.object.loseFocus then self.object:loseFocus() end
+            end,
 
             getOutlineColor = function(self)
                 if     self.isSelected then return COLOR.PURE_WHITE
@@ -37,7 +44,6 @@ return {
 
             getOverlayColor = function(self)
                 if     self.isSelected then return { 0, 0, 0, 0   }
-                elseif self.hasFocus   then return { 1, 1, 0, 0.5 }
                 else                        return { 0, 0, 0, 0.5 } end
             end,
 
