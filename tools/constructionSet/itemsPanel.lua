@@ -13,7 +13,7 @@ local ITEM = {
                 local scale = 1
                 local offX, offY = 0, 0
                 if w and h then 
-                    scale = math.min((w / self.sprite:getW()), (h / self.sprite:getH())) * 0.9
+                    scale = 8 / math.sqrt(math.max(self.sprite:getW(), self.sprite:getH()))
                     offX = w / 2
                     offY = h / 2
                 end
