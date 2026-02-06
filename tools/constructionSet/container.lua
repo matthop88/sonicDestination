@@ -38,6 +38,16 @@ return {
                 if self.object.loseFocus then self.object:loseFocus() end
             end,
 
+            select   = function(self) 
+                self.isSelected = true  
+                if self.object.select then self.object:select() end
+            end,
+
+            unselect = function(self) 
+                self.isSelected = false 
+                if self.object.unselect then self.object:unselect() end
+            end,
+
             getOutlineColor = function(self)
                 if     self.isSelected then return COLOR.PURE_WHITE
                 elseif self.hasFocus   then return COLOR.LIGHT_YELLOW
@@ -45,8 +55,8 @@ return {
             end,
 
             getOverlayColor = function(self)
-                if     self.isSelected then return { 0, 0, 0, 0   }
-                else                        return { 0, 0, 0, 0.5 } end
+                if not self.hasFocus and not self.isSelected then return { 0, 0, 0, 0.5 }
+                else                                              return { 0, 0, 0, 0   } end
             end,
 
             getOutlineWidth = function(self)
@@ -54,8 +64,7 @@ return {
                 else                                     return 1 end
             end,
 
-            select   = function(self) self.isSelected = true  end,
-            unselect = function(self) self.isSelected = false end,
+            
         }
     end,
 }
