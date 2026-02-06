@@ -36,6 +36,7 @@ return {
                 for _, c in ipairs(containers) do
                     if c:isInside(mx, my) then c:gainFocus()
                     else                       c:loseFocus() end
+                    c:update(dt)
                 end
             end,
 
