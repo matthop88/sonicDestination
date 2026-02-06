@@ -13,7 +13,9 @@ return {
             
 
             draw = function(self, graphics)
-                object:draw(graphics, self.x, self.y, self.w, self.h)
+                if object.drawInContainer then object:drawInContainer(graphics, self.x, self.y, self.w, self.h)
+                else                           object:draw(graphics, self.x, self.y, self.w, self.h)        end
+                
                 graphics:setColor(self:getOverlayColor())
                 graphics:rectangle("fill", self.x, self.y, self.w, self.h)
                 graphics:setColor(self:getOutlineColor())
