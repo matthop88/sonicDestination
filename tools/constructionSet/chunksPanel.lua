@@ -6,8 +6,9 @@ local CHUNKS
 local CHUNK = {
     create = function(self, chunkID)
         return {
-            chunkID  = chunkID,
-            hasFocus = false,
+            chunkID    = chunkID,
+            hasFocus   = false,
+            isSelected = false,
 
             drawInContainer = function(self, graphics, x, y, w, h)
                 if CHUNKS then 
@@ -15,8 +16,8 @@ local CHUNK = {
                     CHUNKS:drawAt(graphics, x, y, self.chunkID, w / 256, h / 256) 
                 end
 
-                if self.hasFocus then
-                    graphics:setColor(1, 1, 0, 0.3)
+                if self.hasFocus and not self.isSelected then
+                    graphics:setColor(1, 1, 0, 0.5)
                     graphics:rectangle("fill", x, y, w, h)
                 end
             end,  
@@ -28,8 +29,11 @@ local CHUNK = {
                 end
             end,
 
-            gainFocus = function(self) self.hasFocus = true  end,
-            loseFocus = function(self) self.hasFocus = false end, 
+            gainFocus = function(self) self.hasFocus = true    end,
+            loseFocus = function(self) self.hasFocus = false   end, 
+
+            select    = function(self) self.isSelected = true  end,
+            unselect  = function(self) self.isSelected = false end,
         }
     end,
 }
