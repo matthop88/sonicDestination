@@ -9,20 +9,24 @@ local CHUNK = {
             chunkID  = chunkID,
             hasFocus = false,
 
-            draw = function(self, graphics, x, y, w, h)
-                w = w or 256
-                h = h or 256
-
+            drawInContainer = function(self, graphics, x, y, w, h)
                 if CHUNKS then 
                     graphics:setColor(COLOR.PURE_WHITE)
                     CHUNKS:drawAt(graphics, x, y, self.chunkID, w / 256, h / 256) 
                 end
 
                 if self.hasFocus then
-                    graphics:setColor(1, 1, 0, 0.5)
+                    graphics:setColor(1, 1, 0, 0.3)
                     graphics:rectangle("fill", x, y, w, h)
                 end
             end,  
+
+            draw = function(self, graphics, x, y)
+                if CHUNKS then
+                    graphics:setColor(COLOR.PURE_WHITE)
+                    CHUNKS:drawAt(graphics, x, y, self.chunkID, 1, 1)
+                end
+            end,
 
             gainFocus = function(self) self.hasFocus = true  end,
             loseFocus = function(self) self.hasFocus = false end, 
