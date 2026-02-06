@@ -6,7 +6,8 @@ local CHUNKS
 local CHUNK = {
     create = function(self, chunkID)
         return {
-            chunkID = chunkID,
+            chunkID  = chunkID,
+            hasFocus = false,
 
             draw = function(self, graphics, x, y, w, h)
                 w = w or 256
@@ -16,7 +17,15 @@ local CHUNK = {
                     graphics:setColor(COLOR.PURE_WHITE)
                     CHUNKS:drawAt(graphics, x, y, self.chunkID, w / 256, h / 256) 
                 end
-            end,     
+
+                if self.hasFocus then
+                    graphics:setColor(1, 1, 0, 0.5)
+                    graphics:rectangle("fill", x, y, w, h)
+                end
+            end,  
+
+            gainFocus = function(self) self.hasFocus = true  end,
+            loseFocus = function(self) self.hasFocus = false end, 
         }
     end,
 }
