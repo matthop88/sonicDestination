@@ -21,7 +21,11 @@ local BADNIK = {
                 end
                 
                 graphics:setColor(COLOR.PURE_WHITE)
-                self.sprite:drawAt(graphics, x + offX, y + offY, scale, scale)
+                if self.hasFocus or self.isSelected then
+                    self.sprite:drawAt(graphics, x + offX, y + offY, scale, scale)
+                else
+                    self.sprite:drawThumbnail(graphics, x + offX, y + offY, scale, scale)
+                end
                 
             end,  
 
