@@ -8,14 +8,14 @@ return {
             y          = y,
             w          = w,
             h          = h,
+            cx         = x + (w / 2),
+            cy         = y + (h / 2),
             hasFocus   = false,
             isSelected = false,
             
 
             draw = function(self, graphics)
-                if object.drawInContainer then object:drawInContainer(graphics, self.x, self.y, self.w, self.h)
-                else                           object:draw(graphics, self.x, self.y, self.w, self.h)        end
-                
+                if object.drawInContainer then object:drawInContainer(graphics, self.cx, self.cy, self.w, self.h) end
                 graphics:setColor(self:getOverlayColor())
                 graphics:rectangle("fill", self.x, self.y, self.w, self.h)
                 graphics:setColor(self:getOutlineColor())
@@ -25,8 +25,7 @@ return {
             end,
 
             update = function(self, dt)
-                if     object.updateInContainer then object:updateInContainer(dt)
-                elseif object.update            then object:update(dt)        end
+                if     object.updateInContainer then object:updateInContainer(dt) end
             end,
 
             isInside = function(self, x, y)
