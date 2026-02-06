@@ -13,12 +13,12 @@ local CHUNK = {
             drawInContainer = function(self, graphics, x, y, w, h)
                 if CHUNKS then 
                     graphics:setColor(COLOR.PURE_WHITE)
-                    CHUNKS:drawAt(graphics, x, y, self.chunkID, w / 256, h / 256) 
+                    CHUNKS:drawAt(graphics, x - (w / 2), y - (h / 2), self.chunkID, w / 256, h / 256) 
                 end
 
                 if self.hasFocus and not self.isSelected then
                     graphics:setColor(1, 1, 0, 0.5)
-                    graphics:rectangle("fill", x, y, w, h)
+                    graphics:rectangle("fill", x - (w / 2), y - (h / 2), w, h)
                 end
             end,  
 
