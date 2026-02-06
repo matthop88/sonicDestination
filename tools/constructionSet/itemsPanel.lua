@@ -59,7 +59,7 @@ local ITEM_TEMPLATE = {
             loseFocus = function(self) self.hasFocus = false   end, 
 
             select    = function(self) self.isSelected = true  end,
-            unselect  = function(self) self.isSelected = false end,
+            deselect  = function(self) self.isSelected = false end,
       
             newObject = function(self) return ITEM:create(self.name, self.spritePath) end,
         }
@@ -67,15 +67,15 @@ local ITEM_TEMPLATE = {
 }
         
 return {
-    create = function(self)
+    create = function(self, stickyMouse)
         local itemList = {}
         local WIDTH, HEIGHT = 64, 64
 
         table.insert(itemList, ITEM_TEMPLATE:create("ring", "objects/ring", WIDTH, HEIGHT))
         table.insert(itemList, ITEM_TEMPLATE:create("giantRing", "objects/giantRing", WIDTH, HEIGHT))
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = itemList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT }
-
+        local palette   = require("tools/constructionSet/palette"):create { objects = itemList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
+        
         return {
             draw               = function(self, graphics)   palette:draw(graphics)             end,
             update             = function(self, dt, mx, my) palette:update(dt, mx, my)         end,
