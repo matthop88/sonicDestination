@@ -78,6 +78,10 @@ return {
 				self.currentAnimation:drawThumbnail(GRAFX, x, y, sX, sY, self.xScale)
 			end,
 
+			drawAt = function(self, GRAFX, x, y, sX, sY)
+				self.currentAnimation:drawAt(GRAFX, x, y, sX, sY, self.xScale)
+			end,
+
 			isInside = function(self, px, py)
 				return px >= self.x - self.currentAnimation:offsetX() 
 				   and px <= self.x - self.currentAnimation:offsetX() + self.currentAnimation:width()
