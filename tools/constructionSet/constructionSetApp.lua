@@ -22,12 +22,17 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
-function love.draw()
+-- ...
+-- ...
+-- ...
+
+--------------------------------------------------------------
+--                  Specialized Functions                   --
+--------------------------------------------------------------
+
+function drawMouse()
     STICKY_MOUSE:draw(graphics, love.mouse.getPosition())
 end
-
--- ...
--- ...
 
 --------------------------------------------------------------
 --                          Plugins                         --
@@ -52,6 +57,7 @@ PLUGINS = require("plugins/engine")
              { label = "Items",   panel = ITEMS_PANEL, },
         }
     })
+    :add("drawingLayer", { drawingFn = drawMouse })
 
     
 --        ...
