@@ -29,6 +29,10 @@ return {
 			update = function(self, dt)
 				if self.object and self.object.update then self.object:update(dt) end
 			end,
+
+			handleKeypressed = function(self, key)
+				if key == "x" and self.object and self.object.flipX then self.object:flipX() end
+			end,
 		}
 	end,
 
