@@ -25,9 +25,9 @@ local BADNIK = {
                 self.sprite:drawThumbnail(graphics, x, y, self.scale, self.scale)
             end,  
 
-            update = function(self, dt)
-                self.sprite:update(dt)
-            end,
+            update = function(self, dt) self.sprite:update(dt) end,
+            flipX  = function(self)     self.sprite:flipX()    end,
+            
         }):init(name, spritePath, containerWidth, containerHeight)
     end,
 }
