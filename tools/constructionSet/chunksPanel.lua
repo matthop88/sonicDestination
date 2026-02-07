@@ -4,27 +4,33 @@ local CHUNKS
 -- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
 
 local CHUNK = {
-    create = function(self, chunkID)
-        return {
-            chunkID    = chunkID,
-            
+    create = function(self, chunkID, containerWidth, containerHeight)
+        return ({
+            init = function(self, chunkID, containerWidth, containerHeight)
+                self.chunkID = chunkID
+                self.scale   = 1
+                if containerWidth and containerHeight then
+                    self.scale = math.min(containerWidth / 256, containerHeight / 256)
+                end
+
+                return self
+            end,
+
             draw = function(self, graphics, x, y, w, h)
                 if CHUNKS then
                     graphics:setColor(COLOR.PURE_WHITE)
-                    local sX, sY = 1, 1
-                    if w and h then sX, sY = w / 256, h / 256 end
-                    CHUNKS:drawAt(graphics, x, y, self.chunkID, sX, sY) 
+                    CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale, self.scale) 
                 end
-            end,  
-        }
+            end, 
+        }):init(chunkID, containerWidth, containerHeight)
     end,
 }
 
 -- A CHUNK_TEMPLATE is what solely resides in the container. It is capable of creating chunk objects, which can be placed on the map.
 
 local CHUNK_TEMPLATE = {
-    create = function(self, chunkID)
-        local coreChunk = CHUNK:create(chunkID)
+    create = function(self, chunkID, containerWidth, containerHeight)
+        local coreChunk = CHUNK:create(chunkID, containerWidth, containerHeight)
 
         return {
             hasFocus   = false,
@@ -59,9 +65,10 @@ local CHUNK_TEMPLATE = {
 return {
     create = function(self, stickyMouse)
         local chunkList = {}
-        for id = 2, 17 do table.insert(chunkList, CHUNK_TEMPLATE:create(id)) end
+        local WIDTH, HEIGHT = 128, 128
+        for id = 2, 17 do table.insert(chunkList, CHUNK_TEMPLATE:create(id, WIDTH, HEIGHT)) end
 
-        local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, STICKY_MOUSE = stickyMouse }
+        local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
         
         return {
             initChunkInfo = function(self)
