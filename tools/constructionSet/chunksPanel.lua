@@ -1,5 +1,5 @@
 local COLOR = require("tools/lib/colors")
-local CHUNKS
+local CHUNKS, SOLIDS
 
 -- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
 
@@ -27,15 +27,21 @@ local CHUNK = {
                         graphics:setLineWidth(3)
                         graphics:line(x - 32, y,      x + 32, y)
                         graphics:line(x,      y - 32, x,      y + 32)
+                        if self.showSolids then 
+                            if self.xFlip == 1 then SOLIDS:drawAt(graphics, x - 128, y - 128, self.chunkID) 
+                            else                    SOLIDS:xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
+                        end
                     else
                         CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale) 
                     end
                 end
             end, 
 
-            hold    = function(self) self.isHeld = true           end,
-            release = function(self) self.isHeld = false          end,
-            flipX   = function(self) self.xFlip  = 0 - self.xFlip end,
+            hold         = function(self) self.isHeld = true                    end,
+            release      = function(self) self.isHeld = false                   end,
+            flipX        = function(self) self.xFlip  = 0 - self.xFlip          end,
+            toggleSolids = function(self) self.showSolids = not self.showSolids end,
+
         }):init(chunkID, containerWidth, containerHeight)
     end,
 }
@@ -86,9 +92,10 @@ return {
         
         return {
             initChunkInfo = function(self)
-                local CHUNKS_PATH   = "game/resources/zones/chunks/ghzChunks.lua"
-                local CHUNKS_IMG, _ = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-                CHUNKS              = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
+                local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks.lua"
+                local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+                CHUNKS                        = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
+                SOLIDS                        = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
             end,
 
             draw               = function(self, graphics)   palette:draw(graphics)             end,
