@@ -25,6 +25,10 @@ return {
 					love.mouse.setVisible(true)
 				end
 			end,
+
+			update = function(self, dt)
+				if self.object and self.object.update then self.object:update(dt) end
+			end,
 		}
 	end,
 
