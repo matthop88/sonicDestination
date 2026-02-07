@@ -20,7 +20,6 @@ local CHUNK = {
 
             draw = function(self, graphics, x, y, w, h)
                 if CHUNKS then
-                    graphics:setColor(COLOR.PURE_WHITE)
                     if self.isHeld then
                         CHUNKS:drawAt(graphics, x - 128, y - 128, self.chunkID, self.scale, self.scale)
                     else
@@ -48,6 +47,7 @@ local CHUNK_TEMPLATE = {
 
             drawInContainer = function(self, graphics, x, y, w, h)
                 x, y = x - (w / 2), y - (h / 2)
+                graphics:setColor(COLOR.PURE_WHITE)
                 coreChunk:draw(graphics, x, y, w, h)
 
                 if self.hasFocus and not self.isSelected then
