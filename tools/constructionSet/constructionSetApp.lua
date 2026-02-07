@@ -10,7 +10,7 @@ local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create(STICK
 local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
 
 local graphics      = require("tools/lib/graphics"):create()
-graphics:setScale(3)
+local SCALE         = 3
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -18,6 +18,7 @@ graphics:setScale(3)
 
 love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+graphics:setScale(SCALE)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -39,7 +40,7 @@ end
 
 function drawMouse()
     local mx, my = love.mouse.getPosition()
-    STICKY_MOUSE:draw(graphics, mx / 3, my / 3)
+    STICKY_MOUSE:draw(graphics, mx / SCALE, my / SCALE)
 end
 
 --------------------------------------------------------------
