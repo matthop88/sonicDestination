@@ -31,7 +31,8 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if key == "x" and self.object and self.object.flipX then self.object:flipX() end
+				if     key == "x" and self.object and self.object.flipX        then self.object:flipX() 
+				elseif key == "s" and self.object and self.object.toggleSolids then self.object:toggleSolids() end
 			end,
 		}
 	end,
