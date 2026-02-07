@@ -9,6 +9,7 @@ return {
         local CONTAINER_HEIGHT = params.CONTAINER_HEIGHT or 128
 
         local containers = {}
+        local STICKY_MOUSE = params.STICKY_MOUSE
 
         return ({
             init = function(self, objects)
@@ -42,8 +43,13 @@ return {
 
             handleMousepressed = function(self, mx, my)
                 for _, c in ipairs(containers) do
-                    if c:isInside(mx, my) then c:select()
-                    else                       c:unselect() end
+                    if c:isInside(mx, my) then 
+                        c:select()
+                        STICKY_MOUSE:onSelect(c)
+                    else                       
+                        c:deselect() 
+                        STICKY_MOUSE:onDeselect(c)
+                    end
                 end
             end,
         }):init(params.objects)
