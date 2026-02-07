@@ -5,6 +5,7 @@ return {
 				if self.selected ~= container then
 					self.selected = container
 					self.object   = container:newObject()
+					if self.object.hold then self.object:hold() end
 				end
 			end,
 
