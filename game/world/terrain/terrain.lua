@@ -43,6 +43,7 @@ return {
 	end,
 
 	drawTerrain = function(self)
+        self.graphics:setColor(1, 1, 1)
         for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkID in ipairs(row) do
                 CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
