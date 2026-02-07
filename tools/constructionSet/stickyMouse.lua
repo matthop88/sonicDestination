@@ -19,6 +19,7 @@ return {
 			draw = function(self, graphics, mx, my)
 				if self.object then
 					love.mouse.setVisible(false)
+					graphics:setColor(1, 1, 1, 0.7)
 					self.object:draw(graphics, mx, my)
 				else
 					love.mouse.setVisible(true)
