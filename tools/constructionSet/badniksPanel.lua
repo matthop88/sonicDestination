@@ -18,12 +18,10 @@ local BADNIK = {
             end,
 
             draw = function(self, graphics, x, y, w, h)
-                graphics:setColor(COLOR.PURE_WHITE)
                 self.sprite:drawAt(graphics, x, y, self.scale, self.scale)
             end,
 
             drawThumbnail = function(self, graphics, x, y, w, h)
-                graphics:setColor(COLOR.PURE_WHITE)
                 self.sprite:drawThumbnail(graphics, x, y, self.scale, self.scale)
             end,  
 
@@ -45,6 +43,7 @@ local BADNIK_TEMPLATE = {
             isSelected = false,
             
             drawInContainer = function(self, graphics, x, y, w, h)
+                graphics:setColor(COLOR.PURE_WHITE)
                 if self.isSelected or self.hasFocus then coreBadnik:draw(graphics, x, y, w, h)
                 else                                     coreBadnik:drawThumbnail(graphics, x, y, w, h) end
             end,  
