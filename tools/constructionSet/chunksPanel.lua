@@ -6,6 +6,8 @@ local CHUNKS
 local CHUNK = {
     create = function(self, chunkID, containerWidth, containerHeight)
         return ({
+            isHeld = false,
+
             init = function(self, chunkID, containerWidth, containerHeight)
                 self.chunkID = chunkID
                 self.scale   = 1
@@ -19,9 +21,16 @@ local CHUNK = {
             draw = function(self, graphics, x, y, w, h)
                 if CHUNKS then
                     graphics:setColor(COLOR.PURE_WHITE)
-                    CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale, self.scale) 
+                    if self.isHeld then
+                        CHUNKS:drawAt(graphics, x - 128, y - 128, self.chunkID, self.scale, self.scale)
+                    else
+                        CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale, self.scale) 
+                    end
                 end
             end, 
+
+            hold    = function(self) self.isHeld = true  end,
+            release = function(self) self.isHeld = false end,
         }):init(chunkID, containerWidth, containerHeight)
     end,
 }
