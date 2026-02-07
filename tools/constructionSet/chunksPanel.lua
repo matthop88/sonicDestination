@@ -22,6 +22,10 @@ local CHUNK = {
                 if CHUNKS then
                     if self.isHeld then
                         CHUNKS:drawAt(graphics, x - 128, y - 128, self.chunkID, self.scale, self.scale)
+                        graphics:setColor(0.5, 0.5, 0.5)
+                        graphics:setLineWidth(3)
+                        graphics:line(x - 32, y,      x + 32, y)
+                        graphics:line(x,      y - 32, x,      y + 32)
                     else
                         CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale, self.scale) 
                     end
@@ -68,8 +72,6 @@ local CHUNK_TEMPLATE = {
         }
     end,
 }
-
-
         
 return {
     create = function(self, stickyMouse)
@@ -93,8 +95,3 @@ return {
         }
     end,
 }
-
--- We add objects to the palette. The palette ensconces them in containers.
--- When an element is selected, a callback (which can be registered) is notified, and it is passed the object.
--- This will be used for the mouse.
-
