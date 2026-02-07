@@ -7,6 +7,7 @@ local CHUNK = {
     create = function(self, chunkID, containerWidth, containerHeight)
         return ({
             isHeld = false,
+            xFlip  = 1,
 
             init = function(self, chunkID, containerWidth, containerHeight)
                 self.chunkID = chunkID
@@ -21,19 +22,20 @@ local CHUNK = {
             draw = function(self, graphics, x, y, w, h)
                 if CHUNKS then
                     if self.isHeld then
-                        CHUNKS:drawAt(graphics, x - 128, y - 128, self.chunkID, self.scale, self.scale)
+                        CHUNKS:drawAt(graphics, x - (128 * self.xFlip), y - 128, self.chunkID, self.scale * self.xFlip, self.scale)
                         graphics:setColor(0.5, 0.5, 0.5)
                         graphics:setLineWidth(3)
                         graphics:line(x - 32, y,      x + 32, y)
                         graphics:line(x,      y - 32, x,      y + 32)
                     else
-                        CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale, self.scale) 
+                        CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale) 
                     end
                 end
             end, 
 
-            hold    = function(self) self.isHeld = true  end,
-            release = function(self) self.isHeld = false end,
+            hold    = function(self) self.isHeld = true           end,
+            release = function(self) self.isHeld = false          end,
+            flipX   = function(self) self.xFlip  = 0 - self.xFlip end,
         }):init(chunkID, containerWidth, containerHeight)
     end,
 }
@@ -77,7 +79,8 @@ return {
     create = function(self, stickyMouse)
         local chunkList = {}
         local WIDTH, HEIGHT = 128, 128
-        for id = 2, 17 do table.insert(chunkList, CHUNK_TEMPLATE:create(id, WIDTH, HEIGHT)) end
+        local ids = { 10, 19, 17, 5, 9, }
+        for _, id in ipairs(ids) do table.insert(chunkList, CHUNK_TEMPLATE:create(id, WIDTH, HEIGHT)) end
 
         local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
         
