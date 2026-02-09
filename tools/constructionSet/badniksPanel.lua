@@ -69,7 +69,9 @@ return {
     create = function(self, stickyMouse)
         local badnikList = {}
         local WIDTH, HEIGHT = 96, 96
-        table.insert(badnikList, BADNIK_TEMPLATE:create("motobug", "objects/motobug", WIDTH, HEIGHT))
+        table.insert(badnikList, BADNIK_TEMPLATE:create("motobug",  "objects/motobug",  WIDTH, HEIGHT))
+        table.insert(badnikList, BADNIK_TEMPLATE:create("patabata", "objects/patabata", WIDTH, HEIGHT))
+        table.insert(badnikList, BADNIK_TEMPLATE:create("tamabboh", "objects/tamabboh", WIDTH, HEIGHT))
 
         local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
 
