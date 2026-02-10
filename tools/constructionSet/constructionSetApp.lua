@@ -64,7 +64,8 @@ PLUGINS = require("plugins/engine")
              { label = "Chunks",  panel = CHUNKS_PANEL,  },
              { label = "Badniks", panel = BADNIKS_PANEL, },
              { label = "Items",   panel = ITEMS_PANEL, },
-        }
+        },
+        accessorFnName = "getTabbedPane",
     })
     :add("drawingLayer", { drawingFn = drawMouse })
 
