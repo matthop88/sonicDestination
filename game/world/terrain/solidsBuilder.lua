@@ -8,6 +8,13 @@ return {
 				self:drawAt(graphics, x, y, chunkID)
 		    end,
 
+		    xFlippedDraw = function(self, graphics, rowNum, colNum, chunkID)
+		    	local x = (colNum - 1) * 256
+				local y = (rowNum - 1) * 256
+        		
+				self:xFlippedDrawAt(graphics, x, y, chunkID)
+			end,
+
 		    drawAt = function(self, graphics, x, y, chunkID)
 		    	local chunkSolids = self[chunkID]
 		    	local rowY = y
@@ -42,10 +49,18 @@ return {
 				end
 			end,
 
-		    getSolidAt = function(self, chunkID, xInChunk, yInChunk)
-        		local chunkSolids = self[chunkID]
-        		if    chunkSolids == nil then return nil
-        		else                          return chunkSolids[yInChunk][xInChunk] end
+		    getSolidAt = function(self, chunkInfo, xInChunk, yInChunk)
+		    	local chunkID = chunkInfo
+		    	if type(chunkInfo) == "table" then
+		    		chunkID = chunkInfo[2]
+		    		local chunkSolids = self[chunkID]
+		    		if chunkSolids == nil then return nil
+		    		else                       return chunkSolids[yInChunk][17 - xInChunk] end
+		    	else
+	        		local chunkSolids = self[chunkID]
+	        		if    chunkSolids == nil then return nil
+	        		else                          return chunkSolids[yInChunk][xInChunk] end
+	        	end
     		end,
     	}
 
