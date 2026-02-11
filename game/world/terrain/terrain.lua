@@ -46,24 +46,37 @@ return {
         self.graphics:setColor(1, 1, 1)
         for rowNum, row in ipairs(MAP_DATA) do
             for colNum, chunkInfo in ipairs(row) do
-                local chunkID = chunkInfo
-                if type(chunkInfo) == "table" then
-                    chunkID = chunkInfo[2]
-                    -- draw backwards
-                    CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
-                    if self.showSolids then
-                        SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
-                    end
-                else
-                    CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
-                    if self.showSolids then 
-                        SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
-                    end
-                end
+                self:drawChunk(rowNum, colNum, chunkInfo)
             end
         end
         self.graphics:setColor(1, 1, 1)
 	end,
+
+    drawChunk = function(self, rowNum, colNum, chunkInfo)
+        if self:isXFlipped(chunkInfo) then
+            self:drawXFlippedChunk(rowNum, colNum, chunkInfo[2])
+        else
+            self:drawVanillaChunk(rowNum, colNum, chunkInfo)
+        end
+    end,
+
+    isXFlipped = function(self, chunkInfo)
+        return type(chunkInfo) == "table" and chunkInfo[1] == "XFLIP"
+    end,
+
+    drawVanillaChunk = function(self, rowNum, colNum, chunkID)
+        CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
+        if self.showSolids then 
+            SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
+        end
+    end,
+
+    drawXFlippedChunk = function(self, rowNum, colNum, chunkID)
+        CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
+        if self.showSolids then
+            SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
+        end
+    end,
 
     drawSolidAt = function(self, x, y, color)
         self.graphics:setColor(color)
