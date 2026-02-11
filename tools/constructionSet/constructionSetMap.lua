@@ -7,12 +7,13 @@ return {
 
 			draw = function(self)
 				self:drawSonic1Blocks()
+				self:drawSonic2Blocks()
 			end,
 
 			handleKeypressed = function(self, key)
 				if key == "S" then
 					self.destination = self.destination + 1000
-					if self.destination > 6000 then
+					if self.destination > 7000 then
 						self.destination = 0
 					end
 					self.transparency:setDestination(self.destination)
@@ -41,6 +42,22 @@ return {
 
 				-- Scrapbrain Zone
 				x = self:drawZone(x + 256, 4608, self:getColor(0.7, 0, 0, -5000), { { w = 36, h = 8 }, { w = 40, h = 8 }, { w = 23, h = 8 } })
+			end,
+
+			drawSonic2Blocks = function(self)
+				local x = self:drawZone(0, 8192, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 44, h = 4 }, { w = 44.5, h = 5 } })
+				self:drawZone(x + 256, 8192, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 41, h = 8 }, { w = 45.5, h = 8 } })
+
+				local x = self:drawZone(0, 10496, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 44, h = 8 }, { w = 46.5, h = 8 }})
+				self:drawZone(x + 256, 10496, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 42.5, h = 8 }, { w = 56.0, h = 8 }})
+			
+				local x = self:drawZone(0, 12800, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 41.5, h = 8 }, { w = 52.0, h = 8 }})
+				self:drawZone(x + 256, 12800, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 37.0, h = 8 }, { w = 38.0, h = 8 }})
+
+				local x = self:drawZone(0, 15104, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 49, h = 8 }, { w = 46.5, h = 8 }})
+				self:drawZone(x + 256, 15104, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 36, h = 8 }, { w = 32, h = 8 }, { w = 49, h = 8 }})
+
+				self:drawZone(0, 17408, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 21.5, h = 6 }, { w = 50.5, h = 7 }, { w = 15, h = 2.5 }})
 			end,
 
 			drawZone = function(self, x, y, c, zoneInfo)
