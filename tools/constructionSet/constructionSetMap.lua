@@ -9,15 +9,33 @@ return {
 
 			drawSonic1Blocks = function(self)
 				-- Green Hill Zone
-				self.graphics:setColor(1, 0.5, 0.5)
-				self.graphics:rectangle("fill", 0, 0, (40 * 256), (5 * 256))
+				local x = self:drawZone(0, 0, { 1, 0.5, 0.5 }, { { w = 40, h = 5 }, { w = 33, h = 6 }, { w = 45, h = 6 } })
+			
+				-- Marble Zone
+				self:drawZone(x + 256, 0, { 1, 0, 1 }, { { w = 26, h = 6 }, { w = 27, h = 6 }, { w = 28, h = 8 } })
+			
+				-- Spring Yard Zone
+				x = self:drawZone(0, 1792, { 1, 1, 0 }, { { w = 37, h = 5 }, { w = 43, h = 6 }, { w = 49, h = 7 } })
 
-				self.graphics:rectangle("fill", (41 * 256), 0, (33 * 256), (6 * 256))
+				-- Labyrinth Zone
+				self:drawZone(x + 256, 2304, { 0, 0.5, 1 }, { { w = 32, h = 8 }, { w = 19, h = 8 }, { w = 35, h = 8 } })
+			
+				-- Starlight Zone
+				x = self:drawZone(0, 3840, { 0.7, 0.7, 0.7 }, { { w = 34, h = 8 }, { w = 34, h = 7 }, { w = 35, h = 8 } })
 
-				self.graphics:rectangle("fill", (75 * 256), 0, (45 * 256), (6 * 256))
+				-- Scrapbrain Zone
+				x = self:drawZone(x + 256, 4608, { 0.7, 0, 0 }, { { w = 36, h = 8 }, { w = 40, h = 8 }, { w = 23, h = 8 } })
 			end,
 
-
+			drawZone = function(self, x, y, c, zoneInfo)
+				self.graphics:setColor(c)
+				for _, zone in ipairs(zoneInfo) do
+					self.graphics:rectangle("fill", x, y, zone.w * 256, zone.h * 256)
+					x = x + (zone.w * 256) + 256
+				end
+				return x
+			end,
+				
 			---------------------- Graphics Object Methods ------------------------
 
 		    moveImage = function(self, deltaX, deltaY)
