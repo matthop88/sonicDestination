@@ -10,7 +10,6 @@ local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create(STICK
 local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
 
 local graphics      = require("tools/lib/graphics"):create()
-local SCALE         = 3
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -18,7 +17,6 @@ local SCALE         = 3
 
 love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
-graphics:setScale(SCALE)
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -39,8 +37,7 @@ end
 --------------------------------------------------------------
 
 function drawMouse()
-    local mx, my = love.mouse.getPosition()
-    STICKY_MOUSE:draw(graphics, mx / SCALE, my / SCALE)
+    STICKY_MOUSE:draw(graphics, love.mouse.getPosition())
 end
 
 --------------------------------------------------------------
@@ -57,7 +54,10 @@ PLUGINS = require("plugins/engine")
                 CHUNKS_PANEL:initChunkInfo()
             end,
         },
-    })  
+    }) 
+    :add("scrolling",      { imageViewer = graphics })
+    :add("zooming",        { imageViewer = graphics })    
+    :add("grid2d",         { graphics    = graphics }) 
     :add("tabbedPane",
     { 
         TABS = { 
@@ -69,7 +69,4 @@ PLUGINS = require("plugins/engine")
     })
     :add("drawingLayer", { drawingFn = drawMouse })
 
-    
---        ...
---        ...
 
