@@ -28,7 +28,8 @@ return {
 				end
 				if self.object then
 					graphics:setColor(1, 1, 1, self.objectTransparency:get() / 255)
-					self.object:draw(graphics, graphics:screenToImageCoordinates(mx, my))
+					local x, y = graphics:screenToImageCoordinates(mx, my)
+					self.object:draw(graphics, math.floor(x), math.floor(y))
 				end
 				
 			end,
