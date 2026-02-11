@@ -22,7 +22,6 @@ return {
 					local rowX = x
 					for _, solid in ipairs(rowOfSolids) do
 						if solid == 1 then
-							graphics:setColor(1, 1, 1)
 							graphics:setLineWidth(2)
                 			graphics:line(rowX, rowY, rowX + 16, rowY)
                 		end
@@ -39,7 +38,6 @@ return {
 					local rowX = x + 240
 					for _, solid in ipairs(rowOfSolids) do
 						if solid == 1 then
-							graphics:setColor(1, 1, 1)
 							graphics:setLineWidth(2)
                 			graphics:line(rowX, rowY, rowX + 16, rowY)
                 		end
