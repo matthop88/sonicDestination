@@ -50,17 +50,21 @@ return {
 			end,
 
 		    getSolidAt = function(self, chunkInfo, xInChunk, yInChunk)
-		    	local chunkID = chunkInfo
-		    	if type(chunkInfo) == "table" then
-		    		chunkID = chunkInfo[2]
-		    		local chunkSolids = self[chunkID]
-		    		if chunkSolids == nil then return nil
-		    		else                       return chunkSolids[yInChunk][17 - xInChunk] end
+		    	if self:isXFlipped(chunkInfo) then
+		    		return self:getChunkSolidAt(chunkInfo[2], 17 - xInChunk, yInChunk)
 		    	else
-	        		local chunkSolids = self[chunkID]
-	        		if    chunkSolids == nil then return nil
-	        		else                          return chunkSolids[yInChunk][xInChunk] end
-	        	end
+		    		return self:getChunkSolidAt(chunkInfo, xInChunk, yInChunk)
+		    	end
+		    end,
+
+		    getChunkSolidAt = function(self, chunkID, xInChunk, yInChunk)
+        		local chunkSolids = self[chunkID]
+        		if    chunkSolids == nil then return nil
+        		else                          return chunkSolids[yInChunk][xInChunk] end
+        	end,
+
+    		isXFlipped = function(self, chunkInfo)
+        		return type(chunkInfo) == "table" and chunkInfo[1] == "XFLIP"
     		end,
     	}
 
