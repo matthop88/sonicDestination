@@ -23,6 +23,10 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
+function love.draw()
+    MAP:draw()
+end
+
 function love.update(dt)
     STICKY_MOUSE:update(dt)
 end
