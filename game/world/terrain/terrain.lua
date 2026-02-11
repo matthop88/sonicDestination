@@ -45,10 +45,20 @@ return {
 	drawTerrain = function(self)
         self.graphics:setColor(1, 1, 1)
         for rowNum, row in ipairs(MAP_DATA) do
-            for colNum, chunkID in ipairs(row) do
-                CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
-                if self.showSolids then 
-                    SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
+            for colNum, chunkInfo in ipairs(row) do
+                local chunkID = chunkInfo
+                if type(chunkInfo) == "table" then
+                    chunkID = chunkInfo[2]
+                    -- draw backwards
+                    CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
+                    if self.showSolids then
+                        SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
+                    end
+                else
+                    CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
+                    if self.showSolids then 
+                        SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
+                    end
                 end
             end
         end
