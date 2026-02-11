@@ -1,6 +1,8 @@
 return {
 	create = function(self)
 		return {
+			objectTransparency = require("tools/lib/tweenableValue"):create(25, { speed = 5 }),
+	
 			onSelect = function(self, container)
 				if self.selected ~= container then
 					self.selected = container
@@ -19,12 +21,13 @@ return {
 			draw = function(self, graphics, mx, my)
 				if my < getTabbedPane():getTabsY() and self.object then
 					love.mouse.setVisible(false)
-					graphics:setColor(1, 1, 1, 0.7)
+					self.objectTransparency:setDestination(205)
 				else
 					love.mouse.setVisible(true)
-					graphics:setColor(1, 1, 1, 0.1)
+					self.objectTransparency:setDestination(25)
 				end
 				if self.object then
+					graphics:setColor(1, 1, 1, self.objectTransparency:get() / 255)
 					self.object:draw(graphics, graphics:screenToImageCoordinates(mx, my))
 				end
 				
@@ -32,6 +35,7 @@ return {
 
 			update = function(self, dt)
 				if self.object and self.object.update then self.object:update(dt) end
+				self.objectTransparency:update(dt)
 			end,
 
 			handleKeypressed = function(self, key)
