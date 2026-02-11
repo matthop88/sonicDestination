@@ -10,6 +10,7 @@ local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create(STICK
 local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
 
 local graphics      = require("tools/lib/graphics"):create()
+local MAP           = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -55,8 +56,8 @@ PLUGINS = require("plugins/engine")
             end,
         },
     }) 
-    :add("scrolling",      { imageViewer = graphics })
-    :add("zooming",        { imageViewer = graphics })    
+    :add("scrolling",      { imageViewer = MAP })
+    :add("zooming",        { imageViewer = MAP })    
     :add("grid2d",         { 
         graphics    = graphics,
         bounds      = { x = 0, y = 0, w = 256, h = 256 },
