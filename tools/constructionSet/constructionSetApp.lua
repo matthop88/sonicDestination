@@ -29,10 +29,12 @@ end
 
 function love.update(dt)
     STICKY_MOUSE:update(dt)
+    MAP:update(dt)
 end
 
 function love.keypressed(key)
     STICKY_MOUSE:handleKeypressed(key)
+    MAP:handleKeypressed(key)
 end
 
 -- ...
