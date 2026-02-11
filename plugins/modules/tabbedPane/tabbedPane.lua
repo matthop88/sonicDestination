@@ -138,11 +138,16 @@ return {
 		end
 	end,
 
+	handleKeypressed = function(self, key)
+		local mx, my = love.mouse.getPosition()
+		if my > self:getTabsY() and key == "space" then
+			self:toggleTabbedPaneOpening()
+		end
+	end,
+
 	handleMousepressed = function(self, mx, my, params)
 		if params.doubleClicked then
-			if self.TABS.opened then self.TABS.y:setDestination(self.HEIGHT - 40)
-			else                     self.TABS.y:setDestination(self.HEIGHT - 35 - self.PANE_HEIGHT) end
-			self.TABS.opened = not self.TABS.opened
+			self:toggleTabbedPaneOpening()
 		elseif self.TABS.opened then
 			for n, t in ipairs(self.TABS) do
 				if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
@@ -160,6 +165,12 @@ return {
 		if currentTab.panel then
 			currentTab.panel:handleMousepressed(mx, my)
 		end
+	end,
+
+	toggleTabbedPaneOpening = function(self)
+		if self.TABS.opened then self.TABS.y:setDestination(self.HEIGHT - 40)
+		else                     self.TABS.y:setDestination(self.HEIGHT - 35 - self.PANE_HEIGHT) end
+		self.TABS.opened = not self.TABS.opened
 	end,
 
 	getBGColor = function(self, params)
