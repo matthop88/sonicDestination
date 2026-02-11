@@ -17,13 +17,17 @@ return {
 			end,
 
 			draw = function(self, graphics, mx, my)
-				if self.object and my < getTabbedPane():getTabsY() then
+				if my < getTabbedPane():getTabsY() and self.object then
 					love.mouse.setVisible(false)
 					graphics:setColor(1, 1, 1, 0.7)
-					self.object:draw(graphics, graphics:screenToImageCoordinates(mx, my))
 				else
 					love.mouse.setVisible(true)
+					graphics:setColor(1, 1, 1, 0.1)
 				end
+				if self.object then
+					self.object:draw(graphics, graphics:screenToImageCoordinates(mx, my))
+				end
+				
 			end,
 
 			update = function(self, dt)
