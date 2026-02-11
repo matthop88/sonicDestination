@@ -23,10 +23,6 @@ local CHUNK = {
                 if CHUNKS then
                     if self.isHeld then
                         CHUNKS:drawAt(graphics, x - (128 * self.xFlip), y - 128, self.chunkID, self.scale * self.xFlip, self.scale)
-                        graphics:setColor(0.5, 0.5, 0.5)
-                        graphics:setLineWidth(3)
-                        graphics:line(x - 32, y,      x + 32, y)
-                        graphics:line(x,      y - 32, x,      y + 32)
                         if self.showSolids then 
                             if self.xFlip == 1 then SOLIDS:drawAt(graphics, x - 128, y - 128, self.chunkID) 
                             else                    SOLIDS:xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
