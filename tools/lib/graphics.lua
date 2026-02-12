@@ -99,9 +99,21 @@ return {
             ------------------------ Text Drawing Functions --------------------
         
             printf    = function(self, text, x, y, w, align)
-                love.graphics.printf(text, (x + self.x) * self.scale, 
-                                           (y + self.y) * self.scale,
-                                                     w  * self.scale, align)
+                -- Check to see if text is on screen
+                local leftOfText  = (x + self.x) * self.scale
+                local topOfText   = (y + self.y) * self.scale
+                local rightOfText  = leftOfText + (w * self.scale)
+                local bottomOfText = topOfText + (self.fontSize * self.scale)
+
+                if     leftOfText   < love.graphics:getWidth() 
+                   and rightOfText  > 0 
+                   and topOfText    < love.graphics:getHeight() 
+                   and bottomOfText > 0
+                then
+                    love.graphics.printf(text, (x + self.x) * self.scale, 
+                                               (y + self.y) * self.scale,
+                                                         w  * self.scale, align)
+                end
             end,
         
             ------------------------- Scrolling Functions ----------------------
