@@ -1,22 +1,33 @@
 return {
 	create = function(self, params)
 		return {
+			superChunks = { 
+				{ x = 14, y =  0, w =  2 }, 
+				{ x = 14, y =  1, w =  2 },
+				{ x = 12, y =  2, w =  4 },
+				{ x = 14, y =  3, w =  2 },
+				{ x =  5, y =  4, w = 11 },
+				{ x = 13, y =  8, w =  3 },
+				{ x = 11, y =  9, w =  5 },
+				{ x = 11, y = 15, w =  5 },
+			},
 			graphics = params.graphics,
 			transparency = require("tools/lib/tweenableValue"):create(0, { speed = 1 }),
 			destination  = 0,
 
 			draw = function(self)
-				self:drawSonic1Blocks()
-				self:drawSonic2Blocks()
-				self:drawSonicCDBlocks()
-				self:drawSonic3Blocks()
-				self:drawSonicAndKnucklesBlocks()
+				if self.transparency:get() > 0     then self:drawSonic1Blocks() end
+				if self.transparency:get() > 6000  then self:drawSonic2Blocks() end
+				if self.transparency:get() > 7000  then self:drawSonicCDBlocks() end
+				if self.transparency:get() > 8000  then self:drawSonic3Blocks() end
+				if self.transparency:get() > 9000  then self:drawSonicAndKnucklesBlocks() end
+				if self.transparency:get() > 10000 then self:drawFreeSuperChunks() end
 			end,
 
 			handleKeypressed = function(self, key)
 				if key == "S" then
 					self.destination = self.destination + 1000
-					if self.destination > 10000 then
+					if self.destination > 11000 then
 						self.destination = 0
 					end
 					self.transparency:setDestination(self.destination)
@@ -119,6 +130,22 @@ return {
 				x = self:drawZone(x + 256, 61440, self:getColor(1, 0.3, 1, -9000), { { w = 27, h = 16 }, { w = 3.5, h = 1.5 }})
 				self:drawZone(x + 256, 61440, self:getColor(0.6, 0, 0, -9000), { { w = 56.5, h = 12.5 }, { w = 56, h = 14, y = -256 }})
 				self:drawZone(x - 128, 64895, self:getColor(1, 0, 0, -9000), { { w = 116, h = 2 }})
+			end,
+
+			drawFreeSuperChunks = function(self)
+				local chunkNum = 1
+				for _, sc in ipairs(self.superChunks) do
+					for i = 1, sc.w do
+						self.graphics:setColor(0.9, 0.9, 0.9, (self.transparency:get() - 10000) / 1000)
+						local x = ((sc.x + (i - 1)) * 16 * 256) + 512
+						local y = (sc.y * 16 * 256) + 512
+						self.graphics:rectangle("fill", x, y, 3072, 3072)
+						self.graphics:setColor(0, 0, 0)
+						self.graphics:setFontSize(1024)
+						self.graphics:printf("" .. chunkNum, x, y + 768, 3072, "center")
+						chunkNum = chunkNum + 1
+					end
+				end
 			end,
 
 			drawZone = function(self, x, y, c, zoneInfo)
