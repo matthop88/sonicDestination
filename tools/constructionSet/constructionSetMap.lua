@@ -9,12 +9,13 @@ return {
 				self:drawSonic1Blocks()
 				self:drawSonic2Blocks()
 				self:drawSonicCDBlocks()
+				self:drawSonic3Blocks()
 			end,
 
 			handleKeypressed = function(self, key)
 				if key == "S" then
 					self.destination = self.destination + 1000
-					if self.destination > 8000 then
+					if self.destination > 9000 then
 						self.destination = 0
 					end
 					self.transparency:setDestination(self.destination)
@@ -91,6 +92,17 @@ return {
 				self:drawZone(x + 256, 39936, self:getColor(0.7, 0.7, 0.7, -7000), { { w = 16, h = 4 }, { w = 16, h = 4 }})
 				self:drawZone(0, 42240, self:getColor(0.2, 0.2, 0.2, -7000), { { w = 32, h = 8 }, { w = 32, h = 8 }, { w = 32, h = 8 }, { w = 32, h = 8 }})
 			
+			end,
+
+			drawSonic3Blocks = function(self)
+				local x = self:drawZone(0, 45056, self:getColor(0.3, 1, 0.3, -8000), { { w = 46.125, h = 6.5 }, { w = 60, h = 10 }})
+				self:drawZone(x + 256, 45056, self:getColor(0.3, 0.3, 1, -8000), { { w = 56, h = 12 }, { w = 72, h = 12 }})
+
+				local x = self:drawZone(0, 48384, self:getColor(1, 0.3, 0.3, -8000), { { w = 48, h = 16 }, { w = 64, h = 12.5 }})
+				self:drawZone(x + 256, 48384, self:getColor(1, 0.3, 1, -8000), { { w = 56, h = 12.5 }, { w = 76, h = 12.5 }})
+			
+				self:drawZone(0, 52736, self:getColor(0.3, 1, 1, -8000), { { w = 112.6875, h = 8 }, { w = 64, h = 12 }})
+				self:drawZone(0, 56064, self:getColor(1, 1, 0.3, -8000), { { w = 64, h = 12 }, { w = 68.5, h = 12 }})
 			end,
 
 			drawZone = function(self, x, y, c, zoneInfo)
