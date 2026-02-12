@@ -48,20 +48,20 @@ return {
 			end,
 
 			drawSonic2Blocks = function(self)
-				local x = self:drawZone(0, 7424, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 44, h = 4 }, { w = 44.5, h = 5 } })
-				self:drawZone(x + 256, 7424, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 41, h = 8 }, { w = 45.5, h = 8 } })
+				local x = self:drawZone(0, 7424, self:getColor(1, 0.5, 0.5, -6000), { { w = 44, h = 4 }, { w = 44.5, h = 5 } })
+				self:drawZone(x + 256, 7424, self:getColor(0.5, 1, 0.5, -6000), { { w = 41, h = 8 }, { w = 45.5, h = 8 } })
 
-				x = self:drawZone(0, 9728, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 44, h = 8 }, { w = 46.5, h = 8 }})
-				self:drawZone(x, 9728, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 42.5, h = 8 }, { w = 56.0, h = 8 }})
+				x = self:drawZone(0, 9728, self:getColor(0.5, 0.5, 1, -6000), { { w = 44, h = 8 }, { w = 46.5, h = 8 }})
+				self:drawZone(x, 9728, self:getColor(0.5, 1, 1, -6000), { { w = 42.5, h = 8 }, { w = 56.0, h = 8 }})
 			
-				x = self:drawZone(0, 12032, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 41.5, h = 8 }, { w = 52.0, h = 8 }})
-				self:drawZone(x + 256, 12032, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 37.0, h = 8 }, { w = 38.0, h = 8 }})
+				x = self:drawZone(0, 12032, self:getColor(1, 1, 0.5, -6000), { { w = 41.5, h = 8 }, { w = 52.0, h = 8 }})
+				self:drawZone(x + 256, 12032, self:getColor(1, 0.5, 1, -6000), { { w = 37.0, h = 8 }, { w = 38.0, h = 8 }})
 
-				x = self:drawZone(0, 14336, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 49, h = 8 }, { w = 46.5, h = 8 }})
-				self:drawZone(x + 256, 14336, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 36, h = 8 }, { w = 32, h = 8 }, { w = 49, h = 8 }})
+				x = self:drawZone(0, 14336, self:getColor(0.5, 0.7, 0, -6000), { { w = 49, h = 8 }, { w = 46.5, h = 8 }})
+				self:drawZone(x + 256, 14336, self:getColor(0.7, 0, 0.5, -6000), { { w = 36, h = 8 }, { w = 32, h = 8 }, { w = 49, h = 8 }})
 
-				self:drawZone(0, 16640, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 21.5, h = 6 }, { w = 50.5, h = 7 }})
-				self:drawZone(0, 18688, self:getColor(0.5, 0.5, 0.5, -6000), { { w = 15, h = 2.5 }})
+				self:drawZone(0, 16640, self:getColor(0, 0.5, 0.7, -6000), { { w = 21.5, h = 6 }, { w = 50.5, h = 7 }})
+				self:drawZone(0, 18688, self:getColor(0.7, 0.7, 0.7, -6000), { { w = 15, h = 2.5 }})
 			end,
 
 			drawSonicCDBlocks = function(self)
