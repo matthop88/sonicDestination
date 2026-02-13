@@ -2,7 +2,8 @@ return {
 	create = function(self)
 		return {
 			objectTransparency = require("tools/lib/tweenableValue"):create(25, { speed = 5 }),
-	
+			lastX, lastY = 0, 0,
+
 			onSelect = function(self, container)
 				if self.selected ~= container then
 					self.selected = container
@@ -29,7 +30,12 @@ return {
 				if self.object then
 					graphics:setColor(1, 1, 1, self.objectTransparency:get() / 255)
 					local x, y = graphics:screenToImageCoordinates(mx, my)
-					self.object:draw(graphics, math.floor(x), math.floor(y))
+					if graphics:getX() ~= self.lastX or graphics:getY() ~= self.lastY then
+						self.object:draw(graphics, x, y)
+					else
+						self.object:draw(graphics, math.floor(x), math.floor(y))
+					end
+					self.lastX, self.lastY = graphics:getX(), graphics:getY()
 				end
 				
 			end,
