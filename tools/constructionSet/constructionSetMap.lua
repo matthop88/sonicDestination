@@ -69,21 +69,9 @@ return {
 				if self.graphics:getScale() > 1 then
 					alpha = 1 - (self.graphics:getScale() - 1)
 				end
-
 				self.graphics:setColor(1, 1, 1, alpha)
 
-				local fontSize = math.min(96, math.max(24 / self.graphics:getScale(), 24 - (topMostY / 2)))
-				self.graphics:setFontSize(fontSize)
-				
-				for chunkX = math.max(0, leftChunk), math.min(255, rightChunk) do
-					local x = chunkX % 16
-					local scx = math.floor(chunkX / 16)
-
-					self.graphics:printf(self.hex[scx + 1] .. self.hex[x + 1], chunkX * 256, math.max(-150, topMostY), 256, "center")
-				end
-
-				fontSize = math.min(96, math.max(24 / self.graphics:getScale(), 24 - (leftMostX / 3)))
-				
+				local fontSize = math.min(96, math.max(24 / self.graphics:getScale(), 24 - (leftMostX / 3)))
 				self.graphics:setFontSize(fontSize)
 
 				for chunkY = math.max(0, topChunk), math.min(255, bottomChunk) do
@@ -92,10 +80,24 @@ return {
 					
 					self.graphics:printf(self.hex[scy + 1] .. self.hex[y + 1], math.max(-200, leftMostX), chunkY * 256 + (128 - (fontSize * 0.7)), 1.5 * fontSize, "right")
 				end
+				
+				fontSize = math.min(96, math.max(24 / self.graphics:getScale(), 24 - (topMostY / 2)))
+				self.graphics:setFontSize(fontSize)
+			
+				self.graphics:setColor(0, 0, 0, alpha)
+				self.graphics:rectangle("fill", leftMostX, topMostY, rightMostX - leftMostX, self.graphics:getFontHeight())
+				self.graphics:setColor(1, 1, 1, alpha)
 
+				for chunkX = math.max(0, leftChunk), math.min(255, rightChunk) do
+					local x = chunkX % 16
+					local scx = math.floor(chunkX / 16)
+
+					self.graphics:printf(self.hex[scx + 1] .. self.hex[x + 1], chunkX * 256, math.max(-150, topMostY), 256, "center")
+				end
 			end,
 
 			drawTileCoordinates = function(self)
+				local fontWidth = self.graphics:getFontWidth("FFF")
 				local leftMostX,  topMostY    = self.graphics:screenToImageCoordinates(0, 0)
 				local rightMostX, bottomMostY = self.graphics:screenToImageCoordinates(love.graphics:getWidth(), love.graphics:getHeight())
 
@@ -105,12 +107,28 @@ return {
 				bottomTile = math.floor(bottomMostY / 16)
 				
 				local alpha = self.graphics:getScale() - 1
-				
-				self.graphics:setColor(1, 1, 1, alpha)
+				if self.graphics:getScale() > 20 then
+					alpha = 1 - ((self.graphics:getScale() - 20) / 20)
+				end
 				local s = 12 / self.graphics:getScale()
-				local fontSize = math.max(1, math.min(6, math.max(s, s - (topMostY / 3))))
+				
+				local fontSize = math.max(2, math.min(6, math.max(s, s - (leftMostX / 6))))
+				self.graphics:setFontSize(fontSize)
+				self.graphics:setColor(1, 1, 1, alpha)
+				
+				for tileY = math.max(0, topTile), math.min(4095, bottomTile) do
+					local y = tileY % 16
+					local cy = math.floor(tileY / 16) % 16
+					local scy = math.floor(tileY / 256)
+					self.graphics:printf(self.hex[scy + 1] .. self.hex[cy + 1] .. self.hex[y + 1], math.max(-16, leftMostX), tileY * 16 + (8 - fontSize / 2), 3 * fontSize, "left")
+				end
+
+				local fontSize = math.max(2, math.min(6, math.max(s, s - (topMostY / 3))))
 				self.graphics:setFontSize(fontSize)
 
+				self.graphics:setColor(0, 0, 0, alpha)
+				self.graphics:rectangle("fill", leftMostX, topMostY, rightMostX - leftMostX, self.graphics:getFontHeight() + 0.5)
+				self.graphics:setColor(1, 1, 1, alpha)
 				for tileX = math.max(0, leftTile), math.min(4095, rightTile) do
 					local x = tileX % 16
 					local cx = math.floor(tileX / 16) % 16
@@ -119,15 +137,7 @@ return {
 					self.graphics:printf(self.hex[scx + 1] .. self.hex[cx + 1] .. self.hex[x + 1], tileX * 16, math.max(-9, topMostY), 16, "center")
 				end
 
-				fontSize = math.max(1, math.min(6, math.max(s, s - (leftMostX / 6))))
-				self.graphics:setFontSize(fontSize)
-
-				for tileY = math.max(0, topTile), math.min(4095, bottomTile) do
-					local y = tileY % 16
-					local cy = math.floor(tileY / 16) % 16
-					local scy = math.floor(tileY / 256)
-					self.graphics:printf(self.hex[scy + 1] .. self.hex[cy + 1] .. self.hex[y + 1], math.max(-20, leftMostX), tileY * 16 + (8 - fontSize / 2), 3 * fontSize, "right")
-				end
+				
 			end,
 	
 			---------------------- Graphics Object Methods ------------------------
