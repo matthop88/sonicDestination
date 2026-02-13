@@ -5,9 +5,12 @@ return {
 			hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" },
 
 			draw = function(self)
-				if self.graphics:getScale() < 0.2 then
+				if self.graphics:getScale() < 0.15 then
 					self:drawSuperChunkCoordinates()
 				end
+				if self.graphics:getScale() > 0.05 then
+					self:drawChunkCoordinates()
+				end 
 			end,
 
 			handleKeypressed = function(self, key)
@@ -21,15 +24,33 @@ return {
 			end,
 
 			drawSuperChunkCoordinates = function(self)
-				self.graphics:setColor(1, 1, 1)
+				local alpha = 1 - ((self.graphics:getScale() - 0.05) * 10)
+				
+				self.graphics:setColor(1, 1, 1, alpha)
+				self.graphics:setFontSize(1536)
+				
 				for x = 0, 15 do
-					self.graphics:setFontSize(1536)
 					self.graphics:printf("" .. self.hex[x + 1], x * 256 * 16, -2400, 256 * 16, "center")
 				end
 
 				for y = 0, 15 do
-					self.graphics:setFontSize(1536)
 					self.graphics:printf("" .. self.hex[y + 1], -3200, (y * 256 * 16 + 1184), 2000, "right")
+				end
+
+			end,
+
+			drawChunkCoordinates = function(self)
+				local alpha = (self.graphics:getScale() - 0.05) * 10
+				
+				self.graphics:setColor(1, 1, 1, alpha)
+				self.graphics:setFontSize(96)
+
+				for x = 0, 15 do
+					self.graphics:printf("0" .. self.hex[x + 1], x * 256, -150, 256, "center")
+				end
+
+				for y = 0, 15 do
+					self.graphics:printf("0" .. self.hex[y + 1], -200, (y * 256 + 60), 150, "right")
 				end
 
 			end,
