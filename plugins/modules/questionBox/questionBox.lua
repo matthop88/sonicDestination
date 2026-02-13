@@ -17,6 +17,8 @@ return {
 		self.maxH  = math.max(40, (#self.lines * 28) + 28)
 		self.useDoubleClick   = params.useDoubleClick
 		self.getDoubleClickFn = params.getDoubleClickFn
+
+		return self
 	end,
 
 	draw = function(self)
