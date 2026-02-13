@@ -4,6 +4,7 @@ return {
 
     init   = function(self, params)
         self.timedFunctions = params
+        return self
     end,
 
     update = function(self, dt)
