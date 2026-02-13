@@ -50,7 +50,7 @@ return {
 				self.graphics:setFontSize(fontSize)
 				
 				for y = 0, 15 do
-					self.graphics:printf("" .. self.hex[y + 1], math.max(-3200, leftMostX), (y * 256 * 16 + (2048 - (fontSize * 0.6))), fontSize * 0.75, "right")
+					self.graphics:printf("" .. self.hex[y + 1], math.max(-3000, leftMostX), (y * 256 * 16 + (2048 - (fontSize * 0.6))), fontSize * 0.8, "right")
 				end
 
 			end,
