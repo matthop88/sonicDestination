@@ -53,23 +53,32 @@ return {
 				bottomChunk = math.floor(bottomMostY / 256)
 
 				local alpha = (self.graphics:getScale() - 0.05) * 10
+				
 				if self.graphics:getScale() > 1 then
 					alpha = 1 - ((self.graphics:getScale() - 1) / 4)
 				end
 
 				self.graphics:setColor(1, 1, 1, alpha)
-				self.graphics:setFontSize(96)
 
+				local fontSize = math.min(96, math.max(24, 24 - (topMostY / 2)))
+				self.graphics:setFontSize(fontSize)
+				
 				for chunkX = math.max(0, leftChunk), math.min(255, rightChunk) do
 					local x = chunkX % 16
 					local scx = math.floor(chunkX / 16)
-					self.graphics:printf(self.hex[scx + 1] .. self.hex[x + 1], chunkX * 256, -150, 256, "center")
+
+					self.graphics:printf(self.hex[scx + 1] .. self.hex[x + 1], chunkX * 256, math.max(-150, topMostY), 256, "center")
 				end
+
+				fontSize = math.min(96, math.max(24, 24 - (leftMostX / 3)))
+				
+				self.graphics:setFontSize(fontSize)
 
 				for chunkY = math.max(0, topChunk), math.min(255, bottomChunk) do
 					local y = chunkY % 16
 					local scy = math.floor(chunkY / 16)
-					self.graphics:printf(self.hex[scy + 1] .. self.hex[y + 1], -200, chunkY * 256 + 60, 150, "right")
+					
+					self.graphics:printf(self.hex[scy + 1] .. self.hex[y + 1], math.max(-200, leftMostX), chunkY * 256 + (128 - (fontSize * 0.7)), 1.5 * fontSize, "right")
 				end
 
 			end,
