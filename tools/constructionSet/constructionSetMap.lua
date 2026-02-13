@@ -90,8 +90,8 @@ return {
 
 				for tileX = math.max(0, leftTile), math.min(4095, rightTile) do
 					local x = tileX % 16
-					local cx = math.floor(tileX / 16)
-					local scx = math.floor(cx / 16)
+					local cx = math.floor(tileX / 16) % 16
+					local scx = math.floor(tileX / 256)
 					
 					self.graphics:printf(self.hex[scx + 1] .. self.hex[cx + 1] .. self.hex[x + 1], tileX * 16, -9, 16, "center")
 				end
