@@ -86,17 +86,18 @@ return ({
     end,
         
     addPlugin = function(self, plugin, params)
-        self:initPlugin(plugin, params or { })
+        plugin = self:initPlugin(plugin, params or { })
         table.insert(self, plugin)
         return self
     end,
 
     initPlugin = function(self, plugin, params)
-        if plugin.init ~= nil then plugin:init(params) end
+        if plugin.init ~= nil then plugin = plugin:init(params) end
         if params.accessorFnName ~= nil then
             self:createGlobalAccessorFn(params.accessorFnName, plugin)
         end
         plugin.__ENGINE = self
+        return plugin
     end,
 
     createGlobalAccessorFn = function(self, name, plugin)
