@@ -43,9 +43,12 @@ end
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
-function drawMouseAndCoordinates()
-    MAP:drawCoordinates()
+function drawMouse()
     STICKY_MOUSE:draw(graphics, love.mouse.getPosition())
+end
+
+function drawCoordinates()
+    MAP:drawCoordinates()
 end
 
 --------------------------------------------------------------
@@ -69,6 +72,7 @@ PLUGINS = require("plugins/engine")
         graphics    = graphics,
         bounds      = { x = 0, y = 0, w = 256, h = 256 },
     }) 
+    :add("drawingLayer", { drawingFn = drawCoordinates })
     :add("tabbedPane",
     { 
         TABS = { 
@@ -78,4 +82,4 @@ PLUGINS = require("plugins/engine")
         },
         accessorFnName = "getTabbedPane",
     })
-    :add("drawingLayer", { drawingFn = drawMouseAndCoordinates })
+    :add("drawingLayer", { drawingFn = drawMouse })
