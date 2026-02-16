@@ -14,6 +14,10 @@ return {
                 graphics:setAlpha(alpha)
             end,
 
+            getAlpha     = function(self)
+                return graphics:getAlpha()
+            end,
+
             setLineWidth = function(self, lineWidth)
                 graphics:setLineWidth(lineWidth)
             end,
