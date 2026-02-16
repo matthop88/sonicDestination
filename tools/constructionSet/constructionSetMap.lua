@@ -7,8 +7,6 @@ return {
 			hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" },
 
 			chunks = {
-				xFlip = 1,
-
 				place = function(self, chunkID, x, y, xFlipped)
 					for n, chunk in ipairs(self) do
 						if chunk.x == x and chunk.y == y then
@@ -35,6 +33,25 @@ return {
 				end,
 			},
 
+			objects = {
+				place = function(self, obj, x, y)
+					table.insert(self, { obj = obj, x = x, y = y })
+				end,
+
+				draw = function(self, graphics)
+					graphics:setColor(1, 1, 1)
+					for _, object in ipairs(self) do
+						object.obj:draw(graphics, object.x, object.y, 1, 1)
+					end
+				end,
+
+				update = function(self, dt)
+					for _, object in ipairs(self) do
+						object.obj:update(dt)
+					end
+				end,
+			},
+
 			initChunkInfo = function(self, chunkInfo)
 				CHUNKS = chunkInfo.chunks
 				SOLIDS = chunkInfo.solids
@@ -42,6 +59,7 @@ return {
 
 			draw = function(self)
 				self.chunks:draw(self.graphics)
+				self.objects:draw(self.graphics)
 			end,
 
 			drawCoordinates = function(self)
@@ -67,8 +85,12 @@ return {
 				self.chunks:place(chunkID, x, y, xFlipped)
 			end,
 
+			placeObject = function(self, obj, x, y)
+				self.objects:place(obj, x, y)
+			end,
+
 			update = function(self, dt)
-				-- Do nothing
+				self.objects:update(dt)
 			end,
 
 			drawSuperChunkCoordinates = function(self)
