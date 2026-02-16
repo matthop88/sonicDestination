@@ -27,11 +27,17 @@ local CHUNK = {
                             if self.xFlip == 1 then SOLIDS:drawAt(graphics, x - 128, y - 128, self.chunkID) 
                             else                    SOLIDS:xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
                         end
+                        graphics:setColor(1, 1, 1, graphics:getAlpha())
+                        graphics:rectangle("line", x - 128, y - 128, 256, 256)
                     else
                         CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale) 
                     end
                 end
             end, 
+
+            quantizeXY = function(self, x, y)
+                return (math.floor(x / 256) * 256) + 128, (math.floor(y / 256) * 256) + 128
+            end,
 
             hold         = function(self) self.isHeld = true                    end,
             release      = function(self) self.isHeld = false                   end,
