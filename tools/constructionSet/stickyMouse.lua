@@ -67,6 +67,7 @@ return {
 				if self.object and self.object.place then
 					local x, y = graphics:screenToImageCoordinates(mx, my)
 					self.object:place(map, x, y)
+					self.object = self.selected:newObject()
 				end
 			end,
 		}
