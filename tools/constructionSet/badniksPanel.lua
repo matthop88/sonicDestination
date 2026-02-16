@@ -4,11 +4,14 @@ local BADNIKS
 -- A BADNIK is an object. It contains a sprite, and can draw itself into a space of optionally specified dimensions.
 
 local BADNIK = {
-    create = function(self, name, spritePath, containerWidth, containerHeight)
+    create = function(self, name, spritePath, containerWidth, containerHeight, flipX)
         return ({
+            xFlip = flipX or 1,
+
             init = function(self, name, spritePath, containerWidth, containerHeight)
                 self.name   = name
                 self.sprite = require("tools/lib/sprites/sprite"):create(spritePath, 0, 0)
+                if self.xFlip == -1 then self.sprite:flipX() end
                 self.scale  = 1
                 if containerWidth and containerHeight then
                     self.scale = math.min((containerWidth / self.sprite:getW()), (containerHeight / self.sprite:getH())) * 0.9
@@ -26,20 +29,24 @@ local BADNIK = {
             end,  
 
             update = function(self, dt) self.sprite:update(dt) end,
-            flipX  = function(self)     self.sprite:flipX()    end,
+            flipX  = function(self)     
+                self.sprite:flipX()   
+                self.xFlip = -1 * self.xFlip 
+            end,
             
             place        = function(self, map, x, y)
                 map:placeObject(self, x, y)
             end, 
-            
+
         }):init(name, spritePath, containerWidth, containerHeight)
     end,
 }
 
 local BADNIK_TEMPLATE = {
     create = function(self, name, spritePath, containerWidth, containerHeight)
-        local coreBadnik = BADNIK:create(name, spritePath, containerWidth, containerHeight)
-        
+        local coreBadnik    = BADNIK:create(name, spritePath, containerWidth, containerHeight)
+        local workingBadnik = nil
+
         return {
             name       = name,
             spritePath = spritePath,
@@ -64,7 +71,12 @@ local BADNIK_TEMPLATE = {
             select    = function(self) self.isSelected = true  end,
             deselect  = function(self) self.isSelected = false end,
    
-            newObject = function(self) return BADNIK:create(self.name, self.spritePath) end,
+            newObject = function(self) 
+                local xFlip = 1
+                if workingBadnik then xFlip = workingBadnik.xFlip end
+                workingBadnik = BADNIK:create(self.name, self.spritePath, nil, nil, xFlip) 
+                return workingBadnik
+            end,
         }
     end,
 }
