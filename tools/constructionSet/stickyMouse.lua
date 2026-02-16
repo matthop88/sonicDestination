@@ -68,6 +68,7 @@ return {
 					local x, y = graphics:screenToImageCoordinates(mx, my)
 					self.object:place(map, x, y)
 					self.object = self.selected:newObject()
+					if self.object.hold then self.object:hold() end
 				end
 			end,
 		}
