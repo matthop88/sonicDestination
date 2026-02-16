@@ -91,14 +91,14 @@ return {
     create = function(self, stickyMouse)
         local chunkList = {}
         local WIDTH, HEIGHT = 128, 128
-        local ids = { 10, 19, 17, 5, 9, }
+        local ids = { 1, 2, 3, 4, 5, 6, 7, }
         for _, id in ipairs(ids) do table.insert(chunkList, CHUNK_TEMPLATE:create(id, WIDTH, HEIGHT)) end
 
         local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
         
         return {
             initChunkInfo = function(self)
-                local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks.lua"
+                local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks_2.lua"
                 local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
                 CHUNKS                        = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
                 SOLIDS                        = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
