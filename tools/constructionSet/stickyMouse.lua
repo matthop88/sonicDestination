@@ -20,24 +20,37 @@ return {
 			end,
 
 			draw = function(self, graphics, mx, my)
-				if my < getTabbedPane():getTabsY() and self.object then
-					love.mouse.setVisible(false)
+				local x, y = graphics:screenToImageCoordinates(mx, my)
+				if not self:isWithinBounds(x, y) then
+					self.objectTransparency:setDestination(0)
+				elseif my < getTabbedPane():getTabsY() and self.object then
 					self.objectTransparency:setDestination(205)
 				else
-					love.mouse.setVisible(true)
 					self.objectTransparency:setDestination(25)
 				end
 				if self.object then
 					graphics:setColor(1, 1, 1, self.objectTransparency:get() / 255)
-					local x, y = graphics:screenToImageCoordinates(mx, my)
-					if graphics:getX() ~= self.lastX or graphics:getY() ~= self.lastY then
+					if self:areWeScrolling(graphics) then
 						self.object:draw(graphics, x, y)
 					else
-						self.object:draw(graphics, math.floor(x), math.floor(y))
+						self:drawObjectQuantized(graphics, x, y)
 					end
 					self.lastX, self.lastY = graphics:getX(), graphics:getY()
 				end
 				
+			end,
+
+			isWithinBounds = function(self, x, y)
+				return x >= 0 and x < 65536 and y >= 0 and y < 65536
+			end,
+
+			areWeScrolling = function(self, graphics)
+				return graphics:getX() ~= self.lastX or graphics:getY() ~= self.lastY
+			end,
+
+			drawObjectQuantized = function(self, graphics, x, y)
+				if self.object.quantizeXY then x, y = self.object:quantizeXY(x, y) end
+				self.object:draw(graphics, math.floor(x), math.floor(y))
 			end,
 
 			update = function(self, dt)
