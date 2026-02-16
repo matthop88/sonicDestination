@@ -8,6 +8,7 @@ return {
 			
 			chunks = {
 				selected = nil,
+				hidden   = { x = nil, y = nil },
 
 				place = function(self, chunkID, x, y, xFlipped)
 					for n, chunk in ipairs(self) do
@@ -25,19 +26,21 @@ return {
 					if CHUNKS then
 						graphics:setColor(1, 1, 1)
 						for _, chunk in ipairs(self) do
-							if chunk.xFlipped then
-								CHUNKS:drawAt(graphics, (chunk.x * 256) + 256, chunk.y * 256, chunk.id, -1, 1)
-							else
-								CHUNKS:drawAt(graphics, chunk.x * 256, chunk.y * 256, chunk.id, 1, 1)
+							if not self:isChunkHidden(chunk) then
+								if chunk.xFlipped then
+									CHUNKS:drawAt(graphics, (chunk.x * 256) + 256, chunk.y * 256, chunk.id, -1, 1)
+								else
+									CHUNKS:drawAt(graphics, chunk.x * 256, chunk.y * 256, chunk.id, 1, 1)
+								end
 							end
-						end
 
-						if self.selected then
-							graphics:setColor(1, 1, 1, 0.5)
-							graphics:rectangle("fill", self.selected.x * 256, self.selected.y * 256, 256, 256)
-							graphics:setColor(1, 1, 0)
-							graphics:setLineWidth(5)
-							graphics:rectangle("line", (self.selected.x * 256) - 2, (self.selected.y * 256) - 2, 260, 260)
+							if self.selected then
+								graphics:setColor(1, 1, 1, 0.5)
+								graphics:rectangle("fill", self.selected.x * 256, self.selected.y * 256, 256, 256)
+								graphics:setColor(1, 1, 0)
+								graphics:setLineWidth(5)
+								graphics:rectangle("line", (self.selected.x * 256) - 2, (self.selected.y * 256) - 2, 260, 260)
+							end
 						end
 					end
 				end,
@@ -47,12 +50,22 @@ return {
 					for _, chunk in ipairs(self) do
 						if chunk.x == x and chunk.y == y then
 							self.selected = chunk
+							break
 						end
 					end
 				end,
 
+				hideAt = function(self, x, y)
+					self.hidden.x, self.hidden.y = x, y
+				end,
+
+				isChunkHidden = function(self, chunk)
+					return chunk.x == self.hidden.x and chunk.y == self.hidden.y
+				end,
+
 				deselect = function(self)
 					self.selected = nil
+					self.hidden   = { x = nil, y = nil }
 				end,
 			},
 
@@ -101,6 +114,10 @@ return {
 
 			deselectAll = function(self)
 				self.chunks:deselect()
+			end,
+
+			hideChunkAt = function(self, x, y)
+				self.chunks:hideAt(math.floor(x / 256), math.floor(y / 256))
 			end,
 
 			placeChunk = function(self, chunkID, x, y, xFlipped)
