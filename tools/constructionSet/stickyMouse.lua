@@ -59,7 +59,8 @@ return {
 
 			handleKeypressed = function(self, key)
 				if     key == "x" and self.object and self.object.flipX        then self.object:flipX() 
-				elseif key == "s" and self.object and self.object.toggleSolids then self.object:toggleSolids() end
+				elseif key == "s" and self.object and self.object.toggleSolids then self.object:toggleSolids()
+				elseif key == "escape"                                         then self.object = nil      end
 			end,
 
 			handleMousepressed = function(self, graphics, mx, my, map)
