@@ -15,7 +15,7 @@ return {
             init = function(self, objects)
                 local x, y = LEFTMOST, TOPMOST
                 for _, obj in ipairs(objects) do
-                    table.insert(containers, CONTAINER:create(obj, x, y, CONTAINER_WIDTH, CONTAINER_HEIGHT))
+                    table.insert(containers, CONTAINER:create(obj, x, y, CONTAINER_WIDTH, CONTAINER_HEIGHT, self))
                     x = x + CONTAINER_WIDTH + 15
                     if x > 1080 then
                         x = LEFTMOST
@@ -52,6 +52,35 @@ return {
                     end
                 end
             end,
+
+            getSelectedIndex = function(self)
+                for n, c in ipairs(containers) do
+                    if c.isSelected then return n end
+                end
+            end,
+
+            selectNext = function(self)
+                local n = self:getSelectedIndex()
+                if n then
+                    containers[n]:deselect()
+                    n = n + 1
+                    if n > #containers then n = 1 end
+                    containers[n]:select()
+                    STICKY_MOUSE:onSelect(containers[n])
+                end
+            end,
+
+            selectPrev = function(self)
+                local n = self:getSelectedIndex()
+                if n then
+                    containers[n]:deselect()
+                    n = n - 1
+                    if n < 1 then n = #containers end
+                    containers[n]:select()
+                    STICKY_MOUSE:onSelect(containers[n])
+                end
+            end,
+
         }):init(params.objects)
     end,
 }
