@@ -1,7 +1,7 @@
 local COLOR = require("tools/lib/colors")
 
 return {
-    create = function(self, object, x, y, w, h)
+    create = function(self, object, x, y, w, h, palette)
         return {
             object     = object,
             x          = x,
@@ -10,6 +10,7 @@ return {
             h          = h,
             cx         = x + (w / 2),
             cy         = y + (h / 2),
+            palette    = palette,
             hasFocus   = false,
             isSelected = false,
             
@@ -71,6 +72,9 @@ return {
             newObject = function(self)
                 return self.object:newObject()
             end,
+
+            next = function(self) self.palette:selectNext() end,
+            prev = function(self) self.palette:selectPrev() end,
         }
     end,
 }
