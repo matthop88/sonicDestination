@@ -46,7 +46,8 @@ end
 --------------------------------------------------------------
 
 function drawMouse()
-    STICKY_MOUSE:draw(graphics, love.mouse.getPosition())
+    local mx, my = love.mouse.getPosition()
+    STICKY_MOUSE:draw(graphics, mx, my, MAP)
 end
 
 function drawCoordinates()
