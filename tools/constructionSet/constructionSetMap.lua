@@ -7,6 +7,8 @@ return {
 			coordinateMaster = require("tools/constructionSet/coordinateMaster"),
 			
 			chunks = {
+				selected = nil,
+
 				place = function(self, chunkID, x, y, xFlipped)
 					for n, chunk in ipairs(self) do
 						if chunk.x == x and chunk.y == y then
@@ -29,7 +31,28 @@ return {
 								CHUNKS:drawAt(graphics, chunk.x * 256, chunk.y * 256, chunk.id, 1, 1)
 							end
 						end
+
+						if self.selected then
+							graphics:setColor(1, 1, 1, 0.5)
+							graphics:rectangle("fill", self.selected.x * 256, self.selected.y * 256, 256, 256)
+							graphics:setColor(1, 1, 0)
+							graphics:setLineWidth(5)
+							graphics:rectangle("line", (self.selected.x * 256) - 2, (self.selected.y * 256) - 2, 260, 260)
+						end
 					end
+				end,
+
+				selectAt = function(self, x, y)
+					self:deselect()
+					for _, chunk in ipairs(self) do
+						if chunk.x == x and chunk.y == y then
+							self.selected = chunk
+						end
+					end
+				end,
+
+				deselect = function(self)
+					self.selected = nil
 				end,
 			},
 
@@ -67,9 +90,17 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if key == "s" then
-					print(self.graphics:getScale())
+				if     key == "s"      then print(self.graphics:getScale())
+				elseif key == "escape" then self:deselectAll()
 				end
+			end,
+
+			selectAt = function(self, x, y)
+				self.chunks:selectAt(math.floor(x / 256), math.floor(y / 256))
+			end,
+
+			deselectAll = function(self)
+				self.chunks:deselect()
 			end,
 
 			placeChunk = function(self, chunkID, x, y, xFlipped)
