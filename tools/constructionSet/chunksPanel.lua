@@ -44,6 +44,10 @@ local CHUNK = {
             flipX        = function(self) self.xFlip  = 0 - self.xFlip          end,
             toggleSolids = function(self) self.showSolids = not self.showSolids end,
 
+            place        = function(self, map, x, y)
+                map:placeChunk(self.chunkID, math.floor(x / 256), math.floor(y / 256), self.xFlip == -1)
+            end, 
+
         }):init(chunkID, containerWidth, containerHeight)
     end,
 }
@@ -98,6 +102,8 @@ return {
                 local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
                 CHUNKS                        = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
                 SOLIDS                        = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
+
+                return { chunks = CHUNKS, solids = SOLIDS }
             end,
 
             draw               = function(self, graphics)   palette:draw(graphics)             end,
