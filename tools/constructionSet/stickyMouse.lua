@@ -19,7 +19,7 @@ return {
 				end
 			end,
 
-			draw = function(self, graphics, mx, my)
+			draw = function(self, graphics, mx, my, map)
 				local x, y = graphics:screenToImageCoordinates(mx, my)
 				if not self:isWithinBounds(x, y) then
 					self.objectTransparency:setDestination(0)
@@ -29,11 +29,11 @@ return {
 					self.objectTransparency:setDestination(25)
 				end
 				if self.object then
-					graphics:setColor(1, 1, 1, self.objectTransparency:get() / 255)
+					graphics:setColor(1, 1, 1, self.objectTransparency:get() / 256)
 					if self:areWeScrolling(graphics) then
 						self.object:draw(graphics, x, y)
 					else
-						self:drawObjectQuantized(graphics, x, y)
+						self:drawObjectQuantized(graphics, x, y, map)
 					end
 					self.lastX, self.lastY = graphics:getX(), graphics:getY()
 				end
@@ -47,8 +47,11 @@ return {
 				return graphics:getX() ~= self.lastX or graphics:getY() ~= self.lastY
 			end,
 
-			drawObjectQuantized = function(self, graphics, x, y)
-				if self.object.quantizeXY then x, y = self.object:quantizeXY(x, y) end
+			drawObjectQuantized = function(self, graphics, x, y, map)
+				if self.object.quantizeXY then 
+					x, y = self.object:quantizeXY(x, y)
+					map:hideChunkAt(x, y)
+				end
 				self.object:draw(graphics, math.floor(x), math.floor(y))
 			end,
 
