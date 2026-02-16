@@ -67,11 +67,18 @@ return {
 			end,
 
 			handleMousepressed = function(self, graphics, mx, my, map)
+				local x, y = graphics:screenToImageCoordinates(mx, my)
+
+				map:deselectAll()
+				
 				if self.object and self.object.place then
-					local x, y = graphics:screenToImageCoordinates(mx, my)
 					self.object:place(map, x, y)
 					self.object = self.selected:newObject()
 					if self.object.hold then self.object:hold() end
+
+					return true
+				else
+					map:selectAt(x, y)
 				end
 			end,
 		}
