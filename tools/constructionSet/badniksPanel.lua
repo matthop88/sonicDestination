@@ -28,6 +28,10 @@ local BADNIK = {
             update = function(self, dt) self.sprite:update(dt) end,
             flipX  = function(self)     self.sprite:flipX()    end,
             
+            place        = function(self, map, x, y)
+                map:placeObject(self, x, y)
+            end, 
+            
         }):init(name, spritePath, containerWidth, containerHeight)
     end,
 }
