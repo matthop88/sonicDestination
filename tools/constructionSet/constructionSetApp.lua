@@ -37,7 +37,9 @@ function love.keypressed(key)
     MAP:handleKeypressed(key)
 end
 
--- ...
+function love.mousepressed(mx, my)
+    STICKY_MOUSE:handleMousepressed(graphics, mx, my, MAP)
+end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
@@ -62,7 +64,8 @@ PLUGINS = require("plugins/engine")
     {
         {   secondsWait = 0.25, 
             callback = function() 
-                CHUNKS_PANEL:initChunkInfo()
+                local chunkInfo = CHUNKS_PANEL:initChunkInfo()
+                MAP:initChunkInfo(chunkInfo)
             end,
         },
     }) 
