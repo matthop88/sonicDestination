@@ -1,11 +1,47 @@
+local CHUNKS, SOLIDS
+
 return {
 	create = function(self, params)
 		return {
 			graphics = params.graphics,
 			hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" },
 
+			chunks = {
+				xFlip = 1,
+
+				place = function(self, chunkID, x, y, xFlipped)
+					for n, chunk in ipairs(self) do
+						if chunk.x == x and chunk.y == y then
+							chunk.id = chunkID
+							chunk.xFlipped = xFlipped
+							return
+						end
+					end
+
+					table.insert(self, { id = chunkID, x = x, y = y, xFlipped = xFlipped })
+				end,
+
+				draw = function(self, graphics)
+					if CHUNKS then
+						graphics:setColor(1, 1, 1)
+						for _, chunk in ipairs(self) do
+							if chunk.xFlipped then
+								CHUNKS:drawAt(graphics, (chunk.x * 256) + 256, chunk.y * 256, chunk.id, -1, 1)
+							else
+								CHUNKS:drawAt(graphics, chunk.x * 256, chunk.y * 256, chunk.id, 1, 1)
+							end
+						end
+					end
+				end,
+			},
+
+			initChunkInfo = function(self, chunkInfo)
+				CHUNKS = chunkInfo.chunks
+				SOLIDS = chunkInfo.solids
+			end,
+
 			draw = function(self)
-				-- do nothing
+				self.chunks:draw(self.graphics)
 			end,
 
 			drawCoordinates = function(self)
@@ -25,6 +61,10 @@ return {
 				if key == "s" then
 					print(self.graphics:getScale())
 				end
+			end,
+
+			placeChunk = function(self, chunkID, x, y, xFlipped)
+				self.chunks:place(chunkID, x, y, xFlipped)
 			end,
 
 			update = function(self, dt)
