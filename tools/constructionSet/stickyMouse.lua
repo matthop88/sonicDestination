@@ -37,7 +37,6 @@ return {
 					end
 					self.lastX, self.lastY = graphics:getX(), graphics:getY()
 				end
-				
 			end,
 
 			isWithinBounds = function(self, x, y)
@@ -61,6 +60,13 @@ return {
 			handleKeypressed = function(self, key)
 				if     key == "x" and self.object and self.object.flipX        then self.object:flipX() 
 				elseif key == "s" and self.object and self.object.toggleSolids then self.object:toggleSolids() end
+			end,
+
+			handleMousepressed = function(self, graphics, mx, my, map)
+				if self.object and self.object.place then
+					local x, y = graphics:screenToImageCoordinates(mx, my)
+					self.object:place(map, x, y)
+				end
 			end,
 		}
 	end,
