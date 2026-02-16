@@ -146,17 +146,21 @@ return {
 	end,
 
 	handleMousepressed = function(self, mx, my, params)
-		if params.doubleClicked then
+		if params.doubleClicked and my >= self:getTabsY() then
 			self:toggleTabbedPaneOpening()
+			return true
 		elseif self.TABS.opened then
 			for n, t in ipairs(self.TABS) do
 				if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
 					self.TAB_INDEX = n
-					return
+					return true
 				end
 			end
 
-			self:handleMousepressedCurrentTab(mx, my - self:getTabsBottom()) 
+			if my >= self:getTabsY() then
+				self:handleMousepressedCurrentTab(mx, my - self:getTabsBottom()) 
+				return true
+			end
 		end
 	end,
 
