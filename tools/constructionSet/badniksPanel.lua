@@ -35,7 +35,7 @@ local BADNIK = {
             end,
             
             place        = function(self, map, x, y)
-                map:placeObject(self, x, y)
+                map:placeObject(self, math.floor(x), math.floor(y))
             end, 
 
         }):init(name, spritePath, containerWidth, containerHeight)
