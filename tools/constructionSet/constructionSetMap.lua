@@ -9,46 +9,46 @@ return {
 			chunks = {
 				selected = nil,
 				hidden   = { x = nil, y = nil },
+				held     = nil,
 
-				place = function(self, chunkID, x, y, xFlipped)
-					for n, chunk in ipairs(self) do
-						if chunk.x == x and chunk.y == y then
-							chunk.id = chunkID
-							chunk.xFlipped = xFlipped
-							return
+				place = function(self, obj, x, y)
+					if self.held and self.held.obj == obj then
+						self.held.x, self.held.y = x, y
+						self:releaseSelected()
+						return true
+					else
+						for n, chunk in ipairs(self) do
+							if chunk.x == x and chunk.y == y then
+								chunk.obj = obj
+								return
+							end
 						end
 					end
 
-					table.insert(self, { id = chunkID, x = x, y = y, xFlipped = xFlipped })
+					table.insert(self, { obj = obj, x = x, y = y })
 				end,
 
 				draw = function(self, graphics)
-					if CHUNKS then
-						graphics:setColor(1, 1, 1)
-						for _, chunk in ipairs(self) do
-							if not self:isChunkHidden(chunk) and chunk.id ~= nil then
-								if chunk.xFlipped then
-									CHUNKS:drawAt(graphics, (chunk.x * 256) + 256, chunk.y * 256, chunk.id, -1, 1)
-								else
-									CHUNKS:drawAt(graphics, chunk.x * 256, chunk.y * 256, chunk.id, 1, 1)
-								end
-							end
+					graphics:setColor(1, 1, 1)
+					for _, chunk in ipairs(self) do
+						if chunk.obj ~= nil and not self:isChunkHeld(chunk) and not self:isChunkHidden(chunk) then
+							chunk.obj:draw(graphics, (chunk.x * 256), (chunk.y * 256))
 						end
+					end
 
-						if self.selected and self.selected.id ~= nil then
-							graphics:setColor(1, 1, 1, 0.3)
-							graphics:rectangle("fill", self.selected.x * 256, self.selected.y * 256, 256, 256)
-							graphics:setColor(1, 1, 0)
-							graphics:setLineWidth(5)
-							graphics:rectangle("line", (self.selected.x * 256) - 2, (self.selected.y * 256) - 2, 260, 260)
-						end
+					if self.selected and self.selected.obj ~= nil then
+						graphics:setColor(1, 1, 1, 0.3)
+						graphics:rectangle("fill", self.selected.x * 256, self.selected.y * 256, 256, 256)
+						graphics:setColor(1, 1, 0)
+						graphics:setLineWidth(5)
+						graphics:rectangle("line", (self.selected.x * 256) - 2, (self.selected.y * 256) - 2, 260, 260)
 					end
 				end,
 
 				selectAt = function(self, x, y)
 					self:deselect()
 					for _, chunk in ipairs(self) do
-						if chunk.x == x and chunk.y == y and chunk.id ~= nil then
+						if chunk.x == x and chunk.y == y and chunk.obj ~= nil then
 							self.selected = chunk
 							break
 						end
@@ -56,13 +56,24 @@ return {
 				end,
 
 				deleteSelected = function(self)
-					print("Deleting selected")
-					if self.selected then self.selected.id = nil end
+					if self.selected then self.selected.obj = nil end
 					self:deselect()
 				end,
 
 				xFlipSelected = function(self)
-					if self.selected and self.selected.id ~= nil then self.selected.xFlipped = not self.selected.xFlipped end
+					if self.selected and self.selected.obj ~= nil then self.selected.obj:flipX() end
+				end,
+
+				holdSelected = function(self)
+					if self.selected and self.selected.obj ~= nil then
+						self.held = self.selected
+						return self.held.obj
+					end
+				end,
+
+				releaseSelected = function(self)
+					if self.held then self.held.obj:release() end
+					self.held = nil
 				end,
 
 				hideAt = function(self, x, y)
@@ -73,6 +84,10 @@ return {
 					return chunk.x == self.hidden.x and chunk.y == self.hidden.y
 				end,
 
+				isChunkHeld = function(self, chunk)
+					return self.held == chunk
+				end,
+
 				deselect = function(self)
 					self.selected = nil
 					self.hidden   = { x = nil, y = nil }
@@ -80,7 +95,9 @@ return {
 
 				report = function(self)
 					for n, chunk in ipairs(self) do
-						print(n .. ": { id = " .. (chunk.id or "nil") .. ", x = " .. chunk.x .. ", y = " .. chunk.y .. " }")
+						local obj = "nil"
+						if chunk.obj then obj = chunk.obj.chunkID end
+						print(n .. ": { obj = " .. obj .. ", x = " .. chunk.x .. ", y = " .. chunk.y .. " }")
 					end
 				end,
 			},
@@ -131,16 +148,18 @@ return {
 				self.chunks:selectAt(math.floor(x / 256), math.floor(y / 256))
 			end,
 
-			deselectAll    = function(self) self.chunks:deselect()       end,
-			deleteSelected = function(self) self.chunks:deleteSelected() end,
-			xFlipSelected  = function(self) self.chunks:xFlipSelected()  end,
+			deselectAll    = function(self)  self.chunks:deselect()            end,
+			deleteSelected = function(self)  self.chunks:deleteSelected()      end,
+			xFlipSelected  = function(self)  self.chunks:xFlipSelected()       end,
+			holdSelected   = function(self)  return self.chunks:holdSelected() end,
+			releaseSelected = function(self) self.chunks:releaseSelected()     end,
 
 			hideChunkAt = function(self, x, y)
 				self.chunks:hideAt(math.floor(x / 256), math.floor(y / 256))
 			end,
 
-			placeChunk = function(self, chunkID, x, y, xFlipped)
-				self.chunks:place(chunkID, x, y, xFlipped)
+			placeChunk = function(self, chunk, x, y)
+				return self.chunks:place(chunk, x, y)
 			end,
 
 			placeObject = function(self, obj, x, y)
