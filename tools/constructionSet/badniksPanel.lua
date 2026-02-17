@@ -20,6 +20,9 @@ local BADNIK = {
                 return self
             end,
 
+            getW = function(self) return self.sprite:getW() end,
+            getH = function(self) return self.sprite:getH() end,
+
             draw = function(self, graphics, x, y, w, h)
                 self.sprite:drawAt(graphics, x, y, self.scale, self.scale)
             end,
