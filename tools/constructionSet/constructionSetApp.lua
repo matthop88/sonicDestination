@@ -4,13 +4,13 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local STICKY_MOUSE  = require("tools/constructionSet/stickyMouse"):create()
+local graphics      = require("tools/lib/graphics"):create()
+
+local MAP           = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
+local STICKY_MOUSE  = require("tools/constructionSet/stickyMouse"):create(MAP)
 local CHUNKS_PANEL  = require("tools/constructionSet/chunksPanel"):create(STICKY_MOUSE)
 local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create(STICKY_MOUSE)
 local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
-
-local graphics      = require("tools/lib/graphics"):create()
-local MAP           = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -38,7 +38,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(mx, my)
-    STICKY_MOUSE:handleMousepressed(graphics, mx, my, MAP)
+    STICKY_MOUSE:handleMousepressed(graphics, mx, my)
 end
 
 --------------------------------------------------------------
@@ -47,7 +47,7 @@ end
 
 function drawMouse()
     local mx, my = love.mouse.getPosition()
-    STICKY_MOUSE:draw(graphics, mx, my, MAP)
+    STICKY_MOUSE:draw(graphics, mx, my)
 end
 
 function drawCoordinates()
