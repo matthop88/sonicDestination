@@ -1,10 +1,12 @@
 return {
-	create = function(self)
+	create = function(self, map)
 		return {
 			objectTransparency = require("tools/lib/tweenableValue"):create(25, { speed = 5 }),
+			map                = map,
 			lastX, lastY = 0, 0,
 
 			onSelect = function(self, container)
+				self.map:deselectAll()
 				if self.selected ~= container then
 					self.selected = container
 					self.object   = container:newObject()
@@ -13,13 +15,14 @@ return {
 			end,
 
 			onDeselect = function(self, container)
+				self.map:deselectAll()
 				if self.selected == container then
 					self.selected = nil
 					self.object   = nil
 				end
 			end,
 
-			draw = function(self, graphics, mx, my, map)
+			draw = function(self, graphics, mx, my)
 				local x, y = graphics:screenToImageCoordinates(mx, my)
 				if not self:isWithinBounds(x, y) then
 					self.objectTransparency:setDestination(0)
@@ -33,7 +36,7 @@ return {
 					if self:areWeScrolling(graphics) then
 						self.object:draw(graphics, x, y)
 					else
-						self:drawObjectQuantized(graphics, x, y, map)
+						self:drawObjectQuantized(graphics, x, y)
 					end
 					self.lastX, self.lastY = graphics:getX(), graphics:getY()
 				end
@@ -47,10 +50,10 @@ return {
 				return graphics:getX() ~= self.lastX or graphics:getY() ~= self.lastY
 			end,
 
-			drawObjectQuantized = function(self, graphics, x, y, map)
+			drawObjectQuantized = function(self, graphics, x, y)
 				if self.object.quantizeXY then 
 					x, y = self.object:quantizeXY(x, y)
-					map:hideChunkAt(x, y)
+					self.map:hideChunkAt(x, y)
 				end
 				self.object:draw(graphics, math.floor(x), math.floor(y))
 			end,
@@ -69,19 +72,19 @@ return {
 				end
 			end,
 
-			handleMousepressed = function(self, graphics, mx, my, map)
+			handleMousepressed = function(self, graphics, mx, my)
 				local x, y = graphics:screenToImageCoordinates(mx, my)
 
-				map:deselectAll()
+				self.map:deselectAll()
 				
 				if self.object and self.object.place then
-					self.object:place(map, x, y)
+					self.object:place(self.map, x, y)
 					self.object = self.selected:newObject()
 					if self.object.hold then self.object:hold() end
 
 					return true
 				else
-					map:selectAt(x, y)
+					self.map:selectAt(x, y)
 				end
 			end,
 		}
