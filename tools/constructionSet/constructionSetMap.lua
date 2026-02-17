@@ -12,20 +12,23 @@ return {
 				held     = nil,
 
 				place = function(self, obj, x, y)
-					if self.held and self.held.obj == obj then
-						self.held.x, self.held.y = x, y
-						self:releaseSelected()
-						return true
-					else
-						for n, chunk in ipairs(self) do
-							if chunk.x == x and chunk.y == y then
-								chunk.obj = obj
-								return
-							end
+					local wasHeld = self.held ~= nil
+					self:releaseSelected()
+					local replaced = false
+					for n, chunk in ipairs(self) do
+						if chunk.obj == obj then
+							chunk.obj = nil
+						elseif chunk.x == x and chunk.y == y then
+							chunk.obj = obj
+							replaced = true
 						end
 					end
 
-					table.insert(self, { obj = obj, x = x, y = y })
+					if not replaced then
+						table.insert(self, { obj = obj, x = x, y = y })
+					end
+
+					return replaced or wasHeld
 				end,
 
 				draw = function(self, graphics)
