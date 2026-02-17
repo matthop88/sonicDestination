@@ -28,9 +28,11 @@ local CHUNK = {
                             else                    SOLIDS:xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
                         end
                         graphics:setColor(1, 1, 1, graphics:getAlpha())
+                        graphics:setLineWidth(1)
                         graphics:rectangle("line", x - 128, y - 128, 256, 256)
                     else
-                        CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale) 
+                        if self.xFlip == -1 then CHUNKS:drawAt(graphics, x + 256, y, self.chunkID, self.scale * self.xFlip, self.scale)
+                        else                     CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale)  end
                     end
                 end
             end, 
@@ -45,7 +47,8 @@ local CHUNK = {
             toggleSolids = function(self) self.showSolids = not self.showSolids end,
 
             place        = function(self, map, x, y)
-                map:placeChunk(self.chunkID, math.floor(x / 256), math.floor(y / 256), self.xFlip == -1)
+                self:release()
+                return map:placeChunk(self, math.floor(x / 256), math.floor(y / 256))
             end, 
 
         }):init(chunkID, containerWidth, containerHeight)
