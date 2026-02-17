@@ -22,6 +22,15 @@ return {
 				end
 			end,
 
+			hold = function(self)
+				local obj = self.map:holdSelected()
+				if obj then
+					self.object = obj
+					self.object:hold()
+					self.map:deselectAll()
+				end
+			end,
+
 			draw = function(self, graphics, mx, my)
 				local x, y = graphics:screenToImageCoordinates(mx, my)
 				if not self:isWithinBounds(x, y) then
@@ -69,6 +78,7 @@ return {
 				elseif key == "escape"                                         then self.object = nil
 				elseif key == "tab"      and self.selected                     then self.selected:next()
 				elseif key == "shifttab" and self.selected                     then self.selected:prev()
+				elseif key == "space"                                          then self:hold()
 				end
 			end,
 
@@ -78,10 +88,13 @@ return {
 				self.map:deselectAll()
 				
 				if self.object and self.object.place then
-					self.object:place(self.map, x, y)
-					self.object = self.selected:newObject()
-					if self.object.hold then self.object:hold() end
-
+					if self.object:place(self.map, x, y) then
+						self.object = nil
+					else
+						self.object = self.selected:newObject()
+						if self.object.hold then self.object:hold() end
+					end
+					
 					return true
 				else
 					self.map:selectAt(x, y)
