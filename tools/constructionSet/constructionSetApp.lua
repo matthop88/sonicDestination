@@ -87,7 +87,7 @@ PLUGINS = require("plugins/engine")
     { 
         TABS = { 
              { label = "Chunks",  panel = CHUNKS_PANEL,  },
-             { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_2_PANEL }, },
+             { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
         },
         accessorFnName = "getTabbedPane",
