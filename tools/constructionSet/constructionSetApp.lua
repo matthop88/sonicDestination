@@ -4,13 +4,19 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-local graphics      = require("tools/lib/graphics"):create()
+local graphics        = require("tools/lib/graphics"):create()
 
-local MAP           = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
-local STICKY_MOUSE  = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL  = require("tools/constructionSet/chunksPanel"):create(STICKY_MOUSE)
-local BADNIKS_PANEL = require("tools/constructionSet/badniksPanel"):create(STICKY_MOUSE)
-local ITEMS_PANEL   = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
+local MAP             = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
+local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
+local CHUNKS_PANEL    = require("tools/constructionSet/chunksPanel"):create(STICKY_MOUSE)
+
+local BADNIKS_PANEL   = require("tools/constructionSet/badniksPanel"):create( { { name = "motobug", spritePath = "objects/motobug" } }, STICKY_MOUSE)
+local BADNIKS_2_PANEL = require("tools/constructionSet/badniksPanel"):create( { 
+    { name = "patabata", spritePath = "objects/patabata" },
+    { name = "tamabboh", spritePath = "objects/tamabboh" },
+}, STICKY_MOUSE)
+
+local ITEMS_PANEL     = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -81,7 +87,7 @@ PLUGINS = require("plugins/engine")
     { 
         TABS = { 
              { label = "Chunks",  panel = CHUNKS_PANEL,  },
-             { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL }, },
+             { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
         },
         accessorFnName = "getTabbedPane",
