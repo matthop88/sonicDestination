@@ -21,7 +21,7 @@ return {
 			
 			handleKeypressed   = function(self, key)
 				if     key == "optiontab"      then self:next()
-				elseif key == "shiftoptiontab" then self:prev()
+				elseif key == "optionshifttab" then self:prev()
 				end
 			end,
 		}
