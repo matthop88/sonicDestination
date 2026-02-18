@@ -112,6 +112,11 @@ return {
 		panel:draw(self.graphics)
 	end,
 
+	onCurrentPanel = function(self, fn) 
+		local currentPanel = self.TABS[self.TAB_INDEX].panel
+		if currentPanel ~= nil then fn(currentPanel) end
+	end,
+		
 	update = function(self, dt)
 		local mx, my = love.mouse.getPosition()
 
@@ -131,17 +136,18 @@ return {
 	end,
 
 	updateCurrentTab = function(self, dt)
-		local currentTab = self.TABS[self.TAB_INDEX]
-		if currentTab.panel then
-			local mx, my = love.mouse.getPosition()
-			currentTab.panel:update(dt, mx, my - self:getTabsBottom())
-		end
+		local mx, my = love.mouse.getPosition()
+		self:onCurrentPanel(function(p) p:update(dt, mx, my - self:getTabsBottom()) end)
 	end,
 
 	handleKeypressed = function(self, key)
 		local mx, my = love.mouse.getPosition()
-		if my > self:getTabsY() and key == "space" then
-			self:toggleTabbedPaneOpening()
+		if my > self:getTabsY() then
+			if key == "space" then
+				self:toggleTabbedPaneOpening()
+			elseif self.TABS.opened then
+				self:onCurrentPanel(function(p) p:handleKeypressed(key) end)
+			end
 		end
 	end,
 
@@ -158,16 +164,9 @@ return {
 			end
 
 			if my >= self:getTabsY() then
-				self:handleMousepressedCurrentTab(mx, my - self:getTabsBottom()) 
+				self:onCurrentPanel(function(p) p:handleMousepressed(mx, my - self:getTabsBottom()) end)
 				return true
 			end
-		end
-	end,
-
-	handleMousepressedCurrentTab = function(self, mx, my)
-		local currentTab = self.TABS[self.TAB_INDEX]
-		if currentTab.panel then
-			currentTab.panel:handleMousepressed(mx, my)
 		end
 	end,
 
