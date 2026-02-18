@@ -71,8 +71,7 @@ PLUGINS = require("plugins/engine")
     {
         {   secondsWait = 0.25, 
             callback = function() 
-                local chunkInfo = CHUNKS_PANEL:initChunkInfo()
-                MAP:initChunkInfo(chunkInfo)
+                CHUNKS_PANEL:initChunkInfo()
             end,
         },
     }) 
