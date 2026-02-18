@@ -1,11 +1,13 @@
 local COLOR = require("tools/lib/colors")
-local CHUNKS, SOLIDS
 
 -- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
 
 local CHUNK = {
-    create = function(self, chunkID, containerWidth, containerHeight)
+    create = function(self, chunkID, CHUNKS, SOLIDS, containerWidth, containerHeight)
         return ({
+            CHUNKS = CHUNKS,
+            SOLIDS = SOLIDS,
+
             isHeld = false,
             xFlip  = 1,
 
@@ -20,19 +22,19 @@ local CHUNK = {
             end,
 
             draw = function(self, graphics, x, y, w, h)
-                if CHUNKS then
+                if self.CHUNKS:isValid() then
                     if self.isHeld then
-                        CHUNKS:drawAt(graphics, x - (128 * self.xFlip), y - 128, self.chunkID, self.scale * self.xFlip, self.scale)
+                        self.CHUNKS:get():drawAt(graphics, x - (128 * self.xFlip), y - 128, self.chunkID, self.scale * self.xFlip, self.scale)
                         if self.showSolids then 
-                            if self.xFlip == 1 then SOLIDS:drawAt(graphics, x - 128, y - 128, self.chunkID) 
-                            else                    SOLIDS:xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
+                            if self.xFlip == 1 then self.SOLIDS:get():drawAt(graphics, x - 128, y - 128, self.chunkID) 
+                            else                    self.SOLIDS:get():xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
                         end
                         graphics:setColor(1, 1, 1, graphics:getAlpha())
                         graphics:setLineWidth(1)
                         graphics:rectangle("line", x - 128, y - 128, 256, 256)
                     else
-                        if self.xFlip == -1 then CHUNKS:drawAt(graphics, x + 256, y, self.chunkID, self.scale * self.xFlip, self.scale)
-                        else                     CHUNKS:drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale)  end
+                        if self.xFlip == -1 then self.CHUNKS:get():drawAt(graphics, x + 256, y, self.chunkID, self.scale * self.xFlip, self.scale)
+                        else                     self.CHUNKS:get():drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale)  end
                     end
                 end
             end, 
@@ -58,8 +60,8 @@ local CHUNK = {
 -- A CHUNK_TEMPLATE is what solely resides in the container. It is capable of creating chunk objects, which can be placed on the map.
 
 local CHUNK_TEMPLATE = {
-    create = function(self, chunkID, containerWidth, containerHeight)
-        local coreChunk = CHUNK:create(chunkID, containerWidth, containerHeight)
+    create = function(self, chunkID, CHUNKS, SOLIDS, containerWidth, containerHeight)
+        local coreChunk = CHUNK:create(chunkID, CHUNKS, SOLIDS, containerWidth, containerHeight)
 
         return {
             hasFocus   = false,
@@ -84,29 +86,33 @@ local CHUNK_TEMPLATE = {
             deselect  = function(self) self.isSelected = false end,
 
             newObject = function(self)
-                return CHUNK:create(self.chunkID)
+                return CHUNK:create(self.chunkID, CHUNKS, SOLIDS)
             end,
         }
     end,
 }
         
 return {
-    create = function(self, stickyMouse)
+    create = function(self, stickyMouse, ids)
+        local CHUNKS = require("tools/lib/dataStructures/lazyVal"):create()
+        local SOLIDS = require("tools/lib/dataStructures/lazyVal"):create()
+
         local chunkList = {}
         local WIDTH, HEIGHT = 128, 128
-        local ids = { 1, 2, 3, 4, 5, 6, 7, }
-        for _, id in ipairs(ids) do table.insert(chunkList, CHUNK_TEMPLATE:create(id, WIDTH, HEIGHT)) end
+        for _, id in ipairs(ids) do table.insert(chunkList, CHUNK_TEMPLATE:create(id, CHUNKS, SOLIDS, WIDTH, HEIGHT)) end
 
         local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
         
         return {
-            initChunkInfo = function(self)
-                local CHUNKS_PATH             = "game/resources/zones/chunks/ghzChunks_2.lua"
-                local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-                CHUNKS                        = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG)
-                SOLIDS                        = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
+            CHUNKS = CHUNKS,
+            SOLIDS = SOLIDS,
 
-                return { chunks = CHUNKS, solids = SOLIDS }
+            initChunkInfo = function(self, chunksPath)
+                local CHUNKS_PATH             = chunksPath
+                local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+                
+                self.CHUNKS:set(requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG))
+                self.SOLIDS:set(requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA))
             end,
 
             draw               = function(self, graphics)   palette:draw(graphics)             end,
