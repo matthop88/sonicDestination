@@ -8,15 +8,15 @@ local graphics        = require("tools/lib/graphics"):create()
 
 local MAP             = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/chunksPanel"):create(STICKY_MOUSE)
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE)
 
-local BADNIKS_PANEL   = require("tools/constructionSet/badniksPanel"):create( { { name = "motobug", spritePath = "objects/motobug" } }, STICKY_MOUSE)
-local BADNIKS_2_PANEL = require("tools/constructionSet/badniksPanel"):create( { 
+local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { { name = "motobug", spritePath = "objects/motobug" } }, STICKY_MOUSE)
+local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { 
     { name = "patabata", spritePath = "objects/patabata" },
     { name = "tamabboh", spritePath = "objects/tamabboh" },
 }, STICKY_MOUSE)
 
-local ITEMS_PANEL     = require("tools/constructionSet/itemsPanel"):create(STICKY_MOUSE)
+local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create(STICKY_MOUSE)
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
