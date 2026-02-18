@@ -8,8 +8,8 @@ local graphics        = require("tools/lib/graphics"):create()
 
 local MAP             = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE)
-
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
+local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { { name = "motobug", spritePath = "objects/motobug" } }, STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { 
     { name = "patabata", spritePath = "objects/patabata" },
@@ -71,7 +71,8 @@ PLUGINS = require("plugins/engine")
     {
         {   secondsWait = 0.25, 
             callback = function() 
-                CHUNKS_PANEL:initChunkInfo()
+                CHUNKS_PANEL:initChunkInfo("game/resources/zones/chunks/ghzChunks_2.lua")
+                CHUNKS_2_PANEL:initChunkInfo("game/resources/zones/chunks/scdPtpChunks.lua")
             end,
         },
     }) 
@@ -85,7 +86,7 @@ PLUGINS = require("plugins/engine")
     :add("tabbedPane",
     { 
         TABS = { 
-             { label = "Chunks",  panel = CHUNKS_PANEL,  },
+             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL  }, },
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
         },
