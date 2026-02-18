@@ -1,5 +1,3 @@
-local CHUNKS, SOLIDS
-
 return {
 	create = function(self, params)
 		return {
@@ -123,11 +121,6 @@ return {
 					end
 				end,
 			},
-
-			initChunkInfo = function(self, chunkInfo)
-				CHUNKS = chunkInfo.chunks
-				SOLIDS = chunkInfo.solids
-			end,
 
 			draw = function(self)
 				self.chunks:draw(self.graphics)
