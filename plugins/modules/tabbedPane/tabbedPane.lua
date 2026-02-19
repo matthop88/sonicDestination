@@ -146,7 +146,9 @@ return {
 			if key == "space" then
 				self:toggleTabbedPaneOpening()
 			elseif self.TABS.opened then
-				self:onCurrentPanel(function(p) p:handleKeypressed(key) end)
+				local result = false
+				self:onCurrentPanel(function(p) result = p:handleKeypressed(key) end)
+				return result
 			end
 		end
 	end,
