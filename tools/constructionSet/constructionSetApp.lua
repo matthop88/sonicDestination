@@ -82,6 +82,7 @@ PLUGINS = require("plugins/engine")
         bounds      = { x = 0, y = 0, w = 256, h = 256 },
     }) 
     :add("drawingLayer", { drawingFn = drawCoordinates })
+    :add("drawingLayer", { drawingFn = drawMouse })
     :add("tabbedPane",
     { 
         TABS = { 
@@ -92,4 +93,4 @@ PLUGINS = require("plugins/engine")
         accessorFnName = "getTabbedPane",
     })
     :add("scrolling",      { imageViewer = MAP })
-    :add("drawingLayer", { drawingFn = drawMouse })
+    
