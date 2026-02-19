@@ -98,7 +98,7 @@ return {
         local SOLIDS = require("tools/lib/dataStructures/lazyVal"):create()
 
         local chunkList = {}
-        local WIDTH, HEIGHT = 128, 128
+        local WIDTH, HEIGHT = 256, 256
         for _, id in ipairs(ids) do table.insert(chunkList, CHUNK_TEMPLATE:create(id, CHUNKS, SOLIDS, WIDTH, HEIGHT)) end
 
         local palette   = require("tools/constructionSet/palette"):create { objects = chunkList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
@@ -115,10 +115,10 @@ return {
                 self.SOLIDS:set(requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA))
             end,
 
-            draw               = function(self, graphics)   palette:draw(graphics)             end,
-            update             = function(self, dt, mx, my) palette:update(dt, mx, my)         end,
-            handleMousepressed = function(self, mx, my)     palette:handleMousepressed(mx, my) end,
-            handleKeypressed   = function(self, key)                                           end,
+            draw               = function(self, graphics)   palette:draw(graphics)               end,
+            update             = function(self, dt, mx, my) palette:update(dt, mx, my)           end,
+            handleMousepressed = function(self, mx, my)     palette:handleMousepressed(mx, my)   end,
+            handleKeypressed   = function(self, key)        return palette:handleKeypressed(key) end,                                 
         }
     end,
 }
