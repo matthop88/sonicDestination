@@ -22,6 +22,8 @@ return {
 			handleKeypressed   = function(self, key)
 				if     key == "optiontab"      then self:next()
 				elseif key == "optionshifttab" then self:prev()
+				else
+					return self:getPanel():handleKeypressed(key)
 				end
 			end,
 		}
