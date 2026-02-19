@@ -10,6 +10,8 @@ return {
 
         local containers = {}
         local STICKY_MOUSE = params.STICKY_MOUSE
+        local ROW_COUNT = 1
+        local y         = 0 
 
         return ({
             init = function(self, objects)
@@ -20,6 +22,7 @@ return {
                     if x > 1080 then
                         x = LEFTMOST
                         y = y + CONTAINER_HEIGHT + 15
+                        ROW_COUNT = ROW_COUNT + 1
                     end
                 end
 
@@ -28,22 +31,34 @@ return {
 
             draw = function(self, graphics)
                 graphics:clear(COLOR.DARK_GREY)
+                graphics:moveImage(0, -y)
                 for _, c in ipairs(containers) do
                     c:draw(graphics)
                 end
+                graphics:moveImage(0, y)
             end,
 
             update = function(self, dt, mx, my)
                 for _, c in ipairs(containers) do
-                    if c:isInside(mx, my) then c:gainFocus()
-                    else                       c:loseFocus() end
+                    if c:isInside(mx, my + y) then c:gainFocus()
+                    else                           c:loseFocus() end
                     c:update(dt)
+                end
+            end,
+
+            handleKeypressed = function(self, key)
+                if key == "down" then
+                    y = math.min(y + CONTAINER_HEIGHT + 15, (CONTAINER_HEIGHT + 15) * (ROW_COUNT - 1))
+                    return true
+                elseif key == "up" then
+                    y = math.max(y - CONTAINER_HEIGHT - 15, 0)
+                    return true
                 end
             end,
 
             handleMousepressed = function(self, mx, my)
                 for _, c in ipairs(containers) do
-                    if c:isInside(mx, my) then 
+                    if c:isInside(mx, my + y) then 
                         c:select()
                         STICKY_MOUSE:onSelect(c)
                     else                       
