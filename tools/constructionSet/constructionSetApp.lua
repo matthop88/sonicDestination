@@ -76,7 +76,6 @@ PLUGINS = require("plugins/engine")
             end,
         },
     }) 
-    :add("scrolling",      { imageViewer = MAP })
     :add("zooming",        { imageViewer = MAP })    
     :add("grid2d",         { 
         graphics    = graphics,
@@ -92,4 +91,5 @@ PLUGINS = require("plugins/engine")
         },
         accessorFnName = "getTabbedPane",
     })
+    :add("scrolling",      { imageViewer = MAP })
     :add("drawingLayer", { drawingFn = drawMouse })
