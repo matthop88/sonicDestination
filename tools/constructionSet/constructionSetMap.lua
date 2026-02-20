@@ -107,12 +107,22 @@ return {
 				objList = require("game/util/dataStructures/linkedList"):create(),  
     
 				place = function(self, obj, x, y)
-					self.objList:add { obj = obj, x = x, y = y }
+					if self.held and self.held.obj == obj then
+						self.held.x, self.held.y = x, y
+						self:releaseSelected()
+						return true
+					else
+						self.objList:add { obj = obj, x = x, y = y }
+					end
 				end,
 
 				draw = function(self, graphics)
 					graphics:setColor(1, 1, 1)
-					self.objList:forEach(function(o) o.obj:draw(graphics, o.x, o.y, 1, 1) end)
+					self.objList:forEach(function(o) 
+						if o ~= self.held then
+							o.obj:draw(graphics, o.x, o.y, 1, 1)
+						end
+					end)
 					if self.selected then
 						graphics:setColor(1, 1, 0)
 						graphics:setLineWidth(2)
@@ -166,6 +176,18 @@ return {
 					if self.selected then self.selected.x, self.selected.y = self.selected.x + x, self.selected.y + y end
 				end,
 
+				holdSelected = function(self)
+					if self.selected then
+						self.held = self.selected
+						return self.held.obj
+					end
+				end,
+
+				releaseSelected = function(self)
+					if self.held then self.held.obj:release() end
+					self.held = nil
+				end,
+
 			},
 
 			draw = function(self)
@@ -217,8 +239,15 @@ return {
 				self.objects:nudgeSelected(x, y)
 			end,
 
-			holdSelected   = function(self)  return self.chunks:holdSelected() end,
-			releaseSelected = function(self) self.chunks:releaseSelected()     end,
+			holdSelected   = function(self)  
+				local result = self.objects:holdSelected()
+				return result or self.chunks:holdSelected()
+			end,
+
+			releaseSelected = function(self) 
+				self.objects:releaseSelected()
+				self.chunks:releaseSelected()     
+			end,
 
 			hideChunkAt = function(self, x, y)
 				self.chunks:hideAt(math.floor(x / 256), math.floor(y / 256))
@@ -229,7 +258,7 @@ return {
 			end,
 
 			placeObject = function(self, obj, x, y)
-				self.objects:place(obj, x, y)
+				return self.objects:place(obj, x, y)
 			end,
 
 			update = function(self, dt)
