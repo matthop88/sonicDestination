@@ -104,21 +104,19 @@ return {
 			},
 
 			objects = {
+				objList = require("game/util/dataStructures/linkedList"):create(),  
+    
 				place = function(self, obj, x, y)
-					table.insert(self, { obj = obj, x = x, y = y })
+					self.objList:add { obj = obj, x = x, y = y }
 				end,
 
 				draw = function(self, graphics)
 					graphics:setColor(1, 1, 1)
-					for _, object in ipairs(self) do
-						object.obj:draw(graphics, object.x, object.y, 1, 1)
-					end
+					self.objList:forEach(function(o) o.obj:draw(graphics, o.x, o.y, 1, 1) end)
 				end,
 
 				update = function(self, dt)
-					for _, object in ipairs(self) do
-						object.obj:update(dt)
-					end
+					self.objList:forEach(function(o) o.obj:update(dt) end)
 				end,
 			},
 
