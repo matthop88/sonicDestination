@@ -17,6 +17,9 @@ local ITEM = {
                 return self
             end,
             
+            getW = function(self) return self.sprite:getW() end,
+            getH = function(self) return self.sprite:getH() end,
+
             draw = function(self, graphics, x, y, w, h)
                 self.sprite:drawAt(graphics, x, y, self.scale, self.scale)
             end,
@@ -29,9 +32,17 @@ local ITEM = {
                 self.sprite:update(dt)
             end,
 
+            flipX  = function(self)     
+                -- do nothing
+            end,
+
             place        = function(self, map, x, y)
-                map:placeObject(self, x, y)
+                self:release()
+                return map:placeObject(self, x, y)
             end, 
+
+            hold         = function(self) self.isHeld = true    end,
+            release      = function(self) self.isHeld = false   end,
             
         }):init(name, spritePath, containerWidth, containerHeight)
     end,
