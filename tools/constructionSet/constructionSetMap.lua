@@ -26,7 +26,7 @@ return {
 						table.insert(self, { obj = obj, x = x, y = y })
 					end
 
-					return replaced or wasHeld
+					return wasHeld
 				end,
 
 				draw = function(self, graphics)
