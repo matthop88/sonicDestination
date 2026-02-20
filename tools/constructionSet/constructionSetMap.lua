@@ -30,9 +30,11 @@ return {
 				end,
 
 				draw = function(self, graphics)
-					graphics:setColor(1, 1, 1)
 					for _, chunk in ipairs(self) do
-						if chunk.obj ~= nil and not self:isChunkHeld(chunk) and not self:isChunkHidden(chunk) then
+						if self:isChunkHidden(chunk) then graphics:setColor(0.3, 0.3, 0.3) 
+						else                              graphics:setColor(1, 1, 1)   end
+
+						if chunk.obj ~= nil and not self:isChunkHeld(chunk) then
 							chunk.obj:draw(graphics, (chunk.x * 256), (chunk.y * 256))
 						end
 					end
