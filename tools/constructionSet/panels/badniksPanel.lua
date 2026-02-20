@@ -38,8 +38,12 @@ local BADNIK = {
             end,
             
             place        = function(self, map, x, y)
-                map:placeObject(self, math.floor(x), math.floor(y))
+                self:release()
+                return map:placeObject(self, math.floor(x), math.floor(y))
             end, 
+
+            hold         = function(self) self.isHeld = true                    end,
+            release      = function(self) self.isHeld = false                   end,
 
         }):init(name, spritePath, containerWidth, containerHeight)
     end,
