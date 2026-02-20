@@ -113,11 +113,59 @@ return {
 				draw = function(self, graphics)
 					graphics:setColor(1, 1, 1)
 					self.objList:forEach(function(o) o.obj:draw(graphics, o.x, o.y, 1, 1) end)
+					if self.selected then
+						graphics:setColor(1, 1, 0)
+						graphics:setLineWidth(2)
+						graphics:rectangle("line", 
+							self.selected.x - 2 - self.selected.obj:getW() / 2,
+							self.selected.y - 2 - self.selected.obj:getH() / 2,
+							self.selected.obj:getW() + 4,
+							self.selected.obj:getH() + 4)
+					end
 				end,
 
 				update = function(self, dt)
 					self.objList:forEach(function(o) o.obj:update(dt) end)
 				end,
+
+				selectAt = function(self, x, y)
+					self:deselect()
+					local selectionMade = false
+					self.objList:forEach(function(o) 
+						if    x >= o.x - o.obj:getW() / 2 
+						  and x <  o.x + o.obj:getW() / 2 
+						  and y >= o.y - o.obj:getH() / 2 
+						  and y <  o.y + o.obj:getH() / 2 then
+						    self.selected = o
+						    selectionMade = true
+						end
+					end)
+
+					return selectionMade
+				end,
+
+				deselect = function(self)
+					self.selected = nil
+				end,
+
+				deleteSelected = function(self)
+					self.objList:forEach(function(o)
+            			if self.selected == o then
+                			self:deselect()
+                			self.objList:remove()
+                			return true
+            			end
+        			end)
+				end,
+
+				xFlipSelected = function(self)
+					if self.selected then self.selected.obj:flipX() end
+				end,
+
+				nudgeSelected = function(self, x, y)
+					if self.selected then self.selected.x, self.selected.y = self.selected.x + x, self.selected.y + y end
+				end,
+
 			},
 
 			draw = function(self)
@@ -130,21 +178,45 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if     key == "s"         then print(self.graphics:getScale())
-				elseif key == "escape"    then self:deselectAll()
-				elseif key == "backspace" then self:deleteSelected()
-				elseif key == "x"         then self:xFlipSelected()
-				elseif key == "c"         then self.chunks:report()
+				if     key == "s"          then print(self.graphics:getScale())
+				elseif key == "escape"     then self:deselectAll()
+				elseif key == "backspace"  then self:deleteSelected()
+				elseif key == "x"          then self:xFlipSelected()
+				elseif key == "c"          then self.chunks:report()
+				elseif key == "shiftleft"  then self.objects:nudgeSelected(-1,  0)
+				elseif key == "shiftright" then self.objects:nudgeSelected( 1,  0)
+				elseif key == "shiftup"    then self.objects:nudgeSelected( 0, -1)
+				elseif key == "shiftdown"  then self.objects:nudgeSelected( 0,  1)
 				end
 			end,
 
 			selectAt = function(self, x, y)
-				self.chunks:selectAt(math.floor(x / 256), math.floor(y / 256))
+				if not self.objects:selectAt(x, y) then
+					self.chunks:selectAt(math.floor(x / 256), math.floor(y / 256))
+				else
+					self.chunks:deselect()
+				end
 			end,
 
-			deselectAll    = function(self)  self.chunks:deselect()            end,
-			deleteSelected = function(self)  self.chunks:deleteSelected()      end,
-			xFlipSelected  = function(self)  self.chunks:xFlipSelected()       end,
+			deselectAll    = function(self)  
+				self.chunks:deselect()
+				self.objects:deselect()            
+			end,
+
+			deleteSelected = function(self)  
+				self.objects:deleteSelected()
+				self.chunks:deleteSelected()      
+			end,
+
+			xFlipSelected  = function(self)  
+				self.objects:xFlipSelected()
+				self.chunks:xFlipSelected()       
+			end,
+
+			nudgeSelected = function(self, x, y)
+				self.objects:nudgeSelected(x, y)
+			end,
+
 			holdSelected   = function(self)  return self.chunks:holdSelected() end,
 			releaseSelected = function(self) self.chunks:releaseSelected()     end,
 
