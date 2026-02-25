@@ -4,42 +4,49 @@ return {
 			graphics         = params.graphics,
 			coordinateMaster = require("tools/constructionSet/coordinateMaster"),
 			
-			chunks = {
+			chunks = ({
 				selected = nil,
 				hidden   = { x = nil, y = nil },
 				held     = nil,
 
+				init = function(self)
+					for i = 1, 256 do table.insert(self, {}) end
+					return self
+				end,
+
 				add = function(self, obj, x, y)
-					table.insert(self, { obj = obj, x = x, y = y })
+					local row = self[y + 1]
+					if #row <= x then
+						for j = #row, x + 1 do table.insert(row, {}) end
+					end
+					row[x + 1] = { obj = obj, x = x, y = y }
 				end,
 
 				place = function(self, obj, x, y)
+					if x < 0 or y < 0 or x > 255 or y > 255 then return end
 					local wasHeld = self.held ~= nil
 					self:releaseSelected()
-					local replaced = false
-					for n, chunk in ipairs(self) do
-						if chunk.obj == obj then
-							chunk.obj = nil
-						elseif chunk.x == x and chunk.y == y then
-							chunk.obj = obj
-							replaced = true
+					for r, row in ipairs(self) do
+						for c, chunk in ipairs(row) do
+							if chunk and chunk.obj == obj then
+								self[r][c] = {}
+							end
 						end
 					end
-
-					if not replaced then
-						self:add(obj, x, y)
-					end
+					self:add(obj, x, y)
 
 					return wasHeld
 				end,
 
 				draw = function(self, graphics)
-					for _, chunk in ipairs(self) do
-						if self:isChunkHidden(chunk) then graphics:setColor(0.3, 0.3, 0.3) 
-						else                              graphics:setColor(1, 1, 1)   end
+					for _, row in ipairs(self) do
+						for _, chunk in ipairs(row) do
+							if self:isChunkHidden(chunk) then graphics:setColor(0.3, 0.3, 0.3) 
+							else                              graphics:setColor(1, 1, 1)   end
 
-						if chunk.obj ~= nil and not self:isChunkHeld(chunk) then
-							chunk.obj:draw(graphics, (chunk.x * 256), (chunk.y * 256))
+							if chunk.obj ~= nil and not self:isChunkHeld(chunk) then
+								chunk.obj:draw(graphics, (chunk.x * 256), (chunk.y * 256))
+							end
 						end
 					end
 
@@ -53,12 +60,11 @@ return {
 				end,
 
 				selectAt = function(self, x, y)
+					if x < 0 or y < 0 or x > 255 or y > 255 then return end
 					self:deselect()
-					for _, chunk in ipairs(self) do
-						if chunk.x == x and chunk.y == y and chunk.obj ~= nil then
-							self.selected = chunk
-							break
-						end
+					local chunk = self[y + 1][x + 1]
+					if chunk and chunk.x == x and chunk.y == y and chunk.obj ~= nil then
+						self.selected = chunk
 					end
 				end,
 
@@ -99,15 +105,7 @@ return {
 					self.selected = nil
 					self.hidden   = { x = nil, y = nil }
 				end,
-
-				report = function(self)
-					for n, chunk in ipairs(self) do
-						local obj = "nil"
-						if chunk.obj then obj = chunk.obj.chunkID end
-						print(n .. ": { obj = " .. obj .. ", x = " .. chunk.x .. ", y = " .. chunk.y .. " }")
-					end
-				end,
-			},
+			}):init(),
 
 			objects = {
 				objList = require("game/util/dataStructures/linkedList"):create(),  
@@ -210,7 +208,6 @@ return {
 				elseif key == "escape"     then self:deselectAll()
 				elseif key == "backspace"  then self:deleteSelected()
 				elseif key == "x"          then self:xFlipSelected()
-				elseif key == "c"          then self.chunks:report()
 				elseif key == "shiftleft"  then self.objects:nudgeSelected(-1,  0)
 				elseif key == "shiftright" then self.objects:nudgeSelected( 1,  0)
 				elseif key == "shiftup"    then self.objects:nudgeSelected( 0, -1)
@@ -272,9 +269,22 @@ return {
 			end,
 
 			saveMap = function(self)
-				for _, chunk in ipairs(self.chunks) do
-					print(chunk.obj:toString())
+				print("return {")
+				for n, row in ipairs(self.chunks) do
+					if #row > 0 then
+						local rowString = "  { row = " .. n .. ", data = { "
+						for _, chunk in ipairs(row) do
+							if chunk.obj then
+								rowString = rowString .. chunk.obj:toString()
+							else
+								rowString = rowString .. "{}"
+							end
+							rowString = rowString .. ", "
+						end
+						print(rowString .. "} },")
+					end
 				end
+				print("}")
 			end,
 	
 			---------------------- Graphics Object Methods ------------------------
