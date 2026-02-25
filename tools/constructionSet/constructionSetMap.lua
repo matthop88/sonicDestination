@@ -206,7 +206,7 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if     key == "s"          then print(self.graphics:getScale())
+				if     key == "s"          then self:saveMap()
 				elseif key == "escape"     then self:deselectAll()
 				elseif key == "backspace"  then self:deleteSelected()
 				elseif key == "x"          then self:xFlipSelected()
@@ -269,6 +269,12 @@ return {
 
 			update = function(self, dt)
 				self.objects:update(dt)
+			end,
+
+			saveMap = function(self)
+				for _, chunk in ipairs(self.chunks) do
+					print(chunk.obj:toString())
+				end
 			end,
 	
 			---------------------- Graphics Object Methods ------------------------
