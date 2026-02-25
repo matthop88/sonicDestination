@@ -92,7 +92,7 @@ return {
 				if self.object and self.object.place then
 					if self.object:place(self.map, x, y) then
 						self.object = nil
-					else
+					elseif self.selected then
 						self.object = self.selected:newObject()
 						if self.object.hold then self.object:hold() end
 					end
