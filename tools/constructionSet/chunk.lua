@@ -52,7 +52,10 @@ return {
             end, 
 
             toString     = function(self)
-                return "{ \"" .. self.CHUNKS:get():getChunksName() .. "\", " .. self.chunkID .. "}"
+                local xFlipString = ""
+                if self.xFlip < 0 then xFlipString = ", xFlip = true" end
+
+                return "{ \"" .. self.CHUNKS:get():getChunksName() .. "\", " .. self.chunkID .. xFlipString .. "}"
             end,
 
         }):init(chunkID, containerWidth, containerHeight)
