@@ -24,7 +24,6 @@ return {
 
 				place = function(self, obj, x, y)
 					if x < 0 or y < 0 or x > 255 or y > 255 then return end
-					local wasHeld = self.held ~= nil
 					self:releaseSelected()
 					for r, row in ipairs(self) do
 						for c, chunk in ipairs(row) do
@@ -35,7 +34,7 @@ return {
 					end
 					self:add(obj, x, y)
 
-					return wasHeld
+					return true
 				end,
 
 				draw = function(self, graphics)
