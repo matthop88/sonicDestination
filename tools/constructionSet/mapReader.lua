@@ -17,7 +17,9 @@ return {
 					CHUNKS:set(chunkFactory:getChunks(element[CHUNKS_IMG_NAME]))
 					SOLIDS:set(chunkFactory:getSolids(element[CHUNKS_IMG_NAME]))
 
-					chunksList:add(CHUNK:create(element[CHUNK_ID], CHUNKS, SOLIDS), x - 1, y - 1)
+					local chunk = CHUNK:create(element[CHUNK_ID], CHUNKS, SOLIDS)
+					if element.xFlip then chunk:flipX() end
+					chunksList:add(chunk, x - 1, y - 1)
 				end
 			end
 		end
