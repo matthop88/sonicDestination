@@ -54,11 +54,11 @@ return {
             CHUNKS = CHUNKS,
             SOLIDS = SOLIDS,
 
-            initChunkInfo = function(self, chunksPath)
-                local CHUNKS_PATH             = chunksPath
+            initChunkInfo = function(self, chunksName)
+                local CHUNKS_PATH             = "game/resources/zones/chunks/" .. chunksName .. ".lua"
                 local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
                 
-                self.CHUNKS:set(requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG))
+                self.CHUNKS:set(requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG, chunksName))
                 self.SOLIDS:set(requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA))
             end,
 
