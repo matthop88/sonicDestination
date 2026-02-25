@@ -45,8 +45,10 @@ return {
             toggleSolids = function(self) self.showSolids = not self.showSolids end,
 
             place        = function(self, map, x, y)
-                self:release()
-                return map:placeChunk(self, math.floor(x / 256), math.floor(y / 256))
+                if map:placeChunk(self, math.floor(x / 256), math.floor(y / 256)) then
+                    self:release()
+                    return true
+                end
             end, 
 
             toString     = function(self)
