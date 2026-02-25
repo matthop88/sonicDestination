@@ -71,8 +71,8 @@ PLUGINS = require("plugins/engine")
     {
         {   secondsWait = 0.25, 
             callback = function() 
-                CHUNKS_PANEL:initChunkInfo("game/resources/zones/chunks/ghzChunks_2.lua")
-                CHUNKS_2_PANEL:initChunkInfo("game/resources/zones/chunks/scdPtpChunks.lua")
+                CHUNKS_PANEL:initChunkInfo("ghzChunks_2")
+                CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
                 require("tools/constructionSet/mapReader"):readMapIntoChunksList(require("tools/constructionSet/data/sampleData"), MAP.chunks)
             end,
         },
