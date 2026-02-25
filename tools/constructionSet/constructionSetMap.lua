@@ -9,6 +9,10 @@ return {
 				hidden   = { x = nil, y = nil },
 				held     = nil,
 
+				add = function(self, obj, x, y)
+					table.insert(self, { obj = obj, x = x, y = y })
+				end,
+
 				place = function(self, obj, x, y)
 					local wasHeld = self.held ~= nil
 					self:releaseSelected()
@@ -23,7 +27,7 @@ return {
 					end
 
 					if not replaced then
-						table.insert(self, { obj = obj, x = x, y = y })
+						self:add(obj, x, y)
 					end
 
 					return wasHeld
