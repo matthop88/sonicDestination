@@ -49,6 +49,10 @@ return {
                 return map:placeChunk(self, math.floor(x / 256), math.floor(y / 256))
             end, 
 
+            toString     = function(self)
+                return "{ \"" .. self.CHUNKS:get():getChunksName() .. "\", " .. self.chunkID .. "}"
+            end,
+
         }):init(chunkID, containerWidth, containerHeight)
     end,
 }
