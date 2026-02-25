@@ -1,11 +1,11 @@
 return {
-	create = function(self, chunksImg)
+	create = function(self, chunksImg, chunksName)
 		return ({
 			data = {},
 
-		    init = function(self, chunksImg)
-		    	self.chunksImg = chunksImg
-
+		    init = function(self, chunksImg, chunksName)
+		    	self.chunksImg  = chunksImg
+		    	self.chunksName = chunksName
 		    	self.data = {}
 
 			    local chunkCount = self:calculateChunkCount()
@@ -46,7 +46,11 @@ return {
 				graphics:draw(self.chunksImg, self:get(chunkID), x, y, 0, sX, sY)
 		    end,
 
-		}):init(chunksImg)
+		    getChunksName = function(self)
+		    	return self.chunksName
+		    end,
+
+		}):init(chunksImg, chunksName)
 	end,
 }
 
