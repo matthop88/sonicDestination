@@ -2,7 +2,7 @@ local COLOR = require("tools/lib/colors")
 
 -- A CHUNK is an object. It contains a chunkID, a reference to CHUNKS, and can draw itself into a space of optionally specified dimensions.
 
-local CHUNK = require("tools/constructionSet/chunk")
+local CHUNK = require("tools/constructionSet/templates/chunk")
 
 -- A CHUNK_TEMPLATE is what solely resides in the container. It is capable of creating chunk objects, which can be placed on the map.
 
