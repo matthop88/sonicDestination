@@ -191,6 +191,10 @@ return {
 					self.held = nil
 				end,
 
+				forEach = function(self, fn)
+					self.objList:forEach(fn)
+				end,
+
 			},
 
 			draw = function(self)
@@ -203,7 +207,9 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if     key == "s"          then self:saveMap()
+				if     key == "s"          then 
+					self:saveMap()
+					self:saveObjects()
 				elseif key == "escape"     then self:deselectAll()
 				elseif key == "backspace"  then self:deleteSelected()
 				elseif key == "x"          then self:xFlipSelected()
@@ -285,6 +291,15 @@ return {
 				end
 				print("}")
 			end,
+
+			saveObjects = function(self)
+				print("return {")
+				self.objects:forEach(function(object)
+					print("  { obj = \"" .. object.obj:getName() .. "\", x = " .. object.x .. ", y = " .. object.y .. ", },")
+				end)
+				print("}")
+			end,
+
 	
 			---------------------- Graphics Object Methods ------------------------
 
