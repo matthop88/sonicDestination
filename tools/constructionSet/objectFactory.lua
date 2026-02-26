@@ -37,5 +37,19 @@ return {
 			object     = ITEM,
 		},
 	},
+
+	getByName = function(self, name)
+		return self.library[name]
+	end,
+
+	createTemplate = function(self, name, width, height)
+		local info = self:getByName(name)
+		return info.template:create(info.name, info.spritePath, width, height)
+	end,
+
+	createObject = function(self, name, xFlip)
+		local info = self:getByName(name)
+		return info.object:create(info.name, info.spritePath, nil, nil, xFlip)
+	end,
 	
 }
