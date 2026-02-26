@@ -115,8 +115,12 @@ return {
 						self:releaseSelected()
 						return true
 					else
-						self.objList:add { obj = obj, x = x, y = y }
+						self:add(obj, x, y)
 					end
+				end,
+
+				add = function(self, obj, x, y)
+					self.objList:add { obj = obj, x = x, y = y }
 				end,
 
 				draw = function(self, graphics)
