@@ -17,10 +17,11 @@ local ITEM = {
                 return self
             end,
             
-            getW = function(self) return self.sprite:getW() end,
-            getH = function(self) return self.sprite:getH() end,
+            getName = function(self) return self.name          end,
+            getW    = function(self) return self.sprite:getW() end,
+            getH    = function(self) return self.sprite:getH() end,
 
-            draw = function(self, graphics, x, y, w, h)
+            draw    = function(self, graphics, x, y, w, h)
                 self.sprite:drawAt(graphics, x, y, self.scale, self.scale)
             end,
 
