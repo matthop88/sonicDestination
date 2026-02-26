@@ -1,7 +1,7 @@
 local CHUNKS_IMG_NAME = 1
 local CHUNK_ID        = 2
 
-local CHUNK = require("tools/constructionSet/chunk")
+local CHUNK = require("tools/constructionSet/templates/chunk")
 
 return {
 	readMapIntoChunksList = function(self, map, chunksList)
