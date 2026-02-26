@@ -24,4 +24,13 @@ return {
 			end
 		end
 	end,
+
+	readObjectsIntoObjectsList = function(self, objects, objectsList)
+		local objectFactory = require("tools/constructionSet/objectFactory")
+
+		for _, object in ipairs(objects) do
+			local newObject = objectFactory:createObject(object.obj)
+			objectsList:add(newObject, object.x, object.y)
+		end
+	end,
 }
