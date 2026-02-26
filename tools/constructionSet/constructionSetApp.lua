@@ -10,11 +10,8 @@ local MAP             = require("tools/constructionSet/constructionSetMap"):crea
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
 local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
 local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
-local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { { name = "motobug", spritePath = "objects/motobug" } }, STICKY_MOUSE)
-local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { 
-    { name = "patabata", spritePath = "objects/patabata" },
-    { name = "tamabboh", spritePath = "objects/tamabboh" },
-}, STICKY_MOUSE)
+local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
+local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
 local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create(STICKY_MOUSE)
 
@@ -74,6 +71,7 @@ PLUGINS = require("plugins/engine")
                 CHUNKS_PANEL:initChunkInfo("ghzChunks_2")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
                 require("tools/constructionSet/mapReader"):readMapIntoChunksList(require("tools/constructionSet/data/maps/sampleMap"), MAP.chunks)
+                require("tools/constructionSet/mapReader"):readObjectsIntoObjectsList(require("tools/constructionSet/data/objects/sampleObjects"), MAP.objects)
             end,
         },
     }) 
