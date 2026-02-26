@@ -1,12 +1,12 @@
-local ITEM_TEMPLATE = require("tools/constructionSet/templates/itemTemplate")
+local OBJECT_FACTORY = require("tools/constructionSet/objectFactory")
 
 return {
     create = function(self, stickyMouse)
         local itemList = {}
         local WIDTH, HEIGHT = 64, 64
 
-        table.insert(itemList, ITEM_TEMPLATE:create("ring", "objects/ring", WIDTH, HEIGHT))
-        table.insert(itemList, ITEM_TEMPLATE:create("giantRing", "objects/giantRing", WIDTH, HEIGHT))
+        table.insert(itemList, OBJECT_FACTORY:createTemplate("ring",      WIDTH, HEIGHT))
+        table.insert(itemList, OBJECT_FACTORY:createTemplate("giantRing", WIDTH, HEIGHT))
 
         local palette   = require("tools/constructionSet/palette"):create { objects = itemList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
         
