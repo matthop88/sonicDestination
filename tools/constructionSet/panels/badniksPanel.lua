@@ -1,11 +1,11 @@
-local BADNIK_TEMPLATE = require("tools/constructionSet/templates/badnikTemplate")
+local OBJECT_FACTORY = require("tools/constructionSet/objectFactory")
         
 return {
-    create = function(self, templateParams, stickyMouse)
+    create = function(self, names, stickyMouse)
         local badnikList = {}
         local WIDTH, HEIGHT = 96, 96
-        for _, param in ipairs(templateParams) do
-            table.insert(badnikList, BADNIK_TEMPLATE:create(param.name, param.spritePath, WIDTH, HEIGHT))
+        for _, name in ipairs(names) do
+            table.insert(badnikList, OBJECT_FACTORY:createTemplate(name, WIDTH, HEIGHT))
         end
 
         local palette   = require("tools/constructionSet/palette"):create { objects = badnikList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
