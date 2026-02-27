@@ -217,6 +217,7 @@ return {
 				if     key == "s"          then 
 					self:saveMap()
 					self:saveObjects()
+					print("Saved to " .. love.filesystem.getSaveDirectory())
 				elseif key == "escape"     then self:deselectAll()
 				elseif key == "backspace"  then self:deleteSelected()
 				elseif key == "x"          then self:xFlipSelected()
@@ -281,7 +282,12 @@ return {
 			end,
 
 			saveMap = function(self)
-				print("return {")
+				love.filesystem.createDirectory("tools/constructionSet/data/maps")
+				love.filesystem.write("tools/constructionSet/data/maps/sampleMap.lua", self:encodeMapData())
+			end,
+
+			encodeMapData = function(self)
+				local encodedMap = "return {\n"
 				for n, row in ipairs(self.chunks) do
 					if #row > 0 then
 						local rowString = "  { row = " .. n .. ", data = { "
@@ -293,20 +299,26 @@ return {
 							end
 							rowString = rowString .. ", "
 						end
-						print(rowString .. "} },")
+						encodedMap = encodedMap .. rowString .. "} },\n"
 					end
 				end
-				print("}")
+				return encodedMap .. "}\n"
 			end,
 
 			saveObjects = function(self)
-				print("return {")
-				self.objects:forEach(function(object)
-					print("  { obj = \"" .. object.obj:getName() .. "\", x = " .. object.x .. ", y = " .. object.y .. ", },")
-				end)
-				print("}")
+				love.filesystem.createDirectory("tools/constructionSet/data/objects")
+				love.filesystem.write("tools/constructionSet/data/objects/sampleObjects.lua", self:encodeObjectData())
 			end,
 
+			encodeObjectData = function(self)
+				local encodedObjects = "return {\n"
+				self.objects:forEach(function(object)
+					local xFlipString = ""
+					if object.obj.xFlip == -1 then xFlipString = ", xFlip = true" end
+					encodedObjects = encodedObjects .. "  { obj = \"" .. object.obj:getName() .. "\", x = " .. object.x .. ", y = " .. object.y .. xFlipString .. " },\n"
+				end)
+				return encodedObjects .. "}\n"
+			end,
 	
 			---------------------- Graphics Object Methods ------------------------
 
