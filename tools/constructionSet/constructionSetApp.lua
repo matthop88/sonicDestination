@@ -6,6 +6,8 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local graphics        = require("tools/lib/graphics"):create()
 
+local DATA_IN         = __PARAMS["dataIn"]  or "sample"
+local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
 local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
@@ -37,7 +39,13 @@ end
 
 function love.keypressed(key)
     STICKY_MOUSE:handleKeypressed(key)
-    MAP:handleKeypressed(key)
+    if key == "s" then
+        MAP:saveMap(DATA_OUT)
+        MAP:saveObjects(DATA_OUT)
+        print("Saved to " .. love.filesystem.getSaveDirectory())
+    else        
+        MAP:handleKeypressed(key)
+    end
 end
 
 function love.mousepressed(mx, my)
@@ -70,8 +78,17 @@ PLUGINS = require("plugins/engine")
             callback = function() 
                 CHUNKS_PANEL:initChunkInfo("ghzChunks_2")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
-                require("tools/constructionSet/mapReader"):readMapIntoChunksList(require("tools/constructionSet/data/maps/sampleMap"), MAP.chunks)
-                require("tools/constructionSet/mapReader"):readObjectsIntoObjectsList(require("tools/constructionSet/data/objects/sampleObjects"), MAP.objects)
+                
+                if DATA_IN then
+                    local mapPath = "tools/constructionSet/data/maps/" .. DATA_IN .. "Map"
+                    local objPath = "tools/constructionSet/data/objects/" .. DATA_IN .. "Objects"
+                    if love.filesystem.getInfo(mapPath .. ".lua") then
+                        require("tools/constructionSet/mapReader"):readMapIntoChunksList(require(mapPath), MAP.chunks)
+                    end
+                    if love.filesystem.getInfo(objPath .. ".lua") then
+                        require("tools/constructionSet/mapReader"):readObjectsIntoObjectsList(require(objPath), MAP.objects)
+                    end
+                end
             end,
         },
     }) 
