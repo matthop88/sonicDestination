@@ -214,11 +214,7 @@ return {
 			end,
 
 			handleKeypressed = function(self, key)
-				if     key == "s"          then 
-					self:saveMap()
-					self:saveObjects()
-					print("Saved to " .. love.filesystem.getSaveDirectory())
-				elseif key == "escape"     then self:deselectAll()
+				if     key == "escape"     then self:deselectAll()
 				elseif key == "backspace"  then self:deleteSelected()
 				elseif key == "x"          then self:xFlipSelected()
 				elseif key == "shiftleft"  then self.objects:nudgeSelected(-1,  0)
@@ -281,9 +277,9 @@ return {
 				self.objects:update(dt)
 			end,
 
-			saveMap = function(self)
+			saveMap = function(self, filename)
 				love.filesystem.createDirectory("tools/constructionSet/data/maps")
-				love.filesystem.write("tools/constructionSet/data/maps/sampleMap.lua", self:encodeMapData())
+				love.filesystem.write("tools/constructionSet/data/maps/" .. filename .. "Map.lua", self:encodeMapData())
 			end,
 
 			encodeMapData = function(self)
@@ -305,9 +301,9 @@ return {
 				return encodedMap .. "}\n"
 			end,
 
-			saveObjects = function(self)
+			saveObjects = function(self, filename)
 				love.filesystem.createDirectory("tools/constructionSet/data/objects")
-				love.filesystem.write("tools/constructionSet/data/objects/sampleObjects.lua", self:encodeObjectData())
+				love.filesystem.write("tools/constructionSet/data/objects/" .. filename .. "Objects.lua", self:encodeObjectData())
 			end,
 
 			encodeObjectData = function(self)
