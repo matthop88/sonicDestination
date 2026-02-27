@@ -24,7 +24,6 @@ return {
 
 				place = function(self, obj, x, y)
 					if x < 0 or y < 0 or x > 255 or y > 255 then return end
-					self:releaseSelected()
 					for r, row in ipairs(self) do
 						for c, chunk in ipairs(row) do
 							if chunk and chunk.obj == obj then
@@ -32,9 +31,12 @@ return {
 							end
 						end
 					end
+					obj:release()
 					self:add(obj, x, y)
-
-					return true
+					if self.held then
+						self:releaseSelected()
+						return true
+					end
 				end,
 
 				draw = function(self, graphics)
@@ -111,8 +113,8 @@ return {
     
 				place = function(self, obj, x, y)
 					if self.held and self.held.obj == obj then
-						self.held.x, self.held.y = x, y
 						self:releaseSelected()
+						self:add(obj, x, y)
 						return true
 					else
 						self:add(obj, x, y)
@@ -186,6 +188,7 @@ return {
 				holdSelected = function(self)
 					if self.selected then
 						self.held = self.selected
+						self:deleteSelected()
 						return self.held.obj
 					end
 				end,
