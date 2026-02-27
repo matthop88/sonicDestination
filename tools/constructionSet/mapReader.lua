@@ -29,7 +29,7 @@ return {
 		local objectFactory = require("tools/constructionSet/objectFactory")
 
 		for _, object in ipairs(objects) do
-			local newObject = objectFactory:createObject(object.obj)
+			local newObject = objectFactory:createObject(object.obj, object.xFlip)
 			objectsList:add(newObject, object.x, object.y)
 		end
 	end,
