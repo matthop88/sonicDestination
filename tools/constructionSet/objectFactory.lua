@@ -49,6 +49,9 @@ return {
 
 	createObject = function(self, name, xFlip)
 		local info = self:getByName(name)
+		if xFlip == true then xFlip = -1
+		else                  xFlip =  1 end
+		
 		return info.object:create(info.name, info.spritePath, nil, nil, xFlip)
 	end,
 	
