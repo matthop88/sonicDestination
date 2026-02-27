@@ -69,6 +69,7 @@ local APP_PATH = {
     slicer       = "tools/spriteSheetSlicer",
     transparency = "tools/transparencyEditor",
     sandbox      = "tools/spriteSandbox",
+    construction = "tools/constructionSet",
     test         = "testing",
 }
 
