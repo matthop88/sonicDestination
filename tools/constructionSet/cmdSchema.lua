@@ -12,5 +12,10 @@ return {
 			shortcut = "o",
 			required = false,
 		},
+		showData = {
+			description = "prints out a list of data files",
+			shortcut = "s",
+			required = false,
+		},
 	},
 }
