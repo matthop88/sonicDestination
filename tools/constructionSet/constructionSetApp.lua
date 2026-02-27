@@ -6,11 +6,12 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
 local graphics        = require("tools/lib/graphics"):create()
 
+local SHOW_DATA       = __PARAMS["showData"]
 local DATA_IN         = __PARAMS["dataIn"]  or "sample"
 local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 17, 19, 7, 37, 26, 31 })
 local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
@@ -65,6 +66,15 @@ function drawCoordinates()
     MAP:drawCoordinates()
 end
 
+function showData()
+    print("\nData Names:\n-----------")
+    local dataFilenames = love.filesystem.getDirectoryItems("tools/constructionSet/data/maps")
+    for _, dataFilename in ipairs(dataFilenames) do
+        print(string.sub(dataFilename, 1, string.len(dataFilename) - 7))
+    end
+    print()
+end    
+
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
@@ -76,10 +86,13 @@ PLUGINS = require("plugins/engine")
     {
         {   secondsWait = 0.25, 
             callback = function() 
-                CHUNKS_PANEL:initChunkInfo("ghzChunks_2")
+                CHUNKS_PANEL:initChunkInfo("ghzChunks")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
                 
-                if DATA_IN then
+                if SHOW_DATA then
+                    showData()
+                    love.event.quit()
+                elseif DATA_IN then
                     local mapPath = "tools/constructionSet/data/maps/" .. DATA_IN .. "Map"
                     local objPath = "tools/constructionSet/data/objects/" .. DATA_IN .. "Objects"
                     if love.filesystem.getInfo(mapPath .. ".lua") then
