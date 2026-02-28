@@ -278,8 +278,8 @@ return {
 			end,
 
 			saveMap = function(self, filename)
-				love.filesystem.createDirectory("tools/constructionSet/data/maps")
-				love.filesystem.write("tools/constructionSet/data/maps/" .. filename .. "Map.lua", self:encodeMapData())
+				love.filesystem.createDirectory("game/resources/zones/maps")
+				love.filesystem.write("game/resources/zones/maps/" .. filename .. "Map.lua", self:encodeMapData())
 			end,
 
 			encodeMapData = function(self)
@@ -302,8 +302,8 @@ return {
 			end,
 
 			saveObjects = function(self, filename)
-				love.filesystem.createDirectory("tools/constructionSet/data/objects")
-				love.filesystem.write("tools/constructionSet/data/objects/" .. filename .. "Objects.lua", self:encodeObjectData())
+				love.filesystem.createDirectory("game/resources/zones/objects")
+				love.filesystem.write("game/resources/zones/objects/" .. filename .. "Objects.lua", self:encodeObjectData())
 			end,
 
 			encodeObjectData = function(self)
