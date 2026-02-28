@@ -2,7 +2,7 @@ return ({
 	library = {},
 
     init = function(self)
-        return self:addChunks("ghzChunks_2")
+        return self:addChunks("ghzChunks")
                    :addChunks("scdPtpChunks")
     end,
 
