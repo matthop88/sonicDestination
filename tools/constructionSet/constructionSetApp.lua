@@ -11,7 +11,7 @@ local DATA_IN         = __PARAMS["dataIn"]  or "sample"
 local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/constructionSetMap"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 17, 19, 7, 37, 26, 31 })
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17 })
 local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
@@ -67,10 +67,13 @@ function drawCoordinates()
 end
 
 function showData()
+    local STRING_UTIL = require("tools/lib/stringUtil")
     print("\nData Names:\n-----------")
-    local dataFilenames = love.filesystem.getDirectoryItems("tools/constructionSet/data/maps")
+    local dataFilenames = love.filesystem.getDirectoryItems("game/resources/zones/maps")
     for _, dataFilename in ipairs(dataFilenames) do
-        print(string.sub(dataFilename, 1, string.len(dataFilename) - 7))
+        if STRING_UTIL:endsWith(dataFilename, ".lua") then
+            print(string.sub(dataFilename, 1, string.len(dataFilename) - 7))
+        end
     end
     print()
 end    
@@ -93,8 +96,8 @@ PLUGINS = require("plugins/engine")
                     showData()
                     love.event.quit()
                 elseif DATA_IN then
-                    local mapPath = "tools/constructionSet/data/maps/" .. DATA_IN .. "Map"
-                    local objPath = "tools/constructionSet/data/objects/" .. DATA_IN .. "Objects"
+                    local mapPath = "game/resources/zones/maps/" .. DATA_IN .. "Map"
+                    local objPath = "game/resources/zones/objects/" .. DATA_IN .. "Objects"
                     if love.filesystem.getInfo(mapPath .. ".lua") then
                         require("tools/constructionSet/mapReader"):readMapIntoChunksList(require(mapPath), MAP.chunks)
                     end
