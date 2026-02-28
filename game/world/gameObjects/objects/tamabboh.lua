@@ -1,24 +1,31 @@
-return {
-    imageName = "PTPBadniksTransparent",
+local SOUND_MANAGER  = requireRelative("sound/soundManager")
+local SCRIPT_REPO    = requireRelative("world/badniks/scripts/lib/scriptRepo")
 
-    animations  = {
-        grinding = { fps = 5, isDefault = true, offset = { x = 20, y = 15 }, w = 31, h = 31,
-            hitBox = { rX = 10, rY = 8, danger = 1 },
-            ----------------------------------------------------------------------------
-            { x = 405, y = 197, w = 31, h = 29, offset = { x = 20, y = 14 }, },
-            { x = 445, y = 197, w = 31, h = 28, offset = { x = 20, y = 14 }, },
-            { x = 445, y = 239, w = 31, h = 28, offset = { x = 20, y = 14 }, },
-        },
-        charging = { fps = 1, offset = { x = 20, y = 15 }, w = 32, h = 31,
-            hitBox = { rX = 10, rY = 8, danger = 1 },
-            { x = 405, y = 236, w = 32, h = 31, offset = { x = 20, y = 15 }, },
-        },
-        tamabbohDying  = { fps = 5, offset = { x = 20, y = 15 }, w = 31, h = 31,
-            reps = 1,
-            parts = {
-                {   name = "tamabbohBody", animation = "dying",  },
-                {   name = "explosion",    animation = "poof",   },
-            },
-        },
-    },
+return {
+	create = function(self)
+		local SENSOR_DX = 10
+		local SENSOR_DY = 21
+
+		return {
+			script   = SCRIPT_REPO:get("pacingBackAndForth"),
+
+			onCollisionWithPlayer = function(self, player)
+				if player:isSpinning() then
+					self:setAnimation("tamabbohDying")
+					self:setDead()
+					SOUND_MANAGER:play("badnikDeath")
+        			player:reboundIfPossible(self.y, 180)
+				end
+			end,
+
+			scanGround = function(self)
+				if not self.groundScanner then
+					self.groundScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = SENSOR_DX, dy = SENSOR_DY }
+				end
+
+				return self.groundScanner:scan()
+			end,
+
+		}
+	end,
 }
