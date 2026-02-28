@@ -12,8 +12,9 @@ return {
     init = function(self, params)
         self.map    = params.map
         
-        MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map                .. ".lua")
-        MAP_DATA    = dofile(MAP_PATH)
+        MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map)
+        if _LOADED then _LOADED[MAP_PATH] = nil end
+        MAP_DATA    = require(MAP_PATH)
 
         CHUNKS_PATH = relativePath("resources/zones/chunks/" .. MAP_DATA.chunksDataName .. ".lua")
 
@@ -44,9 +45,9 @@ return {
 
 	drawTerrain = function(self)
         self.graphics:setColor(1, 1, 1)
-        for rowNum, row in ipairs(MAP_DATA) do
-            for colNum, chunkInfo in ipairs(row) do
-                self:drawChunk(rowNum, colNum, chunkInfo)
+        for _, row in ipairs(MAP_DATA) do
+            for colNum, chunkInfo in ipairs(row.data) do
+                self:drawChunk(row.row, colNum, chunkInfo)
             end
         end
         self.graphics:setColor(1, 1, 1)
@@ -99,8 +100,8 @@ return {
 
     getChunkIDAt = function(self, x, y)
         local mapX, mapY = self:screenToMapCoordinates(x, y)
-        local mapRow = MAP_DATA[mapY] or {}
-        return mapRow[mapX]
+        local mapRow = MAP_DATA[mapY] or { data = {} }
+        return mapRow.data[mapX]
     end,
 
     screenToMapCoordinates = function(self, x, y)
