@@ -13,7 +13,7 @@ return ({
         local chunks = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG, chunksName)
         local solids = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
 
-        self.library[chunksName] = { chunks = chunks, solids = solids }
+        self.library[chunksName] = { chunks = chunks, solids = solids, data = CHUNKS_DATA }
 
         return self
     end,
@@ -26,5 +26,10 @@ return ({
     getSolids = function(self, chunksName)
     	local obj = self.library[chunksName]
     	if obj then return obj.solids end
+    end,
+
+    getData = function(self, chunksName)
+        local obj = self.library[chunksName]
+        if obj then return obj.data end
     end,
 }):init()
