@@ -5,7 +5,7 @@ local CHUNK = require("tools/constructionSet/templates/chunk")
 
 return {
 	readMapIntoChunksList = function(self, map, chunksList)
-		local chunkFactory = require("tools/constructionSet/chunkFactory")
+		local chunkFactory = require("game/world/terrain/chunkFactory")
 
 		local CHUNK_DATA_NAME = map.chunksDataName
 
