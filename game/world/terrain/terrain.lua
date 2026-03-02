@@ -2,12 +2,13 @@ local MAP_DATA
 local CHUNKS_DATA
 local SOLIDS
 local CHUNKS
+local CHUNK_FACTORY = requireRelative("world/terrain/chunkFactory")
+
 return {
     showSolids = false,
     
     init = function(self, params)
-        local chunkFactory = requireRelative("world/terrain/chunkFactory")
-
+        
         self.map    = params.map
         
         local MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map)
@@ -18,13 +19,15 @@ return {
         self.pageHeight = #MAP_DATA    * 256
         self.graphics   = params.GRAPHICS
 
-        CHUNKS_DATA = chunkFactory:getData(MAP_DATA.chunksDataName)
-        SOLIDS      = chunkFactory:getSolids(MAP_DATA.chunksDataName)
-        CHUNKS      = chunkFactory:getChunks(MAP_DATA.chunksDataName)
-        
         return self
     end,
 
+    initChunks = function(self)
+        CHUNKS_DATA = CHUNK_FACTORY:getData(MAP_DATA.chunksDataName)
+        SOLIDS      = CHUNK_FACTORY:getSolids(MAP_DATA.chunksDataName)
+        CHUNKS      = CHUNK_FACTORY:getChunks(MAP_DATA.chunksDataName)
+    end,
+        
     draw = function(self)
 		self:drawBackground()
 		self:drawTerrain()
@@ -62,6 +65,7 @@ return {
     end,
 
     drawVanillaChunk = function(self, rowNum, colNum, chunkID)
+        if not CHUNKS then self:initChunks() end
         CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
         if self.showSolids then 
             SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
@@ -69,6 +73,7 @@ return {
     end,
 
     drawXFlippedChunk = function(self, rowNum, colNum, chunkID)
+        if not CHUNKS then self:initChunks() end
         CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
         if self.showSolids then
             SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
@@ -89,6 +94,7 @@ return {
     end,
 
     getChunkAt = function(self, x, y)
+        if not CHUNKS_DATA then self:initChunks() end
         local chunkID = self:getChunkIDAt(x, y)
         if    chunkID == nil then return nil
         else                      return CHUNKS_DATA[chunkID] end
@@ -110,6 +116,7 @@ return {
     end,
 
     getSolidAt = function(self, x, y)
+        if not SOLIDS then self:initChunks() end
         local chunkID = self:getChunkIDAt(x, y)
         if chunkID == nil then return nil
         else
@@ -132,6 +139,6 @@ return {
     end,
 
 	getObjectsDataName = function(self)
-		return MAP_DATA.objectsDataName
+		return MAP_DATA.objectsDataName or "ghz1Objects"
 	end,
 }
