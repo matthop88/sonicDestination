@@ -7,29 +7,40 @@ return ({
     end,
 
 	addChunks = function(self, chunksName)
-		local CHUNKS_PATH = "game/resources/zones/chunks/" .. chunksName .. ".lua"
-        local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
-                
-        local chunks = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG, chunksName)
-        local solids = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
-
-        self.library[chunksName] = { chunks = chunks, solids = solids, data = CHUNKS_DATA }
+		self.library[chunksName] = { chunks = nil, solids = nil, data = nil,
+            init = function(self)
+                local CHUNKS_PATH = relativePath("resources/zones/chunks/" .. chunksName .. ".lua")
+                local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
+            
+                self.chunks = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG, chunksName)
+                self.solids = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
+                self.data   = CHUNKS_DATA
+                self.init   = nil
+            end, }
 
         return self
     end,
 
+    getChunkInfo = function(self, chunksName)
+        local chunkInfo = self.library[chunksName]
+        if chunkInfo and chunkInfo.init then
+            chunkInfo:init()
+        end
+        return chunkInfo
+    end,
+
     getChunks = function(self, chunksName)
-    	local obj = self.library[chunksName]
-    	if obj then return obj.chunks end
+    	local chunkInfo = self:getChunkInfo(chunksName)
+    	if chunkInfo then return chunkInfo.chunks end
     end,
 
     getSolids = function(self, chunksName)
-    	local obj = self.library[chunksName]
-    	if obj then return obj.solids end
+    	local chunkInfo = self:getChunkInfo(chunksName)
+        if chunkInfo then return chunkInfo.solids end
     end,
 
     getData = function(self, chunksName)
-        local obj = self.library[chunksName]
-        if obj then return obj.data end
+        local chunkInfo = self:getChunkInfo(chunksName)
+        if chunkInfo then return chunkInfo.data end
     end,
 }):init()
