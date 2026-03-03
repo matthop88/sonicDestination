@@ -35,7 +35,7 @@ return {
 
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
-        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "ghz1Map", chunks = "ghzChunks" })
+        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "scdPtp1", })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
         return self
@@ -44,6 +44,7 @@ return {
     refreshObjectsMap = function(self, x, y)
         local objectsMap = requireRelative("resources/zones/objects/" .. TERRAIN:getObjectsDataName())
         if not x then
+            objectsMap.origin = objectsMap.origin or { x = 512, y = 940 }
             x, y = objectsMap.origin.x, objectsMap.origin.y
         end
         GLOBALS:getPlayer():initPosition(x, y, false)
