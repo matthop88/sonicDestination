@@ -34,7 +34,7 @@ return {
 
             place        = function(self, map, x, y)
                 self:release()
-                return map:placeObject(self, x, y)
+                return map:placeObject(self, math.floor(x), math.floor(y))
             end, 
 
             hold         = function(self) self.isHeld = true    end,
