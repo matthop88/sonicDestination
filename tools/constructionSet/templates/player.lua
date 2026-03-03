@@ -40,8 +40,15 @@ return {
                 return map:placePlayer(self, math.floor(x), math.floor(y))
             end, 
 
-            hold         = function(self) self.isHeld = true                    end,
-            release      = function(self) self.isHeld = false                   end,
+            hold         = function(self) 
+                self.isHeld = true
+                self.sprite:setAnimation("running")
+            end,
+
+            release      = function(self) 
+                self.isHeld = false 
+                self.sprite:setAnimation("standing")
+            end,
 
         }):init(name, spritePath, containerWidth, containerHeight)
     end,
