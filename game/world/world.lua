@@ -12,6 +12,8 @@ return {
 
     events  = {},
 
+    GROUND_LEVEL = 940,
+
     fadeLayer = { 
         color    = { r = 1, g = 1, b = 1 }, 
         alpha    = 0,
@@ -154,5 +156,9 @@ return {
 
     getObjectsList = function(self)
         return self.objects
+    end,
+
+    getGroundLevel = function(self)
+        return self.GROUND_LEVEL
     end,
 }
