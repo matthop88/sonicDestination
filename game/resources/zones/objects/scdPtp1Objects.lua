@@ -1,14 +1,12 @@
 return {
-  sourceImage      = "resources/zones/maps/SCD_PTP_Map_Act1.png",
-  origin           = { x = 56,  y = 238,  },
-  -------------------------------------------
-  { obj = "patabata", x = 300, y = 200,  },
-  { obj = "giantRing", x = 963, y = 128, inactive = true, threshold = 100,
-    destination = { 
-      { map = "ghz1Map", coordinates = { x = 256,  y = 500, } },
-      { map = "ghz1Map", coordinates = { x = 2048, y = 100, } },
-      { map = "ghz1Map", coordinates = { x = 8192, y = 800, } },
-    },
-  },
-
+  { obj = "tamabboh", x = 1050, y = 430 },
+  { obj = "tamabboh", x = 1513, y = 238 },
+  { obj = "tamabboh", x = 2166, y = 268, xFlip = true },
+  { obj = "patabata", x = 24, y = 237, xFlip = true },
+  { obj = "patabata", x = 415, y = 361 },
+  { obj = "patabata", x = 898, y = 295 },
+  { obj = "patabata", x = 1397, y = 127 },
+  { obj = "patabata", x = 1879, y = 282, xFlip = true },
+  { obj = "patabata", x = 2431, y = 263, xFlip = true },
+  { obj = "giantRing", x = 2210, y = 161 },
 }
