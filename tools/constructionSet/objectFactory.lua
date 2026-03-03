@@ -14,6 +14,12 @@ return {
 			template   = PLAYER_TEMPLATE,
 			object     = PLAYER,
 		},
+		sonic2 = {
+			name       = "sonic2",
+			spritePath = "sonic2",
+			template   = PLAYER_TEMPLATE,
+			object     = PLAYER,
+		},
 		motobug = {
 			name       = "motobug",
 			spritePath = "objects/motobug",
