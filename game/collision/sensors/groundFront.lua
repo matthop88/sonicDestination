@@ -36,7 +36,7 @@ return {
 			end,
 
 			scan = function(self, dt)
-				WORLD.GROUND_LEVEL = 1262
+				WORLD:refreshGroundLevel()
 				local rayLength = (self.owner.velocity.y * dt) + 16
 				if rayLength > 0 then
 					local scanY = 1
