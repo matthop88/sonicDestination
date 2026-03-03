@@ -122,6 +122,10 @@ return {
 				self:refreshAnimation()
 			end,
 
+			setAnimation = function(self, name)
+				self.currentAnimation = self.animations[name]
+			end,
+
 			toggleFreeze = function(self) self.frozen = not self.frozen     end,
 			flipX        = function(self) self.xScale = self.xScale * -1    end,
 			prevFrame    = function(self) self.currentAnimation:prevFrame() end,
