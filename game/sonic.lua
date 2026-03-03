@@ -35,7 +35,6 @@ return {
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Air_State#Air_Drag
     ------------------------------------------------------------------
-    GROUND_LEVEL            = 940,
 
     HITBOX                  = nil,
     ringCount               = 0,
@@ -75,7 +74,7 @@ return {
         self:moveTo(x, y)
         self:activate()
         if standing then
-            self.GROUND_LEVEL = y
+            WORLD.GROUND_LEVEL = y
             self.nextState  = STATES.STAND_RIGHT
             self.velocity.x = 0
             self.velocity.y = 0
@@ -193,7 +192,7 @@ return {
     end,
 
     isGrounded    = function(self)
-        return self.position.y == self.GROUND_LEVEL and self.velocity.y >= 0
+        return self.position.y == WORLD:getGroundLevel() and self.velocity.y >= 0
     end,
     
     getState      = function(self)        return self.nextState   end,
@@ -220,8 +219,8 @@ return {
         self.position.x = self.position.x + (self.velocity.x * dt)
         local oldYPosition = self.position.y
         self.position.y = self.position.y + (self.velocity.y * dt)
-        if self.velocity.y > 0 and oldYPosition - 10 < self.GROUND_LEVEL and self.position.y + 10 >= self.GROUND_LEVEL then
-            self.position.y = self.GROUND_LEVEL
+        if self.velocity.y > 0 and oldYPosition - 10 < WORLD:getGroundLevel() and self.position.y + 10 >= WORLD:getGroundLevel() then
+            self.position.y = WORLD:getGroundLevel()
         end
     end,
 
