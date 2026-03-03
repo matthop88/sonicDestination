@@ -5,8 +5,9 @@ local COLOR_PURE_WHITE    = { 1, 1,    1 }
 local leftX, topY, rightX, bottomY
 
 return {
-    getWidth  = love.graphics.getWidth,
-    getHeight = love.graphics.getHeight,
+    getWidth    = love.graphics.getWidth,
+    getHeight   = love.graphics.getHeight,
+    groundLevel = 1282,
 
     init = function(self, params)
         self.graphics = params.GRAPHICS
@@ -27,12 +28,16 @@ return {
     drawHorizontalLine = function(self)
         self.graphics:setColor(COLOR_PURE_WHITE)
         self.graphics:setLineWidth(1.5)
-        self.graphics:line(leftX, 1282, rightX, 1282)
+        self.graphics:line(leftX, self.groundLevel, rightX, self.groundLevel)
     end,
 
     drawVerticalLine = function(self)
         self.graphics:setColor(COLOR_PURE_WHITE)
         self.graphics:setLineWidth(1.5)
         self.graphics:line(leftX + (rightX - leftX) / 2, topY, leftX + (rightX - leftX) / 2, bottomY)
+    end,
+
+    setGroundLevel = function(self, groundLevel)
+        self.groundLevel = groundLevel
     end,
 }
