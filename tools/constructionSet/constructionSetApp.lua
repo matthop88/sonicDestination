@@ -19,7 +19,7 @@ local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):cre
 local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create(STICKY_MOUSE)
 
 local PLAYER_PANEL    = require("tools/constructionSet/panels/playerPanel"):create( { "sonic1" }, STICKY_MOUSE)
-
+local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2" }, STICKY_MOUSE)
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -123,7 +123,7 @@ PLUGINS = require("plugins/engine")
              { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL  }, },
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
-             { label = "Player",  panel = PLAYER_PANEL, },
+             { label = "Player",  panel = require("tools/constructionSet/panels/multiPanel"):create { PLAYER_PANEL, PLAYER_2_PANEL }, },
         },
         accessorFnName = "getTabbedPane",
     })
