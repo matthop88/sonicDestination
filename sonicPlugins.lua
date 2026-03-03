@@ -75,7 +75,6 @@ return {
             params.PROP_LOADER:update(dt)
             self.SONIC:update(dt) 
             self.WORLD:update(dt)
-            updateRefreshed(dt)
         end
 
         self.AIR_DRAG   = self.SONIC.AIR_DRAG_VALUE
@@ -122,7 +121,7 @@ return {
             :add("grid3D",         { 
                 graphics       = self.GRAPHICS,
                 topLineYOffset = 0,
-                standingLine   = 1262,
+                standingLine   = self.WORLD:getGroundLevel(),
                 toggleGridKey  = "g",
                 showGrid       = true,
             })
