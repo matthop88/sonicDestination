@@ -1,31 +1,75 @@
 local MAP_DATA
-local CHUNKS_DATA
-local SOLIDS
-local CHUNKS
+
 local CHUNK_FACTORY = requireRelative("world/terrain/chunkFactory")
+
+local CHUNKS_IMG_NAME = 1
+local CHUNK_ID        = 2
 
 return {
     showSolids = false,
     
     init = function(self, params)
+        self.mapName   = params.map
+        local MAP_PATH = relativePath("resources/zones/maps/"   .. self.mapName)
         
-        self.map    = params.map
-        
-        local MAP_PATH    = relativePath("resources/zones/maps/"   .. self.map)
         if _LOADED then _LOADED[MAP_PATH] = nil end
-        MAP_DATA    = require(MAP_PATH)
+        MAP_DATA = require(MAP_PATH)
 
-        self.pageWidth  = #MAP_DATA[1] * 256
-        self.pageHeight = #MAP_DATA    * 256
+        self.map = self:loadMapData()
+
+        self.pageWidth  = #self.map[1] * 256
+        self.pageHeight = #self.map    * 256
         self.graphics   = params.GRAPHICS
 
         return self
+    end,
+
+    loadMapData = function(self)
+        local chunkFactory = requireRelative("world/terrain/chunkFactory")
+        local map = {}
+        for i = 1, 256 do table.insert(map, {}) end
+
+        for _, mapRow in ipairs(MAP_DATA) do
+            local row = {}
+            for _, elt in ipairs(mapRow.data) do
+                if type(elt) == "table" then
+                    if elt[CHUNKS_IMG_NAME] and elt[CHUNK_ID] then
+                        local mapElt = { 
+                            CHUNK_IMG_NAME = elt[CHUNKS_IMG_NAME],
+                            ID             = elt[CHUNK_ID],
+                            XFLIP          = elt.xFlip
+                        }
+                        table.insert(row, mapElt)
+                    else
+                        table.insert(row, {})
+                    end
+                else
+                    local mapElt = {
+                        CHUNK_IMG_NAME = MAP_DATA.chunksDataName,
+                        ID             = elt,
+                        XFLIP          = false
+                    }
+                    table.insert(row, mapElt)
+                end
+
+                map[mapRow.row] = row
+            end
+        end
+
+        return map
     end,
 
     initChunks = function(self)
         CHUNKS_DATA = CHUNK_FACTORY:getData(MAP_DATA.chunksDataName)
         SOLIDS      = CHUNK_FACTORY:getSolids(MAP_DATA.chunksDataName)
         CHUNKS      = CHUNK_FACTORY:getChunks(MAP_DATA.chunksDataName)
+    end,
+
+    initChunk = function(self, chunkInfo)
+        chunkInfo.CHUNKS = CHUNK_FACTORY:getChunks(chunkInfo.CHUNK_IMG_NAME)
+        chunkInfo.SOLIDS = CHUNK_FACTORY:getSolids(chunkInfo.CHUNK_IMG_NAME)
+        chunkInfo.DATA   = CHUNK_FACTORY:getData(chunkInfo.CHUNK_IMG_NAME)
+        chunkInfo.CHUNK_IMG_NAME = nil
     end,
         
     draw = function(self)
@@ -44,39 +88,39 @@ return {
 
 	drawTerrain = function(self)
         self.graphics:setColor(1, 1, 1)
-        for _, row in ipairs(MAP_DATA) do
-            for colNum, chunkInfo in ipairs(row.data) do
-                self:drawChunk(row.row, colNum, chunkInfo)
+        for rowNum, row in ipairs(self.map) do
+            for colNum, chunkInfo in ipairs(row) do
+                self:drawChunk(rowNum, colNum, chunkInfo)
             end
         end
         self.graphics:setColor(1, 1, 1)
 	end,
 
     drawChunk = function(self, rowNum, colNum, chunkInfo)
-        if self:isXFlipped(chunkInfo) then
-            self:drawXFlippedChunk(rowNum, colNum, chunkInfo[2])
+        if chunkInfo.XFLIP then
+            self:drawXFlippedChunk(rowNum, colNum, chunkInfo)
         else
             self:drawVanillaChunk(rowNum, colNum, chunkInfo)
         end
     end,
 
-    isXFlipped = function(self, chunkInfo)
-        return type(chunkInfo) == "table" and chunkInfo[1] == "XFLIP"
-    end,
-
-    drawVanillaChunk = function(self, rowNum, colNum, chunkID)
-        if not CHUNKS then self:initChunks() end
-        CHUNKS:draw(self.graphics, rowNum, colNum, chunkID)
-        if self.showSolids then 
-            SOLIDS:draw(self.graphics, rowNum, colNum, chunkID) 
+    drawVanillaChunk = function(self, rowNum, colNum, chunkInfo)
+        if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
+        if chunkInfo.CHUNKS then
+            chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
+            if self.showSolids then 
+                chunkInfo.SOLIDS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
+            end
         end
     end,
 
-    drawXFlippedChunk = function(self, rowNum, colNum, chunkID)
-        if not CHUNKS then self:initChunks() end
-        CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
-        if self.showSolids then
-            SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkID)
+    drawXFlippedChunk = function(self, rowNum, colNum, chunkInfo)
+        if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
+        if chunkInfo.CHUNKS then
+            chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
+            if self.showSolids then
+                chunkInfo.SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
+            end
         end
     end,
 
@@ -94,16 +138,19 @@ return {
     end,
 
     getChunkAt = function(self, x, y)
-        if not CHUNKS_DATA then self:initChunks() end
-        local chunkID = self:getChunkIDAt(x, y)
-        if    chunkID == nil then return nil
-        else                      return CHUNKS_DATA[chunkID] end
+        local chunkInfo = self:getChunkInfoAt(x, y)
+        if     chunkInfo == nil or chunkInfo.ID == nil then 
+            return nil
+        else
+            if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
+            return chunkInfo.DATA[chunkInfo.ID]
+        end
     end,
 
-    getChunkIDAt = function(self, x, y)
+    getChunkInfoAt = function(self, x, y)
         local mapX, mapY = self:screenToMapCoordinates(x, y)
-        local mapRow = MAP_DATA[mapY] or { data = {} }
-        return mapRow.data[mapX]
+        local mapRow = self.map[mapY] or { }
+        return mapRow[mapX]
     end,
 
     screenToMapCoordinates = function(self, x, y)
@@ -116,12 +163,13 @@ return {
     end,
 
     getSolidAt = function(self, x, y)
-        if not SOLIDS then self:initChunks() end
-        local chunkID = self:getChunkIDAt(x, y)
-        if chunkID == nil then return nil
+        local chunkInfo = self:getChunkInfoAt(x, y)
+        if chunkInfo == nil or chunkInfo.ID == nil then 
+            return nil
         else
             local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
-            return SOLIDS:getSolidAt(chunkID, xInChunk, yInChunk)
+            if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
+            return chunkInfo.SOLIDS:getSolidAt(chunkInfo.ID, xInChunk, yInChunk)
         end
     end,
 
@@ -131,7 +179,7 @@ return {
     end,
 
     refresh = function(self)
-        self:init { GRAPHICS = self.graphics, map = self.map }
+        self:init { GRAPHICS = self.graphics, map = self.mapName }
     end,
 
     toggleShowSolids = function(self)
