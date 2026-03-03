@@ -47,11 +47,11 @@ return {
 				end
 			end,
 
-		    getSolidAt = function(self, chunkInfo, xInChunk, yInChunk)
-		    	if self:isXFlipped(chunkInfo) then
-		    		return self:getChunkSolidAt(chunkInfo[2], 17 - xInChunk, yInChunk)
+		    getSolidAt = function(self, chunkID, xInChunk, yInChunk, xFlip)
+		    	if xFlip then
+		    		return self:getChunkSolidAt(chunkID, 17 - xInChunk, yInChunk)
 		    	else
-		    		return self:getChunkSolidAt(chunkInfo, xInChunk, yInChunk)
+		    		return self:getChunkSolidAt(chunkID, xInChunk, yInChunk)
 		    	end
 		    end,
 
@@ -60,10 +60,6 @@ return {
         		if    chunkSolids == nil then return nil
         		else                          return chunkSolids[yInChunk][xInChunk] end
         	end,
-
-    		isXFlipped = function(self, chunkInfo)
-        		return type(chunkInfo) == "table" and chunkInfo[1] == "XFLIP"
-    		end,
     	}
 
 		for n, chunk in ipairs(chunkData) do
