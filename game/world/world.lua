@@ -40,13 +40,15 @@ return {
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "scdPtp1", })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
+        self:refreshGroundLevel()
+        
         return self
     end,
 
     refreshObjectsMap = function(self, x, y)
         local objectsMap = requireRelative("resources/zones/objects/" .. TERRAIN:getObjectsDataName())
         if not x then
-            objectsMap.origin = objectsMap.origin or { x = 512, y = 940 }
+            objectsMap.origin = objectsMap.origin or { x = 512, y = 0 }
             x, y = objectsMap.origin.x, objectsMap.origin.y
         end
         GLOBALS:getPlayer():initPosition(x, y, false)
@@ -62,6 +64,7 @@ return {
     reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
+            self:refreshGroundLevel()
         end
         self:refreshObjectsMap(x, y)
     end,
@@ -160,5 +163,10 @@ return {
 
     getGroundLevel = function(self)
         return self.GROUND_LEVEL
+    end,
+
+    refreshGroundLevel = function(self)
+        self.GROUND_LEVEL = TERRAIN:getCalculatedGroundLevel()
+        WORKSPACE:setGroundLevel(TERRAIN:getCalculatedGroundLevel())
     end,
 }
