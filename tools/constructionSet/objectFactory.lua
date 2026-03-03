@@ -1,11 +1,19 @@
 local BADNIK_TEMPLATE = require("tools/constructionSet/templates/badnikTemplate")
 local ITEM_TEMPLATE   = require("tools/constructionSet/templates/itemTemplate")
+local PLAYER_TEMPLATE = require("tools/constructionSet/templates/playerTemplate")
 
 local BADNIK          = require("tools/constructionSet/templates/badnik")
 local ITEM            = require("tools/constructionSet/templates/item")
+local PLAYER          = require("tools/constructionSet/templates/player")
 
 return {
 	library = {
+		sonic1 = {
+			name       = "sonic1",
+			spritePath = "sonic1",
+			template   = PLAYER_TEMPLATE,
+			object     = PLAYER,
+		},
 		motobug = {
 			name       = "motobug",
 			spritePath = "objects/motobug",
