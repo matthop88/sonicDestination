@@ -204,9 +204,15 @@ return {
 
 			},
 
+			player = nil,
+
 			draw = function(self)
 				self.chunks:draw(self.graphics)
 				self.objects:draw(self.graphics)
+				if self.player then
+					self.graphics:setColor(1, 1, 1)
+					self.player.obj:draw(self.graphics, self.player.x, self.player.y, 1, 1)
+				end
 			end,
 
 			drawCoordinates = function(self)
@@ -273,8 +279,17 @@ return {
 				return self.objects:place(obj, x, y)
 			end,
 
+			placePlayer = function(self, obj, x, y)
+				self.player = { obj = obj, x = x, y = y }
+				obj:release()
+				return true
+			end,
+
 			update = function(self, dt)
 				self.objects:update(dt)
+				if self.player then
+					self.player.obj:update(dt)
+				end
 			end,
 
 			saveMap = function(self, filename)
