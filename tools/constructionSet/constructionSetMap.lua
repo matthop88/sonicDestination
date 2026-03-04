@@ -421,6 +421,12 @@ return {
 
 			encodeObjectData = function(self)
 				local encodedObjects = "return {\n"
+				
+				-- Write player origin if player exists
+				if self.player.obj then
+					encodedObjects = encodedObjects .. "  origin = { x = " .. self.player.x .. ", y = " .. self.player.y .. ", sprite = \"" .. self.player.obj:getName() .. "\" },\n"
+				end
+				
 				self.objects:forEach(function(object)
 					local xFlipString = ""
 					if object.obj.xFlip == -1 then xFlipString = ", xFlip = true" end
