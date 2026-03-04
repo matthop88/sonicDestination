@@ -39,8 +39,23 @@ return {
 		local objectFactory = require("tools/constructionSet/objectFactory")
 
 		for _, object in ipairs(objects) do
-			local newObject = objectFactory:createObject(object.obj, object.xFlip)
-			objectsList:add(newObject, object.x, object.y)
+			-- Skip origin field (it's for player, not objects)
+			if object.obj then
+				local newObject = objectFactory:createObject(object.obj, object.xFlip)
+				objectsList:add(newObject, object.x, object.y)
+			end
+		end
+	end,
+
+	readPlayerFromObjects = function(self, objects, player)
+		local objectFactory = require("tools/constructionSet/objectFactory")
+
+		-- Look for origin field
+		if objects.origin then
+			local origin = objects.origin
+			local sprite = origin.sprite or "sonic1"  -- Default to sonic1 if not specified
+			local playerObject = objectFactory:createObject(sprite, false)
+			player:place(playerObject, origin.x, origin.y)
 		end
 	end,
 }
