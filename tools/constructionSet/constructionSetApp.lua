@@ -104,7 +104,9 @@ PLUGINS = require("plugins/engine")
                         require("tools/constructionSet/mapReader"):readMapIntoChunksList(require(mapPath), MAP.chunks)
                     end
                     if love.filesystem.getInfo(objPath .. ".lua") then
-                        require("tools/constructionSet/mapReader"):readObjectsIntoObjectsList(require(objPath), MAP.objects)
+                        local objectsData = require(objPath)
+                        require("tools/constructionSet/mapReader"):readObjectsIntoObjectsList(objectsData, MAP.objects)
+                        require("tools/constructionSet/mapReader"):readPlayerFromObjects(objectsData, MAP.player)
                     end
                 end
             end,
