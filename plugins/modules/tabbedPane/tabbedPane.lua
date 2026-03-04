@@ -157,7 +157,7 @@ return {
 		if params.doubleClicked and my >= self:getTabsY() then
 			self:toggleTabbedPaneOpening()
 			return true
-		elseif self.TABS.opened then
+		else
 			for n, t in ipairs(self.TABS) do
 				if mx >= t.x and mx <= t.x + t.w and my >= self:getTabsY() and my <= self:getTabsBottom() then
 					self.TAB_INDEX = n
