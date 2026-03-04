@@ -204,15 +204,105 @@ return {
 
 			},
 
-			player = nil,
+			player = {
+				obj = nil,
+				x = nil,
+				y = nil,
+				selected = false,
+				held = nil,
+
+				place = function(self, obj, x, y)
+					self.obj = obj
+					self.x = x
+					self.y = y
+					self.selected = false
+					self.held = nil
+					obj:release()
+					return true
+				end,
+
+				selectAt = function(self, x, y)
+					if not self.obj then return false end
+					
+					if    x >= self.x - self.obj:getW() / 2 
+					  and x <  self.x + self.obj:getW() / 2 
+					  and y >= self.y - self.obj:getH() / 2 
+					  and y <  self.y + self.obj:getH() / 2 then
+						self.selected = true
+						return true
+					end
+					return false
+				end,
+
+				deselect = function(self)
+					self.selected = false
+				end,
+
+				deleteSelected = function(self)
+					if self.selected then
+						self.obj = nil
+						self.x = nil
+						self.y = nil
+						self.selected = false
+					end
+				end,
+
+				xFlipSelected = function(self)
+					if self.selected and self.obj then
+						self.obj:flipX()
+					end
+				end,
+
+				nudgeSelected = function(self, dx, dy)
+					if self.selected and self.obj then
+						self.x = self.x + dx
+						self.y = self.y + dy
+					end
+				end,
+
+				holdSelected = function(self)
+					if self.selected and self.obj then
+						self.held = { obj = self.obj, x = self.x, y = self.y }
+						self.selected = false
+						return self.held.obj
+					end
+				end,
+
+				releaseSelected = function(self)
+					if self.held then
+						self.held.obj:release()
+					end
+					self.held = nil
+				end,
+
+				draw = function(self, graphics)
+					if self.obj and not self.held then
+						graphics:setColor(1, 1, 1)
+						self.obj:draw(graphics, self.x, self.y, 1, 1)
+						
+						if self.selected then
+							graphics:setColor(1, 1, 0)
+							graphics:setLineWidth(2)
+							graphics:rectangle("line", 
+								self.x - 2 - self.obj:getW() / 2,
+								self.y - 2 - self.obj:getH() / 2,
+								self.obj:getW() + 4,
+								self.obj:getH() + 4)
+						end
+					end
+				end,
+
+				update = function(self, dt)
+					if self.obj then
+						self.obj:update(dt)
+					end
+				end,
+			},
 
 			draw = function(self)
 				self.chunks:draw(self.graphics)
 				self.objects:draw(self.graphics)
-				if self.player then
-					self.graphics:setColor(1, 1, 1)
-					self.player.obj:draw(self.graphics, self.player.x, self.player.y, 1, 1)
-				end
+				self.player:draw(self.graphics)
 			end,
 
 			drawCoordinates = function(self)
@@ -223,48 +313,60 @@ return {
 				if     key == "escape"     then self:deselectAll()
 				elseif key == "backspace"  then self:deleteSelected()
 				elseif key == "x"          then self:xFlipSelected()
-				elseif key == "shiftleft"  then self.objects:nudgeSelected(-1,  0)
-				elseif key == "shiftright" then self.objects:nudgeSelected( 1,  0)
-				elseif key == "shiftup"    then self.objects:nudgeSelected( 0, -1)
-				elseif key == "shiftdown"  then self.objects:nudgeSelected( 0,  1)
+				elseif key == "shiftleft"  then self:nudgeSelected(-1,  0)
+				elseif key == "shiftright" then self:nudgeSelected( 1,  0)
+				elseif key == "shiftup"    then self:nudgeSelected( 0, -1)
+				elseif key == "shiftdown"  then self:nudgeSelected( 0,  1)
 				end
 			end,
 
 			selectAt = function(self, x, y)
-				if not self.objects:selectAt(x, y) then
-					self.chunks:selectAt(math.floor(x / 256), math.floor(y / 256))
-				else
+				if self.player:selectAt(x, y) then
+					self.objects:deselect()
 					self.chunks:deselect()
+				elseif self.objects:selectAt(x, y) then
+					self.player:deselect()
+					self.chunks:deselect()
+				else
+					self.player:deselect()
+					self.objects:deselect()
+					self.chunks:selectAt(math.floor(x / 256), math.floor(y / 256))
 				end
 			end,
 
 			deselectAll    = function(self)  
 				self.chunks:deselect()
-				self.objects:deselect()            
+				self.objects:deselect()
+				self.player:deselect()
 			end,
 
 			deleteSelected = function(self)  
 				self.objects:deleteSelected()
-				self.chunks:deleteSelected()      
+				self.chunks:deleteSelected()
+				self.player:deleteSelected()
 			end,
 
 			xFlipSelected  = function(self)  
 				self.objects:xFlipSelected()
-				self.chunks:xFlipSelected()       
+				self.chunks:xFlipSelected()
+				self.player:xFlipSelected()
 			end,
 
 			nudgeSelected = function(self, x, y)
 				self.objects:nudgeSelected(x, y)
+				self.player:nudgeSelected(x, y)
 			end,
 
 			holdSelected   = function(self)  
-				local result = self.objects:holdSelected()
+				local result = self.player:holdSelected()
+				if not result then result = self.objects:holdSelected() end
 				return result or self.chunks:holdSelected()
 			end,
 
 			releaseSelected = function(self) 
 				self.objects:releaseSelected()
-				self.chunks:releaseSelected()     
+				self.chunks:releaseSelected()
+				self.player:releaseSelected()
 			end,
 
 			hideChunkAt = function(self, x, y)
@@ -280,16 +382,12 @@ return {
 			end,
 
 			placePlayer = function(self, obj, x, y)
-				self.player = { obj = obj, x = x, y = y }
-				obj:release()
-				return true
+				return self.player:place(obj, x, y)
 			end,
 
 			update = function(self, dt)
 				self.objects:update(dt)
-				if self.player then
-					self.player.obj:update(dt)
-				end
+				self.player:update(dt)
 			end,
 
 			saveMap = function(self, filename)
