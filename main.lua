@@ -41,11 +41,17 @@ local launchProgress             = function(args)
     require "fun/applications/progress/progress"
 end
 
+local launchGame                 = function(args)
+    __MAP_NAME = args[2]
+    require "game/main"
+end
+
 --------------------------------------------------------------
 --                      Local Variables                     --
 --------------------------------------------------------------
 
 local APP_LAUNCHER = {
+    game         = launchGame,
     inspector    = launchColorInspector,
     slicer       = launchSlicer,
     transparency = launchTransparencyEditor,
