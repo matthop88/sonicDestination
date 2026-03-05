@@ -132,4 +132,38 @@ PLUGINS = require("plugins/engine")
     })
     :add("scrolling",      { imageViewer = MAP })
     :add("readout",        { printFnName = "printToReadout" })
+    :add("questionBox",
+    {   x = 1150,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            "Navigation_",
+            { "Arrow Keys", "- Scroll Map View", },
+            { "z/a keys", "- Zoom in/out on map", },
+            "",
+            "Tab Panel Interface_",
+            { "Double-click", },
+            { "   (or space)", "- Toggle opening tab pane", },
+            { "option-tab", "- Move to next page in current tab", },
+            { "shift-option-tab", "- Move to previous page in current tab", },
+            "",
+            "Placement Mode_",
+            { "tab", "- Select next entry in current tab panel", },
+            { "shift-tab", "- Select previous entry in current tab panel", },
+            { "Click", "- Places held entity", },
+            { "escape", "- Exits placement mode", },
+            "",
+            "Selection Mode_",
+            { "Click",  "- Selects chunk, badnik, item or player",  },
+            { "Delete", "- Deletes selected entity", },
+            { "Shift-arrow", "- Nudges selected badnik, item or player", },
+            { "x", "- Flips selected entity horizontally", },
+            { "space", "- Picks up entity; enters placement mode", },
+            "",
+            "Miscellaneous_",
+            { "S", "- Save to file", },
+            { "R", "- Refresh from file", },
+        },
+    })
     
