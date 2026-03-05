@@ -112,6 +112,14 @@ return {
 					self.obj:update(dt)
 				end
 			end,
+
+			clear = function(self)
+				self.obj = nil
+				self.x = nil
+				self.y = nil
+				self.selected = false
+				self.held = nil
+			end,
 		}
 	end,
 }
