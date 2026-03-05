@@ -5,6 +5,22 @@ From within this directory, the "game" (such as it is) can be executed via:
 
     love .
 
+or explicitly with:
+
+    love . game
+
+with an optional argument specifying the map you wish to load.
+Only specify the map name (without an extension.)
+Map is expected to be located in the game/resources/zones/maps directory.
+
+EX: 
+
+    love . game ghz1
+
+loads the game with the map file `sonicDestination/game/resources/zones/maps/ghz1Map.lua`.
+
+If no map is specified, the game defaults to `scdPtp1`.
+
 To execute the Color Inspector application, use the command
 
     love . inspector
