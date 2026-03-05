@@ -48,11 +48,11 @@ return {
 
     refreshObjectsMap = function(self, x, y)
         local objectsMap = requireRelative("resources/zones/objects/" .. TERRAIN:getObjectsDataName())
+        self.origin = objectsMap.origin or { x = 512, y = 0 }
         if not x then
-            objectsMap.origin = objectsMap.origin or { x = 512, y = 0 }
-            x, y = objectsMap.origin.x, objectsMap.origin.y
+            x, y = self.origin.x, self.origin.y
         end
-        local sprite = objectsMap.origin and objectsMap.origin.sprite or "sonic1"
+        local sprite = self.origin and self.origin.sprite or "sonic1"
         GLOBALS:getPlayer():initPosition(x, y, false, sprite)
         GRAPHICS:setX(math.min(0, -x + 200))
         GRAPHICS:setY(-y + 200)
@@ -141,6 +141,9 @@ return {
     fadeIn           = function(self)       self.fadeLayer:fadeIn()            end,
 
     teleport    = function(self, map, x, y, giantRing, player)
+        if x == nil or y == nil then 
+            x, y = self.origin.x, self.origin.y
+        end
         local teleportObject = requireRelative("world/events/teleport"):create(self, { map = map, x = x, y = y, giantRing = giantRing, player = player })
         for n, evt in ipairs(self.events) do
             if evt:getName() == "teleport" then 
