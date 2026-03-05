@@ -17,9 +17,6 @@ end
 local WORLD     = requireRelative("world/world", { GRAPHICS = GRAPHICS })
 local SONIC     = requireRelative("sonic",       { GRAPHICS = GRAPHICS, WORLD = WORLD })
 
-local timer     = 0
-local refreshed = false
-
 --------------------------------------------------------------
 --                     Global Variables                     --
 --------------------------------------------------------------
@@ -57,7 +54,6 @@ function love.update(dt)
     PROP_LOADER:update(dt)
     SONIC:update(dt)
     WORLD:update(dt)
-    updateRefreshed(dt)
 end
 
 -- Function Name: love.keypressed(key)
@@ -73,16 +69,6 @@ end
 --------------------------------------------------------------
 function love.keyreleased(key)
     SONIC:keyreleased(key)
-end
-
-function updateRefreshed(dt)
-    if not refreshed then
-        timer = timer + dt
-        if timer >= 0.2 then
-            WORLD:refresh()
-            refreshed = true
-        end
-    end
 end
 
 --------------------------------------------------------------

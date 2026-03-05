@@ -5,6 +5,22 @@ From within this directory, the "game" (such as it is) can be executed via:
 
     love .
 
+or explicitly with:
+
+    love . game
+
+with an optional argument specifying the map you wish to load.
+Only specify the map name (without an extension.)
+Map is expected to be located in the game/resources/zones/maps directory.
+
+EX: 
+
+    love . game ghz1
+
+loads the game with the map file `sonicDestination/game/resources/zones/maps/ghz1Map.lua`.
+
+If no map is specified, the game defaults to `scdPtp1`.
+
 To execute the Color Inspector application, use the command
 
     love . inspector
@@ -91,12 +107,16 @@ To execute the MapViewer application, use the command
     love . mapViewer
 
 with three possible inputs:
---mapIn,        -m  A map data file to read in, which links to a chunks image or chunk data image
---chunkDataIn,  -c  A chunk data file to read in; an impromptu map will be constructed from it
---chunkImageIn, -C  A chunk image file to read in; an impromptu map will be constructed from it. (Not a useful option)
+
+`--mapIn,        -m`  A map data file to read in, which links to a chunks image or chunk data image
+
+`--chunkDataIn,  -c`  A chunk data file to read in; an impromptu map will be constructed from it
+
+`--chunkImageIn, -C`  A chunk image file to read in; an impromptu map will be constructed from it. (Not a useful option)
+
 
 If desired, a map image file can be specified to rewrite out
---mapOut,       -o  Raw map image to write out. 
+`--mapOut,       -o`  Raw map image to write out. 
 
 Do NOT specify the exception for any of these.
 
@@ -117,15 +137,19 @@ To execute the Tileinator application, use the command
 
 with these inputs:
 
---chunkImageIn,  -i,  An image file with chunks derived from a world map; a tiles image will be created from it
---mapFileIn,     -m,  An optional map data file containing chunk references; a new reference will be added pointing to the new chunk data
+`--chunkImageIn,  -i`,  An image file with chunks derived from a world map; a tiles image will be created from it
+
+`--mapFileIn,     -m`,  An optional map data file containing chunk references; a new reference will be added pointing to the new chunk data
+
 
 and with these two outputs:
 
---chunkFileOut,  -c,  A chunk data file to write out; will refer to the tiles image file that is created.
+`--chunkFileOut,  -c`,  A chunk data file to write out; will refer to the tiles image file that is created.
                       If unspecified, this will default to `sampleChunkLayout.lua`
---tileImageOut,  -t   A tiles image to write based upon compression from chunk.
+                      
+`--tileImageOut,  -t`   A tiles image to write based upon compression from chunk.
                       If unspecified, this will default to `sampleTileImage.png`
+                      
 
 Chunk layout file is expected to be located in the `resources/zones/chunks/` directory.
 Tile image   file will be written to the           `resources/zones/tiles/`  directory.
@@ -137,6 +161,56 @@ EX:
 runs the Tileinator application, which analyzes the file `resources/zones/chunks/ghzChunks_IMG.png` and creates two files: `resources/zones/chunks/ghzChunks.lua` and `resources/zones/tiles/ghzTiles_IMG.png`.
 
 In addition, the file `resources/zones/maps/ghz1Map.lua` is updated to have a reference to the new ghzChunks.lua chunk data file embedded inside of it.
+
+To execute the ChunkDoctor application, use the command
+
+    love . chunkDoctor
+
+with these inputs:
+
+`--chunkDataIn,  -i`,  A data file consisting of references to tiles that compose various chunks
+
+`--chunkDataOut, -o`,  A data file to write out. Defaults to same file as chunkDataIn.
+
+Chunk data file is expected to be located in the `resources/zones/chunks/` directory, and the output file will be written to the same directory.
+
+To execute the RingMaster application, use the command
+
+    love . ringMaster
+
+with these inputs:
+
+`--mapIn,        -i`, a map image file to locate rings in
+
+`--ringDataOut,  -o`, a data file to write locations of rings in
+
+The following inputs are optional:
+
+`--mapOut,        -m`, map image file to write out (in case you wish to modify the image in RingMaster)
+
+`--objectType,    -t`, type of object to find (either ring or motobug. Defaults to ring)
+
+The map image file is expected to reside in the `resources/zones/maps/` directory.
+
+To execute the Sprite Sandbox application, use the command
+
+    love . sandbox
+
+The following inputs are optional:
+
+`--background,        -b`, background image to read in. Resides in `resources/zones/maps` directory.
+
+To execute the Badnik University application, use the command
+
+    love . badnikU
+
+Currently, there are no required or optional inputs for the Badnik University application.
+
+To execute the Construction Set application, use the command
+
+    love . construction
+
+Currently, there are no required or optional inputs for the Construction Set application.
 
 To execute the TestSuite application, use the command
 

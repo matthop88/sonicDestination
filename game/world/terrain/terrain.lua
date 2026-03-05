@@ -10,7 +10,7 @@ return {
     
     init = function(self, params)
         self.mapName   = params.map
-        local MAP_PATH = relativePath("resources/zones/maps/"   .. self.mapName)
+        local MAP_PATH = relativePath("resources/zones/maps/"   .. self.mapName .. "Map")
         
         if _LOADED then _LOADED[MAP_PATH] = nil end
         MAP_DATA = require(MAP_PATH)
@@ -169,7 +169,7 @@ return {
         else
             local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
             if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
-            return chunkInfo.SOLIDS:getSolidAt(chunkInfo.ID, xInChunk, yInChunk)
+            return chunkInfo.SOLIDS:getSolidAt(chunkInfo.ID, xInChunk, yInChunk, chunkInfo.XFLIP)
         end
     end,
 
@@ -187,6 +187,10 @@ return {
     end,
 
 	getObjectsDataName = function(self)
-		return MAP_DATA.objectsDataName or "ghz1Objects"
+		return self.mapName .. "Objects"
+	end,
+
+	getCalculatedGroundLevel = function(self)
+		return self.map.calculatedGroundLevel or 940  -- Default to 940 if not calculated
 	end,
 }

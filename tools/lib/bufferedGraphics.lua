@@ -14,6 +14,10 @@ return {
                 graphics:setAlpha(alpha)
             end,
 
+            getAlpha     = function(self)
+                return graphics:getAlpha()
+            end,
+
             setLineWidth = function(self, lineWidth)
                 graphics:setLineWidth(lineWidth)
             end,
@@ -24,6 +28,12 @@ return {
 
             setFontSize = function(self, fontSize)
                 graphics:setFontSize(fontSize)
+            end,
+
+            clear = function(self, arg1, arg2, arg3, arg4)
+                love.graphics.setCanvas(self.buffer)
+                graphics:clear(arg1, arg2, arg3, arg4)
+                love.graphics.setCanvas()
             end,
 
             rectangle = function(self, mode, x, y, w, h)
@@ -59,6 +69,12 @@ return {
             printf    = function(self, text, x, y, w, align)
                 love.graphics.setCanvas(self.buffer)
                 graphics:printf(text, x, y, w, align)
+                love.graphics.setCanvas()
+            end,
+
+            print     = function(self, text, x, y)
+                love.graphics.setCanvas(self.buffer)
+                graphics:print(text, x, y)
                 love.graphics.setCanvas()
             end,
 

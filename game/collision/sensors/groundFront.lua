@@ -36,13 +36,13 @@ return {
 			end,
 
 			scan = function(self, dt)
-				self.owner.GROUND_LEVEL = 1262
+				WORLD:refreshGroundLevel()
 				local rayLength = (self.owner.velocity.y * dt) + 16
 				if rayLength > 0 then
 					local scanY = 1
 					while rayLength > 0 do
 						if WORLD:getSolidAt(self.x, self.y + scanY) == 1 then
-							self.owner.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 21 + scanY
+							WORLD.GROUND_LEVEL = (math.floor(self.y / 16) * 16) - 21 + scanY
 							self.hlSolid = { x = math.floor(self.x / 16) * 16, y = math.floor((self.y + scanY) / 16) * 16 }
 							self.hlCounter = 1
 							break

@@ -10,6 +10,8 @@ return {
 		self.graphics = require("tools/lib/graphics"):create()
 		if params.active ~= nil then self.active = params.active end
 		self.propertyBox = require("plugins/modules/listVisualizer/propertyBox"):init(self)
+
+		return self
 	end,
 
 	toggleActive = function(self)

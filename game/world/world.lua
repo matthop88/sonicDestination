@@ -12,6 +12,8 @@ return {
 
     events  = {},
 
+    GROUND_LEVEL = 940,
+
     fadeLayer = { 
         color    = { r = 1, g = 1, b = 1 }, 
         alpha    = 0,
@@ -35,8 +37,11 @@ return {
 
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
-        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "ghz1Map", chunks = "ghzChunks" })
+        local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
+        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
+        
+        self:refreshGroundLevel()
         
         return self
     end,
@@ -44,9 +49,11 @@ return {
     refreshObjectsMap = function(self, x, y)
         local objectsMap = requireRelative("resources/zones/objects/" .. TERRAIN:getObjectsDataName())
         if not x then
+            objectsMap.origin = objectsMap.origin or { x = 512, y = 0 }
             x, y = objectsMap.origin.x, objectsMap.origin.y
         end
-        GLOBALS:getPlayer():initPosition(x, y, false)
+        local sprite = objectsMap.origin and objectsMap.origin.sprite or "sonic1"
+        GLOBALS:getPlayer():initPosition(x, y, false, sprite)
         GRAPHICS:setX(math.min(0, -x + 200))
         GRAPHICS:setY(-y + 200)
 
@@ -59,6 +66,7 @@ return {
     reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
+            self:refreshGroundLevel()
         end
         self:refreshObjectsMap(x, y)
     end,
@@ -153,5 +161,14 @@ return {
 
     getObjectsList = function(self)
         return self.objects
+    end,
+
+    getGroundLevel = function(self)
+        return self.GROUND_LEVEL
+    end,
+
+    refreshGroundLevel = function(self)
+        self.GROUND_LEVEL = TERRAIN:getCalculatedGroundLevel()
+        WORKSPACE:setGroundLevel(TERRAIN:getCalculatedGroundLevel())
     end,
 }

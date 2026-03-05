@@ -37,6 +37,11 @@ return {
                 local r, g, b = love.graphics.getColor()
                 love.graphics.setColor(r, g, b, alpha or 1)
             end,
+
+            getAlpha     = function(self)
+                local r, g, b, a = love.graphics.getColor()
+                return a
+            end,
             
             setLineWidth = function(self, lineWidth) self.lineWidth = lineWidth    end,
         
@@ -53,6 +58,10 @@ return {
             end,
             
             ----------------------- Shape Drawing Functions --------------------
+            
+            clear     = function(self, arg1, arg2, arg3, arg4)
+                love.graphics.clear(arg1, arg2, arg3, arg4)
+            end,
             
             rectangle = function(self, mode, x, y, w, h)
                 love.graphics.setLineWidth(self.lineWidth * self.scale)
@@ -95,9 +104,26 @@ return {
             ------------------------ Text Drawing Functions --------------------
         
             printf    = function(self, text, x, y, w, align)
-                love.graphics.printf(text, (x + self.x) * self.scale, 
-                                           (y + self.y) * self.scale,
-                                                     w  * self.scale, align)
+                -- Check to see if text is on screen
+                local leftOfText  = (x + self.x) * self.scale
+                local topOfText   = (y + self.y) * self.scale
+                local rightOfText  = leftOfText + (w * self.scale)
+                local bottomOfText = topOfText + (self.fontSize * self.scale)
+
+                if     leftOfText   < love.graphics:getWidth() 
+                   and rightOfText  > 0 
+                   and topOfText    < love.graphics:getHeight() 
+                   and bottomOfText > 0
+                then
+                    love.graphics.printf(text, (x + self.x) * self.scale, 
+                                               (y + self.y) * self.scale,
+                                                         w  * self.scale, align)
+                end
+            end,
+
+            print     = function(self, text, x, y)
+                love.graphics.print(text, (x + self.x) * self.scale, 
+                                          (y + self.y) * self.scale)
             end,
         
             ------------------------- Scrolling Functions ----------------------

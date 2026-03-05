@@ -21,6 +21,12 @@ return {
 				end
 			end,
 
+			drawAt = function(self, GRAFX, x, y, sX, sY, xScale)
+				for _, subAnim in ipairs(self.subAnimations) do
+					subAnim:drawAt(GRAFX, x, y, sX, sY, xScale)
+				end
+			end,
+
 			drawThumbnail = function(self, GRAFX, x, y, sX, sY, xScale)
 				for _, subAnim in ipairs(self.subAnimations) do
 					subAnim:drawThumbnail(GRAFX, x, y, sX, sY, xScale)
