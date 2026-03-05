@@ -37,7 +37,8 @@ return {
 
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
-        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = "scdPtp1", })
+        local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
+        TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         
         self:refreshGroundLevel()
