@@ -52,7 +52,8 @@ return {
             objectsMap.origin = objectsMap.origin or { x = 512, y = 0 }
             x, y = objectsMap.origin.x, objectsMap.origin.y
         end
-        GLOBALS:getPlayer():initPosition(x, y, false)
+        local sprite = objectsMap.origin and objectsMap.origin.sprite or "sonic1"
+        GLOBALS:getPlayer():initPosition(x, y, false, sprite)
         GRAPHICS:setX(math.min(0, -x + 200))
         GRAPHICS:setY(-y + 200)
 
