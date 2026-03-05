@@ -67,10 +67,10 @@ return {
 
 			getDestination = function(self)
 				local destination = self.object.destination
-				if #destination > 0 then
+				if destination ~= nil and #destination > 0 then
 					return destination[love.math.random(1, #destination)]
 				else
-					return destination
+					return destination or { coordinates = { } }
 				end
 			end,
 

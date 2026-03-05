@@ -16,6 +16,7 @@ return {
         MAP_DATA = require(MAP_PATH)
 
         self.map = self:loadMapData()
+        self.map.calculatedGroundLevel = self:calculateGroundLevel(self.map)
 
         self.pageWidth  = #self.map[1] * 256
         self.pageHeight = #self.map    * 256
@@ -57,6 +58,17 @@ return {
         end
 
         return map
+    end,
+
+    calculateGroundLevel = function(self, map)
+        local lastPopulatedRow = 0
+        for rowNum = 1, #map do
+            local row = map[rowNum]
+            if #row > 0 then
+                lastPopulatedRow = rowNum
+            end
+        end
+        return lastPopulatedRow * 256
     end,
 
     initChunks = function(self)
