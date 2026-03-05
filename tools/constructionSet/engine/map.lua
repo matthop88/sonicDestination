@@ -99,6 +99,25 @@ return {
 				self.player:update(dt)
 			end,
 
+			clear = function(self)
+				-- Clear chunks
+				for i = 1, #self.chunks do
+					self.chunks[i] = {}
+				end
+				
+				-- Clear objects
+				self.objects.objList = require("game/util/dataStructures/linkedList"):create()
+				self.objects.selected = nil
+				self.objects.held = nil
+				
+				-- Clear player
+				self.player.obj = nil
+				self.player.x = nil
+				self.player.y = nil
+				self.player.selected = false
+				self.player.held = nil
+			end,
+
 			saveMap = function(self, filename)
 				love.filesystem.createDirectory("game/resources/zones/maps")
 				love.filesystem.write("game/resources/zones/maps/" .. filename .. "Map.lua", self:encodeMapData())
