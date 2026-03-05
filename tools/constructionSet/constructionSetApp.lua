@@ -47,6 +47,8 @@ function love.keypressed(key)
         MAP:saveObjects(DATA_OUT)
         printToReadout("Map saved: " .. DATA_OUT)
         print("Saved to " .. love.filesystem.getSaveDirectory())
+    elseif key == "R" then
+        refreshFromFile()
     else        
         MAP:handleKeypressed(key)
     end
@@ -79,6 +81,30 @@ function showData()
         end
     end
     print()
+end
+
+function refreshFromFile()
+    MAP:clear()
+    
+    -- Reload from files
+    if DATA_IN then
+        local mapPath = "game/resources/zones/maps/" .. DATA_IN .. "Map"
+        local objPath = "game/resources/zones/objects/" .. DATA_IN .. "Objects"
+        
+        if love.filesystem.getInfo(mapPath .. ".lua") then
+            package.loaded[mapPath] = nil
+            require("tools/constructionSet/mapReader"):readMapIntoChunksList(require(mapPath), MAP.chunks)
+        end
+        
+        if love.filesystem.getInfo(objPath .. ".lua") then
+            package.loaded[objPath] = nil
+            local objectsData = require(objPath)
+            require("tools/constructionSet/mapReader"):readObjectsIntoObjectsList(objectsData, MAP.objects)
+            require("tools/constructionSet/mapReader"):readPlayerFromObjects(objectsData, MAP.player)
+        end
+        
+        printToReadout("Map refreshed: " .. DATA_IN)
+    end
 end    
 
 --------------------------------------------------------------
