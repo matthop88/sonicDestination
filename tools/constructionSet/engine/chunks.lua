@@ -102,6 +102,15 @@ return {
 				self.selected = nil
 				self.hidden   = { x = nil, y = nil }
 			end,
+
+			clear = function(self)
+				for i = 1, #self do
+					self[i] = {}
+				end
+				self.selected = nil
+				self.hidden = { x = nil, y = nil }
+				self.held = nil
+			end,
 		}):init()
 	end,
 }
