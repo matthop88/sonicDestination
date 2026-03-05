@@ -70,7 +70,7 @@ return {
         }
     end,
 
-    initPosition = function(self, x, y, standing)
+    initPosition = function(self, x, y, standing, sprite)
         self:moveTo(x, y)
         self:activate()
         if standing then
@@ -78,6 +78,13 @@ return {
             self.nextState  = STATES.STAND_RIGHT
             self.velocity.x = 0
             self.velocity.y = 0
+        end
+        if sprite then
+            if sprite == "sonic2" and self.sprite == sonic1Sprite then
+                self:changeSonicSprite(sonic2Sprite)
+            elseif sprite == "sonic1" and self.sprite == sonic2Sprite then
+                self:changeSonicSprite(sonic1Sprite)
+            end
         end
     end,
 
@@ -248,11 +255,6 @@ return {
     end,
 
     onPropertyChange = function(self, propData)
-        if     propData.player1 == "sonic2" and self.sprite == sonic1Sprite then
-            self:changeSonicSprite(sonic2Sprite)
-        elseif propData.player1 ~= "sonic2" and self.sprite == sonic2Sprite then
-            self:changeSonicSprite(sonic1Sprite)
-        end
         if propData.jumpSound     then SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)     end
         if propData.sonicHitSound then SOUND_MANAGER:setOverride("sonicHit",     propData.sonicHitSound) end
     end,
