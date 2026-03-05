@@ -56,23 +56,7 @@ return {
             end
         end
 
-        map.calculatedGroundLevel = self:calculateGroundLevel(map)
         return map
-    end,
-
-    calculateGroundLevel = function(self, map)
-        local lastPopulatedRow = 0
-        
-        for rowNum = #map, 1, -1 do
-            local row = map[rowNum]
-            
-            if #row > 0 then
-                lastPopulatedRow = rowNum
-                break
-            end
-        end
-        
-        return lastPopulatedRow * 256
     end,
 
     initChunks = function(self)
