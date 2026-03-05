@@ -140,6 +140,25 @@ return {
 							self.selected.y - 2 - self.selected.obj:getH() / 2,
 							self.selected.obj:getW() + 4,
 							self.selected.obj:getH() + 4)
+						
+						-- Draw coordinate box (directly to screen, unscaled)
+						local coordText = string.format("(%d, %d)", self.selected.x, self.selected.y)
+						local imageBoxX = self.selected.x + self.selected.obj:getW() / 2 + 8
+						local imageBoxY = self.selected.y - self.selected.obj:getH() / 2
+						
+						-- Convert to screen coordinates
+						local screenX, screenY = graphics:imageToScreenCoordinates(imageBoxX, imageBoxY)
+						
+						local textWidth = love.graphics.getFont():getWidth(coordText)
+						local textHeight = love.graphics.getFont():getHeight()
+						
+						love.graphics.setLineWidth(2)
+						love.graphics.setColor(0, 0, 0, 0.8)
+						love.graphics.rectangle("fill", screenX, screenY, textWidth + 8, textHeight + 4)
+						love.graphics.setColor(1, 1, 0)
+						love.graphics.rectangle("line", screenX, screenY, textWidth + 8, textHeight + 4)
+						love.graphics.setColor(1, 1, 1)
+						love.graphics.print(coordText, screenX + 4, screenY + 2)
 					end
 				end,
 
@@ -288,6 +307,25 @@ return {
 								self.y - 2 - self.obj:getH() / 2,
 								self.obj:getW() + 4,
 								self.obj:getH() + 4)
+							
+							-- Draw coordinate box (directly to screen, unscaled)
+							local coordText = string.format("(%d, %d)", self.x, self.y)
+							local imageBoxX = self.x + self.obj:getW() / 2 + 8
+							local imageBoxY = self.y - self.obj:getH() / 2
+							
+							-- Convert to screen coordinates
+							local screenX, screenY = graphics:imageToScreenCoordinates(imageBoxX, imageBoxY)
+							
+							local textWidth = love.graphics.getFont():getWidth(coordText)
+							local textHeight = love.graphics.getFont():getHeight()
+							
+							love.graphics.setLineWidth(2)
+							love.graphics.setColor(0, 0, 0, 0.8)
+							love.graphics.rectangle("fill", screenX, screenY, textWidth + 8, textHeight + 4)
+							love.graphics.setColor(1, 1, 0)
+							love.graphics.rectangle("line", screenX, screenY, textWidth + 8, textHeight + 4)
+							love.graphics.setColor(1, 1, 1)
+							love.graphics.print(coordText, screenX + 4, screenY + 2)
 						end
 					end
 				end,
