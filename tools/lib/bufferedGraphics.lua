@@ -72,6 +72,12 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            print     = function(self, text, x, y)
+                love.graphics.setCanvas(self.buffer)
+                graphics:print(text, x, y)
+                love.graphics.setCanvas()
+            end,
+
             getX = function(self) return graphics:getX() end,
             getY = function(self) return graphics:getY() end,
             
