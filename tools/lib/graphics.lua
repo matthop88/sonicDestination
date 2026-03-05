@@ -120,6 +120,11 @@ return {
                                                          w  * self.scale, align)
                 end
             end,
+
+            print     = function(self, text, x, y)
+                love.graphics.print(text, (x + self.x) * self.scale, 
+                                          (y + self.y) * self.scale)
+            end,
         
             ------------------------- Scrolling Functions ----------------------
             
