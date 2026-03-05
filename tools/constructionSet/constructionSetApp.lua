@@ -42,9 +42,10 @@ end
 
 function love.keypressed(key)
     STICKY_MOUSE:handleKeypressed(key)
-    if key == "s" then
+    if key == "S" then
         MAP:saveMap(DATA_OUT)
         MAP:saveObjects(DATA_OUT)
+        printToReadout("Map saved: " .. DATA_OUT)
         print("Saved to " .. love.filesystem.getSaveDirectory())
     else        
         MAP:handleKeypressed(key)
@@ -130,4 +131,5 @@ PLUGINS = require("plugins/engine")
         accessorFnName = "getTabbedPane",
     })
     :add("scrolling",      { imageViewer = MAP })
+    :add("readout",        { printFnName = "printToReadout" })
     
