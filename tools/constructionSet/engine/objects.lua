@@ -112,6 +112,12 @@ return {
 			forEach = function(self, fn)
 				self.objList:forEach(fn)
 			end,
+
+			clear = function(self)
+				self.objList = require("game/util/dataStructures/linkedList"):create()
+				self.selected = nil
+				self.held = nil
+			end,
 		}
 	end,
 }
