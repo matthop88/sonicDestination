@@ -3,12 +3,13 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
-local SOUND_DATA = love.sound.newSoundData("game/resources/sounds/" .. (__SOUND_FILE or "sonicCDJump.mp3"))
-local AUDIO_SOURCE = love.audio.newSource(SOUND_DATA)
+
+local SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(
+	"game/resources/sounds/" .. (__SOUND_FILE or "sonicCDJump.mp3")
+):init()
 
 local SAMPLING_RATE = 64
 local MARGIN_LEFT   = 100
-local NUM_SAMPLES   = SOUND_DATA:getSampleCount()
 
 local sampleData = {}
 
@@ -36,11 +37,7 @@ end
 function love.keypressed(key)
     if key == "space" then
         local samplePosition = getSampleXFromMouseX()
-        local sampleRate = SOUND_DATA:getSampleRate()
-        local timeInSeconds = samplePosition / sampleRate
-        
-        AUDIO_SOURCE:seek(timeInSeconds, "seconds")
-        AUDIO_SOURCE:play()
+        SOUND_OBJECT:playFromSample(samplePosition)
     end
 end
 
@@ -50,7 +47,7 @@ end
 
 function getSampleXFromMouseX()
     local mx = (getConstrainedMouseX() - MARGIN_LEFT) + 1
-    return math.min(mx * SAMPLING_RATE, NUM_SAMPLES - 1)
+    return math.min(mx * SAMPLING_RATE, SOUND_OBJECT:getSampleCount() - 1)
 end
 
 function getConstrainedMouseX()
@@ -62,10 +59,10 @@ function analyzeData()
     local min, max     = 0, 0
     local indexInChunk = 0
 
-    local NUM_SAMPLES = SOUND_DATA:getSampleCount()
+    local NUM_SAMPLES = SOUND_OBJECT:getSampleCount()
 
     for i = 0, NUM_SAMPLES - 1 do
-        local currentSample = SOUND_DATA:getSample(i) * 256
+        local currentSample = SOUND_OBJECT:getSample(i) * 256
         min = math.min(currentSample, min)
         max = math.max(currentSample, max)
         indexInChunk = indexInChunk + 1
