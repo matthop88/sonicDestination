@@ -8,68 +8,28 @@ local SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(
 	"game/resources/sounds/" .. (__SOUND_FILE or "sonicCDJump.mp3")
 ):init()
 
-local SAMPLING_RATE = 64
-local MARGIN_LEFT   = 100
-
-local sampleData = {}
+local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
+	soundObject = SOUND_OBJECT,
+	samplingRate = 64,
+	marginLeft = 100,
+}
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
-    for k, v in ipairs(sampleData) do
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.line(MARGIN_LEFT + k, 256 - v.max, MARGIN_LEFT + k, 256 - v.min)
-    end
-
-    love.graphics.setColor(0, 1, 0)
-    local mx, my = love.mouse.getPosition()
-
-    mx = getConstrainedMouseX()
-    love.graphics.line(mx, 0, mx, 512)
+    SOUND_VIEW:draw()
 end
 
 function love.mousepressed(mx, my)
-    print(getSampleXFromMouseX())
+    print(SOUND_VIEW:getSampleXFromMouseX())
 end
 
 function love.keypressed(key)
     if key == "space" then
-        local samplePosition = getSampleXFromMouseX()
+        local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
-    end
-end
-
---------------------------------------------------------------
---                  Specialized Functions                   --
---------------------------------------------------------------
-
-function getSampleXFromMouseX()
-    local mx = (getConstrainedMouseX() - MARGIN_LEFT) + 1
-    return math.min(mx * SAMPLING_RATE, SOUND_OBJECT:getSampleCount() - 1)
-end
-
-function getConstrainedMouseX()
-    local mx, _ = love.mouse.getPosition()
-    return math.min(math.max(mx, MARGIN_LEFT), MARGIN_LEFT + #sampleData)
-end
-
-function analyzeData()
-    local min, max     = 0, 0
-    local indexInChunk = 0
-
-    local NUM_SAMPLES = SOUND_OBJECT:getSampleCount()
-
-    for i = 0, NUM_SAMPLES - 1 do
-        local currentSample = SOUND_OBJECT:getSample(i) * 256
-        min = math.min(currentSample, min)
-        max = math.max(currentSample, max)
-        indexInChunk = indexInChunk + 1
-        if indexInChunk >= SAMPLING_RATE or indexInChunk >= NUM_SAMPLES - 1 then
-            table.insert(sampleData, { min = min, max = max })
-            indexInChunk, min, max = 0, 0, 0
-        end
     end
 end
 
@@ -80,5 +40,14 @@ end
 love.window.setTitle("Sound Graph Application")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-analyzeData()
+SOUND_VIEW:analyzeData()
+
+--------------------------------------------------------------
+--                          Plugins                         --
+--------------------------------------------------------------
+
+PLUGINS = require("plugins/engine")
+    :add("modKeyEnabler")
+    :add("zooming",    { imageViewer = SOUND_VIEW })
+    :add("scrolling",  { imageViewer = SOUND_VIEW, scrollY = false })
 
