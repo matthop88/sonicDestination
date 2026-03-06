@@ -4,6 +4,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
 local SOUND_DATA = love.sound.newSoundData("game/resources/sounds/" .. (__SOUND_FILE or "sonicCDJump.mp3"))
+local AUDIO_SOURCE = love.audio.newSource(SOUND_DATA)
 
 local SAMPLING_RATE = 64
 local MARGIN_LEFT   = 100
@@ -30,6 +31,17 @@ end
 
 function love.mousepressed(mx, my)
     print(getSampleXFromMouseX())
+end
+
+function love.keypressed(key)
+    if key == "space" then
+        local samplePosition = getSampleXFromMouseX()
+        local sampleRate = SOUND_DATA:getSampleRate()
+        local timeInSeconds = samplePosition / sampleRate
+        
+        AUDIO_SOURCE:seek(timeInSeconds, "seconds")
+        AUDIO_SOURCE:play()
+    end
 end
 
 --------------------------------------------------------------
