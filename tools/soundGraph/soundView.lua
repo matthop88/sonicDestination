@@ -101,7 +101,7 @@ return {
 		    end,
 
 		    adjustScaleGeometrically = function(self, deltaScale)
-		        self.graphics:adjustScaleGeometrically(deltaScale)
+		        self.graphics:adjustScaleGeometrically(deltaScale * 2)
 				if self.graphics:getScale() > 1 then
 					self.graphics:setScale(1)
 				elseif self.graphics:getScale() < self.minScale then
