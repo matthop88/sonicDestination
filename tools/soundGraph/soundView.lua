@@ -76,7 +76,7 @@ return {
 			---------------------- Graphics Object Methods ------------------------
 
 		    moveImage = function(self, deltaX, deltaY)
-		        self.graphics:moveImage(deltaX / self.graphics:getScale(), deltaY / self.graphics:getScale())
+		        self.graphics:moveImage(deltaX, deltaY)
 		        
 		        -- Constrain left scrolling
 		        local currentX = self.graphics:getX()
