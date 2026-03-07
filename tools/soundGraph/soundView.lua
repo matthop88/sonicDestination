@@ -35,7 +35,16 @@ return {
 					love.graphics.line(screenX1, y1, screenX2, y2)
 				end
 
-				-- Draw cursor line
+				-- Draw playback cursor (yellow)
+				local currentSample = self.soundObject:getCurrentSample()
+				if currentSample then
+					local imageX = self.marginLeft + currentSample
+					local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
+					love.graphics.setColor(1, 1, 0)
+					love.graphics.line(screenX, 0, screenX, 512)
+				end
+
+				-- Draw mouse cursor line (green)
 				love.graphics.setColor(0, 1, 0)
 				local mx = self:getConstrainedMouseX()
 				love.graphics.line(mx, 0, mx, 512)
