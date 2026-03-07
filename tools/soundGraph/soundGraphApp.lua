@@ -49,5 +49,5 @@ SOUND_VIEW:analyzeData()
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
     :add("zooming",    { imageViewer = SOUND_VIEW })
-    :add("scrolling",  { imageViewer = SOUND_VIEW, scrollY = false, scrollSpeed = 1200 })
+    :add("scrolling",  { imageViewer = SOUND_VIEW, scrollY = false, scrollSpeed = 24000 })
 
