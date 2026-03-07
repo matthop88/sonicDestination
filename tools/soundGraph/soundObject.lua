@@ -27,6 +27,12 @@ return {
 				self.audioSource:play()
 			end,
 
+			getCurrentSample = function(self)
+				if not self:isPlaying() then return nil end
+				local timeInSeconds = self.audioSource:tell("seconds")
+				return math.floor(timeInSeconds * self:getSampleRate())
+			end,
+
 			stop = function(self)
 				self.audioSource:stop()
 			end,
