@@ -1,12 +1,17 @@
 return {
 	create = function(self, params)
-		return {
+		return ({
 			graphics = require("tools/lib/graphics"):create(),
 			soundObject = params.soundObject,
 			samplingRate = params.samplingRate or 64,
 			marginLeft = params.marginLeft or 100,
 			sampleData = {},
 
+			init = function(self)
+				self:moveImage(self.marginLeft, 0)
+				return self
+			end,
+			
 			analyzeData = function(self)
 				local min, max = 0, 0
 				local indexInChunk = 0
@@ -27,8 +32,7 @@ return {
 			draw = function(self)
 				-- Draw waveform
 				for k, v in ipairs(self.sampleData) do
-					local imageX = self.marginLeft + k
-					local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
+					local screenX, _ = self:imageToScreenCoordinates(k, 0)
 					
 					love.graphics.setColor(1, 1, 1)
 					love.graphics.line(screenX, 256 - v.max, screenX, 256 - v.min)
@@ -46,14 +50,22 @@ return {
 			end,
 
 			getSampleXFromMouseX = function(self)
-				local mx = (self:getConstrainedMouseX() - self.marginLeft) + 1
-				return math.min(mx * self.samplingRate, self.soundObject:getSampleCount() - 1)
+				local mx, my = love.mouse.getPosition()
+				local imageX, _ = self:screenToImageCoordinates(mx, my)
+				local relativeX = imageX - self.marginLeft
+				return math.max(0, math.min(relativeX * self.samplingRate, self.soundObject:getSampleCount() - 1))
 			end,
 
 			---------------------- Graphics Object Methods ------------------------
 
 		    moveImage = function(self, deltaX, deltaY)
 		        self.graphics:moveImage(deltaX / self.graphics:getScale(), deltaY / self.graphics:getScale())
+		        
+		        -- Constrain left scrolling
+		        local currentX = self.graphics:getX()
+		        if currentX > self.marginLeft then
+		            self.graphics:setX(self.marginLeft)
+		        end
 		    end,
 
 		    screenToImageCoordinates = function(self, screenX, screenY)
@@ -71,6 +83,6 @@ return {
 		    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
 		        self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
 		    end,
-		}
+		}):init()
 	end,
 }
