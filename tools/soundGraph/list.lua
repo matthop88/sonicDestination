@@ -1,12 +1,16 @@
 return {
 	create = function(self, params)
 		local COLORS = require("tools/lib/colors")
+		local fontSize = params.fontSize or 12
+		local font = love.graphics.newFont(fontSize)
+		local itemHeight = font:getHeight() + 10
 		
 		return {
 			x = params.x or 0,
 			y = params.y or 0,
 			width = params.width or 200,
-			itemHeight = params.itemHeight or 25,
+			font = font,
+			itemHeight = itemHeight,
 			items = params.items or {},
 			selectedIndex = nil,
 
@@ -59,8 +63,8 @@ return {
 			end,
 
 			drawText = function(self, item, itemY)
-				local font = love.graphics.getFont()
-				local textY = itemY + (self.itemHeight - font:getHeight()) / 2
+				local textY = itemY + (self.itemHeight - self.font:getHeight()) / 2
+				love.graphics.setFont(self.font)
 				love.graphics.print(item, self.x + 5, textY)
 			end,
 
