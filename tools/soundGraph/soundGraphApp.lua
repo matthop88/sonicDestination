@@ -14,16 +14,29 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	marginLeft = 100,
 }
 
+local LIST = require("tools/soundGraph/list"):create {
+	x = 20,
+	y = 20,
+	width = 200,
+	items = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
     SOUND_VIEW:draw()
+    LIST:draw()
 end
 
 function love.mousepressed(mx, my)
-    print(SOUND_VIEW:getSampleXFromMouseX())
+    local item, index = LIST:handleClick(mx, my)
+    if item then
+        print("Selected: " .. item .. " (index " .. index .. ")")
+    else
+        print(SOUND_VIEW:getSampleXFromMouseX())
+    end
 end
 
 function love.keypressed(key)
