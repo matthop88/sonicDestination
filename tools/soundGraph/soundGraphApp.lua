@@ -18,6 +18,7 @@ local LIST = require("tools/soundGraph/list"):create {
 	x = 20,
 	y = 20,
 	width = 200,
+	fontSize = 24,
 	items = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }
 }
 
