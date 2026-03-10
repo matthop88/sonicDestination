@@ -31,6 +31,10 @@ function love.draw()
     LIST:draw()
 end
 
+function love.update(dt)
+    LIST:update(dt)
+end
+
 function love.mousepressed(mx, my)
     local item, index = LIST:handleClick(mx, my)
     if item then
