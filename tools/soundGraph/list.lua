@@ -13,10 +13,34 @@ return {
 			itemHeight = itemHeight,
 			items = params.items or {},
 			selectedIndex = nil,
+			
+			flashIndex = nil,
+			flashTimer = 0,
+			flashDuration = 0.07,
+			flashCount = 0,
+			flashState = false,
 
 			draw = function(self)
 				self:drawBackground()
 				self:drawItems()
+			end,
+
+			update = function(self, dt)
+				if self.flashIndex then
+					self.flashTimer = self.flashTimer + dt
+					if self.flashTimer >= self.flashDuration then
+						self.flashTimer = 0
+						self.flashState = not self.flashState
+						if self.flashState then
+							self.flashCount = self.flashCount + 1
+							if self.flashCount >= 2 then
+								self.flashIndex = nil
+								self.flashCount = 0
+								self.flashState = false
+							end
+						end
+					end
+				end
 			end,
 
 			drawBackground = function(self)
@@ -34,8 +58,9 @@ return {
 				for i, item in ipairs(self.items) do
 					local itemY = self.y + (i - 1) * self.itemHeight
 					local isHovered = self:itemContainsPt(i, mx, my)
+					local isFlashing = (self.flashIndex == i and self.flashState)
 
-					if isHovered then
+					if isFlashing or (isHovered and self.flashIndex ~= i) then
 						self:drawReversedText(item, itemY)
 					else
 						self:drawWhiteText(item, itemY)
@@ -73,6 +98,10 @@ return {
 					local clickedIndex = self:getClickedItemIndex(mx, my)
 					if clickedIndex then
 						self.selectedIndex = clickedIndex
+						self.flashIndex = clickedIndex
+						self.flashTimer = 0
+						self.flashCount = 0
+						self.flashState = true
 						return self:getSelectedItem()
 					end
 				end
