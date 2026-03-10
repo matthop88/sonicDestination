@@ -15,10 +15,10 @@ return {
 			selectedIndex = nil,
 			
 			flashIndex = nil,
-			flashTimer = 0,
-			flashDuration = 0.07,
-			flashCount = 0,
-			flashState = false,
+			flashing = require("tools/soundGraph/flashing"):create {
+				flashCount = 2,
+				flashDuration = 0.07,
+			},
 
 			draw = function(self)
 				self:drawBackground()
@@ -26,20 +26,9 @@ return {
 			end,
 
 			update = function(self, dt)
-				if self.flashIndex then
-					self.flashTimer = self.flashTimer + dt
-					if self.flashTimer >= self.flashDuration then
-						self.flashTimer = 0
-						self.flashState = not self.flashState
-						if self.flashState then
-							self.flashCount = self.flashCount + 1
-							if self.flashCount >= 2 then
-								self.flashIndex = nil
-								self.flashCount = 0
-								self.flashState = false
-							end
-						end
-					end
+				self.flashing:update(dt)
+				if not self.flashing:isActive() then
+					self.flashIndex = nil
 				end
 			end,
 
@@ -58,7 +47,7 @@ return {
 				for i, item in ipairs(self.items) do
 					local itemY = self.y + (i - 1) * self.itemHeight
 					local isHovered = self:itemContainsPt(i, mx, my)
-					local isFlashing = (self.flashIndex == i and self.flashState)
+					local isFlashing = (self.flashIndex == i and self.flashing:isFlashing())
 
 					if isFlashing or (isHovered and self.flashIndex ~= i) then
 						self:drawReversedText(item, itemY)
@@ -99,9 +88,7 @@ return {
 					if clickedIndex then
 						self.selectedIndex = clickedIndex
 						self.flashIndex = clickedIndex
-						self.flashTimer = 0
-						self.flashCount = 0
-						self.flashState = true
+						self.flashing:start()
 						return self:getSelectedItem()
 					end
 				end
