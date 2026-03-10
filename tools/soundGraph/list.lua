@@ -1,5 +1,7 @@
 return {
 	create = function(self, params)
+		local COLORS = require("tools/lib/colors")
+		
 		return {
 			x = params.x or 0,
 			y = params.y or 0,
@@ -16,10 +18,9 @@ return {
 			drawBackground = function(self)
 				local totalHeight = #self.items * self.itemHeight
 				
-				-- Draw background rectangle (black with white outline)
-				love.graphics.setColor(0, 0, 0)
+				love.graphics.setColor(COLORS.JET_BLACK)
 				love.graphics.rectangle("fill", self.x, self.y, self.width, totalHeight)
-				love.graphics.setColor(1, 1, 1)
+				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, totalHeight)
 			end,
 
@@ -45,18 +46,15 @@ return {
 			end,
 
 			drawReversedText = function(self, item, itemY)
-				-- Draw white background for hovered item
-				love.graphics.setColor(1, 1, 1)
+				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("fill", self.x, itemY, self.width, self.itemHeight)
 				
-				-- Draw black text
-				love.graphics.setColor(0, 0, 0)
+				love.graphics.setColor(COLORS.JET_BLACK)
 				self:drawText(item, itemY)
 			end,
 
 			drawWhiteText = function(self, item, itemY)
-				-- Draw white text
-				love.graphics.setColor(1, 1, 1)
+				love.graphics.setColor(COLORS.PURE_WHITE)
 				self:drawText(item, itemY)
 			end,
 
@@ -67,17 +65,23 @@ return {
 			end,
 
 			handleClick = function(self, mx, my)
-				-- Check if click is within list bounds
 				if self:listBoxContainsPt(mx, my) then
-					-- Determine which item was clicked
-					local relativeY = my - self.y
-					local clickedIndex = math.floor(relativeY / self.itemHeight) + 1
-					if clickedIndex >= 1 and clickedIndex <= #self.items then
+					local clickedIndex = self:getClickedItemIndex(mx, my)
+					if clickedIndex then
 						self.selectedIndex = clickedIndex
 						return self:getSelectedItem()
 					end
 				end
 				return nil, nil
+			end,
+
+			getClickedItemIndex = function(self, mx, my)
+				local relativeY = my - self.y
+				local clickedIndex = math.floor(relativeY / self.itemHeight) + 1
+				if clickedIndex >= 1 and clickedIndex <= #self.items then
+					return clickedIndex
+				end
+				return nil
 			end,
 
 			listBoxContainsPt = function(self, px, py)
