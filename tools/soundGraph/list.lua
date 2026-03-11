@@ -1,24 +1,49 @@
 return {
 	create = function(self, params)
 		local COLORS = require("tools/lib/colors")
+		local TEXT_ITEM = require("tools/soundGraph/textItem")
+		
 		local fontSize = params.fontSize or 12
 		local font = love.graphics.newFont(fontSize)
-		local itemHeight = font:getHeight() + 10
+		local itemHeight = params.itemHeight or (font:getHeight() + 10)
 		
-		return {
+		-- Convert string items to TextItem objects
+		local items = {}
+		for _, item in ipairs(params.items or {}) do
+			if type(item) == "string" then
+				table.insert(items, TEXT_ITEM:create { text = item, font = font })
+			else
+				table.insert(items, item)
+			end
+		end
+		
+		return ({
 			x = params.x or 0,
 			y = params.y or 0,
 			width = params.width or 200,
-			font = font,
 			itemHeight = itemHeight,
-			items = params.items or {},
+			items = items,
 			selectedIndex = nil,
 			
 			flashIndex = nil,
 			flashing = require("tools/soundGraph/flashing"):create {
 				flashCount = 2,
-				flashDuration = 0.07,
+				flashDuration = 0.08,
 			},
+
+			init = function(self)
+				self:layoutItems()
+				return self
+			end,
+
+			layoutItems = function(self)
+				for i, item in ipairs(self.items) do
+					item.x = self.x
+					item.y = self.y + (i - 1) * self.itemHeight
+					item.width = self.width
+					item.height = self.itemHeight
+				end
+			end,
 
 			draw = function(self)
 				self:drawBackground()
@@ -29,6 +54,10 @@ return {
 				self.flashing:update(dt)
 				if not self.flashing:isActive() then
 					self.flashIndex = nil
+				end
+				
+				for _, item in ipairs(self.items) do
+					item:update(dt)
 				end
 			end,
 
@@ -45,63 +74,26 @@ return {
 				local mx, my = love.mouse.getPosition()
 
 				for i, item in ipairs(self.items) do
-					local itemY = self.y + (i - 1) * self.itemHeight
-					local isHovered = self:itemContainsPt(i, mx, my)
+					local isHovered = item:containsPt(mx, my)
 					local isFlashing = (self.flashIndex == i and self.flashing:isFlashing())
 
-					if isFlashing or (isHovered and self.flashIndex ~= i) then
-						self:drawReversedText(item, itemY)
-					else
-						self:drawWhiteText(item, itemY)
-					end
+					item:setPressed(isFlashing or (isHovered and self.flashIndex ~= i))
+					item:draw()
 				end
-			end,
-
-			itemContainsPt = function(self, i, px, py)
-				local itemY = self.y + (i - 1) * self.itemHeight
-				return px >= self.x and px <= self.x + self.width and
-				       py >= itemY and py <= itemY + self.itemHeight
-			end,
-
-			drawReversedText = function(self, item, itemY)
-				love.graphics.setColor(COLORS.PURE_WHITE)
-				love.graphics.rectangle("fill", self.x, itemY, self.width, self.itemHeight)
-				
-				love.graphics.setColor(COLORS.JET_BLACK)
-				self:drawText(item, itemY)
-			end,
-
-			drawWhiteText = function(self, item, itemY)
-				love.graphics.setColor(COLORS.PURE_WHITE)
-				self:drawText(item, itemY)
-			end,
-
-			drawText = function(self, item, itemY)
-				local textY = itemY + (self.itemHeight - self.font:getHeight()) / 2
-				love.graphics.setFont(self.font)
-				love.graphics.print(item, self.x + 5, textY)
 			end,
 
 			handleClick = function(self, mx, my)
 				if self:listBoxContainsPt(mx, my) then
-					local clickedIndex = self:getClickedItemIndex(mx, my)
-					if clickedIndex then
-						self.selectedIndex = clickedIndex
-						self.flashIndex = clickedIndex
-						self.flashing:start()
-						return self:getSelectedItem()
+					for i, item in ipairs(self.items) do
+						if item:containsPt(mx, my) then
+							self.selectedIndex = i
+							self.flashIndex = i
+							self.flashing:start()
+							return self:getSelectedItem()
+						end
 					end
 				end
 				return nil, nil
-			end,
-
-			getClickedItemIndex = function(self, mx, my)
-				local relativeY = my - self.y
-				local clickedIndex = math.floor(relativeY / self.itemHeight) + 1
-				if clickedIndex >= 1 and clickedIndex <= #self.items then
-					return clickedIndex
-				end
-				return nil
 			end,
 
 			listBoxContainsPt = function(self, px, py)
@@ -112,10 +104,10 @@ return {
 
 			getSelectedItem = function(self)
 				if self.selectedIndex then
-					return self.items[self.selectedIndex], self.selectedIndex
+					return self.items[self.selectedIndex]:getValue(), self.selectedIndex
 				end
 				return nil, nil
 			end,
-		}
+		}):init()
 	end,
 }
