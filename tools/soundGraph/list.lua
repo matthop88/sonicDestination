@@ -1,3 +1,7 @@
+local function isSelectable(item)
+	return not item.notSelectable
+end
+
 return {
 	create = function(self, params)
 		local COLORS = require("tools/lib/colors")
@@ -78,7 +82,7 @@ return {
 				local mx, my = love.mouse.getPosition()
 
 				for i, item in ipairs(self.items) do
-					local isHovered = item:containsPt(mx, my)
+					local isHovered = isSelectable(item) and item:containsPt(mx, my)
 					local isFlashing = (self.flashIndex == i and self.flashing:isFlashing())
 
 					item:setPressed(isFlashing or (isHovered and self.flashIndex ~= i))
@@ -89,7 +93,7 @@ return {
 			handleClick = function(self, mx, my)
 				if self:listBoxContainsPt(mx, my) then
 					for i, item in ipairs(self.items) do
-						if item:containsPt(mx, my) then
+						if isSelectable(item) and item:containsPt(mx, my) then
 							self.selectedIndex = i
 							self.flashIndex = i
 							self.flashing:start()
