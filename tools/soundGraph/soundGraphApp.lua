@@ -28,7 +28,7 @@ local LIST = require("tools/soundGraph/list"):create {
 		"Item 1", 
 		OVAL_ITEM:create { color = { 1, 0, 0 } },
 		"Item 2", 
-		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2 },
+		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2, notSelectable = true },
 		"Item 3",
 		OVAL_ITEM:create { color = { 0, 0, 1 }, height = defaultHeight * 2 },
 	}
