@@ -17,6 +17,8 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 local OVAL_ITEM = require("tools/soundGraph/ovalItem")
 local RECTANGLE_ITEM = require("tools/soundGraph/rectangleItem")
 
+local defaultHeight = love.graphics.getFont():getHeight() + 10
+
 local LIST = require("tools/soundGraph/list"):create {
 	x = 20,
 	y = 20,
@@ -26,9 +28,9 @@ local LIST = require("tools/soundGraph/list"):create {
 		"Item 1", 
 		OVAL_ITEM:create { color = { 1, 0, 0 } },
 		"Item 2", 
-		RECTANGLE_ITEM:create { color = { 0, 1, 0 } },
+		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2 },
 		"Item 3",
-		OVAL_ITEM:create { color = { 0, 0, 1 } },
+		OVAL_ITEM:create { color = { 0, 0, 1 }, height = defaultHeight * 2 },
 	}
 }
 
