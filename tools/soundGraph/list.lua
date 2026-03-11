@@ -24,6 +24,7 @@ return {
 			itemHeight = itemHeight,
 			items = items,
 			selectedIndex = nil,
+			totalHeight = 0,
 			
 			flashIndex = nil,
 			flashing = require("tools/soundGraph/flashing"):create {
@@ -37,12 +38,17 @@ return {
 			end,
 
 			layoutItems = function(self)
+				local currentY = self.y
 				for i, item in ipairs(self.items) do
 					item.x = self.x
-					item.y = self.y + (i - 1) * self.itemHeight
+					item.y = currentY
 					item.width = self.width
-					item.height = self.itemHeight
+					if not item.height or item.height == 25 then
+						item.height = self.itemHeight
+					end
+					currentY = currentY + item.height
 				end
+				self.totalHeight = currentY - self.y
 			end,
 
 			draw = function(self)
@@ -62,12 +68,10 @@ return {
 			end,
 
 			drawBackground = function(self)
-				local totalHeight = #self.items * self.itemHeight
-				
 				love.graphics.setColor(COLORS.JET_BLACK)
-				love.graphics.rectangle("fill", self.x, self.y, self.width, totalHeight)
+				love.graphics.rectangle("fill", self.x, self.y, self.width, self.totalHeight)
 				love.graphics.setColor(COLORS.PURE_WHITE)
-				love.graphics.rectangle("line", self.x, self.y, self.width, totalHeight)
+				love.graphics.rectangle("line", self.x, self.y, self.width, self.totalHeight)
 			end,
 
 			drawItems = function(self)
@@ -97,9 +101,8 @@ return {
 			end,
 
 			listBoxContainsPt = function(self, px, py)
-				local totalHeight = #self.items * self.itemHeight
 				return px >= self.x and px <= self.x + self.width and
-				       py >= self.y and py <= self.y + totalHeight
+				       py >= self.y and py <= self.y + self.totalHeight
 			end,
 
 			getSelectedItem = function(self)
