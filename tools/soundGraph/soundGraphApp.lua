@@ -14,12 +14,22 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	marginLeft = 100,
 }
 
+local OVAL_ITEM = require("tools/soundGraph/ovalItem")
+local RECTANGLE_ITEM = require("tools/soundGraph/rectangleItem")
+
 local LIST = require("tools/soundGraph/list"):create {
 	x = 20,
 	y = 20,
 	width = 200,
 	fontSize = 24,
-	items = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }
+	items = { 
+		"Item 1", 
+		OVAL_ITEM:create { color = { 1, 0, 0 } },
+		"Item 2", 
+		RECTANGLE_ITEM:create { color = { 0, 1, 0 } },
+		"Item 3",
+		OVAL_ITEM:create { color = { 0, 0, 1 } },
+	}
 }
 
 --------------------------------------------------------------
