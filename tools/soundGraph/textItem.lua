@@ -9,6 +9,7 @@ return {
 			y = params.y or 0,
 			width = params.width or 200,
 			height = params.height or 25,
+			notSelectable = params.notSelectable or false,
 			pressed = false,
 
 			draw = function(self)
