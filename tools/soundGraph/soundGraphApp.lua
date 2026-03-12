@@ -20,8 +20,8 @@ local RECTANGLE_ITEM = require("tools/soundGraph/rectangleItem")
 local defaultHeight = love.graphics.getFont():getHeight() + 10
 
 local LIST = require("tools/soundGraph/list"):create {
-	x = 20,
-	y = 20,
+	x = 0,
+	y = 0,
 	width = 200,
 	fontSize = 24,
 	items = { 
@@ -34,21 +34,29 @@ local LIST = require("tools/soundGraph/list"):create {
 	}
 }
 
+local SCROLL_PANE = require("tools/soundGraph/scrollPane"):create {
+	x = 100,
+	y = 100,
+	width = 200,
+	height = 400,
+	list = LIST
+}
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
     SOUND_VIEW:draw()
-    LIST:draw()
+    SCROLL_PANE:draw()
 end
 
 function love.update(dt)
-    LIST:update(dt)
+    SCROLL_PANE:update(dt)
 end
 
 function love.mousepressed(mx, my)
-    local item, index = LIST:handleClick(mx, my)
+    local item, index = SCROLL_PANE:handleClick(mx, my)
     if item then
         print("Selected: " .. item .. " (index " .. index .. ")")
     else
@@ -60,6 +68,10 @@ function love.keypressed(key)
     if key == "space" then
         local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
+    elseif key == "w" then
+        SCROLL_PANE:scrollBy(-1)
+    elseif key == "s" then
+        SCROLL_PANE:scrollBy(1)
     end
 end
 
