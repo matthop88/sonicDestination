@@ -12,31 +12,32 @@ return {
 			notSelectable = params.notSelectable or false,
 			pressed = false,
 
-			draw = function(self)
+			draw = function(self, graphics)
+				graphics = graphics or love.graphics
 				if self.pressed then
-					self:drawReversedText()
+					self:drawReversedText(graphics)
 				else
-					self:drawWhiteText()
+					self:drawWhiteText(graphics)
 				end
 			end,
 
-			drawReversedText = function(self)
-				love.graphics.setColor(COLORS.PURE_WHITE)
-				love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+			drawReversedText = function(self, graphics)
+				graphics:setColor(COLORS.PURE_WHITE)
+				graphics:rectangle("fill", self.x, self.y, self.width, self.height)
 				
-				love.graphics.setColor(COLORS.JET_BLACK)
-				self:drawText()
+				graphics:setColor(COLORS.JET_BLACK)
+				self:drawText(graphics)
 			end,
 
-			drawWhiteText = function(self)
-				love.graphics.setColor(COLORS.PURE_WHITE)
-				self:drawText()
+			drawWhiteText = function(self, graphics)
+				graphics:setColor(COLORS.PURE_WHITE)
+				self:drawText(graphics)
 			end,
 
-			drawText = function(self)
+			drawText = function(self, graphics)
 				local textY = self.y + (self.height - self.font:getHeight()) / 2
-				love.graphics.setFont(self.font)
-				love.graphics.print(self.text, self.x + 5, textY)
+				graphics:setFont(self.font)
+				graphics:print(self.text, self.x + 5, textY)
 			end,
 
 			setPressed = function(self, pressed)
