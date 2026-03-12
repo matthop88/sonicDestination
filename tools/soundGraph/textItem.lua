@@ -13,7 +13,6 @@ return {
 			pressed = false,
 
 			draw = function(self, graphics)
-				graphics = graphics or love.graphics
 				if self.pressed then
 					self:drawReversedText(graphics)
 				else
