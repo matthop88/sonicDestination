@@ -55,9 +55,13 @@ return {
 				self.totalHeight = currentY - self.y
 			end,
 
-			draw = function(self)
-				self:drawBackground()
-				self:drawItems()
+			draw = function(self, graphics, mx, my)
+				graphics = graphics or love.graphics
+				if not mx or not my then
+					mx, my = love.mouse.getPosition()
+				end
+				self:drawBackground(graphics)
+				self:drawItems(graphics, mx, my)
 			end,
 
 			update = function(self, dt)
@@ -71,22 +75,20 @@ return {
 				end
 			end,
 
-			drawBackground = function(self)
-				love.graphics.setColor(COLORS.JET_BLACK)
-				love.graphics.rectangle("fill", self.x, self.y, self.width, self.totalHeight)
-				love.graphics.setColor(COLORS.PURE_WHITE)
-				love.graphics.rectangle("line", self.x, self.y, self.width, self.totalHeight)
+			drawBackground = function(self, graphics)
+				graphics:setColor(COLORS.JET_BLACK)
+				graphics:rectangle("fill", self.x, self.y, self.width, self.totalHeight)
+				graphics:setColor(COLORS.PURE_WHITE)
+				graphics:rectangle("line", self.x, self.y, self.width, self.totalHeight)
 			end,
 
-			drawItems = function(self)
-				local mx, my = love.mouse.getPosition()
-
+			drawItems = function(self, graphics, mx, my)
 				for i, item in ipairs(self.items) do
 					local isHovered = isSelectable(item) and item:containsPt(mx, my)
 					local isFlashing = (self.flashIndex == i and self.flashing:isFlashing())
 
 					item:setPressed(isFlashing or (isHovered and self.flashIndex ~= i))
-					item:draw()
+					item:draw(graphics)
 				end
 			end,
 
