@@ -54,6 +54,12 @@ return {
                 love.graphics.setCanvas()
             end,
 
+            ellipse   = function(self, mode, x, y, rx, ry)
+                love.graphics.setCanvas(self.buffer)
+                graphics:ellipse(mode, x, y, rx, ry)
+                love.graphics.setCanvas()
+            end,
+
             draw      = function(self, image, quad, x, y, r, sx, sy)
                 love.graphics.setCanvas(self.buffer)
                 graphics:draw(image, quad, x, y, r, sx, sy)
