@@ -9,21 +9,21 @@ return {
 			notSelectable = params.notSelectable or false,
 			pressed = false,
 
-			draw = function(self)
+			draw = function(self, graphics)
 				if self.pressed then
-					love.graphics.setColor(1, 1, 1)
-					love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+					graphics:setColor(1, 1, 1)
+					graphics:rectangle("fill", self.x, self.y, self.width, self.height)
 					
-					love.graphics.setColor(0, 0, 0)
+					graphics:setColor(0, 0, 0)
 				else
-					love.graphics.setColor(self.color)
+					graphics:setColor(self.color)
 				end
 				
 				local cx = self.x + self.width / 2
 				local cy = self.y + self.height / 2
 				local rx = self.width / 2 - 5
 				local ry = self.height / 2 - 5
-				love.graphics.ellipse("fill", cx, cy, rx, ry)
+				graphics:ellipse("fill", cx, cy, rx, ry)
 			end,
 
 			setPressed = function(self, pressed)
