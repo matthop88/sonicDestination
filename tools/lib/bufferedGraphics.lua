@@ -1,5 +1,7 @@
 return {
     create = function(self, graphics, w, h)
+        graphics = graphics or require("tools/lib/graphics"):create()
+        
         return {
             buffer = love.graphics.newCanvas(w, h),
 
