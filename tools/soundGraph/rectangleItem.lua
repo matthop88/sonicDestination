@@ -9,17 +9,17 @@ return {
 			notSelectable = params.notSelectable or false,
 			pressed = false,
 
-			draw = function(self)
+			draw = function(self, graphics)
 				if self.pressed then
-					love.graphics.setColor(1, 1, 1)
-					love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+					graphics:setColor(1, 1, 1)
+					graphics:rectangle("fill", self.x, self.y, self.width, self.height)
 					
-					love.graphics.setColor(0, 0, 0)
+					graphics:setColor(0, 0, 0)
 				else
-					love.graphics.setColor(self.color)
+					graphics:setColor(self.color)
 				end
 				
-				love.graphics.rectangle("fill", self.x + 5, self.y + 5, self.width - 10, self.height - 10)
+				graphics:rectangle("fill", self.x + 5, self.y + 5, self.width - 10, self.height - 10)
 			end,
 
 			setPressed = function(self, pressed)
