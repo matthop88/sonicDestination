@@ -56,12 +56,16 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    local item, index = LIST:handleClick(mx, my)
+    local item, index = LIST:handleMousePressed(mx, my)
     if item then
         print("Selected: " .. item .. " (index " .. index .. ")")
     else
         print(SOUND_VIEW:getSampleXFromMouseX())
     end
+end
+
+function love.mousereleased()
+    LIST:handleMouseReleased()
 end
 
 function love.keypressed(key)
