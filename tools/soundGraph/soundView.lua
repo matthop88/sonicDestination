@@ -8,12 +8,17 @@ return {
 			sampleData = {},
 			followPlaybackCursor = false,
 			currentSample = nil,
+			analysisProgress = 1,  -- 0 to 1, 1 means complete
+			analysisCoroutine = nil,
 
 			analyzeData = function(self)
 				if not self.soundObject then return end
 				
 				local NUM_SAMPLES = self.soundObject:getSampleCount()
-		
+				local CHUNK_SIZE = 100000  -- Process this many samples per frame
+				
+				print("Starting analysis of " .. NUM_SAMPLES .. " samples")
+				
 				-- First pass: find maximum absolute amplitude
 				local maxAmplitude = 0
 				for i = 0, NUM_SAMPLES - 1 do
@@ -21,7 +26,15 @@ return {
 					if sample > maxAmplitude then
 						maxAmplitude = sample
 					end
+					
+					-- Yield every CHUNK_SIZE samples to update progress
+					if i % CHUNK_SIZE == 0 then
+						self.analysisProgress = (i / NUM_SAMPLES) * 0.5  -- First pass is 0-50%
+						coroutine.yield()
+					end
 				end
+				
+				print("First pass complete, maxAmplitude: " .. maxAmplitude)
 		
 				-- Calculate scale factor to fit waveform on screen
 				-- Screen height is 512, centered at 256, so max amplitude should map to 256
@@ -31,7 +44,15 @@ return {
 				for i = 0, NUM_SAMPLES - 1 do
 					local currentSample = self.soundObject:getSample(i) * amplitudeScale
 					table.insert(self.sampleData, currentSample)
+					
+					-- Yield every CHUNK_SIZE samples to update progress
+					if i % CHUNK_SIZE == 0 then
+						self.analysisProgress = 0.5 + (i / NUM_SAMPLES) * 0.5  -- Second pass is 50-100%
+						coroutine.yield()
+					end
 				end
+				
+				print("Second pass complete")
 		
 				-- Calculate minimum scale with limit for large files
 				-- 2 seconds of music at 44100 Hz = 88200 samples per channel
@@ -39,6 +60,9 @@ return {
 				self.minScale = math.max(1024 / NUM_SAMPLES, 1024 / NUM_SAMPLES_IN_2_SECONDS)
 				self.graphics:setScale(self.minScale)
 				self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
+				
+				self.analysisProgress = 1  -- Complete
+				print("Analysis complete!")
 			end,
 		
 			refresh = function(self, soundObject, samplingRate, marginLeft)
@@ -46,10 +70,21 @@ return {
 				self.samplingRate = samplingRate or self.samplingRate
 				self.marginLeft = marginLeft or self.marginLeft
 				self.sampleData = {}
-				self:analyzeData()
+				self.analysisProgress = 0
+				self.analysisCoroutine = coroutine.create(function() self:analyzeData() end)
+			end,
+			
+			getProgress = function(self)
+				return self.analysisProgress
+			end,
+			
+			isAnalysisComplete = function(self)
+				return self.analysisProgress >= 1
 			end,
 		
 			drawWaveform = function(self)
+				if #self.sampleData == 0 then return end
+				
 				love.graphics.setLineWidth(1)
 				love.graphics.setColor(1, 1, 1)
 				
@@ -105,6 +140,14 @@ return {
 			end,
 			
 			update = function(self, dt)
+				-- Resume analysis coroutine if it exists and isn't finished
+				if self.analysisCoroutine and coroutine.status(self.analysisCoroutine) ~= "dead" then
+					local success, err = coroutine.resume(self.analysisCoroutine)
+					if not success then
+						print("Error in analysis coroutine: " .. tostring(err))
+					end
+				end
+				
 				self:updateCurrentSample()
 				
 				if self.followPlaybackCursor and self.soundObject then
