@@ -9,7 +9,7 @@ return {
 		)
 		
 		local scrollBarWidth = 30
-		local scrollBar = require("tools/soundGraph/scrollBar"):create {
+		local scrollBar = require("tools/lib/guiList/scrollBar"):create {
 			x = (params.x or 0) + (params.width or 200) - scrollBarWidth,
 			y = params.y or 0,
 			width = scrollBarWidth,
