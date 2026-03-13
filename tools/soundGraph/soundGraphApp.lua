@@ -38,11 +38,11 @@ end
 table.sort(soundItems)
 
 local LIST = require("tools/lib/guiList/list"):create {
-	x = 100,
-	y = 100,
-	width = 300,
+	x = (WINDOW_WIDTH - 400) / 2,  -- Center horizontally
+	y = (WINDOW_HEIGHT - 400) / 2,  -- Center vertically
+	width = 400,
 	height = 400,
-	fontSize = 16,
+	fontSize = 28,
 	items = soundItems,
 	onItemSelected = function(listOrPane, label, index)
 		local soundKey = labelToKeyMap[label]
