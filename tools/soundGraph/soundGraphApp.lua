@@ -87,6 +87,9 @@ end
 
 function love.update(dt)
     LIST:update(dt)
+    if SOUND_VIEW then
+        SOUND_VIEW:update(dt)
+    end
 end
 
 function love.mousepressed(mx, my)
@@ -106,6 +109,9 @@ function love.keypressed(key)
         SOUND_OBJECT:playFromSample(samplePosition)
     elseif key == "L" then
         LIST:setVisible(true)
+    elseif key == "F" and SOUND_VIEW then
+        local enabled = SOUND_VIEW:toggleFollowPlaybackCursor()
+        print("Follow playback cursor: " .. (enabled and "ENABLED" or "DISABLED"))
     end
 end
 
