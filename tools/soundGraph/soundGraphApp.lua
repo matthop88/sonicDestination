@@ -26,14 +26,9 @@ local function loadSound(soundKey)
 	local soundPath = "game/resources/sounds/" .. soundInfo.filename
 	print("Loading sound: " .. soundPath)
 	
-	-- Create new sound object and view
+	-- Create new sound object and refresh view
 	SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(soundPath):init()
-	SOUND_VIEW = require("tools/soundGraph/soundView"):create {
-		soundObject = SOUND_OBJECT,
-		samplingRate = 64,
-		marginLeft = 100,
-	}
-	SOUND_VIEW:analyzeData()
+	SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
 end
 
 -- Get list of sound names from soundData
