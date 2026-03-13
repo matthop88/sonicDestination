@@ -8,20 +8,26 @@ return {
 			params.height or 400
 		)
 		
+		local scrollBarWidth = 30
+		local scrollBar = require("tools/soundGraph/scrollBar"):create {
+			x = (params.x or 0) + (params.width or 200) - scrollBarWidth,
+			y = params.y or 0,
+			width = scrollBarWidth,
+			height = params.height or 400,
+			buttonHeight = 20,
+			scrollSpeed = params.scrollSpeed or 300,
+		}
+		
 		return ({
 			x = params.x or 0,
 			y = params.y or 0,
 			width = params.width or 200,
 			height = params.height or 400,
 			scrollSpeed = params.scrollSpeed or 300,
-			scrollBarWidth = 30,
+			scrollBarWidth = scrollBarWidth,
+			scrollBar = scrollBar,
 			graphics = graphics,
 			list = params.list,
-			scrollY = 0,
-			buttonHeight = 20,
-			mouseOverUpButton = false,
-			mouseOverDownButton = false,
-			mousePressed = false,
 
 			init = function(self)
 				self.list.x = 0
@@ -39,135 +45,19 @@ return {
 				self.list:draw(self.graphics, bufferMx, bufferMy)
 				self.graphics:blitToScreen(self.x, self.y)
 				self:drawBorder()
-				self:drawButtons(mx, my)
+				self.scrollBar.listTotalHeight = self.list.totalHeight
+				self.scrollBar.paneHeight = self.height
+				self.scrollBar:draw(mx, my)
 			end,
 		
 			drawBorder = function(self)
 				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 			end,
-	
-			drawButtons = function(self, mx, my)
-				local scrollBarX = self.x + self.list.width
-				local scrollBarY = self.y
-				local scrollBarHeight = self.height
-				
-				-- Draw scroll bar background
-				love.graphics.setColor(COLORS.MEDIUM_GREY)
-				love.graphics.rectangle("fill", scrollBarX, scrollBarY, self.scrollBarWidth, scrollBarHeight)
-				love.graphics.setColor(COLORS.DARK_GREY)
-				love.graphics.rectangle("line", scrollBarX, scrollBarY, self.scrollBarWidth, scrollBarHeight)
-				
-				-- Button positioning
-				local buttonWidth = self.scrollBarWidth
-				local buttonX = scrollBarX
-				local upButtonY = scrollBarY + 5
-				local downButtonY = scrollBarY + scrollBarHeight - self.buttonHeight - 5
-					
-				-- Check if buttons are enabled
-				local maxScroll, minScroll = self:calculateScrollConstraints()
-				local upEnabled = self.scrollY < maxScroll
-				local downEnabled = self.scrollY > minScroll
-					
-				-- Update hover states
-				self.mouseOverUpButton = self:isOverUpButton(mx, my) and upEnabled
-				self.mouseOverDownButton = self:isOverDownButton(mx, my) and downEnabled
-				
-				-- Draw buttons
-				self:drawUpButton(buttonX, buttonWidth, upButtonY, upEnabled)
-				self:drawDownButton(buttonX, buttonWidth, downButtonY, downEnabled)
-			end,
-
-			drawUpButton = function(self, buttonX, buttonWidth, buttonY, enabled)
-				if not enabled then
-					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.VERY_DARK_GREY, "line")
-				elseif self.mousePressed and self.mouseOverUpButton then
-					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.PURE_WHITE, "fill")
-				elseif self.mouseOverUpButton then
-					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
-					love.graphics.setLineWidth(2)
-					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.PURE_WHITE, "line")
-				else
-					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
-				end
-			end,
-		
-			drawDownButton = function(self, buttonX, buttonWidth, buttonY, enabled)
-				if not enabled then
-					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.VERY_DARK_GREY, "line")
-				elseif self.mousePressed and self.mouseOverDownButton then
-					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.PURE_WHITE, "fill")
-				elseif self.mouseOverDownButton then
-					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
-					love.graphics.setLineWidth(2)
-					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.PURE_WHITE, "line")
-				else
-					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
-				end
-			end,
-		
-			drawUpIcon = function(self, buttonX, buttonWidth, buttonY, color, drawMode)
-				love.graphics.setColor(color)
-				local centerX = buttonX + buttonWidth / 2
-				local topY = buttonY + 3
-				local bottomY = buttonY + self.buttonHeight - 3
-				love.graphics.polygon(drawMode,
-					centerX, topY,
-					centerX - 8, bottomY,
-					centerX + 8, bottomY
-				)
-			end,
-		
-			drawDownIcon = function(self, buttonX, buttonWidth, buttonY, color, drawMode)
-				love.graphics.setColor(color)
-				local centerX = buttonX + buttonWidth / 2
-				local topY = buttonY + 3
-				local bottomY = buttonY + self.buttonHeight - 3
-				love.graphics.polygon(drawMode,
-					centerX, bottomY,
-					centerX - 8, topY,
-					centerX + 8, topY
-				)
-			end,
-		
-			calculateScrollConstraints = function(self)
-				local maxScroll = 0
-				local minScroll = -(math.max(0, self.list.totalHeight - self.height))
-				return maxScroll, minScroll
-			end,
-			
-			isOverUpButton = function(self, mx, my)
-				local buttonWidth = self.scrollBarWidth
-				local buttonX = self.x + self.list.width
-				local upButtonY = self.y + 5
-				return mx >= buttonX and mx <= buttonX + buttonWidth and
-					   my >= upButtonY and my <= upButtonY + self.buttonHeight
-			end,
-
-			isOverDownButton = function(self, mx, my)
-				local buttonWidth = self.scrollBarWidth
-				local buttonX = self.x + self.list.width
-				local downButtonY = self.y + self.height - self.buttonHeight - 5
-				return mx >= buttonX and mx <= buttonX + buttonWidth and
-				       my >= downButtonY and my <= downButtonY + self.buttonHeight
-			end,
 
 			update = function(self, dt)
-				if love.keyboard.isDown("w") then
-					self:scrollBy(self.scrollSpeed * dt)
-				elseif love.keyboard.isDown("s") then
-					self:scrollBy(-self.scrollSpeed * dt)
-				end
-				
-				-- Handle button scrolling
-				if self.mousePressed then
-					local mx, my = love.mouse.getPosition()
-					if self:isOverUpButton(mx, my) then
-						self:scrollBy(self.scrollSpeed * dt)
-					elseif self:isOverDownButton(mx, my) then
-						self:scrollBy(-self.scrollSpeed * dt)
-					end
-				end
+				self.scrollBar:update(dt)
+				self:updateScrollPosition()
 				
 				self.list:update(dt)
 			end,
@@ -178,23 +68,17 @@ return {
 				return offsetX, offsetY
 			end,
 
-			scrollBy = function(self, deltaY)
-				self.scrollY = self.scrollY + deltaY
-				
-				-- Constrain scrolling: don't scroll past the top or bottom
-				local maxScroll, minScroll = self:calculateScrollConstraints()
-				self.scrollY = math.max(minScroll, math.min(maxScroll, self.scrollY))
-				
-				self.graphics:setY(self.scrollY)
+			updateScrollPosition = function(self)
+				self.graphics:setY(self.scrollBar:getScrollY())
 			end,
 
 			scrollTo = function(self, y)
-				self.scrollY = y
-				self.graphics:setY(self.scrollY)
+				self.scrollBar:scrollTo(y)
+				self:updateScrollPosition()
 			end,
 
 			getScrollY = function(self)
-				return self.scrollY
+				return self.scrollBar:getScrollY()
 			end,
 
 			handleClick = function(self, mx, my)
@@ -203,16 +87,16 @@ return {
 			end,
 
 			handleMousePressed = function(self, mx, my)
-				self.mousePressed = true
-				-- Check if clicking on a button; if not, pass to list
-				if not self:isOverUpButton(mx, my) and not self:isOverDownButton(mx, my) then
+				local isOverButton = self.scrollBar:handleMousePressed(mx, my)
+				-- If not clicking on a button, pass to list
+				if not isOverButton then
 					return self:handleClick(mx, my)
 				end
 				return nil, nil
 			end,
 
 			handleMouseReleased = function(self)
-				self.mousePressed = false
+				self.scrollBar:handleMouseReleased()
 			end,
 		}):init()
 	end,
