@@ -4,6 +4,8 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
 
+local SOUND_DATA = require("tools/soundGraph/soundData")
+
 local SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(
 	"game/resources/sounds/" .. (__SOUND_FILE or "sonicCDJump.mp3")
 ):init()
@@ -14,34 +16,47 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	marginLeft = 100,
 }
 
-local OVAL_ITEM = require("tools/lib/guiList/ovalItem")
-local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
+local function loadSound(soundKey)
+	local soundInfo = SOUND_DATA[soundKey]
+	if not soundInfo then
+		print("Error: Sound key not found: " .. soundKey)
+		return
+	end
+	
+	local soundPath = "game/resources/sounds/" .. soundInfo.filename
+	print("Loading sound: " .. soundPath)
+	
+	-- Create new sound object and view
+	SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(soundPath):init()
+	SOUND_VIEW = require("tools/soundGraph/soundView"):create {
+		soundObject = SOUND_OBJECT,
+		samplingRate = 64,
+		marginLeft = 100,
+	}
+	SOUND_VIEW:analyzeData()
+end
 
-local defaultHeight = love.graphics.getFont():getHeight() + 10
+-- Get list of sound names from soundData
+local soundItems = {}
+local labelToKeyMap = {}  -- Map from display label to original key
+for soundKey, soundInfo in pairs(SOUND_DATA) do
+	table.insert(soundItems, soundInfo.label)
+	labelToKeyMap[soundInfo.label] = soundKey
+end
+table.sort(soundItems)
 
 local LIST = require("tools/lib/guiList/list"):create {
 	x = 100,
 	y = 100,
-	width = 200,
+	width = 300,
 	height = 400,
-	fontSize = 24,
-	items = { 
-		"Item 1", 
-		OVAL_ITEM:create { color = { 1, 0, 0 } },
-		"Item 2", 
-		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2, notSelectable = true },
-		"Item 3",
-		OVAL_ITEM:create { color = { 0, 0, 1 }, height = defaultHeight * 2 },
-		"Item 4",
-		"Item 5",
-		"Item 6",
-		"Item 7",
-		"Item 8",
-		"Item 9",
-		"Item 10",
-	},
-	onItemSelected = function(listOrPane, item, index)
-		print("Selected: " .. item .. " (index " .. index .. ")")
+	fontSize = 16,
+	items = soundItems,
+	onItemSelected = function(listOrPane, label, index)
+		local soundKey = labelToKeyMap[label]
+		print("Selected: " .. label .. " (key: " .. soundKey .. ", index " .. index .. ")")
+		loadSound(soundKey)
+		listOrPane:setVisible(false)
 	end,
 }
 
@@ -73,6 +88,8 @@ function love.keypressed(key)
     if key == "space" then
         local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
+    elseif key == "L" then
+        LIST:setVisible(true)
     end
 end
 
