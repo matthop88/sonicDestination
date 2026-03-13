@@ -6,12 +6,9 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
 
 local SOUND_DATA = require("tools/soundGraph/soundData")
 
-local SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(
-	"game/resources/sounds/" .. (__SOUND_FILE or "sonicCDJump.mp3")
-):init()
-
+local SOUND_OBJECT = nil
 local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
-	soundObject = SOUND_OBJECT,
+	soundObject = nil,
 	samplingRate = 64,
 	marginLeft = 100,
 }
@@ -60,7 +57,9 @@ local LIST = require("tools/lib/guiList/list"):create {
 --------------------------------------------------------------
 
 function love.draw()
-    SOUND_VIEW:draw()
+    if SOUND_VIEW then
+        SOUND_VIEW:draw()
+    end
     LIST:draw()
 end
 
@@ -70,7 +69,7 @@ end
 
 function love.mousepressed(mx, my)
     local handled = LIST:handleMousePressed(mx, my)
-    if not handled then
+    if not handled and SOUND_VIEW and SOUND_OBJECT then
         print(SOUND_VIEW:getSampleXFromMouseX())
     end
 end
@@ -80,7 +79,7 @@ function love.mousereleased()
 end
 
 function love.keypressed(key)
-    if key == "space" then
+    if key == "space" and SOUND_VIEW and SOUND_OBJECT then
         local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
     elseif key == "L" then
@@ -95,7 +94,8 @@ end
 love.window.setTitle("Sound Graph Application")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-SOUND_VIEW:analyzeData()
+-- Start with list visible
+LIST:setVisible(true)
 
 --------------------------------------------------------------
 --                          Plugins                         --
