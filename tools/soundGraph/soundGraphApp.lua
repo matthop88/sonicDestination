@@ -14,12 +14,12 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	marginLeft = 100,
 }
 
-local OVAL_ITEM = require("tools/soundGraph/ovalItem")
-local RECTANGLE_ITEM = require("tools/soundGraph/rectangleItem")
+local OVAL_ITEM = require("tools/lib/guiList/ovalItem")
+local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
 
 local defaultHeight = love.graphics.getFont():getHeight() + 10
 
-local LIST = require("tools/soundGraph/list"):create {
+local LIST = require("tools/lib/guiList/list"):create {
 	x = 100,
 	y = 100,
 	width = 200,
