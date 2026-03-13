@@ -12,6 +12,7 @@ return {
 			width = params.width or 200,
 			height = params.height or 400,
 			scrollSpeed = params.scrollSpeed or 300,
+			scrollBarWidth = 30,
 			graphics = graphics,
 			list = params.list,
 			scrollY = 0,
@@ -23,6 +24,7 @@ return {
 			init = function(self)
 				self.list.x = 0
 				self.list.y = 0
+				self.list.width = self.width - self.scrollBarWidth
 				self.list:layoutItems()
 				self.graphics:setY(0)
 				return self
@@ -46,57 +48,92 @@ return {
 
 			drawButtons = function(self, mx, my)
 				local COLORS = require("tools/lib/colors")
-				local buttonWidth = 20
-				local buttonX = self.x + self.width - buttonWidth - 5
-				local upButtonY = self.y + 5
-				local downButtonY = self.y + self.height - self.buttonHeight - 5
+				local scrollBarX = self.x + self.list.width
+				local scrollBarY = self.y
+				local scrollBarHeight = self.height
+				
+				-- Draw scroll bar background
+				love.graphics.setColor(COLORS.MEDIUM_GREY)
+				love.graphics.rectangle("fill", scrollBarX, scrollBarY, self.scrollBarWidth, scrollBarHeight)
+				love.graphics.setColor(COLORS.DARK_GREY)
+				love.graphics.rectangle("line", scrollBarX, scrollBarY, self.scrollBarWidth, scrollBarHeight)
+				
+				-- Button positioning
+				local buttonWidth = self.scrollBarWidth
+				local buttonX = scrollBarX
+				local upButtonY = scrollBarY + 5
+				local downButtonY = scrollBarY + scrollBarHeight - self.buttonHeight - 5
 				
 				-- Update hover states
 				self.mouseOverUpButton = self:isOverUpButton(mx, my)
 				self.mouseOverDownButton = self:isOverDownButton(mx, my)
 				
 				-- Draw up button (triangle pointing up)
-				if self.mouseOverUpButton then
-					love.graphics.setColor(COLORS.PURE_WHITE)
-				else
-					love.graphics.setColor(COLORS.MEDIUM_GREY)
-				end
 				local upCenterX = buttonX + buttonWidth / 2
 				local upTopY = upButtonY + 3
 				local upBottomY = upButtonY + self.buttonHeight - 3
-				love.graphics.polygon("fill", 
-					upCenterX, upTopY,
-					upCenterX - 8, upBottomY,
-					upCenterX + 8, upBottomY
-				)
+				if self.mousePressed and self.mouseOverUpButton then
+					love.graphics.setColor(COLORS.JET_BLACK)
+					love.graphics.polygon("fill", 
+						upCenterX, upTopY,
+						upCenterX - 8, upBottomY,
+						upCenterX + 8, upBottomY
+					)
+				elseif self.mouseOverUpButton then
+					love.graphics.setColor(COLORS.JET_BLACK)
+					love.graphics.polygon("line", 
+						upCenterX, upTopY,
+						upCenterX - 8, upBottomY,
+						upCenterX + 8, upBottomY
+					)
+				else
+					love.graphics.setColor(COLORS.DARK_GREY)
+					love.graphics.polygon("fill", 
+						upCenterX, upTopY,
+						upCenterX - 8, upBottomY,
+						upCenterX + 8, upBottomY
+					)
+				end
 				
 				-- Draw down button (triangle pointing down)
-				if self.mouseOverDownButton then
-					love.graphics.setColor(COLORS.PURE_WHITE)
-				else
-					love.graphics.setColor(COLORS.MEDIUM_GREY)
-				end
 				local downCenterX = buttonX + buttonWidth / 2
 				local downTopY = downButtonY + 3
 				local downBottomY = downButtonY + self.buttonHeight - 3
-				love.graphics.polygon("fill",
-					downCenterX, downBottomY,
-					downCenterX - 8, downTopY,
-					downCenterX + 8, downTopY
-				)
+				if self.mousePressed and self.mouseOverDownButton then
+					love.graphics.setColor(COLORS.JET_BLACK)
+					love.graphics.polygon("fill",
+						downCenterX, downBottomY,
+						downCenterX - 8, downTopY,
+						downCenterX + 8, downTopY
+					)
+				elseif self.mouseOverDownButton then
+					love.graphics.setColor(COLORS.JET_BLACK)
+					love.graphics.polygon("line",
+						downCenterX, downBottomY,
+						downCenterX - 8, downTopY,
+						downCenterX + 8, downTopY
+					)
+				else
+					love.graphics.setColor(COLORS.DARK_GREY)
+					love.graphics.polygon("fill",
+						downCenterX, downBottomY,
+						downCenterX - 8, downTopY,
+						downCenterX + 8, downTopY
+					)
+				end
 			end,
 
 			isOverUpButton = function(self, mx, my)
-				local buttonWidth = 20
-				local buttonX = self.x + self.width - buttonWidth - 5
+				local buttonWidth = self.scrollBarWidth
+				local buttonX = self.x + self.list.width
 				local upButtonY = self.y + 5
 				return mx >= buttonX and mx <= buttonX + buttonWidth and
 				       my >= upButtonY and my <= upButtonY + self.buttonHeight
 			end,
 
 			isOverDownButton = function(self, mx, my)
-				local buttonWidth = 20
-				local buttonX = self.x + self.width - buttonWidth - 5
+				local buttonWidth = self.scrollBarWidth
+				local buttonX = self.x + self.list.width
 				local downButtonY = self.y + self.height - self.buttonHeight - 5
 				return mx >= buttonX and mx <= buttonX + buttonWidth and
 				       my >= downButtonY and my <= downButtonY + self.buttonHeight
