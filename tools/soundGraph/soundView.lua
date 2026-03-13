@@ -6,6 +6,8 @@ return {
 			samplingRate = params.samplingRate or 64,
 			marginLeft = params.marginLeft or 100,
 			sampleData = {},
+			followPlaybackCursor = false,
+			currentSample = nil,
 
 			analyzeData = function(self)
 				if not self.soundObject then return end
@@ -74,12 +76,17 @@ return {
 				end
 			end,
 	
+			draw = function(self)
+				self:drawWaveform()
+				self:drawPlaybackCursor()
+				self:drawMouseCursor()
+			end,
+			
 			drawPlaybackCursor = function(self)
 				if not self.soundObject then return end
 				
-				local currentSample = self.soundObject:getCurrentSample()
-				if currentSample then
-					local imageX = self.marginLeft + currentSample
+				if self.currentSample then
+					local imageX = self.marginLeft + self.currentSample
 					local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
 					love.graphics.setColor(1, 1, 0)
 					love.graphics.setLineWidth(3)
@@ -90,16 +97,44 @@ return {
 	
 			drawMouseCursor = function(self)
 				if not self.soundObject or #self.sampleData == 0 then return end
+				if self.followPlaybackCursor then return end
 				
 				love.graphics.setColor(0, 1, 0)
 				local mx = self:getConstrainedMouseX()
 				love.graphics.line(mx, 0, mx, 512)
 			end,
-	
-			draw = function(self)
-				self:drawWaveform()
-				self:drawPlaybackCursor()
-				self:drawMouseCursor()
+			
+			update = function(self, dt)
+				self:updateCurrentSample()
+				
+				if self.followPlaybackCursor and self.soundObject then
+					if self.currentSample then
+						local imageX = self.marginLeft + self.currentSample
+						local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
+						
+						-- Keep cursor centered on screen (640 is middle of 1280)
+						if screenX ~= 640 then
+							self:syncImageCoordinatesWithScreen(imageX, 0, 640, 0)
+						end
+					end
+				end
+			end,
+			
+			updateCurrentSample = function(self)
+				if self.soundObject then
+					self.currentSample = self.soundObject:getCurrentSample()
+				else
+					self.currentSample = nil
+				end
+			end,
+			
+			setFollowPlaybackCursor = function(self, enabled)
+				self.followPlaybackCursor = enabled
+			end,
+			
+			toggleFollowPlaybackCursor = function(self)
+				self.followPlaybackCursor = not self.followPlaybackCursor
+				return self.followPlaybackCursor
 			end,
 	
 			getConstrainedMouseX = function(self)
