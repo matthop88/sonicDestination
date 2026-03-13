@@ -126,6 +126,14 @@ return {
 			end
 			return nil, nil
 		end,
+
+		handleMousePressed = function(self, mx, my)
+			return self:handleClick(mx, my)
+		end,
+
+		handleMouseReleased = function(self)
+			-- No-op for plain list
+		end,
 	}):init()
 		
 	-- Check if we need a scrollPane
