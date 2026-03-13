@@ -39,13 +39,13 @@ return {
 				self:drawBorder()
 				self:drawButtons(mx, my)
 			end,
-
+	
 			drawBorder = function(self)
 				local COLORS = require("tools/lib/colors")
 				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 			end,
-
+	
 			drawButtons = function(self, mx, my)
 				local COLORS = require("tools/lib/colors")
 				local scrollBarX = self.x + self.list.width
@@ -68,59 +68,51 @@ return {
 				self.mouseOverUpButton = self:isOverUpButton(mx, my)
 				self.mouseOverDownButton = self:isOverDownButton(mx, my)
 				
-				-- Draw up button (triangle pointing up)
-				local upCenterX = buttonX + buttonWidth / 2
-				local upTopY = upButtonY + 3
-				local upBottomY = upButtonY + self.buttonHeight - 3
+				-- Draw up button
 				if self.mousePressed and self.mouseOverUpButton then
-					love.graphics.setColor(COLORS.JET_BLACK)
-					love.graphics.polygon("fill", 
-						upCenterX, upTopY,
-						upCenterX - 8, upBottomY,
-						upCenterX + 8, upBottomY
-					)
+					self:drawUpButton(buttonX, buttonWidth, upButtonY, COLORS.PURE_WHITE, "fill")
 				elseif self.mouseOverUpButton then
-					love.graphics.setColor(COLORS.JET_BLACK)
-					love.graphics.polygon("line", 
-						upCenterX, upTopY,
-						upCenterX - 8, upBottomY,
-						upCenterX + 8, upBottomY
-					)
+					self:drawUpButton(buttonX, buttonWidth, upButtonY, COLORS.DARK_GREY, "fill")
+					love.graphics.setLineWidth(2)
+					self:drawUpButton(buttonX, buttonWidth, upButtonY, COLORS.PURE_WHITE, "line")
 				else
-					love.graphics.setColor(COLORS.DARK_GREY)
-					love.graphics.polygon("fill", 
-						upCenterX, upTopY,
-						upCenterX - 8, upBottomY,
-						upCenterX + 8, upBottomY
-					)
+					self:drawUpButton(buttonX, buttonWidth, upButtonY, COLORS.DARK_GREY, "fill")
 				end
 				
-				-- Draw down button (triangle pointing down)
-				local downCenterX = buttonX + buttonWidth / 2
-				local downTopY = downButtonY + 3
-				local downBottomY = downButtonY + self.buttonHeight - 3
+				-- Draw down button
 				if self.mousePressed and self.mouseOverDownButton then
-					love.graphics.setColor(COLORS.JET_BLACK)
-					love.graphics.polygon("fill",
-						downCenterX, downBottomY,
-						downCenterX - 8, downTopY,
-						downCenterX + 8, downTopY
-					)
+					self:drawDownButton(buttonX, buttonWidth, downButtonY, COLORS.PURE_WHITE, "fill")
 				elseif self.mouseOverDownButton then
-					love.graphics.setColor(COLORS.JET_BLACK)
-					love.graphics.polygon("line",
-						downCenterX, downBottomY,
-						downCenterX - 8, downTopY,
-						downCenterX + 8, downTopY
-					)
+					self:drawDownButton(buttonX, buttonWidth, downButtonY, COLORS.DARK_GREY, "fill")
+					love.graphics.setLineWidth(2)
+					self:drawDownButton(buttonX, buttonWidth, downButtonY, COLORS.PURE_WHITE, "line")
 				else
-					love.graphics.setColor(COLORS.DARK_GREY)
-					love.graphics.polygon("fill",
-						downCenterX, downBottomY,
-						downCenterX - 8, downTopY,
-						downCenterX + 8, downTopY
-					)
+					self:drawDownButton(buttonX, buttonWidth, downButtonY, COLORS.DARK_GREY, "fill")
 				end
+			end,
+	
+			drawUpButton = function(self, buttonX, buttonWidth, buttonY, color, drawMode)
+				love.graphics.setColor(color)
+				local centerX = buttonX + buttonWidth / 2
+				local topY = buttonY + 3
+				local bottomY = buttonY + self.buttonHeight - 3
+				love.graphics.polygon(drawMode,
+					centerX, topY,
+					centerX - 8, bottomY,
+					centerX + 8, bottomY
+				)
+			end,
+	
+			drawDownButton = function(self, buttonX, buttonWidth, buttonY, color, drawMode)
+				love.graphics.setColor(color)
+				local centerX = buttonX + buttonWidth / 2
+				local topY = buttonY + 3
+				local bottomY = buttonY + self.buttonHeight - 3
+				love.graphics.polygon(drawMode,
+					centerX, bottomY,
+					centerX - 8, topY,
+					centerX + 8, topY
+				)
 			end,
 
 			isOverUpButton = function(self, mx, my)
