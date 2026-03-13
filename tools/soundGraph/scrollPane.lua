@@ -15,12 +15,13 @@ return {
 			list = params.list,
 			scrollY = 0,
 
-			init = function(self)
-				self.list.x = 0
-				self.list.y = 0
-				self.graphics:setY(0)
-				return self
-			end,
+		init = function(self)
+			self.list.x = 0
+			self.list.y = 0
+			self.list:layoutItems()
+			self.graphics:setY(0)
+			return self
+		end,
 
 		draw = function(self)
 			self.graphics:clear(0, 0, 0, 0)
@@ -67,10 +68,18 @@ return {
 				return self.scrollY
 			end,
 
-			handleClick = function(self, mx, my)
-				local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
-				return self.list:handleClick(bufferMx, bufferMy)
-			end,
+		handleClick = function(self, mx, my)
+			local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
+			return self.list:handleClick(bufferMx, bufferMy)
+		end,
+
+		handleKeypressed = function(self, key)
+			if key == "w" then
+				self:scrollBy(10)
+			elseif key == "s" then
+				self:scrollBy(-10)
+			end
+		end,
 		}):init()
 	end,
 }
