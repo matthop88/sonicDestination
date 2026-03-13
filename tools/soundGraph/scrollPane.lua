@@ -1,3 +1,5 @@
+local COLORS = require("tools/lib/colors")
+
 return {
 	create = function(self, params)
 		local graphics = require("tools/lib/bufferedGraphics"):create(
@@ -39,15 +41,13 @@ return {
 				self:drawBorder()
 				self:drawButtons(mx, my)
 			end,
-	
+		
 			drawBorder = function(self)
-				local COLORS = require("tools/lib/colors")
 				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 			end,
 	
 			drawButtons = function(self, mx, my)
-				local COLORS = require("tools/lib/colors")
 				local scrollBarX = self.x + self.list.width
 				local scrollBarY = self.y
 				local scrollBarHeight = self.height
@@ -63,18 +63,25 @@ return {
 				local buttonX = scrollBarX
 				local upButtonY = scrollBarY + 5
 				local downButtonY = scrollBarY + scrollBarHeight - self.buttonHeight - 5
-				
+					
+				-- Check if buttons are enabled
+				local maxScroll, minScroll = self:calculateScrollConstraints()
+				local upEnabled = self.scrollY < maxScroll
+				local downEnabled = self.scrollY > minScroll
+					
 				-- Update hover states
-				self.mouseOverUpButton = self:isOverUpButton(mx, my)
-				self.mouseOverDownButton = self:isOverDownButton(mx, my)
+				self.mouseOverUpButton = self:isOverUpButton(mx, my) and upEnabled
+				self.mouseOverDownButton = self:isOverDownButton(mx, my) and downEnabled
 				
 				-- Draw buttons
-				self:drawUpButton(buttonX, buttonWidth, upButtonY, COLORS)
-				self:drawDownButton(buttonX, buttonWidth, downButtonY, COLORS)
+				self:drawUpButton(buttonX, buttonWidth, upButtonY, upEnabled)
+				self:drawDownButton(buttonX, buttonWidth, downButtonY, downEnabled)
 			end,
-	
-			drawUpButton = function(self, buttonX, buttonWidth, buttonY, COLORS)
-				if self.mousePressed and self.mouseOverUpButton then
+
+			drawUpButton = function(self, buttonX, buttonWidth, buttonY, enabled)
+				if not enabled then
+					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.VERY_DARK_GREY, "line")
+				elseif self.mousePressed and self.mouseOverUpButton then
 					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.PURE_WHITE, "fill")
 				elseif self.mouseOverUpButton then
 					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
@@ -84,9 +91,11 @@ return {
 					self:drawUpIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
 				end
 			end,
-	
-			drawDownButton = function(self, buttonX, buttonWidth, buttonY, COLORS)
-				if self.mousePressed and self.mouseOverDownButton then
+		
+			drawDownButton = function(self, buttonX, buttonWidth, buttonY, enabled)
+				if not enabled then
+					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.VERY_DARK_GREY, "line")
+				elseif self.mousePressed and self.mouseOverDownButton then
 					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.PURE_WHITE, "fill")
 				elseif self.mouseOverDownButton then
 					self:drawDownIcon(buttonX, buttonWidth, buttonY, COLORS.DARK_GREY, "fill")
@@ -120,13 +129,19 @@ return {
 					centerX + 8, topY
 				)
 			end,
-
+		
+			calculateScrollConstraints = function(self)
+				local maxScroll = 0
+				local minScroll = -(math.max(0, self.list.totalHeight - self.height))
+				return maxScroll, minScroll
+			end,
+			
 			isOverUpButton = function(self, mx, my)
 				local buttonWidth = self.scrollBarWidth
 				local buttonX = self.x + self.list.width
 				local upButtonY = self.y + 5
 				return mx >= buttonX and mx <= buttonX + buttonWidth and
-				       my >= upButtonY and my <= upButtonY + self.buttonHeight
+					   my >= upButtonY and my <= upButtonY + self.buttonHeight
 			end,
 
 			isOverDownButton = function(self, mx, my)
@@ -167,8 +182,7 @@ return {
 				self.scrollY = self.scrollY + deltaY
 				
 				-- Constrain scrolling: don't scroll past the top or bottom
-				local maxScroll = 0
-				local minScroll = -(math.max(0, self.list.totalHeight - self.height))
+				local maxScroll, minScroll = self:calculateScrollConstraints()
 				self.scrollY = math.max(minScroll, math.min(maxScroll, self.scrollY))
 				
 				self.graphics:setY(self.scrollY)
