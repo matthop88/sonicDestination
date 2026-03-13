@@ -20,33 +20,16 @@ local RECTANGLE_ITEM = require("tools/soundGraph/rectangleItem")
 local defaultHeight = love.graphics.getFont():getHeight() + 10
 
 local LIST = require("tools/soundGraph/list"):create {
-	x = 0,
-	y = 0,
-	width = 200,
-	fontSize = 24,
-	items = { 
-		"Item 1", 
-		OVAL_ITEM:create { color = { 1, 0, 0 } },
-		"Item 2", 
-		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2, notSelectable = true },
-		"Item 3",
-		OVAL_ITEM:create { color = { 0, 0, 1 }, height = defaultHeight * 2 },
-		"Item 4",
-		"Item 5",
-		"Item 6",
-		"Item 7",
-		"Item 8",
-		"Item 9",
-		"Item 10",
-	}
-}
-
-local SCROLL_PANE = require("tools/soundGraph/scrollPane"):create {
 	x = 100,
 	y = 100,
 	width = 200,
 	height = 400,
-	list = LIST
+	fontSize = 24,
+	items = { 
+		"Item 1", 
+		"Item 2", 
+		"Item 3",
+	}
 }
 
 --------------------------------------------------------------
@@ -55,15 +38,15 @@ local SCROLL_PANE = require("tools/soundGraph/scrollPane"):create {
 
 function love.draw()
     SOUND_VIEW:draw()
-    SCROLL_PANE:draw()
+    LIST:draw()
 end
 
 function love.update(dt)
-    SCROLL_PANE:update(dt)
+    LIST:update(dt)
 end
 
 function love.mousepressed(mx, my)
-    local item, index = SCROLL_PANE:handleClick(mx, my)
+    local item, index = LIST:handleClick(mx, my)
     if item then
         print("Selected: " .. item .. " (index " .. index .. ")")
     else
@@ -75,10 +58,8 @@ function love.keypressed(key)
     if key == "space" then
         local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
-    elseif key == "w" then
-        SCROLL_PANE:scrollBy(10)
-    elseif key == "s" then
-        SCROLL_PANE:scrollBy(-10)
+    else
+        LIST:handleKeypressed(key)
     end
 end
 
