@@ -40,8 +40,9 @@ local LIST = require("tools/soundGraph/list"):create {
 		"Item 9",
 		"Item 10",
 	},
-	onItemSelected = function(item, index)
+	onItemSelected = function(list, item, index)
 		print("Selected: " .. item .. " (index " .. index .. ")")
+		list:setVisible(false)
 	end,
 }
 
