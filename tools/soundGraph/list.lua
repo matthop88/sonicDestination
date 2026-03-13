@@ -2,6 +2,8 @@ local function isSelectable(item)
 	return not item.notSelectable
 end
 
+local SIMPLE_GRAPHICS = require("tools/lib/simpleGraphics"):create()
+
 return {
 	create = function(self, params)
 		local COLORS = require("tools/lib/colors")
@@ -21,20 +23,21 @@ return {
 			end
 		end
 		
-		return ({
-			x = params.x or 0,
-			y = params.y or 0,
-			width = params.width or 200,
-			itemHeight = itemHeight,
-			items = items,
-			selectedIndex = nil,
-			totalHeight = 0,
-			
-			flashIndex = nil,
-			flashing = require("tools/soundGraph/flashing"):create {
-				flashCount = 2,
-				flashDuration = 0.08,
-			},
+	local list = ({
+		x = params.x or 0,
+		y = params.y or 0,
+		width = params.width or 200,
+		itemHeight = itemHeight,
+		items = items,
+		selectedIndex = nil,
+		totalHeight = 0,
+		needsBorder = true,
+		
+		flashIndex = nil,
+		flashing = require("tools/soundGraph/flashing"):create {
+			flashCount = 2,
+			flashDuration = 0.08,
+		},
 
 			init = function(self)
 				self:layoutItems()
@@ -55,14 +58,17 @@ return {
 				self.totalHeight = currentY - self.y
 			end,
 
-			draw = function(self, graphics, mx, my)
-				graphics = graphics or love.graphics
-				if not mx or not my then
-					mx, my = love.mouse.getPosition()
-				end
-				self:drawBackground(graphics)
-				self:drawItems(graphics, mx, my)
-			end,
+		draw = function(self, graphics, mx, my)
+			graphics = graphics or SIMPLE_GRAPHICS
+			if not mx or not my then
+				mx, my = love.mouse.getPosition()
+			end
+			self:drawBackground(graphics)
+			self:drawItems(graphics, mx, my)
+			if self.needsBorder then
+				self:drawBorder(graphics)
+			end
+		end,
 
 			update = function(self, dt)
 				self.flashing:update(dt)
@@ -75,10 +81,15 @@ return {
 				end
 			end,
 
-		drawBackground = function(self, graphics)
-			graphics:setColor(COLORS.JET_BLACK)
-			graphics:rectangle("fill", self.x, self.y, self.width, self.totalHeight)
-		end,
+			drawBackground = function(self, graphics)
+				graphics:setColor(COLORS.JET_BLACK)
+				graphics:rectangle("fill", self.x, self.y, self.width, self.totalHeight)
+			end,
+
+			drawBorder = function(self, graphics)
+				graphics:setColor(COLORS.PURE_WHITE)
+				graphics:rectangle("line", self.x, self.y, self.width, self.totalHeight)
+			end,
 
 			drawItems = function(self, graphics, mx, my)
 				for i, item in ipairs(self.items) do
@@ -109,12 +120,32 @@ return {
 				       py >= self.y and py <= self.y + self.totalHeight
 			end,
 
-			getSelectedItem = function(self)
-				if self.selectedIndex then
-					return self.items[self.selectedIndex]:getValue(), self.selectedIndex
-				end
-				return nil, nil
-			end,
+		getSelectedItem = function(self)
+			if self.selectedIndex then
+				return self.items[self.selectedIndex]:getValue(), self.selectedIndex
+			end
+			return nil, nil
+		end,
+
+		handleKeypressed = function(self, key)
+			-- No-op for plain list (no scrolling)
+		end,
 		}):init()
+		
+		-- Check if we need a scrollPane
+		local maxHeight = params.height
+		if maxHeight and list.totalHeight > maxHeight then
+			list.needsBorder = false
+			local SCROLL_PANE = require("tools/soundGraph/scrollPane")
+			return SCROLL_PANE:create {
+				x = params.x or 0,
+				y = params.y or 0,
+				width = params.width or 200,
+				height = maxHeight,
+				list = list
+			}
+		end
+		
+		return list
 	end,
 }
