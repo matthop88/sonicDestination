@@ -27,8 +27,18 @@ local LIST = require("tools/soundGraph/list"):create {
 	fontSize = 24,
 	items = { 
 		"Item 1", 
+		OVAL_ITEM:create { color = { 1, 0, 0 } },
 		"Item 2", 
+		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2, notSelectable = true },
 		"Item 3",
+		OVAL_ITEM:create { color = { 0, 0, 1 }, height = defaultHeight * 2 },
+		"Item 4",
+		"Item 5",
+		"Item 6",
+		"Item 7",
+		"Item 8",
+		"Item 9",
+		"Item 10",
 	}
 }
 
@@ -58,8 +68,6 @@ function love.keypressed(key)
     if key == "space" then
         local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
-    else
-        LIST:handleKeypressed(key)
     end
 end
 
