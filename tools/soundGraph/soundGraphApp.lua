@@ -21,6 +21,9 @@ local function loadSound(soundKey)
 		return
 	end
 	
+	-- Reset progress bar before loading
+	getProgressBar():refresh()
+	
 	local basePath = MUSIC_DATA[soundKey] and "game/resources/music/" or "game/resources/sounds/"
 	local soundPath = basePath .. soundInfo.filename
 	print("Loading sound: " .. soundPath)
@@ -37,7 +40,9 @@ local function loadSound(soundKey)
 	end
 	
 	SOUND_OBJECT = result
+	print("Sound loaded, starting analysis...")
 	SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
+	print("Analysis coroutine created")
 end
 
 -- Get list of sound and music names
@@ -89,6 +94,10 @@ function love.update(dt)
     LIST:update(dt)
     if SOUND_VIEW then
         SOUND_VIEW:update(dt)
+        if not SOUND_VIEW:isAnalysisComplete() then
+            local progress = SOUND_VIEW:getProgress()
+            setProgressBarText(string.format("Loading Sound Data... %.0f%%", progress * 100))
+        end
     end
 end
 
@@ -133,4 +142,11 @@ PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
     :add("zooming",    { imageViewer = SOUND_VIEW })
     :add("scrolling",  { imageViewer = SOUND_VIEW, scrollY = false, scrollSpeed = 48000 })
+    :add("progressBar",
+    {
+        message       = "Loading Sound Data...",
+        callback      = function() return SOUND_VIEW:getProgress() end,
+        setTextFnName = "setProgressBarText",
+        accessorFnName = "getProgressBar",
+    })
 
