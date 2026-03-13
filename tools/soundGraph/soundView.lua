@@ -8,6 +8,8 @@ return {
 			sampleData = {},
 
 			analyzeData = function(self)
+				if not self.soundObject then return end
+				
 				local NUM_SAMPLES = self.soundObject:getSampleCount()
 		
 				-- First pass: find maximum absolute amplitude
@@ -41,7 +43,7 @@ return {
 				self.sampleData = {}
 				self:analyzeData()
 			end,
-
+		
 			drawWaveform = function(self)
 				love.graphics.setLineWidth(1)
 				love.graphics.setColor(1, 1, 1)
@@ -57,8 +59,10 @@ return {
 					love.graphics.line(screenX1, y1, screenX2, y2)
 				end
 			end,
-
+	
 			drawPlaybackCursor = function(self)
+				if not self.soundObject then return end
+				
 				local currentSample = self.soundObject:getCurrentSample()
 				if currentSample then
 					local imageX = self.marginLeft + currentSample
@@ -69,36 +73,42 @@ return {
 					love.graphics.setLineWidth(1)
 				end
 			end,
-
+	
 			drawMouseCursor = function(self)
+				if not self.soundObject or #self.sampleData == 0 then return end
+				
 				love.graphics.setColor(0, 1, 0)
 				local mx = self:getConstrainedMouseX()
 				love.graphics.line(mx, 0, mx, 512)
 			end,
-
+	
 			draw = function(self)
 				self:drawWaveform()
 				self:drawPlaybackCursor()
 				self:drawMouseCursor()
 			end,
-
+	
 			getConstrainedMouseX = function(self)
 				local mx, _ = love.mouse.getPosition()
 				local leftmostScreenX, _ = self:imageToScreenCoordinates(self.marginLeft, 0)
 				local rightmostScreenX, _ = self:imageToScreenCoordinates(self.marginLeft + #self.sampleData, 0)
 				return math.min(math.max(mx, leftmostScreenX), rightmostScreenX)
 			end,
-
+	
 			getSampleXFromMouseX = function(self)
+				if not self.soundObject then return 0 end
+				
 				local mx, my = love.mouse.getPosition()
 				local imageX, _ = self:screenToImageCoordinates(mx, my)
 				local sampleIndex = math.floor(imageX - self.marginLeft)
 				return math.max(0, math.min(sampleIndex, self.soundObject:getSampleCount() - 1))
 			end,
-
+	
 			---------------------- Graphics Object Methods ------------------------
-
+	
 		    moveImage = function(self, deltaX, deltaY)
+		        if #self.sampleData == 0 then return end
+		        
 		        self.graphics:moveImage(deltaX, deltaY)
 		        
 		        -- Constrain left scrolling
@@ -114,16 +124,18 @@ return {
 					self:syncImageCoordinatesWithScreen(rightmostImageX, 0, 1124, 0)
 		        end
 		    end,
-
-		    screenToImageCoordinates = function(self, screenX, screenY)
-		        return self.graphics:screenToImageCoordinates(screenX, screenY)
-		    end,
-
-		    imageToScreenCoordinates = function(self, imageX, imageY)
-		        return self.graphics:imageToScreenCoordinates(imageX, imageY)
-		    end,
-
+	
+			screenToImageCoordinates = function(self, screenX, screenY)
+				return self.graphics:screenToImageCoordinates(screenX, screenY)
+			end,
+	
+			imageToScreenCoordinates = function(self, imageX, imageY)
+				return self.graphics:imageToScreenCoordinates(imageX, imageY)
+			end,
+	
 		    adjustScaleGeometrically = function(self, deltaScale)
+		        if not self.minScale then return end
+		        
 		        self.graphics:adjustScaleGeometrically(deltaScale * 2)
 				if self.graphics:getScale() > 1 then
 					self.graphics:setScale(1)
