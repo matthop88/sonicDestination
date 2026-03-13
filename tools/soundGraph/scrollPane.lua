@@ -22,26 +22,41 @@ return {
 				return self
 			end,
 
-			draw = function(self)
-				self.graphics:clear(0, 0, 0, 0)
-				local mx, my = love.mouse.getPosition()
-				local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
-				self.list:draw(self.graphics, bufferMx, bufferMy)
-				self.graphics:blitToScreen(self.x, self.y)
-			end,
+		draw = function(self)
+			self.graphics:clear(0, 0, 0, 0)
+			local mx, my = love.mouse.getPosition()
+			local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
+			self.list:draw(self.graphics, bufferMx, bufferMy)
+			self.graphics:blitToScreen(self.x, self.y)
+			self:drawBorder()
+		end,
+
+		drawBorder = function(self)
+			local COLORS = require("tools/lib/colors")
+			love.graphics.setColor(COLORS.PURE_WHITE)
+			love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+		end,
 
 			update = function(self, dt)
 				self.list:update(dt)
 			end,
 
-			translateMouseCoordinates = function(self, mx, my)
-				return mx - self.x, my - self.y
-			end,
+		translateMouseCoordinates = function(self, mx, my)
+			local offsetX = mx - self.x - self.graphics:getX()
+			local offsetY = my - self.y - self.graphics:getY()
+			return offsetX, offsetY
+		end,
 
-			scrollBy = function(self, deltaY)
-				self.scrollY = self.scrollY + deltaY
-				self.graphics:setY(self.scrollY)
-			end,
+		scrollBy = function(self, deltaY)
+			self.scrollY = self.scrollY + deltaY
+			
+			-- Constrain scrolling: don't scroll past the top or bottom
+			local maxScroll = 0
+			local minScroll = -(math.max(0, self.list.totalHeight - self.height))
+			self.scrollY = math.max(minScroll, math.min(maxScroll, self.scrollY))
+			
+			self.graphics:setY(self.scrollY)
+		end,
 
 			scrollTo = function(self, y)
 				self.scrollY = y
