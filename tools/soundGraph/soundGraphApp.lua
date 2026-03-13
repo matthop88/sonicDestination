@@ -50,18 +50,37 @@ local soundItems = {}
 local labelToKeyMap = {}  -- Map from display label to original key
 
 -- Add sound items
+local soundLabels = {}
 for soundKey, soundInfo in pairs(SOUND_DATA) do
-	table.insert(soundItems, soundInfo.label)
+	table.insert(soundLabels, soundInfo.label)
 	labelToKeyMap[soundInfo.label] = soundKey
 end
+table.sort(soundLabels)
 
--- Add music items
-for musicKey, musicInfo in pairs(MUSIC_DATA) do
-	table.insert(soundItems, musicInfo.label)
-	labelToKeyMap[musicInfo.label] = musicKey
+for _, label in ipairs(soundLabels) do
+	table.insert(soundItems, label)
 end
 
-table.sort(soundItems)
+-- Add separator
+local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
+table.insert(soundItems, RECTANGLE_ITEM:create {
+	color = { 0.5, 0.5, 0.5 },
+	width = 390,
+	height = 5,
+	notSelectable = true,
+})
+
+-- Add music items
+local musicLabels = {}
+for musicKey, musicInfo in pairs(MUSIC_DATA) do
+	table.insert(musicLabels, musicInfo.label)
+	labelToKeyMap[musicInfo.label] = musicKey
+end
+table.sort(musicLabels)
+
+for _, label in ipairs(musicLabels) do
+	table.insert(soundItems, label)
+end
 
 local LIST = require("tools/lib/guiList/list"):create {
 	x = (WINDOW_WIDTH - 400) / 2,  -- Center horizontally
