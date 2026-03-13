@@ -7,7 +7,7 @@ local SIMPLE_GRAPHICS = require("tools/lib/simpleGraphics"):create()
 return {
 	create = function(self, params)
 		local COLORS = require("tools/lib/colors")
-		local TEXT_ITEM = require("tools/soundGraph/textItem")
+		local TEXT_ITEM = require("tools/lib/guiList/textItem")
 		
 		local fontSize = params.fontSize or 12
 		local font = love.graphics.newFont(fontSize)
@@ -37,7 +37,7 @@ return {
 			pendingSelection = nil,
 			
 			flashIndex = nil,
-			flashing = require("tools/soundGraph/flashing"):create {
+			flashing = require("tools/lib/guiList/flashing"):create {
 				flashCount = 2,
 				flashDuration = 0.08,
 			},
@@ -166,7 +166,7 @@ return {
 		local maxHeight = params.height
 		if maxHeight and list.totalHeight > maxHeight then
 			list.needsBorder = false
-			local SCROLL_PANE = require("tools/soundGraph/scrollPane")
+			local SCROLL_PANE = require("tools/lib/guiList/scrollPane")
 			return SCROLL_PANE:create {
 				x = params.x or 0,
 				y = params.y or 0,
