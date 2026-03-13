@@ -32,7 +32,9 @@ return {
 			selectedIndex = nil,
 			totalHeight = 0,
 			needsBorder = true,
+			visible = true,
 			onItemSelected = params.onItemSelected,
+			pendingSelection = nil,
 			
 			flashIndex = nil,
 			flashing = require("tools/soundGraph/flashing"):create {
@@ -60,6 +62,8 @@ return {
 			end,
 	
 			draw = function(self, graphics, mx, my)
+				if not self.visible then return end
+				
 				graphics = graphics or SIMPLE_GRAPHICS
 				if not mx or not my then
 					mx, my = love.mouse.getPosition()
@@ -72,9 +76,17 @@ return {
 			end,
 	
 			update = function(self, dt)
+				if not self.visible then return end
+				
 				self.flashing:update(dt)
 				if not self.flashing:isActive() then
 					self.flashIndex = nil
+					
+					-- Call callback after flashing completes
+					if self.pendingSelection and self.onItemSelected then
+						self.onItemSelected(self, self.pendingSelection.value, self.pendingSelection.index)
+						self.pendingSelection = nil
+					end
 				end
 				
 				for _, item in ipairs(self.items) do
@@ -103,16 +115,19 @@ return {
 			end,
 	
 			handleClick = function(self, mx, my)
+				if not self.visible then return false end
+				
 				if self:listBoxContainsPt(mx, my) then
 					for i, item in ipairs(self.items) do
 						if isSelectable(item) and item:containsPt(mx, my) then
 							self.selectedIndex = i
 							self.flashIndex = i
 							self.flashing:start()
-							if self.onItemSelected then
-								local value, index = self:getSelectedItem()
-								self.onItemSelected(value, index)
-							end
+							
+							-- Store selection to call callback after flashing completes
+							local value, index = self:getSelectedItem()
+							self.pendingSelection = { value = value, index = index }
+							
 							return true
 						end
 					end
@@ -132,11 +147,17 @@ return {
 				return nil, nil
 			end,
 	
+			setVisible = function(self, visible)
+				self.visible = visible
+			end,
+	
 			handleMousePressed = function(self, mx, my)
+				if not self.visible then return false end
 				return self:handleClick(mx, my)
 			end,
 	
 			handleMouseReleased = function(self)
+				if not self.visible then return end
 				-- No-op for plain list
 			end,
 		}):init()
