@@ -21,6 +21,7 @@ return {
 			end,
 
 			drawWaveform = function(self)
+				love.graphics.setLineWidth(1)
 				love.graphics.setColor(1, 1, 1)
 				for k = 1, #self.sampleData - 1 do
 					local imageX1 = k
