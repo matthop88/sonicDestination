@@ -22,28 +22,28 @@ return {
 				table.insert(items, item)
 			end
 		end
-		
-	local list = ({
-		x = params.x or 0,
-		y = params.y or 0,
-		width = params.width or 200,
-		itemHeight = itemHeight,
-		items = items,
-		selectedIndex = nil,
-		totalHeight = 0,
-		needsBorder = true,
-		
-		flashIndex = nil,
-		flashing = require("tools/soundGraph/flashing"):create {
-			flashCount = 2,
-			flashDuration = 0.08,
-		},
-
+			
+		local list = ({
+			x = params.x or 0,
+			y = params.y or 0,
+			width = params.width or 200,
+			itemHeight = itemHeight,
+			items = items,
+			selectedIndex = nil,
+			totalHeight = 0,
+			needsBorder = true,
+			
+			flashIndex = nil,
+			flashing = require("tools/soundGraph/flashing"):create {
+				flashCount = 2,
+				flashDuration = 0.08,
+			},
+	
 			init = function(self)
 				self:layoutItems()
 				return self
 			end,
-
+	
 			layoutItems = function(self)
 				local currentY = self.y
 				for i, item in ipairs(self.items) do
@@ -57,19 +57,19 @@ return {
 				end
 				self.totalHeight = currentY - self.y
 			end,
-
-		draw = function(self, graphics, mx, my)
-			graphics = graphics or SIMPLE_GRAPHICS
-			if not mx or not my then
-				mx, my = love.mouse.getPosition()
-			end
-			self:drawBackground(graphics)
-			self:drawItems(graphics, mx, my)
-			if self.needsBorder then
-				self:drawBorder(graphics)
-			end
-		end,
-
+	
+			draw = function(self, graphics, mx, my)
+				graphics = graphics or SIMPLE_GRAPHICS
+				if not mx or not my then
+					mx, my = love.mouse.getPosition()
+				end
+				self:drawBackground(graphics)
+				self:drawItems(graphics, mx, my)
+				if self.needsBorder then
+					self:drawBorder(graphics)
+				end
+			end,
+	
 			update = function(self, dt)
 				self.flashing:update(dt)
 				if not self.flashing:isActive() then
@@ -80,9 +80,9 @@ return {
 					item:update(dt)
 				end
 			end,
-
+	
 			drawBackground = function(self, graphics)
-				graphics:setColor(COLORS.JET_BLACK)
+				graphics:setColor(COLORS.DARK_GREY)
 				graphics:rectangle("fill", self.x, self.y, self.width, self.totalHeight)
 			end,
 
@@ -119,17 +119,17 @@ return {
 				return px >= self.x and px <= self.x + self.width and
 				       py >= self.y and py <= self.y + self.totalHeight
 			end,
-
-		getSelectedItem = function(self)
-			if self.selectedIndex then
-				return self.items[self.selectedIndex]:getValue(), self.selectedIndex
-			end
-			return nil, nil
-		end,
-
-		handleKeypressed = function(self, key)
-			-- No-op for plain list (no scrolling)
-		end,
+	
+			getSelectedItem = function(self)
+				if self.selectedIndex then
+					return self.items[self.selectedIndex]:getValue(), self.selectedIndex
+				end
+				return nil, nil
+			end,
+	
+			handleKeypressed = function(self, key)
+				-- No-op for plain list (no scrolling)
+			end,
 		}):init()
 		
 		-- Check if we need a scrollPane
