@@ -64,8 +64,8 @@ return {
 				
 				-- Only draw visible samples
 				for k = startSample, endSample do
-					local imageX1 = k - 1
-					local imageX2 = k
+					local imageX1 = self.marginLeft + k - 1
+					local imageX2 = self.marginLeft + k
 					local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
 					local screenX2, _ = self:imageToScreenCoordinates(imageX2, 0)
 					
@@ -186,8 +186,8 @@ return {
 				if not self.minScale then return end
 		        
 				self.graphics:adjustScaleGeometrically(deltaScale * 2)
-				if self.graphics:getScale() > 1 then
-					self.graphics:setScale(1)
+				if self.graphics:getScale() > 10 then
+					self.graphics:setScale(10)
 				elseif self.graphics:getScale() < self.minScale then
 					self.graphics:setScale(self.minScale)
 				end
