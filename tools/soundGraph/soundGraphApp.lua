@@ -5,6 +5,7 @@
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
 
 local SOUND_DATA = require("tools/soundGraph/soundData")
+local MUSIC_DATA = require("tools/soundGraph/musicData")
 
 local SOUND_OBJECT = nil
 local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
@@ -14,27 +15,47 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 }
 
 local function loadSound(soundKey)
-	local soundInfo = SOUND_DATA[soundKey]
+	local soundInfo = SOUND_DATA[soundKey] or MUSIC_DATA[soundKey]
 	if not soundInfo then
 		print("Error: Sound key not found: " .. soundKey)
 		return
 	end
 	
-	local soundPath = "game/resources/sounds/" .. soundInfo.filename
+	local basePath = MUSIC_DATA[soundKey] and "game/resources/music/" or "game/resources/sounds/"
+	local soundPath = basePath .. soundInfo.filename
 	print("Loading sound: " .. soundPath)
 	
 	-- Create new sound object and refresh view
-	SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(soundPath):init()
+	local success, result = pcall(function()
+		return require("tools/soundGraph/soundObject"):create(soundPath):init()
+	end)
+	
+	if not success then
+		print("Error loading sound file: " .. result)
+		print("The file may be corrupted or empty.")
+		return
+	end
+	
+	SOUND_OBJECT = result
 	SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
 end
 
--- Get list of sound names from soundData
+-- Get list of sound and music names
 local soundItems = {}
 local labelToKeyMap = {}  -- Map from display label to original key
+
+-- Add sound items
 for soundKey, soundInfo in pairs(SOUND_DATA) do
 	table.insert(soundItems, soundInfo.label)
 	labelToKeyMap[soundInfo.label] = soundKey
 end
+
+-- Add music items
+for musicKey, musicInfo in pairs(MUSIC_DATA) do
+	table.insert(soundItems, musicInfo.label)
+	labelToKeyMap[musicInfo.label] = musicKey
+end
+
 table.sort(soundItems)
 
 local LIST = require("tools/lib/guiList/list"):create {
@@ -114,6 +135,7 @@ PLUGINS = require("plugins/engine")
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
 
 local SOUND_DATA = require("tools/soundGraph/soundData")
+local MUSIC_DATA = require("tools/soundGraph/musicData")
 
 local SOUND_OBJECT = nil
 local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
@@ -123,27 +145,47 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 }
 
 local function loadSound(soundKey)
-	local soundInfo = SOUND_DATA[soundKey]
+	local soundInfo = SOUND_DATA[soundKey] or MUSIC_DATA[soundKey]
 	if not soundInfo then
 		print("Error: Sound key not found: " .. soundKey)
 		return
 	end
 	
-	local soundPath = "game/resources/sounds/" .. soundInfo.filename
+	local basePath = MUSIC_DATA[soundKey] and "game/resources/music/" or "game/resources/sounds/"
+	local soundPath = basePath .. soundInfo.filename
 	print("Loading sound: " .. soundPath)
 	
 	-- Create new sound object and refresh view
-	SOUND_OBJECT = require("tools/soundGraph/soundObject"):create(soundPath):init()
+	local success, result = pcall(function()
+		return require("tools/soundGraph/soundObject"):create(soundPath):init()
+	end)
+	
+	if not success then
+		print("Error loading sound file: " .. result)
+		print("The file may be corrupted or empty.")
+		return
+	end
+	
+	SOUND_OBJECT = result
 	SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
 end
 
--- Get list of sound names from soundData
+-- Get list of sound and music names
 local soundItems = {}
 local labelToKeyMap = {}  -- Map from display label to original key
+
+-- Add sound items
 for soundKey, soundInfo in pairs(SOUND_DATA) do
 	table.insert(soundItems, soundInfo.label)
 	labelToKeyMap[soundInfo.label] = soundKey
 end
+
+-- Add music items
+for musicKey, musicInfo in pairs(MUSIC_DATA) do
+	table.insert(soundItems, musicInfo.label)
+	labelToKeyMap[musicInfo.label] = musicKey
+end
+
 table.sort(soundItems)
 
 local LIST = require("tools/lib/guiList/list"):create {
