@@ -69,9 +69,18 @@ return {
 				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 			end,
-	
+			
 			update = function(self, dt)
 				if not self.visible then return end
+				
+				-- Handle arrow key scrolling
+				if love.keyboard.isDown("up") then
+					self.scrollBar:scrollBy(self.scrollSpeed * dt)
+					self:updateScrollPosition()
+				elseif love.keyboard.isDown("down") then
+					self.scrollBar:scrollBy(-self.scrollSpeed * dt)
+					self:updateScrollPosition()
+				end
 				
 				self.scrollBar:update(dt)
 				self:updateScrollPosition()
@@ -88,11 +97,11 @@ return {
 			updateScrollPosition = function(self)
 				self.graphics:setY(self.scrollBar:getScrollY())
 			end,
-	
-				scrollTo = function(self, y)
-					self.scrollBar:scrollTo(y)
-					self:updateScrollPosition()
-				end,
+
+			scrollTo = function(self, y)
+				self.scrollBar:scrollTo(y)
+				self:updateScrollPosition()
+			end,
 	
 			getScrollY = function(self)
 				return self.scrollBar:getScrollY()
