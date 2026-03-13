@@ -32,9 +32,9 @@ return {
 				end
 		
 				-- Calculate minimum scale with limit for large files
-				-- 3 seconds of music at 44100 Hz = 132300 samples per channel
-				local NUM_SAMPLES_IN_3_SECONDS = 3 * 44100
-				self.minScale = math.max(1024 / NUM_SAMPLES, 1024 / NUM_SAMPLES_IN_3_SECONDS)
+				-- 2 seconds of music at 44100 Hz = 88200 samples per channel
+				local NUM_SAMPLES_IN_2_SECONDS = 2 * 44100
+				self.minScale = math.max(1024 / NUM_SAMPLES, 1024 / NUM_SAMPLES_IN_2_SECONDS)
 				self.graphics:setScale(self.minScale)
 				self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
 			end,
@@ -51,20 +51,19 @@ return {
 				love.graphics.setLineWidth(1)
 				love.graphics.setColor(1, 1, 1)
 				
-				-- Calculate leftmost and rightmost visible samples
-				local leftmostImageX = self.marginLeft
-				local rightmostImageX = self.marginLeft + #self.sampleData
-				local leftmostScreenX, _ = self:screenToImageCoordinates(0, 0)
-				local rightmostScreenX, _ = self:screenToImageCoordinates(1280, 0)
+				-- Convert screen bounds to image coordinates
+				local leftmostImageX, _ = self:screenToImageCoordinates(0, 0)
+				local rightmostImageX, _ = self:screenToImageCoordinates(1280, 0)
 				
-				-- Convert screen bounds to sample indices
-				local startSample = math.max(1, math.floor(leftmostScreenX - self.marginLeft))
-				local endSample = math.min(#self.sampleData - 1, math.ceil(rightmostScreenX - self.marginLeft))
+				-- Convert image coordinates to sample array indices (1-based)
+				-- Samples are positioned from marginLeft to marginLeft + #sampleData in image space
+				local startSample = math.max(1, math.floor(leftmostImageX - self.marginLeft + 1))
+				local endSample = math.min(#self.sampleData - 1, math.ceil(rightmostImageX - self.marginLeft + 1))
 				
 				-- Only draw visible samples
 				for k = startSample, endSample do
-					local imageX1 = k
-					local imageX2 = k + 1
+					local imageX1 = k - 1
+					local imageX2 = k
 					local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
 					local screenX2, _ = self:imageToScreenCoordinates(imageX2, 0)
 					
@@ -149,9 +148,9 @@ return {
 			end,
 	
 		    adjustScaleGeometrically = function(self, deltaScale)
-		        if not self.minScale then return end
+				if not self.minScale then return end
 		        
-		        self.graphics:adjustScaleGeometrically(deltaScale * 2)
+				self.graphics:adjustScaleGeometrically(deltaScale * 2)
 				if self.graphics:getScale() > 1 then
 					self.graphics:setScale(1)
 				elseif self.graphics:getScale() < self.minScale then
