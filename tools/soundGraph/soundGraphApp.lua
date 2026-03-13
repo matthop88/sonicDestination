@@ -39,7 +39,10 @@ local LIST = require("tools/soundGraph/list"):create {
 		"Item 8",
 		"Item 9",
 		"Item 10",
-	}
+	},
+	onItemSelected = function(item, index)
+		print("Selected: " .. item .. " (index " .. index .. ")")
+	end,
 }
 
 --------------------------------------------------------------
@@ -56,10 +59,8 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    local item, index = LIST:handleMousePressed(mx, my)
-    if item then
-        print("Selected: " .. item .. " (index " .. index .. ")")
-    else
+    local handled = LIST:handleMousePressed(mx, my)
+    if not handled then
         print(SOUND_VIEW:getSampleXFromMouseX())
     end
 end
