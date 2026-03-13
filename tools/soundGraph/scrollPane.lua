@@ -85,14 +85,14 @@ return {
 				local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
 				return self.list:handleClick(bufferMx, bufferMy)
 			end,
-
+	
 			handleMousePressed = function(self, mx, my)
 				local isOverButton = self.scrollBar:handleMousePressed(mx, my)
 				-- If not clicking on a button, pass to list
 				if not isOverButton then
 					return self:handleClick(mx, my)
 				end
-				return nil, nil
+				return true
 			end,
 
 			handleMouseReleased = function(self)
