@@ -31,6 +31,13 @@ local LIST = require("tools/soundGraph/list"):create {
 		RECTANGLE_ITEM:create { color = { 0, 1, 0 }, height = defaultHeight / 2, notSelectable = true },
 		"Item 3",
 		OVAL_ITEM:create { color = { 0, 0, 1 }, height = defaultHeight * 2 },
+		"Item 4",
+		"Item 5",
+		"Item 6",
+		"Item 7",
+		"Item 8",
+		"Item 9",
+		"Item 10",
 	}
 }
 
@@ -69,9 +76,9 @@ function love.keypressed(key)
         local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
         SOUND_OBJECT:playFromSample(samplePosition)
     elseif key == "w" then
-        SCROLL_PANE:scrollBy(-1)
+        SCROLL_PANE:scrollBy(10)
     elseif key == "s" then
-        SCROLL_PANE:scrollBy(1)
+        SCROLL_PANE:scrollBy(-10)
     end
 end
 
