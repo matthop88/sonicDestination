@@ -31,7 +31,10 @@ return {
 					table.insert(self.sampleData, currentSample)
 				end
 		
-				self.minScale = 1024 / NUM_SAMPLES
+				-- Calculate minimum scale with limit for large files
+				-- 3 seconds of music at 44100 Hz = 132300 samples per channel
+				local NUM_SAMPLES_IN_3_SECONDS = 3 * 44100
+				self.minScale = math.max(1024 / NUM_SAMPLES, 1024 / NUM_SAMPLES_IN_3_SECONDS)
 				self.graphics:setScale(self.minScale)
 				self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
 			end,
@@ -47,7 +50,19 @@ return {
 			drawWaveform = function(self)
 				love.graphics.setLineWidth(1)
 				love.graphics.setColor(1, 1, 1)
-				for k = 1, #self.sampleData - 1 do
+				
+				-- Calculate leftmost and rightmost visible samples
+				local leftmostImageX = self.marginLeft
+				local rightmostImageX = self.marginLeft + #self.sampleData
+				local leftmostScreenX, _ = self:screenToImageCoordinates(0, 0)
+				local rightmostScreenX, _ = self:screenToImageCoordinates(1280, 0)
+				
+				-- Convert screen bounds to sample indices
+				local startSample = math.max(1, math.floor(leftmostScreenX - self.marginLeft))
+				local endSample = math.min(#self.sampleData - 1, math.ceil(rightmostScreenX - self.marginLeft))
+				
+				-- Only draw visible samples
+				for k = startSample, endSample do
 					local imageX1 = k
 					local imageX2 = k + 1
 					local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
