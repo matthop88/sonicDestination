@@ -28,7 +28,8 @@ return {
 			scrollBar = scrollBar,
 			graphics = graphics,
 			list = params.list,
-
+			visible = true,
+	
 			init = function(self)
 				self.list.x = 0
 				self.list.y = 0
@@ -37,8 +38,10 @@ return {
 				self.graphics:setY(0)
 				return self
 			end,
-
+	
 			draw = function(self)
+				if not self.visible then return end
+				
 				self.graphics:clear(0, 0, 0, 0)
 				local mx, my = love.mouse.getPosition()
 				local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
@@ -49,25 +52,27 @@ return {
 				self.scrollBar.paneHeight = self.height
 				self.scrollBar:draw(mx, my)
 			end,
-		
+			
 			drawBorder = function(self)
 				love.graphics.setColor(COLORS.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 			end,
 
 			update = function(self, dt)
+				if not self.visible then return end
+				
 				self.scrollBar:update(dt)
 				self:updateScrollPosition()
 				
 				self.list:update(dt)
 			end,
-
+	
 			translateMouseCoordinates = function(self, mx, my)
 				local offsetX = mx - self.x - self.graphics:getX()
 				local offsetY = my - self.y - self.graphics:getY()
 				return offsetX, offsetY
 			end,
-
+	
 			updateScrollPosition = function(self)
 				self.graphics:setY(self.scrollBar:getScrollY())
 			end,
@@ -80,13 +85,20 @@ return {
 			getScrollY = function(self)
 				return self.scrollBar:getScrollY()
 			end,
-
+	
 			handleClick = function(self, mx, my)
+				if not self.visible then return false end
 				local bufferMx, bufferMy = self:translateMouseCoordinates(mx, my)
 				return self.list:handleClick(bufferMx, bufferMy)
 			end,
+			
+			setVisible = function(self, visible)
+				self.visible = visible
+				self.list.visible = visible
+			end,
 	
 			handleMousePressed = function(self, mx, my)
+				if not self.visible then return false end
 				local isOverButton = self.scrollBar:handleMousePressed(mx, my)
 				-- If not clicking on a button, pass to list
 				if not isOverButton then
@@ -94,8 +106,9 @@ return {
 				end
 				return true
 			end,
-
+	
 			handleMouseReleased = function(self)
+				if not self.visible then return end
 				self.scrollBar:handleMouseReleased()
 			end,
 		}):init()
