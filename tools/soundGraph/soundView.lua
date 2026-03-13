@@ -9,15 +9,37 @@ return {
 
 			analyzeData = function(self)
 				local NUM_SAMPLES = self.soundObject:getSampleCount()
-
+		
+				-- First pass: find maximum absolute amplitude
+				local maxAmplitude = 0
 				for i = 0, NUM_SAMPLES - 1 do
-					local currentSample = self.soundObject:getSample(i) * 512
+					local sample = math.abs(self.soundObject:getSample(i))
+					if sample > maxAmplitude then
+						maxAmplitude = sample
+					end
+				end
+		
+				-- Calculate scale factor to fit waveform on screen
+				-- Screen height is 512, centered at 256, so max amplitude should map to 256
+				local amplitudeScale = maxAmplitude > 0 and (256 / maxAmplitude) or 512
+		
+				-- Second pass: scale samples
+				for i = 0, NUM_SAMPLES - 1 do
+					local currentSample = self.soundObject:getSample(i) * amplitudeScale
 					table.insert(self.sampleData, currentSample)
 				end
-
+		
 				self.minScale = 1024 / NUM_SAMPLES
 				self.graphics:setScale(self.minScale)
 				self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
+			end,
+		
+			refresh = function(self, soundObject, samplingRate, marginLeft)
+				self.soundObject = soundObject
+				self.samplingRate = samplingRate or self.samplingRate
+				self.marginLeft = marginLeft or self.marginLeft
+				self.sampleData = {}
+				self:analyzeData()
 			end,
 
 			drawWaveform = function(self)
