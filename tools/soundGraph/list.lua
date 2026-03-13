@@ -75,12 +75,10 @@ return {
 				end
 			end,
 
-			drawBackground = function(self, graphics)
-				graphics:setColor(COLORS.JET_BLACK)
-				graphics:rectangle("fill", self.x, self.y, self.width, self.totalHeight)
-				graphics:setColor(COLORS.PURE_WHITE)
-				graphics:rectangle("line", self.x, self.y, self.width, self.totalHeight)
-			end,
+		drawBackground = function(self, graphics)
+			graphics:setColor(COLORS.JET_BLACK)
+			graphics:rectangle("fill", self.x, self.y, self.width, self.totalHeight)
+		end,
 
 			drawItems = function(self, graphics, mx, my)
 				for i, item in ipairs(self.items) do
