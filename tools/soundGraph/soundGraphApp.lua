@@ -133,8 +133,12 @@ end
 
 function love.keypressed(key)
     if key == "space" and SOUND_VIEW and SOUND_OBJECT then
-        local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
-        SOUND_OBJECT:playFromSample(samplePosition)
+        if SOUND_OBJECT:isPlaying() then
+            SOUND_OBJECT:pause()
+        else
+            local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
+            SOUND_OBJECT:playFromSample(samplePosition)
+        end
     elseif key == "L" then
         LIST:setVisible(true)
     elseif key == "F" and SOUND_VIEW then
