@@ -36,6 +36,10 @@ return {
 			stop = function(self)
 				self.audioSource:stop()
 			end,
+			
+			pause = function(self)
+				self.audioSource:pause()
+			end,
 
 			isPlaying = function(self)
 				return self.audioSource:isPlaying()
