@@ -150,15 +150,24 @@ return {
 				
 				self:updateCurrentSample()
 				
-				if self.followPlaybackCursor and self.soundObject then
-					if self.currentSample then
-						local imageX = self.marginLeft + self.currentSample
-						local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
-						
-						-- Keep cursor centered on screen (640 is middle of 1280)
-						if screenX ~= 640 then
-							self:syncImageCoordinatesWithScreen(imageX, 0, 640, 0)
-						end
+				if self.followPlaybackCursor and self.soundObject and self.soundObject:isPlaying() then
+					self:syncViewWithCurrentSample()
+				end
+			end,
+			
+			refreshView = function(self)
+				self:updateCurrentSample()
+				self:syncViewWithCurrentSample()
+			end,
+			
+			syncViewWithCurrentSample = function(self)
+				if self.currentSample then
+					local imageX = self.marginLeft + self.currentSample
+					local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
+					
+					-- Keep cursor centered on screen (640 is middle of 1280)
+					if screenX ~= 640 then
+						self:syncImageCoordinatesWithScreen(imageX, 0, 640, 0)
 					end
 				end
 			end,
