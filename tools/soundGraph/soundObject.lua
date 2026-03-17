@@ -26,9 +26,18 @@ return {
 				self.audioSource:seek(timeInSeconds, "seconds")
 				self.audioSource:play()
 			end,
+			
+			jumpToBeginning = function(self)
+				self.audioSource:seek(0, "seconds")
+			end,
+			
+			jumpToEnd = function(self)
+				local lastSample = self:getSampleCount() - 1
+				local timeInSeconds = lastSample / self:getSampleRate()
+				self.audioSource:seek(timeInSeconds, "seconds")
+			end,
 
 			getCurrentSample = function(self)
-				if not self:isPlaying() then return nil end
 				local timeInSeconds = self.audioSource:tell("seconds")
 				return math.floor(timeInSeconds * self:getSampleRate())
 			end,
