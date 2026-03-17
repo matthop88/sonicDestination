@@ -132,7 +132,7 @@ return {
 	
 			drawMouseCursor = function(self)
 				if not self.soundObject or #self.sampleData == 0 then return end
-				if self.followPlaybackCursor then return end
+				if self.followPlaybackCursor and self.soundObject:isPlaying() then return end
 				
 				love.graphics.setColor(0, 1, 0)
 				local mx = self:getConstrainedMouseX()
