@@ -12,6 +12,10 @@ return {
 			getSampleCount = function(self)
 				return self.soundData:getSampleCount()
 			end,
+			
+			getChannelCount = function(self)
+				return self.soundData:getChannelCount()
+			end,
 
 			getSampleRate = function(self)
 				return self.soundData:getSampleRate()
@@ -22,7 +26,7 @@ return {
 			end,
 
 			playFromSample = function(self, samplePosition)
-				local timeInSeconds = samplePosition / self:getSampleRate()
+				local timeInSeconds = samplePosition / (self:getSampleRate() * self:getChannelCount())
 				self.audioSource:seek(timeInSeconds, "seconds")
 				self.audioSource:play()
 			end,
@@ -39,7 +43,7 @@ return {
 
 			getCurrentSample = function(self)
 				local timeInSeconds = self.audioSource:tell("seconds")
-				return math.floor(timeInSeconds * self:getSampleRate())
+				return math.floor(timeInSeconds * self:getSampleRate() * self:getChannelCount())
 			end,
 
 			stop = function(self)
