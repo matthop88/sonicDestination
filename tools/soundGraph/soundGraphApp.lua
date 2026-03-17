@@ -139,6 +139,12 @@ function love.keypressed(key)
             local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
             SOUND_OBJECT:playFromSample(samplePosition)
         end
+    elseif key == "shiftleft" and SOUND_OBJECT then
+        SOUND_OBJECT:jumpToBeginning()
+        SOUND_VIEW:refreshView()
+    elseif key == "shiftright" and SOUND_OBJECT then
+        SOUND_OBJECT:jumpToEnd()
+        SOUND_VIEW:refreshView()
     elseif key == "L" then
         LIST:setVisible(true)
     elseif key == "F" and SOUND_VIEW then
