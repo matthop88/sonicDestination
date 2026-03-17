@@ -12,6 +12,7 @@ return {
 			currentSample = nil,
 			analysisProgress = 1,  -- 0 to 1, 1 means complete
 			analysisCoroutine = nil,
+			minOptimumScale = nil,  -- Scale where drawing is optimized (1 second of audio)
 
 			analyzeData = function(self)
 				if not self.soundObject then return end
@@ -64,11 +65,15 @@ return {
 					end
 				end
 		
-				-- Calculate minimum scale with limit for large files
-				-- 1 second of music at 44100 Hz = 44100 samples per channel
+				-- Calculate minimum scales
+				-- minScale: fits entire waveform on screen (1024 pixels)
+				self.minScale = 1024 / #self.sampleData
+				-- minOptimumScale: 1 second of audio for good performance
 				local NUM_SAMPLES_IN_1_SECOND = 44100
-				self.minScale = math.max(1024 / #self.sampleData, 1024 / NUM_SAMPLES_IN_1_SECOND)
-				self.graphics:setScale(self.minScale)
+				self.minOptimumScale = 1024 / NUM_SAMPLES_IN_1_SECOND
+				
+				-- Start at minOptimumScale for good initial performance
+				self.graphics:setScale(self.minOptimumScale)
 				self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
 				
 				self.analysisProgress = 1  -- Complete
@@ -107,24 +112,35 @@ return {
 				local startSample = math.max(1, math.floor(leftmostImageX - self.marginLeft + 1))
 				local endSample = math.min(#self.sampleData - 1, math.ceil(rightmostImageX - self.marginLeft + 1))
 				
+				-- Calculate sample skip for performance when zoomed out
+				-- At minOptimumScale or larger, draw every sample (step=1)
+				-- Below that, skip samples proportionally
+				local currentScale = self.graphics:getScale()
+				local sampleStep = 1
+				if self.minOptimumScale and currentScale < self.minOptimumScale then
+					sampleStep = math.max(1, math.floor(self.minOptimumScale / currentScale))
+				end
+				
 				-- Draw channel 1 (white)
 				love.graphics.setColor(1, 1, 1)
-				for k = startSample, endSample do
-					local imageX1 = self.marginLeft + k - 1
-					local imageX2 = self.marginLeft + k
-					local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
-					local screenX2, _ = self:imageToScreenCoordinates(imageX2, 0)
-					
-					local y1 = 256 - self.sampleData[k]
-					local y2 = 256 - self.sampleData[k + 1]
-					
-					love.graphics.line(screenX1, y1, screenX2, y2)
+				for k = startSample, endSample, sampleStep do
+					if self.sampleData[k + 1] then
+						local imageX1 = self.marginLeft + k - 1
+						local imageX2 = self.marginLeft + k
+						local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
+						local screenX2, _ = self:imageToScreenCoordinates(imageX2, 0)
+						
+						local y1 = 256 - self.sampleData[k]
+						local y2 = 256 - self.sampleData[k + 1]
+						
+						love.graphics.line(screenX1, y1, screenX2, y2)
+					end
 				end
 				
 				-- Draw channel 2 if stereo (white)
 				if self.channelCount > 1 and #self.sampleDataChannel2 > 0 then
 					love.graphics.setColor(1, 1, 1)
-					for k = startSample, endSample do
+					for k = startSample, endSample, sampleStep do
 						if self.sampleDataChannel2[k] and self.sampleDataChannel2[k + 1] then
 							local imageX1 = self.marginLeft + k - 1
 							local imageX2 = self.marginLeft + k
