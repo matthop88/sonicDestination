@@ -6,6 +6,8 @@ return {
 			samplingRate = params.samplingRate or 64,
 			marginLeft = params.marginLeft or 100,
 			sampleData = {},
+			sampleDataChannel2 = {},
+			channelCount = 1,
 			followPlaybackCursor = false,
 			currentSample = nil,
 			analysisProgress = 1,  -- 0 to 1, 1 means complete
@@ -15,13 +17,15 @@ return {
 				if not self.soundObject then return end
 				
 				local NUM_SAMPLES = self.soundObject:getSampleCount()
+				local CHANNEL_COUNT = self.soundObject:getChannelCount()
+				local TOTAL_SAMPLES = NUM_SAMPLES * CHANNEL_COUNT  -- Total interleaved samples
 				local CHUNK_SIZE = 100000  -- Process this many samples per frame
 				
-				print("Starting analysis of " .. NUM_SAMPLES .. " samples")
+				self.channelCount = CHANNEL_COUNT
 				
-				-- First pass: find maximum absolute amplitude
+				-- First pass: find maximum absolute amplitude (check all channels)
 				local maxAmplitude = 0
-				for i = 0, NUM_SAMPLES - 1 do
+				for i = 0, TOTAL_SAMPLES - 1 do
 					local sample = math.abs(self.soundObject:getSample(i))
 					if sample > maxAmplitude then
 						maxAmplitude = sample
@@ -29,40 +33,45 @@ return {
 					
 					-- Yield every CHUNK_SIZE samples to update progress
 					if i % CHUNK_SIZE == 0 then
-						self.analysisProgress = (i / NUM_SAMPLES) * 0.5  -- First pass is 0-50%
+						self.analysisProgress = (i / TOTAL_SAMPLES) * 0.5  -- First pass is 0-50%
 						coroutine.yield()
 					end
 				end
-				
-				print("First pass complete, maxAmplitude: " .. maxAmplitude)
 		
 				-- Calculate scale factor to fit waveform on screen
 				-- Screen height is 512, centered at 256, so max amplitude should map to 256
 				local amplitudeScale = maxAmplitude > 0 and (256 / maxAmplitude) or 512
 		
-				-- Second pass: scale samples
-				for i = 0, NUM_SAMPLES - 1 do
+				-- Second pass: scale and store samples by channel
+				for i = 0, TOTAL_SAMPLES - 1 do
 					local currentSample = self.soundObject:getSample(i) * amplitudeScale
-					table.insert(self.sampleData, currentSample)
+					
+					if CHANNEL_COUNT == 1 then
+						-- Mono: store in sampleData
+						table.insert(self.sampleData, currentSample)
+					elseif i % CHANNEL_COUNT == 0 then
+						-- Stereo/Multi: channel 1 (left)
+						table.insert(self.sampleData, currentSample)
+					else
+						-- Stereo/Multi: other channels (e.g., right)
+						table.insert(self.sampleDataChannel2, currentSample)
+					end
 					
 					-- Yield every CHUNK_SIZE samples to update progress
 					if i % CHUNK_SIZE == 0 then
-						self.analysisProgress = 0.5 + (i / NUM_SAMPLES) * 0.5  -- Second pass is 50-100%
+						self.analysisProgress = 0.5 + (i / TOTAL_SAMPLES) * 0.5  -- Second pass is 50-100%
 						coroutine.yield()
 					end
 				end
-				
-				print("Second pass complete")
 		
 				-- Calculate minimum scale with limit for large files
-				-- 2 seconds of music at 44100 Hz = 88200 samples per channel
-				local NUM_SAMPLES_IN_2_SECONDS = 2 * 44100
-				self.minScale = math.max(1024 / NUM_SAMPLES, 1024 / NUM_SAMPLES_IN_2_SECONDS)
+				-- 1 second of music at 44100 Hz = 44100 samples per channel
+				local NUM_SAMPLES_IN_1_SECOND = 44100
+				self.minScale = math.max(1024 / #self.sampleData, 1024 / NUM_SAMPLES_IN_1_SECOND)
 				self.graphics:setScale(self.minScale)
 				self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
 				
 				self.analysisProgress = 1  -- Complete
-				print("Analysis complete!")
 			end,
 		
 			refresh = function(self, soundObject, samplingRate, marginLeft)
@@ -70,6 +79,8 @@ return {
 				self.samplingRate = samplingRate or self.samplingRate
 				self.marginLeft = marginLeft or self.marginLeft
 				self.sampleData = {}
+				self.sampleDataChannel2 = {}
+				self.channelCount = soundObject:getChannelCount()
 				self.analysisProgress = 0
 				self.analysisCoroutine = coroutine.create(function() self:analyzeData() end)
 			end,
@@ -86,7 +97,6 @@ return {
 				if #self.sampleData == 0 then return end
 				
 				love.graphics.setLineWidth(1)
-				love.graphics.setColor(1, 1, 1)
 				
 				-- Convert screen bounds to image coordinates
 				local leftmostImageX, _ = self:screenToImageCoordinates(0, 0)
@@ -97,7 +107,8 @@ return {
 				local startSample = math.max(1, math.floor(leftmostImageX - self.marginLeft + 1))
 				local endSample = math.min(#self.sampleData - 1, math.ceil(rightmostImageX - self.marginLeft + 1))
 				
-				-- Only draw visible samples
+				-- Draw channel 1 (white)
+				love.graphics.setColor(1, 1, 1)
 				for k = startSample, endSample do
 					local imageX1 = self.marginLeft + k - 1
 					local imageX2 = self.marginLeft + k
@@ -108,6 +119,24 @@ return {
 					local y2 = 256 - self.sampleData[k + 1]
 					
 					love.graphics.line(screenX1, y1, screenX2, y2)
+				end
+				
+				-- Draw channel 2 if stereo (white)
+				if self.channelCount > 1 and #self.sampleDataChannel2 > 0 then
+					love.graphics.setColor(1, 1, 1)
+					for k = startSample, endSample do
+						if self.sampleDataChannel2[k] and self.sampleDataChannel2[k + 1] then
+							local imageX1 = self.marginLeft + k - 1
+							local imageX2 = self.marginLeft + k
+							local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
+							local screenX2, _ = self:imageToScreenCoordinates(imageX2, 0)
+							
+							local y1 = 256 - self.sampleDataChannel2[k]
+							local y2 = 256 - self.sampleDataChannel2[k + 1]
+							
+							love.graphics.line(screenX1, y1, screenX2, y2)
+						end
+					end
 				end
 			end,
 	
@@ -174,7 +203,9 @@ return {
 			
 			updateCurrentSample = function(self)
 				if self.soundObject then
-					self.currentSample = self.soundObject:getCurrentSample()
+					local totalSample = self.soundObject:getCurrentSample()
+					-- Convert from total sample space to per-channel space
+					self.currentSample = math.floor(totalSample / self.channelCount)
 				else
 					self.currentSample = nil
 				end
@@ -201,8 +232,11 @@ return {
 				
 				local mx, my = love.mouse.getPosition()
 				local imageX, _ = self:screenToImageCoordinates(mx, my)
-				local sampleIndex = math.floor(imageX - self.marginLeft)
-				return math.max(0, math.min(sampleIndex, self.soundObject:getSampleCount() - 1))
+				local perChannelSampleIndex = math.floor(imageX - self.marginLeft)
+				perChannelSampleIndex = math.max(0, math.min(perChannelSampleIndex, #self.sampleData - 1))
+				
+				-- Convert from per-channel space to total sample space
+				return perChannelSampleIndex * self.channelCount
 			end,
 	
 			---------------------- Graphics Object Methods ------------------------
