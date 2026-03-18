@@ -65,10 +65,19 @@ function love.update(dt)
             end
         end
     end
+    
+    -- Handle thumb dragging
+    if INFO_PANE.isDraggingThumb then
+        local mx, my = love.mouse.getPosition()
+        INFO_PANE:handleMouseDragged(mx, my)
+    end
 end
 
 function love.mousepressed(mx, my)
     local handled = SOUND_LIST:handleMousePressed(mx, my)
+    if not handled then
+        handled = INFO_PANE:handleMousePressed(mx, my)
+    end
     if not handled and SOUND_VIEW and SOUND_OBJECT then
         print(SOUND_VIEW:getSampleXFromMouseX())
     end
@@ -76,6 +85,7 @@ end
 
 function love.mousereleased()
     SOUND_LIST:handleMouseReleased()
+    INFO_PANE:handleMouseReleased()
 end
 
 function love.keypressed(key)
