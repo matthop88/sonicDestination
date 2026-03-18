@@ -2,13 +2,22 @@
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
+local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 712
+local WAVEFORM_HEIGHT = 512
+local INFO_PANE_HEIGHT = 200
 
 local SOUND_OBJECT = nil
 local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	soundObject = nil,
 	samplingRate = 64,
 	marginLeft = 100,
+}
+
+local INFO_PANE = require("tools/soundGraph/infoPane"):create {
+	x = 0,
+	y = WAVEFORM_HEIGHT,
+	width = WINDOW_WIDTH,
+	height = INFO_PANE_HEIGHT,
 }
 
 local SOUND_LIST = require("tools/soundGraph/soundList"):create {
@@ -25,6 +34,7 @@ local SOUND_LIST = require("tools/soundGraph/soundList"):create {
 		SOUND_OBJECT = soundObject
 		print("Analysis coroutine created")
 		SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
+		INFO_PANE:setSoundObject(SOUND_OBJECT)
 	end,
 }
 
@@ -36,16 +46,23 @@ function love.draw()
     if SOUND_VIEW then
         SOUND_VIEW:draw()
     end
+    INFO_PANE:draw()
     SOUND_LIST:draw()
 end
 
 function love.update(dt)
     SOUND_LIST:update(dt)
+    INFO_PANE:update(dt)
     if SOUND_VIEW then
         SOUND_VIEW:update(dt)
         if not SOUND_VIEW:isAnalysisComplete() then
             local progress = SOUND_VIEW:getProgress()
             setProgressBarText(string.format("Loading Sound Data... %.0f%%", progress * 100))
+        else
+            -- Update info pane with sound model once analysis is complete
+            if SOUND_VIEW.soundModel and not INFO_PANE.soundModel then
+                INFO_PANE:setSoundModel(SOUND_VIEW.soundModel)
+            end
         end
     end
 end
