@@ -11,49 +11,20 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	marginLeft = 100,
 }
 
-local SOUND_LIST  -- Forward declaration
-
-local function loadSound(soundKey)
-	local soundInfo = SOUND_LIST:getSoundInfo(soundKey)
-	if not soundInfo then
-		print("Error: Sound key not found: " .. soundKey)
-		return
-	end
-	
-	-- Reset progress bar before loading
-	getProgressBar():refresh()
-	
-	local basePath = SOUND_LIST:isMusicTrack(soundKey) and "game/resources/music/" or "game/resources/sounds/"
-	local soundPath = basePath .. soundInfo.filename
-	print("Loading sound: " .. soundPath)
-	
-	-- Create new sound object and refresh view
-	local success, result = pcall(function()
-		return require("tools/soundGraph/soundObject"):create(soundPath):init()
-	end)
-	
-	if not success then
-		print("Error loading sound file: " .. result)
-		print("The file may be corrupted or empty.")
-		return
-	end
-	
-	SOUND_OBJECT = result
-	print("Sound loaded, starting analysis...")
-	SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
-	print("Analysis coroutine created")
-end
-
-SOUND_LIST = require("tools/soundGraph/soundList"):create {
+local SOUND_LIST = require("tools/soundGraph/soundList"):create {
 	x = (WINDOW_WIDTH - 400) / 2,
 	y = (WINDOW_HEIGHT - 400) / 2,
 	width = 400,
 	height = 400,
 	fontSize = 28,
 	scrollSpeed = 1200,
-	onSoundSelected = function(soundKey, label, index)
-		print("Selected: " .. label .. " (key: " .. soundKey .. ", index " .. index .. ")")
-		loadSound(soundKey)
+	onSoundLoaded = function(soundObject)
+		-- Reset progress bar before loading
+		getProgressBar():refresh()
+		
+		SOUND_OBJECT = soundObject
+		print("Analysis coroutine created")
+		SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
 	end,
 }
 
