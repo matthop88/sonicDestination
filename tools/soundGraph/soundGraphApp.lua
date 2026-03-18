@@ -4,9 +4,6 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 512
 
-local SOUND_DATA = require("tools/soundGraph/soundData")
-local MUSIC_DATA = require("tools/soundGraph/musicData")
-
 local SOUND_OBJECT = nil
 local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	soundObject = nil,
@@ -14,8 +11,10 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	marginLeft = 100,
 }
 
+local SOUND_LIST  -- Forward declaration
+
 local function loadSound(soundKey)
-	local soundInfo = SOUND_DATA[soundKey] or MUSIC_DATA[soundKey]
+	local soundInfo = SOUND_LIST:getSoundInfo(soundKey)
 	if not soundInfo then
 		print("Error: Sound key not found: " .. soundKey)
 		return
@@ -24,7 +23,7 @@ local function loadSound(soundKey)
 	-- Reset progress bar before loading
 	getProgressBar():refresh()
 	
-	local basePath = MUSIC_DATA[soundKey] and "game/resources/music/" or "game/resources/sounds/"
+	local basePath = SOUND_LIST:isMusicTrack(soundKey) and "game/resources/music/" or "game/resources/sounds/"
 	local soundPath = basePath .. soundInfo.filename
 	print("Loading sound: " .. soundPath)
 	
@@ -45,56 +44,16 @@ local function loadSound(soundKey)
 	print("Analysis coroutine created")
 end
 
--- Get list of sound and music names
-local soundItems = {}
-local labelToKeyMap = {}  -- Map from display label to original key
-
--- Add sound items
-local soundLabels = {}
-for soundKey, soundInfo in pairs(SOUND_DATA) do
-	table.insert(soundLabels, soundInfo.label)
-	labelToKeyMap[soundInfo.label] = soundKey
-end
-table.sort(soundLabels)
-
-for _, label in ipairs(soundLabels) do
-	table.insert(soundItems, label)
-end
-
--- Add separator
-local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
-table.insert(soundItems, RECTANGLE_ITEM:create {
-	color = { 0.5, 0.5, 0.5 },
-	width = 390,
-	height = 5,
-	notSelectable = true,
-})
-
--- Add music items
-local musicLabels = {}
-for musicKey, musicInfo in pairs(MUSIC_DATA) do
-	table.insert(musicLabels, musicInfo.label)
-	labelToKeyMap[musicInfo.label] = musicKey
-end
-table.sort(musicLabels)
-
-for _, label in ipairs(musicLabels) do
-	table.insert(soundItems, label)
-end
-
-local LIST = require("tools/lib/guiList/list"):create {
-	x = (WINDOW_WIDTH - 400) / 2,  -- Center horizontally
-	y = (WINDOW_HEIGHT - 400) / 2,  -- Center vertically
+SOUND_LIST = require("tools/soundGraph/soundList"):create {
+	x = (WINDOW_WIDTH - 400) / 2,
+	y = (WINDOW_HEIGHT - 400) / 2,
 	width = 400,
 	height = 400,
 	fontSize = 28,
 	scrollSpeed = 1200,
-	items = soundItems,
-	onItemSelected = function(listOrPane, label, index)
-		local soundKey = labelToKeyMap[label]
+	onSoundSelected = function(soundKey, label, index)
 		print("Selected: " .. label .. " (key: " .. soundKey .. ", index " .. index .. ")")
 		loadSound(soundKey)
-		listOrPane:setVisible(false)
 	end,
 }
 
@@ -106,11 +65,11 @@ function love.draw()
     if SOUND_VIEW then
         SOUND_VIEW:draw()
     end
-    LIST:draw()
+    SOUND_LIST:draw()
 end
 
 function love.update(dt)
-    LIST:update(dt)
+    SOUND_LIST:update(dt)
     if SOUND_VIEW then
         SOUND_VIEW:update(dt)
         if not SOUND_VIEW:isAnalysisComplete() then
@@ -121,14 +80,14 @@ function love.update(dt)
 end
 
 function love.mousepressed(mx, my)
-    local handled = LIST:handleMousePressed(mx, my)
+    local handled = SOUND_LIST:handleMousePressed(mx, my)
     if not handled and SOUND_VIEW and SOUND_OBJECT then
         print(SOUND_VIEW:getSampleXFromMouseX())
     end
 end
 
 function love.mousereleased()
-    LIST:handleMouseReleased()
+    SOUND_LIST:handleMouseReleased()
 end
 
 function love.keypressed(key)
@@ -146,7 +105,7 @@ function love.keypressed(key)
         SOUND_OBJECT:jumpToEnd()
         SOUND_VIEW:refreshView()
     elseif key == "L" then
-        LIST:setVisible(true)
+        SOUND_LIST:setVisible(true)
     elseif key == "F" and SOUND_VIEW then
         local enabled = SOUND_VIEW:toggleFollowPlaybackCursor()
         print("Follow playback cursor: " .. (enabled and "ENABLED" or "DISABLED"))
@@ -161,7 +120,7 @@ love.window.setTitle("Sound Graph Application")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 -- Start with list visible
-LIST:setVisible(true)
+SOUND_LIST:setVisible(true)
 
 --------------------------------------------------------------
 --                          Plugins                         --
