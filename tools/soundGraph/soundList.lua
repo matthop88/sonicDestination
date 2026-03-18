@@ -68,7 +68,7 @@ return {
 	end,
 	
 	create = function(self, params)
-		local onSoundSelected = params.onSoundSelected
+		local onSoundLoaded = params.onSoundLoaded
 		
 		-- Map from display label to original key
 		local labelToKeyMap = {}
@@ -76,6 +76,37 @@ return {
 		local soundList = {
 			list = nil,
 			labelToKeyMap = labelToKeyMap,
+			onSoundLoaded = onSoundLoaded,
+			
+			loadSound = function(self, soundKey)
+				local soundInfo = self:getSoundInfo(soundKey)
+				if not soundInfo then
+					print("Error: Sound key not found: " .. soundKey)
+					return
+				end
+				
+				local basePath = self:isMusicTrack(soundKey) and "game/resources/music/" or "game/resources/sounds/"
+				local soundPath = basePath .. soundInfo.filename
+				print("Loading sound: " .. soundPath)
+				
+				-- Create new sound object
+				local success, result = pcall(function()
+					return require("tools/soundGraph/soundObject"):create(soundPath):init()
+				end)
+				
+				if not success then
+					print("Error loading sound file: " .. result)
+					print("The file may be corrupted or empty.")
+					return
+				end
+				
+				print("Sound loaded, starting analysis...")
+				
+				-- Call the callback with the loaded sound object
+				if self.onSoundLoaded then
+					self.onSoundLoaded(result)
+				end
+			end,
 			
 			-- Delegate methods to the underlying list
 			draw = function(self)
@@ -122,8 +153,9 @@ return {
 			items = self:buildListItems(labelToKeyMap),
 			onItemSelected = function(listOrPane, label, index)
 				local soundKey = labelToKeyMap[label]
-				if soundKey and onSoundSelected then
-					onSoundSelected(soundKey, label, index)
+				if soundKey then
+					print("Selected: " .. label .. " (key: " .. soundKey .. ", index " .. index .. ")")
+					soundList:loadSound(soundKey)
 				end
 				listOrPane:setVisible(false)
 			end,
