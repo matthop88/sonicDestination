@@ -181,6 +181,7 @@ return {
         else
             local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
             if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
+			if not chunkInfo.SOLIDS then return 0 end
             return chunkInfo.SOLIDS:getSolidAt(chunkInfo.ID, xInChunk, yInChunk, chunkInfo.XFLIP)
         end
     end,
