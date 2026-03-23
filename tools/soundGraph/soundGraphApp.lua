@@ -18,6 +18,11 @@ local INFO_PANE = require("tools/soundGraph/infoPane"):create {
 	y = WAVEFORM_HEIGHT,
 	width = WINDOW_WIDTH,
 	height = INFO_PANE_HEIGHT,
+	onPositionChanged = function()
+		if SOUND_VIEW then
+			SOUND_VIEW:refreshView()
+		end
+	end,
 }
 
 local SOUND_LIST = require("tools/soundGraph/soundList"):create {
@@ -67,7 +72,7 @@ function love.update(dt)
     end
     
     -- Handle thumb dragging
-    if INFO_PANE.isDraggingThumb then
+    if INFO_PANE.timelineScrubber and INFO_PANE.timelineScrubber.isDragging then
         local mx, my = love.mouse.getPosition()
         INFO_PANE:handleMouseDragged(mx, my)
     end
