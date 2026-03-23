@@ -225,6 +225,20 @@ return {
 		    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
 		        self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
 		    end,
+		    
+		    getLeftScreenBound = function(self)
+		    	if not self.soundModel then return 0 end
+		    	local leftImageX = self.marginLeft
+		    	local leftScreenX, _ = self:imageToScreenCoordinates(leftImageX, 0)
+		    	return leftScreenX
+		    end,
+		    
+		    getRightScreenBound = function(self)
+		    	if not self.soundModel then return 0 end
+		    	local rightImageX = self.marginLeft + self.soundModel:getSampleCount()
+		    	local rightScreenX, _ = self:imageToScreenCoordinates(rightImageX, 0)
+		    	return rightScreenX
+		    end,
 		}
 	end,
 }
