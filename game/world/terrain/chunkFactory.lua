@@ -4,6 +4,7 @@ return ({
     init = function(self)
         return self:addChunks("ghzChunks")
                    :addChunks("scdPtpChunks")
+				   :addChunks("scdPtpChunksOrig")
     end,
 
 	addChunks = function(self, chunksName)
