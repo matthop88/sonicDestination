@@ -2,140 +2,108 @@ return {
 	create = function(self, params)
 		return ({
 			x = params.x or 0,
-			y = params.y or 512,
+			y = params.y or 0,
 			width = params.width or 1280,
-			height = params.height or 200,
+			margin = params.margin or 40,
+			thumbWidth = params.thumbWidth or 12,
+			thumbHeight = params.thumbHeight or 20,
 			soundObject = nil,
 			soundModel = nil,
-			font = love.graphics.newFont(16),
-			timelineScrubber = nil,
+			isDragging = false,
 			onPositionChanged = params.onPositionChanged,
+			lineStartX = nil,
+			lineEndX = nil,
+			lineWidth = nil,
 			
 			init = function(self)
-				self.timelineScrubber = require("tools/soundGraph/timelineScrubber"):create {
-					x = self.x,
-					y = self.y + 170,
-					width = self.width,
-					margin = 40,
-					thumbWidth = 12,
-					thumbHeight = 20,
-					onPositionChanged = self.onPositionChanged,
-				}
+				self.lineStartX = self.x + self.margin
+				self.lineEndX = self.x + self.width - self.margin
+				self.lineWidth = self.lineEndX - self.lineStartX
 				return self
 			end,
 			
 			setSoundObject = function(self, soundObject)
 				self.soundObject = soundObject
-				self.timelineScrubber:setSoundObject(soundObject)
 			end,
 			
 			setSoundModel = function(self, soundModel)
 				self.soundModel = soundModel
-				self.timelineScrubber:setSoundModel(soundModel)
 			end,
 			
 			draw = function(self)
-				love.graphics.setFont(self.font)
-				self:drawBackground()
-				self:drawBorder()
-				self:drawInfoText()
-				self.timelineScrubber:draw()
+				if not self.soundObject or not self.soundModel then return end
+				
+				self:drawTimeline()
+				self:drawThumb()
 			end,
 			
-			drawBackground = function(self)
-				love.graphics.setColor(0.15, 0.15, 0.15)
-				love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
-			end,
-			
-			drawBorder = function(self)
-				love.graphics.setColor(0.5, 0.5, 0.5)
+			drawTimeline = function(self)
+				love.graphics.setColor(0, 1, 0)
 				love.graphics.setLineWidth(2)
-				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+				love.graphics.line(self.lineStartX, self.y, self.lineEndX, self.y)
 				love.graphics.setLineWidth(1)
 			end,
 			
-			drawInfoText = function(self)
-				if not self.soundObject or not self.soundModel then return end
-				
+			drawThumb = function(self)
+				local thumbX = self:getThumbPosition()
 				love.graphics.setColor(1, 1, 1)
-				local textX = self.x + 20
-				local textY = self.y + 20
-				local lineHeight = 25
-				
-				self:drawSampleRate(textX, textY)
-				textY = textY + lineHeight
-				
-				self:drawChannelCount(textX, textY)
-				textY = textY + lineHeight
-				
-				self:drawTotalSamples(textX, textY)
-				textY = textY + lineHeight
-				
-				self:drawDuration(textX, textY)
-				textY = textY + lineHeight
-				
-				self:drawCurrentPosition(textX, textY)
+				love.graphics.rectangle("fill", 
+					thumbX - self.thumbWidth / 2, 
+					self.y - self.thumbHeight / 2,
+					self.thumbWidth,
+					self.thumbHeight)
 			end,
 			
-			drawSampleRate = function(self, textX, textY)
-				local sampleRate = self.soundObject:getSampleRate()
-				love.graphics.print("Sample Rate: " .. sampleRate .. " Hz", textX, textY)
-			end,
-			
-			drawChannelCount = function(self, textX, textY)
-				local channels = self.soundModel:getChannelCount()
-				local channelText = channels == 1 and "Mono" or (channels == 2 and "Stereo" or channels .. " Channels")
-				love.graphics.print("Channels: " .. channelText, textX, textY)
-			end,
-			
-			drawTotalSamples = function(self, textX, textY)
-				local totalSamples = self.soundObject:getSampleCount()
-				love.graphics.print("Total Samples: " .. totalSamples, textX, textY)
-			end,
-			
-			drawDuration = function(self, textX, textY)
-				local sampleRate = self.soundObject:getSampleRate()
-				local totalSamples = self.soundObject:getSampleCount()
-				local duration = totalSamples / sampleRate
-				love.graphics.print("Duration: " .. self:formatTime(duration), textX, textY)
-			end,
-			
-			drawCurrentPosition = function(self, textX, textY)
-				if self.soundObject:isPlaying() or self.soundObject:getCurrentSample() > 0 then
-					local currentTime = self.soundObject.audioSource:tell("seconds")
-					local currentMinutes = math.floor(currentTime / 60)
-					local currentSeconds = currentTime % 60
-					love.graphics.print(string.format("Current Position: %d:%06.3f", currentMinutes, currentSeconds), textX, textY)
-				end
-			end,
-			
-			formatTime = function(self, timeInSeconds)
-				local minutes = math.floor(timeInSeconds / 60)
-				local seconds = timeInSeconds % 60
+			getThumbPosition = function(self)
+				if not self.soundObject or not self.soundModel then return 0 end
 				
-				if timeInSeconds < 10 then
-					-- Show milliseconds for times under 10 seconds
-					return string.format("%d:%06.3f", minutes, seconds)
-				else
-					-- Regular format for 10 seconds and above
-					return string.format("%d:%05.2f", minutes, seconds)
-				end
+				local duration = self.soundObject:getSampleCount() / self.soundObject:getSampleRate()
+				local currentTime = self.soundObject.audioSource:tell("seconds")
+				local progress = duration > 0 and (currentTime / duration) or 0
+				
+				return self.lineStartX + (progress * self.lineWidth)
+			end,
+			
+			isMouseOverThumb = function(self, mx, my)
+				if not self.soundObject or not self.soundModel then return false end
+				
+				local thumbX = self:getThumbPosition()
+				local thumbLeft = thumbX - self.thumbWidth / 2
+				local thumbRight = thumbX + self.thumbWidth / 2
+				local thumbTop = self.y - self.thumbHeight / 2
+				local thumbBottom = self.y + self.thumbHeight / 2
+				
+				return mx >= thumbLeft and mx <= thumbRight and my >= thumbTop and my <= thumbBottom
 			end,
 			
 			handleMousePressed = function(self, mx, my)
-				return self.timelineScrubber:handleMousePressed(mx, my)
+				if self:isMouseOverThumb(mx, my) then
+					self.isDragging = true
+					return true
+				end
+				return false
 			end,
 			
 			handleMouseReleased = function(self)
-				self.timelineScrubber:handleMouseReleased()
+				self.isDragging = false
 			end,
 			
 			handleMouseDragged = function(self, mx, my)
-				self.timelineScrubber:handleMouseDragged(mx, my)
-			end,
-			
-			update = function(self, dt)
-				-- Future: could add animations or other updates here
+				if not self.isDragging or not self.soundObject or not self.soundModel then return end
+				
+				-- Clamp mouse position to timeline bounds
+				local clampedX = math.max(self.lineStartX, math.min(mx, self.lineEndX))
+				local progress = (clampedX - self.lineStartX) / self.lineWidth
+				
+				-- Set audio position
+				local duration = self.soundObject:getSampleCount() / self.soundObject:getSampleRate()
+				local newTime = progress * duration
+				self.soundObject.audioSource:seek(newTime, "seconds")
+				
+				-- Notify that position changed
+				if self.onPositionChanged then
+					self.onPositionChanged()
+				end
 			end,
 		}):init()
 	end,
