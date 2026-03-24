@@ -136,7 +136,11 @@ return {
 			end,
 			
 			update = function(self, dt)
-				-- Future: could add animations or other updates here
+				-- Handle marker dragging
+				if self.isDraggingStart then
+					local mx, my = love.mouse.getPosition()
+					self:handleMouseDragged(mx, my)
+				end
 			end,
 		}):init()
 	end,
