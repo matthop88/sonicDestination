@@ -69,6 +69,23 @@ return {
 				return screenX
 			end,
 			
+			getStartMarkerSample = function(self)
+				if not self.soundView or not self.startMarkerImageX or not self.soundModel then return 0 end
+				
+				local marginLeft = self.soundView.marginLeft or 100
+				local sampleOffset = math.floor(self.startMarkerImageX - marginLeft)
+				
+				-- Convert per-channel sample to total sample space
+				local totalSample = self.soundModel:totalSampleFromPerChannelSample(math.max(0, sampleOffset))
+				
+				-- Debug output
+				print(string.format("Marker: imageX=%.2f, marginLeft=%.2f, sampleOffset=%d, channelCount=%d, totalSample=%d",
+					self.startMarkerImageX, marginLeft, sampleOffset, 
+					self.soundModel:getChannelCount(), totalSample))
+				
+				return totalSample
+			end,
+			
 			isMouseOverStartMarker = function(self, mx, my)
 				if not self.soundView or not self.startMarkerImageX then return false end
 				
