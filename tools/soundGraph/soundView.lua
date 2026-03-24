@@ -39,7 +39,8 @@ return {
 			end,
 			
 			isAnalysisComplete = function(self)
-				return self.soundModel and self.soundModel:isAnalysisComplete() or true
+				if not self.soundModel then return true end
+				return self.soundModel:isAnalysisComplete()
 			end,
 	
 			draw = function(self)
