@@ -10,6 +10,7 @@ return {
 			font = love.graphics.newFont(16),
 			timelineScrubber = nil,
 			onPositionChanged = params.onPositionChanged,
+			markerPane = params.markerPane,
 			
 			init = function(self)
 				self.timelineScrubber = require("tools/soundGraph/timelineScrubber"):create {
@@ -20,6 +21,7 @@ return {
 					thumbWidth = 12,
 					thumbHeight = 20,
 					onPositionChanged = self.onPositionChanged,
+					markerPane = self.markerPane,
 				}
 				return self
 			end,
