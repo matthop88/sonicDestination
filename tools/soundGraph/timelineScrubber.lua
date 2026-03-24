@@ -11,6 +11,7 @@ return {
 			soundModel = nil,
 			isDragging = false,
 			onPositionChanged = params.onPositionChanged,
+			markerPane = params.markerPane,
 			lineStartX = nil,
 			lineEndX = nil,
 			lineWidth = nil,
@@ -34,6 +35,7 @@ return {
 				if not self.soundObject or not self.soundModel then return end
 				
 				self:drawTimeline()
+				self:drawStartMarkerIndicator()
 				self:drawThumb()
 			end,
 			
@@ -42,6 +44,21 @@ return {
 				love.graphics.setLineWidth(2)
 				love.graphics.line(self.lineStartX, self.y, self.lineEndX, self.y)
 				love.graphics.setLineWidth(1)
+			end,
+			
+			drawStartMarkerIndicator = function(self)
+				if not self.markerPane then return end
+				
+				local progress = self.markerPane:getStartMarkerProgress()
+				local markerX = self.lineStartX + (progress * self.lineWidth)
+				local markerSize = 6  -- Smaller than the main marker
+				
+				love.graphics.setColor(1, 0.5, 0)  -- Orange
+				love.graphics.polygon("fill",
+					markerX, self.y - markerSize,           -- Top point
+					markerX + markerSize, self.y,           -- Right point
+					markerX, self.y + markerSize            -- Bottom point
+				)
 			end,
 			
 			drawThumb = function(self)
