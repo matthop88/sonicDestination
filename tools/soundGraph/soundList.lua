@@ -85,13 +85,16 @@ return {
 					return
 				end
 				
-				local basePath = self:isMusicTrack(soundKey) and "game/resources/music/" or "game/resources/sounds/"
+				-- Add isMusic flag to soundInfo
+				soundInfo.isMusic = self:isMusicTrack(soundKey)
+				
+				local basePath = soundInfo.isMusic and "game/resources/music/" or "game/resources/sounds/"
 				local soundPath = basePath .. soundInfo.filename
 				print("Loading sound: " .. soundPath)
 				
 				-- Create new sound object
 				local success, result = pcall(function()
-					return require("tools/soundGraph/soundObject"):create(soundPath):init()
+					return require("tools/soundGraph/soundObject"):create(soundInfo):init()
 				end)
 				
 				if not success then
