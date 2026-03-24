@@ -1,14 +1,19 @@
 return {
 	create = function(self, params)
-		return {
-			graphics = require("tools/lib/graphics"):create(),
+		local WINDOW_WIDTH = params.windowWidth or 1280
+		local WAVEFORM_HEIGHT = params.waveformHeight or 512
+		local MARKER_PANE_HEIGHT = params.markerPaneHeight or 64
+		local INFO_PANE_HEIGHT = params.infoPaneHeight or 200
+		
+		local soundView = {
 			soundObject = params.soundObject,
 			soundModel = nil,
 			samplingRate = params.samplingRate or 64,
 			marginLeft = params.marginLeft or 100,
-			followPlaybackCursor = false,
-			currentSample = nil,
-			scaleInitialized = false,
+			waveformHeight = WAVEFORM_HEIGHT,
+			waveformPane = nil,
+			markerPane = nil,
+			infoPane = nil,
 
 			refresh = function(self, soundObject, samplingRate, marginLeft)
 				self.soundObject = soundObject
@@ -16,7 +21,17 @@ return {
 				self.marginLeft = marginLeft or self.marginLeft
 				self.soundModel = require("tools/soundGraph/soundModel"):create(soundObject)
 				self.soundModel:startAnalysis()
-				self.scaleInitialized = false
+				
+				-- Update child components
+				if self.waveformPane then
+					self.waveformPane:refresh(soundObject, samplingRate, marginLeft)
+				end
+				if self.markerPane then
+					self.markerPane:setSoundObject(soundObject)
+				end
+				if self.infoPane then
+					self.infoPane:setSoundObject(soundObject)
+				end
 			end,
 			
 			getProgress = function(self)
@@ -26,81 +41,18 @@ return {
 			isAnalysisComplete = function(self)
 				return self.soundModel and self.soundModel:isAnalysisComplete() or true
 			end,
-		
-			drawWaveform = function(self)
-				if not self.soundModel or self.soundModel:getSampleCount() == 0 then return end
-				
-				love.graphics.setLineWidth(1)
-				
-				-- Convert screen bounds to image coordinates
-				local leftmostImageX, _ = self:screenToImageCoordinates(0, 0)
-				local rightmostImageX, _ = self:screenToImageCoordinates(1280, 0)
-				
-				-- Convert image coordinates to sample array indices (1-based)
-				local sampleCount = self.soundModel:getSampleCount()
-				local startSample = math.max(1, math.floor(leftmostImageX - self.marginLeft + 1))
-				local endSample = math.min(sampleCount - 1, math.ceil(rightmostImageX - self.marginLeft + 1))
-				
-				-- Calculate sample skip for performance when zoomed out
-				local currentScale = self.graphics:getScale()
-				local sampleStep = 1
-				local minOptimumScale = self.soundModel:getMinOptimumScale()
-				if minOptimumScale and currentScale < minOptimumScale then
-					sampleStep = math.max(1, math.floor(minOptimumScale / currentScale))
-				end
-				
-				-- Draw all channels
-				self:drawChannel(1, startSample, endSample, sampleStep)
-				if self.soundModel:getChannelCount() > 1 then
-					self:drawChannel(2, startSample, endSample, sampleStep)
-				end
-			end,
-			
-			drawChannel = function(self, channelNumber, startSample, endSample, sampleStep)
-				love.graphics.setColor(1, 1, 1)
-				for k = startSample, endSample, sampleStep do
-					local sample1 = self.soundModel:getSample(k, channelNumber)
-					local sample2 = self.soundModel:getSample(k + 1, channelNumber)
-					if sample1 and sample2 then
-						local imageX1 = self.marginLeft + k - 1
-						local imageX2 = self.marginLeft + k
-						local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
-						local screenX2, _ = self:imageToScreenCoordinates(imageX2, 0)
-						
-						local y1 = 256 - sample1
-						local y2 = 256 - sample2
-						
-						love.graphics.line(screenX1, y1, screenX2, y2)
-					end
-				end
-			end,
 	
 			draw = function(self)
-				self:drawWaveform()
-				self:drawPlaybackCursor()
-				self:drawMouseCursor()
-			end,
-			
-			drawPlaybackCursor = function(self)
-				if not self.soundObject then return end
-				
-				if self.currentSample then
-					local imageX = self.marginLeft + self.currentSample
-					local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
-					love.graphics.setColor(1, 1, 0)
-					love.graphics.setLineWidth(3)
-					love.graphics.line(screenX, 0, screenX, 512)
-					love.graphics.setLineWidth(1)
+				-- Draw child components
+				if self.waveformPane then
+					self.waveformPane:draw()
 				end
-			end,
-	
-			drawMouseCursor = function(self)
-				if not self.soundObject or not self.soundModel or self.soundModel:getSampleCount() == 0 then return end
-				if self.followPlaybackCursor and self.soundObject:isPlaying() then return end
-				
-				love.graphics.setColor(0, 1, 0)
-				local mx = self:getConstrainedMouseX()
-				love.graphics.line(mx, 0, mx, 512)
+				if self.markerPane then
+					self.markerPane:draw()
+				end
+				if self.infoPane then
+					self.infoPane:draw()
+				end
 			end,
 			
 			update = function(self, dt)
@@ -109,136 +61,141 @@ return {
 					self.soundModel:updateAnalysis()
 					
 					-- Initialize scale after analysis completes
-					if self.soundModel:isAnalysisComplete() and not self.scaleInitialized then
+					if self.soundModel:isAnalysisComplete() then
 						local minOptimumScale = self.soundModel:getMinOptimumScale()
-						if minOptimumScale then
-							self.graphics:setScale(minOptimumScale)
-							self:moveImage(self.marginLeft / self.graphics:getScale(), 0)
-							self.scaleInitialized = true
+						if self.waveformPane then
+							self.waveformPane:initializeScale(minOptimumScale)
+						end
+						
+						-- Update child components with sound model after analysis completes
+						if self.markerPane and self.markerPane.soundModel ~= self.soundModel then
+							self.markerPane:setSoundModel(self.soundModel)
+						end
+						if self.infoPane and self.infoPane.soundModel ~= self.soundModel then
+							self.infoPane:setSoundModel(self.soundModel)
+						end
+						if self.waveformPane and self.waveformPane.soundModel ~= self.soundModel then
+							self.waveformPane:setSoundModel(self.soundModel)
 						end
 					end
 				end
 				
-				self:updateCurrentSample()
+				-- Update current sample
+				if self.waveformPane then
+					self.waveformPane:updateCurrentSample()
+				end
 				
-				if self.followPlaybackCursor and self.soundObject and self.soundObject:isPlaying() then
-					self:syncViewWithCurrentSample()
+				if self.waveformPane and self.waveformPane.followPlaybackCursor and self.soundObject and self.soundObject:isPlaying() then
+					self.waveformPane:syncViewWithCurrentSample()
+				end
+				
+				-- Update child components
+				if self.markerPane then
+					self.markerPane:update(dt)
+				end
+				if self.infoPane then
+					self.infoPane:update(dt)
 				end
 			end,
 			
 			refreshView = function(self)
-				self:updateCurrentSample()
-				self:syncViewWithCurrentSample()
-			end,
-			
-			syncViewWithCurrentSample = function(self)
-				if self.currentSample then
-					local imageX = self.marginLeft + self.currentSample
-					local screenX, _ = self:imageToScreenCoordinates(imageX, 0)
-					
-					-- Keep cursor centered on screen (640 is middle of 1280)
-					if screenX ~= 640 then
-						self:syncImageCoordinatesWithScreen(imageX, 0, 640, 0)
-					end
+				if self.waveformPane then
+					self.waveformPane:refreshView()
 				end
-			end,
-			
-			updateCurrentSample = function(self)
-				if self.soundModel then
-					self.currentSample = self.soundModel:getCurrentSample()
-				else
-					self.currentSample = nil
-				end
-			end,
-			
-			setFollowPlaybackCursor = function(self, enabled)
-				self.followPlaybackCursor = enabled
 			end,
 			
 			toggleFollowPlaybackCursor = function(self)
-				self.followPlaybackCursor = not self.followPlaybackCursor
-				return self.followPlaybackCursor
-			end,
-	
-			getConstrainedMouseX = function(self)
-				if not self.soundModel then return 0 end
-				local mx, _ = love.mouse.getPosition()
-				local leftmostScreenX, _ = self:imageToScreenCoordinates(self.marginLeft, 0)
-				local rightmostScreenX, _ = self:imageToScreenCoordinates(self.marginLeft + self.soundModel:getSampleCount(), 0)
-				return math.min(math.max(mx, leftmostScreenX), rightmostScreenX)
-			end,
-	
-			getSampleXFromMouseX = function(self)
-				if not self.soundObject or not self.soundModel then return 0 end
-				
-				local mx, my = love.mouse.getPosition()
-				local imageX, _ = self:screenToImageCoordinates(mx, my)
-				local perChannelSampleIndex = math.floor(imageX - self.marginLeft)
-				perChannelSampleIndex = math.max(0, math.min(perChannelSampleIndex, self.soundModel:getSampleCount() - 1))
-				
-				-- Convert from per-channel space to total sample space
-				return self.soundModel:totalSampleFromPerChannelSample(perChannelSampleIndex)
-			end,
-	
-			---------------------- Graphics Object Methods ------------------------
-	
-		    moveImage = function(self, deltaX, deltaY)
-		        if not self.soundModel or self.soundModel:getSampleCount() == 0 then return end
-		        
-		        self.graphics:moveImage(deltaX, deltaY)
-		        
-		        -- Constrain left scrolling
-		        local currentX = self.graphics:getX()
-		        if currentX > (self.marginLeft / self.graphics:getScale()) then
-		            self.graphics:setX(self.marginLeft / self.graphics:getScale())
-		        end
-		        
-		        -- Constrain right scrolling
-		        local rightmostImageX = self.marginLeft + self.soundModel:getSampleCount()
-		        local rightmostScreenX, _ = self:imageToScreenCoordinates(rightmostImageX, 0)
-		        if rightmostScreenX < 1124 then
-					self:syncImageCoordinatesWithScreen(rightmostImageX, 0, 1124, 0)
-		        end
-		    end,
-	
-			screenToImageCoordinates = function(self, screenX, screenY)
-				return self.graphics:screenToImageCoordinates(screenX, screenY)
-			end,
-	
-			imageToScreenCoordinates = function(self, imageX, imageY)
-				return self.graphics:imageToScreenCoordinates(imageX, imageY)
-			end,
-	
-		    adjustScaleGeometrically = function(self, deltaScale)
-				if not self.soundModel then return end
-				local minScale = self.soundModel:getMinScale()
-				if not minScale then return end
-		        
-				self.graphics:adjustScaleGeometrically(deltaScale * 2)
-				if self.graphics:getScale() > 10 then
-					self.graphics:setScale(10)
-				elseif self.graphics:getScale() < minScale then
-					self.graphics:setScale(minScale)
+				if self.waveformPane then
+					return self.waveformPane:toggleFollowPlaybackCursor()
 				end
-		    end,
-
-		    syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
-		        self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
+				return false
+			end,
+			
+			getSampleXFromMouseX = function(self)
+				return self.waveformPane and self.waveformPane:getSampleXFromMouseX() or 0
+			end,
+			
+			moveImage = function(self, deltaX, deltaY)
+				if self.waveformPane then
+					self.waveformPane:moveImage(deltaX, deltaY)
+				end
+			end,
+			
+			adjustScaleGeometrically = function(self, deltaScale)
+				if self.waveformPane then
+					self.waveformPane:adjustScaleGeometrically(deltaScale)
+				end
+			end,
+			
+			getLeftScreenBound = function(self)
+				return self.waveformPane and self.waveformPane:getLeftScreenBound() or 0
+			end,
+			
+			getRightScreenBound = function(self)
+				return self.waveformPane and self.waveformPane:getRightScreenBound() or 0
+			end,
+		    
+		    handleMousePressed = function(self, mx, my)
+		    	if self.infoPane and self.infoPane:handleMousePressed(mx, my) then
+		    		return true
+		    	end
+		    	if self.markerPane and self.markerPane:handleMousePressed(mx, my) then
+		    		return true
+		    	end
+		    	return false
 		    end,
 		    
-		    getLeftScreenBound = function(self)
-		    	if not self.soundModel then return 0 end
-		    	local leftImageX = self.marginLeft
-		    	local leftScreenX, _ = self:imageToScreenCoordinates(leftImageX, 0)
-		    	return leftScreenX
+		    handleMouseReleased = function(self)
+		    	if self.infoPane then
+		    		self.infoPane:handleMouseReleased()
+		    	end
+		    	if self.markerPane then
+		    		self.markerPane:handleMouseReleased()
+		    	end
 		    end,
 		    
-		    getRightScreenBound = function(self)
-		    	if not self.soundModel then return 0 end
-		    	local rightImageX = self.marginLeft + self.soundModel:getSampleCount()
-		    	local rightScreenX, _ = self:imageToScreenCoordinates(rightImageX, 0)
-		    	return rightScreenX
+		    getStartMarkerSample = function(self)
+		    	return self.markerPane and self.markerPane:getStartMarkerSample() or 0
+		    end,
+		    
+		    init = function(self)
+		    	-- Create waveform pane
+		    	self.waveformPane = require("tools/soundGraph/waveformPane"):create {
+		    		x = 0,
+		    		y = 0,
+		    		width = params.windowWidth or 1280,
+		    		height = params.waveformHeight or 512,
+		    		samplingRate = params.samplingRate or 64,
+		    		marginLeft = params.marginLeft or 100,
+		    	}
+		    	
+		    	-- Create marker pane
+		    	self.markerPane = require("tools/soundGraph/markerPane"):create {
+		    		x = 0,
+		    		y = self.waveformHeight,
+		    		width = params.windowWidth or 1280,
+		    		height = params.markerPaneHeight or 64,
+		    		soundView = self.waveformPane,
+		    		onMarkerChanged = function()
+		    		end,
+		    	}
+		    	
+		    	-- Create info pane
+		    	self.infoPane = require("tools/soundGraph/infoPane"):create {
+		    		x = 0,
+		    		y = self.waveformHeight + (params.markerPaneHeight or 64),
+		    		width = params.windowWidth or 1280,
+		    		height = params.infoPaneHeight or 200,
+		    		markerPane = self.markerPane,
+		    		onPositionChanged = function()
+		    			self:refreshView()
+		    		end,
+		    	}
+		    	
+		    	return self
 		    end,
 		}
+		
+		return soundView:init()
 	end,
 }
