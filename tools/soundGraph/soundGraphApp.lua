@@ -49,6 +49,9 @@ local SOUND_LIST = require("tools/soundGraph/soundList"):create {
 		-- Reset progress bar before loading
 		getProgressBar():refresh()
 		
+		-- Reset sound object to start position
+		soundObject.audioSource:seek(0, "seconds")
+		
 		SOUND_OBJECT = soundObject
 		print("Analysis coroutine created")
 		SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
@@ -80,8 +83,8 @@ function love.update(dt)
             local progress = SOUND_VIEW:getProgress()
             setProgressBarText(string.format("Loading Sound Data... %.0f%%", progress * 100))
         else
-            -- Update panes with sound model once analysis is complete
-            if SOUND_VIEW.soundModel and not INFO_PANE.soundModel then
+            -- Update panes with sound model if it has changed
+            if SOUND_VIEW.soundModel and INFO_PANE.soundModel ~= SOUND_VIEW.soundModel then
                 INFO_PANE:setSoundModel(SOUND_VIEW.soundModel)
                 MARKER_PANE:setSoundModel(SOUND_VIEW.soundModel)
             end
@@ -110,7 +113,13 @@ function love.mousepressed(mx, my)
         handled = MARKER_PANE:handleMousePressed(mx, my)
     end
     if not handled and SOUND_VIEW and SOUND_OBJECT then
-        print(SOUND_VIEW:getSampleXFromMouseX())
+        -- Get sample position from mouse, constrained by start marker
+        local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
+        local startMarkerSample = MARKER_PANE:getStartMarkerSample()
+        local constrainedSample = math.max(samplePosition, startMarkerSample)
+        
+        print("Playing from sample: " .. constrainedSample)
+        SOUND_OBJECT:playFromSample(constrainedSample)
     end
 end
 
@@ -125,11 +134,17 @@ function love.keypressed(key)
         if SOUND_OBJECT:isPlaying() then
             SOUND_OBJECT:pause()
         else
+            -- Get sample position from mouse, constrained by start marker
             local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
-            SOUND_OBJECT:playFromSample(samplePosition)
+            local startMarkerSample = MARKER_PANE:getStartMarkerSample()
+            local constrainedSample = math.max(samplePosition, startMarkerSample)
+            SOUND_OBJECT:playFromSample(constrainedSample)
         end
     elseif key == "shiftleft" and SOUND_OBJECT then
-        SOUND_OBJECT:jumpToBeginning()
+        -- Jump to start marker position, not beginning
+        local startMarkerSample = MARKER_PANE:getStartMarkerSample()
+        SOUND_OBJECT:playFromSample(startMarkerSample)
+        SOUND_OBJECT:pause()
         SOUND_VIEW:refreshView()
     elseif key == "shiftright" and SOUND_OBJECT then
         SOUND_OBJECT:jumpToEnd()
