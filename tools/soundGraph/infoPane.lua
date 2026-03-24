@@ -137,7 +137,11 @@ return {
 			end,
 			
 			update = function(self, dt)
-				-- Future: could add animations or other updates here
+				-- Handle thumb dragging
+				if self.timelineScrubber and self.timelineScrubber.isDragging then
+					local mx, my = love.mouse.getPosition()
+					self:handleMouseDragged(mx, my)
+				end
 			end,
 		}):init()
 	end,
