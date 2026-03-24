@@ -89,10 +89,7 @@ function love.keypressed(key)
             SOUND_OBJECT:playFromSample(constrainedSample)
         end
     elseif key == "shiftleft" and SOUND_OBJECT then
-        -- Jump to start marker position, not beginning
-        local startMarkerSample = SOUND_VIEW:getStartMarkerSample()
-        SOUND_OBJECT:playFromSample(startMarkerSample)
-        SOUND_OBJECT:pause()
+        SOUND_OBJECT:jumpToBeginning()
         SOUND_VIEW:refreshView()
     elseif key == "shiftright" and SOUND_OBJECT then
         SOUND_OBJECT:jumpToEnd()
