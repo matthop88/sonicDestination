@@ -86,6 +86,15 @@ return {
 				return totalSample
 			end,
 			
+			getStartMarkerProgress = function(self)
+				if not self.soundModel then return 0 end
+				
+				local sampleOffset = self.startMarkerImageX - (self.soundView and self.soundView.marginLeft or 100)
+				local totalSamples = self.soundModel:getSampleCount()
+				
+				return totalSamples > 0 and (sampleOffset / totalSamples) or 0
+			end,
+			
 			isMouseOverStartMarker = function(self, mx, my)
 				if not self.soundView or not self.startMarkerImageX then return false end
 				
