@@ -1,7 +1,14 @@
 return {
-	create = function(self, soundFilePath)
+	create = function(self, soundInfo)
+		local basePath = soundInfo.isMusic and "game/resources/music/" or "game/resources/sounds/"
+		local soundPath = basePath .. soundInfo.filename
+		
 		return {
-			soundData = love.sound.newSoundData(soundFilePath),
+			soundInfo = soundInfo,
+			soundPath = soundPath,
+			volume = soundInfo.volume or 0.5,
+			startPoint = soundInfo.startPoint or 0,
+			soundData = love.sound.newSoundData(soundPath),
 			audioSource = nil,
 
 			init = function(self)
@@ -32,7 +39,8 @@ return {
 			end,
 			
 			jumpToBeginning = function(self)
-				self.audioSource:seek(0, "seconds")
+				local timeInSeconds = self.startPoint / self:getSampleRate()
+				self.audioSource:seek(timeInSeconds, "seconds")
 			end,
 			
 			jumpToEnd = function(self)
