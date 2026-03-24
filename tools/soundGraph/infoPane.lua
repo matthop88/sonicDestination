@@ -61,6 +61,7 @@ return {
 				
 				love.graphics.setColor(1, 1, 1)
 				local textX = self.x + 20
+				local textX2 = self.x + 400  -- Second column
 				local textY = self.y + 20
 				local lineHeight = 25
 				
@@ -68,6 +69,7 @@ return {
 				textY = textY + lineHeight
 				
 				self:drawChannelCount(textX, textY)
+				self:drawStartPoint(textX2, textY)
 				textY = textY + lineHeight
 				
 				self:drawTotalSamples(textX, textY)
@@ -88,6 +90,11 @@ return {
 				local channels = self.soundModel:getChannelCount()
 				local channelText = channels == 1 and "Mono" or (channels == 2 and "Stereo" or channels .. " Channels")
 				love.graphics.print("Channels: " .. channelText, textX, textY)
+			end,
+			
+			drawStartPoint = function(self, textX, textY)
+				local startPoint = self.soundObject.startPoint or 0
+				love.graphics.print("Start Point: " .. startPoint, textX, textY)
 			end,
 			
 			drawTotalSamples = function(self, textX, textY)
