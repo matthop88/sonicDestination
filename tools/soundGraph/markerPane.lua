@@ -25,13 +25,23 @@ return {
 			
 			setSoundObject = function(self, soundObject)
 				self.soundObject = soundObject
+				-- Initialize marker position from soundObject's startPoint
+				if soundObject and soundObject.startPoint and self.soundView then
+					-- Convert startPoint from total samples to per-channel samples
+					local channelCount = soundObject:getChannelCount()
+					local perChannelStartPoint = soundObject.startPoint / channelCount
+					self.startMarkerImageX = self.soundView.marginLeft + perChannelStartPoint
+				end
 			end,
 			
 			setSoundModel = function(self, soundModel)
 				self.soundModel = soundModel
-				-- Reset marker to start of waveform
-				if self.soundView then
-					self.startMarkerImageX = self.soundView.marginLeft
+				-- Initialize marker from soundObject's startPoint (don't reset to 0)
+				if self.soundObject and self.soundView then
+					-- Convert startPoint from total samples to per-channel samples
+					local channelCount = self.soundObject:getChannelCount()
+					local perChannelStartPoint = (self.soundObject.startPoint or 0) / channelCount
+					self.startMarkerImageX = self.soundView.marginLeft + perChannelStartPoint
 				end
 			end,
 			
@@ -129,6 +139,13 @@ return {
 				local maxImageX = marginLeft + sampleCount
 				
 				self.startMarkerImageX = math.max(marginLeft, math.min(imageX, maxImageX))
+				
+				-- Update soundObject's startPoint (convert from per-channel to total samples)
+				if self.soundObject then
+					local perChannelSample = math.floor(self.startMarkerImageX - marginLeft)
+					local channelCount = self.soundObject:getChannelCount()
+					self.soundObject.startPoint = perChannelSample * channelCount
+				end
 				
 				if self.onMarkerChanged then
 					self.onMarkerChanged()
