@@ -31,6 +31,7 @@ local INFO_PANE = require("tools/soundGraph/infoPane"):create {
 	y = WAVEFORM_HEIGHT + MARKER_PANE_HEIGHT,
 	width = WINDOW_WIDTH,
 	height = INFO_PANE_HEIGHT,
+	markerPane = MARKER_PANE,
 	onPositionChanged = function()
 		if SOUND_VIEW then
 			SOUND_VIEW:refreshView()
