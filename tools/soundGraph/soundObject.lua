@@ -39,7 +39,7 @@ return {
 			end,
 			
 			jumpToBeginning = function(self)
-				local timeInSeconds = self.startPoint / self:getSampleRate()
+				local timeInSeconds = self.startPoint / (self:getSampleRate() * self:getChannelCount())
 				self.audioSource:seek(timeInSeconds, "seconds")
 			end,
 			
