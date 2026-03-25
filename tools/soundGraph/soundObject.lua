@@ -14,13 +14,25 @@ return {
 
 			init = function(self)
 				self.audioSource = love.audio.newSource(self.soundData)
-				-- Set endPoint in total sample space (multiply by channel count)
-				self.endPoint = soundInfo.endPoint or ((self:getSampleCount() - 1) * self:getChannelCount())
+				-- Cache duration calculation
+				self.duration = self:getPerChannelSampleCount() / self:getSampleRate()
+				-- Set endPoint in total sample space
+				self.endPoint = soundInfo.endPoint or (self:getSampleCount() - 1)
 				return self
 			end,
 
-			getSampleCount = function(self)
+			getPerChannelSampleCount = function(self)
+				-- LOVE2D's soundData:getSampleCount() is poorly named - it returns the number
+				-- of samples per channel (frames), not the total number of interleaved samples
 				return self.soundData:getSampleCount()
+			end,
+			
+			getSampleCount = function(self)
+				return self:getPerChannelSampleCount() * self:getChannelCount()
+			end,
+			
+			getDuration = function(self)
+				return self.duration
 			end,
 			
 			getChannelCount = function(self)
@@ -81,6 +93,22 @@ return {
 				local timeInSeconds = self.endPoint / (self:getSampleRate() * self:getChannelCount())
 				self.audioSource:seek(timeInSeconds, "seconds")
 				self:pause()
+			end,
+			
+			getStartPoint = function(self)
+				return self.startPoint
+			end,
+			
+			setStartPoint = function(self, value)
+				self.startPoint = value
+			end,
+			
+			getEndPoint = function(self)
+				return self.endPoint
+			end,
+			
+			setEndPoint = function(self, value)
+				self.endPoint = value
 			end,
 		}
 	end,
