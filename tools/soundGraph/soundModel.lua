@@ -13,7 +13,7 @@ return {
 			analyzeData = function(self)
 				if not self.soundObject then return end
 				
-				local NUM_SAMPLES = self.soundObject:getSampleCount()
+				local NUM_SAMPLES = self.soundObject:getPerChannelSampleCount()
 				local CHANNEL_COUNT = self.soundObject:getChannelCount()
 				local TOTAL_SAMPLES = NUM_SAMPLES * CHANNEL_COUNT
 				local CHUNK_SIZE = 100000
