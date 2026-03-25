@@ -32,8 +32,8 @@ return {
 				if soundObject and self.soundView then
 					-- Convert from total samples to per-channel samples (for image coordinates)
 					local channelCount = soundObject:getChannelCount()
-					local perChannelStartPoint = soundObject.startPoint / channelCount
-					local perChannelEndPoint = soundObject.endPoint / channelCount
+					local perChannelStartPoint = soundObject:getStartPoint() / channelCount
+					local perChannelEndPoint = soundObject:getEndPoint() / channelCount
 					
 					self.startMarkerImageX = self.soundView.marginLeft + perChannelStartPoint
 					self.endMarkerImageX = self.soundView.marginLeft + perChannelEndPoint
@@ -46,8 +46,8 @@ return {
 				if self.soundObject and self.soundView then
 					-- Convert from total samples to per-channel samples (for image coordinates)
 					local channelCount = self.soundObject:getChannelCount()
-					local perChannelStartPoint = (self.soundObject.startPoint or 0) / channelCount
-					local perChannelEndPoint = (self.soundObject.endPoint or 0) / channelCount
+					local perChannelStartPoint = (self.soundObject:getStartPoint() or 0) / channelCount
+					local perChannelEndPoint = (self.soundObject:getEndPoint() or 0) / channelCount
 					
 					self.startMarkerImageX = self.soundView.marginLeft + perChannelStartPoint
 					self.endMarkerImageX = self.soundView.marginLeft + perChannelEndPoint
@@ -217,7 +217,7 @@ return {
 					if self.soundObject then
 						local perChannelSample = math.floor(self.startMarkerImageX - marginLeft)
 						local channelCount = self.soundObject:getChannelCount()
-						self.soundObject.startPoint = perChannelSample * channelCount
+						self.soundObject:setStartPoint(perChannelSample * channelCount)
 					end
 					
 					if self.onMarkerChanged then
@@ -230,7 +230,7 @@ return {
 					if self.soundObject then
 						local perChannelSample = math.floor(self.endMarkerImageX - marginLeft)
 						local channelCount = self.soundObject:getChannelCount()
-						self.soundObject.endPoint = perChannelSample * channelCount
+						self.soundObject:setEndPoint(perChannelSample * channelCount)
 					end
 					
 					if self.onMarkerChanged then
