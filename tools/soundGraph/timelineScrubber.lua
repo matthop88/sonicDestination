@@ -11,7 +11,6 @@ return {
 			soundModel = nil,
 			isDragging = false,
 			onPositionChanged = params.onPositionChanged,
-			markerPane = params.markerPane,
 			lineStartX = nil,
 			lineEndX = nil,
 			lineWidth = nil,
@@ -48,9 +47,9 @@ return {
 			end,
 			
 			drawStartMarkerIndicator = function(self)
-				if not self.markerPane then return end
+				if not self.soundObject then return end
 				
-				local progress = self.markerPane:getStartMarkerProgress()
+				local progress = self.soundObject:getStartPoint() / self.soundObject:getPerChannelSampleCount()
 				local markerX = self.lineStartX + (progress * self.lineWidth)
 				local markerSize = 6  -- Smaller than the main marker
 				
@@ -63,9 +62,9 @@ return {
 			end,
 			
 			drawEndMarkerIndicator = function(self)
-				if not self.markerPane then return end
+				if not self.soundObject then return end
 				
-				local progress = self.markerPane:getEndMarkerProgress()
+				local progress = self.soundObject:getEndPoint() / self.soundObject:getPerChannelSampleCount()
 				local markerX = self.lineStartX + (progress * self.lineWidth)
 				local markerSize = 6  -- Smaller than the main marker
 				
@@ -90,7 +89,7 @@ return {
 			getThumbPosition = function(self)
 				if not self.soundObject or not self.soundModel then return 0 end
 				
-				local duration = self.soundObject:getSampleCount() / self.soundObject:getSampleRate()
+				local duration = self.soundObject:getDuration()
 				local currentTime = self.soundObject.audioSource:tell("seconds")
 				local progress = duration > 0 and (currentTime / duration) or 0
 				
@@ -129,13 +128,21 @@ return {
 				local progress = (clampedX - self.lineStartX) / self.lineWidth
 				
 				-- Set audio position
-				local duration = self.soundObject:getSampleCount() / self.soundObject:getSampleRate()
+				local duration = self.soundObject:getDuration()
 				local newTime = progress * duration
 				self.soundObject.audioSource:seek(newTime, "seconds")
 				
 				-- Notify that position changed
 				if self.onPositionChanged then
 					self.onPositionChanged()
+				end
+			end,
+			
+			update = function(self, dt)
+				-- Handle thumb dragging
+				if self.isDragging then
+					local mx, my = love.mouse.getPosition()
+					self:handleMouseDragged(mx, my)
 				end
 			end,
 		}):init()
