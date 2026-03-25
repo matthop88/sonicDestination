@@ -73,6 +73,7 @@ return {
 				textY = textY + lineHeight
 				
 				self:drawTotalSamples(textX, textY)
+				self:drawEndPoint(textX2, textY)
 				textY = textY + lineHeight
 				
 				self:drawDuration(textX, textY)
@@ -97,8 +98,14 @@ return {
 				love.graphics.print("Start Point: " .. startPoint, textX, textY)
 			end,
 			
+			drawEndPoint = function(self, textX, textY)
+				local endPoint = self.soundObject.endPoint or 0
+				love.graphics.print("End Point: " .. endPoint, textX, textY)
+			end,
+			
 			drawTotalSamples = function(self, textX, textY)
-				local totalSamples = self.soundObject:getSampleCount()
+				local perChannelSamples = self.soundObject:getSampleCount()
+				local totalSamples = perChannelSamples * self.soundObject:getChannelCount()
 				love.graphics.print("Total Samples: " .. totalSamples, textX, textY)
 			end,
 			
