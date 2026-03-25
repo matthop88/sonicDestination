@@ -48,6 +48,13 @@ function love.draw()
 end
 
 function love.update(dt)
+    -- Check if sound has reached endpoint
+    if SOUND_OBJECT then
+        if SOUND_OBJECT:checkEndpointReached() then
+            SOUND_OBJECT:jumpToEnd()
+        end
+    end
+    
     SOUND_LIST:update(dt)
     SOUND_VIEW:update(dt)
     if not SOUND_VIEW:isAnalysisComplete() then
