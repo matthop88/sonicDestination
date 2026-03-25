@@ -13,41 +13,51 @@ return {
 			laneHeight = (params.height or 64) / 2,
 			markerSize = 12,
 			startMarkerImageX = nil,  -- Position in image coordinates
+			endMarkerImageX = nil,    -- Position in image coordinates
 			isDraggingStart = false,
+			isDraggingEnd = false,
 			onMarkerChanged = params.onMarkerChanged,
 			
 			init = function(self)
 				self.topLaneY = self.y + self.laneHeight / 2
 				self.bottomLaneY = self.y + self.laneHeight + self.laneHeight / 2
 				self.startMarkerImageX = (self.soundView and self.soundView.marginLeft) or 100
+				self.endMarkerImageX = self.startMarkerImageX  -- Will be updated when sound loads
 				return self
 			end,
 			
 			setSoundObject = function(self, soundObject)
 				self.soundObject = soundObject
-				-- Initialize marker position from soundObject's startPoint
-				if soundObject and soundObject.startPoint and self.soundView then
-					-- Convert startPoint from total samples to per-channel samples
+				-- Initialize marker positions from soundObject's startPoint and endPoint
+				if soundObject and self.soundView then
+					-- Convert from total samples to per-channel samples (for image coordinates)
 					local channelCount = soundObject:getChannelCount()
 					local perChannelStartPoint = soundObject.startPoint / channelCount
+					local perChannelEndPoint = soundObject.endPoint / channelCount
+					
 					self.startMarkerImageX = self.soundView.marginLeft + perChannelStartPoint
+					self.endMarkerImageX = self.soundView.marginLeft + perChannelEndPoint
 				end
 			end,
 			
 			setSoundModel = function(self, soundModel)
 				self.soundModel = soundModel
-				-- Initialize marker from soundObject's startPoint (don't reset to 0)
+				-- Initialize markers from soundObject's startPoint and endPoint  
 				if self.soundObject and self.soundView then
-					-- Convert startPoint from total samples to per-channel samples
+					-- Convert from total samples to per-channel samples (for image coordinates)
 					local channelCount = self.soundObject:getChannelCount()
 					local perChannelStartPoint = (self.soundObject.startPoint or 0) / channelCount
+					local perChannelEndPoint = (self.soundObject.endPoint or 0) / channelCount
+					
 					self.startMarkerImageX = self.soundView.marginLeft + perChannelStartPoint
+					self.endMarkerImageX = self.soundView.marginLeft + perChannelEndPoint
 				end
 			end,
 			
 			draw = function(self)
 				self:drawBackground()
 				self:drawStartMarker()
+				self:drawEndMarker()
 			end,
 			
 			drawBackground = function(self)
@@ -59,17 +69,35 @@ return {
 				if not self.soundView or not self.startMarkerImageX then return end
 				
 				-- Convert image position to screen position
-				local screenX, _ = self.soundView:imageToScreenCoordinates(self.startMarkerImageX, 0)
+				local markerScreenX, _ = self.soundView:imageToScreenCoordinates(self.startMarkerImageX, 0)
 				
 				love.graphics.setColor(1, 0.5, 0)  -- Orange
 				
-				-- Draw right-pointing triangle (play button shape)
+				-- Draw right-pointing triangle with tip at exact marker position
 				local centerY = self.topLaneY
 				local size = self.markerSize
 				love.graphics.polygon("fill",
-					screenX, centerY - size,  -- Top point
-					screenX + size, centerY,  -- Right point
-					screenX, centerY + size   -- Bottom point
+					markerScreenX - size, centerY - size,  -- Top point
+					markerScreenX, centerY,                -- Right point (tip at marker)
+					markerScreenX - size, centerY + size   -- Bottom point
+				)
+			end,
+			
+			drawEndMarker = function(self)
+				if not self.soundView or not self.endMarkerImageX then return end
+				
+				-- Convert image position to screen position
+				local markerScreenX, _ = self.soundView:imageToScreenCoordinates(self.endMarkerImageX, 0)
+				
+				love.graphics.setColor(0.5, 0, 1)  -- Purple
+				
+				-- Draw left-pointing triangle with tip at exact marker position
+				local centerY = self.topLaneY
+				local size = self.markerSize
+				love.graphics.polygon("fill",
+					markerScreenX + size, centerY - size,  -- Top point
+					markerScreenX, centerY,                -- Left point (tip at marker)
+					markerScreenX + size, centerY + size   -- Bottom point
 				)
 			end,
 			
@@ -105,14 +133,53 @@ return {
 				return totalSamples > 0 and (sampleOffset / totalSamples) or 0
 			end,
 			
+			getEndMarkerSample = function(self)
+				if not self.soundView or not self.endMarkerImageX or not self.soundModel then return 0 end
+				
+				local marginLeft = self.soundView.marginLeft or 100
+				local sampleOffset = math.floor(self.endMarkerImageX - marginLeft)
+				
+				-- Convert per-channel sample to total sample space
+				local totalSample = self.soundModel:totalSampleFromPerChannelSample(math.max(0, sampleOffset))
+				
+				return totalSample
+			end,
+			
+			getEndMarkerProgress = function(self)
+				if not self.soundModel then return 0 end
+				
+				local sampleOffset = self.endMarkerImageX - (self.soundView and self.soundView.marginLeft or 100)
+				local totalSamples = self.soundModel:getSampleCount()
+				
+				return totalSamples > 0 and (sampleOffset / totalSamples) or 0
+			end,
+			
 			isMouseOverStartMarker = function(self, mx, my)
 				if not self.soundView or not self.startMarkerImageX then return false end
 				
 				local screenX = self:getStartMarkerScreenX()
 				local size = self.markerSize
 				local centerY = self.topLaneY
+				-- Tip is now at screenX, base extends from screenX - size
+				return mx >= screenX - size and mx <= screenX
+					and my >= centerY - size and my <= centerY + size
+			end,
+			
+			isMouseOverEndMarker = function(self, mx, my)
+				if not self.soundView or not self.endMarkerImageX then return false end
+				
+				local screenX = self:getEndMarkerScreenX()
+				local size = self.markerSize
+				local centerY = self.topLaneY
+				-- Tip is now at screenX, base extends to screenX + size
 				return mx >= screenX and mx <= screenX + size
 					and my >= centerY - size and my <= centerY + size
+			end,
+			
+			getEndMarkerScreenX = function(self)
+				if not self.soundView or not self.endMarkerImageX then return 0 end
+				local screenX, _ = self.soundView:imageToScreenCoordinates(self.endMarkerImageX, 0)
+				return screenX
 			end,
 			
 			handleMousePressed = function(self, mx, my)
@@ -120,15 +187,20 @@ return {
 					self.isDraggingStart = true
 					return true
 				end
+				if self:isMouseOverEndMarker(mx, my) then
+					self.isDraggingEnd = true
+					return true
+				end
 				return false
 			end,
 			
 			handleMouseReleased = function(self)
 				self.isDraggingStart = false
+				self.isDraggingEnd = false
 			end,
 			
 			handleMouseDragged = function(self, mx, my)
-				if not self.isDraggingStart or not self.soundView then return end
+				if not self.soundView then return end
 				
 				-- Convert screen position to image position
 				local imageX, _ = self.soundView:screenToImageCoordinates(mx, my)
@@ -138,23 +210,38 @@ return {
 				local sampleCount = self.soundModel and self.soundModel:getSampleCount() or 0
 				local maxImageX = marginLeft + sampleCount
 				
-				self.startMarkerImageX = math.max(marginLeft, math.min(imageX, maxImageX))
-				
-				-- Update soundObject's startPoint (convert from per-channel to total samples)
-				if self.soundObject then
-					local perChannelSample = math.floor(self.startMarkerImageX - marginLeft)
-					local channelCount = self.soundObject:getChannelCount()
-					self.soundObject.startPoint = perChannelSample * channelCount
-				end
-				
-				if self.onMarkerChanged then
-					self.onMarkerChanged()
+				if self.isDraggingStart then
+					self.startMarkerImageX = math.max(marginLeft, math.min(imageX, maxImageX))
+					
+					-- Update soundObject's startPoint (convert from per-channel to total samples)
+					if self.soundObject then
+						local perChannelSample = math.floor(self.startMarkerImageX - marginLeft)
+						local channelCount = self.soundObject:getChannelCount()
+						self.soundObject.startPoint = perChannelSample * channelCount
+					end
+					
+					if self.onMarkerChanged then
+						self.onMarkerChanged()
+					end
+				elseif self.isDraggingEnd then
+					self.endMarkerImageX = math.max(marginLeft, math.min(imageX, maxImageX))
+					
+					-- Update soundObject's endPoint (convert from per-channel to total samples)
+					if self.soundObject then
+						local perChannelSample = math.floor(self.endMarkerImageX - marginLeft)
+						local channelCount = self.soundObject:getChannelCount()
+						self.soundObject.endPoint = perChannelSample * channelCount
+					end
+					
+					if self.onMarkerChanged then
+						self.onMarkerChanged()
+					end
 				end
 			end,
 			
 			update = function(self, dt)
 				-- Handle marker dragging
-				if self.isDraggingStart then
+				if self.isDraggingStart or self.isDraggingEnd then
 					local mx, my = love.mouse.getPosition()
 					self:handleMouseDragged(mx, my)
 				end
