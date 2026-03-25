@@ -8,11 +8,14 @@ return {
 			soundPath = soundPath,
 			volume = soundInfo.volume or 0.5,
 			startPoint = soundInfo.startPoint or 0,
+			endPoint = nil,  -- Set in init() to default to last sample
 			soundData = love.sound.newSoundData(soundPath),
 			audioSource = nil,
 
 			init = function(self)
 				self.audioSource = love.audio.newSource(self.soundData)
+				-- Set endPoint in total sample space (multiply by channel count)
+				self.endPoint = soundInfo.endPoint or ((self:getSampleCount() - 1) * self:getChannelCount())
 				return self
 			end,
 
@@ -44,9 +47,9 @@ return {
 			end,
 			
 			jumpToEnd = function(self)
-				local lastSample = self:getSampleCount() - 1
-				local timeInSeconds = lastSample / self:getSampleRate()
+				local timeInSeconds = self.endPoint / (self:getSampleRate() * self:getChannelCount())
 				self.audioSource:seek(timeInSeconds, "seconds")
+				self:pause()
 			end,
 
 			getCurrentSample = function(self)
@@ -64,6 +67,20 @@ return {
 
 			isPlaying = function(self)
 				return self.audioSource:isPlaying()
+			end,
+			
+			checkEndpointReached = function(self)
+				if self:isPlaying() then
+					local currentSample = self:getCurrentSample()
+					return currentSample >= self.endPoint
+				end
+				return false
+			end,
+			
+			jumpToEnd = function(self)
+				local timeInSeconds = self.endPoint / (self:getSampleRate() * self:getChannelCount())
+				self.audioSource:seek(timeInSeconds, "seconds")
+				self:pause()
 			end,
 		}
 	end,
