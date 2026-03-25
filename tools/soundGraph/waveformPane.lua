@@ -73,11 +73,25 @@ return {
 			end,
 			
 			drawChannel = function(self, channelNumber, startSample, endSample, sampleStep)
-				love.graphics.setColor(1, 1, 1)
+				if not self.soundObject then return end
+				
+				-- Get start and end points in per-channel sample space
+				local channelCount = self.soundObject:getChannelCount()
+				local startPointPerChannel = self.soundObject.startPoint / channelCount
+				local endPointPerChannel = self.soundObject.endPoint / channelCount
+				
 				for k = startSample, endSample, sampleStep do
 					local sample1 = self.soundModel:getSample(k, channelNumber)
 					local sample2 = self.soundModel:getSample(k + 1, channelNumber)
 					if sample1 and sample2 then
+						-- Check if we're in the active range
+						local samplePos = k - 1  -- Convert to 0-based for comparison
+						if samplePos >= startPointPerChannel and samplePos <= endPointPerChannel then
+							love.graphics.setColor(1, 1, 1)  -- White for active range
+						else
+							love.graphics.setColor(0.5, 0.5, 0.5)  -- Gray for inactive range
+						end
+						
 						local imageX1 = self.marginLeft + k - 1
 						local imageX2 = self.marginLeft + k
 						local screenX1, _ = self:imageToScreenCoordinates(imageX1, 0)
