@@ -77,8 +77,8 @@ return {
 				
 				-- Get start and end points in per-channel sample space
 				local channelCount = self.soundObject:getChannelCount()
-				local startPointPerChannel = self.soundObject.startPoint / channelCount
-				local endPointPerChannel = self.soundObject.endPoint / channelCount
+				local startPointPerChannel = self.soundObject:getStartPoint() / channelCount
+				local endPointPerChannel = self.soundObject:getEndPoint() / channelCount
 				
 				for k = startSample, endSample, sampleStep do
 					local sample1 = self.soundModel:getSample(k, channelNumber)
