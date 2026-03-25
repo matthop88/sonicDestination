@@ -5,7 +5,7 @@ return {
 		local MARKER_PANE_HEIGHT = params.markerPaneHeight or 64
 		local INFO_PANE_HEIGHT = params.infoPaneHeight or 200
 		
-		local soundView = {
+		return ({
 			soundObject = params.soundObject,
 			soundModel = nil,
 			samplingRate = params.samplingRate or 64,
@@ -14,6 +14,7 @@ return {
 			waveformPane = nil,
 			markerPane = nil,
 			infoPane = nil,
+			timelineScrubber = nil,
 
 			refresh = function(self, soundObject, samplingRate, marginLeft)
 				self.soundObject = soundObject
@@ -31,6 +32,9 @@ return {
 				end
 				if self.infoPane then
 					self.infoPane:setSoundObject(soundObject)
+				end
+				if self.timelineScrubber then
+					self.timelineScrubber:setSoundObject(soundObject)
 				end
 			end,
 			
@@ -54,6 +58,9 @@ return {
 				if self.infoPane then
 					self.infoPane:draw()
 				end
+				if self.timelineScrubber then
+					self.timelineScrubber:draw()
+				end
 			end,
 			
 			update = function(self, dt)
@@ -68,17 +75,20 @@ return {
 							self.waveformPane:initializeScale(minOptimumScale)
 						end
 						
-						-- Update child components with sound model after analysis completes
-						if self.markerPane and self.markerPane.soundModel ~= self.soundModel then
-							self.markerPane:setSoundModel(self.soundModel)
-						end
-						if self.infoPane and self.infoPane.soundModel ~= self.soundModel then
-							self.infoPane:setSoundModel(self.soundModel)
-						end
-						if self.waveformPane and self.waveformPane.soundModel ~= self.soundModel then
-							self.waveformPane:setSoundModel(self.soundModel)
-						end
+					-- Update child components with sound model after analysis completes
+					if self.markerPane and self.markerPane.soundModel ~= self.soundModel then
+						self.markerPane:setSoundModel(self.soundModel)
 					end
+					if self.infoPane and self.infoPane.soundModel ~= self.soundModel then
+						self.infoPane:setSoundModel(self.soundModel)
+					end
+					if self.waveformPane and self.waveformPane.soundModel ~= self.soundModel then
+						self.waveformPane:setSoundModel(self.soundModel)
+					end
+					if self.timelineScrubber and self.timelineScrubber.soundModel ~= self.soundModel then
+						self.timelineScrubber:setSoundModel(self.soundModel)
+					end
+				end
 				end
 				
 				-- Update current sample
@@ -94,8 +104,8 @@ return {
 				if self.markerPane then
 					self.markerPane:update(dt)
 				end
-				if self.infoPane then
-					self.infoPane:update(dt)
+				if self.timelineScrubber then
+					self.timelineScrubber:update(dt)
 				end
 			end,
 			
@@ -115,29 +125,9 @@ return {
 			getSampleXFromMouseX = function(self)
 				return self.waveformPane and self.waveformPane:getSampleXFromMouseX() or 0
 			end,
-			
-			moveImage = function(self, deltaX, deltaY)
-				if self.waveformPane then
-					self.waveformPane:moveImage(deltaX, deltaY)
-				end
-			end,
-			
-			adjustScaleGeometrically = function(self, deltaScale)
-				if self.waveformPane then
-					self.waveformPane:adjustScaleGeometrically(deltaScale)
-				end
-			end,
-			
-			getLeftScreenBound = function(self)
-				return self.waveformPane and self.waveformPane:getLeftScreenBound() or 0
-			end,
-			
-			getRightScreenBound = function(self)
-				return self.waveformPane and self.waveformPane:getRightScreenBound() or 0
-			end,
 		    
 		    handleMousePressed = function(self, mx, my)
-		    	if self.infoPane and self.infoPane:handleMousePressed(mx, my) then
+		    	if self.timelineScrubber and self.timelineScrubber:handleMousePressed(mx, my) then
 		    		return true
 		    	end
 		    	if self.markerPane and self.markerPane:handleMousePressed(mx, my) then
@@ -147,8 +137,8 @@ return {
 		    end,
 		    
 		    handleMouseReleased = function(self)
-		    	if self.infoPane then
-		    		self.infoPane:handleMouseReleased()
+		    	if self.timelineScrubber then
+		    		self.timelineScrubber:handleMouseReleased()
 		    	end
 		    	if self.markerPane then
 		    		self.markerPane:handleMouseReleased()
@@ -156,7 +146,7 @@ return {
 		    end,
 		    
 		    getStartMarkerSample = function(self)
-		    	return self.markerPane and self.markerPane:getStartMarkerSample() or 0
+		    	return self.soundObject and self.soundObject:getStartPoint() or 0
 		    end,
 		    
 		    init = function(self)
@@ -187,7 +177,17 @@ return {
 		    		y = self.waveformHeight + (params.markerPaneHeight or 64),
 		    		width = params.windowWidth or 1280,
 		    		height = params.infoPaneHeight or 200,
-		    		markerPane = self.markerPane,
+		    	}
+		    	
+		    	-- Create timeline scrubber
+		    	local infoPaneY = self.waveformHeight + (params.markerPaneHeight or 64)
+		    	self.timelineScrubber = require("tools/soundGraph/timelineScrubber"):create {
+		    		x = 0,
+		    		y = infoPaneY + 170,
+		    		width = params.windowWidth or 1280,
+		    		margin = 40,
+		    		thumbWidth = 12,
+		    		thumbHeight = 20,
 		    		onPositionChanged = function()
 		    			self:refreshView()
 		    		end,
@@ -195,8 +195,6 @@ return {
 		    	
 		    	return self
 		    end,
-		}
-		
-		return soundView:init()
+		}):init()
 	end,
 }
