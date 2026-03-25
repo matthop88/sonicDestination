@@ -1,6 +1,6 @@
 return {
 	create = function(self, params)
-		return ({
+		return {
 			x = params.x or 0,
 			y = params.y or 512,
 			width = params.width or 1280,
@@ -8,32 +8,13 @@ return {
 			soundObject = nil,
 			soundModel = nil,
 			font = love.graphics.newFont(16),
-			timelineScrubber = nil,
-			onPositionChanged = params.onPositionChanged,
-			markerPane = params.markerPane,
-			
-			init = function(self)
-				self.timelineScrubber = require("tools/soundGraph/timelineScrubber"):create {
-					x = self.x,
-					y = self.y + 170,
-					width = self.width,
-					margin = 40,
-					thumbWidth = 12,
-					thumbHeight = 20,
-					onPositionChanged = self.onPositionChanged,
-					markerPane = self.markerPane,
-				}
-				return self
-			end,
 			
 			setSoundObject = function(self, soundObject)
 				self.soundObject = soundObject
-				self.timelineScrubber:setSoundObject(soundObject)
 			end,
 			
 			setSoundModel = function(self, soundModel)
 				self.soundModel = soundModel
-				self.timelineScrubber:setSoundModel(soundModel)
 			end,
 			
 			draw = function(self)
@@ -41,7 +22,6 @@ return {
 				self:drawBackground()
 				self:drawBorder()
 				self:drawInfoText()
-				self.timelineScrubber:draw()
 			end,
 			
 			drawBackground = function(self)
@@ -94,26 +74,30 @@ return {
 			end,
 			
 			drawStartPoint = function(self, textX, textY)
-				local startPoint = self.soundObject.startPoint or 0
+				local startPoint = self.soundObject:getStartPoint()
 				love.graphics.print("Start Point: " .. startPoint, textX, textY)
 			end,
 			
 			drawEndPoint = function(self, textX, textY)
-				local endPoint = self.soundObject.endPoint or 0
+				local endPoint = self.soundObject:getEndPoint()
 				love.graphics.print("End Point: " .. endPoint, textX, textY)
 			end,
 			
 			drawTotalSamples = function(self, textX, textY)
-				local perChannelSamples = self.soundObject:getSampleCount()
-				local totalSamples = perChannelSamples * self.soundObject:getChannelCount()
-				love.graphics.print("Total Samples: " .. totalSamples, textX, textY)
+				local startPoint = self.soundObject:getStartPoint()
+				local endPoint = self.soundObject:getEndPoint()
+				local activeSamples = endPoint - startPoint + 1
+				love.graphics.print("Total Samples: " .. activeSamples, textX, textY)
 			end,
 			
 			drawDuration = function(self, textX, textY)
+				local startPoint = self.soundObject:getStartPoint()
+				local endPoint = self.soundObject:getEndPoint()
+				local activeSamples = endPoint - startPoint + 1
 				local sampleRate = self.soundObject:getSampleRate()
-				local totalSamples = self.soundObject:getSampleCount()
-				local duration = totalSamples / sampleRate
-				love.graphics.print("Duration: " .. self:formatTime(duration), textX, textY)
+				local channelCount = self.soundObject:getChannelCount()
+				local activeDuration = activeSamples / (sampleRate * channelCount)
+				love.graphics.print("Duration: " .. self:formatTime(activeDuration), textX, textY)
 			end,
 			
 			drawCurrentPosition = function(self, textX, textY)
@@ -137,26 +121,6 @@ return {
 					return string.format("%d:%05.2f", minutes, seconds)
 				end
 			end,
-			
-			handleMousePressed = function(self, mx, my)
-				return self.timelineScrubber:handleMousePressed(mx, my)
-			end,
-			
-			handleMouseReleased = function(self)
-				self.timelineScrubber:handleMouseReleased()
-			end,
-			
-			handleMouseDragged = function(self, mx, my)
-				self.timelineScrubber:handleMouseDragged(mx, my)
-			end,
-			
-			update = function(self, dt)
-				-- Handle thumb dragging
-				if self.timelineScrubber and self.timelineScrubber.isDragging then
-					local mx, my = love.mouse.getPosition()
-					self:handleMouseDragged(mx, my)
-				end
-			end,
-		}):init()
+		}
 	end,
 }
