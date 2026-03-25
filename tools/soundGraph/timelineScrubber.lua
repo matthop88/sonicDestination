@@ -36,6 +36,7 @@ return {
 				
 				self:drawTimeline()
 				self:drawStartMarkerIndicator()
+				self:drawEndMarkerIndicator()
 				self:drawThumb()
 			end,
 			
@@ -55,9 +56,24 @@ return {
 				
 				love.graphics.setColor(1, 0.5, 0)  -- Orange
 				love.graphics.polygon("fill",
-					markerX, self.y - markerSize,           -- Top point
-					markerX + markerSize, self.y,           -- Right point
-					markerX, self.y + markerSize            -- Bottom point
+					markerX - markerSize, self.y - markerSize,  -- Top point
+					markerX, self.y,                            -- Right point (tip at marker)
+					markerX - markerSize, self.y + markerSize   -- Bottom point
+				)
+			end,
+			
+			drawEndMarkerIndicator = function(self)
+				if not self.markerPane then return end
+				
+				local progress = self.markerPane:getEndMarkerProgress()
+				local markerX = self.lineStartX + (progress * self.lineWidth)
+				local markerSize = 6  -- Smaller than the main marker
+				
+				love.graphics.setColor(0.5, 0, 1)  -- Purple
+				love.graphics.polygon("fill",
+					markerX + markerSize, self.y - markerSize,  -- Top point
+					markerX, self.y,                            -- Left point (tip at marker)
+					markerX + markerSize, self.y + markerSize   -- Bottom point
 				)
 			end,
 			
