@@ -5,9 +5,10 @@ local function createMarker(config)
 		imageX = config.initialImageX or 100,
 		isDragging = false,
 		color = config.color or {1, 1, 1},
-		direction = config.direction or "right",  -- "right" or "left"
 		laneY = config.laneY,
 		size = config.size or 12,
+		leftOffset = config.leftOffset or 0,
+		rightOffset = config.rightOffset or 0,
 		getValueFromSoundObject = config.getValueFromSoundObject,
 		setValueOnSoundObject = config.setValueOnSoundObject,
 		
@@ -44,15 +45,8 @@ local function createMarker(config)
 			local screenX = self:getScreenX()
 			local centerY = self.laneY
 			
-			if self.direction == "right" then
-				-- Tip at screenX, base extends from screenX - size
-				return mx >= screenX - self.size and mx <= screenX
-					and my >= centerY - self.size and my <= centerY + self.size
-			else
-				-- Tip at screenX, base extends to screenX + size
-				return mx >= screenX and mx <= screenX + self.size
-					and my >= centerY - self.size and my <= centerY + self.size
-			end
+			return mx >= screenX + self.leftOffset and mx <= screenX + self.rightOffset
+				and my >= centerY - self.size and my <= centerY + self.size
 		end,
 		
 		draw = function(self)
@@ -63,24 +57,14 @@ local function createMarker(config)
 			
 			love.graphics.setColor(unpack(self.color))
 			
-			if self.direction == "right" then
-				-- Right-pointing triangle with tip at exact marker position
-				love.graphics.polygon("fill",
-					screenX - self.size, centerY - self.size,  -- Top point
-					screenX, centerY,                          -- Right point (tip at marker)
-					screenX - self.size, centerY + self.size   -- Bottom point
-				)
-			else
-				-- Left-pointing triangle with tip at exact marker position
-				love.graphics.polygon("fill",
-					screenX + self.size, centerY - self.size,  -- Top point
-					screenX, centerY,                          -- Left point (tip at marker)
-					screenX + self.size, centerY + self.size   -- Bottom point
-				)
-			end
+			self:drawShape(screenX, centerY)
 		end,
 		
-		handlePressed = function(self, mx, my)
+		-- Stub for drawShape (should be overridden by factory)
+		drawShape = function(self, screenX, centerY)
+		end,
+	
+	handlePressed = function(self, mx, my)
 			if self:isMouseOver(mx, my) then
 				self.isDragging = true
 				return true
@@ -138,61 +122,77 @@ end
 -- Marker factory
 return {
 	createStartMarker = function(markerPane)
-		return createMarker {
+		-- Creates right-pointing orange triangle (►)
+		local marker = createMarker {
 			markerPane = markerPane,
 			initialImageX = (markerPane.soundView and markerPane.soundView.marginLeft) or 100,
 			color = {1, 0.5, 0},  -- Orange
-			direction = "right",
 			laneY = markerPane.topLaneY,
 			size = markerPane.markerSize,
+			leftOffset = -markerPane.markerSize,  -- Extends left from marker position
+			rightOffset = 0,
 			getValueFromSoundObject = function(soundObject) return soundObject:getStartPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setStartPoint(value) end,
 		}
+		
+		marker.drawShape = function(self, screenX, centerY)
+			love.graphics.polygon("fill",
+				screenX - self.size, centerY - self.size,  -- Top point
+				screenX, centerY,                          -- Right point (tip at marker)
+				screenX - self.size, centerY + self.size   -- Bottom point
+			)
+		end
+		
+		return marker
 	end,
 	
 	createEndMarker = function(markerPane)
-		return createMarker {
+		-- Creates left-pointing purple triangle (◄)
+		local marker = createMarker {
 			markerPane = markerPane,
 			initialImageX = (markerPane.soundView and markerPane.soundView.marginLeft) or 100,
 			color = {0.5, 0, 1},  -- Purple
-			direction = "left",
 			laneY = markerPane.topLaneY,
 			size = markerPane.markerSize,
+			leftOffset = 0,
+			rightOffset = markerPane.markerSize,  -- Extends right from marker position
 			getValueFromSoundObject = function(soundObject) return soundObject:getEndPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setEndPoint(value) end,
 		}
+		
+		marker.drawShape = function(self, screenX, centerY)
+			love.graphics.polygon("fill",
+				screenX + self.size, centerY - self.size,  -- Top point
+				screenX, centerY,                          -- Left point (tip at marker)
+				screenX + self.size, centerY + self.size   -- Bottom point
+			)
+		end
+		
+		return marker
 	end,
 	
 	createLoopStartMarker = function(markerPane)
+		-- Creates white musical start repeat symbol (||:) with right edge of colon at marker position
 		local marker = createMarker {
 			markerPane = markerPane,
 			initialImageX = (markerPane.soundView and markerPane.soundView.marginLeft) or 100,
 			color = {1, 1, 1},  -- White
-			direction = "right",
 			laneY = markerPane.bottomLaneY,
 			size = markerPane.markerSize,
+			leftOffset = -14,  -- Symbol extends left from marker position
+			rightOffset = 0,
 			getValueFromSoundObject = function(soundObject) return soundObject:getLoopStartPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setLoopStartPoint(value) end,
 		}
 		
-		-- Override draw method for musical start repeat symbol (||:)
-		-- Right side of colon aligned with marker position
-		marker.draw = function(self)
-			if not self.markerPane.soundView or not self.imageX then return end
-			
-			local screenX = self:getScreenX()
-			local centerY = self.laneY
-			
-			love.graphics.setColor(unpack(self.color))
+		marker.drawShape = function(self, screenX, centerY)
 			love.graphics.setLineWidth(2)
 			
-			-- Draw colon (two dots) with right edge at marker position
 			local dotRadius = 2
-			local colonCenterOffset = -3  -- Center of colon slightly left of marker
+			local colonCenterOffset = -3
 			love.graphics.circle("fill", screenX + colonCenterOffset, centerY - 4, dotRadius)
 			love.graphics.circle("fill", screenX + colonCenterOffset, centerY + 4, dotRadius)
 			
-			-- Draw double vertical lines (start repeat bar) to the left of colon
 			local lineHeight = self.size * 1.5
 			local lineOffset = -8
 			love.graphics.line(screenX + lineOffset, centerY - lineHeight/2, screenX + lineOffset, centerY + lineHeight/2)
@@ -201,68 +201,36 @@ return {
 			love.graphics.setLineWidth(1)
 		end
 		
-		-- Override isMouseOver for the new shape
-		marker.isMouseOver = function(self, mx, my)
-			if not self.markerPane.soundView or not self.imageX then return false end
-			
-			local screenX = self:getScreenX()
-			local centerY = self.laneY
-			
-			-- Hit box covers the lines and colon (extends left from marker)
-			return mx >= screenX - 14 and mx <= screenX
-				and my >= centerY - self.size and my <= centerY + self.size
-		end
-		
 		return marker
 	end,
 	
 	createLoopEndMarker = function(markerPane)
+		-- Creates white musical end repeat symbol (:||) with left edge of lines at marker position
 		local marker = createMarker {
 			markerPane = markerPane,
 			initialImageX = (markerPane.soundView and markerPane.soundView.marginLeft) or 100,
 			color = {1, 1, 1},  -- White
-			direction = "left",
 			laneY = markerPane.bottomLaneY,
 			size = markerPane.markerSize,
+			leftOffset = -8,  -- Colon extends left
+			rightOffset = 6,  -- Lines extend right
 			getValueFromSoundObject = function(soundObject) return soundObject:getLoopEndPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setLoopEndPoint(value) end,
 		}
 		
-		-- Override draw method for musical end repeat symbol (:|)
-		-- Left side of double lines aligned with marker position
-		marker.draw = function(self)
-			if not self.markerPane.soundView or not self.imageX then return end
-			
-			local screenX = self:getScreenX()
-			local centerY = self.laneY
-			
-			love.graphics.setColor(unpack(self.color))
+		marker.drawShape = function(self, screenX, centerY)
 			love.graphics.setLineWidth(2)
 			
-			-- Draw colon (two dots) to the left of marker position
 			local dotRadius = 2
 			local colonCenterOffset = -5
 			love.graphics.circle("fill", screenX + colonCenterOffset, centerY - 4, dotRadius)
 			love.graphics.circle("fill", screenX + colonCenterOffset, centerY + 4, dotRadius)
 			
-			-- Draw double vertical lines (end repeat bar) with left edge at marker
 			local lineHeight = self.size * 1.5
 			love.graphics.line(screenX, centerY - lineHeight/2, screenX, centerY + lineHeight/2)
 			love.graphics.line(screenX + 3, centerY - lineHeight/2, screenX + 3, centerY + lineHeight/2)
 			
 			love.graphics.setLineWidth(1)
-		end
-		
-		-- Override isMouseOver for the new shape
-		marker.isMouseOver = function(self, mx, my)
-			if not self.markerPane.soundView or not self.imageX then return false end
-			
-			local screenX = self:getScreenX()
-			local centerY = self.laneY
-			
-			-- Hit box covers the colon and double lines (extends right from marker)
-			return mx >= screenX - 8 and mx <= screenX + 6
-				and my >= centerY - self.size and my <= centerY + self.size
 		end
 		
 		return marker
