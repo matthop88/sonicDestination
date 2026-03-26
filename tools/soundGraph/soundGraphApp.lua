@@ -109,6 +109,16 @@ function love.keypressed(key)
     elseif key == "F" then
         local enabled = SOUND_VIEW:toggleFollowPlaybackCursor()
         print("Follow playback cursor: " .. (enabled and "ENABLED" or "DISABLED"))
+    elseif key == "s" and SOUND_OBJECT and SOUND_OBJECT:isLoopingEnabled() then
+        local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
+        SOUND_OBJECT:setLoopStartPoint(samplePosition)
+        SOUND_OBJECT:enforceConstraints()
+        SOUND_VIEW.markerPane:updateAllMarkerValues()
+    elseif key == "e" and SOUND_OBJECT and SOUND_OBJECT:isLoopingEnabled() then
+        local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
+        SOUND_OBJECT:setLoopEndPoint(samplePosition)
+        SOUND_OBJECT:enforceConstraints()
+        SOUND_VIEW.markerPane:updateAllMarkerValues()
     end
 end
 
