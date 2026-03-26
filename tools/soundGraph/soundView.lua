@@ -168,6 +168,12 @@ return {
 		    		height = params.markerPaneHeight or 64,
 		    		soundView = self.waveformPane,
 		    		onMarkerChanged = function()
+		    			if self.soundObject then
+		    				self.soundObject:enforceConstraints()
+		    			end
+		    			if self.markerPane then
+		    				self.markerPane:updateAllMarkerValues()
+		    			end
 		    		end,
 		    	}
 		    	
