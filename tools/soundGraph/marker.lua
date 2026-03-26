@@ -94,11 +94,6 @@ local function createMarker(config)
 				local perChannelSample = math.floor(self.imageX - marginLeft)
 				local channelCount = self.markerPane.soundObject:getChannelCount()
 				self.setValueOnSoundObject(self.markerPane.soundObject, perChannelSample * channelCount)
-				
-				-- Read back the constrained value from soundObject and update visual position
-				local constrainedValue = self.getValueFromSoundObject(self.markerPane.soundObject)
-				local constrainedPerChannel = constrainedValue / channelCount
-				self.imageX = marginLeft + constrainedPerChannel
 			end
 			
 			if self.markerPane.onMarkerChanged then
@@ -115,6 +110,18 @@ local function createMarker(config)
 			local perChannelValue = totalSampleValue / channelCount
 			
 			self.imageX = self.markerPane.soundView.marginLeft + perChannelValue
+		end,
+		
+		updateValue = function(self)
+			if not self.markerPane.soundObject or not self.markerPane.soundView then return end
+			
+			local marginLeft = self.markerPane.soundView.marginLeft or 100
+			local channelCount = self.markerPane.soundObject:getChannelCount()
+			
+			-- Read back the constrained value from soundObject and update visual position
+			local constrainedValue = self.getValueFromSoundObject(self.markerPane.soundObject)
+			local constrainedPerChannel = constrainedValue / channelCount
+			self.imageX = marginLeft + constrainedPerChannel
 		end,
 	})
 end
