@@ -57,11 +57,18 @@ return {
 				textY = textY + lineHeight
 				
 				self:drawDuration(textX, textY)
-				self:drawLoopStartPoint(textX2, textY)
-				textY = textY + lineHeight
 				
-				self:drawLoopEndPoint(textX2, textY)
-				textY = textY + lineHeight
+				-- Only show loop points for music tracks
+				local isMusic = self.soundObject.soundInfo and self.soundObject.soundInfo.isMusic
+				if isMusic then
+					self:drawLoopStartPoint(textX2, textY)
+					textY = textY + lineHeight
+					
+					self:drawLoopEndPoint(textX2, textY)
+					textY = textY + lineHeight
+				else
+					textY = textY + lineHeight
+				end
 				
 				self:drawCurrentPosition(textX, textY)
 			end,
