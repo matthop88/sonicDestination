@@ -41,6 +41,11 @@ return {
 					self.endMarker:initializeFromSoundObject()
 					self.loopStartMarker:initializeFromSoundObject()
 					self.loopEndMarker:initializeFromSoundObject()
+					
+					-- Enable loop markers only for music tracks
+					local isMusic = soundObject.soundInfo and soundObject.soundInfo.isMusic
+					self.loopStartMarker:setActive(isMusic)
+					self.loopEndMarker:setActive(isMusic)
 				end
 			end,
 			
