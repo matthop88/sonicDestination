@@ -48,9 +48,11 @@ function love.draw()
 end
 
 function love.update(dt)
-    -- Check if sound has reached endpoint
+    -- Check if sound should loop or stop
     if SOUND_OBJECT then
-        if SOUND_OBJECT:checkEndpointReached() then
+        if SOUND_OBJECT:checkLoopEndReached() then
+            SOUND_OBJECT:jumpToLoopStart()
+        elseif SOUND_OBJECT:checkEndpointReached() then
             SOUND_OBJECT:jumpToEnd()
         end
     end
