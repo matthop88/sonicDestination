@@ -22,6 +22,8 @@ return {
 				self.endPoint = soundInfo.endPoint or (self:getSampleCount() - 1)
 				-- Set loopEndPoint in total sample space
 				self.loopEndPoint = soundInfo.loopEndPoint or (self:getSampleCount() - 1)
+				-- Enforce all constraints on initial values
+				self:enforceConstraints()
 				return self
 			end,
 
@@ -104,8 +106,7 @@ return {
 			end,
 			
 			setStartPoint = function(self, value)
-				-- Constrain start point to not exceed end point
-				self.startPoint = math.min(value, self.endPoint)
+				self.startPoint = value
 			end,
 			
 			getEndPoint = function(self)
@@ -113,8 +114,7 @@ return {
 			end,
 			
 			setEndPoint = function(self, value)
-				-- Constrain end point to not be less than start point
-				self.endPoint = math.max(value, self.startPoint)
+				self.endPoint = value
 			end,
 			
 			getLoopStartPoint = function(self)
@@ -122,8 +122,7 @@ return {
 			end,
 			
 			setLoopStartPoint = function(self, value)
-				-- Constrain loop start to not exceed loop end
-				self.loopStartPoint = math.min(value, self.loopEndPoint)
+				self.loopStartPoint = value
 			end,
 			
 			getLoopEndPoint = function(self)
@@ -131,8 +130,14 @@ return {
 			end,
 			
 			setLoopEndPoint = function(self, value)
-				-- Constrain loop end to not be less than loop start
-				self.loopEndPoint = math.max(value, self.loopStartPoint)
+				self.loopEndPoint = value
+			end,
+			
+			enforceConstraints = function(self)
+				self.startPoint     = math.min(self.startPoint, self.endPoint)
+				self.loopStartPoint = math.max(self.startPoint, math.min(self.loopStartPoint, self.endPoint))
+				self.loopEndPoint   = math.max(self.startPoint, math.min(self.loopEndPoint, self.endPoint))
+				self.loopStartPoint = math.min(self.loopStartPoint, self.loopEndPoint)
 			end,
 		}
 	end,
