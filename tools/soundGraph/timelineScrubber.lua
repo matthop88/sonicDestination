@@ -36,6 +36,8 @@ return {
 				self:drawTimeline()
 				self:drawStartMarkerIndicator()
 				self:drawEndMarkerIndicator()
+				self:drawLoopStartMarkerIndicator()
+				self:drawLoopEndMarkerIndicator()
 				self:drawThumb()
 			end,
 			
@@ -74,6 +76,49 @@ return {
 					markerX, self.y,                            -- Left point (tip at marker)
 					markerX + markerSize, self.y + markerSize   -- Bottom point
 				)
+			end,
+			
+			drawLoopStartMarkerIndicator = function(self)
+				if not self.soundObject then return end
+				
+				local progress = self.soundObject:getLoopStartPoint() / self.soundObject:getPerChannelSampleCount()
+				local markerX = self.lineStartX + (progress * self.lineWidth)
+				
+				love.graphics.setColor(1, 1, 1)  -- White
+				love.graphics.setLineWidth(1)
+				
+				-- Draw small colon dots with right edge at marker (||:)
+				local dotRadius = 1
+				local colonOffset = -2
+				love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
+				love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
+				
+				-- Draw small double vertical lines to the left
+				local lineHeight = 4
+				local lineOffset = -5
+				love.graphics.line(markerX + lineOffset, self.y - lineHeight, markerX + lineOffset, self.y + lineHeight)
+				love.graphics.line(markerX + lineOffset - 2, self.y - lineHeight, markerX + lineOffset - 2, self.y + lineHeight)
+			end,
+			
+			drawLoopEndMarkerIndicator = function(self)
+				if not self.soundObject then return end
+				
+				local progress = self.soundObject:getLoopEndPoint() / self.soundObject:getPerChannelSampleCount()
+				local markerX = self.lineStartX + (progress * self.lineWidth)
+				
+				love.graphics.setColor(1, 1, 1)  -- White
+				love.graphics.setLineWidth(1)
+				
+				-- Draw small colon dots to the left (:|)
+				local dotRadius = 1
+				local colonOffset = -3
+				love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
+				love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
+				
+				-- Draw small double vertical lines with left edge at marker
+				local lineHeight = 4
+				love.graphics.line(markerX, self.y - lineHeight, markerX, self.y + lineHeight)
+				love.graphics.line(markerX + 2, self.y - lineHeight, markerX + 2, self.y + lineHeight)
 			end,
 			
 			drawThumb = function(self)
