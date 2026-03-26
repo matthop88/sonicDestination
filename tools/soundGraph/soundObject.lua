@@ -95,6 +95,23 @@ return {
 				return false
 			end,
 			
+			isLoopingEnabled = function(self)
+				return self.soundInfo and self.soundInfo.isMusic
+			end,
+			
+			checkLoopEndReached = function(self)
+				if self:isPlaying() and self:isLoopingEnabled() then
+					local currentSample = self:getCurrentSample()
+					return currentSample >= self.loopEndPoint
+				end
+				return false
+			end,
+			
+			jumpToLoopStart = function(self)
+				local timeInSeconds = self.loopStartPoint / (self:getSampleRate() * self:getChannelCount())
+				self.audioSource:seek(timeInSeconds, "seconds")
+			end,
+			
 			jumpToEnd = function(self)
 				local timeInSeconds = self.endPoint / (self:getSampleRate() * self:getChannelCount())
 				self.audioSource:seek(timeInSeconds, "seconds")
