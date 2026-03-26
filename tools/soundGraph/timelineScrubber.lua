@@ -57,49 +57,47 @@ return {
 			drawStartMarkerIndicator = function(self)
 				if not self.soundObject then return end
 				
-				local progress = self.soundObject:getStartPoint() / self.soundObject:getPerChannelSampleCount()
+				local progress = self.soundObject:getStartPoint() / self.soundObject:getSampleCount()
 				local markerX = self.lineStartX + (progress * self.lineWidth)
-				local markerSize = 6  -- Smaller than the main marker
+				local markerSize = 6
 				
-				love.graphics.setColor(1, 0.5, 0)  -- Orange
+				love.graphics.setColor(1, 0.5, 0)
 				love.graphics.polygon("fill",
-					markerX - markerSize, self.y - markerSize,  -- Top point
-					markerX, self.y,                            -- Right point (tip at marker)
-					markerX - markerSize, self.y + markerSize   -- Bottom point
+					markerX - markerSize, self.y - markerSize,
+					markerX, self.y,
+					markerX - markerSize, self.y + markerSize
 				)
 			end,
 			
 			drawEndMarkerIndicator = function(self)
 				if not self.soundObject then return end
 				
-				local progress = self.soundObject:getEndPoint() / self.soundObject:getPerChannelSampleCount()
+				local progress = self.soundObject:getEndPoint() / self.soundObject:getSampleCount()
 				local markerX = self.lineStartX + (progress * self.lineWidth)
-				local markerSize = 6  -- Smaller than the main marker
+				local markerSize = 6
 				
-				love.graphics.setColor(0.5, 0, 1)  -- Purple
+				love.graphics.setColor(0.5, 0, 1)
 				love.graphics.polygon("fill",
-					markerX + markerSize, self.y - markerSize,  -- Top point
-					markerX, self.y,                            -- Left point (tip at marker)
-					markerX + markerSize, self.y + markerSize   -- Bottom point
+					markerX + markerSize, self.y - markerSize,
+					markerX, self.y,
+					markerX + markerSize, self.y + markerSize
 				)
 			end,
 			
 			drawLoopStartMarkerIndicator = function(self)
 				if not self.soundObject then return end
 				
-				local progress = self.soundObject:getLoopStartPoint() / self.soundObject:getPerChannelSampleCount()
+				local progress = self.soundObject:getLoopStartPoint() / self.soundObject:getSampleCount()
 				local markerX = self.lineStartX + (progress * self.lineWidth)
 				
-				love.graphics.setColor(1, 1, 1)  -- White
+				love.graphics.setColor(1, 1, 1)
 				love.graphics.setLineWidth(1)
 				
-				-- Draw small colon dots with right edge at marker (||:)
 				local dotRadius = 1
 				local colonOffset = -2
 				love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
 				love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
 				
-				-- Draw small double vertical lines to the left
 				local lineHeight = 4
 				local lineOffset = -5
 				love.graphics.line(markerX + lineOffset, self.y - lineHeight, markerX + lineOffset, self.y + lineHeight)
@@ -109,19 +107,17 @@ return {
 			drawLoopEndMarkerIndicator = function(self)
 				if not self.soundObject then return end
 				
-				local progress = self.soundObject:getLoopEndPoint() / self.soundObject:getPerChannelSampleCount()
+				local progress = self.soundObject:getLoopEndPoint() / self.soundObject:getSampleCount()
 				local markerX = self.lineStartX + (progress * self.lineWidth)
 				
-				love.graphics.setColor(1, 1, 1)  -- White
+				love.graphics.setColor(1, 1, 1)
 				love.graphics.setLineWidth(1)
 				
-				-- Draw small colon dots to the left (:|)
 				local dotRadius = 1
 				local colonOffset = -3
 				love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
 				love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
 				
-				-- Draw small double vertical lines with left edge at marker
 				local lineHeight = 4
 				love.graphics.line(markerX, self.y - lineHeight, markerX, self.y + lineHeight)
 				love.graphics.line(markerX + 2, self.y - lineHeight, markerX + 2, self.y + lineHeight)
