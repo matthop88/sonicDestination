@@ -119,6 +119,15 @@ return {
 				self.audioSource:seek(timeInSeconds, "seconds")
 			end,
 			
+			update = function(self, dt)
+				if self:checkLoopEndReached() then
+					local currentSample = self:getCurrentSample()
+					self:jumpToLoopStartWithDelta(currentSample)
+				elseif self:checkEndpointReached() then
+					self:jumpToEnd()
+				end
+			end,
+			
 			jumpToEnd = function(self)
 				local timeInSeconds = self.endPoint / (self:getSampleRate() * self:getChannelCount())
 				self.audioSource:seek(timeInSeconds, "seconds")
