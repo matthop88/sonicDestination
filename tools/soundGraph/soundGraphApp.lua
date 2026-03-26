@@ -48,14 +48,8 @@ function love.draw()
 end
 
 function love.update(dt)
-    -- Check if sound should loop or stop
     if SOUND_OBJECT then
-        if SOUND_OBJECT:checkLoopEndReached() then
-            local currentSample = SOUND_OBJECT:getCurrentSample()
-            SOUND_OBJECT:jumpToLoopStartWithDelta(currentSample)
-        elseif SOUND_OBJECT:checkEndpointReached() then
-            SOUND_OBJECT:jumpToEnd()
-        end
+        SOUND_OBJECT:update(dt)
     end
     
     SOUND_LIST:update(dt)
