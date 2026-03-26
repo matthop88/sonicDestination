@@ -9,6 +9,8 @@ return {
 			volume = soundInfo.volume or 0.5,
 			startPoint = soundInfo.startPoint or 0,
 			endPoint = nil,  -- Set in init() to default to last sample
+			loopStartPoint = soundInfo.loopStartPoint or 0,
+			loopEndPoint = nil,  -- Set in init() to default to last sample
 			soundData = love.sound.newSoundData(soundPath),
 			audioSource = nil,
 
@@ -18,6 +20,8 @@ return {
 				self.duration = self:getPerChannelSampleCount() / self:getSampleRate()
 				-- Set endPoint in total sample space
 				self.endPoint = soundInfo.endPoint or (self:getSampleCount() - 1)
+				-- Set loopEndPoint in total sample space
+				self.loopEndPoint = soundInfo.loopEndPoint or (self:getSampleCount() - 1)
 				return self
 			end,
 
@@ -100,7 +104,8 @@ return {
 			end,
 			
 			setStartPoint = function(self, value)
-				self.startPoint = value
+				-- Constrain start point to not exceed end point
+				self.startPoint = math.min(value, self.endPoint)
 			end,
 			
 			getEndPoint = function(self)
@@ -108,7 +113,26 @@ return {
 			end,
 			
 			setEndPoint = function(self, value)
-				self.endPoint = value
+				-- Constrain end point to not be less than start point
+				self.endPoint = math.max(value, self.startPoint)
+			end,
+			
+			getLoopStartPoint = function(self)
+				return self.loopStartPoint
+			end,
+			
+			setLoopStartPoint = function(self, value)
+				-- Constrain loop start to not exceed loop end
+				self.loopStartPoint = math.min(value, self.loopEndPoint)
+			end,
+			
+			getLoopEndPoint = function(self)
+				return self.loopEndPoint
+			end,
+			
+			setLoopEndPoint = function(self, value)
+				-- Constrain loop end to not be less than loop start
+				self.loopEndPoint = math.max(value, self.loopStartPoint)
 			end,
 		}
 	end,
