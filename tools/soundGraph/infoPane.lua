@@ -57,6 +57,10 @@ return {
 				textY = textY + lineHeight
 				
 				self:drawDuration(textX, textY)
+				self:drawLoopStartPoint(textX2, textY)
+				textY = textY + lineHeight
+				
+				self:drawLoopEndPoint(textX2, textY)
 				textY = textY + lineHeight
 				
 				self:drawCurrentPosition(textX, textY)
@@ -81,6 +85,16 @@ return {
 			drawEndPoint = function(self, textX, textY)
 				local endPoint = self.soundObject:getEndPoint()
 				love.graphics.print("End Point: " .. endPoint, textX, textY)
+			end,
+			
+			drawLoopStartPoint = function(self, textX, textY)
+				local loopStartPoint = self.soundObject:getLoopStartPoint()
+				love.graphics.print("Loop Start: " .. loopStartPoint, textX, textY)
+			end,
+			
+			drawLoopEndPoint = function(self, textX, textY)
+				local loopEndPoint = self.soundObject:getLoopEndPoint()
+				love.graphics.print("Loop End: " .. loopEndPoint, textX, textY)
 			end,
 			
 			drawTotalSamples = function(self, textX, textY)
