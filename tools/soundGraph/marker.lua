@@ -4,6 +4,7 @@ local function createMarker(config)
 		markerPane = config.markerPane,
 		imageX = config.initialImageX or 100,
 		isDragging = false,
+		active = config.active ~= false,  -- Default to true
 		color = config.color or {1, 1, 1},
 		laneY = config.laneY,
 		size = config.size or 12,
@@ -40,7 +41,7 @@ local function createMarker(config)
 		end,
 		
 		isMouseOver = function(self, mx, my)
-			if not self.markerPane.soundView or not self.imageX then return false end
+			if not self.active or not self.markerPane.soundView or not self.imageX then return false end
 			
 			local screenX = self:getScreenX()
 			local centerY = self.laneY
@@ -50,7 +51,7 @@ local function createMarker(config)
 		end,
 		
 		draw = function(self)
-			if not self.markerPane.soundView or not self.imageX then return end
+			if not self.active or not self.markerPane.soundView or not self.imageX then return end
 			
 			local screenX = self:getScreenX()
 			local centerY = self.laneY
@@ -118,10 +119,13 @@ local function createMarker(config)
 			local marginLeft = self.markerPane.soundView.marginLeft or 100
 			local channelCount = self.markerPane.soundObject:getChannelCount()
 			
-			-- Read back the constrained value from soundObject and update visual position
 			local constrainedValue = self.getValueFromSoundObject(self.markerPane.soundObject)
 			local constrainedPerChannel = constrainedValue / channelCount
 			self.imageX = marginLeft + constrainedPerChannel
+		end,
+		
+		setActive = function(self, active)
+			self.active = active
 		end,
 	})
 end
