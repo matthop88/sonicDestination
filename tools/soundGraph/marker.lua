@@ -110,6 +110,11 @@ local function createMarker(config)
 				local perChannelSample = math.floor(self.imageX - marginLeft)
 				local channelCount = self.markerPane.soundObject:getChannelCount()
 				self.setValueOnSoundObject(self.markerPane.soundObject, perChannelSample * channelCount)
+				
+				-- Read back the constrained value from soundObject and update visual position
+				local constrainedValue = self.getValueFromSoundObject(self.markerPane.soundObject)
+				local constrainedPerChannel = constrainedValue / channelCount
+				self.imageX = marginLeft + constrainedPerChannel
 			end
 			
 			if self.markerPane.onMarkerChanged then
@@ -156,5 +161,110 @@ return {
 			getValueFromSoundObject = function(soundObject) return soundObject:getEndPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setEndPoint(value) end,
 		}
+	end,
+	
+	createLoopStartMarker = function(markerPane)
+		local marker = createMarker {
+			markerPane = markerPane,
+			initialImageX = (markerPane.soundView and markerPane.soundView.marginLeft) or 100,
+			color = {1, 1, 1},  -- White
+			direction = "right",
+			laneY = markerPane.bottomLaneY,
+			size = markerPane.markerSize,
+			getValueFromSoundObject = function(soundObject) return soundObject:getLoopStartPoint() end,
+			setValueOnSoundObject = function(soundObject, value) soundObject:setLoopStartPoint(value) end,
+		}
+		
+		-- Override draw method for musical start repeat symbol (||:)
+		-- Right side of colon aligned with marker position
+		marker.draw = function(self)
+			if not self.markerPane.soundView or not self.imageX then return end
+			
+			local screenX = self:getScreenX()
+			local centerY = self.laneY
+			
+			love.graphics.setColor(unpack(self.color))
+			love.graphics.setLineWidth(2)
+			
+			-- Draw colon (two dots) with right edge at marker position
+			local dotRadius = 2
+			local colonCenterOffset = -3  -- Center of colon slightly left of marker
+			love.graphics.circle("fill", screenX + colonCenterOffset, centerY - 4, dotRadius)
+			love.graphics.circle("fill", screenX + colonCenterOffset, centerY + 4, dotRadius)
+			
+			-- Draw double vertical lines (start repeat bar) to the left of colon
+			local lineHeight = self.size * 1.5
+			local lineOffset = -8
+			love.graphics.line(screenX + lineOffset, centerY - lineHeight/2, screenX + lineOffset, centerY + lineHeight/2)
+			love.graphics.line(screenX + lineOffset - 3, centerY - lineHeight/2, screenX + lineOffset - 3, centerY + lineHeight/2)
+			
+			love.graphics.setLineWidth(1)
+		end
+		
+		-- Override isMouseOver for the new shape
+		marker.isMouseOver = function(self, mx, my)
+			if not self.markerPane.soundView or not self.imageX then return false end
+			
+			local screenX = self:getScreenX()
+			local centerY = self.laneY
+			
+			-- Hit box covers the lines and colon (extends left from marker)
+			return mx >= screenX - 14 and mx <= screenX
+				and my >= centerY - self.size and my <= centerY + self.size
+		end
+		
+		return marker
+	end,
+	
+	createLoopEndMarker = function(markerPane)
+		local marker = createMarker {
+			markerPane = markerPane,
+			initialImageX = (markerPane.soundView and markerPane.soundView.marginLeft) or 100,
+			color = {1, 1, 1},  -- White
+			direction = "left",
+			laneY = markerPane.bottomLaneY,
+			size = markerPane.markerSize,
+			getValueFromSoundObject = function(soundObject) return soundObject:getLoopEndPoint() end,
+			setValueOnSoundObject = function(soundObject, value) soundObject:setLoopEndPoint(value) end,
+		}
+		
+		-- Override draw method for musical end repeat symbol (:|)
+		-- Left side of double lines aligned with marker position
+		marker.draw = function(self)
+			if not self.markerPane.soundView or not self.imageX then return end
+			
+			local screenX = self:getScreenX()
+			local centerY = self.laneY
+			
+			love.graphics.setColor(unpack(self.color))
+			love.graphics.setLineWidth(2)
+			
+			-- Draw colon (two dots) to the left of marker position
+			local dotRadius = 2
+			local colonCenterOffset = -5
+			love.graphics.circle("fill", screenX + colonCenterOffset, centerY - 4, dotRadius)
+			love.graphics.circle("fill", screenX + colonCenterOffset, centerY + 4, dotRadius)
+			
+			-- Draw double vertical lines (end repeat bar) with left edge at marker
+			local lineHeight = self.size * 1.5
+			love.graphics.line(screenX, centerY - lineHeight/2, screenX, centerY + lineHeight/2)
+			love.graphics.line(screenX + 3, centerY - lineHeight/2, screenX + 3, centerY + lineHeight/2)
+			
+			love.graphics.setLineWidth(1)
+		end
+		
+		-- Override isMouseOver for the new shape
+		marker.isMouseOver = function(self, mx, my)
+			if not self.markerPane.soundView or not self.imageX then return false end
+			
+			local screenX = self:getScreenX()
+			local centerY = self.laneY
+			
+			-- Hit box covers the colon and double lines (extends right from marker)
+			return mx >= screenX - 8 and mx <= screenX + 6
+				and my >= centerY - self.size and my <= centerY + self.size
+		end
+		
+		return marker
 	end,
 }
