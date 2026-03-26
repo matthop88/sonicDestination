@@ -36,8 +36,14 @@ return {
 				self:drawTimeline()
 				self:drawStartMarkerIndicator()
 				self:drawEndMarkerIndicator()
-				self:drawLoopStartMarkerIndicator()
-				self:drawLoopEndMarkerIndicator()
+				
+				-- Only draw loop markers for music tracks
+				local isMusic = self.soundObject.soundInfo and self.soundObject.soundInfo.isMusic
+				if isMusic then
+					self:drawLoopStartMarkerIndicator()
+					self:drawLoopEndMarkerIndicator()
+				end
+				
 				self:drawThumb()
 			end,
 			
