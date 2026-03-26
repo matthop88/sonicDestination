@@ -8,6 +8,7 @@ return {
 			soundObject = nil,
 			soundModel = nil,
 			font = love.graphics.newFont(16),
+			labelFont = love.graphics.newFont(32),
 			
 			setSoundObject = function(self, soundObject)
 				self.soundObject = soundObject
@@ -46,6 +47,7 @@ return {
 				local lineHeight = 25
 				
 				self:drawSampleRate(textX, textY)
+				self:drawLabel(textX2, textY - 15)
 				textY = textY + lineHeight
 				
 				self:drawChannelCount(textX, textY)
@@ -76,6 +78,20 @@ return {
 			drawSampleRate = function(self, textX, textY)
 				local sampleRate = self.soundObject:getSampleRate()
 				love.graphics.print("Sample Rate: " .. sampleRate .. " Hz", textX, textY)
+			end,
+			
+			drawLabel = function(self, textX, textY)
+				local label = self.soundObject.soundInfo and self.soundObject.soundInfo.label or "Unknown"
+				love.graphics.setFont(self.labelFont)
+				love.graphics.setColor(0.5, 0.7, 1)
+				
+				-- Center the label horizontally
+				local labelWidth = self.labelFont:getWidth(label)
+				local centeredX = (self.width - labelWidth) / 2
+				love.graphics.print(label, centeredX, textY)
+				
+				love.graphics.setFont(self.font)
+				love.graphics.setColor(1, 1, 1)
 			end,
 			
 			drawChannelCount = function(self, textX, textY)
