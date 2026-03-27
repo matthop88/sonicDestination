@@ -13,6 +13,7 @@ return {
 			endPoint = nil,  -- Set in init() to default to last sample
 			loopStartPoint = soundInfo.loopStartPoint or 0,
 			loopEndPoint = nil,  -- Set in init() to default to last sample
+			loopMarkersEnabled = true,
 			soundData = love.sound.newSoundData(soundPath),
 			audioSource = nil,
 
@@ -104,9 +105,9 @@ return {
 				return false
 			end,
 			
-			isLoopingEnabled = function(self)
-				return self.soundInfo and self.soundInfo.isMusic
-			end,
+		isLoopingEnabled = function(self)
+			return self.soundInfo and self.soundInfo.isMusic and self.loopMarkersEnabled
+		end,
 			
 			checkLoopEndReached = function(self)
 				if self:isPlaying() and self:isLoopingEnabled() then
@@ -175,13 +176,17 @@ return {
 				self.loopEndPoint = value
 			end,
 			
-			setVolume = function(self, volume)
-				self.volume = volume
-				self.audioSource:setVolume(volume)
-				
-				local cacheKey = self.soundInfo.key or self.soundInfo.filename
-				volumeCache[cacheKey] = volume
-			end,
+		setVolume = function(self, volume)
+			self.volume = volume
+			self.audioSource:setVolume(volume)
+			
+			local cacheKey = self.soundInfo.key or self.soundInfo.filename
+			volumeCache[cacheKey] = volume
+		end,
+		
+		setLoopMarkersEnabled = function(self, enabled)
+			self.loopMarkersEnabled = enabled
+		end,
 			
 			enforceConstraints = function(self)
 				self.startPoint     = math.min(self.startPoint, self.endPoint)
