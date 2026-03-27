@@ -1,3 +1,5 @@
+local volumeCache = {}
+
 return {
 	create = function(self, soundInfo)
 		local basePath = soundInfo.isMusic and "game/resources/music/" or "game/resources/sounds/"
@@ -16,6 +18,12 @@ return {
 
 			init = function(self)
 				self.audioSource = love.audio.newSource(self.soundData)
+				
+				local cacheKey = self.soundInfo.key or self.soundInfo.filename
+				if volumeCache[cacheKey] then
+					self.volume = volumeCache[cacheKey]
+				end
+				
 				self.audioSource:setVolume(self.volume)
 				-- Cache duration calculation
 				self.duration = self:getPerChannelSampleCount() / self:getSampleRate()
@@ -170,6 +178,9 @@ return {
 			setVolume = function(self, volume)
 				self.volume = volume
 				self.audioSource:setVolume(volume)
+				
+				local cacheKey = self.soundInfo.key or self.soundInfo.filename
+				volumeCache[cacheKey] = volume
 			end,
 			
 			enforceConstraints = function(self)
