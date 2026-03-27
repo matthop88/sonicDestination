@@ -1,6 +1,7 @@
 -- Base marker object factory
 local function createMarker(config)
-	local doubleClick = require("plugins/modules/doubleClick"):init { interval = 0.3 }
+	local doubleClickModule = dofile("plugins/modules/doubleClick.lua")
+	local doubleClick = doubleClickModule:init { interval = 0.3 }
 	
 	return ({
 		markerPane = config.markerPane,
@@ -80,7 +81,9 @@ local function createMarker(config)
 	handlePressed = function(self, mx, my)
 		if self:isMouseOver(mx, my) then
 			local params = {}
-			self.doubleClick:prehandleMousepressed(mx, my, params)
+			if self.doubleClick then
+				self.doubleClick:prehandleMousepressed(mx, my, params)
+			end
 			
 			if params.doubleClicked and self.toggleable then
 				self.enabled = not self.enabled
