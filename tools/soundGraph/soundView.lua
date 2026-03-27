@@ -177,27 +177,29 @@ return {
 		    		end,
 		    	}
 		    	
-		    	-- Create info pane
-		    	self.infoPane = require("tools/soundGraph/infoPane"):create {
-		    		x = 0,
-		    		y = self.waveformHeight + (params.markerPaneHeight or 64),
-		    		width = params.windowWidth or 1280,
-		    		height = params.infoPaneHeight or 200,
-		    	}
+		-- Create info pane
+		self.infoPane = require("tools/soundGraph/infoPane"):create {
+			x = 0,
+			y = self.waveformHeight + (params.markerPaneHeight or 64),
+			width = params.windowWidth or 1280,
+			height = params.infoPaneHeight or 200,
+			soundView = self,
+		}
 		    	
-		    	-- Create timeline scrubber
-		    	local infoPaneY = self.waveformHeight + (params.markerPaneHeight or 64)
-		    	self.timelineScrubber = require("tools/soundGraph/timelineScrubber"):create {
-		    		x = 0,
-		    		y = infoPaneY + 170,
-		    		width = params.windowWidth or 1280,
-		    		margin = 40,
-		    		thumbWidth = 12,
-		    		thumbHeight = 20,
-		    		onPositionChanged = function()
-		    			self:refreshView()
-		    		end,
-		    	}
+		-- Create timeline scrubber
+		local infoPaneY = self.waveformHeight + (params.markerPaneHeight or 64)
+		self.timelineScrubber = require("tools/soundGraph/timelineScrubber"):create {
+			x = 0,
+			y = infoPaneY + 170,
+			width = params.windowWidth or 1280,
+			margin = 40,
+			thumbWidth = 12,
+			thumbHeight = 20,
+			markerPane = self.markerPane,
+			onPositionChanged = function()
+				self:refreshView()
+			end,
+		}
 		    	
 		    	return self
 		    end,
