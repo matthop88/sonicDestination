@@ -1,10 +1,16 @@
 -- Base marker object factory
 local function createMarker(config)
+	local doubleClick = require("plugins/modules/doubleClick"):init { interval = 0.3 }
+	
 	return ({
 		markerPane = config.markerPane,
 		imageX = config.initialImageX or 100,
 		isDragging = false,
+		readyToDrag = false,
+		pressedX = nil,
+		pressedY = nil,
 		active = config.active ~= false,  -- Default to true
+		enabled = config.enabled ~= false,  -- Default to true
 		color = config.color or {1, 1, 1},
 		laneY = config.laneY,
 		size = config.size or 12,
@@ -12,6 +18,8 @@ local function createMarker(config)
 		rightOffset = config.rightOffset or 0,
 		getValueFromSoundObject = config.getValueFromSoundObject,
 		setValueOnSoundObject = config.setValueOnSoundObject,
+		toggleable = config.toggleable or false,
+		doubleClick = doubleClick,
 		
 		getScreenX = function(self)
 			if not self.markerPane.soundView or not self.imageX then return 0 end
@@ -50,35 +58,80 @@ local function createMarker(config)
 				and my >= centerY - self.size and my <= centerY + self.size
 		end,
 		
-		draw = function(self)
-			if not self.active or not self.markerPane.soundView or not self.imageX then return end
-			
-			local screenX = self:getScreenX()
-			local centerY = self.laneY
-			
+	draw = function(self)
+		if not self.active or not self.markerPane.soundView or not self.imageX then return end
+		
+		local screenX = self:getScreenX()
+		local centerY = self.laneY
+		
+		if self.enabled then
 			love.graphics.setColor(unpack(self.color))
-			
-			self:drawShape(screenX, centerY)
-		end,
+		else
+			love.graphics.setColor(0.3, 0.3, 0.3)
+		end
+		
+		self:drawShape(screenX, centerY)
+	end,
 		
 		-- Stub for drawShape (should be overridden by factory)
 		drawShape = function(self, screenX, centerY)
 		end,
 	
 	handlePressed = function(self, mx, my)
-			if self:isMouseOver(mx, my) then
-				self.isDragging = true
+		if self:isMouseOver(mx, my) then
+			local params = {}
+			self.doubleClick:prehandleMousepressed(mx, my, params)
+			
+			if params.doubleClicked and self.toggleable then
+				self.enabled = not self.enabled
+				
+				if self.markerPane.soundObject then
+					local isLoopingEnabled = self.markerPane:isLoopingEnabled()
+					self.markerPane.soundObject:setLoopMarkersEnabled(isLoopingEnabled)
+				end
+				
+				self.readyToDrag = false
 				return true
 			end
-			return false
-		end,
+			
+			if self.toggleable then
+				self.readyToDrag = true
+				self.pressedX = mx
+				self.pressedY = my
+			else
+				self.isDragging = true
+			end
+			return true
+		end
+		return false
+	end,
 		
-		handleReleased = function(self)
-			self.isDragging = false
-		end,
+	handleReleased = function(self)
+		self.isDragging = false
+		self.readyToDrag = false
+		self.pressedX = nil
+		self.pressedY = nil
+	end,
 		
-		handleDragged = function(self, mx, my)
-			if not self.isDragging or not self.markerPane.soundView then return end
+	handleDragged = function(self, mx, my)
+		if not self.enabled or not self.markerPane.soundView then return end
+		
+		-- For toggleable markers, only start dragging if mouse has moved
+		if self.readyToDrag then
+			local dragThreshold = 3
+			local dx = mx - (self.pressedX or mx)
+			local dy = my - (self.pressedY or my)
+			local distance = math.sqrt(dx * dx + dy * dy)
+			
+			if distance > dragThreshold then
+				self.isDragging = true
+				self.readyToDrag = false
+			else
+				return
+			end
+		end
+		
+		if not self.isDragging then return end
 			
 			-- Convert screen position to image position
 			local imageX, _ = self.markerPane.soundView:screenToImageCoordinates(mx, my)
@@ -124,9 +177,17 @@ local function createMarker(config)
 			self.imageX = marginLeft + constrainedPerChannel
 		end,
 		
-		setActive = function(self, active)
-			self.active = active
-		end,
+	setActive = function(self, active)
+		self.active = active
+	end,
+	
+	setEnabled = function(self, enabled)
+		self.enabled = enabled
+	end,
+	
+	isEnabled = function(self)
+		return self.enabled
+	end,
 	})
 end
 
@@ -194,6 +255,7 @@ return {
 			rightOffset = 0,
 			getValueFromSoundObject = function(soundObject) return soundObject:getLoopStartPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setLoopStartPoint(value) end,
+			toggleable = true,
 		}
 		
 		marker.drawShape = function(self, screenX, centerY)
@@ -227,6 +289,7 @@ return {
 			rightOffset = 6,  -- Lines extend right
 			getValueFromSoundObject = function(soundObject) return soundObject:getLoopEndPoint() end,
 			setValueOnSoundObject = function(soundObject, value) soundObject:setLoopEndPoint(value) end,
+			toggleable = true,
 		}
 		
 		marker.drawShape = function(self, screenX, centerY)
