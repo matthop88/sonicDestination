@@ -14,19 +14,19 @@ return {
 			soundData = love.sound.newSoundData(soundPath),
 			audioSource = nil,
 
-		init = function(self)
-			self.audioSource = love.audio.newSource(self.soundData)
-			self.audioSource:setVolume(self.volume)
-			-- Cache duration calculation
-			self.duration = self:getPerChannelSampleCount() / self:getSampleRate()
-			-- Set endPoint in total sample space
-			self.endPoint = soundInfo.endPoint or (self:getSampleCount() - 1)
-			-- Set loopEndPoint in total sample space
-			self.loopEndPoint = soundInfo.loopEndPoint or (self:getSampleCount() - 1)
-			-- Enforce all constraints on initial values
-			self:enforceConstraints()
-			return self
-		end,
+			init = function(self)
+				self.audioSource = love.audio.newSource(self.soundData)
+				self.audioSource:setVolume(self.volume)
+				-- Cache duration calculation
+				self.duration = self:getPerChannelSampleCount() / self:getSampleRate()
+				-- Set endPoint in total sample space
+				self.endPoint = soundInfo.endPoint or (self:getSampleCount() - 1)
+				-- Set loopEndPoint in total sample space
+				self.loopEndPoint = soundInfo.loopEndPoint or (self:getSampleCount() - 1)
+				-- Enforce all constraints on initial values
+				self:enforceConstraints()
+				return self
+			end,
 
 			getPerChannelSampleCount = function(self)
 				-- LOVE2D's soundData:getSampleCount() is poorly named - it returns the number
@@ -163,16 +163,16 @@ return {
 				return self.loopEndPoint
 			end,
 			
-		setLoopEndPoint = function(self, value)
-			self.loopEndPoint = value
-		end,
-		
-		setVolume = function(self, volume)
-			self.volume = volume
-			self.audioSource:setVolume(volume)
-		end,
-		
-		enforceConstraints = function(self)
+			setLoopEndPoint = function(self, value)
+				self.loopEndPoint = value
+			end,
+			
+			setVolume = function(self, volume)
+				self.volume = volume
+				self.audioSource:setVolume(volume)
+			end,
+			
+			enforceConstraints = function(self)
 				self.startPoint     = math.min(self.startPoint, self.endPoint)
 				self.loopStartPoint = math.max(self.startPoint, math.min(self.loopStartPoint, self.endPoint))
 				self.loopEndPoint   = math.max(self.startPoint, math.min(self.loopEndPoint, self.endPoint))
