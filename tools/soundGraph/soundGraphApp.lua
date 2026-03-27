@@ -2,7 +2,7 @@
 --                      Local Variables                     --
 --------------------------------------------------------------
 
-local WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 776
+local WINDOW_WIDTH, WINDOW_HEIGHT = 1400, 776
 local WAVEFORM_HEIGHT = 512
 local MARKER_PANE_HEIGHT = 64
 local INFO_PANE_HEIGHT = 200
@@ -12,10 +12,18 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	soundObject = nil,
 	samplingRate = 64,
 	marginLeft = 100,
-	windowWidth = WINDOW_WIDTH,
+	windowWidth = WINDOW_WIDTH - 100,
 	waveformHeight = WAVEFORM_HEIGHT,
 	markerPaneHeight = MARKER_PANE_HEIGHT,
 	infoPaneHeight = INFO_PANE_HEIGHT,
+}
+
+local VOLUME_PANE = require("tools/soundGraph/volumePane"):create {
+	x = 1280,
+	y = 0,
+	width = 120,
+	height = WINDOW_HEIGHT,
+	quantize = 0.1,
 }
 
 local SOUND_LIST = require("tools/soundGraph/soundList"):create {
@@ -35,6 +43,7 @@ local SOUND_LIST = require("tools/soundGraph/soundList"):create {
 		SOUND_OBJECT = soundObject
 		print("Analysis coroutine created")
 		SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
+		VOLUME_PANE:setSoundObject(SOUND_OBJECT)
 	end,
 }
 
@@ -45,6 +54,7 @@ local SOUND_LIST = require("tools/soundGraph/soundList"):create {
 function love.draw()
     SOUND_VIEW:draw()
     SOUND_LIST:draw()
+    VOLUME_PANE:draw()
 end
 
 function love.update(dt)
@@ -54,6 +64,7 @@ function love.update(dt)
     
     SOUND_LIST:update(dt)
     SOUND_VIEW:update(dt)
+    VOLUME_PANE:update(dt)
     if not SOUND_VIEW:isAnalysisComplete() then
         local progress = SOUND_VIEW:getProgress()
         setProgressBarText(string.format("Loading Sound Data... %.0f%%", progress * 100))
@@ -62,6 +73,9 @@ end
 
 function love.mousepressed(mx, my)
     local handled = SOUND_LIST:handleMousePressed(mx, my)
+    if not handled then
+        handled = VOLUME_PANE:handleMousePressed(mx, my)
+    end
     if not handled then
         handled = SOUND_VIEW:handleMousePressed(mx, my)
     end
@@ -78,6 +92,7 @@ end
 
 function love.mousereleased()
     SOUND_LIST:handleMouseReleased()
+    VOLUME_PANE:handleMouseReleased()
     SOUND_VIEW:handleMouseReleased()
 end
 
