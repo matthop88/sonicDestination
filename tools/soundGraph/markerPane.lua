@@ -73,12 +73,16 @@ return {
 				love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 			end,
 			
-			updateAllMarkerValues = function(self)
-				self.startMarker:updateValue()
-				self.endMarker:updateValue()
-				self.loopStartMarker:updateValue()
-				self.loopEndMarker:updateValue()
-			end,
+		updateAllMarkerValues = function(self)
+			self.startMarker:updateValue()
+			self.endMarker:updateValue()
+			self.loopStartMarker:updateValue()
+			self.loopEndMarker:updateValue()
+		end,
+		
+		isLoopingEnabled = function(self)
+			return self.loopStartMarker:isEnabled() and self.loopEndMarker:isEnabled()
+		end,
 			
 			handleMousePressed = function(self, mx, my)
 				if self.startMarker:handlePressed(mx, my) then
