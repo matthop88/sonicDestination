@@ -18,6 +18,7 @@ return {
 	
 			draw = function(self, mx, my)
 				self:drawScrollBarBackground()
+				self:drawThumb()
 				self:drawButtons(mx, my)
 			end,
 	
@@ -26,6 +27,33 @@ return {
 				love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 				love.graphics.setColor(COLORS.DARK_GREY)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+			end,
+			
+			drawThumb = function(self)
+				if self.listTotalHeight <= self.paneHeight then return end
+				
+				-- Calculate thumb area (between buttons)
+				local thumbAreaY = self.y + self.buttonHeight + 10
+				local thumbAreaHeight = self.height - (2 * self.buttonHeight) - 20
+				
+				-- Calculate thumb size based on visible ratio
+				local visibleRatio = self.paneHeight / self.listTotalHeight
+				local thumbHeight = math.max(20, thumbAreaHeight * visibleRatio)
+				
+				-- Calculate thumb position based on scroll position
+				local maxScroll, minScroll = self:calculateScrollConstraints()
+				local scrollRange = maxScroll - minScroll
+				local scrollProgress = scrollRange > 0 and ((self.scrollY - minScroll) / scrollRange) or 0
+				
+				-- Invert progress since scrollY is negative when scrolling down
+				scrollProgress = 1 - scrollProgress
+				
+				local thumbY = thumbAreaY + (scrollProgress * (thumbAreaHeight - thumbHeight))
+				
+				love.graphics.setColor(1, 1, 1)
+				love.graphics.rectangle("fill", self.x + 4, thumbY, self.width - 8, thumbHeight)
+				love.graphics.setColor(0, 0, 0)
+				love.graphics.rectangle("line", self.x + 4, thumbY, self.width - 8, thumbHeight)
 			end,
 	
 			drawButtons = function(self, mx, my)
