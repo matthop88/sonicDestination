@@ -79,15 +79,6 @@ function love.mousepressed(mx, my)
     if not handled then
         handled = SOUND_VIEW:handleMousePressed(mx, my)
     end
-    if not handled and SOUND_OBJECT then
-        -- Get sample position from mouse, constrained by start marker
-        local samplePosition = SOUND_VIEW:getSampleXFromMouseX()
-        local startMarkerSample = SOUND_VIEW:getStartMarkerSample()
-        local constrainedSample = math.max(samplePosition, startMarkerSample)
-        
-        print("Playing from sample: " .. constrainedSample)
-        SOUND_OBJECT:playFromSample(constrainedSample)
-    end
 end
 
 function love.mousereleased()
