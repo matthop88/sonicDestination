@@ -9,6 +9,7 @@ return {
 			thumbHeight = params.thumbHeight or 20,
 			soundObject = nil,
 			soundModel = nil,
+			markerPane = params.markerPane,
 			isDragging = false,
 			onPositionChanged = params.onPositionChanged,
 			lineStartX = nil,
@@ -84,44 +85,52 @@ return {
 				)
 			end,
 			
-			drawLoopStartMarkerIndicator = function(self)
-				if not self.soundObject then return end
-				
-				local progress = self.soundObject:getLoopStartPoint() / self.soundObject:getSampleCount()
-				local markerX = self.lineStartX + (progress * self.lineWidth)
-				
-				love.graphics.setColor(1, 1, 1)
-				love.graphics.setLineWidth(1)
-				
-				local dotRadius = 1
-				local colonOffset = -2
-				love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
-				love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
-				
-				local lineHeight = 4
-				local lineOffset = -5
-				love.graphics.line(markerX + lineOffset, self.y - lineHeight, markerX + lineOffset, self.y + lineHeight)
-				love.graphics.line(markerX + lineOffset - 2, self.y - lineHeight, markerX + lineOffset - 2, self.y + lineHeight)
-			end,
+		drawLoopStartMarkerIndicator = function(self)
+			if not self.soundObject or not self.markerPane then return end
 			
-			drawLoopEndMarkerIndicator = function(self)
-				if not self.soundObject then return end
-				
-				local progress = self.soundObject:getLoopEndPoint() / self.soundObject:getSampleCount()
-				local markerX = self.lineStartX + (progress * self.lineWidth)
-				
+			local progress = self.soundObject:getLoopStartPoint() / self.soundObject:getSampleCount()
+			local markerX = self.lineStartX + (progress * self.lineWidth)
+			
+			if self.markerPane.loopStartMarker:isEnabled() then
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.setLineWidth(1)
-				
-				local dotRadius = 1
-				local colonOffset = -3
-				love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
-				love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
-				
-				local lineHeight = 4
-				love.graphics.line(markerX, self.y - lineHeight, markerX, self.y + lineHeight)
-				love.graphics.line(markerX + 2, self.y - lineHeight, markerX + 2, self.y + lineHeight)
-			end,
+			else
+				love.graphics.setColor(0.3, 0.3, 0.3)
+			end
+			love.graphics.setLineWidth(1)
+			
+			local dotRadius = 1
+			local colonOffset = -2
+			love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
+			love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
+			
+			local lineHeight = 4
+			local lineOffset = -5
+			love.graphics.line(markerX + lineOffset, self.y - lineHeight, markerX + lineOffset, self.y + lineHeight)
+			love.graphics.line(markerX + lineOffset - 2, self.y - lineHeight, markerX + lineOffset - 2, self.y + lineHeight)
+		end,
+			
+		drawLoopEndMarkerIndicator = function(self)
+			if not self.soundObject or not self.markerPane then return end
+			
+			local progress = self.soundObject:getLoopEndPoint() / self.soundObject:getSampleCount()
+			local markerX = self.lineStartX + (progress * self.lineWidth)
+			
+			if self.markerPane.loopEndMarker:isEnabled() then
+				love.graphics.setColor(1, 1, 1)
+			else
+				love.graphics.setColor(0.3, 0.3, 0.3)
+			end
+			love.graphics.setLineWidth(1)
+			
+			local dotRadius = 1
+			local colonOffset = -3
+			love.graphics.circle("fill", markerX + colonOffset, self.y - 2, dotRadius)
+			love.graphics.circle("fill", markerX + colonOffset, self.y + 2, dotRadius)
+			
+			local lineHeight = 4
+			love.graphics.line(markerX, self.y - lineHeight, markerX, self.y + lineHeight)
+			love.graphics.line(markerX + 2, self.y - lineHeight, markerX + 2, self.y + lineHeight)
+		end,
 			
 			drawThumb = function(self)
 				local thumbX = self:getThumbPosition()
