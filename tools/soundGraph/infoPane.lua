@@ -7,6 +7,7 @@ return {
 			height = params.height or 200,
 			soundObject = nil,
 			soundModel = nil,
+			soundView = params.soundView,
 			font = love.graphics.newFont(16),
 			labelFont = love.graphics.newFont(32),
 			
@@ -110,15 +111,27 @@ return {
 				love.graphics.print("End Point: " .. endPoint, textX, textY)
 			end,
 			
-			drawLoopStartPoint = function(self, textX, textY)
-				local loopStartPoint = self.soundObject:getLoopStartPoint()
-				love.graphics.print("Loop Start: " .. loopStartPoint, textX, textY)
-			end,
+		drawLoopStartPoint = function(self, textX, textY)
+			local loopStartPoint = self.soundObject:getLoopStartPoint()
 			
-			drawLoopEndPoint = function(self, textX, textY)
-				local loopEndPoint = self.soundObject:getLoopEndPoint()
-				love.graphics.print("Loop End: " .. loopEndPoint, textX, textY)
-			end,
+			if self.soundView and self.soundView.markerPane and not self.soundView.markerPane.loopStartMarker:isEnabled() then
+				love.graphics.setColor(0.3, 0.3, 0.3)
+			end
+			
+			love.graphics.print("Loop Start: " .. loopStartPoint, textX, textY)
+			love.graphics.setColor(1, 1, 1)
+		end,
+		
+		drawLoopEndPoint = function(self, textX, textY)
+			local loopEndPoint = self.soundObject:getLoopEndPoint()
+			
+			if self.soundView and self.soundView.markerPane and not self.soundView.markerPane.loopEndMarker:isEnabled() then
+				love.graphics.setColor(0.3, 0.3, 0.3)
+			end
+			
+			love.graphics.print("Loop End: " .. loopEndPoint, textX, textY)
+			love.graphics.setColor(1, 1, 1)
+		end,
 			
 			drawTotalSamples = function(self, textX, textY)
 				local startPoint = self.soundObject:getStartPoint()
