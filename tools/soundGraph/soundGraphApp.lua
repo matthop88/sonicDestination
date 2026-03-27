@@ -138,6 +138,7 @@ SOUND_LIST:setVisible(true)
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
+    :add("doubleClick", { accessorFnName = "getDoubleClick" })
     :add("zooming",    { imageViewer = SOUND_VIEW.waveformPane })
     :add("scrolling",  { imageViewer = SOUND_VIEW.waveformPane, scrollY = false, scrollSpeed = 48000 })
     :add("progressBar",
@@ -147,4 +148,36 @@ PLUGINS = require("plugins/engine")
         setTextFnName = "setProgressBarText",
         accessorFnName = "getProgressBar",
     })
+    :add("questionBox",
+    {   x = 1230,
+        alpha = 0.9,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            tabSize = 200,
+            "Playback Controls_",
+            { "space", "- Play/Pause audio", },
+            { "shift-left", "- Jump to start point", },
+            { "shift-right", "- Jump to end point", },
+            { "left/right", "- Seek backward/forward (hold)", },
+            "",
+            "Markers_",
+            { "Drag marker", "- Adjust position", },
+            { "Double-click", },
+            { "   loop marker", "- Toggle loop marker on/off (music only)", },
+            "",
+            "Loop Markers (Music Only)_",
+            { "s", "- Set loop start to cursor position", },
+            { "e", "- Set loop end to cursor position", },
+            "",
+            "Volume Control_",
+            { "Drag slider", "- Adjust volume (0.0-1.0)", },
+            "",
+            "View Controls_",
+            { "z/a", "- Zoom in/out on waveform", },
+            { "F", "- Toggle follow playback cursor", },
+            { "L", "- Show sound list", },
+        },
+    })
+
 
