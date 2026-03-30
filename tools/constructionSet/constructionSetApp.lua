@@ -27,6 +27,9 @@ local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):crea
 love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+local MUSIC_DATA    = require("tools/constructionSet/data/music/bgMusicData")
+local MUSIC_ELEMENT = require("tools/constructionSet/music/musicElement"):create(MUSIC_DATA.constructionSet)
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -38,6 +41,7 @@ end
 function love.update(dt)
     STICKY_MOUSE:update(dt)
     MAP:update(dt)
+    MUSIC_ELEMENT:update(dt)
 end
 
 function love.keypressed(key)
@@ -49,6 +53,8 @@ function love.keypressed(key)
         print("Saved to " .. love.filesystem.getSaveDirectory())
     elseif key == "R" then
         refreshFromFile()
+    elseif key == "M" then
+        MUSIC_ELEMENT:play()
     else        
         MAP:handleKeypressed(key)
     end
