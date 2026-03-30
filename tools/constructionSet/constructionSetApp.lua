@@ -18,6 +18,8 @@ local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):cre
 
 local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create(STICKY_MOUSE)
 
+local MISCELLANEOUS_PANEL = require("tools/constructionSet/panels/miscellaneousPanel"):create()
+
 local PLAYER_PANEL    = require("tools/constructionSet/panels/playerPanel"):create( { "sonic1" }, STICKY_MOUSE)
 local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2" }, STICKY_MOUSE)
 --------------------------------------------------------------
@@ -159,6 +161,7 @@ PLUGINS = require("plugins/engine")
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
              { label = "Player",  panel = require("tools/constructionSet/panels/multiPanel"):create { PLAYER_PANEL, PLAYER_2_PANEL }, },
+             { label = "Miscellaneous", panel = MISCELLANEOUS_PANEL, },
         },
         accessorFnName = "getTabbedPane",
     })
