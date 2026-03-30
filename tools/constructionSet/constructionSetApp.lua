@@ -53,8 +53,6 @@ function love.keypressed(key)
         print("Saved to " .. love.filesystem.getSaveDirectory())
     elseif key == "R" then
         refreshFromFile()
-    elseif key == "M" then
-        MUSIC_ELEMENT:play()
     else        
         MAP:handleKeypressed(key)
     end
@@ -127,6 +125,8 @@ PLUGINS = require("plugins/engine")
                 CHUNKS_PANEL:initChunkInfo("ghzChunks")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
                 
+                MUSIC_ELEMENT:play()
+
                 if SHOW_DATA then
                     showData()
                     love.event.quit()
