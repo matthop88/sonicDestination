@@ -117,7 +117,16 @@ return {
 				self.visible = visible
 				self.list.visible = visible
 			end,
-	
+
+			getListHeight = function(self)
+				return self.height
+			end,
+			
+			setY = function(self, y)
+				self.y = y
+				self.scrollBar.y = y
+			end,
+
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				local isOverButton = self.scrollBar:handleMousePressed(mx, my)
@@ -127,7 +136,7 @@ return {
 				end
 				return true
 			end,
-	
+
 			handleMouseReleased = function(self)
 				if not self.visible then return end
 				self.scrollBar:handleMouseReleased()
