@@ -201,5 +201,5 @@ PLUGINS = require("plugins/engine")
             { "R", "- Refresh from file", },
         },
     })
-    :add("overlay", { accessorFnName = "getOverlay" })
+    :add("modals", { accessorFnName = "getModals" })
     
