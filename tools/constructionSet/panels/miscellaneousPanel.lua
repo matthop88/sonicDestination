@@ -2,12 +2,8 @@ return {
     create = function(self)
         local buttonList = {}
         local WIDTH, HEIGHT = 256, 256
-        local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
 
-        table.insert(buttonList, require("tools/constructionSet/buttons/musicButton"):create {
-            windowWidth = WINDOW_WIDTH,
-            windowHeight = WINDOW_HEIGHT,
-        })
+        table.insert(buttonList, require("tools/constructionSet/buttons/musicButton"):create {})
 
         local palette = require("tools/constructionSet/palette"):create { objects = buttonList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT }
         
