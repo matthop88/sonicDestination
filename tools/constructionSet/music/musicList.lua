@@ -42,6 +42,14 @@ return {
 			setVisible = function(self, visible)
 				guiList:setVisible(visible)
 			end,
+			
+			getListHeight = function(self)
+				return guiList:getListHeight()
+			end,
+			
+			setY = function(self, y)
+				guiList:setY(y)
+			end,
 		}
 	end,
 	
