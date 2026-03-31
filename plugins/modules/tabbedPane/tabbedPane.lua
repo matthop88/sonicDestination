@@ -172,6 +172,14 @@ return {
 		end
 	end,
 
+	handleMousereleased = function(self, mx, my)
+		self:onCurrentPanel(function(p) 
+			if p.handleMousereleased then 
+				p:handleMousereleased(mx, my) 
+			end
+		end)
+	end,
+
 	toggleTabbedPaneOpening = function(self)
 		if self.TABS.opened then self.TABS.y:setDestination(self.HEIGHT - 40)
 		else                     self.TABS.y:setDestination(self.HEIGHT - 35 - self.PANE_HEIGHT) end
