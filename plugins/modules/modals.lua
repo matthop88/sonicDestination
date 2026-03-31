@@ -25,7 +25,7 @@ return {
 		end
 	end,
 	
-	handleMousepressed = function(self, mx, my)
+	modalMousepressed = function(self, mx, my)
 		for _, component in ipairs(self.components) do
 			if component.handleMousePressed then
 				local handled = component:handleMousePressed(mx, my)
@@ -37,7 +37,7 @@ return {
 		return false
 	end,
 	
-	handleMousereleased = function(self, mx, my)
+	modalMousereleased = function(self, mx, my)
 		for _, component in ipairs(self.components) do
 			if component.handleMouseReleased then
 				component:handleMouseReleased(mx, my)
