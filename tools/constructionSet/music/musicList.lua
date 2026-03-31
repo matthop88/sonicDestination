@@ -50,6 +50,12 @@ return {
 			setY = function(self, y)
 				guiList:setY(y)
 			end,
+
+			getSelectedItem = function(self)
+				local value, index = guiList:getSelectedItem()
+				if index == 1 then return nil
+				else return value end
+			end,
 		}
 	end,
 	
