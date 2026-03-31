@@ -72,6 +72,12 @@ return {
                 end
             end,
 
+            handleMousereleased = function(self, mx, my)
+                for _, c in ipairs(containers) do
+                    c:handleMousereleased(mx, my + y)
+                end
+            end,
+
             getSelectedIndex = function(self)
                 for n, c in ipairs(containers) do
                     if c.isSelected then return n end
