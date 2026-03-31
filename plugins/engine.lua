@@ -60,7 +60,9 @@ return ({
     end,
 
     mousepressed = function(self, mx, my)
+        if self:modalMousepressed(mx, my) then return end
         local params = {}
+
         for _, plugin in ipairs(self) do
             if plugin.prehandleMousepressed ~= nil then plugin:prehandleMousepressed(mx, my, params)               end
             if plugin.handleMousepressed    ~= nil and  plugin:handleMousepressed(mx, my, params) then return true end
@@ -68,11 +70,26 @@ return ({
         self.oldMousepressed(mx, my, params)
     end,
 
+    modalMousepressed = function(self, mx, my)
+        for _, plugin in ipairs(self) do
+            if plugin.modalMousepressed ~= nil and plugin:modalMousepressed(mx, my) then return true end
+        end
+        return false
+    end,
+
     mousereleased = function(self, mx, my)
+        if self:modalMousereleased(mx, my) then return end
         for _, plugin in ipairs(self) do
             if plugin.handleMousereleased ~= nil and plugin:handleMousereleased(mx, my) then return true end
         end
         self.oldMousereleased(mx, my)
+    end,
+
+    modalMousereleased = function(self, mx, my)
+        for _, plugin in ipairs(self) do
+            if plugin.modalMousereleased ~= nil and plugin:modalMousereleased(mx, my) then return true end
+        end
+        return false
     end,
 
     add = function(self, pluginPath, params)
