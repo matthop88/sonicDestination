@@ -150,7 +150,19 @@ return {
 			setVisible = function(self, visible)
 				self.visible = visible
 			end,
-	
+
+			getListHeight = function(self)
+				return self.totalHeight
+			end,
+			
+			setY = function(self, y)
+				local deltaY = y - self.y
+				self.y = y
+				for _, item in ipairs(self.items) do
+					item.y = item.y + deltaY
+				end
+			end,
+
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				return self:handleClick(mx, my)
