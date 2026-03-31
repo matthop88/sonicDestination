@@ -4,6 +4,7 @@ return {
 	create = function(self, params)
 		return {
 			label = params.label or "Music",
+			title = "None",
 			hasFocus = false,
 			isSelected = false,
 			isPressed = false,
@@ -22,6 +23,9 @@ return {
 				end
 				graphics:setFontSize(48)
 				graphics:printf(self.label, x - w/2, y - 24, w, "center")
+				if self.musicList then self.title = self.musicList:getSelectedItem() or "None" end
+				graphics:setFontSize(24)
+				graphics:printf(self.title, x - w/2, y + 36, w, "center")
 			end,
 			
 			updateInContainer = function(self, dt)
@@ -40,42 +44,42 @@ return {
 				self.isPressed = true
 			end,
 			
-		deselect = function(self)
-			self.isSelected = false
-		end,
-		
-		handleMousereleased = function(self, mx, my)
-			self.isPressed = false
-			if self.isSelected then
-				self:showMusicList()
-			end
-		end,
-		
-		showMusicList = function(self)
-			if not self.musicList then
-				self.musicList = require("tools/constructionSet/music/musicList"):create {
-					x = 32,
-					y = 0,
-					width = 400,
-					height = 400,
-					fontSize = 28,
-					scrollSpeed = 1200,
-				}
+			deselect = function(self)
+				self.isSelected = false
+			end,
+			
+			handleMousereleased = function(self, mx, my)
+				self.isPressed = false
+				if self.isSelected then
+					self:showMusicList()
+				end
+			end,
+			
+			showMusicList = function(self)
+				if not self.musicList then
+					self.musicList = require("tools/constructionSet/music/musicList"):create {
+						x = 32,
+						y = 0,
+						width = 400,
+						height = 400,
+						fontSize = 28,
+						scrollSpeed = 1200,
+					}
+					
+				local listHeight = self.musicList:getListHeight()
+				self.musicList:setY(800 - listHeight)
 				
-			local listHeight = self.musicList:getListHeight()
-			self.musicList:setY(800 - listHeight)
+				if _G.getModals then
+					getModals():add(self.musicList)
+				end
+				end
+				
+				self.musicList:setVisible(true)
+			end,
 			
-			if _G.getModals then
-				getModals():add(self.musicList)
-			end
-			end
-			
-			self.musicList:setVisible(true)
-		end,
-		
-		newObject = function(self)
-			return nil
-		end,
+			newObject = function(self)
+				return nil
+			end,
 		}
 	end,
 }
