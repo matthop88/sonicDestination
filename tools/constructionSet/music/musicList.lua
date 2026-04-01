@@ -1,4 +1,4 @@
-local MUSIC_DATA = require("tools/constructionSet/data/music/musicData")
+local MUSIC_DATA = require("game/music/musicData")
 
 return {
 	create = function(self, params)
