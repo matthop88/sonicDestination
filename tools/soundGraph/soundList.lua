@@ -1,5 +1,5 @@
 local SOUND_DATA = require("tools/soundGraph/data/soundData")
-local MUSIC_DATA = require("tools/soundGraph/data/musicData")
+local MUSIC_DATA = require("game/music/musicData")
 
 return {
 	buildListItems = function(self, labelToKeyMap)
