@@ -112,6 +112,8 @@ return {
 
 			encodeMapData = function(self)
 				local encodedMap = "return {\n"
+				local PROPERTIES = getProperties()
+				encodedMap = encodedMap .. PROPERTIES:encode()
 				for n, row in ipairs(self.chunks) do
 					if #row > 0 then
 						local rowString = "  { row = " .. n .. ", data = { "
