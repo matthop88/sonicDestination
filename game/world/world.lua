@@ -3,8 +3,7 @@ local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
-local MUSIC_DATA     = requireRelative("music/musicData")
-local MUSIC_ELEMENT
+local MUSIC_MANAGER  = requireRelative("music/musicManager"):create()
 local ORIGIN
 
 return {
@@ -69,9 +68,9 @@ return {
         local map = TERRAIN:getMapData()
 
         if map.properties and map.properties.music then
-            if MUSIC_ELEMENT then MUSIC_ELEMENT:stop() end
-            MUSIC_ELEMENT = requireRelative("music/musicElement"):create(MUSIC_DATA, map.properties.music)
-            MUSIC_ELEMENT:play()
+            MUSIC_MANAGER:clear()
+            MUSIC_MANAGER:newTrack(map.properties.music)
+            MUSIC_MANAGER:play()
         end
     end,
 
@@ -124,7 +123,7 @@ return {
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
         SOUND_MANAGER:update(dt)
-        if MUSIC_ELEMENT then MUSIC_ELEMENT:update(dt) end
+        MUSIC_MANAGER:update(dt)
     end,
 
     updateEvents = function(self, dt)
