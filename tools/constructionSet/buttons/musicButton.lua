@@ -2,9 +2,10 @@ local COLOR = require("tools/lib/colors")
 
 return {
 	create = function(self, params)
+		local title = nil
+
 		return {
 			label = params.label or "Music",
-			title = "None",
 			hasFocus = false,
 			isSelected = false,
 			isPressed = false,
@@ -23,11 +24,11 @@ return {
 				end
 				graphics:setFontSize(48)
 				graphics:printf(self.label, x - w/2, y - 24, w, "center")
-				if self.musicList then self.title = self.musicList:getSelectedItem() or "None" end
 				graphics:setFontSize(24)
-				graphics:printf(self.title, x - w/2, y + 36, w, "center")
+				if title == nil then title = getProperties().music or "None" end
+				graphics:printf(title, x - w/2, y + 36, w, "center")
 			end,
-			
+
 			updateInContainer = function(self, dt)
 			end,
 			
@@ -64,14 +65,22 @@ return {
 						height = 400,
 						fontSize = 28,
 						scrollSpeed = 1200,
+						onMusicTrackSelected = function(item, index) 
+							title = item or "None" 
+							if title == "None" then
+								getProperties().music = nil
+							else
+								getProperties().music = title
+							end
+						end,
 					}
+
+					local listHeight = self.musicList:getListHeight()
+					self.musicList:setY(800 - listHeight)
 					
-				local listHeight = self.musicList:getListHeight()
-				self.musicList:setY(800 - listHeight)
-				
-				if _G.getModals then
-					getModals():add(self.musicList)
-				end
+					if _G.getModals then
+						getModals():add(self.musicList)
+					end
 				end
 				
 				self.musicList:setVisible(true)
