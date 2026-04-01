@@ -30,8 +30,19 @@ love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 local MUSIC_DATA    = require("tools/constructionSet/data/music/bgMusicData")
-local MUSIC_ELEMENT = require("tools/constructionSet/music/musicElement"):create(MUSIC_DATA.constructionSet)
+local MUSIC_ELEMENT = require("tools/constructionSet/music/musicElement"):create(MUSIC_DATA, "Construction Set")
 
+local PROPERTIES    = {
+    encode = function(self)
+        local encoded = "  properties = {\n"
+        if self.music then
+            encoded = encoded .. "      music = \"" .. self.music .. "\",\n"
+        end
+        encoded = encoded .. "  },\n"
+
+        return encoded
+    end,          
+}
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -111,7 +122,11 @@ function refreshFromFile()
         
         printToReadout("Map refreshed: " .. DATA_IN)
     end
-end    
+end   
+
+function getProperties()
+    return PROPERTIES
+end 
 
 --------------------------------------------------------------
 --                          Plugins                         --
@@ -136,7 +151,9 @@ PLUGINS = require("plugins/engine")
                     local mapPath = "game/resources/zones/maps/" .. DATA_IN .. "Map"
                     local objPath = "game/resources/zones/objects/" .. DATA_IN .. "Objects"
                     if love.filesystem.getInfo(mapPath .. ".lua") then
-                        require("tools/constructionSet/mapReader"):readMapIntoChunksList(require(mapPath), MAP.chunks)
+                        local mapData = require(mapPath)
+                        require("tools/constructionSet/mapReader"):readMapIntoChunksList(mapData, MAP.chunks)
+                        require("tools/constructionSet/mapReader"):readMusicFromMap(mapData)
                     end
                     if love.filesystem.getInfo(objPath .. ".lua") then
                         local objectsData = require(objPath)
