@@ -30,7 +30,7 @@ love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 local MUSIC_DATA    = require("tools/constructionSet/data/music/bgMusicData")
-local MUSIC_ELEMENT = require("tools/constructionSet/music/musicElement"):create(MUSIC_DATA, "Construction Set")
+local MUSIC_ELEMENT = require("game/music/musicElement"):create(MUSIC_DATA, "Construction Set")
 
 local PROPERTIES    = {
     encode = function(self)
