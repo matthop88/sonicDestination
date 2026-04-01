@@ -206,4 +206,8 @@ return {
 	getCalculatedGroundLevel = function(self)
 		return self.map.calculatedGroundLevel or 940  -- Default to 940 if not calculated
 	end,
+
+    getMapData = function(self)
+        return MAP_DATA
+    end,
 }
