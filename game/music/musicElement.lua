@@ -1,17 +1,18 @@
-local BASE_PATH = "game/resources/music/"
+local BASE_PATH = relativePath("resources/music/")
 
-local findFilename = function(musicInfo, trackName)
-	for k, v in pairs(musicInfo) do
+local findByTrackName = function(musicData, trackName)
+	for k, v in pairs(musicData) do
 		if v.label == trackName then
-			return v.filename
+			return v
 		end
 	end
 end
 
 return {
-	create = function(self, musicInfo, trackName)
+	create = function(self, musicData, trackName)
 
-		local musicPath = BASE_PATH .. findFilename(musicInfo, trackName)
+		local musicInfo = findByTrackName(musicData, trackName)
+		local musicPath = BASE_PATH .. musicInfo.filename
 		
 		return ({
 			musicInfo      = musicInfo,
@@ -30,6 +31,9 @@ return {
 				self.audioSource:setVolume(self.volume)
 				self.endPoint     = self.musicInfo.endPoint     or (self:getSampleCount() - 1)
 				self.loopEndPoint = self.musicInfo.loopEndPoint or (self:getSampleCount() - 1)
+
+				print("Loop End Point: ", self.loopEndPoint)
+				print("Loop Start Point: ", self.loopStartPoint)
 				return self
 			end,
 
