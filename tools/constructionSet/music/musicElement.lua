@@ -1,8 +1,17 @@
 local BASE_PATH = "game/resources/music/"
 
+local findFilename = function(musicInfo, trackName)
+	for k, v in pairs(musicInfo) do
+		if v.label == trackName then
+			return v.filename
+		end
+	end
+end
+
 return {
-	create = function(self, musicInfo)
-		local musicPath = BASE_PATH .. musicInfo.filename
+	create = function(self, musicInfo, trackName)
+
+		local musicPath = BASE_PATH .. findFilename(musicInfo, trackName)
 		
 		return ({
 			musicInfo      = musicInfo,
