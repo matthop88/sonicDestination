@@ -35,6 +35,12 @@ return {
 		end
 	end,
 
+	readMusicFromMap = function(self, mapData)
+		if mapData.properties and mapData.properties.music then
+			getProperties().music = mapData.properties.music
+		end
+	end,
+
 	readObjectsIntoObjectsList = function(self, objects, objectsList)
 		local objectFactory = require("tools/constructionSet/objectFactory")
 
