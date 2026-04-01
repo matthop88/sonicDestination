@@ -5,6 +5,8 @@ return {
 		local labelToKeyMap = {}
 		local items = self:buildListItems(labelToKeyMap)
 		
+		local onMusicTrackSelected = params.onMusicTrackSelected
+
 		local guiList = require("tools/lib/guiList/list"):create {
 			x = params.x or 0,
 			y = params.y or 0,
@@ -15,9 +17,8 @@ return {
 			scrollSpeed = params.scrollSpeed or 1200,
 			onItemSelected = function(listOrPane, item, index)
 				listOrPane:setVisible(false)
-				if index == 1 then
-					-- "None" selected
-					return
+				if onMusicTrackSelected then
+					onMusicTrackSelected(item, index)
 				end
 			end,
 		}
