@@ -2,7 +2,7 @@ local GRAPHICS
 local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
-local SOUND_MANAGER  = requireRelative("sound/soundManager")
+local SOUND_MANAGER
 local MUSIC_MANAGER
 local ORIGIN
 
@@ -37,7 +37,8 @@ return {
     },
 
     init = function(self, params)
-        GRAPHICS = params.GRAPHICS
+        GRAPHICS      = params.GRAPHICS
+        SOUND_MANAGER = params.SOUND_MANAGER
         MUSIC_MANAGER = params.MUSIC_MANAGER
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
