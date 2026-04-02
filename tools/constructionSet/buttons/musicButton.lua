@@ -3,13 +3,13 @@ local COLOR = require("tools/lib/colors")
 return {
 	create = function(self, params)
 		local title = nil
+		local musicPanel = nil
 
 		return {
 			label = params.label or "Music",
 			hasFocus = false,
 			isSelected = false,
 			isPressed = false,
-			musicList = nil,
 			
 			drawInContainer = function(self, graphics, x, y, w, h)
 				if self.isPressed then
@@ -45,50 +45,48 @@ return {
 				self.isPressed = true
 			end,
 			
-			deselect = function(self)
-				self.isSelected = false
-			end,
-			
-			handleMousereleased = function(self, mx, my)
-				self.isPressed = false
-				if self.isSelected then
-					self:showMusicList()
-				end
-			end,
-			
-			showMusicList = function(self)
-				if not self.musicList then
-					self.musicList = require("tools/constructionSet/music/musicList"):create {
-						x = 32,
-						y = 0,
-						width = 400,
-						height = 400,
-						fontSize = 28,
-						scrollSpeed = 1200,
-						onMusicTrackSelected = function(item, index) 
-							title = item or "None" 
-							if title == "None" then
-								getProperties().music = nil
-							else
-								getProperties().music = title
-							end
-						end,
-					}
-
-					local listHeight = self.musicList:getListHeight()
-					self.musicList:setY(800 - listHeight)
-					
-					if _G.getModals then
-						getModals():add(self.musicList)
-					end
-				end
+		deselect = function(self)
+			self.isSelected = false
+		end,
+		
+		handleMousereleased = function(self, mx, my)
+			self.isPressed = false
+			if self.isSelected then
+				self:showMusicPanel()
+			end
+		end,
+		
+		showMusicPanel = function(self)
+			if not musicPanel then
+				musicPanel = require("tools/constructionSet/music/musicPanel"):create {
+					x = 300,
+					y = 250,
+					width = 600,
+					height = 300,
+					initialTrack = getProperties().music or "None",
+					onTrackChanged = function(trackName)
+						title = trackName
+						if trackName == "None" then
+							getProperties().music = nil
+						else
+							getProperties().music = trackName
+						end
+					end,
+				}
 				
-				self.musicList:setVisible(true)
-			end,
+				if _G.getModals then
+					getModals():add(musicPanel)
+				end
+			end
 			
-			newObject = function(self)
-				return nil
-			end,
+			musicPanel:setVisible(true)
+			self.isSelected = false
+			self.isPressed = false
+		end,
+		
+		newObject = function(self)
+			return nil
+		end,
 		}
 	end,
 }
