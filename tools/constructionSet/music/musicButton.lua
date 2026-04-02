@@ -14,11 +14,11 @@ return {
 			drawInContainer = function(self, graphics, x, y, w, h)
 				if self.isPressed then
 					-- Draw filled rectangle for pressed state
-					graphics:setColor(1, 1, 0)
+					graphics:setColor(COLOR.YELLOW)
 					graphics:rectangle("fill", x - w/2, y - h/2, w, h)
-					graphics:setColor(0, 0, 0)
+					graphics:setColor(COLOR.JET_BLACK)
 				elseif self.isSelected then
-					graphics:setColor(1, 1, 0)
+					graphics:setColor(COLOR.YELLOW)
 				else
 					graphics:setColor(COLOR.PURE_WHITE)
 				end
@@ -45,48 +45,48 @@ return {
 				self.isPressed = true
 			end,
 			
-		deselect = function(self)
-			self.isSelected = false
-		end,
-		
-		handleMousereleased = function(self, mx, my)
-			self.isPressed = false
-			if self.isSelected then
-				self:showMusicPanel()
-			end
-		end,
-		
-		showMusicPanel = function(self)
-			if not musicPanel then
-				musicPanel = require("tools/constructionSet/music/musicPanel"):create {
-					x = 300,
-					y = 250,
-					width = 600,
-					height = 300,
-					initialTrack = getProperties().music or "None",
-					onTrackChanged = function(trackName)
-						title = trackName
-						if trackName == "None" then
-							getProperties().music = nil
-						else
-							getProperties().music = trackName
-						end
-					end,
-				}
-				
-				if _G.getModals then
-					getModals():add(musicPanel)
-				end
-			end
+			deselect = function(self)
+				self.isSelected = false
+			end,
 			
-			musicPanel:setVisible(true)
-			self.isSelected = false
-			self.isPressed = false
-		end,
-		
-		newObject = function(self)
-			return nil
-		end,
+			handleMousereleased = function(self, mx, my)
+				self.isPressed = false
+				if self.isSelected then
+					self:showMusicPanel()
+				end
+			end,
+			
+			showMusicPanel = function(self)
+				if not musicPanel then
+					musicPanel = require("tools/constructionSet/music/musicPanel"):create {
+						x = 300,
+						y = 250,
+						width = 600,
+						height = 300,
+						initialTrack = getProperties().music or "None",
+						onTrackChanged = function(trackName)
+							title = trackName
+							if trackName == "None" then
+								getProperties().music = nil
+							else
+								getProperties().music = trackName
+							end
+						end,
+					}
+					
+					if _G.getModals then
+						getModals():add(musicPanel)
+					end
+				end
+				
+				musicPanel:setVisible(true)
+				self.isSelected = false
+				self.isPressed = false
+			end,
+			
+			newObject = function(self)
+				return nil
+			end,
 		}
 	end,
 }
