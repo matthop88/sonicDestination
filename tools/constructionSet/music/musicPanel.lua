@@ -61,7 +61,6 @@ local createOkButton = function(params)
 			love.graphics.setColor(COLOR.PURE_WHITE)
 			love.graphics.rectangle("line", self.x, self.y, self.width, self.height, self.cornerRadius, self.cornerRadius)
 			
-			-- Draw OK text
 			love.graphics.printf("OK", self.x, self.y + 10, self.width, "center")
 		end,
 		
@@ -76,6 +75,14 @@ local createOkButton = function(params)
 	}
 end
 
+local changeMusicTrack = function(trackName)
+	MUSIC_MANAGER:clear()
+	if trackName ~= "None" then
+		MUSIC_MANAGER:newTrack(trackName)
+		MUSIC_MANAGER:play()
+	end
+end	
+				
 return {
 	create = function(self, params)
 		local selectedTrack = params.initialTrack or "None"
@@ -92,7 +99,6 @@ return {
 			visible = false,
 			
 			init = function(self)
-				-- Create music name field
 				musicNameField = createMusicNameField {
 					x = self.x + 20,
 					y = self.y + 80,
@@ -101,13 +107,19 @@ return {
 					selectedTrack = selectedTrack,
 				}
 				
-				-- Create OK button
 				okButton = createOkButton {
 					x = self.x + self.width - 120,
 					y = self.y + self.height - 60,
 					width = 100,
 					height = 40,
 				}
+
+				local oldOnTrackChanged = onTrackChanged
+
+				onTrackChanged = function(trackName)
+					changeMusicTrack(trackName)
+					oldOnTrackChanged(trackName)
+				end
 				
 				return self
 			end,
@@ -176,6 +188,11 @@ return {
 			
 			setVisible = function(self, visible)
 				self.visible = visible
+				if self.visible then
+					changeMusicTrack(musicNameField.selectedTrack)
+				else
+					changeMusicTrack("constructionSet")
+				end
 			end,
 			
 			showMusicList = function(self)
