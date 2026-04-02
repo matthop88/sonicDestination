@@ -17,6 +17,10 @@ end
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
 local MUSIC_MANAGER  = requireRelative("music/musicManager"):create()
 
+PROP_LOADER:notifyOnChange(SOUND_MANAGER)
+PROP_LOADER:notifyOnChange(MUSIC_MANAGER)
+PROP_LOADER:refresh()
+
 local WORLD     = requireRelative("world/world", { GRAPHICS = GRAPHICS, SOUND_MANAGER = SOUND_MANAGER, MUSIC_MANAGER = MUSIC_MANAGER })
 local SONIC     = requireRelative("sonic",       { GRAPHICS = GRAPHICS, WORLD = WORLD })
 
@@ -31,11 +35,9 @@ GLOBALS = requireRelative("globals"):create { player = SONIC, world = WORLD }
 --------------------------------------------------------------
 
 love.window.setTitle("Sonic Destination")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 1 })
 
 PROP_LOADER:notifyOnChange(SONIC)
-PROP_LOADER:notifyOnChange(SOUND_MANAGER)
-PROP_LOADER:notifyOnChange(MUSIC_MANAGER)
 
 WORLD:reset()
 
