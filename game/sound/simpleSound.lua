@@ -1,13 +1,14 @@
 return {
 	create = function(self, params)
 		return {
-			filename   = params.filename,
-			volume     = params.volume or 1,
-			startPoint = params.startPoint,
-            delay      = params.delay,
+			filename     = params.filename,
+			volume       = params.volume or 1,
+			startPoint   = params.startPoint,
+            delay        = params.delay,
+            volumeScalar = 1,
             
-            tracks     = { nil, nil, nil },
-           	trackIndex = 1,
+            tracks       = { nil, nil, nil },
+           	trackIndex   = 1,
 
             load = function(self)
                 if self:getSound() == nil then self:setSound(love.audio.newSource(relativePath("resources/sounds/") .. self.filename, "static"))
@@ -16,7 +17,7 @@ return {
 
             play = function(self)
                 self:load()
-                self:getSound():setVolume(self.volume)
+                self:getSound():setVolume(self.volume * self.volumeScalar)
                 self:getSound():play()
                 if self.startPoint then self:getSound():seek(self.startPoint, "samples") end
                 self:next()
@@ -27,6 +28,10 @@ return {
             next     = function(self)
                 self.trackIndex = self.trackIndex + 1
                 if self.trackIndex > #self.tracks then self.trackIndex = 1 end
+            end,
+
+            setVolumeScalar = function(self, volumeScalar)
+                self.volumeScalar = volumeScalar
             end,
         }
     end,
