@@ -3,7 +3,7 @@ local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
-local MUSIC_MANAGER  = requireRelative("music/musicManager"):create()
+local MUSIC_MANAGER
 local ORIGIN
 
 return {
@@ -38,6 +38,7 @@ return {
 
     init = function(self, params)
         GRAPHICS = params.GRAPHICS
+        MUSIC_MANAGER = params.MUSIC_MANAGER
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
