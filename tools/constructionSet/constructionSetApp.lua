@@ -1,4 +1,10 @@
 --------------------------------------------------------------
+--                    Global Variables                      --
+--------------------------------------------------------------
+
+MUSIC_MANAGER = require("game/music/musicManager"):create()
+
+--------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
 
@@ -29,9 +35,6 @@ local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):crea
 love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local MUSIC_DATA    = require("tools/constructionSet/data/music/bgMusicData")
-local MUSIC_ELEMENT = require("game/music/musicElement"):create(MUSIC_DATA, "Construction Set")
-
 local PROPERTIES    = {
     encode = function(self)
         local encoded = "  properties = {\n"
@@ -54,7 +57,7 @@ end
 function love.update(dt)
     STICKY_MOUSE:update(dt)
     MAP:update(dt)
-    MUSIC_ELEMENT:update(dt)
+    MUSIC_MANAGER:update(dt)
 end
 
 function love.keypressed(key)
@@ -142,7 +145,8 @@ PLUGINS = require("plugins/engine")
                 CHUNKS_PANEL:initChunkInfo("ghzChunks")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
                 
-                MUSIC_ELEMENT:play()
+                MUSIC_MANAGER:newTrack("constructionSet")
+                MUSIC_MANAGER:play()
 
                 if SHOW_DATA then
                     showData()
