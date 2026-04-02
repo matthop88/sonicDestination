@@ -3,11 +3,13 @@ local MUSIC_DATA = requireRelative("music/musicData")
 return {
 	create = function(self)
 		return {
-			tracks = {},
+			tracks       = {},
+			volumeScalar = 1,
 			
 			newTrack = function(self, trackName)
 				local musicElement = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
 				table.insert(self.tracks, musicElement)
+				musicElement:setVolumeScalar(self.volumeScalar)
 				return musicElement
 			end,
 			
@@ -40,6 +42,15 @@ return {
 					track:stop()
 				end
 				self.tracks = {}
+			end,
+
+			onPropertyChange = function(self, propData)
+				if propData.volume and propData.volume.music then
+					self.volumeScalar = propData.volume.music
+					for _, track in ipairs(self.tracks) do
+						track:setVolumeScalar(self.volumeScalar)
+					end
+				end
 			end,
 		}
 	end,
