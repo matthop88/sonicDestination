@@ -18,6 +18,7 @@ return {
 			musicInfo      = musicInfo,
 			musicPath      = musicPath,
 			volume         = musicInfo.volume         or 0.5,
+			volumeScalar   = 1,
 			startPoint     = musicInfo.startPoint     or 0,
 			endPoint       = nil,
 			loopStartPoint = musicInfo.loopStartPoint or 0,
@@ -117,7 +118,16 @@ return {
 			
 			setVolume = function(self, volume)
 				self.volume = volume
-				self.audioSource:setVolume(volume)
+				self.audioSource:setVolume(volume * self.volumeScalar)
+			end,
+
+			setVolumeScalar = function(self, volumeScalar)
+				self.volumeScalar = volumeScalar
+				self:refreshVolume()
+			end,
+
+			refreshVolume = function(self)
+				self:setVolume(self.volume)
 			end,
 		
 		}):init()
