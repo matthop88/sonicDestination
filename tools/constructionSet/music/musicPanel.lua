@@ -1,10 +1,88 @@
 local COLOR = require("tools/lib/colors")
 
+local createMusicNameField = function(params)
+	return {
+		x = params.x,
+		y = params.y,
+		width = params.width,
+		height = params.height or 50,
+		selectedTrack = params.selectedTrack or "None",
+		hovered = false,
+		
+		draw = function(self)
+			-- Draw field background
+			if self.hovered then
+				love.graphics.setColor(COLOR.LIGHTER_GREY)
+			else
+				love.graphics.setColor(COLOR.MEDIUM_DARK_GREY)
+			end
+			love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+			love.graphics.setColor(COLOR.PURE_WHITE)
+			love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+			
+			-- Draw selected track name
+			love.graphics.setColor(COLOR.PURE_WHITE)
+			local fieldFont = love.graphics.newFont(20)
+			love.graphics.setFont(fieldFont)
+			love.graphics.printf(self.selectedTrack, self.x + 10, self.y + 15, self.width - 20, "left")
+		end,
+		
+		update = function(self, mx, my)
+			self.hovered = self:containsPoint(mx, my)
+		end,
+		
+		containsPoint = function(self, mx, my)
+			return mx >= self.x and mx <= self.x + self.width and
+			       my >= self.y and my <= self.y + self.height
+		end,
+		
+		setSelectedTrack = function(self, track)
+			self.selectedTrack = track
+		end,
+	}
+end
+
+local createOkButton = function(params)
+	return {
+		x = params.x,
+		y = params.y,
+		width = params.width or 100,
+		height = params.height or 40,
+		hovered = false,
+		cornerRadius = 10,
+		
+		draw = function(self)
+			if self.hovered then
+				love.graphics.setColor(COLOR.MEDIUM_GREY)
+			else
+				love.graphics.setColor(COLOR.MEDIUM_DARK_GREY)
+			end
+			love.graphics.rectangle("fill", self.x, self.y, self.width, self.height, self.cornerRadius, self.cornerRadius)
+			love.graphics.setColor(COLOR.PURE_WHITE)
+			love.graphics.rectangle("line", self.x, self.y, self.width, self.height, self.cornerRadius, self.cornerRadius)
+			
+			-- Draw OK text
+			love.graphics.printf("OK", self.x, self.y + 10, self.width, "center")
+		end,
+		
+		update = function(self, mx, my)
+			self.hovered = self:containsPoint(mx, my)
+		end,
+		
+		containsPoint = function(self, mx, my)
+			return mx >= self.x and mx <= self.x + self.width and
+			       my >= self.y and my <= self.y + self.height
+		end,
+	}
+end
+
 return {
 	create = function(self, params)
 		local selectedTrack = params.initialTrack or "None"
 		local onTrackChanged = params.onTrackChanged
 		local musicList = nil
+		local musicNameField = nil
+		local okButton = nil
 		
 		return ({
 			x = params.x or 300,
@@ -13,105 +91,72 @@ return {
 			height = params.height or 300,
 			visible = false,
 			
-			-- Field properties
-			fieldX = 0,
-			fieldY = 0,
-			fieldWidth = 0,
-			fieldHeight = 50,
-			
-			-- OK button properties
-			okButtonWidth = 100,
-			okButtonHeight = 40,
-			okButtonHovered = false,
-			
 			init = function(self)
-				self.fieldX = self.x + 20
-				self.fieldY = self.y + 80
-				self.fieldWidth = self.width - 40
+				-- Create music name field
+				musicNameField = createMusicNameField {
+					x = self.x + 20,
+					y = self.y + 80,
+					width = self.width - 40,
+					height = 50,
+					selectedTrack = selectedTrack,
+				}
+				
+				-- Create OK button
+				okButton = createOkButton {
+					x = self.x + self.width - 120,
+					y = self.y + self.height - 60,
+					width = 100,
+					height = 40,
+				}
+				
 				return self
 			end,
-			
+		
 			draw = function(self)
 				if not self.visible then return end
 				
-				-- Draw panel background
-				love.graphics.setColor(0.2, 0.2, 0.2)
+				self:drawPanelBackground()
+				self:drawTitle()
+				musicNameField:draw()
+				okButton:draw()
+			end,
+			
+			drawPanelBackground = function(self)
+				love.graphics.setColor(COLOR.DARK_GREY)
 				love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
-				love.graphics.setColor(1, 1, 1)
+				love.graphics.setColor(COLOR.PURE_WHITE)
 				love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
-				
-				-- Draw title
-				love.graphics.setColor(1, 1, 1)
+			end,
+			
+			drawTitle = function(self)
+				love.graphics.setColor(COLOR.PURE_WHITE)
 				local font = love.graphics.newFont(24)
 				love.graphics.setFont(font)
 				love.graphics.printf("Select Music Track", self.x, self.y + 20, self.width, "center")
-				
-				-- Draw field
-				love.graphics.setColor(0.3, 0.3, 0.3)
-				love.graphics.rectangle("fill", self.fieldX, self.fieldY, self.fieldWidth, self.fieldHeight)
-				love.graphics.setColor(1, 1, 1)
-				love.graphics.rectangle("line", self.fieldX, self.fieldY, self.fieldWidth, self.fieldHeight)
-				
-				-- Draw selected track name
-				love.graphics.setColor(1, 1, 1)
-				local fieldFont = love.graphics.newFont(20)
-				love.graphics.setFont(fieldFont)
-				love.graphics.printf(selectedTrack, self.fieldX + 10, self.fieldY + 15, self.fieldWidth - 20, "left")
-				
-				-- Draw OK button
-				local okX = self.x + self.width - self.okButtonWidth - 20
-				local okY = self.y + self.height - self.okButtonHeight - 20
-				
-				if self.okButtonHovered then
-					love.graphics.setColor(0.5, 0.5, 0.5)
-				else
-					love.graphics.setColor(0.3, 0.3, 0.3)
-				end
-				love.graphics.rectangle("fill", okX, okY, self.okButtonWidth, self.okButtonHeight)
-				love.graphics.setColor(1, 1, 1)
-				love.graphics.rectangle("line", okX, okY, self.okButtonWidth, self.okButtonHeight)
-				
-				-- Draw OK text
-				love.graphics.printf("OK", okX, okY + 10, self.okButtonWidth, "center")
 			end,
 			
 			update = function(self, dt)
 				if not self.visible then return end
 				
-				-- Update OK button hover state
 				local mx, my = love.mouse.getPosition()
-				local okX = self.x + self.width - self.okButtonWidth - 20
-				local okY = self.y + self.height - self.okButtonHeight - 20
-				self.okButtonHovered = mx >= okX and mx <= okX + self.okButtonWidth and
-									   my >= okY and my <= okY + self.okButtonHeight
+				musicNameField:update(mx, my)
+				okButton:update(mx, my)
 			end,
 			
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
-				-- If music list is visible, don't consume the event
 				if musicList and musicList:isVisible() then
 					return false
 				end
 				
-				-- Check if clicked inside panel
-				if mx >= self.x and mx <= self.x + self.width and
-				   my >= self.y and my <= self.y + self.height then
-					
-					-- Check if clicked on field
-					if mx >= self.fieldX and mx <= self.fieldX + self.fieldWidth and
-					   my >= self.fieldY and my <= self.fieldY + self.fieldHeight then
+				if self:containsPoint(mx, my) then
+					if musicNameField:containsPoint(mx, my) then
 						self:showMusicList()
-						return true
 					end
 					
-					-- Check if clicked on OK button
-					local okX = self.x + self.width - self.okButtonWidth - 20
-					local okY = self.y + self.height - self.okButtonHeight - 20
-					if mx >= okX and mx <= okX + self.okButtonWidth and
-					   my >= okY and my <= okY + self.okButtonHeight then
+					if okButton:containsPoint(mx, my) then
 						self:setVisible(false)
-						return true
 					end
 					
 					return true
@@ -120,13 +165,13 @@ return {
 				return false
 			end,
 			
+			containsPoint = function(self, mx, my)
+				return mx >= self.x and mx <= self.x + self.width and
+				       my >= self.y and my <= self.y + self.height
+			end,
+			
 			handleMouseReleased = function(self, mx, my)
-				if not self.visible then return end
-				
-				-- If music list is visible, don't consume the event
-				if musicList and musicList:isVisible() then
-					return
-				end
+				-- Do nothing
 			end,
 			
 			setVisible = function(self, visible)
@@ -136,14 +181,15 @@ return {
 			showMusicList = function(self)
 				if not musicList then
 					musicList = require("tools/constructionSet/music/musicList"):create {
-						x = self.fieldX,
-						y = self.fieldY + self.fieldHeight,
-						width = self.fieldWidth,
+						x = musicNameField.x,
+						y = musicNameField.y + musicNameField.height,
+						width = musicNameField.width,
 						height = 400,
 						fontSize = 24,
 						scrollSpeed = 1200,
 						onMusicTrackSelected = function(item, index)
 							selectedTrack = item or "None"
+							musicNameField:setSelectedTrack(selectedTrack)
 							if onTrackChanged then
 								onTrackChanged(selectedTrack)
 							end
