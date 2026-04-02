@@ -1,4 +1,4 @@
-local SOUND_DATA = require("tools/soundGraph/data/soundData")
+local SOUND_DATA = require("game/sound/soundData")
 local MUSIC_DATA = require("game/music/musicData")
 
 return {
@@ -28,8 +28,10 @@ return {
 		local soundLabels = {}
 		
 		for soundKey, soundInfo in pairs(SOUND_DATA) do
-			table.insert(soundLabels, soundInfo.label)
-			labelToKeyMap[soundInfo.label] = soundKey
+			if soundInfo.label then
+				table.insert(soundLabels, soundInfo.label)
+				labelToKeyMap[soundInfo.label] = soundKey
+			end
 		end
 		table.sort(soundLabels)
 		
