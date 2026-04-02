@@ -1,17 +1,17 @@
 local BASE_PATH = relativePath("resources/music/")
 
-local findByTrackName = function(musicData, trackName)
+local findByLabelOrKey = function(musicData, labelOrKey)
 	for k, v in pairs(musicData) do
-		if v.label == trackName then
+		if v.label == labelOrKey or k == labelOrKey then
 			return v
 		end
 	end
 end
 
 return {
-	create = function(self, musicData, trackName)
+	create = function(self, musicData, labelOrKey)
 
-		local musicInfo = findByTrackName(musicData, trackName)
+		local musicInfo = findByLabelOrKey(musicData, labelOrKey)
 		local musicPath = BASE_PATH .. musicInfo.filename
 		
 		return ({
@@ -33,8 +33,6 @@ return {
 				self.endPoint     = self.musicInfo.endPoint     or (self:getSampleCount() - 1)
 				self.loopEndPoint = self.musicInfo.loopEndPoint or (self:getSampleCount() - 1)
 
-				print("Loop End Point: ", self.loopEndPoint)
-				print("Loop Start Point: ", self.loopStartPoint)
 				return self
 			end,
 
