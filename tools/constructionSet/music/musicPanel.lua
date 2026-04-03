@@ -1,4 +1,5 @@
 local COLOR = require("tools/lib/colors")
+local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
 
 local createMusicNameField = function(params)
 	return {
@@ -79,6 +80,8 @@ local changeMusicTrack = function(trackName)
 	MUSIC_MANAGER:clear()
 	if trackName ~= "None" then
 		MUSIC_MANAGER:newTrack(trackName)
+		local volume = getProperties().musicVolume or 1.0
+		MUSIC_MANAGER:setVolume(volume)
 		MUSIC_MANAGER:play()
 	end
 end	
@@ -90,21 +93,43 @@ return {
 		local musicList = nil
 		local musicNameField = nil
 		local okButton = nil
+		local volumeSlider = nil
 		
 		return ({
 			x = params.x or 300,
 			y = params.y or 250,
-			width = params.width or 600,
-			height = params.height or 300,
+			width = params.width or 750,
+			height = params.height or 400,
 			visible = false,
 			
 			init = function(self)
 				musicNameField = createMusicNameField {
 					x = self.x + 20,
 					y = self.y + 80,
-					width = self.width - 40,
+					width = self.width - 110,
 					height = 50,
 					selectedTrack = selectedTrack,
+				}
+				
+				volumeSlider = verticalSliderPane:create {
+					x = self.x + self.width - 70,
+					y = self.y + 60,
+					width = 60,
+					height = self.height - 140,
+					title = "Volume",
+					minValue = 0,
+					maxValue = 1,
+					quantize = 0.1,
+					titleFontSize = 14,
+					labelFontSize = 16,
+					showLabels = false,
+					getValue = function()
+						return getProperties().musicVolume or 1.0
+					end,
+					setValue = function(value)
+						getProperties().musicVolume = value
+						MUSIC_MANAGER:setVolume(value)
+					end,
 				}
 				
 				okButton = createOkButton {
@@ -113,9 +138,9 @@ return {
 					width = 100,
 					height = 40,
 				}
-
+	
 				local oldOnTrackChanged = onTrackChanged
-
+	
 				onTrackChanged = function(trackName)
 					changeMusicTrack(trackName)
 					oldOnTrackChanged(trackName)
@@ -123,13 +148,14 @@ return {
 				
 				return self
 			end,
-		
+			
 			draw = function(self)
 				if not self.visible then return end
 				
 				self:drawPanelBackground()
 				self:drawTitle()
 				musicNameField:draw()
+				volumeSlider:draw()
 				okButton:draw()
 			end,
 			
@@ -153,13 +179,18 @@ return {
 				local mx, my = love.mouse.getPosition()
 				musicNameField:update(mx, my)
 				okButton:update(mx, my)
+				volumeSlider:update(dt)
 			end,
-			
+				
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
 				if musicList and musicList:isVisible() then
 					return false
+				end
+				
+				if volumeSlider:handleMousePressed(mx, my) then
+					return true
 				end
 				
 				if self:containsPoint(mx, my) then
@@ -181,9 +212,9 @@ return {
 				return mx >= self.x and mx <= self.x + self.width and
 				       my >= self.y and my <= self.y + self.height
 			end,
-			
+				
 			handleMouseReleased = function(self, mx, my)
-				-- Do nothing
+				volumeSlider:handleMouseReleased()
 			end,
 			
 			setVisible = function(self, visible)
