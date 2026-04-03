@@ -37,7 +37,7 @@ return {
 
 			drawAt = function(self, GRAFX, x, y, sX, sY, xScale)
 				local frame = self.currentFrame:get()
-				if frame.QUAD then
+				if frame and frame.QUAD then
 					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * sX * xScale), y - (frame.offset.y * sY), 0, sX * xScale, sY)
 				end
 			end,
