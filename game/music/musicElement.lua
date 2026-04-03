@@ -25,7 +25,8 @@ return {
 			loopEndPoint   = nil,  
 			musicData      = love.sound.newSoundData(musicPath),
 			audioSource    = nil,
-
+			delay          = 0,
+			
 			init = function(self)
 				self.audioSource = love.audio.newSource(self.musicData)
 				
@@ -72,15 +73,22 @@ return {
 			end,
 
 			play = function(self)
-				self.audioSource:play()
+				if self.delay == 0 then
+					self.audioSource:play()
+					self.playTimer = nil
+				else
+					self.playTimer = 0
+				end
 			end,
 			
 			stop = function(self)
 				self.audioSource:stop()
+				self.playTimer = nil
 			end,
 			
 			pause = function(self)
 				self.audioSource:pause()
+				self.playTimer = nil
 			end,
 
 			checkEndpointReached = function(self)
@@ -107,6 +115,13 @@ return {
 			end,
 			
 			update = function(self, dt)
+				if self.playTimer then 
+					self.playTimer = self.playTimer + dt
+					if self.playTimer >= self.delay then
+						self.audioSource:play()
+						self.playTimer = nil
+					end
+				end
 				if self:checkLoopEndReached() then
 					self:initiateLoop()
 				elseif self:checkEndpointReached() then
@@ -114,24 +129,39 @@ return {
 				end
 			end,
 			
-			setVolume = function(self, volume)
-				self.volume = volume
-				self.audioSource:setVolume(volume * self.volumeScalar)
+			getVolume = function(self)
+				local volume = self.volume
+				if self.volumeFn then volume = self.volumeFn() end
+				return volume
 			end,
 
-		setVolumeScalar = function(self, volumeScalar)
-			self.volumeScalar = volumeScalar
-			self:refreshVolume()
-		end,
+			setVolume = function(self, volume)
+				self.volume = volume
+				self:refreshVolume()
+			end,
 
-		refreshVolume = function(self)
-			self:setVolume(self.volume)
-		end,
-		
-		setPitch = function(self, pitch)
-			self.audioSource:setPitch(pitch)
-		end,
+			setVolumeFn = function(self, volumeFn)
+				self.volumeFn = volumeFn
+				self:refreshVolume()
+			end,
+
+			setVolumeScalar = function(self, volumeScalar)
+				self.volumeScalar = volumeScalar
+				self:refreshVolume()
+			end,
+
+			refreshVolume = function(self)
+				self.audioSource:setVolume(self:getVolume() * self.volumeScalar)
+			end,
+			
+			setPitch = function(self, pitch)
+				self.audioSource:setPitch(pitch)
+			end,
+
+			setDelay = function(self, delay)
+				self.delay = delay
+			end,
 	
-	}):init()
+		}):init()
 	end,
 }
