@@ -46,6 +46,9 @@ return {
 			if mapData.properties.musicPitch then
 				getProperties().musicPitch = mapData.properties.musicPitch
 			end
+			if mapData.properties.musicEffect then
+				getProperties().musicEffect = mapData.properties.musicEffect
+			end
 		end
 	end,
 
