@@ -81,7 +81,9 @@ local changeMusicTrack = function(trackName)
 	if trackName ~= "None" then
 		MUSIC_MANAGER:newTrack(trackName)
 		local volume = getProperties().musicVolume or 1.0
+		local pitch = getProperties().musicPitch or 1.0
 		MUSIC_MANAGER:setVolume(volume)
+		MUSIC_MANAGER:setPitch(pitch)
 		MUSIC_MANAGER:play()
 	end
 end	
@@ -94,11 +96,12 @@ return {
 		local musicNameField = nil
 		local okButton = nil
 		local volumeSlider = nil
+		local pitchSlider = nil
 		
 		return ({
 			x = params.x or 300,
 			y = params.y or 250,
-			width = params.width or 750,
+			width = params.width or 830,
 			height = params.height or 400,
 			visible = false,
 			
@@ -106,13 +109,13 @@ return {
 				musicNameField = createMusicNameField {
 					x = self.x + 20,
 					y = self.y + 80,
-					width = self.width - 110,
+					width = self.width - 190,
 					height = 50,
 					selectedTrack = selectedTrack,
 				}
 				
 				volumeSlider = verticalSliderPane:create {
-					x = self.x + self.width - 70,
+					x = self.x + self.width - 150,
 					y = self.y + 60,
 					width = 60,
 					height = self.height - 140,
@@ -132,6 +135,27 @@ return {
 					end,
 				}
 				
+				pitchSlider = verticalSliderPane:create {
+					x = self.x + self.width - 70,
+					y = self.y + 60,
+					width = 60,
+					height = self.height - 140,
+					title = "Pitch",
+					minValue = 0.5,
+					maxValue = 2.0,
+					quantize = 0.1,
+					titleFontSize = 14,
+					labelFontSize = 16,
+					showLabels = false,
+					getValue = function()
+						return getProperties().musicPitch or 1.0
+					end,
+					setValue = function(value)
+						getProperties().musicPitch = value
+						MUSIC_MANAGER:setPitch(value)
+					end,
+				}
+				
 				okButton = createOkButton {
 					x = self.x + self.width - 120,
 					y = self.y + self.height - 60,
@@ -148,7 +172,7 @@ return {
 				
 				return self
 			end,
-			
+				
 			draw = function(self)
 				if not self.visible then return end
 				
@@ -156,6 +180,7 @@ return {
 				self:drawTitle()
 				musicNameField:draw()
 				volumeSlider:draw()
+				pitchSlider:draw()
 				okButton:draw()
 			end,
 			
@@ -172,7 +197,7 @@ return {
 				love.graphics.setFont(font)
 				love.graphics.printf("Select Music Track", self.x, self.y + 20, self.width, "center")
 			end,
-			
+				
 			update = function(self, dt)
 				if not self.visible then return end
 				
@@ -180,8 +205,9 @@ return {
 				musicNameField:update(mx, my)
 				okButton:update(mx, my)
 				volumeSlider:update(dt)
+				pitchSlider:update(dt)
 			end,
-				
+					
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
@@ -190,6 +216,10 @@ return {
 				end
 				
 				if volumeSlider:handleMousePressed(mx, my) then
+					return true
+				end
+				
+				if pitchSlider:handleMousePressed(mx, my) then
 					return true
 				end
 				
@@ -212,9 +242,10 @@ return {
 				return mx >= self.x and mx <= self.x + self.width and
 				       my >= self.y and my <= self.y + self.height
 			end,
-				
+					
 			handleMouseReleased = function(self, mx, my)
 				volumeSlider:handleMouseReleased()
+				pitchSlider:handleMouseReleased()
 			end,
 			
 			setVisible = function(self, visible)
