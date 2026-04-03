@@ -11,19 +11,29 @@ return {
 			minValue = params.minValue or 0,
 			maxValue = params.maxValue or 1,
 			quantize = params.quantize or 0.1,
+			titleFontSize = params.titleFontSize or 16,
+			labelFontSize = params.labelFontSize or 20,
+			showLabels = params.showLabels == nil and true or params.showLabels,
 			getValue = params.getValue,
 			setValue = params.setValue,
 			isDragging = false,
-			
+				
 			init = function(self)
 				self.padding = 15
 				self.sliderWidth = 30
 				self.trackX = self.x + self.padding + self.sliderWidth / 2
-				self.trackY = self.y + 50
-				self.trackHeight = self.height - 80
+				
+				if self.showLabels then
+					self.trackY = self.y + 50
+					self.trackHeight = self.height - 80
+				else
+					self.trackY = self.y + 60
+					self.trackHeight = self.height - 90
+				end
+				
 				self.thumbHeight = 12
-				self.titleFont = love.graphics.newFont(16)
-				self.labelFont = love.graphics.newFont(20)
+				self.titleFont = love.graphics.newFont(self.titleFontSize)
+				self.labelFont = love.graphics.newFont(self.labelFontSize)
 				return self
 			end,
 			
@@ -69,25 +79,35 @@ return {
 				love.graphics.setColor(COLOR.JET_BLACK)
 				love.graphics.rectangle("line", self.x + self.padding + 2, thumbY - self.thumbHeight/2, self.sliderWidth - 4, self.thumbHeight)
 			end,
-				
+					
 			drawLabels = function(self)
 				love.graphics.setFont(self.labelFont)
 				
 				local currentValue = self.getValue and self.getValue() or self.minValue
-				local numSteps = math.floor((self.maxValue - self.minValue) / self.quantize)
 				
-				for i = 0, numSteps do
-					local value = self.minValue + (i * self.quantize)
-					local labelY = self:valueToY(value)
-					local label = string.format("%.1f", value)
+				if self.showLabels then
+					local numSteps = math.floor((self.maxValue - self.minValue) / self.quantize)
 					
-					if math.abs(value - currentValue) < 0.01 then
-						love.graphics.setColor(COLOR.YELLOW)
-					else
-						love.graphics.setColor(COLOR.MEDIUM_LIGHT_GREY)
+					for i = 0, numSteps do
+						local value = self.minValue + (i * self.quantize)
+						local labelY = self:valueToY(value)
+						local label = string.format("%.1f", value)
+						
+						if math.abs(value - currentValue) < 0.01 then
+							love.graphics.setColor(COLOR.YELLOW)
+						else
+							love.graphics.setColor(COLOR.MEDIUM_LIGHT_GREY)
+						end
+						
+						love.graphics.print(label, self.x + self.padding + self.sliderWidth + 15, labelY - 10)
 					end
-					
-					love.graphics.print(label, self.x + self.padding + self.sliderWidth + 15, labelY - 10)
+				else
+					love.graphics.setColor(COLOR.YELLOW)
+					local label = string.format("%.1f", currentValue)
+					local labelWidth = self.labelFont:getWidth(label)
+					local labelX = self.x + (self.width - labelWidth) / 2
+					local labelY = self.y + 35
+					love.graphics.print(label, labelX, labelY)
 				end
 			end,
 				
