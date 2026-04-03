@@ -119,15 +119,19 @@ return {
 				self.audioSource:setVolume(volume * self.volumeScalar)
 			end,
 
-			setVolumeScalar = function(self, volumeScalar)
-				self.volumeScalar = volumeScalar
-				self:refreshVolume()
-			end,
+		setVolumeScalar = function(self, volumeScalar)
+			self.volumeScalar = volumeScalar
+			self:refreshVolume()
+		end,
 
-			refreshVolume = function(self)
-				self:setVolume(self.volume)
-			end,
+		refreshVolume = function(self)
+			self:setVolume(self.volume)
+		end,
 		
-		}):init()
+		setPitch = function(self, pitch)
+			self.audioSource:setPitch(pitch)
+		end,
+	
+	}):init()
 	end,
 }
