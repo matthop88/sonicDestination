@@ -11,6 +11,7 @@ return {
 	LIGHTER_GREY      = { 0.4,  0.4,  0.4       },
 	TRANSPARENT_BLACK = { 0,    0,    0,    0.5 },
 	LIGHT_GREY        = { 0.75, 0.75, 0.75      },
+	MEDIUM_LIGHT_GREY = { 0.7,  0.7,  0.7       },
 	MEDIUM_GREY       = { 0.5,  0.5,  0.5       },
 	RED               = { 1,    0,    0         },
 	YELLOW            = { 1,    1,    0         },
