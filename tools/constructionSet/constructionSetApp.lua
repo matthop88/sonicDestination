@@ -19,6 +19,7 @@ local MAP             = require("tools/constructionSet/engine/map"):create { gra
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
 local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17 })
 local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
+local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 68, 69, 70, 71, 72, 4, 8 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
@@ -162,6 +163,7 @@ PLUGINS = require("plugins/engine")
             callback = function() 
                 CHUNKS_PANEL:initChunkInfo("ghzChunks")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
+                CHUNKS_3_PANEL:initChunkInfo("scdCCPastChunksOrig")
                 
                 MUSIC_MANAGER:newTrack("constructionSet")
                 MUSIC_MANAGER:play()
@@ -196,7 +198,7 @@ PLUGINS = require("plugins/engine")
     :add("tabbedPane",
     { 
         TABS = { 
-             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL  }, },
+             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL, CHUNKS_3_PANEL,  }, },
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
              { label = "Player",  panel = require("tools/constructionSet/panels/multiPanel"):create { PLAYER_PANEL, PLAYER_2_PANEL }, },
