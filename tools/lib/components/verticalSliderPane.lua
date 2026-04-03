@@ -79,11 +79,12 @@ return {
 				love.graphics.setColor(COLOR.JET_BLACK)
 				love.graphics.rectangle("line", self.x + self.padding + 2, thumbY - self.thumbHeight/2, self.sliderWidth - 4, self.thumbHeight)
 			end,
-					
+						
 			drawLabels = function(self)
 				love.graphics.setFont(self.labelFont)
 				
 				local currentValue = self.getValue and self.getValue() or self.minValue
+				local formatString = self.quantize < 0.1 and "%.2f" or "%.1f"
 				
 				if self.showLabels then
 					local numSteps = math.floor((self.maxValue - self.minValue) / self.quantize)
@@ -91,7 +92,7 @@ return {
 					for i = 0, numSteps do
 						local value = self.minValue + (i * self.quantize)
 						local labelY = self:valueToY(value)
-						local label = string.format("%.1f", value)
+						local label = string.format(formatString, value)
 						
 						if math.abs(value - currentValue) < 0.01 then
 							love.graphics.setColor(COLOR.YELLOW)
@@ -103,7 +104,7 @@ return {
 					end
 				else
 					love.graphics.setColor(COLOR.YELLOW)
-					local label = string.format("%.1f", currentValue)
+					local label = string.format(formatString, currentValue)
 					local labelWidth = self.labelFont:getWidth(label)
 					local labelX = self.x + (self.width - labelWidth) / 2
 					local labelY = self.y + 35
