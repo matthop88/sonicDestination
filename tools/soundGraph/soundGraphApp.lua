@@ -18,12 +18,23 @@ local SOUND_VIEW = require("tools/soundGraph/soundView"):create {
 	infoPaneHeight = INFO_PANE_HEIGHT,
 }
 
-local VOLUME_PANE = require("tools/soundGraph/volumePane"):create {
+local VOLUME_PANE = require("tools/lib/components/verticalSliderPane"):create {
 	x = 1280,
 	y = 0,
 	width = 120,
 	height = WINDOW_HEIGHT,
+	title = "Volume",
+	minValue = 0,
+	maxValue = 1,
 	quantize = 0.1,
+	getValue = function()
+		return SOUND_OBJECT and SOUND_OBJECT.volume or 0
+	end,
+	setValue = function(value)
+		if SOUND_OBJECT then
+			SOUND_OBJECT:setVolume(value)
+		end
+	end,
 }
 
 local SOUND_LIST = require("tools/soundGraph/soundList"):create {
@@ -43,7 +54,6 @@ local SOUND_LIST = require("tools/soundGraph/soundList"):create {
 		SOUND_OBJECT = soundObject
 		print("Analysis coroutine created")
 		SOUND_VIEW:refresh(SOUND_OBJECT, 64, 100)
-		VOLUME_PANE:setSoundObject(SOUND_OBJECT)
 	end,
 }
 
