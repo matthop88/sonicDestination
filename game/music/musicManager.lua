@@ -6,11 +6,26 @@ return {
 			tracks       = {},
 			volumeScalar = 1,
 			
-			newTrack = function(self, trackName)
+			newTrack = function(self, trackName, effectName)
+				if effectName == "Reverb" then
+					self:newReverbTrack(trackName)
+				else
+					local musicElement = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
+					table.insert(self.tracks, musicElement)
+					musicElement:setVolumeScalar(self.volumeScalar)
+					return musicElement
+				end
+			end,
+
+			newReverbTrack = function(self, trackName)
 				local musicElement = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
-				table.insert(self.tracks, musicElement)
 				musicElement:setVolumeScalar(self.volumeScalar)
-				return musicElement
+				table.insert(self.tracks, musicElement)
+				local musicElementEcho = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
+				musicElementEcho:setDelay(0.3)
+				musicElementEcho:setVolumeFn(function() return musicElement:getVolume() * 0.5 end)
+				musicElementEcho:setVolumeScalar(self.volumeScalar)
+				table.insert(self.tracks, musicElementEcho)
 			end,
 			
 			play = function(self)
