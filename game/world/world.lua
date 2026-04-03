@@ -67,7 +67,6 @@ return {
     end,
 
     refreshMusic = function(self)
-        print("[world] refreshMusic() called")
         local map = TERRAIN:getMapData()
 
         if map.properties and map.properties.music then
