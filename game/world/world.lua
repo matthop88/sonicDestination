@@ -67,11 +67,18 @@ return {
     end,
 
     refreshMusic = function(self)
+        print("[world] refreshMusic() called")
         local map = TERRAIN:getMapData()
 
         if map.properties and map.properties.music then
             MUSIC_MANAGER:clear()
-            MUSIC_MANAGER:newTrack(map.properties.music, map.properties.musicEffect)
+            MUSIC_MANAGER:newTrack(
+                map.properties.music, 
+                map.properties.musicEffect, 
+                map.properties.musicDelay or 0.5, 
+                map.properties.musicStrength or 0.5,
+                map.properties.musicEchoCount or 6
+            )
             
             local volume = map.properties.musicVolume or 1.0
             local pitch = map.properties.musicPitch or 1.0
