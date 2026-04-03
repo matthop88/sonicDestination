@@ -43,7 +43,14 @@ return {
 				end
 				self.tracks = {}
 			end,
-
+			
+			setVolume = function(self, volume)
+				self.volumeScalar = volume
+				for _, track in ipairs(self.tracks) do
+					track:setVolume(volume)
+				end
+			end,
+	
 			onPropertyChange = function(self, propData)
 				if propData.volume and propData.volume.music then
 					self.volumeScalar = propData.volume.music
