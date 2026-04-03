@@ -72,6 +72,12 @@ return {
         if map.properties and map.properties.music then
             MUSIC_MANAGER:clear()
             MUSIC_MANAGER:newTrack(map.properties.music)
+            
+            local volume = map.properties.musicVolume or 1.0
+            local pitch = map.properties.musicPitch or 1.0
+            MUSIC_MANAGER:setVolume(volume)
+            MUSIC_MANAGER:setPitch(pitch)
+            
             MUSIC_MANAGER:play()
         end
     end,
