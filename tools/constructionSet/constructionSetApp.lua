@@ -41,6 +41,12 @@ local PROPERTIES    = {
         if self.music then
             encoded = encoded .. "      music = \"" .. self.music .. "\",\n"
         end
+        if self.musicVolume then
+            encoded = encoded .. "      musicVolume = " .. self.musicVolume .. ",\n"
+        end
+        if self.musicPitch then
+            encoded = encoded .. "      musicPitch = " .. self.musicPitch .. ",\n"
+        end
         encoded = encoded .. "  },\n"
 
         return encoded
