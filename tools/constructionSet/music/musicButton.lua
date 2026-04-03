@@ -61,7 +61,7 @@ return {
 					musicPanel = require("tools/constructionSet/music/musicPanel"):create {
 						x = 300,
 						y = 250,
-						width = 750,
+						width = 830,
 						height = 400,
 						initialTrack = getProperties().music or "None",
 						onTrackChanged = function(trackName)
