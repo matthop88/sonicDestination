@@ -1,13 +1,14 @@
 local COLOR = require("tools/lib/colors")
 local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
 
-local createMusicNameField = function(params)
+local createField = function(params)
 	return {
 		x = params.x,
 		y = params.y,
 		width = params.width,
 		height = params.height or 50,
-		selectedTrack = params.selectedTrack or "None",
+		label = params.label or "",
+		selectedValue = params.selectedValue or "None",
 		hovered = false,
 		
 		draw = function(self)
@@ -21,11 +22,18 @@ local createMusicNameField = function(params)
 			love.graphics.setColor(COLOR.PURE_WHITE)
 			love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 			
-			-- Draw selected track name
+			-- Draw label and selected value
 			love.graphics.setColor(COLOR.PURE_WHITE)
 			local fieldFont = love.graphics.newFont(20)
 			love.graphics.setFont(fieldFont)
-			love.graphics.printf(self.selectedTrack, self.x + 10, self.y + 15, self.width - 20, "left")
+			
+			if self.label and self.label ~= "" then
+				love.graphics.print(self.label .. ":", self.x + 10, self.y + 15)
+				local labelWidth = fieldFont:getWidth(self.label .. ": ")
+				love.graphics.print(self.selectedValue, self.x + 10 + labelWidth, self.y + 15)
+			else
+				love.graphics.printf(self.selectedValue, self.x + 10, self.y + 15, self.width - 20, "left")
+			end
 		end,
 		
 		update = function(self, mx, my)
@@ -37,10 +45,23 @@ local createMusicNameField = function(params)
 			       my >= self.y and my <= self.y + self.height
 		end,
 		
-		setSelectedTrack = function(self, track)
-			self.selectedTrack = track
+		setSelectedValue = function(self, value)
+			self.selectedValue = value
 		end,
 	}
+end
+
+local createMusicNameField = function(params)
+	params.label = ""
+	params.selectedValue = params.selectedTrack
+	local field = createField(params)
+	field.setSelectedTrack = function(self, track)
+		self:setSelectedValue(track)
+	end
+	field.getSelectedTrack = function(self)
+		return self.selectedValue
+	end
+	return field
 end
 
 local createOkButton = function(params)
@@ -87,13 +108,24 @@ local changeMusicTrack = function(trackName)
 		MUSIC_MANAGER:play()
 	end
 end	
+
+local resetMusicTrack = function()
+	MUSIC_MANAGER:clear()
+	MUSIC_MANAGER:newTrack("constructionSet")
+	MUSIC_MANAGER:setVolume(1.0)
+	MUSIC_MANAGER:setPitch(1.0)
+	MUSIC_MANAGER:play()
+end
 				
 return {
 	create = function(self, params)
 		local selectedTrack = params.initialTrack or "None"
+		local selectedEffect = getProperties().musicEffect or "None"
 		local onTrackChanged = params.onTrackChanged
 		local musicList = nil
+		local effectList = nil
 		local musicNameField = nil
+		local effectField = nil
 		local okButton = nil
 		local volumeSlider = nil
 		local pitchSlider = nil
@@ -102,9 +134,9 @@ return {
 			x = params.x or 300,
 			y = params.y or 250,
 			width = params.width or 830,
-			height = params.height or 400,
+			height = params.height or 450,
 			visible = false,
-			
+				
 			init = function(self)
 				musicNameField = createMusicNameField {
 					x = self.x + 20,
@@ -112,6 +144,15 @@ return {
 					width = self.width - 190,
 					height = 50,
 					selectedTrack = selectedTrack,
+				}
+					
+				effectField = createField {
+					x = self.x + 20,
+					y = self.y + 140,
+					width = self.width - 190,
+					height = 50,
+					label = "Effect",
+					selectedValue = selectedEffect,
 				}
 				
 				volumeSlider = verticalSliderPane:create {
@@ -172,13 +213,14 @@ return {
 				
 				return self
 			end,
-				
+					
 			draw = function(self)
 				if not self.visible then return end
 				
 				self:drawPanelBackground()
 				self:drawTitle()
 				musicNameField:draw()
+				effectField:draw()
 				volumeSlider:draw()
 				pitchSlider:draw()
 				okButton:draw()
@@ -197,21 +239,26 @@ return {
 				love.graphics.setFont(font)
 				love.graphics.printf("Select Music Track", self.x, self.y + 20, self.width, "center")
 			end,
-				
+					
 			update = function(self, dt)
 				if not self.visible then return end
 				
 				local mx, my = love.mouse.getPosition()
 				musicNameField:update(mx, my)
+				effectField:update(mx, my)
 				okButton:update(mx, my)
 				volumeSlider:update(dt)
 				pitchSlider:update(dt)
 			end,
-					
+						
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
 				if musicList and musicList:isVisible() then
+					return false
+				end
+				
+				if effectList and effectList:isVisible() then
 					return false
 				end
 				
@@ -226,6 +273,10 @@ return {
 				if self:containsPoint(mx, my) then
 					if musicNameField:containsPoint(mx, my) then
 						self:showMusicList()
+					end
+					
+					if effectField:containsPoint(mx, my) then
+						self:showEffectList()
 					end
 					
 					if okButton:containsPoint(mx, my) then
@@ -247,16 +298,16 @@ return {
 				volumeSlider:handleMouseReleased()
 				pitchSlider:handleMouseReleased()
 			end,
-			
+				
 			setVisible = function(self, visible)
 				self.visible = visible
 				if self.visible then
-					changeMusicTrack(musicNameField.selectedTrack)
+					changeMusicTrack(musicNameField:getSelectedTrack())
 				else
-					changeMusicTrack("constructionSet")
+					resetMusicTrack()
 				end
 			end,
-			
+				
 			showMusicList = function(self)
 				if not musicList then
 					musicList = require("tools/constructionSet/music/musicList"):create {
@@ -281,6 +332,29 @@ return {
 				end
 				
 				musicList:setVisible(true)
+			end,
+			
+			showEffectList = function(self)
+				if not effectList then
+					effectList = require("tools/constructionSet/music/effectList"):create {
+						x = effectField.x,
+						y = effectField.y + effectField.height,
+						width = effectField.width,
+						height = 150,
+						fontSize = 20,
+						onEffectSelected = function(item, index)
+							selectedEffect = item or "None"
+							effectField:setSelectedValue(selectedEffect)
+							getProperties().musicEffect = selectedEffect ~= "None" and selectedEffect or nil
+						end,
+					}
+					
+					if _G.getModals then
+						getModals():add(effectList)
+					end
+				end
+				
+				effectList:setVisible(true)
 			end,
 		}):init()
 	end,
