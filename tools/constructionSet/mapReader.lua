@@ -36,8 +36,16 @@ return {
 	end,
 
 	readMusicFromMap = function(self, mapData)
-		if mapData.properties and mapData.properties.music then
-			getProperties().music = mapData.properties.music
+		if mapData.properties then
+			if mapData.properties.music then
+				getProperties().music = mapData.properties.music
+			end
+			if mapData.properties.musicVolume then
+				getProperties().musicVolume = mapData.properties.musicVolume
+			end
+			if mapData.properties.musicPitch then
+				getProperties().musicPitch = mapData.properties.musicPitch
+			end
 		end
 	end,
 
