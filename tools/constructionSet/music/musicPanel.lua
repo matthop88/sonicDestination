@@ -1,5 +1,7 @@
 local COLOR = require("tools/lib/colors")
 local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
+local horizontalSlider = require("tools/lib/components/horizontalSlider")
+local echoCountList = require("tools/constructionSet/music/echoCountList")
 
 local createField = function(params)
 	return {
@@ -97,10 +99,10 @@ local createOkButton = function(params)
 	}
 end
 
-local changeMusicTrack = function(trackName, effectName)
+local changeMusicTrack = function(trackName, effectName, echoCount)
 	MUSIC_MANAGER:clear()
 	if trackName ~= "None" then
-		MUSIC_MANAGER:newTrack(trackName, effectName)
+		MUSIC_MANAGER:newTrack(trackName, effectName, getProperties().musicDelay or 0.5, getProperties().musicStrength or 0.5, echoCount or 6)
 		local volume = getProperties().musicVolume or 1.0
 		local pitch = getProperties().musicPitch or 1.0
 		MUSIC_MANAGER:setVolume(volume)
@@ -121,20 +123,27 @@ return {
 	create = function(self, params)
 		local selectedTrack = getProperties().music or "None"
 		local selectedEffect = getProperties().musicEffect or "None"
+		local selectedEchoCount = tostring(getProperties().musicEchoCount or 6)
+		local selectedDelay = getProperties().musicDelay or 0.5
+		local selectedStrength = getProperties().musicStrength or 0.5
 		local onTrackChanged = params.onTrackChanged
 		local musicList = nil
 		local effectList = nil
+		local echoCountList = nil
 		local musicNameField = nil
 		local effectField = nil
+		local echoCountField = nil
+		local delaySlider = nil
+		local strengthSlider = nil
 		local okButton = nil
 		local volumeSlider = nil
 		local pitchSlider = nil
-		
+			
 		return ({
 			x = params.x or 300,
 			y = params.y or 250,
 			width = params.width or 830,
-			height = params.height or 450,
+			height = params.height or 400,
 			visible = false,
 				
 			init = function(self)
@@ -145,7 +154,7 @@ return {
 					height = 50,
 					selectedTrack = selectedTrack,
 				}
-					
+							
 				effectField = createField {
 					x = self.x + 20,
 					y = self.y + 140,
@@ -153,6 +162,53 @@ return {
 					height = 50,
 					label = "Effect",
 					selectedValue = selectedEffect,
+				}
+				
+				echoCountField = createField {
+					x = self.x + 20,
+					y = self.y + 190,
+					width = self.width - 190,
+					height = 50,
+					label = "Echo Count",
+					selectedValue = selectedEchoCount,
+				}
+						
+				delaySlider = horizontalSlider:create {
+					x = self.x + 20,
+					y = self.y + 250,
+					width = self.width - 190,
+					height = 50,
+					title = "Delay",
+					minValue = 0.0,
+					maxValue = 1.0,
+					quantize = 0.1,
+					titleFontSize = 16,
+					labelFontSize = 16,
+					getValue = function()
+						return getProperties().musicDelay or 0.5
+					end,
+					setValue = function(value)
+						getProperties().musicDelay = value
+					end,
+				}
+								
+				strengthSlider = horizontalSlider:create {
+					x = self.x + 20,
+					y = self.y + 300,
+					width = self.width - 190,
+					height = 50,
+					title = "Strength",
+					minValue = 0.0,
+					maxValue = 1.0,
+					quantize = 0.1,
+					titleFontSize = 16,
+					labelFontSize = 16,
+					getValue = function()
+						return getProperties().musicStrength or 0.5
+					end,
+					setValue = function(value)
+						getProperties().musicStrength = value
+					end,
 				}
 				
 				volumeSlider = verticalSliderPane:create {
@@ -203,14 +259,14 @@ return {
 					width = 100,
 					height = 40,
 				}
-	
+		
 				local oldOnTrackChanged = onTrackChanged
-	
+		
 				onTrackChanged = function(trackName)
-					changeMusicTrack(trackName, selectedEffect)
+					changeMusicTrack(trackName, selectedEffect, tonumber(selectedEchoCount))
 					oldOnTrackChanged(trackName)
 				end
-				
+					
 				return self
 			end,
 					
@@ -221,9 +277,31 @@ return {
 				self:drawTitle()
 				musicNameField:draw()
 				effectField:draw()
+				
+				if selectedEffect == "Echo" then
+					echoCountField:draw()
+				end
+				
+				if selectedEffect ~= "None" then
+					delaySlider:draw()
+					strengthSlider:draw()
+				end
+				
 				volumeSlider:draw()
 				pitchSlider:draw()
 				okButton:draw()
+				
+				if musicList and musicList:isVisible() then
+					musicList:draw()
+				end
+				
+				if effectList and effectList:isVisible() then
+					effectList:draw()
+				end
+				
+				if echoCountList and echoCountList:isVisible() then
+					echoCountList:draw()
+				end
 			end,
 			
 			drawPanelBackground = function(self)
@@ -239,18 +317,41 @@ return {
 				love.graphics.setFont(font)
 				love.graphics.printf("Select Music Track", self.x, self.y + 20, self.width, "center")
 			end,
-					
+							
 			update = function(self, dt)
 				if not self.visible then return end
 				
 				local mx, my = love.mouse.getPosition()
 				musicNameField:update(mx, my)
 				effectField:update(mx, my)
+				
+				if selectedEffect == "Echo" then
+					echoCountField:update(mx, my)
+				end
+				
 				okButton:update(mx, my)
+				
+				if selectedEffect ~= "None" then
+					delaySlider:update(dt)
+					strengthSlider:update(dt)
+				end
+				
 				volumeSlider:update(dt)
 				pitchSlider:update(dt)
+				
+				if musicList and musicList:isVisible() then
+					musicList:update(dt, mx, my)
+				end
+				
+				if effectList and effectList:isVisible() then
+					effectList:update(dt, mx, my)
+				end
+				
+				if echoCountList and echoCountList:isVisible() then
+					echoCountList:update(dt, mx, my)
+				end
 			end,
-						
+								
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
@@ -260,6 +361,20 @@ return {
 				
 				if effectList and effectList:isVisible() then
 					return false
+				end
+				
+				if echoCountList and echoCountList:isVisible() then
+					return false
+				end
+				
+				if selectedEffect ~= "None" then
+					if delaySlider:handleMousePressed(mx, my) then
+						return true
+					end
+					
+					if strengthSlider:handleMousePressed(mx, my) then
+						return true
+					end
 				end
 				
 				if volumeSlider:handleMousePressed(mx, my) then
@@ -279,6 +394,10 @@ return {
 						self:showEffectList()
 					end
 					
+					if selectedEffect == "Echo" and echoCountField:containsPoint(mx, my) then
+						self:showEchoCountList()
+					end
+					
 					if okButton:containsPoint(mx, my) then
 						self:setVisible(false)
 					end
@@ -293,21 +412,31 @@ return {
 				return mx >= self.x and mx <= self.x + self.width and
 				       my >= self.y and my <= self.y + self.height
 			end,
-					
+							
 			handleMouseReleased = function(self, mx, my)
 				volumeSlider:handleMouseReleased()
 				pitchSlider:handleMouseReleased()
+				
+				if selectedEffect ~= "None" then
+					delaySlider:handleMouseReleased()
+					strengthSlider:handleMouseReleased()
+					if (selectedDelay ~= getProperties().musicDelay and getProperties().musicDelay) or (selectedStrength ~= getProperties().musicStrength and getProperties().musicStrength) then
+						changeMusicTrack(musicNameField:getSelectedTrack(), selectedEffect, tonumber(selectedEchoCount))
+						selectedDelay = getProperties().musicDelay
+						selectedStrength = getProperties().musicStrength
+					end
+				end
 			end,
 				
 			setVisible = function(self, visible)
 				self.visible = visible
 				if self.visible then
-					changeMusicTrack(musicNameField:getSelectedTrack(), selectedEffect)
+					changeMusicTrack(musicNameField:getSelectedTrack(), selectedEffect, tonumber(selectedEchoCount))
 				else
 					resetMusicTrack()
 				end
 			end,
-				
+					
 			showMusicList = function(self)
 				if not musicList then
 					musicList = require("tools/constructionSet/music/musicList"):create {
@@ -320,7 +449,7 @@ return {
 						onMusicTrackSelected = function(item, index)
 							selectedTrack = item or "None"
 							musicNameField:setSelectedTrack(selectedTrack)
-							if onTrackChanged then
+							if getProperties().music ~= selectedTrack and onTrackChanged then
 								onTrackChanged(selectedTrack)
 							end
 						end,
@@ -334,29 +463,53 @@ return {
 				musicList:setVisible(true)
 			end,
 			
-			showEffectList = function(self)
-				if not effectList then
-					effectList = require("tools/constructionSet/music/effectList"):create {
-						x = effectField.x,
-						y = effectField.y + effectField.height,
-						width = effectField.width,
-						height = 150,
-						fontSize = 20,
-						onEffectSelected = function(item, index)
-							selectedEffect = item or "None"
-							effectField:setSelectedValue(selectedEffect)
-							getProperties().musicEffect = selectedEffect ~= "None" and selectedEffect or nil
-							onTrackChanged(getProperties().music)
-						end,
-					}
-					
-					if _G.getModals then
-						getModals():add(effectList)
-					end
-				end
+		showEffectList = function(self)
+			if not effectList then
+				effectList = require("tools/constructionSet/music/effectList"):create {
+					x = effectField.x,
+					y = effectField.y + effectField.height,
+					width = effectField.width,
+					height = 150,
+					fontSize = 20,
+					onEffectSelected = function(item, index)
+						selectedEffect = item or "None"
+						effectField:setSelectedValue(selectedEffect)
+						getProperties().musicEffect = selectedEffect ~= "None" and selectedEffect or nil
+						onTrackChanged(getProperties().music)
+					end,
+				}
 				
-				effectList:setVisible(true)
-			end,
-		}):init()
-	end,
+				if _G.getModals then
+					getModals():add(effectList)
+				end
+			end
+			
+			effectList:setVisible(true)
+		end,
+		
+		showEchoCountList = function(self)
+			if not echoCountList then
+				echoCountList = require("tools/constructionSet/music/echoCountList"):create {
+					x = echoCountField.x,
+					y = echoCountField.y + echoCountField.height,
+					width = echoCountField.width,
+					maxHeight = 250,
+					onEchoCountSelected = function(item, index)
+						selectedEchoCount = item
+						echoCountField:setSelectedValue(selectedEchoCount)
+						getProperties().musicEchoCount = tonumber(selectedEchoCount)
+						local trackName = musicNameField:getSelectedTrack()
+						changeMusicTrack(trackName, selectedEffect, tonumber(selectedEchoCount))
+					end,
+				}
+				
+				if _G.getModals then
+					getModals():add(echoCountList)
+				end
+			end
+			
+			echoCountList:setVisible(true)
+		end,
+	}):init()
+end,
 }
