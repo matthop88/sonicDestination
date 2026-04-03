@@ -97,10 +97,10 @@ local createOkButton = function(params)
 	}
 end
 
-local changeMusicTrack = function(trackName)
+local changeMusicTrack = function(trackName, effectName)
 	MUSIC_MANAGER:clear()
 	if trackName ~= "None" then
-		MUSIC_MANAGER:newTrack(trackName)
+		MUSIC_MANAGER:newTrack(trackName, effectName)
 		local volume = getProperties().musicVolume or 1.0
 		local pitch = getProperties().musicPitch or 1.0
 		MUSIC_MANAGER:setVolume(volume)
@@ -119,7 +119,7 @@ end
 				
 return {
 	create = function(self, params)
-		local selectedTrack = params.initialTrack or "None"
+		local selectedTrack = getProperties().music or "None"
 		local selectedEffect = getProperties().musicEffect or "None"
 		local onTrackChanged = params.onTrackChanged
 		local musicList = nil
@@ -207,7 +207,7 @@ return {
 				local oldOnTrackChanged = onTrackChanged
 	
 				onTrackChanged = function(trackName)
-					changeMusicTrack(trackName)
+					changeMusicTrack(trackName, selectedEffect)
 					oldOnTrackChanged(trackName)
 				end
 				
@@ -302,7 +302,7 @@ return {
 			setVisible = function(self, visible)
 				self.visible = visible
 				if self.visible then
-					changeMusicTrack(musicNameField:getSelectedTrack())
+					changeMusicTrack(musicNameField:getSelectedTrack(), selectedEffect)
 				else
 					resetMusicTrack()
 				end
@@ -346,6 +346,7 @@ return {
 							selectedEffect = item or "None"
 							effectField:setSelectedValue(selectedEffect)
 							getProperties().musicEffect = selectedEffect ~= "None" and selectedEffect or nil
+							onTrackChanged(getProperties().music)
 						end,
 					}
 					
