@@ -57,8 +57,10 @@ return {
 		local musicLabels = {}
 		
 		for musicKey, musicInfo in pairs(MUSIC_DATA) do
-			table.insert(musicLabels, musicInfo.label)
-			labelToKeyMap[musicInfo.label] = musicKey
+			if musicInfo.label then
+				table.insert(musicLabels, musicInfo.label)
+				labelToKeyMap[musicInfo.label] = musicKey
+			end
 		end
 		table.sort(musicLabels)
 		
