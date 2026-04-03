@@ -13,7 +13,7 @@ return {
 
 		local musicInfo = findByLabelOrKey(musicData, labelOrKey)
 		local musicPath = BASE_PATH .. musicInfo.filename
-		
+			
 		return ({
 			musicInfo      = musicInfo,
 			musicPath      = musicPath,
@@ -26,6 +26,9 @@ return {
 			musicData      = love.sound.newSoundData(musicPath),
 			audioSource    = nil,
 			delay          = 0,
+			echoSource     = nil,
+			echoDelay      = 0,
+			echoStrength   = 1,
 			
 			init = function(self)
 				self.audioSource = love.audio.newSource(self.musicData)
@@ -71,19 +74,19 @@ return {
 				self:jumpToSample(self.endPoint)
 				self:pause()
 			end,
-
+		
 			play = function(self)
-				if self.delay == 0 then
+				local trackType = self.echoSource and "echo" or "main"
+				print(string.format("[musicElement] play() called: type=%s, musicPath=%s", trackType, self.musicPath))
+				
+				if not self.echoSource then
+					self:refreshVolume()
 					self.audioSource:play()
-					self.playTimer = nil
-				else
-					self.playTimer = 0
 				end
 			end,
-			
+				
 			stop = function(self)
 				self.audioSource:stop()
-				self.playTimer = nil
 			end,
 			
 			pause = function(self)
@@ -113,45 +116,70 @@ return {
 				local targetSample = self.loopStartPoint + delta
 				self:jumpToSample(targetSample)
 			end,
-			
+				
 			update = function(self, dt)
-				if self.playTimer then 
-					self.playTimer = self.playTimer + dt
-					if self.playTimer >= self.delay then
+				if self.echoSource and not self:isPlaying() then
+					local sourceSample = self.echoSource:getCurrentSample()
+					if sourceSample >= self.echoDelay then
+						self:refreshVolume()
+						local targetSample = sourceSample - self.echoDelay
+						self:jumpToSample(targetSample)
+						print(string.format("[musicElement] Echo starting at sample %d (source at %d, delay %d samples)", 
+							targetSample, sourceSample, self.echoDelay))
 						self.audioSource:play()
-						self.playTimer = nil
 					end
 				end
+				
 				if self:checkLoopEndReached() then
 					self:initiateLoop()
 				elseif self:checkEndpointReached() then
 					self:jumpToEnd()
 				end
 			end,
-			
+					
 			getVolume = function(self)
+				if self.echoSource then
+					return self.echoSource:getVolume() * self.echoStrength
+				end
 				local volume = self.volume
 				if self.volumeFn then volume = self.volumeFn() end
 				return volume
 			end,
-
+	
 			setVolume = function(self, volume)
+				print(string.format("[musicElement] setVolume called: volume=%.2f, has volumeFn=%s, musicPath=%s", 
+					volume, tostring(self.volumeFn ~= nil), self.musicPath))
 				self.volume = volume
 				self:refreshVolume()
 			end,
-
+		
 			setVolumeFn = function(self, volumeFn)
 				self.volumeFn = volumeFn
 				self:refreshVolume()
 			end,
-
+			
+			setEchoSource = function(self, sourceTrack, delay, strength)
+				self.echoSource = sourceTrack
+				self.echoDelay = delay * 44100
+				self.echoStrength = strength
+				print(string.format("[musicElement] setEchoSource: delay=%.2f sec (%d samples), strength=%.2f", 
+					delay, self.echoDelay, strength))
+			end,
+	
 			setVolumeScalar = function(self, volumeScalar)
+				print(string.format("[musicElement] setVolumeScalar called: scalar=%.2f, has volumeFn=%s, musicPath=%s", 
+					volumeScalar, tostring(self.volumeFn ~= nil), self.musicPath))
 				self.volumeScalar = volumeScalar
 				self:refreshVolume()
 			end,
-
+		
 			refreshVolume = function(self)
-				self.audioSource:setVolume(self:getVolume() * self.volumeScalar)
+				local calculatedVolume = self:getVolume()
+				local finalVolume = calculatedVolume * self.volumeScalar
+				local echoInfo = self.echoSource and string.format("echo(sampleDelay=%d)", self.echoDelay) or "main"
+				print(string.format("[musicElement] refreshVolume: %s, baseVolume=%.2f, calculatedVolume=%.2f, scalar=%.2f, finalVolume=%.2f", 
+					echoInfo, self.volume, calculatedVolume, self.volumeScalar, finalVolume))
+				self.audioSource:setVolume(finalVolume)
 			end,
 			
 			setPitch = function(self, pitch)
