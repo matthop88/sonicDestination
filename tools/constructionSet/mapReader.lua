@@ -49,6 +49,15 @@ return {
 			if mapData.properties.musicEffect then
 				getProperties().musicEffect = mapData.properties.musicEffect
 			end
+			if mapData.properties.musicDelay then
+				getProperties().musicDelay = mapData.properties.musicDelay
+			end
+			if mapData.properties.musicStrength then
+				getProperties().musicStrength = mapData.properties.musicStrength
+			end
+			if mapData.properties.musicEchoCount then
+				getProperties().musicEchoCount = mapData.properties.musicEchoCount
+			end
 		end
 	end,
 
