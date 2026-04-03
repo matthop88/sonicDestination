@@ -43,11 +43,17 @@ return {
 				end
 				self.tracks = {}
 			end,
-			
+				
 			setVolume = function(self, volume)
 				self.volumeScalar = volume
 				for _, track in ipairs(self.tracks) do
 					track:setVolume(volume)
+				end
+			end,
+			
+			setPitch = function(self, pitch)
+				for _, track in ipairs(self.tracks) do
+					track:setPitch(pitch)
 				end
 			end,
 	
