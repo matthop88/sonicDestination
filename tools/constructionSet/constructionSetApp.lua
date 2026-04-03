@@ -50,6 +50,15 @@ local PROPERTIES    = {
         if self.musicEffect then
             encoded = encoded .. "      musicEffect = \"" .. self.musicEffect .. "\",\n"
         end
+        if self.musicDelay then
+            encoded = encoded .. "      musicDelay = " .. self.musicDelay .. ",\n"
+        end
+        if self.musicStrength then
+            encoded = encoded .. "      musicStrength = " .. self.musicStrength .. ",\n"
+        end
+        if self.musicEchoCount then
+            encoded = encoded .. "      musicEchoCount = " .. self.musicEchoCount .. ",\n"
+        end
         encoded = encoded .. "  },\n"
 
         return encoded
