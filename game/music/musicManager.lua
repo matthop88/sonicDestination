@@ -24,8 +24,7 @@ return {
 				musicElement:setVolumeScalar(self.volumeScalar)
 				table.insert(self.tracks, musicElement)
 				local musicElementEcho = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
-				musicElementEcho:setDelay(delay / 4)
-				musicElementEcho:setVolumeFn(function() return musicElement:getVolume() * strength end)
+				musicElementEcho:setEchoSource(musicElement, delay / 4, strength)
 				musicElementEcho:setVolumeScalar(self.volumeScalar)
 				table.insert(self.tracks, musicElementEcho)
 			end,
