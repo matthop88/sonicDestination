@@ -24,7 +24,7 @@ return {
 				musicElement:setVolumeScalar(self.volumeScalar)
 				table.insert(self.tracks, musicElement)
 				local musicElementEcho = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
-				musicElementEcho:setEchoSource(musicElement, delay / 4, strength)
+				musicElementEcho:setEchoSource(musicElement, delay / 2, strength)
 				musicElementEcho:setVolumeScalar(self.volumeScalar)
 				table.insert(self.tracks, musicElementEcho)
 			end,
@@ -38,7 +38,7 @@ return {
 				local previousTrack = musicElement
 				for i = 1, echoCount do
 					local musicElementEcho = require("game/music/musicElement"):create(MUSIC_DATA, trackName)
-					musicElementEcho:setEchoSource(previousTrack, delay, strength)
+					musicElementEcho:setEchoSource(previousTrack, delay * 4, strength)
 					musicElementEcho:setVolumeScalar(self.volumeScalar)
 					table.insert(self.tracks, musicElementEcho)
 					previousTrack = musicElementEcho
