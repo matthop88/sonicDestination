@@ -25,6 +25,7 @@ return {
                         ROW_COUNT = ROW_COUNT + 1
                     end
                 end
+                if x == LEFTMOST then ROW_COUNT = ROW_COUNT - 1 end
 
                 return self
             end,
