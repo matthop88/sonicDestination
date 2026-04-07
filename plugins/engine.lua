@@ -1,11 +1,80 @@
-return ({
+local engine = ({
     oldDraw          = function()       end,
     oldUpdate        = function(dt)     end,
     oldKeypressed    = function(key)    end,
     oldKeyreleased   = function(key)    end,
     oldMousepressed  = function(mx, my) end,
     oldMousereleased = function(mx, my) end,
-
+    
+    -- Performance stats tracking
+    stats = {
+        fps = 0,
+        updateTime = 0,
+        drawTime = 0,
+        memory = 0,
+        drawCalls = 0,
+        updateHistory = {},
+        drawHistory = {},
+        maxHistory = 60,
+        enabled = false,
+        updateStartTime = 0,
+        drawStartTime = 0,
+        
+        beginUpdate = function(self)
+            self.updateStartTime = love.timer.getTime()
+        end,
+        
+        endUpdate = function(self)
+            self.updateTime = love.timer.getTime() - self.updateStartTime
+            self:update()
+        end,
+        
+        beginDraw = function(self)
+            self.drawStartTime = love.timer.getTime()
+        end,
+        
+        endDraw = function(self)
+            self.drawTime = love.timer.getTime() - self.drawStartTime
+        end,
+        
+        getAverage = function(self, history)
+            if #history == 0 then return 0 end
+            local sum = 0
+            for _, v in ipairs(history) do
+                sum = sum + v
+            end
+            return sum / #history
+        end,
+        
+        getAvgUpdate = function(self)
+            return self:getAverage(self.updateHistory) * 1000
+        end,
+        
+        getAvgDraw = function(self)
+            return self:getAverage(self.drawHistory) * 1000
+        end,
+        
+        getTotalFrame = function(self)
+            return self:getAvgUpdate() + self:getAvgDraw()
+        end,
+        
+        update = function(self)
+            self.fps = love.timer.getFPS()
+            self.memory = collectgarbage("count")
+            local graphicsStats = love.graphics.getStats()
+            self.drawCalls = graphicsStats.drawcalls
+            
+            table.insert(self.updateHistory, self.updateTime)
+            table.insert(self.drawHistory, self.drawTime)
+            if #self.updateHistory > self.maxHistory then
+                table.remove(self.updateHistory, 1)
+            end
+            if #self.drawHistory > self.maxHistory then
+                table.remove(self.drawHistory, 1)
+            end
+        end,
+    },
+    
     init = function(self)
         
         self.oldDraw          = love.draw or self.oldDraw
@@ -30,17 +99,25 @@ return ({
     end,
             
     draw = function(self)
+        self.stats:beginDraw()
+        
         self.oldDraw()
         for _, plugin in ipairs(self) do
             if plugin.draw ~= nil then plugin:draw() end
         end
+        
+        self.stats:endDraw()
     end,
 
     update = function(self, dt)
+        self.stats:beginUpdate()
+        
         for _, plugin in ipairs(self) do
             if plugin.update ~= nil and plugin:update(dt) then return true end
         end
         self.oldUpdate(dt)
+        
+        self.stats:endUpdate()
     end,
 
     keypressed = function(self, key)
@@ -121,4 +198,16 @@ return ({
         _G[name] = function() return plugin end
     end,
     
-}):init()
+    getStats = function(self)
+        return self.stats
+    end,
+    
+})
+
+-- Set up global accessor before init
+_G.getEngineStats = function()
+    return engine.stats
+end
+
+-- Initialize and return
+return engine:init()
