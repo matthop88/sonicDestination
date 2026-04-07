@@ -11,6 +11,8 @@ return {
         SONIC:faceRight()
         SONIC.sprite:setCurrentAnimation("standing")
         SONIC.velocity.x = 0
+        if love.keyboard.isDown("left") then SONIC:setState(STATES.ACCELERATE_LEFT) end
+        if love.keyboard.isDown("right") then SONIC:setState(STATES.ACCELERATE_RIGHT) end
     end,
     
     keypressed = function(self, key)

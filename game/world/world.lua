@@ -2,7 +2,8 @@ local GRAPHICS
 local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
-local SOUND_MANAGER  = requireRelative("sound/soundManager")
+local SOUND_MANAGER
+local MUSIC_MANAGER
 local ORIGIN
 
 return {
@@ -36,11 +37,13 @@ return {
     },
 
     init = function(self, params)
-        GRAPHICS = params.GRAPHICS
+        GRAPHICS      = params.GRAPHICS
+        SOUND_MANAGER = params.SOUND_MANAGER
+        MUSIC_MANAGER = params.MUSIC_MANAGER
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
-        
+        self:refreshMusic()
         self:refreshGroundLevel()
         
         return self
@@ -63,9 +66,32 @@ return {
         end
     end,
 
+    refreshMusic = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties and map.properties.music then
+            MUSIC_MANAGER:clear()
+            MUSIC_MANAGER:newTrack(
+                map.properties.music, 
+                map.properties.musicEffect, 
+                map.properties.musicDelay or 0.5, 
+                map.properties.musicStrength or 0.5,
+                map.properties.musicEchoCount or 6
+            )
+            
+            local volume = map.properties.musicVolume or 1.0
+            local pitch = map.properties.musicPitch or 1.0
+            MUSIC_MANAGER:setVolume(volume)
+            MUSIC_MANAGER:setPitch(pitch)
+            
+            MUSIC_MANAGER:play()
+        end
+    end,
+
     reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
+            self:refreshMusic()
             self:refreshGroundLevel()
         end
         self:refreshObjectsMap(x, y)
@@ -111,6 +137,7 @@ return {
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
         SOUND_MANAGER:update(dt)
+        MUSIC_MANAGER:update(dt)
     end,
 
     updateEvents = function(self, dt)

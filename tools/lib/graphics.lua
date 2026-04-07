@@ -85,6 +85,14 @@ return {
                                            (y + self.y) * self.scale,
                                                 radius  * self.scale)
             end,
+
+            ellipse   = function(self, mode, x, y, rx, ry)
+                love.graphics.setLineWidth(self.lineWidth * self.scale)
+                love.graphics.ellipse(mode, (x + self.x) * self.scale,
+                                            (y + self.y) * self.scale,
+                                                 rx     * self.scale,
+                                                 ry     * self.scale)
+            end,
         
             draw      = function(self, image, quad, x, y, r, sx, sy)
                 if type(quad) == "number" then

@@ -2,6 +2,7 @@ return ({
     sounds       = {},
     overrides    = {},
     queuedSounds = requireRelative("util/dataStructures/linkedList"):create(),
+    volumeScalar = 1,
 
     setOverride = function(self, key, value) self.overrides[key] = value end,
 
@@ -20,6 +21,7 @@ return ({
     play = function(self, soundName)
         if self.overrides[soundName] then soundName = self.overrides[soundName] end
         local sound = self.sounds[soundName]
+        sound:setVolumeScalar(self.volumeScalar)
         if sound.delay then self:addToQueue(sound)
         else                sound:play(self)    end
     end,
@@ -37,6 +39,12 @@ return ({
                 return true
             end
         end)
+    end,
+
+    onPropertyChange = function(self, propData)
+        if propData.volume and propData.volume.sounds then
+            self.volumeScalar = propData.volume.sounds
+        end
     end,
         
 }):init()

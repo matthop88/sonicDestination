@@ -26,6 +26,39 @@ local SHOW_HITBOXES = false
 
 local SPLIT_SCREEN  = false
 
+--------------------------------------------------------------
+--                  Performance Stats Display               --
+--------------------------------------------------------------
+
+local STATS_FONT = love.graphics.newFont(16)
+
+local function drawStats()
+    local STATS = getEngineStats()
+    if not STATS.enabled then return end
+    
+    local avgUpdate = STATS:getAvgUpdate()
+    local avgDraw = STATS:getAvgDraw()
+    local totalFrame = STATS:getTotalFrame()
+    
+    love.graphics.setColor(0, 0, 0, 0.7)
+    love.graphics.rectangle("fill", 10, 10, 250, 140)
+    
+    love.graphics.setFont(STATS_FONT)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.print(string.format("FPS: %d", STATS.fps), 20, 20)
+    love.graphics.print(string.format("Update: %.2fms", avgUpdate), 20, 38)
+    love.graphics.print(string.format("Draw: %.2fms", avgDraw), 20, 56)
+    love.graphics.print(string.format("Frame: %.2fms", totalFrame), 20, 74)
+    love.graphics.print(string.format("Memory: %.1f MB", STATS.memory / 1024), 20, 92)
+    love.graphics.print(string.format("Draw Calls: %d", STATS.drawCalls), 20, 110)
+    
+    -- Warning color if frame time is high
+    if totalFrame > 16.67 then -- 60 FPS threshold
+        love.graphics.setColor(1, 0, 0, 1)
+        love.graphics.print("! SLOW FRAME !", 150, 20)
+    end
+end
+
 local smartList = nil
 local createSmartList = function(list)
     if smartList == nil then
@@ -63,6 +96,11 @@ return {
         self.GRAPHICS   = params.GRAPHICS
         self.GRAPHICS:setScale(3)
         
+        -- Frame limiter to 60 FPS
+        self.TARGET_FPS = 60
+        self.MIN_FRAME_TIME = 1 / self.TARGET_FPS
+        self.lastFrameTime = love.timer.getTime()
+        
         self.DRAWING_FN = function()   
             self.SONIC:draw()
             self.WORLD:drawForeground()
@@ -70,6 +108,17 @@ return {
                 self.SONIC:drawHitBox() 
                 self.WORLD:drawHitBoxes()
             end
+        end
+        self.STATS_DRAWING_FN = function()
+            drawStats()
+            
+            -- Frame limiter at end of frame (after all drawing)
+            local currentTime = love.timer.getTime()
+            local frameTime = currentTime - self.lastFrameTime
+            if frameTime < self.MIN_FRAME_TIME then
+                love.timer.sleep(self.MIN_FRAME_TIME - frameTime)
+            end
+            self.lastFrameTime = love.timer.getTime()
         end
         self.UPDATE_FN  = function(dt) 
             params.PROP_LOADER:update(dt)
@@ -110,6 +159,12 @@ return {
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
                     {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
                     {   key = "P", fn = function() 
+                            local STATS = getEngineStats()
+                            STATS.enabled = not STATS.enabled
+                            printMessage(STATS.enabled and "Stats: ON" or "Stats: OFF")
+                        end, 
+                    },
+                    {   key = "p", fn = function() 
                             local message = "x = " .. math.floor(self.SONIC:getX()) .. ", y = " .. math.floor(self.SONIC:getY())
                             printMessage(message)
                             print(message)
@@ -310,6 +365,7 @@ return {
                 active = false,
                 accessorFnName = "getListVisualizer",
             })
+            :add("drawingLayer", { drawingFn = self.STATS_DRAWING_FN })
             :add("readout",        { printFnName = "printMessage"                  })
     end,
 }

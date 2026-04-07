@@ -1,4 +1,10 @@
 --------------------------------------------------------------
+--                    Global Variables                      --
+--------------------------------------------------------------
+
+MUSIC_MANAGER = require("game/music/musicManager"):create()
+
+--------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
 
@@ -11,12 +17,15 @@ local DATA_IN         = __PARAMS["dataIn"]  or "sample"
 local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/engine/map"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17 })
-local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 1, 2, 3, 4, 5, 6, 7 })
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17, 13, 23, 25, 24, 35, })
+local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 30, })
+local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 4 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
 local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create(STICKY_MOUSE)
+
+local MISCELLANEOUS_PANEL = require("tools/constructionSet/panels/miscellaneousPanel"):create()
 
 local PLAYER_PANEL    = require("tools/constructionSet/panels/playerPanel"):create( { "sonic1" }, STICKY_MOUSE)
 local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2" }, STICKY_MOUSE)
@@ -27,6 +36,35 @@ local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):crea
 love.window.setTitle("Construction Set")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
+local PROPERTIES    = {
+    encode = function(self)
+        local encoded = "  properties = {\n"
+        if self.music then
+            encoded = encoded .. "      music = \"" .. self.music .. "\",\n"
+        end
+        if self.musicVolume then
+            encoded = encoded .. "      musicVolume = " .. self.musicVolume .. ",\n"
+        end
+        if self.musicPitch then
+            encoded = encoded .. "      musicPitch = " .. self.musicPitch .. ",\n"
+        end
+        if self.musicEffect then
+            encoded = encoded .. "      musicEffect = \"" .. self.musicEffect .. "\",\n"
+        end
+        if self.musicDelay then
+            encoded = encoded .. "      musicDelay = " .. self.musicDelay .. ",\n"
+        end
+        if self.musicStrength then
+            encoded = encoded .. "      musicStrength = " .. self.musicStrength .. ",\n"
+        end
+        if self.musicEchoCount then
+            encoded = encoded .. "      musicEchoCount = " .. self.musicEchoCount .. ",\n"
+        end
+        encoded = encoded .. "  },\n"
+
+        return encoded
+    end,          
+}
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
@@ -38,6 +76,7 @@ end
 function love.update(dt)
     STICKY_MOUSE:update(dt)
     MAP:update(dt)
+    MUSIC_MANAGER:update(dt)
 end
 
 function love.keypressed(key)
@@ -105,7 +144,11 @@ function refreshFromFile()
         
         printToReadout("Map refreshed: " .. DATA_IN)
     end
-end    
+end   
+
+function getProperties()
+    return PROPERTIES
+end 
 
 --------------------------------------------------------------
 --                          Plugins                         --
@@ -119,8 +162,12 @@ PLUGINS = require("plugins/engine")
         {   secondsWait = 0.25, 
             callback = function() 
                 CHUNKS_PANEL:initChunkInfo("ghzChunks")
-                CHUNKS_2_PANEL:initChunkInfo("scdPtpChunks")
+                CHUNKS_2_PANEL:initChunkInfo("scdPtpChunksOrig")
+                CHUNKS_3_PANEL:initChunkInfo("scdCCPastChunksOrig")
                 
+                MUSIC_MANAGER:newTrack("constructionSet")
+                MUSIC_MANAGER:play()
+
                 if SHOW_DATA then
                     showData()
                     love.event.quit()
@@ -128,7 +175,9 @@ PLUGINS = require("plugins/engine")
                     local mapPath = "game/resources/zones/maps/" .. DATA_IN .. "Map"
                     local objPath = "game/resources/zones/objects/" .. DATA_IN .. "Objects"
                     if love.filesystem.getInfo(mapPath .. ".lua") then
-                        require("tools/constructionSet/mapReader"):readMapIntoChunksList(require(mapPath), MAP.chunks)
+                        local mapData = require(mapPath)
+                        require("tools/constructionSet/mapReader"):readMapIntoChunksList(mapData, MAP.chunks)
+                        require("tools/constructionSet/mapReader"):readMusicFromMap(mapData)
                     end
                     if love.filesystem.getInfo(objPath .. ".lua") then
                         local objectsData = require(objPath)
@@ -149,10 +198,11 @@ PLUGINS = require("plugins/engine")
     :add("tabbedPane",
     { 
         TABS = { 
-             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL  }, },
+             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL, CHUNKS_3_PANEL,  }, },
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = ITEMS_PANEL, },
              { label = "Player",  panel = require("tools/constructionSet/panels/multiPanel"):create { PLAYER_PANEL, PLAYER_2_PANEL }, },
+             { label = "Miscellaneous", panel = MISCELLANEOUS_PANEL, },
         },
         accessorFnName = "getTabbedPane",
     })
@@ -192,4 +242,5 @@ PLUGINS = require("plugins/engine")
             { "R", "- Refresh from file", },
         },
     })
+    :add("modals", { accessorFnName = "getModals" })
     

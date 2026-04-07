@@ -1,5 +1,7 @@
 return {
     create = function(self, graphics, w, h)
+        graphics = graphics or require("tools/lib/graphics"):create()
+        
         return {
             buffer = love.graphics.newCanvas(w, h),
 
@@ -51,6 +53,12 @@ return {
             circle    = function(self, mode, x, y, radius)
                 love.graphics.setCanvas(self.buffer)
                 graphics:circle(mode, x, y, radius)
+                love.graphics.setCanvas()
+            end,
+
+            ellipse   = function(self, mode, x, y, rx, ry)
+                love.graphics.setCanvas(self.buffer)
+                graphics:ellipse(mode, x, y, rx, ry)
                 love.graphics.setCanvas()
             end,
 

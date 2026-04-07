@@ -53,6 +53,12 @@ return {
                 if self.object.deselect then self.object:deselect() end
             end,
 
+            handleMousereleased = function(self, mx, my)
+                if self.object.handleMousereleased then
+                    self.object:handleMousereleased(mx, my)
+                end
+            end,
+
             getOutlineColor = function(self)
                 if     self.isSelected then return COLOR.PURE_WHITE
                 elseif self.hasFocus   then return COLOR.LIGHT_YELLOW

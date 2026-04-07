@@ -35,6 +35,32 @@ return {
 		end
 	end,
 
+	readMusicFromMap = function(self, mapData)
+		if mapData.properties then
+			if mapData.properties.music then
+				getProperties().music = mapData.properties.music
+			end
+			if mapData.properties.musicVolume then
+				getProperties().musicVolume = mapData.properties.musicVolume
+			end
+			if mapData.properties.musicPitch then
+				getProperties().musicPitch = mapData.properties.musicPitch
+			end
+			if mapData.properties.musicEffect then
+				getProperties().musicEffect = mapData.properties.musicEffect
+			end
+			if mapData.properties.musicDelay then
+				getProperties().musicDelay = mapData.properties.musicDelay
+			end
+			if mapData.properties.musicStrength then
+				getProperties().musicStrength = mapData.properties.musicStrength
+			end
+			if mapData.properties.musicEchoCount then
+				getProperties().musicEchoCount = mapData.properties.musicEchoCount
+			end
+		end
+	end,
+
 	readObjectsIntoObjectsList = function(self, objects, objectsList)
 		local objectFactory = require("tools/constructionSet/objectFactory")
 

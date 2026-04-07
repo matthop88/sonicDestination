@@ -6,4 +6,6 @@ return {
 
     -- For sonicHitSound, default is "sonicHit", and alternates are "iceExplode" and "klankOuch".
     sonicHitSound = "sonicHit",
+
+    volume = { music = 0.5, sounds = 0.2 },
 }

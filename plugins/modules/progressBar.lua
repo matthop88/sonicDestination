@@ -60,4 +60,9 @@ return {
         end
     end,
     
+    refresh = function(self)
+        self.progress = 0.0
+        self.alpha = 0.0
+    end,
+    
 }

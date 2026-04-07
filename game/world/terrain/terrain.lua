@@ -101,8 +101,16 @@ return {
 	drawTerrain = function(self)
         self.graphics:setColor(1, 1, 1)
         for rowNum, row in ipairs(self.map) do
-            for colNum, chunkInfo in ipairs(row) do
-                self:drawChunk(rowNum, colNum, chunkInfo)
+            local _, rowTopY    = self.graphics:imageToScreenCoordinates(0, (rowNum - 1) * 256)
+            local _, rowBottomY = self.graphics:imageToScreenCoordinates(0, rowNum * 256)
+            if rowTopY < love.graphics.getHeight() and rowBottomY > 0 then
+                for colNum, chunkInfo in ipairs(row) do
+                    local colLeftX, _  = self.graphics:imageToScreenCoordinates((colNum - 1) * 256, 0)
+                    local colRightX, _ = self.graphics:imageToScreenCoordinates(colNum * 256, 0)
+                    if colLeftX < love.graphics.getWidth() and colRightX > 0 then  
+                        self:drawChunk(rowNum, colNum, chunkInfo)
+                    end
+                end
             end
         end
         self.graphics:setColor(1, 1, 1)
@@ -181,6 +189,7 @@ return {
         else
             local xInChunk, yInChunk = self:screenToChunkCoordinates(x, y)
             if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
+			if not chunkInfo.SOLIDS then return 0 end
             return chunkInfo.SOLIDS:getSolidAt(chunkInfo.ID, xInChunk, yInChunk, chunkInfo.XFLIP)
         end
     end,
@@ -205,4 +214,8 @@ return {
 	getCalculatedGroundLevel = function(self)
 		return self.map.calculatedGroundLevel or 940  -- Default to 940 if not calculated
 	end,
+
+    getMapData = function(self)
+        return MAP_DATA
+    end,
 }

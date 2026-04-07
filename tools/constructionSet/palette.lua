@@ -25,6 +25,7 @@ return {
                         ROW_COUNT = ROW_COUNT + 1
                     end
                 end
+                if x == LEFTMOST then ROW_COUNT = ROW_COUNT - 1 end
 
                 return self
             end,
@@ -60,11 +61,21 @@ return {
                 for _, c in ipairs(containers) do
                     if c:isInside(mx, my + y) then 
                         c:select()
-                        STICKY_MOUSE:onSelect(c)
+                        if STICKY_MOUSE then
+                            STICKY_MOUSE:onSelect(c)
+                        end
                     else                       
-                        c:deselect() 
-                        STICKY_MOUSE:onDeselect(c)
+                        c:deselect()
+                        if STICKY_MOUSE then
+                            STICKY_MOUSE:onDeselect(c)
+                        end
                     end
+                end
+            end,
+
+            handleMousereleased = function(self, mx, my)
+                for _, c in ipairs(containers) do
+                    c:handleMousereleased(mx, my + y)
                 end
             end,
 
@@ -81,7 +92,9 @@ return {
                     n = n + 1
                     if n > #containers then n = 1 end
                     containers[n]:select()
-                    STICKY_MOUSE:onSelect(containers[n])
+                    if STICKY_MOUSE then
+                        STICKY_MOUSE:onSelect(containers[n])
+                    end
                 end
             end,
 
@@ -92,7 +105,9 @@ return {
                     n = n - 1
                     if n < 1 then n = #containers end
                     containers[n]:select()
-                    STICKY_MOUSE:onSelect(containers[n])
+                    if STICKY_MOUSE then
+                        STICKY_MOUSE:onSelect(containers[n])
+                    end
                 end
             end,
 

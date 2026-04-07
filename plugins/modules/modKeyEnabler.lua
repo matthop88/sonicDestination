@@ -72,10 +72,11 @@ return {
         applyCommand = function(self, key)
             return "command" .. key
         end,
-
+    
         release = function(self, key)
+            if not key then return nil end
             local keyValue = self:getValue(key)
-            self.pressed[key] = false
+            self.pressed[key] = nil
             return keyValue
         end,
 

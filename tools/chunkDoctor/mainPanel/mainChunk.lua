@@ -109,6 +109,8 @@ return {
     end,
 
     renderChunk = function(self, chunkNum, y)
+        MAIN_GRAFX:setColor(1, 1, 1)
+        MAIN_GRAFX:rectangle("line", 65, y, 256, 256)
         if y + MAIN_GRAFX:getY() < 400 and y + MAIN_GRAFX:getY() > -256 then        
             MAIN_GRAFX:setColor(1, 1, 1)
             MAIN_GRAFX:setFontSize(32)
