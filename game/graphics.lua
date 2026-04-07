@@ -26,6 +26,10 @@ else
             love.graphics.draw(image, quad, x, y + self.y, r, sx, sy)
         end,
 
+        imageToScreenCoordinates = function(self, x, y)
+            return x, y + self.y
+        end,
+
         screenToImageCoordinates = function(self, x, y)
             return x, y - self.y
         end,
