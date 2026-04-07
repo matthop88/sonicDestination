@@ -35,7 +35,7 @@ GLOBALS = requireRelative("globals"):create { player = SONIC, world = WORLD }
 --------------------------------------------------------------
 
 love.window.setTitle("Sonic Destination")
-love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 1 })
+love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 1, vsync = true })
 
 PROP_LOADER:notifyOnChange(SONIC)
 
