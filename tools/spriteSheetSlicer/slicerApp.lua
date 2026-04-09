@@ -123,17 +123,11 @@ local animRects   = {
     end,
 
     next = function(self)
-        self.selectedIndex = self.selectedIndex + 1
-        if self.selectedIndex > #self then
-            self.selectedIndex = 1
-        end
+        self.selectedIndex = math.min(#self, self.selectedIndex + 1)
     end,
 
     prev = function(self)
-        self.selectedIndex = self.selectedIndex - 1
-        if self.selectedIndex < 1 then
-            self.selectedIndex = #self
-        end
+        self.selectedIndex = math.max(1, self.selectedIndex - 1)
     end,
 }
             
@@ -142,6 +136,104 @@ local imgName     = __PARAMS["image"]
 
 local sheetInfo   = { spriteRects = {}, animations = {}, MARGIN_BG_COLOR = { r = 0.15, g = 0.40, b = 0.10, a = 1 }, SPRITE_BG_COLOR = { r = 0.05, g = 0.28, b = 0.03, a = 1 } }
 local gallery
+
+local CURRENT_STATE
+
+local STATE = {
+    MARGIN_BG_COLOR = {
+        execute = function(self)
+            printToReadout("Please select the Margin Background Color.")
+        end,
+        collect = function(self, r, g, b, a)
+            sheetInfo.MARGIN_BG_COLOR = { r = r, g = g, b = b, a = a }
+        end,
+        mousePressed = function(self, mx, my)
+            self:collect(selectColorMousePressed(mx, my))
+            CURRENT_STATE:doNext()
+        end,
+    },
+    SPRITE_BG_COLOR = {
+        execute = function(self)
+            printToReadout("Please select the Sprite Background Color.")
+        end,
+        collect = function(self, r, g, b, a)
+            sheetInfo.SPRITE_BG_COLOR = { r = r, g = g, b = b, a = a }
+        end,
+        mousePressed = function(self, mx, my)
+            self:collect(selectColorMousePressed(mx, my))
+            CURRENT_STATE:doNext()
+        end,
+    },
+    READY_TO_SLICE  = {
+        execute = function(self)
+            printToReadout("Press any key to begin slicing.")
+        end,
+        keyPressed = function(self, key)
+            CURRENT_STATE:doNext()
+        end,
+    },
+    POST_SLICE      = {
+        execute = function(self)
+            slicer:start({
+                imageViewer          = getImageViewer(),
+                marginBGColor        = sheetInfo.MARGIN_BG_COLOR,
+                spriteBGColor        = sheetInfo.SPRITE_BG_COLOR,
+                callbackWhenComplete = onSlicingCompletion
+            })
+        end,
+    }
+}
+
+CURRENT_STATE = {
+    states = {
+        STATE.MARGIN_BG_COLOR, STATE.SPRITE_BG_COLOR, STATE.READY_TO_SLICE, STATE.POST_SLICE,
+    },
+    currentIndex = 1,
+    get = function(self)
+        return self.states[self.currentIndex]
+    end,
+    next = function(self)
+        self.currentIndex = self.currentIndex + 1
+        if self.currentIndex > #self.states then self.currentIndex = 1 end
+    end,
+    prev = function(self)
+        self.currentIndex = self.currentIndex - 1
+        if self.currentIndex < 1 then self.currentIndex = #self.states end
+    end,
+    equals = function(self, state)
+        return self:get() == state
+    end,
+    set = function(self, state)
+        for i = 1, #self.states do
+            self.currentIndex = i
+            if self:equals(state) then
+                return
+            end
+        end
+    end,
+    execute = function(self)
+        self:get():execute()
+    end,
+    doNext = function(self)
+        self:next()
+        self:execute()
+    end,
+    collect = function(self, r, g, b, a)
+        if self:get().collect then self:get():collect(r, g, b, a) end
+    end,
+    mousePressed = function(self, mx, my)
+        if self:get().mousePressed then 
+            self:get():mousePressed(mx, my)
+            return true
+        end
+    end,
+    keyPressed = function(self, key)
+        if self:get().keyPressed then
+            self:get():keyPressed(key)
+            return true
+        end
+    end,
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -156,7 +248,7 @@ if imgName ~= nil then
         sheetInfo.animations  = sheetInfo.animations  or {}
         sheetInfo.MARGIN_BG_COLOR.a = sheetInfo.MARGIN_BG_COLOR.a or 1
         sheetInfo.SPRITE_BG_COLOR.a = sheetInfo.SPRITE_BG_COLOR.a or 1
-        
+        CURRENT_STATE:set(STATE.READY_TO_SLICE)
         imgPath = sheetInfo.imagePath
     else
         imgPath = imgPath .. imgName .. ".png"
@@ -181,13 +273,15 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    if not gallery:keypressed(key) then
-        if     key == "up"   then
-            animRects:next()
-            refreshGallery()
-        elseif key == "down" then
-            animRects:prev()
-            refreshGallery()
+    if not CURRENT_STATE:keyPressed(key) then
+        if not gallery:keypressed(key) then
+            if     key == "up"   then
+                animRects:next()
+                refreshGallery()
+            elseif key == "down" then
+                animRects:prev()
+                refreshGallery()
+            end
         end
     end
 end
@@ -197,16 +291,24 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(mx, my)
-    if not gallery:mousepressed(mx, my) and currentRect:isValid() then
-        currentRect:select(true)
-        animRects:select(mx, my)
-        refreshGallery()
-        printToReadout(currentRect:toString())
+    if not CURRENT_STATE:mousePressed(mx, my) then
+        if not gallery:mousepressed(mx, my) and currentRect:isValid() then
+            currentRect:select(true)
+            animRects:select(mx, my)
+            refreshGallery()
+            printToReadout(currentRect:toString())
+        end
     end
 end
 
 function love.mousereleased(mx, my)
     currentRect:select(false)
+end
+
+function selectColorMousePressed(mx, my)
+    local imageX, imageY = getImageViewer():screenToImageCoordinates(mx, my)
+    local r, g, b, a     = getImageViewer():getPagePixelAt(imageX, imageY)
+    return r, g, b, a
 end
 
 --------------------------------------------------------------
@@ -235,6 +337,22 @@ function drawOverlays()
     animRects:draw()
     currentRect:draw()
     gallery:draw()
+end
+
+function onColorSelected(color)
+    local r, g, b = unpack(color)
+    print(string.format("{ r = %.2f, g = %.2f, b = %.2f }", r, g, b))
+    --printToReadout(string.format("R = %s, G = %s, B = %s", love.math.colorToBytes(r, g, b)))
+end
+
+function showStateInfo()
+    if CURRENT_STATE:equals(STATE.MARGIN_BG_COLOR) then
+        printToReadout("Please select the Margin Background Color.")
+    elseif CURRENT_STATE:equals(STATE.SPRITE_BG_COLOR) then
+        printToReadout("Please select the Sprite Background Color.")
+    elseif CURRENT_STATE:equals(STATE.READY_TO_SLICE) then
+        printToReadout("Press any key to begin slicing.")
+    end
 end
 
 --------------------------------------------------------------
@@ -289,6 +407,14 @@ PLUGINS = require("plugins/engine")
             { "On FPS field, up/down arrows:",       "Modify FPS"                  },
         },
     })
+    :add("timedFunctions",
+    {
+        {   secondsWait = 1, 
+            callback = function() 
+                CURRENT_STATE:execute()
+            end,
+        },
+    })   
 
 --------------------------------------------------------------
 --             Static code - is executed last               --
@@ -297,10 +423,4 @@ PLUGINS = require("plugins/engine")
 initAnimationInfo()
 gallery = require("tools/spriteSheetSlicer/gallery")
 
-slicer:start({
-    imageViewer          = getImageViewer(),
-    marginBGColor        = sheetInfo.MARGIN_BG_COLOR,
-    spriteBGColor        = sheetInfo.SPRITE_BG_COLOR,
-    callbackWhenComplete = onSlicingCompletion
-})
 
