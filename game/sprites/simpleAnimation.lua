@@ -18,6 +18,14 @@ return {
                 end
             end,
 
+            drawRotated = function(self, GRAPHICS, x, y, scaleX, scaleY, r)
+                local currentQuad = self:getCurrentQuad()
+                local offset = self:getCurrentOffset()
+                if currentQuad then
+                    GRAPHICS:draw(self:getImage(), self:getCurrentQuad(), x, y, r, scaleX, scaleY, offset.x, offset.y)
+                end
+            end,
+
 			drawBorder = function(self, GRAPHICS, x, y, scaleX, scaleY)
                 GRAPHICS:setColor(1, 1, 1)
                 GRAPHICS:setLineWidth(2)
