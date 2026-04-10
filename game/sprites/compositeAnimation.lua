@@ -19,6 +19,10 @@ return {
                 end
             end,
 
+            drawRotated = function(self, GRAPHICS, x, y, scaleX, scaleY, r)
+                self:draw(GRAPHICS, x, y, scaleX, scaleY)
+            end,
+
 			drawBorder = function(self, GRAPHICS, x, y, scaleX, scaleY)
                 GRAPHICS:setColor(1, 1, 1)
                 GRAPHICS:setLineWidth(2)
