@@ -4,7 +4,7 @@ return {
 	create = function(self)
 		return {
 			onCollisionWithPlayer = function(self, player)
-				self:setXSpeed(3)
+				self:setXSpeed(-30)
 			end,
 
 		}
