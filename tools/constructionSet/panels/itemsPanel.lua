@@ -1,13 +1,14 @@
 local OBJECT_FACTORY = require("tools/constructionSet/objectFactory")
 
 return {
-    create = function(self, stickyMouse)
+    create = function(self, names, stickyMouse)
         local itemList = {}
         local WIDTH, HEIGHT = 64, 64
 
-        table.insert(itemList, OBJECT_FACTORY:createTemplate("ring",      WIDTH, HEIGHT))
-        table.insert(itemList, OBJECT_FACTORY:createTemplate("giantRing", WIDTH, HEIGHT))
-
+        for _, name in ipairs(names) do
+            table.insert(itemList, OBJECT_FACTORY:createTemplate(name, WIDTH, HEIGHT))
+        end
+        
         local palette   = require("tools/constructionSet/palette"):create { objects = itemList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT, STICKY_MOUSE = stickyMouse }
         
         return {
