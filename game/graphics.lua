@@ -22,8 +22,8 @@ else
             love.graphics.line(x1, y1 + self.y, x2, y2 + self.y)
         end,
         
-        draw = function(self, image, quad, x, y, r, sx, sy)
-            love.graphics.draw(image, quad, x, y + self.y, r, sx, sy)
+        draw = function(self, image, quad, x, y, r, sx, sy, ox, oy)
+            love.graphics.draw(image, quad, x, y + self.y, r, sx, sy, ox, oy)
         end,
 
         imageToScreenCoordinates = function(self, x, y)
