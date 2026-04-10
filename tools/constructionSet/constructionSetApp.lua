@@ -23,7 +23,8 @@ local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):crea
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
-local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create(STICKY_MOUSE)
+local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create( { "ring", "giantRing", }, STICKY_MOUSE)
+local ITEMS_2_PANEL   = require("tools/constructionSet/panels/itemsPanel"):create( { "bigBall", }, STICKY_MOUSE)
 
 local MISCELLANEOUS_PANEL = require("tools/constructionSet/panels/miscellaneousPanel"):create()
 
@@ -200,7 +201,7 @@ PLUGINS = require("plugins/engine")
         TABS = { 
              { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL, CHUNKS_3_PANEL,  }, },
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
-             { label = "Items",   panel = ITEMS_PANEL, },
+             { label = "Items",   panel = require("tools/constructionSet/panels/multiPanel"):create { ITEMS_PANEL, ITEMS_2_PANEL }, },
              { label = "Player",  panel = require("tools/constructionSet/panels/multiPanel"):create { PLAYER_PANEL, PLAYER_2_PANEL }, },
              { label = "Miscellaneous", panel = MISCELLANEOUS_PANEL, },
         },
