@@ -97,6 +97,12 @@ return {
                 self.currentAnimation:draw(GRAPHICS, x, y, scaleX, scaleY)
             end,
 
+            drawRotated = function(self, x, y, scaleX, scaleY, r, GRAPHICS)
+                GRAPHICS = GRAPHICS or self.graphics
+                GRAPHICS:setColor(COLOR_PURE_WHITE)
+                self.currentAnimation:drawRotated(GRAPHICS, x, y, scaleX, scaleY, r)
+            end,
+
             drawBorder = function(self, x, y, scaleX, scaleY, GRAPHICS)
                 GRAPHICS = GRAPHICS or self.graphics
                 self.currentAnimation:drawBorder(GRAPHICS, x, y, scaleX, scaleY)
