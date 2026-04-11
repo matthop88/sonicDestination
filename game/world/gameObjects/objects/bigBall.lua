@@ -8,15 +8,17 @@ return {
 		return {
 			rotation = 0,
 			vector   = 0,
-			colliding = false,
+			colliding = { false, false },
 
 			onCollisionWithPlayer = function(self, player)
-				self.colliding = true
-				if player:getX() < self:getX() then
-					self.vector = -1
-				else
-					self.vector = 1
+				if self.colliding[2] == false then
+					if player:getX() < self:getX() then
+						self.vector = -1
+					else
+						self.vector = 1
+					end
 				end
+				self.colliding = { true, true }
 			end,
 
 			draw = function(self) 
@@ -43,20 +45,22 @@ return {
             end,
 
             calculateSpeed = function(self, dt)
-            	if self.colliding then
+            	if self.colliding[1] then
             		if self.vector == -1 then
             			self.xSpeed = math.max(-MAX_SPEED, self.xSpeed - (ACCELERATION * dt))
             		else
             			self.xSpeed = math.min(MAX_SPEED, self.xSpeed + (ACCELERATION * dt))
             		end
+            		self.colliding[1] = false
             	else
             		if self.vector == -1 then
             			self.xSpeed = math.min(0, self.xSpeed + (ACCELERATION * dt))
             		else
             			self.xSpeed = math.max(0, self.xSpeed - (ACCELERATION * dt))
             		end
+            		if self.xSpeed == 0 then self.vector = 0 end
+            		self.colliding[2] = false
             	end
-            	self.colliding = false
             end,
 
 		}
