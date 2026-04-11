@@ -5,6 +5,7 @@ return {
 		return {
 			rotation = 0,
 			acceleration = -150,
+			maxSpeed     = -180,
 			colliding = false,
 
 			onCollisionWithPlayer = function(self, player)
@@ -23,7 +24,7 @@ return {
             update = function(self, dt)
                 if self.active then
                 	if self.colliding then
-                		self.xSpeed = self.xSpeed + (self.acceleration * dt)
+                		self.xSpeed = math.max(self.maxSpeed, self.xSpeed + (self.acceleration * dt))
                 	else
                 		self.xSpeed = math.min(0, self.xSpeed - (self.acceleration * dt))
                 	end
