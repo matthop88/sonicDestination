@@ -4,9 +4,11 @@ return {
 	create = function(self)
 		return {
 			rotation = 0,
+			acceleration = -150,
+			colliding = false,
 
 			onCollisionWithPlayer = function(self, player)
-				self:setXSpeed(-16 * math.pi)
+				self.colliding = true
 			end,
 
 			draw = function(self) 
@@ -20,6 +22,12 @@ return {
 
             update = function(self, dt)
                 if self.active then
+                	if self.colliding then
+                		self.xSpeed = self.xSpeed + (self.acceleration * dt)
+                	else
+                		self.xSpeed = math.min(0, self.xSpeed - (self.acceleration * dt))
+                	end
+                	self.colliding = false
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
