@@ -14,6 +14,12 @@ return {
         			player:reboundIfPossible(self.y, 90)
 				end
 			end,
+
+			onCollisionWithDangerousToNPCs = function(self, dangerousObject)
+				self:setAnimation("dying")
+				self:setDead()
+				SOUND_MANAGER:play("badnikDeath")
+			end,
 		}
 	end,
 }
