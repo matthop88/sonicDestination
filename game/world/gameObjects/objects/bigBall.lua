@@ -5,17 +5,21 @@ local MAX_SPEED    = 180
 
 return {
 	create = function(self)
+		local SENSOR_DX = 15
+		local SENSOR_DY = 31
+
 		return {
 			rotation = 0,
 			vector   = 0,
 			colliding = { false, false },
-
+			xFlip    = true,
+			
 			onCollisionWithPlayer = function(self, player)
 				if self.colliding[2] == false then
 					if player:getX() < self:getX() then
-						self.vector = -1
+						self.xFlip = true
 					else
-						self.vector = 1
+						self.xFlip = false
 					end
 				end
 				self.colliding = { true, true }
@@ -36,32 +40,47 @@ return {
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
-                    local deltaX = self:getXVelocity() * dt
+                    local deltaX = self.xSpeed * dt
                     self:setX(self:getX() + deltaX)
                     self.rotation = self.rotation + (deltaX / 24)
                     self:setY(self:getY() + (self:getYSpeed()    * dt))
-                    
                 end
             end,
 
             calculateSpeed = function(self, dt)
-            	if self.colliding[1] then
-            		if self.vector == -1 then
+            	if not self:scanGround() then
+					self.xSpeed = 0
+					self.colliding[2] = false
+					return
+				end
+				if self.colliding[1] then
+            		if not self.xFlip then
             			self.xSpeed = math.max(-MAX_SPEED, self.xSpeed - (ACCELERATION * dt))
             		else
             			self.xSpeed = math.min(MAX_SPEED, self.xSpeed + (ACCELERATION * dt))
             		end
             		self.colliding[1] = false
             	else
-            		if self.vector == -1 then
+            		if not self.xFlip then
             			self.xSpeed = math.min(0, self.xSpeed + (ACCELERATION * dt))
             		else
             			self.xSpeed = math.max(0, self.xSpeed - (ACCELERATION * dt))
             		end
-            		if self.xSpeed == 0 then self.vector = 0 end
             		self.colliding[2] = false
             	end
             end,
+
+			scanGround = function(self)
+				if not self.groundScanner then
+					self.groundScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = SENSOR_DX, dy = SENSOR_DY }
+				end
+
+				return self.groundScanner:scan()
+			end,
+
+			getXFlip = function(self)
+				return self.xFlip
+			end,
 
 		}
 	end,            
