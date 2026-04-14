@@ -25,6 +25,10 @@ return {
 				self.colliding = { true, true }
 			end,
 
+			isDangerousToNPCs = function(self)
+				return true
+			end,
+
 			draw = function(self) 
                 if self.active then
                     self.sprite:drawRotated(self.x, self.y, self.rotation) 
@@ -44,6 +48,9 @@ return {
                     self:setX(self:getX() + deltaX)
                     self.rotation = self.rotation + (deltaX / 24)
                     self:setY(self:getY() + (self:getYSpeed()    * dt))
+                    if self.xSpeed ~= 0 then 
+                    	self.world:checkCollisions(self)
+                    end
                 end
             end,
 
