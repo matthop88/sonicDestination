@@ -13,13 +13,18 @@ return {
 			vector   = 0,
 			colliding = { false, false },
 			xFlip    = true,
+			player   = nil,
 			
 			onCollisionWithPlayer = function(self, player)
 				if self.colliding[2] == false then
-					if player:getX() < self:getX() then
-						self.xFlip = true
-					else
-						self.xFlip = false
+					if not player:isPushing() then
+						self.player = player
+						self.player:setPushing(self)
+						if player:getX() < self:getX() then
+							self.xFlip = true
+						else
+							self.xFlip = false
+						end
 					end
 				end
 				self.colliding = { true, true }
@@ -58,6 +63,10 @@ return {
             	if not self:scanGround() then
 					self.xSpeed = 0
 					self.colliding[2] = false
+					if self.player and self.player:getPushing() == self then
+						self.player:clearPushing()
+						self.player = nil
+					end
 					return
 				end
 				if self.colliding[1] then
@@ -74,6 +83,10 @@ return {
             			self.xSpeed = math.max(0, self.xSpeed - (ACCELERATION * dt))
             		end
             		self.colliding[2] = false
+            		if self.player and self.player:getPushing() == self then
+            			self.player:clearPushing()
+            			self.player = nil
+            		end
             	end
             end,
 
