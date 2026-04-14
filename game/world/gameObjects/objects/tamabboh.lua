@@ -18,6 +18,12 @@ return {
 				end
 			end,
 
+			onCollisionWithDangerousToNPCs = function(self, dangerousObject)
+				self:setAnimation("tamabbohDying")
+				self:setDead()
+				SOUND_MANAGER:play("badnikDeath")
+			end,
+
 			scanGround = function(self)
 				if not self.groundScanner then
 					self.groundScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = SENSOR_DX, dy = SENSOR_DY }
