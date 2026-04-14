@@ -310,4 +310,9 @@ return {
 
     setFlashing  = function(self) self.flashEngine:setFlashing()       end,
     isInvincible = function(self) return self.flashEngine:isFlashing() end,
+
+    clearPushing = function(self)      self.pushing = nil         end,
+    setPushing   = function(self, obj) self.pushing = obj         end,
+    getPushing   = function(self)      return self.pushing        end,
+    isPushing    = function(self)      return self.pushing ~= nil end,
 }
