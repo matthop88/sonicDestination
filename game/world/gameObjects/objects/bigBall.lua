@@ -16,16 +16,19 @@ return {
 			player   = nil,
 			
 			onCollisionWithPlayer = function(self, player)
-				if self.colliding[2] == false then
-					if player:getX() < self:getX() then
-						self.xFlip = true
-					else
-						self.xFlip = false
+				if not player:isPushing() or player:getPushing() == self then
+					if self.colliding[2] == false then
+						if player:getX() < self:getX() then
+							self.xFlip = true
+						else
+							self.xFlip = false
+						end
 					end
+					self.player = player
+					self.player:setPushing(self)
+					self.colliding = { true, true }
+					return true
 				end
-				self.player = player
-				self.player:setPushing(self)
-				self.colliding = { true, true }
 			end,
 
 			isDangerousToNPCs = function(self)
