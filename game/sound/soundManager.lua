@@ -48,7 +48,7 @@ return ({
         if propData.jumpSound        then self:setOverride("sonicJumping", propData.jumpSound)        end
         if propData.sonicHitSound    then self:setOverride("sonicHit",     propData.sonicHitSound)    end
         if propData.badnikDeathSound then self:setOverride("badnikDeath",  propData.badnikDeathSound) end
-    
+        if propData.brakeSound       then self:setOverride("sonicBraking", propData.brakeSound)       end
     end,
         
 }):init()
