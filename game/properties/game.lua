@@ -4,6 +4,9 @@ return {
     -- For jumpSound, default is "sonicJumping", and alternate is "sonicCDJumping".
     jumpSound     = "sonicJumping",
 
+    -- For brakeSound, default is "sonicBraking", and alternate is "sneakers".
+    brakeSound    = "sneakers",
+    
     -- For sonicHitSound, default is "sonicHit", and alternates are "iceExplode" and "klankOuch".
     sonicHitSound = "sonicHit",
 
