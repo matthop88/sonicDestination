@@ -148,19 +148,23 @@ return {
 
     checkCollisions = function(self, otherObject)
         local otherHitBox = otherObject:getHitBox()
+        local firstHitBox = nil
         self.objects:head()
         while not self.objects:isEnd() do
             local object = self.objects:getNext()
-            local hitBox = object:getHitBox()
-            if hitBox and hitBox:intersects(otherHitBox) then
-                if otherObject:isPlayer() then
-                    self.collisionHandler:handleCollisionWithPlayer(object, otherObject)
-                elseif otherObject.isDangerousToNPCs and otherObject:isDangerousToNPCs() then
-                    self.collisionHandler:handleCollisionWithDangerousToNPCs(object, otherObject)
+            if object ~= otherObject then
+                local hitBox = object:getHitBox()
+                if hitBox and hitBox:intersects(otherHitBox) then
+                    if otherObject:isPlayer() then
+                        self.collisionHandler:handleCollisionWithPlayer(object, otherObject)
+                    elseif otherObject.isDangerousToNPCs and otherObject:isDangerousToNPCs() then
+                        self.collisionHandler:handleCollisionWithDangerousToNPCs(object, otherObject)
+                    end
+                    if not firstHitBox then firstHitBox = hitBox end
                 end
-                return hitBox
             end
         end
+        return firstHitBox
     end,
 
     refresh          = function(self)       TERRAIN:refresh()                  end,
