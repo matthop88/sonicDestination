@@ -17,16 +17,14 @@ return {
 			
 			onCollisionWithPlayer = function(self, player)
 				if self.colliding[2] == false then
-					if not player:isPushing() then
-						self.player = player
-						self.player:setPushing(self)
-						if player:getX() < self:getX() then
-							self.xFlip = true
-						else
-							self.xFlip = false
-						end
+					if player:getX() < self:getX() then
+						self.xFlip = true
+					else
+						self.xFlip = false
 					end
 				end
+				self.player = player
+				self.player:setPushing(self)
 				self.colliding = { true, true }
 			end,
 
@@ -50,6 +48,7 @@ return {
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
                     local deltaX = self.xSpeed * dt
+                    local prevX = self.x
                     self:setX(self:getX() + deltaX)
                     self.rotation = self.rotation + (deltaX / 24)
                     self:setY(self:getY() + (self:getYSpeed()    * dt))
@@ -62,6 +61,7 @@ return {
             calculateSpeed = function(self, dt)
             	if not self:scanGround() then
 					self.xSpeed = 0
+					self.colliding[1] = false
 					self.colliding[2] = false
 					if self.player and self.player:getPushing() == self then
 						self.player:clearPushing()
