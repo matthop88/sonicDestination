@@ -255,8 +255,7 @@ return {
     end,
 
     onPropertyChange = function(self, propData)
-        if propData.jumpSound     then SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)     end
-        if propData.sonicHitSound then SOUND_MANAGER:setOverride("sonicHit",     propData.sonicHitSound) end
+        -- Do nothing
     end,
 
     toggleShowSensors = function(self)
@@ -311,8 +310,12 @@ return {
     setFlashing  = function(self) self.flashEngine:setFlashing()       end,
     isInvincible = function(self) return self.flashEngine:isFlashing() end,
 
-    clearPushing = function(self)      self.pushing = nil         end,
-    setPushing   = function(self, obj) self.pushing = obj         end,
+    clearPushing = function(self)      
+        self.pushing = nil 
+    end,
+    setPushing   = function(self, obj) 
+        self.pushing = obj  
+    end,
     getPushing   = function(self)      return self.pushing        end,
     isPushing    = function(self)      return self.pushing ~= nil end,
 }
