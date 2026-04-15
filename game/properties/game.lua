@@ -7,5 +7,8 @@ return {
     -- For sonicHitSound, default is "sonicHit", and alternates are "iceExplode" and "klankOuch".
     sonicHitSound = "sonicHit",
 
-    volume = { music = 0.5, sounds = 0.2 },
+    -- For badnik death sound, default is "badnikDeath"; alternate is "smoosh".
+    badnikDeathSound = "smoosh",
+
+    volume = { music = 0.3, sounds = 0.9 },
 }
