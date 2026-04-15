@@ -12,7 +12,7 @@ return {
 	klank          = { label = "Klank",            filename = "extra/AnvilDing.wav",   volume = 0.8,  startPoint = 11076, endPoint =  41006, },
 	ouch           = { label = "Ouch",             filename = "extra/Ooouuucchh.wav",  volume = 0.8,  startPoint =  8182, endPoint =  38054, },
 	smoosh         = { label = "Smoosh",           filename = "extra/smoosh.wav",      volume = 1.0, },
-	sneakers       = { label = "Sneakers",         filename = "extra/sneakers.wav",    volume = 0.45, },
+	sneakers       = { label = "Sneakers",         filename = "extra/sneakers.wav",    volume = 0.45, pitch = 1.3, },
 	klankOuch      = {
         { filename = "extra/AnvilDing.wav",   volume = 0.8, startPoint = 11076, endPoint =  41006,             },
         { filename = "extra/Ooouuucchh.wav",  volume = 0.8, startPoint =  8182, endPoint =  38054, delay = 0.3 },
