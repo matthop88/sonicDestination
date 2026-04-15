@@ -11,7 +11,7 @@ local ringPanRight   = true
 return {
     ------------------------------------------------------------------
     BRAKING_ACCELERATION    = 1800,           -- 0.5      pixels/frame      
-    MIN_SPEED_TO_BRAKE      = 60,             -- 1        pixel /frame
+    MIN_SPEED_TO_BRAKE      = 210,            -- 3.5      pixels/frame
     RUNNING_ACCELERATION    = 168.75,         -- 0.046875 pixels/frame
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Running#Acceleration
