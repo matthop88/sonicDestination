@@ -3,6 +3,7 @@ return {
 		return {
 			filename     = params.filename,
 			volume       = params.volume or 1,
+            pitch        = params.pitch or 1,
 			startPoint   = params.startPoint,
             delay        = params.delay,
             volumeScalar = 1,
@@ -18,6 +19,7 @@ return {
             play = function(self)
                 self:load()
                 self:getSound():setVolume(self.volume * self.volumeScalar)
+                self:getSound():setPitch(self.pitch)
                 self:getSound():play()
                 if self.startPoint then self:getSound():seek(self.startPoint, "samples") end
                 self:next()
