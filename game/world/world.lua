@@ -1,4 +1,4 @@
-local GRAPHICS
+ local GRAPHICS
 local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
