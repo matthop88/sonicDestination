@@ -11,6 +11,7 @@ return {
 	iceExplode     = { label = "Ice Explode",      filename = "extra/IceExplode1.wav", volume = 0.8,  startPoint =  4892, endPoint =  45896, },
 	klank          = { label = "Klank",            filename = "extra/AnvilDing.wav",   volume = 0.8,  startPoint = 11076, endPoint =  41006, },
 	ouch           = { label = "Ouch",             filename = "extra/Ooouuucchh.wav",  volume = 0.8,  startPoint =  8182, endPoint =  38054, },
+	smoosh         = { label = "Smoosh",           filename = "extra/smoosh.wav",      volume = 1.0, },
 	klankOuch      = {
         { filename = "extra/AnvilDing.wav",   volume = 0.8, startPoint = 11076, endPoint =  41006,             },
         { filename = "extra/Ooouuucchh.wav",  volume = 0.8, startPoint =  8182, endPoint =  38054, delay = 0.3 },
