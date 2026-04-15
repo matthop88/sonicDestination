@@ -45,6 +45,10 @@ return ({
         if propData.volume and propData.volume.sounds then
             self.volumeScalar = propData.volume.sounds
         end
+        if propData.jumpSound        then self:setOverride("sonicJumping", propData.jumpSound)        end
+        if propData.sonicHitSound    then self:setOverride("sonicHit",     propData.sonicHitSound)    end
+        if propData.badnikDeathSound then self:setOverride("badnikDeath",  propData.badnikDeathSound) end
+    
     end,
         
 }):init()
