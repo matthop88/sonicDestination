@@ -3,7 +3,7 @@ local COLOR = require("tools/lib/colors")
 return {
 	create = function(self, params)
 		local title = nil
-		local soundPanel = nil
+		local soundsPanel = nil
 
 		return {
 			label = params.label or "Sounds",
@@ -55,7 +55,20 @@ return {
 			end,
 			
 			showSoundsPanel = function(self)
-				-- Do logic for showing sounds panel
+				if not soundsPanel then
+					soundsPanel = require("tools/constructionSet/sounds/soundsPanel"):create {
+						x = 300,
+						y = 250,
+						width = 830,
+						height = 400,
+					}
+					
+					if _G.getModals then
+						getModals():add(soundsPanel)
+					end
+				end
+				
+				soundsPanel:setVisible(true)
 				self.isSelected = false
 				self.isPressed = false
 			end,
