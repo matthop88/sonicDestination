@@ -17,4 +17,8 @@ return {
         { filename = "extra/AnvilDing.wav",   volume = 0.8, startPoint = 11076, endPoint =  41006,             },
         { filename = "extra/Ooouuucchh.wav",  volume = 0.8, startPoint =  8182, endPoint =  38054, delay = 0.3 },
     },
+    bowlingStrike  = { 
+    	label = "Bowling Strike",   filename = "extra/emycutiepantsBowlingStrike.mp3",
+    	-- Credit to Emycutiepants https://pixabay.com/users/_emycutiepants_-50116316 
+    },
 }
