@@ -27,7 +27,7 @@ return {
 					y = self.y + 80,
 					width = 360,
 					height = 50,
-					list = { "None", "Braking", "Jumping", "Ring Left", "Ring Right", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" },
+					list = { "None", "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" },
 				}
 		
 				return self
