@@ -18,7 +18,9 @@ return {
 			end,
 
 			handleMousepressed = function(self, mx, my)
-				for _, v in ipairs(self) do v:handleMousepressed(mx, my) end
+				for _, v in ipairs(self) do 
+					if v:handleMousepressed(mx, my) then return true end
+				end
 			end,
 		}
 		
