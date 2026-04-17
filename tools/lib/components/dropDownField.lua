@@ -12,6 +12,7 @@ return {
 			selectedValue = params.selectedValue or "None",
 			hovered = false,
 			list = nil,
+			onChanged = params.onChanged,
 			listItems = params.list or {},
 
 			draw = function(self)
@@ -79,6 +80,8 @@ return {
 					items = self.listItems,
 					onItemSelected = function(list, item, index)
 						list:setVisible(false)
+						self.selectedValue = item
+						if self.onChanged then self.onChanged(item, index) end
 					end,
 				}
 			
