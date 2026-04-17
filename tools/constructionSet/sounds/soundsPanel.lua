@@ -3,7 +3,7 @@ local SOUND_DATA = require("game/sound/soundData")
 local COLOR = require("tools/lib/colors")
 local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
 local horizontalSlider = require("tools/lib/components/horizontalSlider")
-local ACTIONS = { "None", "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" }
+local ACTIONS = { "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" }
 
 local buildSeparator = function(self)
 	local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
@@ -80,6 +80,7 @@ return {
 					width = 360,
 					height = 50,
 					list = ACTIONS,
+					selectedIndex = 1,
 					onChanged = function(item, index)
 						print("Action changed to ", item)
 						soundDropDowns:show(item)
@@ -87,6 +88,8 @@ return {
 				}
 
 				self:buildSoundDropDowns()
+
+				soundDropDowns:show(ACTIONS[1])
 		
 				return self
 			end,
@@ -167,6 +170,7 @@ return {
 								height = 50,
 								list = self:buildSoundItems(recommendations),
 								visible = false,
+								selectedIndex = 2,
 							}
 						soundDropDown.action = action
 						table.insert(soundDropDowns, soundDropDown)
