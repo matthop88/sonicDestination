@@ -30,12 +30,16 @@ return {
 				love.graphics.setColor(COLOR.PURE_WHITE)
 				love.graphics.setFont(fieldFont)
 				
+				local selectedValue = self.selectedValue
+				if type(self.selectedValue) == "table" then
+					selectedValue = self.selectedValue.label
+				end
 				if self.label and self.label ~= "" then
 					love.graphics.print(self.label .. ":", self.x + 10, self.y + 15)
 					local labelWidth = fieldFont:getWidth(self.label .. ": ")
-					love.graphics.print(self.selectedValue, self.x + 10 + labelWidth, self.y + 15)
+					love.graphics.print(selectedValue, self.x + 10 + labelWidth, self.y + 15)
 				else
-					love.graphics.printf(self.selectedValue, self.x + 10, self.y + 15, self.width - 20, "left")
+					love.graphics.printf(selectedValue, self.x + 10, self.y + 15, self.width - 20, "left")
 				end
 			end,
 			
