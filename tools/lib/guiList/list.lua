@@ -17,7 +17,9 @@ return {
 		local items = {}
 		for _, item in ipairs(params.items or {}) do
 			if type(item) == "string" then
-				table.insert(items, TEXT_ITEM:create { text = item, font = font })
+				table.insert(items, TEXT_ITEM:create { text = item, font = font, value = item })
+			elseif type(item) == "table" and item.label then
+				table.insert(items, TEXT_ITEM:create { text = item.label, font = font, value = item })
 			else
 				table.insert(items, item)
 			end
