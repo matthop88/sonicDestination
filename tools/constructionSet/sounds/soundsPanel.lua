@@ -143,9 +143,7 @@ return {
 				local items = {}
 				
 				for soundKey, soundInfo in pairs(SOUND_DATA) do
-					if soundInfo.label then
-						table.insert(items, { label = soundInfo.label, value = soundKey })
-					end
+					table.insert(items, { label = soundInfo.label, value = soundKey })
 				end
 				table.sort(items, function(a, b) return a.label < b.label end)
 				
