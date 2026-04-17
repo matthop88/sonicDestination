@@ -23,7 +23,18 @@ return {
 				end
 			end,
 		}
-		
+
+		local soundRecommendations = {
+			Braking           = { "Sonic Braking", "Sneakers" },
+			Jumping           = { "Sonic Jumping", "Sonic CD Jumping" },
+			Collect_Odd_Ring  = { "Ring Collect L" },
+			Collect_Even_Ring = { "Ring Collect R" },
+			Giant_Ring        = { "Giant Ring" },
+			Vanish            = { "Vanish" },
+			Sonic_Hit         = { "Sonic Hit", "Ice Explode", "Klank Ouch!" },
+			Badnik_Hit        = { "Badnik Death", "Smoosh", "Bowling Strike" },
+		}
+
 		return ({
 			x = params.x or 300,
 			y = params.y or 250,
