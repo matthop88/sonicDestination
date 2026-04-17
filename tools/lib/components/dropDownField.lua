@@ -5,13 +5,18 @@ return {
 		local fieldFont = love.graphics.newFont(20)
 		if params.visible == nil then params.visible = true end
 
+		local selectedValue = params.selectedValue or "None"
+		if params.selectedIndex then
+			selectedValue = params.list[params.selectedIndex]
+		end
+
 		return {
 			x = params.x,
 			y = params.y,
 			width = params.width,
 			height = params.height or 50,
 			label = params.label or "",
-			selectedValue = params.selectedValue or "None",
+			selectedValue = selectedValue,
 			hovered = false,
 			list = nil,
 			visible = params.visible,
