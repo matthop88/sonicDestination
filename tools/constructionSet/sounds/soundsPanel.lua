@@ -4,7 +4,8 @@ local horizontalSlider = require("tools/lib/components/horizontalSlider")
 
 return {
 	create = function(self, params)
-		local okButton = nil
+		local okButton       = nil
+		local actionDropDown = nil
 		
 		return ({
 			x = params.x or 300,
@@ -20,6 +21,14 @@ return {
 					width = 100,
 					height = 40,
 				}
+
+				actionDropDown = require("tools/lib/components/dropDownField"):create {
+					x = self.x + 20,
+					y = self.y + 80,
+					width = 360,
+					height = 50,
+					list = { "None", "Braking", "Jumping", "Ring Left", "Ring Right", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" },
+				}
 		
 				return self
 			end,
@@ -29,6 +38,7 @@ return {
 				
 				self:drawPanelBackground()
 				self:drawTitle()
+				actionDropDown:draw()
 				okButton:draw()
 			end,
 			
@@ -43,7 +53,7 @@ return {
 				love.graphics.setColor(COLOR.PURE_WHITE)
 				local font = love.graphics.newFont(24)
 				love.graphics.setFont(font)
-				love.graphics.printf("Select Sound", self.x, self.y + 20, self.width, "center")
+				love.graphics.printf("Select Action", self.x, self.y + 20, self.width, "center")
 			end,
 							
 			update = function(self, dt)
@@ -51,6 +61,7 @@ return {
 				
 				local mx, my = love.mouse.getPosition()
 				okButton:update(mx, my)
+				actionDropDown:update(dt, mx, my)
 			end,
 								
 			handleMousePressed = function(self, mx, my)
@@ -60,7 +71,11 @@ return {
 					self:setVisible(false)
 					return true
 				end
-				return false
+
+				if actionDropDown:handleMousepressed(mx, my) then
+					return true
+				end
+				
 			end,
 			
 			containsPoint = function(self, mx, my)
