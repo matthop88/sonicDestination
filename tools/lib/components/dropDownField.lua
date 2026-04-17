@@ -3,6 +3,8 @@ local COLOR = require("tools/lib/colors")
 return {
 	create = function(self, params)
 		local fieldFont = love.graphics.newFont(20)
+		if params.visible == nil then params.visible = true end
+
 		return {
 			x = params.x,
 			y = params.y,
@@ -12,10 +14,13 @@ return {
 			selectedValue = params.selectedValue or "None",
 			hovered = false,
 			list = nil,
+			visible = params.visible,
 			onChanged = params.onChanged,
 			listItems = params.list or {},
 
 			draw = function(self)
+				if not self.visible then return end
+
 				-- Draw field background
 				if self.hovered then
 					love.graphics.setColor(COLOR.LIGHTER_GREY)
@@ -44,6 +49,8 @@ return {
 			end,
 			
 			update = function(self, dt, mx, my)
+				if not self.visible then return end
+
 				self.hovered = self:containsPoint(mx, my)
 				if self.list then
 					self.list:update(dt, mx, my)
@@ -51,6 +58,8 @@ return {
 			end,
 
 			handleMousepressed = function(self, mx, my)
+				if not self.visible then return end
+				
 				if self:containsPoint(mx, my) then
 					self:showList()
 					return true
