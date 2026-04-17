@@ -28,7 +28,7 @@ return {
 		local soundLabels = {}
 		
 		for soundKey, soundInfo in pairs(SOUND_DATA) do
-			if soundInfo.label then
+			if not soundInfo.complex then
 				table.insert(soundLabels, soundInfo.label)
 				labelToKeyMap[soundInfo.label] = soundKey
 			end
