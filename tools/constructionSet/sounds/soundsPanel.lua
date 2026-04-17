@@ -8,7 +8,19 @@ return {
 	create = function(self, params)
 		local okButton       = nil
 		local actionDropDown = nil
-		local soundsDropDown = nil
+		local soundDropDowns = {
+			draw = function(self) 
+				for _, v in ipairs(self) do v:draw() end
+			end,
+
+			update = function(self, dt, mx, my)
+				for _, v in ipairs(self) do v:update(dt, mx, my) end
+			end,
+
+			handleMousepressed = function(self, mx, my)
+				for _, v in ipairs(self) do v:handleMousepressed(mx, my) end
+			end,
+		}
 		
 		return ({
 			x = params.x or 300,
@@ -33,13 +45,7 @@ return {
 					list = { "None", "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" },
 				}
 
-				soundsDropDown = require("tools/lib/components/dropDownField"):create {
-					x = self.x + 400,
-					y = self.y + 80,
-					width = 360,
-					height = 50,
-					list = self:buildSoundItems(),
-				}
+				self:buildSoundDropDowns()
 		
 				return self
 			end,
@@ -50,7 +56,7 @@ return {
 				self:drawPanelBackground()
 				self:drawTitle()
 				actionDropDown:draw()
-				soundsDropDown:draw()
+				soundDropDowns:draw()
 				okButton:draw()
 			end,
 			
@@ -74,7 +80,7 @@ return {
 				local mx, my = love.mouse.getPosition()
 				okButton:update(mx, my)
 				actionDropDown:update(dt, mx, my)
-				soundsDropDown:update(dt, mx, my)
+				soundDropDowns:update(dt, mx, my)
 			end,
 								
 			handleMousePressed = function(self, mx, my)
@@ -89,7 +95,7 @@ return {
 					return true
 				end
 
-				if soundsDropDown:handleMousepressed(mx, my) then
+				if soundDropDowns:handleMousepressed(mx, my) then
 					return true
 				end
 				
@@ -108,6 +114,18 @@ return {
 				self.visible = visible
 			end,
 
+			buildSoundDropDowns = function(self)
+				table.insert(soundDropDowns, 
+					require("tools/lib/components/dropDownField"):create {
+						x = self.x + 400,
+						y = self.y + 80,
+						width = 360,
+						height = 50,
+						list = self:buildSoundItems(),
+					}
+				)
+			end,
+
 			buildSoundItems = function(self)
 				local items = {}
 				
@@ -116,7 +134,7 @@ return {
 						table.insert(items, { label = soundInfo.label, value = soundKey })
 					end
 				end
-				table.sort(items, function(a, b) return a.label > b.label end)
+				table.sort(items, function(a, b) return a.label < b.label end)
 				
 				return items
 			end,
