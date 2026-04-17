@@ -3,6 +3,17 @@ local SOUND_DATA = require("game/sound/soundData")
 local COLOR = require("tools/lib/colors")
 local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
 local horizontalSlider = require("tools/lib/components/horizontalSlider")
+local ACTIONS = { "None", "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" }
+
+local buildSeparator = function(self)
+	local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
+	return RECTANGLE_ITEM:create {
+		color = { 0.5, 0.5, 0.5 },
+		width = 390,
+		height = 5,
+		notSelectable = true,
+	}
+end
 
 return {
 	create = function(self, params)
@@ -22,6 +33,19 @@ return {
 					if v:handleMousepressed(mx, my) then return true end
 				end
 			end,
+
+			show = function(self, action)
+				for _, v in ipairs(self) do
+					if v.action == action then v.visible = true
+					else                       v.visible = false
+					end
+				end
+			end,
+
+			hide = function(self)
+				for _, v in ipairs(self) do v.visible = false end
+			end,
+
 		}
 
 		local soundRecommendations = {
@@ -55,7 +79,11 @@ return {
 					y = self.y + 80,
 					width = 360,
 					height = 50,
-					list = { "None", "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" },
+					list = ACTIONS,
+					onChanged = function(item, index)
+						print("Action changed to ", item)
+						soundDropDowns:show(item)
+					end,
 				}
 
 				self:buildSoundDropDowns()
@@ -128,25 +156,48 @@ return {
 			end,
 
 			buildSoundDropDowns = function(self)
-				table.insert(soundDropDowns, 
-					require("tools/lib/components/dropDownField"):create {
-						x = self.x + 400,
-						y = self.y + 80,
-						width = 360,
-						height = 50,
-						list = self:buildSoundItems(),
-					}
-				)
+				for _, action in ipairs(ACTIONS) do
+					if action ~= "None" then
+						local recommendations = soundRecommendations[action:gsub(" ", "_")] or {}
+						local soundDropDown = 
+							require("tools/lib/components/dropDownField"):create {
+								x = self.x + 400,
+								y = self.y + 80,
+								width = 360,
+								height = 50,
+								list = self:buildSoundItems(recommendations),
+								visible = false,
+							}
+						soundDropDown.action = action
+						table.insert(soundDropDowns, soundDropDown)
+					end
+				end
 			end,
 
-			buildSoundItems = function(self)
+			buildSoundItems = function(self, recommendations)
 				local items = {}
 				
-				for soundKey, soundInfo in pairs(SOUND_DATA) do
-					table.insert(items, { label = soundInfo.label, value = soundKey })
+				table.insert(items, { label = "None", value = "None" })
+				for _, r in ipairs(recommendations) do
+					for soundKey, soundInfo in pairs(SOUND_DATA) do
+						if soundInfo.label == r then 
+							table.insert(items, { label = soundInfo.label, value = soundKey })
+						end
+					end
 				end
-				table.sort(items, function(a, b) return a.label < b.label end)
-				
+				table.insert(items, buildSeparator())
+				for soundKey, soundInfo in pairs(SOUND_DATA) do
+					local matchesRecommendation = false
+					for _, r in ipairs(recommendations) do
+						if soundInfo.label == r then 
+							matchesRecommendation = true
+						end
+					end
+					if not matchesRecommendation then
+						table.insert(items, { label = soundInfo.label, value = soundKey })
+					end
+				end
+
 				return items
 			end,
 		
