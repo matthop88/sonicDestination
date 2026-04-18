@@ -3,6 +3,7 @@
 --------------------------------------------------------------
 
 MUSIC_MANAGER = require("game/music/musicManager"):create()
+SOUND_MANAGER = require("game/sound/soundManager")
 
 --------------------------------------------------------------
 --                     Local Variables                      --
@@ -78,6 +79,7 @@ function love.update(dt)
     STICKY_MOUSE:update(dt)
     MAP:update(dt)
     MUSIC_MANAGER:update(dt)
+    SOUND_MANAGER:update(dt)
 end
 
 function love.keypressed(key)
