@@ -118,7 +118,6 @@ return {
 	
 			handleClick = function(self, mx, my)
 				if not self.visible then return false end
-				
 				if self:listBoxContainsPt(mx, my) then
 					for i, item in ipairs(self.items) do
 						if isSelectable(item) and item:containsPt(mx, my) then
@@ -174,6 +173,16 @@ return {
 				if not self.visible then return end
 				-- No-op for plain list
 			end,
+
+			handleKeyPressed = function(self, key)
+				if not self.visible then return false end
+				if key == "escape" then
+					self:setVisible(false)
+					return true
+				elseif key == "return" then
+					return self:handleClick(love.mouse.getPosition())
+				end
+			end
 		}):init()
 			
 		-- Check if we need a scrollPane
