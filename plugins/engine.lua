@@ -121,11 +121,19 @@ local engine = ({
     end,
 
     keypressed = function(self, key)
+        if self:modalKeypressed(key) then return end
         for _, plugin in ipairs(self) do
             if plugin.prehandleKeypressed ~= nil then key = plugin:prehandleKeypressed(key)        end
             if plugin.handleKeypressed    ~= nil and plugin:handleKeypressed(key) then return true end
         end
         self.oldKeypressed(key)
+    end,
+
+    modalKeypressed = function(self, key)
+        for _, plugin in ipairs(self) do
+            if plugin.modalKeypressed ~= nil and plugin:modalKeypressed(key) then return true end
+        end
+        return false
     end,
 
     keyreleased = function(self, key)
