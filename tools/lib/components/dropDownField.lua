@@ -70,6 +70,11 @@ return {
 					return true
 				end
 			end,
+
+			handleKeypressed = function(self, key)
+				if not self.visible then return end
+				return self.list:handleKeyPressed(key)
+			end,
 			
 			containsPoint = function(self, mx, my)
 				return mx >= self.x and mx <= self.x + self.width and
@@ -80,11 +85,21 @@ return {
 				self.selectedValue = value
 			end,
 
+			getSelectedValue = function(self)
+				return self.selectedValue
+			end,
+
 			showList = function(self)
 				if not self.list then
 					self:initializeList()
 				end
 				self.list:setVisible(true)
+			end,
+
+			hideList = function(self)
+				if self.list then
+					self.list:setVisible(false)
+				end
 			end,
 
 			initializeList = function(self)
@@ -107,6 +122,16 @@ return {
 					getModals():add(self.list)
 				end
 			end,
+
+			setVisible = function(self, visible)
+				self.visible = visible
+				if visible == false then
+					if self.list then
+						self.list:setVisible(false)
+					end
+				end
+			end,
+
 		}
 	end,
 }
