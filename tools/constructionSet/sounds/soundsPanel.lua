@@ -36,14 +36,14 @@ return {
 
 			show = function(self, action)
 				for _, v in ipairs(self) do
-					if v.action == action then v.visible = true
-					else                       v.visible = false
+					if v.action == action then v:setVisible(true)
+					else                       v:setVisible(false)
 					end
 				end
 			end,
 
 			hide = function(self)
-				for _, v in ipairs(self) do v.visible = false end
+				for _, v in ipairs(self) do v:setVisible(false) end
 			end,
 
 		}
@@ -88,8 +88,6 @@ return {
 				}
 
 				self:buildSoundDropDowns()
-
-				soundDropDowns:show(ACTIONS[1])
 		
 				return self
 			end,
@@ -156,6 +154,11 @@ return {
 				
 			setVisible = function(self, visible)
 				self.visible = visible
+				if visible == false then
+					actionDropDown:hideList()
+					soundDropDowns:hide()
+				end
+				soundDropDowns:show(actionDropDown:getSelectedValue())
 			end,
 
 			buildSoundDropDowns = function(self)
