@@ -3,7 +3,16 @@ local SOUND_DATA = require("game/sound/soundData")
 local COLOR = require("tools/lib/colors")
 local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
 local horizontalSlider = require("tools/lib/components/horizontalSlider")
-local ACTIONS = { "Braking", "Jumping", "Collect Odd Ring", "Collect Even Ring", "Giant Ring", "Vanish", "Sonic Hit", "Badnik Hit" }
+local ACTIONS = { 
+	{ serial = "braking",         label = "Braking" },
+	{ serial = "jumping",         label = "Jumping" },
+	{ serial = "collectOddRing",  label = "Collect Odd Ring" },
+	{ serial = "collectEvenRing", label = "Collect Even Ring" }, 
+	{ serial = "giantRing",       label = "Giant Ring" },
+	{ serial = "vanish",          label = "Vanish" },
+	{ serial = "sonicHit",        label = "Sonic Hit" },
+	{ serial = "badnikHit",       label = "Badnik Hit" },
+}
 
 local buildSeparator = function(self)
 	local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
@@ -57,14 +66,14 @@ return {
 		}
 
 		local soundRecommendations = {
-			Braking           = { "Sonic Braking", "Sneakers" },
-			Jumping           = { "Sonic Jumping", "Sonic CD Jumping" },
-			Collect_Odd_Ring  = { "Ring Collect L" },
-			Collect_Even_Ring = { "Ring Collect R" },
-			Giant_Ring        = { "Giant Ring" },
-			Vanish            = { "Vanish" },
-			Sonic_Hit         = { "Sonic Hit", "Ice Explode", "Klank Ouch!" },
-			Badnik_Hit        = { "Badnik Death", "Smoosh", "Bowling Strike" },
+			braking         = { "Sonic Braking", "Sneakers" },
+			jumping         = { "Sonic Jumping", "Sonic CD Jumping" },
+			collectOddRing  = { "Ring Collect L" },
+			collectEvenRing = { "Ring Collect R" },
+			giantRing       = { "Giant Ring" },
+			vanish          = { "Vanish" },
+			sonicHit        = { "Sonic Hit", "Ice Explode", "Klank Ouch!" },
+			badnikHit       = { "Badnik Death", "Smoosh", "Bowling Strike" },
 		}
 
 		return ({
@@ -189,26 +198,27 @@ return {
 
 			buildSoundDropDowns = function(self)
 				for _, action in ipairs(ACTIONS) do
-					if action ~= "None" then
-						local recommendations = soundRecommendations[action:gsub(" ", "_")] or {}
-						local soundDropDown = 
-							require("tools/lib/components/dropDownField"):create {
-								x = self.x + 400,
-								y = self.y + 80,
-								width = 360,
-								height = 50,
-								list = self:buildSoundItems(recommendations),
-								visible = false,
-								selectedIndex = 2,
-								onChanged = function(item, index)
-									if item.value ~= "None" then
-										SOUND_MANAGER:play(item.value)
-									end
-								end,
-							}
-						soundDropDown.action = action
-						table.insert(soundDropDowns, soundDropDown)
-					end
+					local recommendations = soundRecommendations[action.serial] or {}
+					local soundDropDown = 
+						require("tools/lib/components/dropDownField"):create {
+							x = self.x + 400,
+							y = self.y + 80,
+							width = 360,
+							height = 50,
+							list = self:buildSoundItems(recommendations),
+							visible = false,
+							selectedIndex = 2,
+							onChanged = function(item, index)
+								if item.value ~= "None" then
+									SOUND_MANAGER:play(item.value)
+									local properties = getProperties()
+									if not properties.sounds then properties.sounds = {} end
+									properties.sounds[actionDropDown:getSelectedValue().serial] = item.label
+								end
+							end,
+						}
+					soundDropDown.action = action
+					table.insert(soundDropDowns, soundDropDown)
 				end
 			end,
 
