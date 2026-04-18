@@ -46,6 +46,14 @@ return {
 				for _, v in ipairs(self) do v:setVisible(false) end
 			end,
 
+			getSelectedSound = function(self)
+				for _, v in ipairs(self) do
+					if v.visible then
+						return v:getSelectedValue()
+					end
+				end
+			end,
+
 		}
 
 		local soundRecommendations = {
@@ -83,6 +91,10 @@ return {
 					selectedIndex = 1,
 					onChanged = function(item, index)
 						soundDropDowns:show(item)
+						local selectedSound = soundDropDowns:getSelectedSound()
+						if selectedSound.value ~= "None" then
+							SOUND_MANAGER:play(selectedSound.value)
+						end
 					end,
 				}
 
@@ -156,8 +168,23 @@ return {
 				if visible == false then
 					actionDropDown:hideList()
 					soundDropDowns:hide()
+					self:resetMusic()
+				else
+					self:stopMusic()
 				end
 				soundDropDowns:show(actionDropDown:getSelectedValue())
+			end,
+
+			resetMusic = function(self)
+				MUSIC_MANAGER:clear()
+				MUSIC_MANAGER:newTrack("constructionSet")
+				MUSIC_MANAGER:setVolume(1.0)
+				MUSIC_MANAGER:setPitch(1.0)
+				MUSIC_MANAGER:play()
+			end,
+
+			stopMusic = function(self)
+				MUSIC_MANAGER:clear()
 			end,
 
 			buildSoundDropDowns = function(self)
