@@ -82,7 +82,6 @@ return {
 					list = ACTIONS,
 					selectedIndex = 1,
 					onChanged = function(item, index)
-						print("Action changed to ", item)
 						soundDropDowns:show(item)
 					end,
 				}
@@ -174,6 +173,11 @@ return {
 								list = self:buildSoundItems(recommendations),
 								visible = false,
 								selectedIndex = 2,
+								onChanged = function(item, index)
+									if item.value ~= "None" then
+										SOUND_MANAGER:play(item.value)
+									end
+								end,
 							}
 						soundDropDown.action = action
 						table.insert(soundDropDowns, soundDropDown)
