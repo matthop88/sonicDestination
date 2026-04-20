@@ -65,7 +65,7 @@ return ({
     overrideFromSoundProps = function(self, soundProps)
         if soundProps ~= nil then
             for action, sound in pairs(soundProps) do
-                self:setActionOverride(action, sound)
+                self:setActionOverride(action, sound.sound)
             end
         end
     end,
