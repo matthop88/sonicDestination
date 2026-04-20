@@ -141,7 +141,10 @@ return {
 			end,
 			
 			handleMouseReleased = function(self)
-				self.isDragging = false
+				if self.isDragging then
+					self.isDragging = false
+					return true
+				end
 			end,
 			
 			updateValue = function(self, mx, my)
