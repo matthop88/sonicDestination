@@ -210,13 +210,15 @@ return {
 							list = self:buildSoundItems(recommendations),
 							visible = false,
 							selectedIndex = 2,
-							comparisonFn = function(listItem, value) return listItem.label == value end,
+							comparisonFn = function(listItem, value) return listItem.value == value end,
 							onChanged    = function(item, index)
+								local properties = getProperties()
+								if not properties.sounds then properties.sounds = {} end
 								if item.value ~= "None" then
 									SOUND_MANAGER:play(item.value)
-									local properties = getProperties()
-									if not properties.sounds then properties.sounds = {} end
-									properties.sounds[actionDropDown:getSelectedValue().serial] = item.label
+									properties.sounds[actionDropDown:getSelectedValue().serial] = item.value
+								else
+									properties.sounds[actionDropDown:getSelectedValue().serial] = "None"
 								end
 							end,
 						}
