@@ -20,6 +20,18 @@ return {
             setVolumeScalar = function(self, volumeScalar)
                 self.volumeScalar = volumeScalar
             end,
+
+            setVolume = function(self, volume)
+                for _, sound in ipairs(self.sounds) do
+                    sound:setVolume(volume)
+                end
+            end,
+
+            setPitch = function(self, pitch)
+                for _, sound in ipairs(self.sounds) do
+                    sound:setPitch(pitch)
+                end
+            end,
         }
     end,
 }
