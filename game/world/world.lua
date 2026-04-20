@@ -44,6 +44,7 @@ return {
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         self:refreshMusic()
+        self:refreshSounds()
         self:refreshGroundLevel()
         
         return self
@@ -85,6 +86,14 @@ return {
             MUSIC_MANAGER:setPitch(pitch)
             
             MUSIC_MANAGER:play()
+        end
+    end,
+
+    refreshSounds = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties then
+            SOUND_MANAGER:overrideFromSoundProps(map.properties.sounds)
         end
     end,
 
