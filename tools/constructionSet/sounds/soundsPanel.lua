@@ -98,6 +98,7 @@ return {
 					height = 50,
 					list = ACTIONS,
 					selectedIndex = 1,
+					comparisonFn = function(listItem, value) return listItem.label == value end,
 					onChanged = function(item, index)
 						soundDropDowns:show(item)
 						local selectedSound = soundDropDowns:getSelectedSound()
@@ -199,6 +200,7 @@ return {
 			buildSoundDropDowns = function(self)
 				for _, action in ipairs(ACTIONS) do
 					local recommendations = soundRecommendations[action.serial] or {}
+
 					local soundDropDown = 
 						require("tools/lib/components/dropDownField"):create {
 							x = self.x + 400,
@@ -208,7 +210,8 @@ return {
 							list = self:buildSoundItems(recommendations),
 							visible = false,
 							selectedIndex = 2,
-							onChanged = function(item, index)
+							comparisonFn = function(listItem, value) return listItem.label == value end,
+							onChanged    = function(item, index)
 								if item.value ~= "None" then
 									SOUND_MANAGER:play(item.value)
 									local properties = getProperties()
@@ -218,6 +221,13 @@ return {
 							end,
 						}
 					soundDropDown.action = action
+					local soundProperties = getProperties().sounds
+					if soundProperties then
+						if soundProperties[action.serial] then
+							soundDropDown:setSelectedValue(soundProperties[action.serial])
+						end
+					end
+
 					table.insert(soundDropDowns, soundDropDown)
 				end
 			end,
