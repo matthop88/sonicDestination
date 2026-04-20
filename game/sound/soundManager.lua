@@ -4,6 +4,17 @@ return ({
     queuedSounds = requireRelative("util/dataStructures/linkedList"):create(),
     volumeScalar = 1,
 
+    actionSoundMap = {
+        braking         = "sonicBraking",
+        jumping         = "sonicJumping",
+        collectOddRing  = "ringCollectL",
+        collectEvenRing = "ringCollectR",
+        giantRing       = "giantRing",
+        vanish          = "vanish",
+        sonicHit        = "sonicHit",
+        badnikHit       = "badnikDeath",
+    end,
+
     setOverride = function(self, key, value) self.overrides[key] = value end,
 
     init = function(self)
