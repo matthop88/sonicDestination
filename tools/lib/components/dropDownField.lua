@@ -22,6 +22,7 @@ return {
 			visible = params.visible,
 			onChanged = params.onChanged,
 			listItems = params.list or {},
+			comparisonFn = params.comparisonFn or function(listItem, outsideItem) return listItem == outsideItem end,
 
 			draw = function(self)
 				if not self.visible then return end
@@ -82,7 +83,12 @@ return {
 			end,
 			
 			setSelectedValue = function(self, value)
-				self.selectedValue = value
+				for _, item in ipairs(self.listItems) do
+					if self.comparisonFn(item, value) then
+						self.selectedValue = item
+						break
+					end
+				end
 			end,
 
 			getSelectedValue = function(self)
