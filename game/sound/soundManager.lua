@@ -13,7 +13,7 @@ return ({
         vanish          = "vanish",
         sonicHit        = "sonicHit",
         badnikHit       = "badnikDeath",
-    end,
+    },
 
     setOverride = function(self, key, value) self.overrides[key] = value end,
 
@@ -64,7 +64,7 @@ return ({
 
     overrideFromSoundProps = function(self, soundProps)
         if soundProps ~= nil then
-            for action, sound in keys(soundProps) do
+            for action, sound in pairs(soundProps) do
                 self:setActionOverride(action, sound)
             end
         end
