@@ -79,6 +79,27 @@ return {
 			badnikHit       = { "Badnik Death", "Smoosh", "Bowling Strike" },
 		}
 
+		local playSelectedSound = function()
+			local selectedSound = soundDropDowns:getSelectedSound()
+			if selectedSound.value ~= "None" then
+				local sound = SOUND_MANAGER:getByName(selectedSound.value)
+				sound:setVolume(volumeSlider:getValue())
+				sound:setPitch(pitchSlider:getValue())
+									
+				SOUND_MANAGER:play(selectedSound.value)
+			end
+		end
+
+		local resetSliders = function()
+			local selectedSound = soundDropDowns:getSelectedSound()
+			if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
+				getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
+			end
+						
+			volumeSlider.setValue(getProperties().sounds[actionDropDown:getSelectedValue().serial].volume or 1)
+			pitchSlider.setValue(getProperties().sounds[actionDropDown:getSelectedValue().serial].pitch or 1)
+		end
+
 		return ({
 			x = params.x or 300,
 			y = params.y or 250,
@@ -104,10 +125,8 @@ return {
 					comparisonFn = function(listItem, value) return listItem.label == value end,
 					onChanged = function(item, index)
 						soundDropDowns:show(item)
-						local selectedSound = soundDropDowns:getSelectedSound()
-						if selectedSound.value ~= "None" then
-							SOUND_MANAGER:play(selectedSound.value)
-						end
+						resetSliders()
+						playSelectedSound()
 					end,
 				}
 
@@ -124,11 +143,19 @@ return {
 					labelFontSize = 16,
 					showLabels = false,
 					getValue = function()
-						return getProperties().sounds.volume or 1.0
+						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
+							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
+						end
+						return getProperties().sounds[actionDropDown:getSelectedValue().serial].volume or 1.0
 					end,
 					setValue = function(value)
-						getProperties().sounds = getProperties().sounds or {}
-						getProperties().sounds.volume = value
+						local selectedSound = soundDropDowns:getSelectedSound()
+						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
+							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
+						end
+						getProperties().sounds[actionDropDown:getSelectedValue().serial].volume = value
+						getProperties().sounds[actionDropDown:getSelectedValue().serial].sound = selectedSound.value
+						
 					end,
 				}
 				
@@ -145,11 +172,19 @@ return {
 					labelFontSize = 16,
 					showLabels = false,
 					getValue = function()
-						return getProperties().sounds.pitch or 1.0
+						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
+							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
+						end
+						return getProperties().sounds[actionDropDown:getSelectedValue().serial].pitch or 1.0
 					end,
 					setValue = function(value)
-						getProperties().sounds = getProperties().sounds or {}
-						getProperties().sounds.pitch = value
+						local selectedSound = soundDropDowns:getSelectedSound()
+						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
+							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
+						end
+						getProperties().sounds[actionDropDown:getSelectedValue().serial].pitch = value
+						getProperties().sounds[actionDropDown:getSelectedValue().serial].sound = selectedSound.value
+						
 					end,
 				}
 
@@ -228,8 +263,11 @@ return {
 			end,
 							
 			handleMouseReleased = function(self, mx, my)
-				volumeSlider:handleMouseReleased()
-				pitchSlider:handleMouseReleased()
+				if volumeSlider:handleMouseReleased() then
+					playSelectedSound()
+				elseif pitchSlider:handleMouseReleased() then
+					playSelectedSound()
+				end
 			end,
 				
 			setVisible = function(self, visible)
@@ -277,10 +315,13 @@ return {
 									properties.sounds[actionDropDown:getSelectedValue().serial] = {}
 								end
 								if item.value ~= "None" then
+									local sound = SOUND_MANAGER:getByName(item.value)
+									sound:setVolume(volumeSlider:getValue())
+									sound:setPitch(pitchSlider:getValue())
 									SOUND_MANAGER:play(item.value)
-									properties.sounds[actionDropDown:getSelectedValue().serial] = { sound = item.value }
+									properties.sounds[actionDropDown:getSelectedValue().serial].sound = item.value
 								else
-									properties.sounds[actionDropDown:getSelectedValue().serial] = { sound = "None" }
+									properties.sounds[actionDropDown:getSelectedValue().serial].sound = "None"
 								end
 							end,
 						}
