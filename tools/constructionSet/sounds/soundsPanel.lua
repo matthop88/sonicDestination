@@ -28,6 +28,9 @@ return {
 	create = function(self, params)
 		local okButton       = nil
 		local actionDropDown = nil
+		local volumeSlider = nil
+		local pitchSlider = nil
+		
 		local soundDropDowns = {
 			draw = function(self) 
 				for _, v in ipairs(self) do v:draw() end
@@ -108,6 +111,48 @@ return {
 					end,
 				}
 
+				volumeSlider = verticalSliderPane:create {
+					x = self.x + self.width - 150,
+					y = self.y + 60,
+					width = 60,
+					height = self.height - 140,
+					title = "Volume",
+					minValue = 0,
+					maxValue = 1,
+					quantize = 0.1,
+					titleFontSize = 14,
+					labelFontSize = 16,
+					showLabels = false,
+					getValue = function()
+						return getProperties().sounds.volume or 1.0
+					end,
+					setValue = function(value)
+						getProperties().sounds = getProperties().sounds or {}
+						getProperties().sounds.volume = value
+					end,
+				}
+				
+				pitchSlider = verticalSliderPane:create {
+					x = self.x + self.width - 70,
+					y = self.y + 60,
+					width = 60,
+					height = self.height - 140,
+					title = "Pitch",
+					minValue = 0.75,
+					maxValue = 1.5,
+					quantize = 0.05,
+					titleFontSize = 14,
+					labelFontSize = 16,
+					showLabels = false,
+					getValue = function()
+						return getProperties().sounds.pitch or 1.0
+					end,
+					setValue = function(value)
+						getProperties().sounds = getProperties().sounds or {}
+						getProperties().sounds.pitch = value
+					end,
+				}
+
 				self:buildSoundDropDowns()
 		
 				return self
@@ -120,6 +165,8 @@ return {
 				self:drawTitle()
 				actionDropDown:draw()
 				soundDropDowns:draw()
+				volumeSlider:draw()
+				pitchSlider:draw()
 				okButton:draw()
 			end,
 			
@@ -144,6 +191,9 @@ return {
 				okButton:update(mx, my)
 				actionDropDown:update(dt, mx, my)
 				soundDropDowns:update(dt, mx, my)
+				volumeSlider:update(dt)
+				pitchSlider:update(dt)
+				
 			end,
 								
 			handleMousePressed = function(self, mx, my)
@@ -161,6 +211,14 @@ return {
 				if soundDropDowns:handleMousepressed(mx, my) then
 					return true
 				end
+
+				if volumeSlider:handleMousePressed(mx, my) then
+					return true
+				end
+				
+				if pitchSlider:handleMousePressed(mx, my) then
+					return true
+				end
 				
 			end,
 			
@@ -170,7 +228,8 @@ return {
 			end,
 							
 			handleMouseReleased = function(self, mx, my)
-				-- Do nothing
+				volumeSlider:handleMouseReleased()
+				pitchSlider:handleMouseReleased()
 			end,
 				
 			setVisible = function(self, visible)
