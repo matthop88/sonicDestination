@@ -61,5 +61,17 @@ return ({
         if propData.badnikDeathSound then self:setOverride("badnikDeath",  propData.badnikDeathSound) end
         if propData.brakeSound       then self:setOverride("sonicBraking", propData.brakeSound)       end
     end,
+
+    setActionOverride = function(self, key, value)
+        self:setOverride(self.actionSoundMap[key], value)
+    end,
+
+    overrideFromSoundProps = function(self, soundProps)
+        if soundProps ~= nil then
+            for action, sound in keys(soundProps) do
+                self:setActionOverride(action, sound)
+            end
+        end
+    end,
         
 }):init()
