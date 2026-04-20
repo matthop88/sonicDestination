@@ -94,7 +94,7 @@ return {
 				actionDropDown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 20,
 					y = self.y + 80,
-					width = 360,
+					width = 300,
 					height = 50,
 					list = ACTIONS,
 					selectedIndex = 1,
@@ -203,9 +203,9 @@ return {
 
 					local soundDropDown = 
 						require("tools/lib/components/dropDownField"):create {
-							x = self.x + 400,
+							x = self.x + 340,
 							y = self.y + 80,
-							width = 360,
+							width = 300,
 							height = 50,
 							list = self:buildSoundItems(recommendations),
 							visible = false,
