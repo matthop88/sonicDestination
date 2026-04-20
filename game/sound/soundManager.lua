@@ -30,11 +30,15 @@ return ({
     end,
 
     play = function(self, soundName)
-        if self.overrides[soundName] then soundName = self.overrides[soundName] end
-        local sound = self.sounds[soundName]
+        local sound = self:getByName(soundName)
         sound:setVolumeScalar(self.volumeScalar)
         if sound.delay then self:addToQueue(sound)
         else                sound:play(self)    end
+    end,
+
+    getByName = function(self, soundName)
+        if self.overrides[soundName] then soundName = self.overrides[soundName] end
+        return self.sounds[soundName]
     end,
 
     addToQueue = function(self, sound)
@@ -66,6 +70,9 @@ return ({
         if soundProps ~= nil then
             for action, sound in pairs(soundProps) do
                 self:setActionOverride(action, sound.sound)
+                local soundObj = self:getByName(self.actionSoundMap[action])
+                if sound.volume then soundObj:setVolume(sound.volume) end
+                if sound.pitch then soundObj:setPitch(sound.pitch) end
             end
         end
     end,
