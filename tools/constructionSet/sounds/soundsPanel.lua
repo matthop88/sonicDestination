@@ -273,11 +273,14 @@ return {
 							onChanged    = function(item, index)
 								local properties = getProperties()
 								if not properties.sounds then properties.sounds = {} end
+								if not properties.sounds[actionDropDown:getSelectedValue().serial] then
+									properties.sounds[actionDropDown:getSelectedValue().serial] = {}
+								end
 								if item.value ~= "None" then
 									SOUND_MANAGER:play(item.value)
-									properties.sounds[actionDropDown:getSelectedValue().serial] = item.value
+									properties.sounds[actionDropDown:getSelectedValue().serial] = { sound = item.value }
 								else
-									properties.sounds[actionDropDown:getSelectedValue().serial] = "None"
+									properties.sounds[actionDropDown:getSelectedValue().serial] = { sound = "None" }
 								end
 							end,
 						}
@@ -285,7 +288,7 @@ return {
 					local soundProperties = getProperties().sounds
 					if soundProperties then
 						if soundProperties[action.serial] then
-							soundDropDown:setSelectedValue(soundProperties[action.serial])
+							soundDropDown:setSelectedValue(soundProperties[action.serial].sound)
 						end
 					end
 
