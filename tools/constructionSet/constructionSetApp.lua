@@ -73,36 +73,50 @@ local PROPERTIES    = {
         if self.sounds then
             encoded = encoded .. "      sounds = {\n"
             if self.sounds.braking then
-                encoded = encoded .. self:generateKVString(10, "braking", self.sounds.braking)
+                encoded = encoded .. self:generateKV(10, "braking", self.sounds.braking)
             end
             if self.sounds.jumping then
-                encoded = encoded .. self:generateKVString(10, "jumping", self.sounds.jumping)
+                encoded = encoded .. self:generateKV(10, "jumping", self.sounds.jumping)
             end
             if self.sounds.collectOddRing then
-                encoded = encoded .. self:generateKVString(10, "collectOddRing", self.sounds.collectOddRing)
+                encoded = encoded .. self:generateKV(10, "collectOddRing", self.sounds.collectOddRing)
             end
             if self.sounds.collectEvenRing then
-                encoded = encoded .. self:generateKVString(10, "collectEvenRing", self.sounds.collectEvenRing)
+                encoded = encoded .. self:generateKV(10, "collectEvenRing", self.sounds.collectEvenRing)
             end
             if self.sounds.giantRing then
-                encoded = encoded .. self:generateKVString(10, "giantRing", self.sounds.giantRing)
+                encoded = encoded .. self:generateKV(10, "giantRing", self.sounds.giantRing)
             end
             if self.sounds.vanish then
-                encoded = encoded .. self:generateKVString(10, "vanish", self.sounds.vanish)
+                encoded = encoded .. self:generateKV(10, "vanish", self.sounds.vanish)
             end
             if self.sounds.sonicHit then
-                encoded = encoded .. self:generateKVString(10, "sonicHit", self.sounds.sonicHit)
+                encoded = encoded .. self:generateKV(10, "sonicHit", self.sounds.sonicHit)
             end
             if self.sounds.badnikHit then
-                encoded = encoded .. self:generateKVString(10, "badnikHit", self.sounds.badnikHit)
+                encoded = encoded .. self:generateKV(10, "badnikHit", self.sounds.badnikHit)
             end  
             encoded = encoded .. "      },\n"
         end
         return encoded
     end,
 
-    generateKVString = function(self, padding, key, value)
-        return string.rep(" ", padding) .. key .. " = " .. "\"" .. value .. "\",\n"
+    generateKV = function(self, padding, key, value)
+        if type(value) == "table" then
+            return self:generateKVTable(padding, key, value)
+        else
+            local myValue = value
+            if type(myValue) == "string" then myValue = "\"" .. myValue .. "\"" end
+            return string.rep(" ", padding) .. key .. " = " .. myValue .. ",\n"
+        end
+    end,
+
+    generateKVTable = function(self, padding, key, value)
+        local result = string.rep(" ", padding) .. key .. " = {\n"
+        for k,v in pairs(value) do
+            result = result .. self:generateKV(padding + 4, k, v)
+        end
+        return result .. string.rep(" ", padding) .. "},\n"
     end,
        
 }
