@@ -35,6 +35,14 @@ return {
             setVolumeScalar = function(self, volumeScalar)
                 self.volumeScalar = volumeScalar
             end,
+
+            setVolume = function(self, volume)
+                self.volume = volume
+            end,
+
+            setPitch = function(self, pitch)
+                self.pitch = pitch
+            end,
         }
     end,
 }
