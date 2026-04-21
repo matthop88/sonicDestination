@@ -38,6 +38,7 @@ return ({
 						delay     = p.delay ~= nil and p.delay or 0.5,
 						strength  = p.strength ~= nil and p.strength or 0.5,
 						echoCount = p.echoCount,
+						detuning  = p.detuning,
 					}
 				else
 					element.effect = { type = "None", }
