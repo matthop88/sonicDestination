@@ -51,6 +51,7 @@ return {
 		local echoDropDown   = nil
 		local delaySlider    = nil
 		local strengthSlider = nil
+		local detuningSlider = nil
 		local volumeSlider = nil
 		local pitchSlider = nil
 
@@ -170,7 +171,7 @@ return {
 			x = params.x or 300,
 			y = params.y or 250,
 			width = params.width or 830,
-			height = params.height or 400,
+			height = params.height or 470,
 			visible = false,
 				
 			init = function(self)
@@ -281,6 +282,26 @@ return {
 					end,
 				}
 
+				detuningSlider = horizontalSlider:create {
+					x = self.x + 20,
+					y = self.y + 350,
+					width = self.width - 190,
+					height = 50,
+					title = "Detuning",
+					minValue = 0.8,
+					maxValue = 1.2,
+					quantize = 0.02,
+					titleFontSize = 16,
+					labelFontSize = 16,
+					getValue = function()
+						local sp = actionProps()
+						return sp.detuning ~= nil and sp.detuning or 1.0
+					end,
+					setValue = function(value)
+						actionProps().detuning = value
+					end,
+				}
+
 				volumeSlider = verticalSliderPane:create {
 					x = self.x + self.width - 150,
 					y = self.y + 60,
@@ -349,6 +370,9 @@ return {
 					delaySlider:draw()
 					strengthSlider:draw()
 				end
+				if selectedAudioEffectName() == "Echo" then
+					detuningSlider:draw()
+				end
 				volumeSlider:draw()
 				pitchSlider:draw()
 				okButton:draw()
@@ -382,6 +406,9 @@ return {
 				if selectedAudioEffectName() ~= "None" then
 					delaySlider:update(dt)
 					strengthSlider:update(dt)
+				end
+				if selectedAudioEffectName() == "Echo" then
+					detuningSlider:update(dt)
 				end
 				volumeSlider:update(dt)
 				pitchSlider:update(dt)
@@ -427,6 +454,11 @@ return {
 						return true
 					end
 				end
+				if selectedAudioEffectName() == "Echo" then
+					if detuningSlider:handleMousePressed(mx, my) then
+						return true
+					end
+				end
 
 				if volumeSlider:handleMousePressed(mx, my) then
 					return true
@@ -445,12 +477,22 @@ return {
 							
 			handleMouseReleased = function(self, mx, my)
 				if not self.visible then return end
+				local delayDone, strengthDone = false, false
 				if selectedAudioEffectName() ~= "None" then
-					local delayDone = delaySlider:handleMouseReleased()
-					local strengthDone = strengthSlider:handleMouseReleased()
-					if delayDone or strengthDone then
-						rebuildSoundForSelection()
-					end
+					delayDone = delaySlider:handleMouseReleased()
+					strengthDone = strengthSlider:handleMouseReleased()
+				else
+					delaySlider:handleMouseReleased()
+					strengthSlider:handleMouseReleased()
+				end
+				local detuningDone = false
+				if selectedAudioEffectName() == "Echo" then
+					detuningDone = detuningSlider:handleMouseReleased()
+				else
+					detuningSlider:handleMouseReleased()
+				end
+				if selectedAudioEffectName() ~= "None" and (delayDone or strengthDone or detuningDone) then
+					rebuildSoundForSelection()
 				end
 				if volumeSlider:handleMouseReleased() then
 					playSelectedSound()
