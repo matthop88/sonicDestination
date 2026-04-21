@@ -14,6 +14,25 @@ local ACTIONS = {
 	{ serial = "badnikHit",       label = "Badnik Hit" },
 }
 
+local AUDIO_EFFECTS = {
+	{ label = "None",   value = "None" },
+	{ label = "Reverb", value = "Reverb" },
+	{ label = "Echo",   value = "Echo" },
+}
+
+local ECHO_COUNT_ITEMS = {}
+for n = 0, 10 do
+	local s = tostring(n)
+	table.insert(ECHO_COUNT_ITEMS, { label = s, value = s })
+end
+
+local function ensureSoundActionProps(serial)
+	local p = getProperties()
+	if not p.sounds then p.sounds = {} end
+	if not p.sounds[serial] then p.sounds[serial] = {} end
+	return p.sounds[serial]
+end
+
 local buildSeparator = function(self)
 	local RECTANGLE_ITEM = require("tools/lib/guiList/rectangleItem")
 	return RECTANGLE_ITEM:create {
@@ -28,8 +47,28 @@ return {
 	create = function(self, params)
 		local okButton       = nil
 		local actionDropDown = nil
+		local effectDropDown = nil
+		local echoDropDown   = nil
+		local decaySlider    = nil
+		local strengthSlider = nil
 		local volumeSlider = nil
 		local pitchSlider = nil
+
+		local selectedAudioEffectName = function()
+			local item = effectDropDown:getSelectedValue()
+			if type(item) == "table" then return item.value or "None" end
+			return "None"
+		end
+
+		local actionProps
+
+		local resetFxControls = function()
+			local sp = actionProps()
+			local eff = sp.audioEffect or "None"
+			effectDropDown:setSelectedValue(eff)
+			echoDropDown:setSelectedValue(tostring(sp.echoCount ~= nil and sp.echoCount or 6))
+			echoDropDown:setVisible(eff == "Echo")
+		end
 		
 		local soundDropDowns = {
 			draw = function(self) 
@@ -91,13 +130,33 @@ return {
 		end
 
 		local resetSliders = function()
-			local selectedSound = soundDropDowns:getSelectedSound()
-			if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
-				getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
+			local sp = actionProps()
+			volumeSlider.setValue(sp.volume or 1)
+			pitchSlider.setValue(sp.pitch or 1)
+			resetFxControls()
+		end
+
+		-- Panel runs before list modals. Use this for hits inside an open list so lower fields /
+		-- sliders (which overlap lists visually) do not steal the press.
+		local function openDropDownListContainsPoint(mx, my)
+			local function listHit(l)
+				if not l or not l.visible then return false end
+				if l.listBoxContainsPt then
+					return l:listBoxContainsPt(mx, my)
+				end
+				return mx >= l.x and mx <= l.x + l.width and my >= l.y and my <= l.y + l.height
 			end
-						
-			volumeSlider.setValue(getProperties().sounds[actionDropDown:getSelectedValue().serial].volume or 1)
-			pitchSlider.setValue(getProperties().sounds[actionDropDown:getSelectedValue().serial].pitch or 1)
+			for _, dd in ipairs({ actionDropDown, effectDropDown, echoDropDown }) do
+				if dd and dd.list and listHit(dd.list) then
+					return true
+				end
+			end
+			for _, dd in ipairs(soundDropDowns) do
+				if dd.list and listHit(dd.list) then
+					return true
+				end
+			end
+			return false
 		end
 
 		return ({
@@ -108,6 +167,10 @@ return {
 			visible = false,
 				
 			init = function(self)
+				if _G.getModals then
+					getModals():add(self)
+				end
+
 				okButton = require("tools/lib/components/okButton"):create {
 					x = self.x + self.width - 120,
 					y = self.y + self.height - 60,
@@ -130,6 +193,86 @@ return {
 					end,
 				}
 
+				actionProps = function()
+					return ensureSoundActionProps(actionDropDown:getSelectedValue().serial)
+				end
+
+				effectDropDown = require("tools/lib/components/dropDownField"):create {
+					x = self.x + 20,
+					y = self.y + 140,
+					width = 300,
+					height = 50,
+					label = "Effect",
+					list = AUDIO_EFFECTS,
+					selectedIndex = 1,
+					comparisonFn = function(listItem, value)
+						return listItem.value == value
+					end,
+					onChanged = function(item, index)
+						local sp = actionProps()
+						if item.value == "None" then sp.audioEffect = nil
+						else sp.audioEffect = item.value end
+						echoDropDown:setVisible(item.value == "Echo")
+					end,
+				}
+
+				echoDropDown = require("tools/lib/components/dropDownField"):create {
+					x = self.x + 20,
+					y = self.y + 190,
+					width = 300,
+					height = 50,
+					label = "Echo Count",
+					list = ECHO_COUNT_ITEMS,
+					selectedIndex = 7,
+					visible = false,
+					comparisonFn = function(listItem, value)
+						return listItem.value == value
+					end,
+					onChanged = function(item, index)
+						actionProps().echoCount = tonumber(item.value)
+					end,
+				}
+
+				decaySlider = horizontalSlider:create {
+					x = self.x + 20,
+					y = self.y + 250,
+					width = self.width - 190,
+					height = 50,
+					title = "Decay",
+					minValue = 0.0,
+					maxValue = 1.0,
+					quantize = 0.1,
+					titleFontSize = 16,
+					labelFontSize = 16,
+					getValue = function()
+						local sp = actionProps()
+						return sp.decay ~= nil and sp.decay or 0.5
+					end,
+					setValue = function(value)
+						actionProps().decay = value
+					end,
+				}
+
+				strengthSlider = horizontalSlider:create {
+					x = self.x + 20,
+					y = self.y + 300,
+					width = self.width - 190,
+					height = 50,
+					title = "Strength",
+					minValue = 0.0,
+					maxValue = 1.0,
+					quantize = 0.1,
+					titleFontSize = 16,
+					labelFontSize = 16,
+					getValue = function()
+						local sp = actionProps()
+						return sp.strength ~= nil and sp.strength or 0.5
+					end,
+					setValue = function(value)
+						actionProps().strength = value
+					end,
+				}
+
 				volumeSlider = verticalSliderPane:create {
 					x = self.x + self.width - 150,
 					y = self.y + 60,
@@ -143,19 +286,14 @@ return {
 					labelFontSize = 16,
 					showLabels = false,
 					getValue = function()
-						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
-							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
-						end
-						return getProperties().sounds[actionDropDown:getSelectedValue().serial].volume or 1.0
+						local sp = actionProps()
+						return sp.volume or 1.0
 					end,
 					setValue = function(value)
 						local selectedSound = soundDropDowns:getSelectedSound()
-						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
-							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
-						end
-						getProperties().sounds[actionDropDown:getSelectedValue().serial].volume = value
-						getProperties().sounds[actionDropDown:getSelectedValue().serial].sound = selectedSound.value
-						
+						local sp = actionProps()
+						sp.volume = value
+						sp.sound = selectedSound.value
 					end,
 				}
 				
@@ -172,19 +310,14 @@ return {
 					labelFontSize = 16,
 					showLabels = false,
 					getValue = function()
-						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
-							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
-						end
-						return getProperties().sounds[actionDropDown:getSelectedValue().serial].pitch or 1.0
+						local sp = actionProps()
+						return sp.pitch or 1.0
 					end,
 					setValue = function(value)
 						local selectedSound = soundDropDowns:getSelectedSound()
-						if getProperties().sounds[actionDropDown:getSelectedValue().serial] == nil then
-							getProperties().sounds[actionDropDown:getSelectedValue().serial] = { }
-						end
-						getProperties().sounds[actionDropDown:getSelectedValue().serial].pitch = value
-						getProperties().sounds[actionDropDown:getSelectedValue().serial].sound = selectedSound.value
-						
+						local sp = actionProps()
+						sp.pitch = value
+						sp.sound = selectedSound.value
 					end,
 				}
 
@@ -200,6 +333,14 @@ return {
 				self:drawTitle()
 				actionDropDown:draw()
 				soundDropDowns:draw()
+				effectDropDown:draw()
+				if selectedAudioEffectName() == "Echo" then
+					echoDropDown:draw()
+				end
+				if selectedAudioEffectName() ~= "None" then
+					decaySlider:draw()
+					strengthSlider:draw()
+				end
 				volumeSlider:draw()
 				pitchSlider:draw()
 				okButton:draw()
@@ -226,6 +367,14 @@ return {
 				okButton:update(mx, my)
 				actionDropDown:update(dt, mx, my)
 				soundDropDowns:update(dt, mx, my)
+				effectDropDown:update(dt, mx, my)
+				if selectedAudioEffectName() == "Echo" then
+					echoDropDown:update(dt, mx, my)
+				end
+				if selectedAudioEffectName() ~= "None" then
+					decaySlider:update(dt)
+					strengthSlider:update(dt)
+				end
 				volumeSlider:update(dt)
 				pitchSlider:update(dt)
 				
@@ -247,14 +396,38 @@ return {
 					return true
 				end
 
+				-- Lists are separate modal components registered after this panel. A list draws over
+				-- fields below it (e.g. action list y>=130 overlaps the effect field y=140–190); field
+				-- hit-tests would steal those clicks unless we defer to the list modals first.
+				if openDropDownListContainsPoint(mx, my) then
+					return false
+				end
+
+				if effectDropDown:handleMousepressed(mx, my) then
+					return true
+				end
+
+				if selectedAudioEffectName() == "Echo" and echoDropDown:handleMousepressed(mx, my) then
+					return true
+				end
+
+				if selectedAudioEffectName() ~= "None" then
+					if decaySlider:handleMousePressed(mx, my) then
+						return true
+					end
+					if strengthSlider:handleMousePressed(mx, my) then
+						return true
+					end
+				end
+
 				if volumeSlider:handleMousePressed(mx, my) then
 					return true
 				end
-				
+
 				if pitchSlider:handleMousePressed(mx, my) then
 					return true
 				end
-				
+
 			end,
 			
 			containsPoint = function(self, mx, my)
@@ -263,6 +436,10 @@ return {
 			end,
 							
 			handleMouseReleased = function(self, mx, my)
+				if selectedAudioEffectName() ~= "None" then
+					decaySlider:handleMouseReleased()
+					strengthSlider:handleMouseReleased()
+				end
 				if volumeSlider:handleMouseReleased() then
 					playSelectedSound()
 				elseif pitchSlider:handleMouseReleased() then
@@ -274,12 +451,17 @@ return {
 				self.visible = visible
 				if visible == false then
 					actionDropDown:hideList()
+					effectDropDown:hideList()
+					echoDropDown:hideList()
 					soundDropDowns:hide()
 					self:resetMusic()
 				else
 					self:stopMusic()
 				end
 				soundDropDowns:show(actionDropDown:getSelectedValue())
+				if visible then
+					resetSliders()
+				end
 			end,
 
 			resetMusic = function(self)
@@ -309,19 +491,15 @@ return {
 							selectedIndex = 2,
 							comparisonFn = function(listItem, value) return listItem.value == value end,
 							onChanged    = function(item, index)
-								local properties = getProperties()
-								if not properties.sounds then properties.sounds = {} end
-								if not properties.sounds[actionDropDown:getSelectedValue().serial] then
-									properties.sounds[actionDropDown:getSelectedValue().serial] = {}
-								end
+								local sp = actionProps()
 								if item.value ~= "None" then
 									local sound = SOUND_MANAGER:getByName(item.value)
 									sound:setVolume(volumeSlider:getValue())
 									sound:setPitch(pitchSlider:getValue())
 									SOUND_MANAGER:play(item.value)
-									properties.sounds[actionDropDown:getSelectedValue().serial].sound = item.value
+									sp.sound = item.value
 								else
-									properties.sounds[actionDropDown:getSelectedValue().serial].sound = "None"
+									sp.sound = "None"
 								end
 							end,
 						}
