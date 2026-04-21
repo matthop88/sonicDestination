@@ -19,6 +19,9 @@ return {
 
             setVolumeScalar = function(self, volumeScalar)
                 self.volumeScalar = volumeScalar
+                for _, sound in ipairs(self.sounds) do
+                    sound:setVolumeScalar(volumeScalar)
+                end
             end,
 
             setVolume = function(self, volume)
@@ -30,6 +33,12 @@ return {
             setPitch = function(self, pitch)
                 for _, sound in ipairs(self.sounds) do
                     sound:setPitch(pitch)
+                end
+            end,
+
+            update = function(self, dt)
+                for _, sound in ipairs(self.sounds) do
+                    if sound.update then sound:update(dt) end
                 end
             end,
         }
