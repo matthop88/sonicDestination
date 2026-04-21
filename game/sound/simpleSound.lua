@@ -274,10 +274,17 @@ local Track = {
 			setPitch = function(self, pitch)
 				self.pitch = pitch
 				self.sound:setPitch(pitch)
-				for _, s in ipairs(self.queuedSounds) do
-					s:setPitch(pitch)
-				end
-			end,
+				if self.effect.type == "Echo" then
+                    local detuning = self.effect.detuning or 1
+                    for i, s in ipairs(self.queuedSounds) do
+                        s:setPitch(pitch * (detuning ^ i))
+                    end
+                else
+                    for _, s in ipairs(self.queuedSounds) do
+                        s:setPitch(pitch)
+                    end
+			    end
+            end,
 		}):init()
 	end,
 }
