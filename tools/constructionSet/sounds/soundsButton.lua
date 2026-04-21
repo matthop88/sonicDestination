@@ -63,9 +63,6 @@ return {
 						height = 400,
 					}
 					
-					if _G.getModals then
-						getModals():add(soundsPanel)
-					end
 				end
 				
 				soundsPanel:setVisible(true)
