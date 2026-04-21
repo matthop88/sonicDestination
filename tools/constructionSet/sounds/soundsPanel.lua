@@ -49,7 +49,7 @@ return {
 		local actionDropDown = nil
 		local effectDropDown = nil
 		local echoDropDown   = nil
-		local decaySlider    = nil
+		local delaySlider    = nil
 		local strengthSlider = nil
 		local volumeSlider = nil
 		local pitchSlider = nil
@@ -129,6 +129,13 @@ return {
 			end
 		end
 
+		local rebuildSoundForSelection = function()
+			local selectedSound = soundDropDowns:getSelectedSound()
+			if not selectedSound or selectedSound.value == "None" then return end
+			SOUND_MANAGER:rebuildSound(selectedSound.value)
+			playSelectedSound()
+		end
+
 		local resetSliders = function()
 			local sp = actionProps()
 			volumeSlider.setValue(sp.volume or 1)
@@ -189,7 +196,7 @@ return {
 					onChanged = function(item, index)
 						soundDropDowns:show(item)
 						resetSliders()
-						playSelectedSound()
+						rebuildSoundForSelection()
 					end,
 				}
 
@@ -210,9 +217,9 @@ return {
 					end,
 					onChanged = function(item, index)
 						local sp = actionProps()
-						if item.value == "None" then sp.audioEffect = nil
-						else sp.audioEffect = item.value end
+						sp.audioEffect = item.value
 						echoDropDown:setVisible(item.value == "Echo")
+						rebuildSoundForSelection()
 					end,
 				}
 
@@ -230,15 +237,16 @@ return {
 					end,
 					onChanged = function(item, index)
 						actionProps().echoCount = tonumber(item.value)
+						rebuildSoundForSelection()
 					end,
 				}
 
-				decaySlider = horizontalSlider:create {
+				delaySlider = horizontalSlider:create {
 					x = self.x + 20,
 					y = self.y + 250,
 					width = self.width - 190,
 					height = 50,
-					title = "Decay",
+					title = "Delay",
 					minValue = 0.0,
 					maxValue = 1.0,
 					quantize = 0.1,
@@ -246,10 +254,10 @@ return {
 					labelFontSize = 16,
 					getValue = function()
 						local sp = actionProps()
-						return sp.decay ~= nil and sp.decay or 0.5
+						return sp.delay ~= nil and sp.delay or 0.5
 					end,
 					setValue = function(value)
-						actionProps().decay = value
+						actionProps().delay = value
 					end,
 				}
 
@@ -338,7 +346,7 @@ return {
 					echoDropDown:draw()
 				end
 				if selectedAudioEffectName() ~= "None" then
-					decaySlider:draw()
+					delaySlider:draw()
 					strengthSlider:draw()
 				end
 				volumeSlider:draw()
@@ -372,7 +380,7 @@ return {
 					echoDropDown:update(dt, mx, my)
 				end
 				if selectedAudioEffectName() ~= "None" then
-					decaySlider:update(dt)
+					delaySlider:update(dt)
 					strengthSlider:update(dt)
 				end
 				volumeSlider:update(dt)
@@ -412,7 +420,7 @@ return {
 				end
 
 				if selectedAudioEffectName() ~= "None" then
-					if decaySlider:handleMousePressed(mx, my) then
+					if delaySlider:handleMousePressed(mx, my) then
 						return true
 					end
 					if strengthSlider:handleMousePressed(mx, my) then
@@ -436,9 +444,13 @@ return {
 			end,
 							
 			handleMouseReleased = function(self, mx, my)
+				if not self.visible then return end
 				if selectedAudioEffectName() ~= "None" then
-					decaySlider:handleMouseReleased()
-					strengthSlider:handleMouseReleased()
+					local delayDone = delaySlider:handleMouseReleased()
+					local strengthDone = strengthSlider:handleMouseReleased()
+					if delayDone or strengthDone then
+						rebuildSoundForSelection()
+					end
 				end
 				if volumeSlider:handleMouseReleased() then
 					playSelectedSound()
@@ -461,6 +473,10 @@ return {
 				soundDropDowns:show(actionDropDown:getSelectedValue())
 				if visible then
 					resetSliders()
+					local sel = soundDropDowns:getSelectedSound()
+					if sel and sel.value ~= "None" then
+						SOUND_MANAGER:rebuildSound(sel.value)
+					end
 				end
 			end,
 
@@ -493,11 +509,12 @@ return {
 							onChanged    = function(item, index)
 								local sp = actionProps()
 								if item.value ~= "None" then
+									sp.sound = item.value
+									SOUND_MANAGER:rebuildSound(item.value)
 									local sound = SOUND_MANAGER:getByName(item.value)
 									sound:setVolume(volumeSlider:getValue())
 									sound:setPitch(pitchSlider:getValue())
 									SOUND_MANAGER:play(item.value)
-									sp.sound = item.value
 								else
 									sp.sound = "None"
 								end
