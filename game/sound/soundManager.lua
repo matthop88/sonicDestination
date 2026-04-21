@@ -1,80 +1,52 @@
-return ({
-    sounds       = {},
-    overrides    = {},
-    queuedSounds = requireRelative("util/dataStructures/linkedList"):create(),
-    volumeScalar = 1,
+return {
+	create = function(self, params)
+		return {
+			filename     = params.filename,
+			volume       = params.volume or 1,
+            pitch        = params.pitch or 1,
+			startPoint   = params.startPoint,
+            delay        = params.delay,
+            volumeScalar = 1,
+            
+            -- Fixed pool size: do not use #tracks here — Lua # stops at first nil, so a
+            -- partially filled pool would be length 1 and round-robin would never leave slot 1.
+            trackCount   = 8,
+            tracks       = { nil, nil, nil, nil, nil, nil, nil, nil, },
+           	trackIndex   = 1,
 
-    actionSoundMap = {
-        braking         = "sonicBraking",
-        jumping         = "sonicJumping",
-        collectOddRing  = "ringCollectL",
-        collectEvenRing = "ringCollectR",
-        giantRing       = "giantRing",
-        vanish          = "vanish",
-        sonicHit        = "sonicHit",
-        badnikHit       = "badnikDeath",
-    },
+            load = function(self)
+                if self:getSound() == nil then self:setSound(love.audio.newSource(relativePath("resources/sounds/") .. self.filename, "static")) end
+                --else                      love.audio.stop(self:getSound())                                                                   end
+            end,
 
-    setOverride = function(self, key, value) self.overrides[key] = value end,
+            play = function(self)
+                self:load()
+                local src = self:getSound()
+                src:setVolume(self.volume * self.volumeScalar)
+                src:setPitch(self.pitch)
+                if self.startPoint then src:seek(self.startPoint, "samples") end
+                src:play()
+                self:next()
+            end,
 
-    init = function(self)
-        self:initSoundData()
-        return self
+            getSound = function(self) return self.tracks[self.trackIndex]         end,
+            setSound = function(self, sound) self.tracks[self.trackIndex] = sound end,
+            next     = function(self)
+                self.trackIndex = self.trackIndex + 1
+                if self.trackIndex > self.trackCount then self.trackIndex = 1 end
+            end,
+
+            setVolumeScalar = function(self, volumeScalar)
+                self.volumeScalar = volumeScalar
+            end,
+
+            setVolume = function(self, volume)
+                self.volume = volume
+            end,
+
+            setPitch = function(self, pitch)
+                self.pitch = pitch
+            end,
+        }
     end,
-
-    initSoundData = function(self)
-        for name, element in pairs(requireRelative("sound/soundData")) do
-            if #element > 0 then self.sounds[name] = requireRelative("sound/complexSound"):create(element)
-            else                 self.sounds[name] = requireRelative("sound/simpleSound"):create(element) end
-        end
-    end,
-
-    play = function(self, soundName)
-        local sound = self:getByName(soundName)
-        sound:setVolumeScalar(self.volumeScalar)
-        if sound.delay then self:addToQueue(sound)
-        else                sound:play(self)    end
-    end,
-
-    getByName = function(self, soundName)
-        if self.overrides[soundName] then soundName = self.overrides[soundName] end
-        return self.sounds[soundName]
-    end,
-
-    addToQueue = function(self, sound)
-        self.queuedSounds:add({ timer = sound.delay, sound = sound })
-    end,
-
-    update = function(self, dt)
-        self.queuedSounds:forEach(function(delayedSound)
-            delayedSound.timer = delayedSound.timer - dt
-            if delayedSound.timer <= 0 then
-                delayedSound.sound:play()
-                self.queuedSounds:remove()
-                return true
-            end
-        end)
-    end,
-
-    onPropertyChange = function(self, propData)
-        if propData.volume and propData.volume.sounds then
-            self.volumeScalar = propData.volume.sounds
-        end
-    end,
-
-    setActionOverride = function(self, key, value)
-        self:setOverride(self.actionSoundMap[key], value)
-    end,
-
-    overrideFromSoundProps = function(self, soundProps)
-        if soundProps ~= nil then
-            for action, sound in pairs(soundProps) do
-                self:setActionOverride(action, sound.sound)
-                local soundObj = self:getByName(self.actionSoundMap[action])
-                if sound.volume then soundObj:setVolume(sound.volume) end
-                if sound.pitch then soundObj:setPitch(sound.pitch) end
-            end
-        end
-    end,
-        
-}):init()
+}
