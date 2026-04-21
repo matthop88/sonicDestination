@@ -141,6 +141,7 @@ local Track = {
 			pitch        = params.pitch or 1,
 			startPoint   = params.startPoint or 0,
 			effect       = params.effect or { type = "None", },
+            delay        = params.delay or 0,
 			volumeScalar = 1,
 			queuedSounds = {},
 			drySource    = nil,
@@ -192,7 +193,8 @@ local Track = {
 					pitch        = self.pitch,
 					startPoint   = self.startPoint,
 					volumeScalar = self.volumeScalar,
-					delay        = math.floor((self.effect.delay or 0) * sr * ch),
+					-- Match musicManager:newReverbTrack (delay / 2 before sample conversion)
+					delay        = math.floor(((self.effect.delay or 0) / 8) * sr * ch),
 					syncSource   = self.drySource,
 				}
 
@@ -203,7 +205,37 @@ local Track = {
 			end,
 
 			initEchoTrack = function(self)
-				return self:initDryTrack()
+				self:initDryTrack()
+				local sr = self.soundData:getSampleRate()
+				local ch = self.soundData:getChannelCount()
+				local strength = self.effect.strength or 0.5
+				local echoCount = math.max(0, math.floor(self.effect.echoCount or 6))
+				-- Per-hop delay in samples (same idea as musicManager:newEchoTrack delay * 4 → one factor here)
+				local baseDelaySamples = math.floor((self.effect.delay or 0) * sr * ch)
+				if echoCount > 0 and baseDelaySamples <= 0 then
+					baseDelaySamples = 1
+				end
+
+				self.queuedSounds = {}
+				local previousSource = self.drySource
+				for i = 1, echoCount do
+					local echoSrc = love.audio.newSource(self.soundData, "static")
+					local echoVol = self.volume * (strength ^ i)
+					table.insert(self.queuedSounds, Sound:create {
+						source       = echoSrc,
+						sampleRate   = sr,
+						channelCount = ch,
+						volume       = echoVol,
+						pitch        = self.pitch,
+						startPoint   = self.startPoint,
+						volumeScalar = self.volumeScalar,
+						delay        = baseDelaySamples,
+						syncSource   = previousSource,
+					})
+					previousSource = echoSrc
+				end
+
+				return self
 			end,
 
 			play = function(self, _)
@@ -227,6 +259,14 @@ local Track = {
 			setVolume = function(self, volume)
 				self.volume = volume
 				self.sound:setVolume(volume)
+				if self.effect.type == "Echo" then
+					local strength = self.effect.strength or 0.5
+					for i, s in ipairs(self.queuedSounds) do
+						s:setVolume(volume * (strength ^ i))
+					end
+				elseif self.effect.type == "Reverb" and self.queuedSounds[1] then
+					self.queuedSounds[1]:setVolume(volume * (self.effect.strength or 0.5))
+				end
 			end,
 
 			setPitch = function(self, pitch)
