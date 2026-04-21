@@ -10,7 +10,7 @@ return {
 			selectedValue = params.list[params.selectedIndex]
 		end
 
-		return {
+		return ({
 			x = params.x,
 			y = params.y,
 			width = params.width,
@@ -23,6 +23,31 @@ return {
 			onChanged = params.onChanged,
 			listItems = params.list or {},
 			comparisonFn = params.comparisonFn or function(listItem, outsideItem) return listItem == outsideItem end,
+
+			init = function(self)
+				self.list = require("tools/lib/guiList/list"):create {
+					x      = self.x,
+					y      = self.y + self.height,
+					width  = self.width,
+					height = 400,
+					fontSize = 24,
+					scrollSpeed = 1200,
+					items = self.listItems,
+					onItemSelected = function(list, item, index)
+						list:setVisible(false)
+						self.selectedValue = item
+						if self.onChanged then self.onChanged(item, index) end
+					end,
+				}
+			
+				if _G.getModals then
+					getModals():add(self.list)
+				end
+
+				self:hideList()
+
+				return self
+			end,
 
 			draw = function(self)
 				if not self.visible then return end
@@ -58,9 +83,7 @@ return {
 				if not self.visible then return end
 
 				self.hovered = self:containsPoint(mx, my)
-				if self.list then
-					self.list:update(dt, mx, my)
-				end
+				self.list:update(dt, mx, my)
 			end,
 
 			handleMousepressed = function(self, mx, my)
@@ -96,48 +119,24 @@ return {
 			end,
 
 			showList = function(self)
-				if not self.list then
-					self:initializeList()
-				end
 				self.list:setVisible(true)
 			end,
 
 			hideList = function(self)
-				if self.list then
-					self.list:setVisible(false)
-				end
+				self.list:setVisible(false)
 			end,
 
 			initializeList = function(self)
-				self.list = require("tools/lib/guiList/list"):create {
-					x      = self.x,
-					y      = self.y + self.height,
-					width  = self.width,
-					height = 400,
-					fontSize = 24,
-					scrollSpeed = 1200,
-					items = self.listItems,
-					onItemSelected = function(list, item, index)
-						list:setVisible(false)
-						self.selectedValue = item
-						if self.onChanged then self.onChanged(item, index) end
-					end,
-				}
-			
-				if _G.getModals then
-					getModals():add(self.list)
-				end
+				
 			end,
 
 			setVisible = function(self, visible)
 				self.visible = visible
 				if visible == false then
-					if self.list then
-						self.list:setVisible(false)
-					end
+					self.list:setVisible(false)
 				end
 			end,
 
-		}
+		}):init()
 	end,
 }
