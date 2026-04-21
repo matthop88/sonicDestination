@@ -2,6 +2,7 @@ return {
 	create = function(self, sounds)
         local soundList = {}
         for _, sound in ipairs(sounds) do
+            sound.effect = sounds.effect
             table.insert(soundList, requireRelative("sound/simpleSound"):create(sound))
         end
 
