@@ -217,16 +217,18 @@ local Track = {
 				end
 
 				self.queuedSounds = {}
-				local previousSource = self.drySource
+                local detuning = self.effect.detuning or 1
+                local previousSource = self.drySource
 				for i = 1, echoCount do
 					local echoSrc = love.audio.newSource(self.soundData, "static")
 					local echoVol = self.volume * (strength ^ i)
+                    local currentPitch = self.pitch * (detuning ^ i)
 					table.insert(self.queuedSounds, Sound:create {
 						source       = echoSrc,
 						sampleRate   = sr,
 						channelCount = ch,
 						volume       = echoVol,
-						pitch        = self.pitch,
+						pitch        = currentPitch,
 						startPoint   = self.startPoint,
 						volumeScalar = self.volumeScalar,
 						delay        = baseDelaySamples,
