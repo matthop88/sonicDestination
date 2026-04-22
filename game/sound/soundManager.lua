@@ -31,17 +31,22 @@ return ({
 	mergePropsIntoElement = function(self, soundKey, element, propsTable)
 		if not propsTable then return element end
 		for _, p in pairs(propsTable) do
-			if p.sound == soundKey and p.audioEffect ~= nil then
-				if p.audioEffect ~= "None" then
-					element.effect = {
-						type      = p.audioEffect,
-						delay     = p.delay ~= nil and p.delay or 0.5,
-						strength  = p.strength ~= nil and p.strength or 0.5,
-						echoCount = p.echoCount,
-						detuning  = p.detuning,
-					}
-				else
-					element.effect = { type = "None", }
+			if p.sound == soundKey then
+				if p.reverse ~= nil then
+					element.reverse = p.reverse
+				end
+				if p.audioEffect ~= nil then
+					if p.audioEffect ~= "None" then
+						element.effect = {
+							type      = p.audioEffect,
+							delay     = p.delay ~= nil and p.delay or 0.5,
+							strength  = p.strength ~= nil and p.strength or 0.5,
+							echoCount = p.echoCount,
+							detuning  = p.detuning,
+						}
+					else
+						element.effect = { type = "None", }
+					end
 				end
 			end
 		end
