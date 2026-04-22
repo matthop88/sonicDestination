@@ -106,7 +106,11 @@ local PROPERTIES    = {
             return self:generateKVTable(padding, key, value)
         else
             local myValue = value
-            if type(myValue) == "string" then myValue = "\"" .. myValue .. "\"" end
+            if     type(myValue) == "string"  then myValue = "\"" .. myValue .. "\""
+            elseif type(myValue) == "boolean" then
+                if myValue then myValue = "true"
+                else            myValue = "false" end
+            end
             return string.rep(" ", padding) .. key .. " = " .. myValue .. ",\n"
         end
     end,
