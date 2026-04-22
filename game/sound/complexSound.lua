@@ -3,6 +3,7 @@ return {
         local soundList = {}
         for _, sound in ipairs(sounds) do
             sound.effect = sounds.effect
+            if sounds.reverse ~= nil then sound.reverse = sounds.reverse end
             table.insert(soundList, requireRelative("sound/simpleSound"):create(sound))
         end
 
