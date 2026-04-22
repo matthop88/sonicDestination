@@ -373,6 +373,18 @@ return {
 				if selectedAudioEffectName() == "Echo" then
 					detuningSlider:draw()
 				end
+				do
+					-- Same x as sound dropdown; vertically centered with Effect row (y+140, height 50)
+					local bx, by = self.x + 340, self.y + 156
+					love.graphics.setColor(COLOR.PURE_WHITE)
+					love.graphics.rectangle("line", bx, by, 18, 18)
+					if actionProps().reverse == true then
+						love.graphics.setColor(COLOR.YELLOW)
+						love.graphics.rectangle("fill", bx + 3, by + 3, 12, 12)
+						love.graphics.setColor(COLOR.PURE_WHITE)
+					end
+					love.graphics.print("Reverse", bx + 24, by + 1)
+				end
 				volumeSlider:draw()
 				pitchSlider:draw()
 				okButton:draw()
@@ -465,6 +477,14 @@ return {
 				end
 
 				if pitchSlider:handleMousePressed(mx, my) then
+					return true
+				end
+
+				local rbx, rby = self.x + 340, self.y + 156
+				if mx >= rbx and mx <= rbx + 100 and my >= rby and my <= rby + 22 then
+					local sp = actionProps()
+					sp.reverse = not (sp.reverse == true)
+					rebuildSoundForSelection()
 					return true
 				end
 
