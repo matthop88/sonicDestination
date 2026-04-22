@@ -1,3 +1,48 @@
+-- Build a new SoundData for the frame range [startPoint, endPoint] (interleaved indices, inclusive
+-- of full frames), optionally reversing frame order. When endPoint is nil, uses end of source.
+-- getSampleCount() on SoundData is frame count (see tools/soundGraph/soundObject.lua).
+local function sliceReverseSoundData(full, startPoint, endPoint, reverse)
+	local ch = full:getChannelCount()
+	local frameCount = full:getSampleCount()
+	if ch <= 0 or frameCount <= 0 then return full end
+
+	local totalInterleaved = frameCount * ch
+
+	local i0 = math.floor(startPoint or 0)
+	i0 = math.max(0, math.min(i0, totalInterleaved - ch))
+	i0 = i0 - (i0 % ch)
+
+	local i1
+	if endPoint ~= nil then
+		i1 = math.floor(endPoint)
+		i1 = math.max(0, math.min(i1, totalInterleaved - 1))
+		i1 = i1 - (i1 % ch) + (ch - 1)
+	else
+		i1 = totalInterleaved - 1
+	end
+
+	if i1 < i0 then i0, i1 = i1, i0 end
+
+	local firstFrame = math.floor(i0 / ch)
+	local lastFrame = math.floor(i1 / ch)
+	lastFrame = math.min(lastFrame, frameCount - 1)
+	if lastFrame < firstFrame then firstFrame, lastFrame = lastFrame, firstFrame end
+
+	local nframes = lastFrame - firstFrame + 1
+	if nframes <= 0 then return full end
+
+	local sr = full:getSampleRate()
+	local out = love.sound.newSoundData(nframes, sr, 16, ch)
+
+	for f = 0, nframes - 1 do
+		local srcFrame = firstFrame + (reverse and (nframes - 1 - f) or f)
+		for c = 1, ch do
+			out:setSample(f, c, full:getSample(srcFrame, c))
+		end
+	end
+	return out
+end
+
 local Sound = {
 	create = function(self, params)
 		local volume        = params.volume or 1
@@ -140,9 +185,12 @@ local Track = {
 			volume       = params.volume or 1,
 			pitch        = params.pitch or 1,
 			startPoint   = params.startPoint or 0,
+			endPoint     = params.endPoint,
+			reverse      = params.reverse,
 			effect       = params.effect or { type = "None", },
             delay        = params.delay or 0,
 			volumeScalar = 1,
+			effectiveStartPoint = 0,
 			queuedSounds = {},
 			drySource    = nil,
 			soundData    = nil,
@@ -159,7 +207,15 @@ local Track = {
 
 			initDryTrack = function(self)
 				local path = relativePath("resources/sounds/") .. self.filename
-				self.soundData = love.sound.newSoundData(path)
+				local playStart = self.startPoint or 0
+				if self.reverse then
+					local full = love.sound.newSoundData(path)
+					self.soundData = sliceReverseSoundData(full, self.startPoint, self.endPoint, true)
+					playStart = 0
+				else
+					self.soundData = love.sound.newSoundData(path)
+				end
+				self.effectiveStartPoint = playStart
 				self.drySource = love.audio.newSource(self.soundData, "static")
 
 				local sr = self.soundData:getSampleRate()
@@ -171,7 +227,7 @@ local Track = {
 					channelCount   = ch,
 					volume         = self.volume,
 					pitch          = self.pitch,
-					startPoint     = self.startPoint,
+					startPoint     = self.effectiveStartPoint,
 					volumeScalar   = self.volumeScalar,
 				}
 
@@ -191,7 +247,7 @@ local Track = {
 					channelCount = ch,
 					volume       = self.volume * (self.effect.strength or 0.5),
 					pitch        = self.pitch,
-					startPoint   = self.startPoint,
+					startPoint   = self.effectiveStartPoint,
 					volumeScalar = self.volumeScalar,
 					-- Match musicManager:newReverbTrack (delay / 2 before sample conversion)
 					delay        = math.floor(((self.effect.delay or 0) / 8) * sr * ch),
@@ -229,7 +285,7 @@ local Track = {
 						channelCount = ch,
 						volume       = echoVol,
 						pitch        = currentPitch,
-						startPoint   = self.startPoint,
+						startPoint   = self.effectiveStartPoint,
 						volumeScalar = self.volumeScalar,
 						delay        = baseDelaySamples,
 						syncSource   = previousSource,
