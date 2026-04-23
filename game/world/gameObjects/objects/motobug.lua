@@ -24,6 +24,14 @@ return {
 				SOUND_MANAGER:play("badnikDeath")
 			end,
 
+			onCollisionWithSolid = function(self, solidObject)
+				if  (solidObject:getX() < self:getX() and self:getXVelocity() <= 0)
+			     or (solidObject:getX() > self:getX() and self:getXVelocity() >= 0) then
+			     	self.hitSolid = true
+			     	self.xSpeed = 0
+			    end
+			end,
+
 			scanGround = function(self)
 				if not self.groundScanner then
 					self.groundScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = SENSOR_DX, dy = SENSOR_DY }
