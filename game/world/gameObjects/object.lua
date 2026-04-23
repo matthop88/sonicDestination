@@ -68,7 +68,7 @@ return {
 
             updateHitBox = function(self, dt)
                 local hitBox = self:getHitBox()
-                if hitBox then hitBox:update(self.x, self.y) end
+                if hitBox then hitBox:update(self.x, self.y, self.xFlip) end
             end,
 
             setAnimation = function(self, name) self.sprite:setCurrentAnimation(name) end,
