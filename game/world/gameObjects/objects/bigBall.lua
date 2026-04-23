@@ -32,6 +32,10 @@ return {
 			end,
 
 			isDangerousToNPCs = function(self)
+				return self.xSpeed ~= 0
+			end,
+
+			isSolid = function(self)
 				return true
 			end,
 
@@ -55,9 +59,7 @@ return {
                     self:setX(self:getX() + deltaX)
                     self.rotation = self.rotation + (deltaX / 24)
                     self:setY(self:getY() + (self:getYSpeed()    * dt))
-                    if self.xSpeed ~= 0 then 
-                    	self.world:checkCollisions(self)
-                    end
+                    self.world:checkCollisions(self)
                 end
             end,
 
