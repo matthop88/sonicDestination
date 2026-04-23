@@ -1,4 +1,4 @@
- local GRAPHICS
+local GRAPHICS
 local TERRAIN
 local WORKSPACE
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
@@ -158,9 +158,7 @@ return {
     checkCollisions = function(self, otherObject)
         local otherHitBox = otherObject:getHitBox()
         local firstHitBox = nil
-        self.objects:head()
-        while not self.objects:isEnd() do
-            local object = self.objects:getNext()
+        self.objects:forEach(function(object)
             if object ~= otherObject then
                 local hitBox = object:getHitBox()
                 if hitBox and hitBox:intersects(otherHitBox) then
@@ -168,13 +166,18 @@ return {
                         if self.collisionHandler:handleCollisionWithPlayer(object, otherObject) then
                             firstHitBox = hitBox
                         end
-                    elseif otherObject.isDangerousToNPCs and otherObject:isDangerousToNPCs() then
-                        self.collisionHandler:handleCollisionWithDangerousToNPCs(object, otherObject)
+                    else
+                        if otherObject.isSolid and otherObject:isSolid() then
+                            self.collisionHandler:handleCollisionWithSolid(object, otherObject)
+                        end
+                        if otherObject.isDangerousToNPCs and otherObject:isDangerousToNPCs() then
+                            self.collisionHandler:handleCollisionWithDangerousToNPCs(object, otherObject)
+                        end
                     end
                     if not firstHitBox then firstHitBox = hitBox end
                 end
             end
-        end
+        end)
         return firstHitBox
     end,
 
