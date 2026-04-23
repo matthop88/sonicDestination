@@ -57,12 +57,13 @@ return {
 
             update = function(self, dt)
                 if self.active then
-                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
+                    if self.script and self:isAlive() and not self.hitSolid then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
                     self:setX(self:getX() + (self:getXVelocity() * dt))
                     self:setY(self:getY() + (self:getYSpeed()    * dt))
+                    self.hitSolid = false
                 end
             end,
 
