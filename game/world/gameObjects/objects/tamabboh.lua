@@ -7,7 +7,7 @@ return {
 		local SENSOR_DY = 21
 
 		return {
-			script   = SCRIPT_REPO:get("pacingBackAndForth"),
+			script   = SCRIPT_REPO:get("chargingBackAndForth"),
 
 			onCollisionWithPlayer = function(self, player)
 				if player:isSpinning() then
@@ -20,7 +20,7 @@ return {
 
 			onCollisionWithDangerousToNPCs = function(self, dangerousObject)
 				if not dangerousObject.isDangerousTo or dangerousObject:isDangerousTo(self) then
-					self:setAnimation("motobugDying")
+					self:setAnimation("tamabbohDying")
 					self:setDead()
 					SOUND_MANAGER:play("badnikDeath")
 				end
