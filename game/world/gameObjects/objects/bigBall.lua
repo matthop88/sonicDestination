@@ -32,7 +32,11 @@ return {
 			end,
 
 			isDangerousToNPCs = function(self)
-				return math.abs(self.xSpeed) > 100
+				return self.xSpeed ~= 0
+			end,
+
+			isDangerousTo = function(self, other)
+				return math.abs(self.xSpeed - other.xSpeed) > 100 
 			end,
 
 			isSolid = function(self)
