@@ -25,10 +25,11 @@ return {
 			end,
 
 			onCollisionWithSolid = function(self, solidObject)
-				if  (solidObject:getX() < self:getX() and self:getXVelocity() < 0)
-			     or (solidObject:getX() > self:getX() and self:getXVelocity() > 0) then
+				if  (solidObject:getX() < self:getX() and not self.xFlip)
+			     or (solidObject:getX() > self:getX() and     self.xFlip) then
 			     	self.hitSolid = true
 			     	self.xSpeed = 0
+			     	self.x = self.x + solidObject:getHitBox():calculatePushOnOther(self:getHitBox())
 			    end
 			end,
 
