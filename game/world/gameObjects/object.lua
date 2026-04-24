@@ -72,6 +72,10 @@ return {
                 if hitBox then hitBox:update(self.x, self.y, self.xFlip) end
             end,
 
+            setAnimationByLabel = function(self, label) 
+                self.sprite:setCurrentAnimationByLabel(label) 
+            end,
+            
             setAnimation = function(self, name) self.sprite:setCurrentAnimation(name) end,
             isForeground = function(self)       return self.sprite:isForeground()     end,
             isPlayer     = function(self)       return false                          end,
