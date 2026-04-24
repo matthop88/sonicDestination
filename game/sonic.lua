@@ -172,6 +172,11 @@ return {
     getGeneralX   = function(self) return self.sprite:getGeneralX(self:getX())          end,
     getGeneralY   = function(self) return self.sprite:getGeneralY(self:getY())          end,
     
+    move          = function(self, dx, dy) 
+        self.position.x = self.position.x + dx
+        self.position.y = self.position.y + dy
+    end,
+    
     moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
     isFacingLeft  = function(self) return     self.sprite:isXFlipped()                  end,
