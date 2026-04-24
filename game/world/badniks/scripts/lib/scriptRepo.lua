@@ -16,9 +16,17 @@ return ({
         
     get = function(self, scriptName)
         local script = dofile(relativePath("world/badniks/scripts/" .. scriptName .. ".lua"))
-        script.program = require("tools/lib/dataStructures/navigableList"):create(script.program)
+        local programs = { 
+            current = "default", 
+            getCurrent = function(self) return self[self.current] end,
+            setCurrent = function(self, current) self.current = current end,
+        }
+        for progName, prog in pairs(script.programs) do
+            programs[progName] = requireRelative("util/dataStructures/navigableList"):create(prog)
+        end
 
-        return script
+        script.programs = programs
+        return script.programs
     end,
         
 }):init()
