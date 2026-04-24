@@ -57,7 +57,7 @@ return {
 
             update = function(self, dt)
                 if self.active then
-                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
+                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
