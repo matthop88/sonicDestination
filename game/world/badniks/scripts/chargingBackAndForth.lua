@@ -9,7 +9,7 @@ return {
 	title    = "Charging Back and Forth",
 	programs = {
 		default = {
-			BRANCH_IF_PLAYER_AT { deltaX   = 100, program = "charging", },
+			BRANCH_IF_PLAYER_AT { deltaX   = 200, program = "charging", },
 			MOVE_TOWARDS_EDGE { xSpeed     =  50, animation = "moving", },
 			WAIT              { numSeconds =   1, },
 			FLIPX(),
