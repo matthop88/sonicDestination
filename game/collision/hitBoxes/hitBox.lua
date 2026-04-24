@@ -45,7 +45,7 @@ return {
 	            	if self.x < otherHitBox.x then
 	            		return (self.x + self.radiusX) - (otherHitBox.x - otherHitBox.radiusX)
 	            	else
-	            		return (otherHitBox.x + otherHitBox.radiusX) - (self.x - self.radiusX)
+	            		return (self.x - self.radiusX) - (otherHitBox.x + otherHitBox.radiusX)
 	            	end
 	            end,
 
