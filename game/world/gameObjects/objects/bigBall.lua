@@ -16,6 +16,7 @@ return {
 			player   = nil,
 			
 			onCollisionWithPlayer = function(self, player)
+				player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
 				if not player:isPushing() or player:getPushing() == self then
 					if self.colliding[2] == false then
 						if player:getX() < self:getX() then
