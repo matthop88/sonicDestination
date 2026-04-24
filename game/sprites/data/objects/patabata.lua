@@ -1,6 +1,9 @@
 return {
     imageName = "PTPBadniksTransparent",
-
+    labels    = {
+        moving = "flying",
+        dying  = "dying",
+    },
     animations  = {
         flying = { fps = 5, isDefault = true, offset = { x = 13, y = 8 }, w = 28, h = 22,
             hitBox = { rX = 10, rY = 8, danger = 1 },
