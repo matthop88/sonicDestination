@@ -7,7 +7,7 @@ return function(params)
         end,
 
         execute = function(self, dt, actor)
-            if actor.scanGround and not actor:scanGround() then
+            if (actor.scanGround and not actor:scanGround()) or actor.hitSolid then
                 self:reset()
                 return true
             else
