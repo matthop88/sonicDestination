@@ -19,9 +19,11 @@ return {
 			end,
 
 			onCollisionWithDangerousToNPCs = function(self, dangerousObject)
-				self:setAnimation("motobugDying")
-				self:setDead()
-				SOUND_MANAGER:play("badnikDeath")
+				if not dangerousObject.isDangerousTo or dangerousObject:isDangerousTo(self) then
+					self:setAnimation("motobugDying")
+					self:setDead()
+					SOUND_MANAGER:play("badnikDeath")
+				end
 			end,
 
 			onCollisionWithSolid = function(self, solidObject)
@@ -29,8 +31,8 @@ return {
 			     or (solidObject:getX() > self:getX() and     self.xFlip) then
 			     	self.hitSolid = true
 			     	self.xSpeed = 0
-			     	self.x = self.x + solidObject:getHitBox():calculatePushOnOther(self:getHitBox())
-			    end
+			     end
+			     self.x = self.x + solidObject:getHitBox():calculatePushOnOther(self:getHitBox())
 			end,
 
 			scanGround = function(self)
