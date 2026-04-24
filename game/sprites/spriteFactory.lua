@@ -54,6 +54,10 @@ return {
                 return self.animations:getCurrentAnimName()
             end,
 
+            setCurrentAnimationByLabel = function(self, animationLabelName)
+                self.animations:setCurrentAnimationByLabel(animationLabelName)
+            end,
+
             isForeground = function(self)
                 return self.animations:isForeground()
             end,
