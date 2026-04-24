@@ -1,6 +1,10 @@
 return {
     imageName = "PTPBadniksTransparent",
-
+    labels = {
+        moving   = "grinding",
+        charging = "charging",
+        dying    = "tamabbohDying",
+    },
     animations  = {
         grinding = { fps = 5, isDefault = true, offset = { x = 20, y = 15 }, w = 31, h = 31,
             hitBox = { rX = 13, rY = 8, xOff = 3, danger = 1 },
