@@ -41,6 +41,14 @@ return {
 	            	   and self.y - self.radiusY  < otherHitBox.y + otherHitBox.radiusY
 	            end,
 
+	            calculatePushOnOther = function(self, otherHitBox)
+	            	if self.x < otherHitBox.x then
+	            		return (self.x + self.radiusX) - (otherHitBox.x - otherHitBox.radiusX)
+	            	else
+	            		return (otherHitBox.x + otherHitBox.radiusX) - (self.x - self.radiusX)
+	            	end
+	            end,
+
 	            intersects = function(self, otherHitBox)
 	            	if self:isActive() and otherHitBox:isActive() then
 	            		local result = self:intersectsIntern(otherHitBox)
