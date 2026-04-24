@@ -10,6 +10,7 @@ return {
     create = function(self, spriteDataName)
         local spriteData       = requireRelative("sprites/data/" .. spriteDataName)
         local animationData    = spriteData.animations
+        local labels           = spriteData.labels or {}
         local image            = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. spriteData.imageName .. ".png")
     
         local animations       = self:createAnimationObjects(animationData, image)
@@ -20,6 +21,7 @@ return {
             spriteDataName   = spriteDataName,
             image            = image,
             animations       = animations,
+            labels           = labels,
             defaultAnimation = defaultAnimation,
         }
     end,
@@ -90,6 +92,7 @@ return {
             name              = params.spriteDataName,
             animations        = params.animations,
             currentAnimation  = params.defaultAnimation,
+            labels            = params.labels,
             
             draw = function(self, x, y, scaleX, scaleY, GRAPHICS)
                 GRAPHICS = GRAPHICS or self.graphics
@@ -110,6 +113,15 @@ return {
 
             update = function(self, dt)
                 self.currentAnimation:update(dt)
+            end,
+
+            setCurrentAnimationByLabel = function(self, animationLabelName)
+                local animName = self.labels[animationLabelName]
+                if animName == nil then
+                    print("ERROR: Label not found for sprite " .. self.name .. ": " .. animationLabelName)
+                else
+                    self:setCurrentAnimation(self.labels[animationLabelName])
+                end
             end,
 
             setCurrentAnimation = function(self, animationName)
