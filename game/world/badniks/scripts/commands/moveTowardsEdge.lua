@@ -11,6 +11,7 @@ return function(params)
             if self.animation then actor:setAnimationByLabel(self.animation) end
             if (actor.scanGround and not actor:scanGround()) or actor.hitSolid then
                 self:reset()
+                actor:setXSpeed(0)
                 return true
             else
                 actor:setXSpeed(self.xSpeed)
