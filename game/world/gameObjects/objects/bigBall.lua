@@ -69,12 +69,13 @@ return {
                     self.deleted = self.sprite.deleted
                     local deltaX = self.xSpeed * dt
                     local deltaY = self.ySpeed * dt
-                    if nearestGroundLevel and nearestGroundLevel < deltaY then
-                    	if self.ySpeed > 0 then 
-							self.ySpeed = 0
+                    if nearestGroundLevel and nearestGroundLevel < deltaY then 
+						if self.ySpeed > 0 then
+							self.ySpeed = -(self.ySpeed / 2.5)
+							if math.abs(self.ySpeed) < 5 then self.ySpeed = 0 end
+							self:setY(self:getY() + nearestGroundLevel)
 							SOUND_MANAGER:play("thud")
 						end
-						self:setY(self:getY() + nearestGroundLevel)
 					else
 						self:setY(self:getY() + deltaY)
                     end
