@@ -65,16 +65,7 @@ return {
 
 	readSoundsFromMap = function(self, soundProps)
 		if soundProps then
-			getProperties().sounds = {
-				braking         = soundProps.braking,
-				jumping         = soundProps.jumping,
-				collectOddRing  = soundProps.collectOddRing,
-				collectEvenRing = soundProps.collectEvenRing,
-				giantRing       = soundProps.giantRing,
-				vanish          = soundProps.vanish,
-				sonicHit        = soundProps.sonicHit,
-				badnikHit       = soundProps.badnikHit,
-			}
+			getProperties().sounds = soundProps
         end
     end,
 
