@@ -11,7 +11,7 @@ return function(params)
         execute = function(self, dt, actor)
             if self.animation then actor:setAnimationByLabel(self.animation) end
             actor:setXSpeed(0)
-            actor:setYSpeed(0)
+            if actor.immuneToGravity then actor:setYSpeed(0) end
             self.elapsed = self.elapsed + dt
             if self.elapsed > self.duration then
                 self:reset()
