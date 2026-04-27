@@ -23,6 +23,7 @@ return ({
 		sonicHit        = "sonicHit",
 		badnikHit       = "badnikDeath",
         ballThud        = "thud",
+        badnikFalling   = "yaaaaah",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
