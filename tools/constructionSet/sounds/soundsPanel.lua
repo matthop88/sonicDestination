@@ -14,6 +14,8 @@ local ACTIONS = {
 	{ serial = "badnikHit",       label = "Badnik Hit" },
 	{ serial = "ballThud",        label = "Ball Landing" },
 	{ serial = "badnikFalling",   label = "Badnik Falling" },
+	{ serial = "badnikStrike",    label = "Badnik Strike" },
+	{ serial = "badnikSquished",  label = "Badnik Squished" },
 }
 
 local AUDIO_EFFECTS = {
@@ -121,6 +123,8 @@ return {
 			badnikHit       = { "Badnik Death", "Smoosh", "Bowling Strike" },
 			ballThud        = { "Thud" },
 			badnikFalling   = { "Yaaaaah!" },
+			badnikStrike    = { "Bowling Strike" },
+			badnikSquished  = { "Smoosh" },
 		}
 
 		local playSelectedSound = function()
