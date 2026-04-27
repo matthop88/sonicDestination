@@ -72,30 +72,9 @@ local PROPERTIES    = {
         local encoded = ""
         if self.sounds then
             encoded = encoded .. "      sounds = {\n"
-            if self.sounds.braking then
-                encoded = encoded .. self:generateKV(10, "braking", self.sounds.braking)
+            for k, v in pairs(self.sounds) do
+                encoded = encoded .. self:generateKV(10, k, v)
             end
-            if self.sounds.jumping then
-                encoded = encoded .. self:generateKV(10, "jumping", self.sounds.jumping)
-            end
-            if self.sounds.collectOddRing then
-                encoded = encoded .. self:generateKV(10, "collectOddRing", self.sounds.collectOddRing)
-            end
-            if self.sounds.collectEvenRing then
-                encoded = encoded .. self:generateKV(10, "collectEvenRing", self.sounds.collectEvenRing)
-            end
-            if self.sounds.giantRing then
-                encoded = encoded .. self:generateKV(10, "giantRing", self.sounds.giantRing)
-            end
-            if self.sounds.vanish then
-                encoded = encoded .. self:generateKV(10, "vanish", self.sounds.vanish)
-            end
-            if self.sounds.sonicHit then
-                encoded = encoded .. self:generateKV(10, "sonicHit", self.sounds.sonicHit)
-            end
-            if self.sounds.badnikHit then
-                encoded = encoded .. self:generateKV(10, "badnikHit", self.sounds.badnikHit)
-            end  
             encoded = encoded .. "      },\n"
         end
         return encoded
