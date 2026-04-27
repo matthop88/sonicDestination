@@ -1,11 +1,12 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 
-local ACCELERATION = 100
-local MAX_SPEED    = 180
+local ACCELERATION     = 100
+local AIR_ACCELERATION = 5
+local MAX_SPEED        = 180
 
 return {
 	create = function(self)
-		local SENSOR_DX = 15
+		local SENSOR_DX = 10
 		local SENSOR_DY = 31
 
 		return {
@@ -67,7 +68,12 @@ return {
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
-                    local deltaX = self.xSpeed * dt
+                    local tempSpeed = self.xSpeed
+                    if self.ySpeed == 0 then
+                    	if tempSpeed > 0 then tempSpeed = math.max(0, tempSpeed - 30)
+                    	else                  tempSpeed = math.min(0, tempSpeed + 30) end
+                    end
+                    local deltaX = tempSpeed * dt
                     local deltaY = self.ySpeed * dt
                     if nearestGroundLevel and nearestGroundLevel < deltaY then 
 						if self.ySpeed > 0 then
@@ -88,12 +94,12 @@ return {
 
             initGravityScanner = function(self)
             	if not self.gravityScanner then
-            		self.gravityScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = 24, dy = 24 }
+            		self.gravityScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = -6, dy = 24 }
             	end
             end,
 
             calculateSpeed = function(self, dt)
-            	if not self:scanGround() then
+            	if not self:scanGround() and not (self.player and self.player:getPushing() == self) and self.ySpeed == 0 then
 					self.xSpeed = 0
 					self.colliding[1] = false
 					self.colliding[2] = false
@@ -105,16 +111,16 @@ return {
 				end
 				if self.colliding[1] then
             		if not self.xFlip then
-            			self.xSpeed = math.max(-MAX_SPEED, self.xSpeed - (ACCELERATION * dt))
+            			self.xSpeed = math.max(-MAX_SPEED, self.xSpeed - (self:getAcceleration() * dt))
             		else
-            			self.xSpeed = math.min(MAX_SPEED, self.xSpeed + (ACCELERATION * dt))
+            			self.xSpeed = math.min(MAX_SPEED, self.xSpeed + (self:getAcceleration() * dt))
             		end
             		self.colliding[1] = false
             	else
             		if not self.xFlip then
-            			self.xSpeed = math.min(0, self.xSpeed + (ACCELERATION * dt))
+            			self.xSpeed = math.min(0, self.xSpeed + (self:getAcceleration() * dt))
             		else
-            			self.xSpeed = math.max(0, self.xSpeed - (ACCELERATION * dt))
+            			self.xSpeed = math.max(0, self.xSpeed - (self:getAcceleration() * dt))
             		end
             		self.colliding[2] = false
             		if self.player and self.player:getPushing() == self then
@@ -130,6 +136,11 @@ return {
 				end
 
 				return self.groundScanner:scan()
+			end,
+
+			getAcceleration = function(self)
+				if self.ySpeed == 0 then return ACCELERATION
+				else                     return AIR_ACCELERATION end
 			end,
 
 			getXFlip = function(self)
