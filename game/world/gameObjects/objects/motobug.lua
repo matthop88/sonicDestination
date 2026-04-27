@@ -14,7 +14,7 @@ return {
 				if player:isSpinning() then
 					self:setAnimation("motobugDying")
 					self:setDead()
-					SOUND_MANAGER:play("badnikDeath")
+					SOUND_MANAGER:playAction("badnikHit")
         			player:reboundIfPossible(self.y, 180)
 				end
 			end,
@@ -22,8 +22,11 @@ return {
 			onCollisionWithDangerousToNPCs = function(self, dangerousObject)
 				if not dangerousObject.isDangerousTo or dangerousObject:isDangerousTo(self) then
 					self:setAnimation("motobugDying")
+					if dangerousObject.notifyBadnikDeath then
+						dangerousObject:notifyBadnikDeath(self)
+					end
 					self:setDead()
-					SOUND_MANAGER:play("badnikDeath")
+					SOUND_MANAGER:playAction("badnikHit")
 				end
 			end,
 
@@ -53,7 +56,7 @@ return {
                 		if nearestGroundLevel == nil and self.ySpeed == 0 then
 							if not self.gravityScanner:findNearestGroundWithin(8192) then
 								self.fallingToDeath = true
-								SOUND_MANAGER:play("yaaaaah")
+								SOUND_MANAGER:playAction("badnikFalling")
 							end
 						end
                 	end
