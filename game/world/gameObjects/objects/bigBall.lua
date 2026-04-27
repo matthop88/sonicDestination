@@ -89,6 +89,7 @@ return {
                     self:setX(self:getX() + deltaX)
                     self.rotation = self.rotation + (deltaX / 24)
                     self.world:checkCollisions(self)
+                    if self.y >= 65536 then self.deleted = true end
                 end
             end,
 
