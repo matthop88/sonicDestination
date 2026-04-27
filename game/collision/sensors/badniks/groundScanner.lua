@@ -47,6 +47,18 @@ return {
 				end
 			end,
 
+			findNearestGroundWithin = function(self, deltaY)
+				local quantizedY = math.floor(self:getY() / 16) * 16
+				local yy = quantizedY - self:getY()
+				while yy <= deltaY do
+					local solid = WORLD:getSolidAt(self:getX(), self:getY() + yy)
+					if solid == 1 then
+						return yy
+					end
+					yy = yy + 16
+				end
+			end,
+
 			update = function(self, dt)
 				self.hlCounter = math.max(self.hlCounter - (dt * 3), 0)
 			end,
