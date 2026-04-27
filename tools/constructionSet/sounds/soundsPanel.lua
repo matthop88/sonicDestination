@@ -12,6 +12,7 @@ local ACTIONS = {
 	{ serial = "vanish",          label = "Vanish" },
 	{ serial = "sonicHit",        label = "Sonic Hit" },
 	{ serial = "badnikHit",       label = "Badnik Hit" },
+	{ serial = "ballThud",        label = "Ball Landing" },
 }
 
 local AUDIO_EFFECTS = {
@@ -117,6 +118,7 @@ return {
 			vanish          = { "Vanish" },
 			sonicHit        = { "Sonic Hit", "Ice Explode", "Klank Ouch!" },
 			badnikHit       = { "Badnik Death", "Smoosh", "Bowling Strike" },
+			ballThud        = { "Thud" },
 		}
 
 		local playSelectedSound = function()
