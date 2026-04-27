@@ -4,7 +4,8 @@ local SCRIPT_REPO    = requireRelative("world/badniks/scripts/lib/scriptRepo")
 return {
 	create = function(self)
 		return {
-			script   = SCRIPT_REPO:get("sineWaveBackAndForth"),
+			script          = SCRIPT_REPO:get("sineWaveBackAndForth"),
+			immuneToGravity = true,
 
 			onCollisionWithPlayer = function(self, player)
 				if player:isSpinning() then
