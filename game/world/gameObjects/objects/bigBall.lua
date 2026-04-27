@@ -38,7 +38,7 @@ return {
 			end,
 
 			isDangerousTo = function(self, other)
-				return math.abs(self.xSpeed - other.xSpeed) > 100 
+				return math.abs(self.xSpeed - other.xSpeed) > (other.dangerousSpeed or 100)
 			end,
 
 			isSolid = function(self)
