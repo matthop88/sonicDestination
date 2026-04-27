@@ -13,6 +13,7 @@ return {
 	ouch           = { label = "Ouch",             filename = "extra/Ooouuucchh.wav",  volume = 0.8,  startPoint =  8182, endPoint =  38054, },
 	smoosh         = { label = "Smoosh",           filename = "extra/smoosh.wav",      volume = 1.0, },
 	sneakers       = { label = "Sneakers",         filename = "extra/sneakers.wav",    volume = 0.45, pitch = 1.3, },
+	thud           = { label = "Thud",             filename = "extra/sor2Thud.wav",    volume = 1.0, },
 	klankOuch      = { label = "Klank Ouch!",      complex  = true,
         { filename = "extra/AnvilDing.wav",   volume = 0.8, startPoint = 11076, endPoint =  41006,             },
         { filename = "extra/Ooouuucchh.wav",  volume = 0.8, startPoint =  8182, endPoint =  38054, delay = 0.25 },
@@ -21,4 +22,5 @@ return {
     	label = "Bowling Strike",   filename = "extra/emycutiepantsBowlingStrike.mp3",
     	-- Credit to Emycutiepants https://pixabay.com/users/_emycutiepants_-50116316 
     },
+    
 }
