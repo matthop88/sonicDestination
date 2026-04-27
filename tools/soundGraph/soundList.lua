@@ -131,6 +131,10 @@ return {
 			handleMouseReleased = function(self)
 				self.list:handleMouseReleased()
 			end,
+
+			handleKeyPressed = function(self, key)
+				self.list:handleKeyPressed(key)
+			end,
 			
 			setVisible = function(self, visible)
 				self.list:setVisible(visible)
