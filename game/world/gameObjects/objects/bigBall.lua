@@ -41,6 +41,14 @@ return {
 				return math.abs(self.xSpeed - other.xSpeed) > (other.dangerousSpeed or 100)
 			end,
 
+			notifyBadnikDeath = function(self, badnik)
+				if self.ySpeed > 0 then
+					SOUND_MANAGER:playAction("badnikSquished")
+				else
+					SOUND_MANAGER:playAction("badnikStrike")
+				end
+			end,
+
 			isSolid = function(self)
 				return true
 			end,
@@ -80,7 +88,7 @@ return {
 							self.ySpeed = -(self.ySpeed / 2.5)
 							if math.abs(self.ySpeed) < 5 then self.ySpeed = 0 end
 							self:setY(self:getY() + nearestGroundLevel)
-							SOUND_MANAGER:play("thud")
+							SOUND_MANAGER:playAction("ballThud")
 						end
 					else
 						self:setY(self:getY() + deltaY)
