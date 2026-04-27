@@ -93,6 +93,20 @@ local Sound = {
 		local leaderWasPlaying = false
 
 		return {
+			-- Delayed echoes arm via syncSource:isPlaying() rising edge in update(). Very short dry
+			-- clips can finish before the first SOUND_MANAGER:update, so the edge is never seen.
+			-- Track:play calls this for the first hop; chainPrime links each hop to the next.
+			primeFromSync = function(self)
+				if delaySamples <= 0 or not syncSource or delaySec <= 0 then
+					return
+				end
+				echoWaitArmed = true
+				echoWaitElapsed = 0
+				leaderWasPlaying = syncSource:isPlaying()
+			end,
+
+			chainPrime = nil,
+
 			play = function(self)
 				source:setVolume(volume * volumeScalar)
 				source:setPitch(pitch)
@@ -153,6 +167,9 @@ local Sound = {
 				source:play()
 				echoWaitArmed = false
 				echoWaitElapsed = 0
+				if self.chainPrime and self.chainPrime.primeFromSync then
+					self.chainPrime:primeFromSync()
+				end
 				return true
 			end,
 
@@ -293,11 +310,20 @@ local Track = {
 					previousSource = echoSrc
 				end
 
+				for i = 1, echoCount - 1 do
+					self.queuedSounds[i].chainPrime = self.queuedSounds[i + 1]
+				end
+
 				return self
 			end,
 
 			play = function(self, _)
 				self.sound:play()
+				if (self.effect.type == "Echo" or self.effect.type == "Reverb")
+					and self.queuedSounds[1]
+					and self.queuedSounds[1].primeFromSync then
+					self.queuedSounds[1]:primeFromSync()
+				end
 			end,
 
 			update = function(self, dt)
