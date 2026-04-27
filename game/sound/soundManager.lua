@@ -101,9 +101,11 @@ return ({
 
 	play = function(self, soundName)
 		local sound = self:getByName(soundName)
-		sound:setVolumeScalar(self.volumeScalar)
-		if sound.delay then self:addToQueue(sound)
-		else                sound:play(self)    end
+        if sound then
+    		sound:setVolumeScalar(self.volumeScalar)
+    		if sound.delay then self:addToQueue(sound)
+    		else                sound:play(self)    end
+        end
 	end,
 
 	getByName = function(self, soundName)
