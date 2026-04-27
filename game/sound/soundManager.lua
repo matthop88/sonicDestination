@@ -22,30 +22,43 @@ return ({
 		vanish          = "vanish",
 		sonicHit        = "sonicHit",
 		badnikHit       = "badnikDeath",
+        ballThud        = "thud",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
 
-	-- Map / construction-set rows use the asset key in .sound; merge fx onto that soundData entry.
-	-- If p.audioEffect is nil, keep the base soundData effect (row has not set effect in the panel).
+	-- Map / construction-set rows are keyed by action serial (e.g. ballThud); each row may set
+	-- .sound to a soundData key. If .sound is missing, use actionSoundMap[actionKey] as the
+	-- default sample so effect-only edits still merge (otherwise thud never picks up Reverb/Echo).
 	mergePropsIntoElement = function(self, soundKey, element, propsTable)
 		if not propsTable then return element end
-		for _, p in pairs(propsTable) do
-			if p.sound == soundKey then
-				if p.reverse ~= nil then
-					element.reverse = p.reverse
+		for actionKey, p in pairs(propsTable) do
+			if type(p) == "table" then
+				local rowSound = p.sound
+				local matches = false
+				if rowSound == "None" then
+					matches = false
+				elseif rowSound ~= nil then
+					matches = (rowSound == soundKey)
+				else
+					matches = (self.actionSoundMap[actionKey] == soundKey)
 				end
-				if p.audioEffect ~= nil then
-					if p.audioEffect ~= "None" then
-						element.effect = {
-							type      = p.audioEffect,
-							delay     = p.delay ~= nil and p.delay or 0.5,
-							strength  = p.strength ~= nil and p.strength or 0.5,
-							echoCount = p.echoCount,
-							detuning  = p.detuning,
-						}
-					else
-						element.effect = { type = "None", }
+				if matches then
+					if p.reverse ~= nil then
+						element.reverse = p.reverse
+					end
+					if p.audioEffect ~= nil then
+						if p.audioEffect ~= "None" then
+							element.effect = {
+								type      = p.audioEffect,
+								delay     = p.delay ~= nil and p.delay or 0.5,
+								strength  = p.strength ~= nil and p.strength or 0.5,
+								echoCount = p.echoCount,
+								detuning  = p.detuning,
+							}
+						else
+							element.effect = { type = "None", }
+						end
 					end
 				end
 			end
@@ -78,7 +91,9 @@ return ({
 	rebuildSound = function(self, soundKey, propsTable)
 		local data = requireRelative("sound/soundData")
 		local base = data[soundKey]
-		if not base then return end
+		if not base then 
+            print("Data not found for " .. soundKey)
+            return end
 		local props = propsTable or (_G.getProperties and getProperties().sounds) or nil
 		local merged = self:mergePropsIntoElement(soundKey, shallowCopy(base), props)
 		self:createSoundFromElement(soundKey, merged)
@@ -127,19 +142,27 @@ return ({
 	overrideFromSoundProps = function(self, soundProps)
 		if soundProps == nil then return end
 		local rebuilt = {}
-		for _, sound in pairs(soundProps) do
-			local k = sound.sound
-			if k and k ~= "None" and not rebuilt[k] then
-				rebuilt[k] = true
-				self:rebuildSound(k, soundProps)
+		for actionKey, sound in pairs(soundProps) do
+			if type(sound) == "table" then
+				local k = sound.sound
+				if (not k or k == "None") and self.actionSoundMap[actionKey] then
+					k = self.actionSoundMap[actionKey]
+				end
+				if k and k ~= "None" and not rebuilt[k] then
+					rebuilt[k] = true
+					self:rebuildSound(k, soundProps)
+				end
 			end
 		end
 		for action, sound in pairs(soundProps) do
-			self:setActionOverride(action, sound.sound)
-			local soundObj = self:getByName(self.actionSoundMap[action])
-			if soundObj then
-				if sound.volume then soundObj:setVolume(sound.volume) end
-				if sound.pitch then soundObj:setPitch(sound.pitch) end
+			if type(sound) == "table" and type(action) == "string" then
+				self:setActionOverride(action, sound.sound)
+				local defaultName = self.actionSoundMap[action]
+				local soundObj = defaultName and self:getByName(defaultName)
+				if soundObj then
+					if sound.volume then soundObj:setVolume(sound.volume) end
+					if sound.pitch then soundObj:setPitch(sound.pitch) end
+				end
 			end
 		end
 	end,
