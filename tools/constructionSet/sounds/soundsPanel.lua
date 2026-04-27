@@ -13,6 +13,7 @@ local ACTIONS = {
 	{ serial = "sonicHit",        label = "Sonic Hit" },
 	{ serial = "badnikHit",       label = "Badnik Hit" },
 	{ serial = "ballThud",        label = "Ball Landing" },
+	{ serial = "badnikFalling",   label = "Badnik Falling" },
 }
 
 local AUDIO_EFFECTS = {
@@ -119,6 +120,7 @@ return {
 			sonicHit        = { "Sonic Hit", "Ice Explode", "Klank Ouch!" },
 			badnikHit       = { "Badnik Death", "Smoosh", "Bowling Strike" },
 			ballThud        = { "Thud" },
+			badnikFalling   = { "Yaaaaah!" },
 		}
 
 		local playSelectedSound = function()
@@ -334,8 +336,8 @@ return {
 					width = 60,
 					height = self.height - 140,
 					title = "Pitch",
-					minValue = 0.75,
-					maxValue = 1.5,
+					minValue = 0.5,
+					maxValue = 2.0,
 					quantize = 0.05,
 					titleFontSize = 14,
 					labelFontSize = 16,
