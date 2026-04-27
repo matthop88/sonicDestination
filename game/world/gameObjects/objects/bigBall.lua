@@ -55,17 +55,40 @@ return {
 
             update = function(self, dt)
                 if self.active then
+                	self:initGravityScanner()
                 	self:calculateSpeed(dt)
+                	local nearestGroundLevel = nil
+                	if self.ySpeed >= 0 then
+                		nearestGroundLevel = self.gravityScanner:findNearestGroundWithin(self.ySpeed * dt)
+                	end
+                	if nearestGroundLevel == nil then
+                		self.ySpeed = self.ySpeed + (787.0 * dt)
+                	end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
                     local deltaX = self.xSpeed * dt
+                    local deltaY = self.ySpeed * dt
+                    if nearestGroundLevel and nearestGroundLevel < deltaY then
+                    	if self.ySpeed > 0 then 
+							self.ySpeed = 0
+							SOUND_MANAGER:play("thud")
+						end
+						self:setY(self:getY() + nearestGroundLevel)
+					else
+						self:setY(self:getY() + deltaY)
+                    end
                     local prevX = self.x
                     self:setX(self:getX() + deltaX)
                     self.rotation = self.rotation + (deltaX / 24)
-                    self:setY(self:getY() + (self:getYSpeed()    * dt))
                     self.world:checkCollisions(self)
                 end
+            end,
+
+            initGravityScanner = function(self)
+            	if not self.gravityScanner then
+            		self.gravityScanner = requireRelative("collision/sensors/badniks/groundScanner"):create { OWNER = self, GRAPHICS = self.graphics, WORLD = self.world, dx = 24, dy = 24 }
+            	end
             end,
 
             calculateSpeed = function(self, dt)
