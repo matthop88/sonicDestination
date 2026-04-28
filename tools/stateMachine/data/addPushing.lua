@@ -32,7 +32,9 @@ return {
     { type = "ARROW", label = "Speed = 0", from = "Brake Right",      to = "Accelerate Left",  y =  3.5, xLabel = 1   },
     { type = "ARROW", label = "L On",      from = "Accelerate Right", to = "Brake Right",      y =  2.5, xLabel = -1, },
     { type = "ARROW", label = "R On",      from = "Brake Right",      to = "Accelerate Right", y =  4.5, xLabel = -1, },
-     
+    { type = "ARROW", label = "R Off",     from = "Push Right",       to = "Stand Right",      x =  32 },
+    { type = "ARROW", label = "L Off",     from = "Push Left",        to = "Stand Left",       x =   7,  xLabel = 2.5, yLabel = -1 },
+
     { type = "BOX",   label = "Air Stationary Right",        x  = 26,   y  = -19.5,   w  = 11, h =  4, scrollY = 1086   },
     { type = "BOX",   label = "Air Stationary Left",         x  =  2,   y  = -15.5,   w  = 10, h =  4, scrollY = 1086   },
     { type = "BOX",   label = "Air Accelerate Right",        x  = 41,   y  = -32.5,   w  =  6, h = 27, scrollY = 1086   },
