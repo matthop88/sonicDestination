@@ -15,6 +15,7 @@ return {
 			colliding = { false, false },
 			xFlip    = true,
 			player   = nil,
+			pushSoundTimer = 0,
 			
 			onCollisionWithPlayer = function(self, player)
 				player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
@@ -93,8 +94,15 @@ return {
 					else
 						self:setY(self:getY() + deltaY)
                     end
-                    local prevX = self.x
                     self:setX(self:getX() + deltaX)
+                    if self.player and self.player:getPushing() == self and not SOUND_MANAGER:isActionPlaying("pushObject") then
+                    	if self.pushSoundTimer >= 15 then
+                    		SOUND_MANAGER:playAction("pushObject")
+                    		self.pushSoundTimer = 0
+                    	else
+                    		self.pushSoundTimer = self.pushSoundTimer + (60 * dt)
+                    	end
+                    end
                     self.rotation = self.rotation + (deltaX / 24)
                     self.world:checkCollisions(self)
                     if self.y >= 65536 then self.deleted = true end
