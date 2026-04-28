@@ -115,8 +115,8 @@ return {
         if self.active then
             self.sprite:update(dt)
             if not self.frozen then
-                self:updateState(dt)
                 self:updateFrameRate(dt)
+                self:updateState(dt)
                 self:applyGravity(dt)
                 self:applyAirDrag(dt)
                 self:updateSensors(dt)
@@ -320,7 +320,8 @@ return {
     end,
     setPushing   = function(self, obj) 
         self.pushing = obj 
-        self.sprite:setCurrentAnimation("pushing") 
+        if self:isFacingRight() then self:setState(STATES.PUSH_RIGHT)
+        else                         self:setState(STATES.PUSH_LEFT)  end
     end,
     getPushing   = function(self)      return self.pushing        end,
     isPushing    = function(self)      return self.pushing ~= nil end,
