@@ -19,7 +19,7 @@ return {
 			
 			onCollisionWithPlayer = function(self, player)
 				player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
-				if not player:isPushing() or player:getPushing() == self then
+				if player.velocity.y == 0 and (not player:isPushing() or player:getPushing() == self) then
 					if self.colliding[2] == false then
 						if player:getX() < self:getX() then
 							self.xFlip = true
@@ -64,7 +64,7 @@ return {
             end,
 
             update = function(self, dt)
-                if self.active then
+            	if self.active then
                 	self:initGravityScanner()
                 	self:calculateSpeed(dt)
                 	local nearestGroundLevel = nil
