@@ -34,7 +34,12 @@ return {
         if not love.keyboard.isDown("left") then SONIC:setState(STATES.STAND_LEFT)
         else
             local apparentXVelocity = (SONIC:getX() - self.prevX) / dt
-            SONIC.sprite:setFPS(60 / ((math.max(0, 30 - math.abs(apparentXVelocity / 10))) + 1))
+            if apparentXVelocity == 0 then 
+                SONIC.sprite:setCurrentAnimation("pushing")
+            else
+                SONIC.sprite:setCurrentAnimation("deepPushing")
+            end
+            SONIC.sprite:setFPS(60 / ((math.max(10, 30 - math.abs(apparentXVelocity / 10))) + 1))
             SONIC.velocity.x = math.max(-SONIC.MAX_RUNNING_SPEED, SONIC.velocity.x - (SONIC.RUNNING_ACCELERATION * dt))
             self.prevX = SONIC:getX()
         end
