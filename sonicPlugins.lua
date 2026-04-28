@@ -228,7 +228,7 @@ return {
             :add("drawingLayer", { drawingFn = self.DRAWING_FN })
             :add("stateMachineViewer", {
                 graphics = require("tools/lib/graphics"):create(),
-                states   = { "runningBrakingJumping" },
+                states   = { "addPushing" },
                 nextKey  = "tab",
                 prevKey  = "shifttab",
                 arrowFunctions = {
