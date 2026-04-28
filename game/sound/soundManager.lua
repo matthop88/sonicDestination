@@ -26,6 +26,7 @@ return ({
         badnikFalling   = "yaaaaah",
         badnikSquished  = "smoosh",
         badnikStrike    = "bowlingStrike",
+        pushObject      = "pushRock",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
@@ -104,6 +105,17 @@ return ({
 
 	playAction = function(self, actionName)
 		self:play(self.actionSoundMap[actionName])
+	end,
+
+	isActionPlaying = function(self, actionName)
+		return self:isPlaying(self.actionSoundMap[actionName])
+	end,
+
+	isPlaying = function(self, soundName)
+		local sound = self:getByName(soundName)
+		if sound then
+			return sound:isPlaying()
+		end
 	end,
 
 	play = function(self, soundName)
