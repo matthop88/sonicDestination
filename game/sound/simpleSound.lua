@@ -128,6 +128,10 @@ local Sound = {
 				source:setVolume(volume * volumeScalar)
 			end,
 
+            isPlaying = function(self)
+                return source:isPlaying()
+            end,
+
 			update = function(self, dt)
 				if delaySamples <= 0 or not syncSource or delaySec <= 0 then
 					return
@@ -325,6 +329,18 @@ local Track = {
 					self.queuedSounds[1]:primeFromSync()
 				end
 			end,
+
+            isPlaying = function(self)
+                if self.sound:isPlaying() then 
+                    return true
+                else
+                    for _, queuedSound in ipairs(self.queuedSounds) do
+                        if queuedSound:isPlaying() then
+                            return true
+                        end
+                    end
+                end
+            end,
 
 			update = function(self, dt)
 				for _, s in ipairs(self.queuedSounds) do
