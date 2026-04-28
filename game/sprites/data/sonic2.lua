@@ -32,5 +32,18 @@ return {
         hurt = { fps = 1, offset = { x = 20, y = 16 }, w = 40, h = 28,
             { x =  441, y = 700, w = 40, h = 28, offset = { x = 20, y = 16 }, },
         },
+        pushing = { fps = 2, offset = { x = 12, y = 18 }, w = 28, h = 36,
+            hitBox = { rX = 8, rY = 16 },
+            { x = 884,  y = 698, w = 29, h = 36, offset = { x = 15, y = 18 }, },
+            { x = 952,  y = 697, w = 24, h = 37, offset = { x = 10, y = 18 }, },
+        },
+        deepPushing = { fps = 2, offset = { x = 12, y = 18 }, w = 28, h = 36,
+            hitBox = { rX = 8, rY = 16 },
+            { x = 884,  y = 698, w = 29, h = 36, offset = { x = 15, y = 18 }, },
+            { x = 952,  y = 697, w = 24, h = 37, offset = { x = 10, y = 18 }, },
+            { x = 1011, y = 698, w = 28, h = 36, offset = { x = 14, y = 18 }, },
+            { x = 1078, y = 697, w = 24, h = 37, offset = { x = 10, y = 18 }, },
+        },
+           
     },
 }
