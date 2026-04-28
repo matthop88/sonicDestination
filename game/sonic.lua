@@ -319,7 +319,8 @@ return {
         self.pushing = nil 
     end,
     setPushing   = function(self, obj) 
-        self.pushing = obj  
+        self.pushing = obj 
+        self.sprite:setCurrentAnimation("pushing") 
     end,
     getPushing   = function(self)      return self.pushing        end,
     isPushing    = function(self)      return self.pushing ~= nil end,
