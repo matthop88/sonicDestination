@@ -34,7 +34,7 @@ return {
 				local oldScale = graphics:getScale()
 				graphics:setScale(2)
 				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
-				local x9     = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
+				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
 				graphics:setColor(0, 0.57, 1.0)
 				graphics:rectangle("fill", graphics:calculateViewport())
 				graphics:setColor(1, 1, 1)
@@ -52,14 +52,15 @@ return {
 
 			update = function(self, dt, graphics)
 				local deltaX = graphics:getX() - self.prevX
+				local x0, _ = graphics:screenToImageCoordinates(0, 0)
 				for _, slice in ipairs(self.slices) do
 					slice.x = slice.x + (slice.xSpeed * dt)
 					if slice.xScalar then
 						slice.x = slice.x + (deltaX / slice.xScalar)
 					end
-					if     slice.x > slice.x + slice.w then
+					if     slice.x > x0 + slice.w then
 						slice.x = slice.x - slice.w
-					elseif slice.x < slice.x - slice.w then
+					elseif slice.x < x0 - slice.w then
 						slice.x = slice.x + slice.w
 					end
 				end
