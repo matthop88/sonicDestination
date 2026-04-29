@@ -26,6 +26,8 @@ return {
 			end,
 
 			draw = function(self, graphics)
+				local oldScale = graphics:getScale()
+				graphics:setScale(2)
 				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
 				graphics:setColor(0, 0.57, 1.0)
 				graphics:rectangle("fill", graphics:calculateViewport())
@@ -33,6 +35,7 @@ return {
 				for _, slice in ipairs(self.slices) do
 					graphics:draw(self.bgImg, slice.quad, x0, y0 + slice.y, 0, 1, 1)
 				end
+				graphics:setScale(oldScale)
 			end,
 			    
 		}):init()
