@@ -16,7 +16,9 @@ return {
 				local y = 0
 				for _, slice in ipairs(self.bgData.slices) do
 					table.insert(self.slices, {
+						x = 0,
 						y = y,
+						xSpeed = slice.xSpeed or 0,
 						quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.bgImg:getWidth(), self.bgImg:getHeight())
 					})
 					y = y + slice.h
@@ -33,9 +35,15 @@ return {
 				graphics:rectangle("fill", graphics:calculateViewport())
 				graphics:setColor(1, 1, 1)
 				for _, slice in ipairs(self.slices) do
-					graphics:draw(self.bgImg, slice.quad, x0, y0 + slice.y, 0, 1, 1)
+					graphics:draw(self.bgImg, slice.quad, x0 + slice.x, y0 + slice.y, 0, 1, 1)
 				end
 				graphics:setScale(oldScale)
+			end,
+
+			update = function(self, dt)
+				for _, slice in ipairs(self.slices) do
+					slice.x = slice.x + (slice.xSpeed * dt)
+				end
 			end,
 			    
 		}):init()
