@@ -13,5 +13,5 @@ return {
     -- For badnik death sound, default is "badnikDeath"; alternates are "bowlingStrike" and "smoosh".
     badnikDeathSound = "bowlingStrike",
 
-    volume = { music = 0.5, sounds = 0.9 },
+    volume = { music = 0.7, sounds = 0.9 },
 }
