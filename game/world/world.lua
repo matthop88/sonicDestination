@@ -138,6 +138,7 @@ return {
     drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
 
     update = function(self, dt)
+        BACKGROUND:update(dt)
         TERRAIN:update(dt)
         self.objects:head()
         while not self.objects:isEnd() do
