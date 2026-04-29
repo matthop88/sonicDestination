@@ -1,6 +1,7 @@
 local GRAPHICS
 local TERRAIN
 local WORKSPACE
+local BACKGROUND
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 local SOUND_MANAGER
 local MUSIC_MANAGER
@@ -43,6 +44,7 @@ return {
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
+        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
         self:refreshMusic()
         self:refreshSounds()
         self:refreshGroundLevel()
@@ -107,6 +109,7 @@ return {
     end,
 
     draw = function(self)
+        BACKGROUND:draw(GRAPHICS)
         TERRAIN:draw()
         WORKSPACE:draw()
         self.objects:head()
