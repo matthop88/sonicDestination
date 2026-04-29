@@ -18,6 +18,7 @@ return {
 					table.insert(self.slices, {
 						x = 0,
 						y = y,
+						w = slice.w,
 						xSpeed = slice.xSpeed or 0,
 						quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.bgImg:getWidth(), self.bgImg:getHeight())
 					})
@@ -31,11 +32,18 @@ return {
 				local oldScale = graphics:getScale()
 				graphics:setScale(2)
 				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
+				local x9     = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
 				graphics:setColor(0, 0.57, 1.0)
 				graphics:rectangle("fill", graphics:calculateViewport())
 				graphics:setColor(1, 1, 1)
 				for _, slice in ipairs(self.slices) do
+					if x0 + slice.x > x0 then
+						graphics:draw(self.bgImg, slice.quad, x0 + slice.x - slice.w, y0 + slice.y, 0, 1, 1)
+					end
 					graphics:draw(self.bgImg, slice.quad, x0 + slice.x, y0 + slice.y, 0, 1, 1)
+					if x0 + slice.x + slice.w < x9 then
+						graphics:draw(self.bgImg, slice.quad, x0 + slice.x + slice.w, y0 + slice.y, 0, 1, 1)
+					end
 				end
 				graphics:setScale(oldScale)
 			end,
@@ -43,6 +51,11 @@ return {
 			update = function(self, dt)
 				for _, slice in ipairs(self.slices) do
 					slice.x = slice.x + (slice.xSpeed * dt)
+					if     slice.x > slice.x + slice.w then
+						slice.x = slice.x - slice.w
+					elseif slice.x < slice.x - slice.w then
+						slice.x = slice.x + slice.w
+					end
 				end
 			end,
 			    
