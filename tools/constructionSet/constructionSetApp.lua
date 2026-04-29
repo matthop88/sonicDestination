@@ -18,9 +18,10 @@ local DATA_IN         = __PARAMS["dataIn"]  or "sample"
 local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/engine/map"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17, 13, 23, 25, 24, 35, })
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17, 13, 23, 25, 24, 35, 39, })
 local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 30, })
-local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 4 })
+local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 74, 75, 72, 80, 47, })
+local CHUNKS_4_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 4, 5 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
@@ -202,7 +203,8 @@ PLUGINS = require("plugins/engine")
             callback = function() 
                 CHUNKS_PANEL:initChunkInfo("ghzChunks")
                 CHUNKS_2_PANEL:initChunkInfo("scdPtpChunksOrig")
-                CHUNKS_3_PANEL:initChunkInfo("scdCCPastChunksOrig")
+                CHUNKS_3_PANEL:initChunkInfo("scdPtpGF1Chunks")
+                CHUNKS_4_PANEL:initChunkInfo("scdCCPastChunksOrig")
                 
                 MUSIC_MANAGER:newTrack("constructionSet")
                 MUSIC_MANAGER:play()
@@ -237,7 +239,7 @@ PLUGINS = require("plugins/engine")
     :add("tabbedPane",
     { 
         TABS = { 
-             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL, CHUNKS_3_PANEL,  }, },
+             { label = "Chunks",  panel = require("tools/constructionSet/panels/multiPanel"):create { CHUNKS_PANEL,  CHUNKS_2_PANEL, CHUNKS_3_PANEL, CHUNKS_4_PANEL,  }, },
              { label = "Badniks", panel = require("tools/constructionSet/panels/multiPanel"):create { BADNIKS_PANEL, BADNIKS_2_PANEL }, },
              { label = "Items",   panel = require("tools/constructionSet/panels/multiPanel"):create { ITEMS_PANEL, ITEMS_2_PANEL }, },
              { label = "Player",  panel = require("tools/constructionSet/panels/multiPanel"):create { PLAYER_PANEL, PLAYER_2_PANEL }, },
