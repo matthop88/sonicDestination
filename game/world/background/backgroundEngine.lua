@@ -10,6 +10,7 @@ return {
 			bgImg   = bgImg,
 			bgData  = bgData,
 			slices  = {},
+			prevX   = 0,
 
 			init = function(self)
 				self.slices = {}
@@ -19,7 +20,8 @@ return {
 						x = 0,
 						y = y,
 						w = slice.w,
-						xSpeed = slice.xSpeed or 0,
+						xSpeed  = slice.xSpeed  or 0,
+						xScalar = slice.xScalar,
 						quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.bgImg:getWidth(), self.bgImg:getHeight())
 					})
 					y = y + slice.h
@@ -48,15 +50,20 @@ return {
 				graphics:setScale(oldScale)
 			end,
 
-			update = function(self, dt)
+			update = function(self, dt, graphics)
+				local deltaX = graphics:getX() - self.prevX
 				for _, slice in ipairs(self.slices) do
 					slice.x = slice.x + (slice.xSpeed * dt)
+					if slice.xScalar then
+						slice.x = slice.x + (deltaX / slice.xScalar)
+					end
 					if     slice.x > slice.x + slice.w then
 						slice.x = slice.x - slice.w
 					elseif slice.x < slice.x - slice.w then
 						slice.x = slice.x + slice.w
 					end
 				end
+				self.prevX = graphics:getX()
 			end,
 			    
 		}):init()
