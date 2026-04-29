@@ -6,6 +6,7 @@ return ({
                    :addChunks("scdPtpChunks")
 				   :addChunks("scdPtpChunksOrig")
                    :addChunks("scdCCPastChunksOrig")
+                   :addChunks("scdPtpGF1Chunks")
     end,
 
 	addChunks = function(self, chunksName)
