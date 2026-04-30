@@ -86,6 +86,8 @@ PLUGINS = require("plugins/engine")
             "Sprite Selection Mode_",
             { "Shift-arrow-keys", "- Adjust Sprite Coordinates", },
             { "Tab, Shift-Tab",   "- Walk through Animations", },
+            { "Space",            "- Toggle Frame Freeze", },
+            { "'<', '>' keys",    "- Walk through sprite frames", },
         },
     })
     :add("grid2d",         { graphics = SANDBOX.graphics })
