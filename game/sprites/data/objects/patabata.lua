@@ -14,7 +14,7 @@ return {
             { x = 448, y = 61, w = 26, h = 17, offset = { x = 13, y =  8, }, },
         },
         dying  = { fps = 5, offset = { x = 13, y = 8 }, w = 28, h = 22,
-            reps = 1,
+            reps = 1, terminal = true,
             parts = {
                 {   name = "patabataBody", animation = "dying",  },
                 {   name = "explosion",   animation = "poof",   },
