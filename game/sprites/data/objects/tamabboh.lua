@@ -18,7 +18,7 @@ return {
             { x = 405, y = 236, w = 32, h = 31, offset = { x = 20, y = 15 }, },
         },
         tamabbohDying  = { fps = 5, offset = { x = 20, y = 15 }, w = 31, h = 31,
-            reps = 1,
+            reps = 1, terminal = true,
             parts = {
                 {   name = "tamabbohBody", animation = "dying",  },
                 {   name = "explosion",    animation = "poof",   },
