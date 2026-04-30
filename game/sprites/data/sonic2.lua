@@ -44,6 +44,13 @@ return {
             { x = 1011, y = 698, w = 28, h = 36, offset = { x = 14, y = 16 }, },
             { x = 1078, y = 697, w = 24, h = 37, offset = { x = 10, y = 16 }, },
         },
+        braking = { fps = 8, offset = { x = 19, y = 19 }, w = 38, h = 38,
+            hitBox = { rX = 8, rY = 16 },
+            reps = 1,
+            { x = 825, y = 348, w = 38, h = 38, offset = { x = 19, y = 19 }, },
+            { x = 888, y = 348, w = 38, h = 38, offset = { x = 19, y = 19 }, },
+            { x = 952, y = 347, w = 37, h = 39, offset = { x = 18, y = 19 }, },
+        },
            
     },
 }
