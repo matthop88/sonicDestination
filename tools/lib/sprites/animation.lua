@@ -50,11 +50,18 @@ return {
 			end,
 
 			update = function(self, dt)
-				self.currentFrame:update(dt)
-				if self.currentFrame:isRolledOver() then
-					self.repCount = self.repCount + 1
-					if self:reps() and self.repCount >= self:reps() then self.terminated = true end
+				if not self:reachedMaximumReps() then
+					self.currentFrame:update(dt)
+					if self.currentFrame:isRolledOver() then
+						self:prevFrame()
+						self.repCount = self.repCount + 1
+						if self:reachedMaximumReps() and self.data.terminal then self.terminated = true end
+					end
 				end
+			end,
+
+			reachedMaximumReps = function(self)
+				return self:reps() and self.repCount >= self:reps()
 			end,
 
 			refresh = function(self)
