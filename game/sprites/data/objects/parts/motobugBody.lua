@@ -9,7 +9,7 @@ return {
             { x = 229, y = 316, w = 40, h = 28, offset = { x = 21, y = 14 }, },
         },
         dying = { fps = 5, offset = { x = 20, y = 14 }, w = 40, h = 28,
-            reps = 1,
+            reps = 1, terminal = true,
             { x = 174, y = 276, w = 39, h = 29, offset = { x = 20, y = 14 }, },
             { x = 229, y = 276, w = 40, h = 29, offset = { x = 21, y = 14 }, },
             { x = 174, y = 316, w = 39, h = 28, offset = { x = 20, y = 14 }, },
