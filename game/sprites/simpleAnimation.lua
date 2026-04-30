@@ -34,13 +34,20 @@ return {
 
             update = function(self, dt)
                 local prevFrameIndex = math.floor(self.currentFrameIndex)
-                self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
-                if math.floor(self.currentFrameIndex) > prevFrameIndex then
-                    self.repCount = self.repCount + (1 / #self.data)
-                    if math.floor(self.currentFrameIndex) > #self.data then
-                        self.currentFrameIndex = self.currentFrameIndex - #self.data
+                if not self:reachedMaximumReps() then
+                    self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
+                    if math.floor(self.currentFrameIndex) > prevFrameIndex then
+                        self.repCount = self.repCount + (1 / #self.data)
+                        if math.floor(self.currentFrameIndex) > #self.data then
+                            self.currentFrameIndex = self.currentFrameIndex - #self.data
+                        end
                     end
                 end
+            end,
+
+            reachedMaximumReps = function(self)
+                return  self.data.reps ~= nil
+                    and self.data.reps <= self.repCount
             end,
 
             reset = function(self)
@@ -57,8 +64,7 @@ return {
             end,
 
             deletable          = function(self)      
-                return  self.data.reps ~= nil
-                    and self.data.reps <= self.repCount
+                return self.data.terminal == true and self:reachedMaximumReps()
             end,
 
             isDefault          = function(self)      return self.data.isDefault                                  end,
