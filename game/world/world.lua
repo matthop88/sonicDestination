@@ -33,8 +33,15 @@ return {
             elseif self.alpha < 0 then self.alpha = 0 end
         end,
 
-        fadeOut = function(self) self.velocity =  self.speed end,
-        fadeIn  = function(self) self.velocity = -self.speed end,
+        fadeOut = function(self, color) 
+            if color then self.color = color end
+            self.velocity =  self.speed 
+        end,
+        fadeIn  = function(self, color)
+            self.alpha = 1
+            if color then self.color = color end
+            self.velocity = -self.speed 
+        end,
     },
 
     init = function(self, params)
@@ -48,6 +55,7 @@ return {
         self:refreshMusic()
         self:refreshSounds()
         self:refreshGroundLevel()
+        self:fadeIn({ r = 0, g = 0, b = 0 })
         
         return self
     end,
@@ -190,8 +198,8 @@ return {
     getSolidAt       = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
     toggleShowSolids = function(self)       TERRAIN:toggleShowSolids()         end,
 
-    fadeOut          = function(self)       self.fadeLayer:fadeOut()           end,
-    fadeIn           = function(self)       self.fadeLayer:fadeIn()            end,
+    fadeOut          = function(self, colr) self.fadeLayer:fadeOut(colr)       end,
+    fadeIn           = function(self, colr) self.fadeLayer:fadeIn(colr)        end,
 
     teleport    = function(self, map, x, y, giantRing, player)
         if x == nil or y == nil then 
