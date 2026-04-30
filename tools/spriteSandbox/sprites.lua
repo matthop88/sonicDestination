@@ -54,10 +54,12 @@ return ({
 
     drawMousepressedRect = function(self, GRAFX)
         local sprite = self.mouseoverSprite or self.externallyConsidered
-        local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
+        if sprite then
+            local x, y, w, h = sprite:getX(), sprite:getY(), sprite:getW(), sprite:getH()
         
-        GRAFX:setColor(1, 1, 1, 0.8)
-        GRAFX:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+            GRAFX:setColor(1, 1, 1, 0.8)
+            GRAFX:rectangle("fill", x - (w / 2) - 2, y - (h / 2) - 2, w + 4, h + 4)
+        end
     end, 
 
     drawMouseoverRect = function(self, GRAFX)    
