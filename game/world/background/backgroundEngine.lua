@@ -51,6 +51,8 @@ return {
 			end,
 
 			update = function(self, dt, graphics)
+				local oldScale = graphics:getScale()
+				graphics:setScale(3)
 				local deltaX = graphics:getX() - self.prevX
 				local x0, _ = graphics:screenToImageCoordinates(0, 0)
 				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
@@ -66,6 +68,7 @@ return {
 					end
 				end
 				self.prevX = graphics:getX()
+				graphics:setScale(oldScale)
 			end,
 			    
 		}):init()
