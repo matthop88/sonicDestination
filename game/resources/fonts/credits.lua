@@ -1,4 +1,6 @@
 return {
+  image = "credits.png",
+  data  = {
     { key = "a", value = { quad = { x = 352, y = 896, w = 16, h = 16 }, } },
     { key = "b", value = { quad = { x = 376, y = 896, w = 16, h = 16 }, } },
     { key = "c", value = { quad = { x = 400, y = 896, w = 16, h = 16 }, } },
@@ -26,4 +28,5 @@ return {
     { key = "y", value = { quad = { x = 504, y = 944, w = 16, h = 16 }, } },
     { key = "z", value = { quad = { x = 528, y = 944, w = 16, h = 16 }, } },
     { key = "2", value = { quad = { x = 552, y = 944, w = 15, h = 16 }, } },
+  },
 }
