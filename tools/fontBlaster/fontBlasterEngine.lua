@@ -4,6 +4,7 @@ return {
             graphics         = require("tools/lib/graphics"):create(), 
             
             init = function(self, params)
+                self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
                 return self
             end,
 
