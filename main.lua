@@ -21,17 +21,18 @@ local launchSoundGraph           = function(args)
     require "tools/soundGraph/soundGraphApp"
 end
 
-local launchColorInspector   = function(args) require "tools/colorInspector/inspector"             end
-local launchSlicer           = function(args) require "tools/spriteSheetSlicer/slicerApp"          end
-local launchChunkalyzer      = function(args) require "tools/chunkalyzer/chunkalyzerApp"           end
-local launchMapViewer        = function(args) require "tools/mapViewer/mapViewerApp"               end
-local launchTileinator       = function(args) require "tools/tileinator/tileinatorApp"             end
-local launchChunkDoctor      = function(args) require "tools/chunkDoctor/chunkDoctorApp"           end
-local launchRingMaster       = function(args) require "tools/ringMaster/ringMasterApp"             end
-local launchSpriteSandbox    = function(args) require "tools/spriteSandBox/spriteSandboxApp"       end
-local launchBadnikUniversity = function(args) require "tools/badnikUniversity/badnikUniversityApp" end
-local launchConstructionSet  = function(args) require "tools/constructionSet/constructionSetApp"   end
-local launchBackgroundLayer  = function(args) require "tools/backgroundLayer/backgroundLayerApp"   end
+local launchColorInspector   = function(args) require "tools/colorInspector/inspector"              end
+local launchSlicer           = function(args) require "tools/spriteSheetSlicer/slicerApp"           end
+local launchRectSlicer       = function(args) require "tools/spriteSheetSlicer/customRectSlicerApp" end
+local launchChunkalyzer      = function(args) require "tools/chunkalyzer/chunkalyzerApp"            end
+local launchMapViewer        = function(args) require "tools/mapViewer/mapViewerApp"                end
+local launchTileinator       = function(args) require "tools/tileinator/tileinatorApp"              end
+local launchChunkDoctor      = function(args) require "tools/chunkDoctor/chunkDoctorApp"            end
+local launchRingMaster       = function(args) require "tools/ringMaster/ringMasterApp"              end
+local launchSpriteSandbox    = function(args) require "tools/spriteSandBox/spriteSandboxApp"        end
+local launchBadnikUniversity = function(args) require "tools/badnikUniversity/badnikUniversityApp"  end
+local launchConstructionSet  = function(args) require "tools/constructionSet/constructionSetApp"    end
+local launchBackgroundLayer  = function(args) require "tools/backgroundLayer/backgroundLayerApp"    end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -55,6 +56,7 @@ local APP_LAUNCHER = {
     game         = launchGame,
     inspector    = launchColorInspector,
     slicer       = launchSlicer,
+    rectSlicer   = launchRectSlicer,
     transparency = launchTransparencyEditor,
     scribbler    = launchScribbler,
     stateMachine = launchStateMachineViewer,
@@ -75,6 +77,7 @@ local APP_LAUNCHER = {
 local APP_PATH = {
     inspector    = "tools/colorInspector",
     slicer       = "tools/spriteSheetSlicer",
+    rectSlicer   = "tools/spriteSheetSlicer",
     transparency = "tools/transparencyEditor",
     sandbox      = "tools/spriteSandbox",
     construction = "tools/constructionSet",
