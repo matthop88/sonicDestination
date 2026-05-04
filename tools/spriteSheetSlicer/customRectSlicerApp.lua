@@ -99,6 +99,12 @@ PLUGINS = require("plugins/engine")
             tabSize = 500,
             { "Shift-Arrow Keys:",                   "Scroll Image"                },
             { "z/a:",                                "Zoom in/out"                 },
+            { "", },
+            { "Left Arrow:",                         "Decrease width  by 1 pixel"  },
+            { "Right Arrow:",                        "Increase width  by 1 pixel"  },
+            { "Up Arrow:",                           "Decrease height by 1 pixel"  },
+            { "Down Arrow:",                         "Increase height by 1 pixel"  },
+            
         },
     })
 
