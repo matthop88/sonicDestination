@@ -31,6 +31,7 @@ local launchRingMaster       = function(args) require "tools/ringMaster/ringMast
 local launchSpriteSandbox    = function(args) require "tools/spriteSandBox/spriteSandboxApp"       end
 local launchBadnikUniversity = function(args) require "tools/badnikUniversity/badnikUniversityApp" end
 local launchConstructionSet  = function(args) require "tools/constructionSet/constructionSetApp"   end
+local launchBackgroundLayer  = function(args) require "tools/backgroundLayer/backgroundLayerApp"   end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -66,6 +67,7 @@ local APP_LAUNCHER = {
     sandbox      = launchSpriteSandbox,
     badnikU      = launchBadnikUniversity,
     construction = launchConstructionSet,
+    background   = launchBackgroundLayer,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }

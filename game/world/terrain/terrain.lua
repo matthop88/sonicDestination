@@ -94,8 +94,8 @@ return {
     end,
 
 	drawBackground = function(self)
-        self.graphics:setColor(0, 0.57, 1.0)
-		self.graphics:rectangle("fill", self.graphics:calculateViewport())
+        --self.graphics:setColor(0, 0.57, 1.0)
+		--self.graphics:rectangle("fill", self.graphics:calculateViewport())
 	end,
 
 	drawTerrain = function(self)

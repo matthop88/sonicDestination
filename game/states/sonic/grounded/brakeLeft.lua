@@ -10,7 +10,7 @@ return {
     end,
     
     onEnter    = function(self)
-        if SONIC.velocity.x <= -SONIC.MIN_SPEED_TO_BRAKE then
+        if SONIC.velocity.x <= -SONIC.MIN_SPEED_TO_BRAKE and SONIC:isGrounded() then
             SONIC.sprite:setCurrentAnimation("braking")
             SOUND_MANAGER:play("sonicBraking")
         end

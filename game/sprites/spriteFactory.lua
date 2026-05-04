@@ -18,6 +18,10 @@ return {
                 self.animations:drawBorder(x, y, self.scale.x, self.scale.y)
             end,
 
+            drawRotated = function(self, x, y, r)
+                self.animations:drawRotated(x, y, self.scale.x, self.scale.y, r)
+            end,
+
             drawScaled = function(self, GRAPHICS, x, y, sX, sY)
                 self.animations:draw(x, y, sX, sY, GRAPHICS)
             end,
@@ -48,6 +52,10 @@ return {
 
             getCurrentAnimationName = function(self)
                 return self.animations:getCurrentAnimName()
+            end,
+
+            setCurrentAnimationByLabel = function(self, animationLabelName)
+                self.animations:setCurrentAnimationByLabel(animationLabelName)
             end,
 
             isForeground = function(self)

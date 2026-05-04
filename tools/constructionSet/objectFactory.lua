@@ -50,6 +50,12 @@ return {
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},
+		bigBall = {
+			name       = "bigBall",
+			spritePath = "objects/bigBall",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
 	},
 
 	getByName = function(self, name)

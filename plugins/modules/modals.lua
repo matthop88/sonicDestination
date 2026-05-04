@@ -44,4 +44,15 @@ return {
 			end
 		end
 	end,
+
+	modalKeypressed = function(self, key)
+		for _, component in ipairs(self.components) do
+			if component.handleKeyPressed then
+				local handled = component:handleKeyPressed(key)
+				if handled then
+					return true
+				end
+			end
+		end
+	end,
 }

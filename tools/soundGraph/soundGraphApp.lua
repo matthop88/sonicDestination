@@ -98,6 +98,7 @@ function love.mousereleased()
 end
 
 function love.keypressed(key)
+    SOUND_LIST:handleKeyPressed(key)
     if key == "space" and SOUND_OBJECT then
         if SOUND_OBJECT:isPlaying() then
             SOUND_OBJECT:pause()

@@ -58,8 +58,16 @@ return {
 			if mapData.properties.musicEchoCount then
 				getProperties().musicEchoCount = mapData.properties.musicEchoCount
 			end
+
+			self:readSoundsFromMap(mapData.properties.sounds)
 		end
 	end,
+
+	readSoundsFromMap = function(self, soundProps)
+		if soundProps then
+			getProperties().sounds = soundProps
+        end
+    end,
 
 	readObjectsIntoObjectsList = function(self, objects, objectsList)
 		local objectFactory = require("tools/constructionSet/objectFactory")

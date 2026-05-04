@@ -57,20 +57,25 @@ return {
 
             update = function(self, dt)
                 if self.active then
-                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script.program, self) end
+                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
                     self:setX(self:getX() + (self:getXVelocity() * dt))
                     self:setY(self:getY() + (self:getYSpeed()    * dt))
+                    self.hitSolid = false
                 end
             end,
 
             updateHitBox = function(self, dt)
                 local hitBox = self:getHitBox()
-                if hitBox then hitBox:update(self.x, self.y) end
+                if hitBox then hitBox:update(self.x, self.y, self.xFlip) end
             end,
 
+            setAnimationByLabel = function(self, label) 
+                self.sprite:setCurrentAnimationByLabel(label) 
+            end,
+            
             setAnimation = function(self, name) self.sprite:setCurrentAnimation(name) end,
             isForeground = function(self)       return self.sprite:isForeground()     end,
             isPlayer     = function(self)       return false                          end,

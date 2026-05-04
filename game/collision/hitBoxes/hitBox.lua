@@ -13,8 +13,9 @@ return {
 				danger           = hitBoxData.danger or 0,
 				x                = 0,
 				y                = 0,
+				xOff             = hitBoxData.xOff or 0,
 				source           = source,
-
+				
 				lastIntersection = nil,
 				active           = true,
 
@@ -26,8 +27,11 @@ return {
 					GRAFX:rectangle("line", self.x - (self.radiusX * scaleX), self.y - (self.radiusY * scaleY), self.width * scaleX, self.height * scaleY)
 	            end,
 
-	            update = function(self, x, y)
-	            	self.x, self.y = x, y
+	            update = function(self, x, y, xFlip)
+	            	local xOff = self.xOff
+	            	if xFlip then xOff = -xOff end
+	            	self.x = x - xOff
+	            	self.y = y
 	            end,
 
 	            intersectsIntern = function(self, otherHitBox)
@@ -35,6 +39,14 @@ return {
 	            	   and self.x - self.radiusX  < otherHitBox.x + otherHitBox.radiusX
 	            	   and self.y + self.radiusY  > otherHitBox.y - otherHitBox.radiusY
 	            	   and self.y - self.radiusY  < otherHitBox.y + otherHitBox.radiusY
+	            end,
+
+	            calculatePushOnOther = function(self, otherHitBox)
+	            	if self.x < otherHitBox.x then
+	            		return (self.x + self.radiusX) - (otherHitBox.x - otherHitBox.radiusX)
+	            	else
+	            		return (self.x - self.radiusX) - (otherHitBox.x + otherHitBox.radiusX)
+	            	end
 	            end,
 
 	            intersects = function(self, otherHitBox)

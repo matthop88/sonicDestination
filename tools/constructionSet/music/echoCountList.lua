@@ -34,6 +34,10 @@ return {
 			handleMousePressed = function(self, mx, my)
 				return guiListObj:handleMousePressed(mx, my)
 			end,
+
+			handleKeyPressed = function(self, key)
+				return guiListObj:handleKeyPressed(key)
+			end,
 			
 			setVisible = function(self, visible)
 				guiListObj:setVisible(visible)

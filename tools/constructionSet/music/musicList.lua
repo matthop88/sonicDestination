@@ -39,6 +39,10 @@ return {
 			handleMouseReleased = function(self)
 				guiList:handleMouseReleased()
 			end,
+
+			handleKeyPressed = function(self, key)
+				return guiList:handleKeyPressed(key)
+			end,
 			
 			setVisible = function(self, visible)
 				guiList:setVisible(visible)

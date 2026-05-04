@@ -2,6 +2,8 @@ return {
 	create = function(self, sounds)
         local soundList = {}
         for _, sound in ipairs(sounds) do
+            sound.effect = sounds.effect
+            if sounds.reverse ~= nil then sound.reverse = sounds.reverse end
             table.insert(soundList, requireRelative("sound/simpleSound"):create(sound))
         end
 
@@ -19,6 +21,27 @@ return {
 
             setVolumeScalar = function(self, volumeScalar)
                 self.volumeScalar = volumeScalar
+                for _, sound in ipairs(self.sounds) do
+                    sound:setVolumeScalar(volumeScalar)
+                end
+            end,
+
+            setVolume = function(self, volume)
+                for _, sound in ipairs(self.sounds) do
+                    sound:setVolume(volume)
+                end
+            end,
+
+            setPitch = function(self, pitch)
+                for _, sound in ipairs(self.sounds) do
+                    sound:setPitch(pitch)
+                end
+            end,
+
+            update = function(self, dt)
+                for _, sound in ipairs(self.sounds) do
+                    if sound.update then sound:update(dt) end
+                end
             end,
         }
     end,

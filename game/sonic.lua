@@ -11,7 +11,7 @@ local ringPanRight   = true
 return {
     ------------------------------------------------------------------
     BRAKING_ACCELERATION    = 1800,           -- 0.5      pixels/frame      
-    MIN_SPEED_TO_BRAKE      = 60,             -- 1        pixel /frame
+    MIN_SPEED_TO_BRAKE      = 210,            -- 3.5      pixels/frame
     RUNNING_ACCELERATION    = 168.75,         -- 0.046875 pixels/frame
     ------------------------------------------------------------------
     -- Source: https://info.sonicretro.org/SPG:Running#Acceleration
@@ -115,8 +115,8 @@ return {
         if self.active then
             self.sprite:update(dt)
             if not self.frozen then
-                self:updateState(dt)
                 self:updateFrameRate(dt)
+                self:updateState(dt)
                 self:applyGravity(dt)
                 self:applyAirDrag(dt)
                 self:updateSensors(dt)
@@ -171,6 +171,11 @@ return {
 
     getGeneralX   = function(self) return self.sprite:getGeneralX(self:getX())          end,
     getGeneralY   = function(self) return self.sprite:getGeneralY(self:getY())          end,
+    
+    move          = function(self, dx, dy) 
+        self.position.x = self.position.x + dx
+        self.position.y = self.position.y + dy
+    end,
     
     moveTo        = function(self, x, y)  self.position.x, self.position.y = x, y       end,
 
@@ -255,8 +260,7 @@ return {
     end,
 
     onPropertyChange = function(self, propData)
-        if propData.jumpSound     then SOUND_MANAGER:setOverride("sonicJumping", propData.jumpSound)     end
-        if propData.sonicHitSound then SOUND_MANAGER:setOverride("sonicHit",     propData.sonicHitSound) end
+        -- Do nothing
     end,
 
     toggleShowSensors = function(self)
@@ -310,4 +314,15 @@ return {
 
     setFlashing  = function(self) self.flashEngine:setFlashing()       end,
     isInvincible = function(self) return self.flashEngine:isFlashing() end,
+
+    clearPushing = function(self)      
+        self.pushing = nil 
+    end,
+    setPushing   = function(self, obj) 
+        self.pushing = obj 
+        if self:isFacingRight() then self:setState(STATES.PUSH_RIGHT)
+        else                         self:setState(STATES.PUSH_LEFT)  end
+    end,
+    getPushing   = function(self)      return self.pushing        end,
+    isPushing    = function(self)      return self.pushing ~= nil end,
 }

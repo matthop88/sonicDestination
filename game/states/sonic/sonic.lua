@@ -18,6 +18,9 @@ STATES = {
     AIR_DECELERATE_RIGHT = "airborne/decelerateRight",
 
     HURT                 = "hurt",
+
+    PUSH_LEFT            = "grounded/pushLeft",
+    PUSH_RIGHT           = "grounded/pushRight",
     
     init = function(self, params)
         SONIC = params.SONIC
