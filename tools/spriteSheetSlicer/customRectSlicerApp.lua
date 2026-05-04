@@ -2,6 +2,9 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 768
             
 local imgPath     = "resources/images/sadSlicer.png"
 local imgName     = __PARAMS["image"]
+local rect        = { x = 0, y = 0, w = 40, h = 40 }
+local width       = 40
+local height      = 40
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -23,16 +26,36 @@ end
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
--- ...
--- ...
--- ...
+love.update = function(dt)
+    local imageViewer = getImageViewer()
+    local x, y = imageViewer:screenToImageCoordinates(love.mouse.getPosition())
+    rect = { x = math.floor(x - (width / 2)), y = math.floor(y - (height / 2)), w = width, h = height }
+end
+
+love.mousepressed = function(mx, my)
+    printToReadout("{ x = " .. rect.x .. ", y = " .. rect.y .. ", w = " .. rect.w .. ", h = " .. rect.h .. " }")
+end
+
+love.keypressed = function(key)
+    if     key == "left"  then width  = width  - 1
+    elseif key == "right" then width  = width  + 1
+    elseif key == "up"    then height = height - 1
+    elseif key == "down"  then height = height + 1
+    end
+end
 
 --------------------------------------------------------------
 --                  Specialized Functions                   --
 --------------------------------------------------------------
 
 drawOverlays = function(self)
-    -- Do nothing
+    love.graphics.setColor(1, 1, 1)
+    local imageViewer = getImageViewer()
+    local rx, ry = imageViewer:imageToScreenCoordinates(rect.x, rect.y)
+    local rx2, ry2 = imageViewer:imageToScreenCoordinates(rect.x + rect.w, rect.y + rect.h)
+    local rw, rh = rx2 - rx, ry2 - ry
+    
+    love.graphics.rectangle("line", rx, ry, rw, rh)
 end
 
 -- ...
