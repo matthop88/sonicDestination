@@ -104,7 +104,9 @@ return {
 			end,
 			
 			handleMouseReleased = function(self)
+				local wasDragging = self.isDragging
 				self.isDragging = false
+				return wasDragging
 			end,
 			
 			updateValue = function(self, mx, my)

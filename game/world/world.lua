@@ -1,6 +1,7 @@
 local GRAPHICS
 local TERRAIN
 local WORKSPACE
+local BACKGROUND
 local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 local SOUND_MANAGER
 local MUSIC_MANAGER
@@ -32,8 +33,15 @@ return {
             elseif self.alpha < 0 then self.alpha = 0 end
         end,
 
-        fadeOut = function(self) self.velocity =  self.speed end,
-        fadeIn  = function(self) self.velocity = -self.speed end,
+        fadeOut = function(self, color) 
+            if color then self.color = color end
+            self.velocity =  self.speed 
+        end,
+        fadeIn  = function(self, color)
+            self.alpha = 1
+            if color then self.color = color end
+            self.velocity = -self.speed 
+        end,
     },
 
     init = function(self, params)
@@ -43,8 +51,11 @@ return {
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
+        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
         self:refreshMusic()
+        self:refreshSounds()
         self:refreshGroundLevel()
+        self:fadeIn({ r = 0, g = 0, b = 0 })
         
         return self
     end,
@@ -88,6 +99,14 @@ return {
         end
     end,
 
+    refreshSounds = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties then
+            SOUND_MANAGER:overrideFromSoundProps(map.properties.sounds)
+        end
+    end,
+
     reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
@@ -98,6 +117,7 @@ return {
     end,
 
     draw = function(self)
+        BACKGROUND:draw(GRAPHICS)
         TERRAIN:draw()
         WORKSPACE:draw()
         self.objects:head()
@@ -126,6 +146,7 @@ return {
     drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
 
     update = function(self, dt)
+        BACKGROUND:update(dt, GRAPHICS)
         TERRAIN:update(dt)
         self.objects:head()
         while not self.objects:isEnd() do
@@ -148,15 +169,28 @@ return {
 
     checkCollisions = function(self, otherObject)
         local otherHitBox = otherObject:getHitBox()
-        self.objects:head()
-        while not self.objects:isEnd() do
-            local object = self.objects:getNext()
-            local hitBox = object:getHitBox()
-            if hitBox and hitBox:intersects(otherHitBox) and otherObject:isPlayer() then
-                self.collisionHandler:handleCollisionWithPlayer(object, otherObject)
-                return hitBox
+        local firstHitBox = nil
+        self.objects:forEach(function(object)
+            if object ~= otherObject then
+                local hitBox = object:getHitBox()
+                if hitBox and hitBox:intersects(otherHitBox) then
+                    if otherObject:isPlayer() then
+                        if self.collisionHandler:handleCollisionWithPlayer(object, otherObject) then
+                            firstHitBox = hitBox
+                        end
+                    else
+                        if otherObject.isSolid and otherObject:isSolid() then
+                            self.collisionHandler:handleCollisionWithSolid(object, otherObject)
+                        end
+                        if otherObject.isDangerousToNPCs and otherObject:isDangerousToNPCs() then
+                            self.collisionHandler:handleCollisionWithDangerousToNPCs(object, otherObject)
+                        end
+                    end
+                    if not firstHitBox then firstHitBox = hitBox end
+                end
             end
-        end
+        end)
+        return firstHitBox
     end,
 
     refresh          = function(self)       TERRAIN:refresh()                  end,
@@ -164,8 +198,8 @@ return {
     getSolidAt       = function(self, x, y) return TERRAIN:getSolidAt(x, y)    end,
     toggleShowSolids = function(self)       TERRAIN:toggleShowSolids()         end,
 
-    fadeOut          = function(self)       self.fadeLayer:fadeOut()           end,
-    fadeIn           = function(self)       self.fadeLayer:fadeIn()            end,
+    fadeOut          = function(self, colr) self.fadeLayer:fadeOut(colr)       end,
+    fadeIn           = function(self, colr) self.fadeLayer:fadeIn(colr)        end,
 
     teleport    = function(self, map, x, y, giantRing, player)
         if x == nil or y == nil then 

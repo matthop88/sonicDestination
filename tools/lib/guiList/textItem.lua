@@ -4,6 +4,7 @@ return {
 		
 		return {
 			text = params.text,
+			value = params.value,
 			font = params.font,
 			x = params.x or 0,
 			y = params.y or 0,
@@ -52,7 +53,7 @@ return {
 			end,
 
 			getValue = function(self)
-				return self.text
+				return self.value
 			end,
 		}
 	end,

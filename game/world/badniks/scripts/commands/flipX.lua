@@ -1,7 +1,11 @@
 return function(params)
+	params = params or {}
 	return {
-		execute = function(self, dt, actor)
-			actor:flipX()
+		animation =  params.animation,
+        
+        execute = function(self, dt, actor)
+			if self.animation then actor:setAnimationByLabel(self.animation) end
+            actor:flipX()
 			return true
 		end,
 	}

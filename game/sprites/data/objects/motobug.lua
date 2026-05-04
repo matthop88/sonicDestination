@@ -1,5 +1,9 @@
 return {
     imageName = "sonic1BadniksTransparent",
+    labels = {
+        moving = "motobugRoving",
+        dying  = "motobugDying",
+    },
     animations  = {
         motobugRoving = { isDefault = true, offset = { x = 20, y = 14 }, w = 40, h = 28,
             hitBox = { rX = 15, rY = 10, danger = 1 },
@@ -10,7 +14,7 @@ return {
             }
         },
         motobugDying = { offset = { x = 20, y = 14 }, w = 40, h = 28,
-            reps = 1,
+            reps = 1, terminal = true,
             parts = {
                 {   name = "motobugBody", animation = "dying",  },
                 {   name = "explosion",   animation = "poof",   },

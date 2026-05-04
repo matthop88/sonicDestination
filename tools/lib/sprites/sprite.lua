@@ -34,7 +34,7 @@ return {
 
 	create = function(self, path, x, y, noBumpID)
 		local data        = require("game/sprites/data/" .. path)
-		local SHEET_IMAGE = IMAGE_LOADER:loadImage("resources/images/spriteSheets/" .. data.imageName .. ".png")
+		local SHEET_IMAGE = IMAGE_LOADER:loadImage("game/resources/images/spriteSheets/" .. data.imageName .. ".png")
 		
 		local animations = self:createAnimations(data.animations, SHEET_IMAGE)
 		local animationName, currentAnimation = self:getDefaultAnimation(animations)

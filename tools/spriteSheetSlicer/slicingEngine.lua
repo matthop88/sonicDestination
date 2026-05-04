@@ -29,22 +29,26 @@ return {
     end,
 
     draw = function(self)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
-        
-        for _, rect in SPRITE_RECTS:elements() do
-            love.graphics.setColor(1, 1, 1, rect.alpha or 1)
-            love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+        if IMAGE_VIEWER and SPRITE_RECTS then
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.setLineWidth(1 * IMAGE_VIEWER:getScale())
+            
+            for _, rect in SPRITE_RECTS:elements() do
+                love.graphics.setColor(1, 1, 1, rect.alpha or 1)
+                love.graphics.rectangle("line", IMAGE_VIEWER:pageToScreenRect(rect.x, rect.y, rect.w, rect.h))
+            end
         end
     end,
     
     update = function(self, dt)
         if self.running then self:doSlicing(dt) end
-        for _, rect in SPRITE_RECTS:elements() do
-            if not rect.valid or not self.running then
-                rect.alpha = math.max(0, (rect.alpha or 1) - dt)
-            else
-                rect.alpha = 1
+        if SPRITE_RECTS then
+            for _, rect in SPRITE_RECTS:elements() do
+                if not rect.valid or not self.running then
+                    rect.alpha = math.max(0, (rect.alpha or 1) - dt)
+                else
+                    rect.alpha = 1
+                end
             end
         end
     end,
@@ -113,6 +117,8 @@ return {
     end,
 
     findEnclosingRect = function(self, imageX, imageY)
-        return SPRITE_RECTS:findEnclosingRect(imageX, imageY, whereRectIsValid)
+        if SPRITE_RECTS then
+            return SPRITE_RECTS:findEnclosingRect(imageX, imageY, whereRectIsValid)
+        end
     end,
 }

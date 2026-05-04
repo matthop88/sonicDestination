@@ -3,7 +3,7 @@ return {
 
     animations  = {
         dying  = { fps = 5, offset = { x = 20, y = 14 }, w = 31, h = 31,
-            reps = 1,
+            reps = 1, terminal = true,
             { x = 405, y = 197, w = 31, h = 29, offset = { x = 20, y = 14 }, },
             { x = 445, y = 197, w = 31, h = 28, offset = { x = 20, y = 14 }, },
             { x = 445, y = 239, w = 31, h = 28, offset = { x = 20, y = 14 }, },

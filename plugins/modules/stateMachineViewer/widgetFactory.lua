@@ -3,7 +3,7 @@ return {
         self.GRID_SIZE       = gridSize
         self.LABEL_FONT_SIZE = labelFontSize
         self.graphics        = graphics
-        self.customKeys      = customKeys or { landKey = "space", zeroSpeedKey = "0", }    
+        self.customKeys      = customKeys or { landKey = "space", zeroSpeedKey = "0", pushKey = "p" }    
         self.BOX   = require("plugins/modules/stateMachineViewer/box"):init(  self.GRID_SIZE, self.LABEL_FONT_SIZE,        graphics)
         self.ARROW = require("plugins/modules/stateMachineViewer/arrow"):init(self.GRID_SIZE, self.LABEL_FONT_SIZE * 0.75, graphics)
 
@@ -97,6 +97,7 @@ return {
         elseif element.label == "Jump"      then element.keypressed  = "space"
         elseif element.label == "Land"      then element.keypressed  = self.customKeys.landKey
         elseif element.label == ""          then element.NOP         = true
+        elseif element.label == "Push"      then element.keypressed  = self.customKeys.pushKey
         end
     end,
     

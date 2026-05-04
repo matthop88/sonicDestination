@@ -94,14 +94,17 @@ return {
                                                  ry     * self.scale)
             end,
         
-            draw      = function(self, image, quad, x, y, r, sx, sy)
+            draw      = function(self, image, quad, x, y, r, sx, sy, ox, oy)
                 if type(quad) == "number" then
                     self:drawImage(image, quad, x)
                 else
+
                     love.graphics.draw(image, quad, (x + self.x) * self.scale, 
                                                     (y + self.y) * self.scale,
-                                                    0,        sx * self.scale, 
-                                                              sy * self.scale)
+                                                    r,        sx * self.scale, 
+                                                              sy * self.scale,
+                                                              ox or 0,
+                                                              oy or 0)
                 end
             end,
         

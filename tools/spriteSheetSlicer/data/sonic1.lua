@@ -50,6 +50,22 @@ return {
                 {   x =  39, y = 811, w = 40, h = 28, offset = { x = 20, y = 16 }, },
             },
         },
+        pushing = { fps = 2,
+            rect    = { x = 394, y = 610, w = 128, h = 61 },
+            sprites = {
+                { x = 407, y = 625, w = 29, h = 36, offset = { x = 15, y = 18 }, },
+                { x = 482, y = 624, w = 24, h = 37, offset = { x = 10, y = 18 }, },
+            },
+        },
+        deepPushing = { fps = 2,
+            rect    = { x = 535, y = 610, w = 128, h = 61 },
+            sprites = {
+                { x = 407, y = 625, w = 29, h = 36, offset = { x = 15, y = 18 }, },
+                { x = 482, y = 624, w = 24, h = 37, offset = { x = 10, y = 18 }, },
+                { x = 548, y = 625, w = 28, h = 36, offset = { x = 14, y = 18 }, },
+                { x = 622, y = 624, w = 24, h = 37, offset = { x = 10, y = 18 }, },
+            },
+        },
     },
     spriteRects = {
         { x =  46, y = 349, w = 24, h = 40, offset = { x = 12, y = 20 }, },

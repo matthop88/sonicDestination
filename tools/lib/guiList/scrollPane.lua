@@ -141,6 +141,16 @@ return {
 				if not self.visible then return end
 				self.scrollBar:handleMouseReleased()
 			end,
+
+			handleKeyPressed = function(self, key)
+				if not self.visible then return end
+				if key == "escape" then
+					self:setVisible(false)
+					return true
+				elseif key == "return" then
+					return self:handleClick(love.mouse.getPosition())
+				end
+			end,
 		}):init()
 	end,
 }

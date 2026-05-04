@@ -62,9 +62,9 @@ return {
                 love.graphics.setCanvas()
             end,
 
-            draw      = function(self, image, quad, x, y, r, sx, sy)
+            draw      = function(self, image, quad, x, y, r, sx, sy, ox, oy)
                 love.graphics.setCanvas(self.buffer)
-                graphics:draw(image, quad, x, y, r, sx, sy)
+                graphics:draw(image, quad, x, y, r, sx, sy, ox, oy)
                 love.graphics.setCanvas()
             end,
 
