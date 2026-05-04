@@ -33,6 +33,7 @@ local launchSpriteSandbox    = function(args) require "tools/spriteSandBox/sprit
 local launchBadnikUniversity = function(args) require "tools/badnikUniversity/badnikUniversityApp"  end
 local launchConstructionSet  = function(args) require "tools/constructionSet/constructionSetApp"    end
 local launchBackgroundLayer  = function(args) require "tools/backgroundLayer/backgroundLayerApp"    end
+local launchFontBlaster      = function(args) require "tools/fontBlaster/fontBlasterApp"            end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -70,6 +71,7 @@ local APP_LAUNCHER = {
     badnikU      = launchBadnikUniversity,
     construction = launchConstructionSet,
     background   = launchBackgroundLayer,
+    fontBlaster  = launchFontBlaster,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
