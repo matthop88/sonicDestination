@@ -17,13 +17,40 @@ return {
 	create = function(self)
 		return ({
 			init = function(self)
-				self.fonts = loadDataFilesFromDirectory(relativePath("resources/fonts"))
+				local fonts = loadDataFilesFromDirectory(relativePath("resources/fonts"))
+				self.fonts = {}
 
-				for k, v in pairs(self.fonts) do
-					print("Loaded key = " .. k .. ", value = ", v)
+				for k, v in pairs(fonts) do
+					local image = love.graphics.newImage(relativePath("resources/images/spriteSheets/" .. v.image))
+    				image:setFilter("nearest", "nearest")
+					self.fonts[k] = { image = image, data = {}, spaceWidth = v.spaceWidth }
+					for _, glyph in ipairs(v.data) do
+						local value = {}
+						local q = glyph.value.quad
+						local quad = love.graphics.newQuad(q.x, q.y, q.w, q.h, image:getWidth(), image:getHeight())
+						value.quad = quad
+						value.w = q.w
+						value.h = q.h
+						self.fonts[k].data[glyph.key] = value
+					end
 				end
 
 				return self
+			end,
+
+			draw = function(self, graphics, fontName, keys, x, y)
+				local font = self.fonts[fontName]
+				graphics:setColor(1, 1, 1)
+				local glyphs = {}
+				for _, key in ipairs(keys) do 
+					local f = font.data[key]
+					if f == nil then
+						x = x + font.spaceWidth
+					else
+						graphics:draw(font.image, f.quad, x, y, 0, 1, 1)
+						x = x + f.w + 2
+					end
+				end
 			end,
 
 		}):init()
