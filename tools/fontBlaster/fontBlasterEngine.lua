@@ -1,15 +1,19 @@
 return {
     create = function(self, params)
-        return ({
-            graphics         = require("tools/lib/graphics"):create(), 
+        return {
+            graphics = params.graphics,
             
-            init = function(self, params)
+            init = function(self)
                 self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
+                print("INITIALIZED FONT ENGINE")
                 return self
             end,
 
             draw = function(self)
-                -- Do nothing
+                if self.fontEngine then
+                    self.fontEngine:draw(self.graphics, "captions", { 
+                        "g", "r", "e", "e", "n", " ", "h", "i", "l", "l", " ", "z", "o", "n", "e", }, 300, 300)
+                end
             end,
 
             update = function(self, dt)
@@ -49,7 +53,7 @@ return {
                 self.graphics:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
             end,
             
-        }):init(params)
+        }
     end,
 }
 
