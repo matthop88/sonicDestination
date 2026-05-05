@@ -1,5 +1,12 @@
 return {
     create = function(self, params)
+        local captions1 = {
+            fontName = "captions", 
+            keys = { 
+                "g", "r", "e", "e", "n", " ", "h", "i", "l", "l", " ", "z", "o", "n", "e", 
+            },
+        }
+
         return {
             graphics = params.graphics,
             
@@ -11,8 +18,7 @@ return {
 
             draw = function(self)
                 if self.fontEngine then
-                    self.fontEngine:draw(self.graphics, "captions", { 
-                        "g", "r", "e", "e", "n", " ", "h", "i", "l", "l", " ", "z", "o", "n", "e", }, 300, 300)
+                    self.fontEngine:draw(self.graphics, "captions1", captions1, 300, 300)
                 end
             end,
 
