@@ -65,7 +65,7 @@ return {
 					if f == nil then
 						glyph.w = font.spaceWidth or 16
 					else
-						glyph.w = f.w + 2
+						glyph.w = f.w + 1
 						glyph.quad = f.quad
 					end
 					table.insert(obj.glyphs, glyph)
