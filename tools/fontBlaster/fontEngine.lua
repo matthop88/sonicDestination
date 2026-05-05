@@ -38,11 +38,11 @@ return {
 				return self
 			end,
 
-			draw = function(self, graphics, fontName, keys, x, y)
-				local font = self.fonts[fontName]
+			draw = function(self, graphics, id, fontData, x, y)
+				local font = self.fonts[fontData.fontName]
 				graphics:setColor(1, 1, 1)
 				local glyphs = {}
-				for _, key in ipairs(keys) do 
+				for _, key in ipairs(fontData.keys) do 
 					local f = font.data[key]
 					if f == nil then
 						x = x + font.spaceWidth
