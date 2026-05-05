@@ -3,16 +3,17 @@
 --------------------------------------------------------------
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1200, 800
-local FONT_BLASTER_ENGINE
+local GRAPHICS = require("tools/lib/graphics"):create()
+local FONT_BLASTER_ENGINE = require("tools/fontBlaster/fontBlasterEngine"):create { graphics = GRAPHICS }
 
---------------------------------------------------------------
+------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
 
 love.window.setTitle("Font Blaster")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local FONT_BLASTER_ENGINE = require("tools/fontBlaster/fontBlasterEngine"):create()
+
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -62,5 +63,13 @@ require("plugins/engine")
     })
     :add("scrolling",      { imageViewer = FONT_BLASTER_ENGINE })
     :add("zooming",        { imageViewer = FONT_BLASTER_ENGINE })    
-    :add("grid2d",         { graphics    = FONT_BLASTER_ENGINE.graphics })
+    :add("grid2d",         { graphics    = GRAPHICS })
+    :add("timedFunctions", {
+        {   secondsWait = 0.1, 
+            callback = function() 
+                FONT_BLASTER_ENGINE:init() 
+            end,
+        },
+    }) 
+     
 
