@@ -1,5 +1,6 @@
 return {
 	image = "hud.png",
+	spaceWidth = 8,
 	data  = {
 		{ key = "SCORE",    value = { quad = { x =  25, y = 433, w = 39, h =  11 }, } },
 		{ key = "TIME",     value = { quad = { x =  25, y = 457, w = 31, h =  11 }, } },
