@@ -6,6 +6,8 @@ local rect        = { x = 0, y = 0, w = 40, h = 40 }
 local width       = 40
 local height      = 40
 
+local colorInvert = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -41,6 +43,7 @@ love.keypressed = function(key)
     elseif key == "right" then width  = width  + 1
     elseif key == "up"    then height = height - 1
     elseif key == "down"  then height = height + 1
+    elseif key == "i"     then colorInvert = not colorInvert
     end
 end
 
@@ -49,7 +52,11 @@ end
 --------------------------------------------------------------
 
 drawOverlays = function(self)
-    love.graphics.setColor(1, 1, 1)
+    if colorInvert then
+        love.graphics.setColor(0, 0, 0)
+    else
+        love.graphics.setColor(1, 1, 1)
+    end
     local imageViewer = getImageViewer()
     local rx, ry = imageViewer:imageToScreenCoordinates(rect.x, rect.y)
     local rx2, ry2 = imageViewer:imageToScreenCoordinates(rect.x + rect.w, rect.y + rect.h)
@@ -75,6 +82,10 @@ PLUGINS = require("plugins/engine")
     :add("doubleClick",
     {
         accessorFnName = "getDoubleClick",
+    })
+    :add("keyRepeat", {
+        interval    = 0.05,
+        delay       = 0.5,
     })
     :add("modKeyEnabler")
     :add("scrolling",    { 
