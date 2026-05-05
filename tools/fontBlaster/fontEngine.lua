@@ -16,7 +16,7 @@ end
 return {
 	create = function(self)
 		return ({
-			fontObjects = {},
+			fontBlocks = {},
 
 			init = function(self)
 				local fonts = loadDataFilesFromDirectory(relativePath("resources/fonts"))
@@ -41,19 +41,14 @@ return {
 			end,
 
 			draw = function(self, graphics, id, fontData, x, y)
-				local fontObject = self.fontObjects[id]
-				if not fontObject then
-					print("Creating font object...")
-					fontObject = self:createFontObject(fontData)
-					self.fontObjects[id] = fontObject
+				local fontBlock = self.fontBlocks[id]
+				if not fontBlock then
+					print("Creating font block...")
+					local font = self.fonts[fontData.fontName]
+					fontBlock = require("tools/fontBlaster/fontBlock"):create { font = font, fontData = fontData, x = x, y = y }
+					self.fontBlocks[id] = fontBlock
 				end
-				graphics:setColor(1, 1, 1)
-				for _, glyph in ipairs(fontObject.glyphs) do 
-					if glyph.quad then
-						graphics:draw(fontObject.image, glyph.quad, x, y, 0, 1, 1)
-					end
-					x = x + glyph.w
-				end
+				fontBlock:draw(graphics)
 			end,
 
 			createFontObject = function(self, fontData)
