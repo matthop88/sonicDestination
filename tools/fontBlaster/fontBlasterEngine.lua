@@ -12,9 +12,14 @@ return {
         local time1 = {
             fontName = "hud",
             keys = {
-                "t", "i", "m", "e"
+                "t", "i", "m", "e",
             },
         } 
+
+        local time2 = {
+            fontName = "hud",
+            keys = { "TIME", },
+        }
 
         return {
             graphics = params.graphics,
@@ -30,6 +35,7 @@ return {
                 if self.fontEngine then
                     self.fontEngine:draw(self.graphics, "captions1", captions1, 300, 300)
                     self.fontEngine:draw(self.graphics, "time1",     time1,     100, 100)
+                    self.fontEngine:draw(self.graphics, "time2",     time2,     100, 120)
                 end
             end,
 
