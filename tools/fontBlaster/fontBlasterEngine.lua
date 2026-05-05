@@ -23,19 +23,21 @@ return {
 
         return {
             graphics = params.graphics,
+            objects  = { },
             
             init = function(self)
                 self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
-                print("INITIALIZED FONT ENGINE")
+                table.insert(self.objects, self.fontEngine:newFontBlock("captions1", captions1, 300, 300))
+                table.insert(self.objects, self.fontEngine:newFontBlock("time1",     time1,     100, 100))
+                table.insert(self.objects, self.fontEngine:newFontBlock("time2",     time2,     100, 120))
+                
                 return self
             end,
 
             draw = function(self)
                 self:drawBackground()
-                if self.fontEngine then
-                    self.fontEngine:draw(self.graphics, "captions1", captions1, 300, 300)
-                    self.fontEngine:draw(self.graphics, "time1",     time1,     100, 100)
-                    self.fontEngine:draw(self.graphics, "time2",     time2,     100, 120)
+                for _, obj in ipairs(self.objects) do
+                    obj:draw(self.graphics)
                 end
             end,
 
