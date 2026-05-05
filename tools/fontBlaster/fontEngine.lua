@@ -16,6 +16,8 @@ end
 return {
 	create = function(self)
 		return ({
+			fontObjects = {},
+
 			init = function(self)
 				local fonts = loadDataFilesFromDirectory(relativePath("resources/fonts"))
 				self.fonts = {}
@@ -39,18 +41,36 @@ return {
 			end,
 
 			draw = function(self, graphics, id, fontData, x, y)
-				local font = self.fonts[fontData.fontName]
+				local fontObject = self.fontObjects[id]
+				if not fontObject then
+					print("Creating font object...")
+					fontObject = self:createFontObject(fontData)
+					self.fontObjects[id] = fontObject
+				end
 				graphics:setColor(1, 1, 1)
-				local glyphs = {}
+				for _, glyph in ipairs(fontObject.glyphs) do 
+					if glyph.quad then
+						graphics:draw(fontObject.image, glyph.quad, x, y, 0, 1, 1)
+					end
+					x = x + glyph.w
+				end
+			end,
+
+			createFontObject = function(self, fontData)
+				local font = self.fonts[fontData.fontName]
+				local obj = { image = font.image, glyphs = {} }
 				for _, key in ipairs(fontData.keys) do 
+					local glyph = {}
 					local f = font.data[key]
 					if f == nil then
-						x = x + font.spaceWidth
+						glyph.w = font.spaceWidth or 16
 					else
-						graphics:draw(font.image, f.quad, x, y, 0, 1, 1)
-						x = x + f.w + 2
+						glyph.w = f.w + 2
+						glyph.quad = f.quad
 					end
+					table.insert(obj.glyphs, glyph)
 				end
+				return obj
 			end,
 
 		}):init()
