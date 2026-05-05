@@ -38,7 +38,7 @@ return {
 				return self
 			end,
 
-			newFontBlock = function(self, id, fontData, x, y)
+			newFontBlock = function(self, fontData, x, y)
 				local font = self.fonts[fontData.fontName]
 				local fontBlock = require("tools/fontBlaster/fontBlock"):create { font = font, fontData = fontData, x = x, y = y }
 				return fontBlock
