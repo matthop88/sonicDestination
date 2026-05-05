@@ -21,6 +21,14 @@ return {
             keys = { "TIME", },
         }
 
+        local credits = {
+            fontName = "credits",
+            keys = { 
+                "p", "r", "e", "s", "e", "n", "t", "e", "d", " ", "b", "y", " ", 
+                "s", "o", "n", "i", "c", " ", "t", "e", "a", "m",
+            },
+        }
+
         return {
             graphics = params.graphics,
             objects  = { },
@@ -30,6 +38,7 @@ return {
                 table.insert(self.objects, self.fontEngine:newFontBlock("captions1", captions1, 300, 300))
                 table.insert(self.objects, self.fontEngine:newFontBlock("time1",     time1,     100, 100))
                 table.insert(self.objects, self.fontEngine:newFontBlock("time2",     time2,     100, 120))
+                table.insert(self.objects, self.fontEngine:newFontBlock("credits",   credits,   200, 50))
                 
                 return self
             end,
