@@ -1,5 +1,6 @@
 return {
   image = "credits.png",
+  spaceWidth = 16,
   data  = {
     { key = "a", value = { quad = { x = 352, y = 896, w = 16, h = 16 }, } },
     { key = "b", value = { quad = { x = 376, y = 896, w = 16, h = 16 }, } },
