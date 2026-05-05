@@ -29,17 +29,22 @@ return {
             },
         }
 
+        local lifeHud = {
+            fontName = "hudSmall",
+            keys = { "$", "s", "o", "n", "i", "c", "x", "0", "3", },
+        }
+
         return {
             graphics = params.graphics,
             objects  = { },
             
             init = function(self)
                 self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
-                table.insert(self.objects, self.fontEngine:newFontBlock("captions1", captions1, 300, 300))
-                table.insert(self.objects, self.fontEngine:newFontBlock("time1",     time1,     100, 100))
-                table.insert(self.objects, self.fontEngine:newFontBlock("time2",     time2,     100, 120))
-                table.insert(self.objects, self.fontEngine:newFontBlock("credits",   credits,   200, 50))
-                
+                table.insert(self.objects, self.fontEngine:newFontBlock(captions1, 300, 300))
+                table.insert(self.objects, self.fontEngine:newFontBlock(time1,     100, 100))
+                table.insert(self.objects, self.fontEngine:newFontBlock(time2,     100, 120))
+                table.insert(self.objects, self.fontEngine:newFontBlock(credits,   200, 50))
+                table.insert(self.objects, self.fontEngine:newFontBlock(lifeHud,   200, 100))
                 return self
             end,
 
