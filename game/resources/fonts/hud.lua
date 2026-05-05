@@ -13,7 +13,7 @@ return {
 	    { key = "c",  value = { quad = { x = 373, y = 433, w =  7, h = 11 }, } },
 	    { key = "e",  value = { quad = { x = 397, y = 433, w =  7, h = 11 }, } },
 	    { key = "g",  value = { quad = { x =  49, y = 481, w =  7, h = 11 }, } },
-	    { key = "i",  value = { quad = { x =  34, y = 481, w =  3, h = 11 }, } },
+	    { key = "i",  value = { quad = { x =  34, y = 481, w =  4, h = 11 }, } },
 	    { key = "m",  value = { quad = { x =  38, y = 457, w = 10, h = 11 }, } },
 	    { key = "n",  value = { quad = { x =  39, y = 481, w =  9, h = 11 }, } },
 	    { key = "o",  value = { quad = { x =  41, y = 433, w =  7, h = 11 }, } },
