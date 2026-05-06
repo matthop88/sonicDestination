@@ -36,23 +36,23 @@ return {
 
         return {
             graphics = params.graphics,
-            objects  = { },
-            
+            objects  = require("game/util/dataStructures/linkedList"):create(),  
+    
             init = function(self)
                 self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
-                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, captions1, 300, 300))
-                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, time1,     100, 100))
-                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, time2,     100, 120))
-                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, credits,   200, 50))
-                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, lifeHud,   200, 100))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, captions1, 300, 300))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time1,     100, 100))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time2,     100, 120))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, credits,   200, 50))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, lifeHud,   200, 100))
                 return self
             end,
 
             draw = function(self)
                 self:drawBackground()
-                for _, obj in ipairs(self.objects) do
+                self.objects:forEach(function(obj)
                     obj:draw()
-                end
+                end)
             end,
 
             drawBackground = function(self)
@@ -60,31 +60,53 @@ return {
             end,
 
             update = function(self, dt)
-                for _, obj in ipairs(self.objects) do
+                self.objects:forEach(function(obj)
                     obj:update(dt)
-                end
+                    if obj:isDeleted() then
+                        self.objects:remove()
+                        return true
+                    end
+                end)
             end,
 
             handleKeypressed = function(self, key)
                 if key == "escape" then
                     self:deselectAll()
+                elseif key == "backspace" then
+                    self:delete(self:getSelected())
                 end
             end,
 
             handleMousepressed = function(self, mx, my)
-                for _, obj in ipairs(self.objects) do
+                self.objects:forEach(function(obj)
                     obj:mousepressed(mx, my)
-                end
+                end)
             end,
 
             handleMousereleased = function(self, mx, my)
                 -- Do nothing
             end,
 
+            getSelected = function(self)
+                local selected = nil
+                self.objects:forEach(function(obj)
+                    if obj:isSelected() then 
+                        selected = obj
+                        return true
+                    end
+                end)
+
+                return selected
+            end,
+
+            delete = function(self, obj)
+                if obj ~= nil then obj:setDeleted() end
+            end,
+
             deselectAll = function(self)
-                for _, obj in ipairs(self.objects) do
+                self.objects:forEach(function(obj)
                     obj:deselect()
-                end
+                end)
             end,
 
             -- IMAGE VIEWER METHODS --
