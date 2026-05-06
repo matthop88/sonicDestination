@@ -70,8 +70,11 @@ return {
 			end,
 
 			update = function(self, dt, graphics)
-				local mx, my = graphics:screenToImageCoordinates(love.mouse.getPosition())
-				self.highlighted = (mx >= self.x and my >= self.y and mx < self.x + self.w and my < self.y + self.h)
+				self.highlighted = self:ptInBounds(graphics:screenToImageCoordinates(love.mouse.getPosition()))
+			end,
+
+			ptInBounds = function(self, px, py)
+				return px >= self.x and py >= self.y and px < self.x + self.w and py < self.y + self.h
 			end,
 
 		}):init()
