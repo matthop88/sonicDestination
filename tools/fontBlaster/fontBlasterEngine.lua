@@ -34,17 +34,23 @@ return {
             keys = { "$", "s", "o", "n", "i", "c", "x", "0", "3", },
         }
 
+        local hudTemplate = {
+            fontName = "hud",
+            keys = { "TEMPLATE", },
+        }
+
         return {
             graphics = params.graphics,
             objects  = require("game/util/dataStructures/linkedList"):create(),  
     
             init = function(self)
                 self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, captions1, 300, 300))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time1,     100, 100))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time2,     100, 120))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, credits,   200, 50))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, lifeHud,   200, 100))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, hudTemplate, 300,  75))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, captions1,   300, 300))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time1,       100, 100))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time2,       100, 120))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, credits,     200,  50))
+                self.objects:add(self.fontEngine:newFontBlock(self.graphics, lifeHud,     200, 100))
                 return self
             end,
 
