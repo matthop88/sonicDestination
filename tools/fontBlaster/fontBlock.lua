@@ -113,6 +113,11 @@ return {
 			isDeleted  = function(self) return self.deleted   end,
 			isSelected = function(self) return self.selected  end,
 
+			nudge = function(self, deltaX, deltaY)
+				self.x = self.x + deltaX
+				self.y = self.y + deltaY
+			end,
+
 		}):init()
 	end,
 }
