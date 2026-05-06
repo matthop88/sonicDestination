@@ -21,7 +21,8 @@ local createFontObject = function(font, fontData)
 	return obj
 end
 
-local drawFontObject = function(self, graphics)
+local drawFontObject = function(self)
+	local graphics = self.graphics
 	graphics:setColor(1, 1, 1)
 	local myX = self.x
 	for _, glyph in ipairs(self.obj.glyphs) do 
@@ -30,7 +31,17 @@ local drawFontObject = function(self, graphics)
 		end
 		myX = myX + glyph.w
 	end
-	if self.highlighted then
+	if self.selected then
+		graphics:setColor(0, 0, 0, 0.3)
+		graphics:rectangle("fill", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
+		graphics:setColor(1, 1, 1)
+		graphics:setLineWidth(3)
+		graphics:rectangle("line", self.x - 2, self.y - 2, self.w + 3, self.h + 4)
+		graphics:setColor(0, 0, 0)
+		graphics:setLineWidth(1)
+		graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
+		graphics:rectangle("line", self.x - 4, self.y - 4, self.w + 7, self.h + 8)
+	elseif self.highlighted then
 		graphics:setColor(1, 1, 0)
 		graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
 	end
@@ -59,6 +70,8 @@ return {
 			x           = params.x,
 			y           = params.y,
 			highlighted = false,
+			selected    = false,
+			graphics    = params.graphics,
 
 			draw = drawFontObject,
 
@@ -69,8 +82,12 @@ return {
 				return self
 			end,
 
-			update = function(self, dt, graphics)
-				self.highlighted = self:ptInBounds(graphics:screenToImageCoordinates(love.mouse.getPosition()))
+			update = function(self, dt)
+				self.highlighted = self:ptInBounds(self.graphics:screenToImageCoordinates(love.mouse.getPosition()))
+			end,
+
+			mousepressed = function(self, mx, my)
+				self.selected = self:ptInBounds(self.graphics:screenToImageCoordinates(mx, my))
 			end,
 
 			ptInBounds = function(self, px, py)
