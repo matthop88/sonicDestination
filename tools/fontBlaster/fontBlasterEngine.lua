@@ -66,7 +66,9 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                -- Do nothing
+                if key == "escape" then
+                    self:deselectAll()
+                end
             end,
 
             handleMousepressed = function(self, mx, my)
@@ -77,6 +79,12 @@ return {
 
             handleMousereleased = function(self, mx, my)
                 -- Do nothing
+            end,
+
+            deselectAll = function(self)
+                for _, obj in ipairs(self.objects) do
+                    obj:deselect()
+                end
             end,
 
             -- IMAGE VIEWER METHODS --
