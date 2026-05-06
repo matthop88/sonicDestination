@@ -106,12 +106,8 @@ return {
 				end
 			end,
 
-			mousepressed = function(self, mx, my)
-				local px, py = self.graphics:screenToImageCoordinates(mx, my)
-				self.selected = self:ptInBounds(px, py)
-				if self.selected then
-					self.selectedAt = { x = math.floor(px), y = math.floor(py) }
-				end
+			mouseInBounds = function(self, mx, my)
+				return self:ptInBounds(self.graphics:screenToImageCoordinates(mx, my))
 			end,
 
 			ptInBounds = function(self, px, py)
@@ -121,8 +117,13 @@ return {
 			deselect = function(self)   self.selected = false end,
 
 			setDeleted = function(self) self.deleted = true   end,
-
 			isDeleted  = function(self) return self.deleted   end,
+			select     = function(self, mx, my) 
+				self.selected = true  
+				local px, py  = self.graphics:screenToImageCoordinates(mx, my)
+				self.selectedAt = { x = math.floor(px), y = math.floor(py) }
+			end,
+			deselect   = function(self) self.selected = false end,
 			isSelected = function(self) return self.selected  end,
 
 			nudge = function(self, deltaX, deltaY)
