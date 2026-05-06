@@ -60,7 +60,9 @@ return {
             end,
 
             update = function(self, dt)
-                -- Do nothing
+                for _, obj in ipairs(self.objects) do
+                    obj:update(dt, self.graphics)
+                end
             end,
 
             handleKeypressed = function(self, key)
