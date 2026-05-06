@@ -72,6 +72,7 @@ return {
 			highlighted = false,
 			selected    = false,
 			graphics    = params.graphics,
+			deleted     = false,
 
 			draw = drawFontObject,
 
@@ -94,9 +95,12 @@ return {
 				return px >= self.x and py >= self.y and px < self.x + self.w and py < self.y + self.h
 			end,
 
-			deselect = function(self)
-				self.selected = false
-			end,
+			deselect = function(self)   self.selected = false end,
+
+			setDeleted = function(self) self.deleted = true   end,
+
+			isDeleted  = function(self) return self.deleted   end,
+			isSelected = function(self) return self.selected  end,
 
 		}):init()
 	end,
