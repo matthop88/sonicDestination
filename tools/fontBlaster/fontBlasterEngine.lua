@@ -70,10 +70,12 @@ return {
             end,
 
             handleKeypressed = function(self, key)
-                if key == "escape" then
-                    self:deselectAll()
-                elseif key == "backspace" then
-                    self:delete(self:getSelected())
+                if     key == "escape"     then self:deselectAll()
+                elseif key == "backspace"  then self:delete(self:getSelected())
+                elseif key == "shiftleft"  then self:nudge(self:getSelected(), -1,  0)
+                elseif key == "shiftright" then self:nudge(self:getSelected(),  1,  0)
+                elseif key == "shiftup"    then self:nudge(self:getSelected(),  0, -1)
+                elseif key == "shiftdown"  then self:nudge(self:getSelected(),  0,  1)
                 end
             end,
 
@@ -101,6 +103,10 @@ return {
 
             delete = function(self, obj)
                 if obj ~= nil then obj:setDeleted() end
+            end,
+
+            nudge = function(self, obj, deltaX, deltaY)
+                if obj ~= nil then obj:nudge(deltaX, deltaY) end
             end,
 
             deselectAll = function(self)
