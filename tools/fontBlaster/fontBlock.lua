@@ -84,11 +84,22 @@ return {
 			end,
 
 			update = function(self, dt)
-				self.highlighted = self:ptInBounds(self.graphics:screenToImageCoordinates(love.mouse.getPosition()))
+				local px, py = self.graphics:screenToImageCoordinates(love.mouse.getPosition())
+				self.highlighted = self:ptInBounds(px, py)
+				if self.selected and love.mouse.isDown(1) then
+					self.x = self.x + (math.floor(px) - self.selectedAt.x)
+					self.y = self.y + (math.floor(py) - self.selectedAt.y)
+					self.selectedAt.x = math.floor(px)
+					self.selectedAt.y = math.floor(py)
+				end
 			end,
 
 			mousepressed = function(self, mx, my)
-				self.selected = self:ptInBounds(self.graphics:screenToImageCoordinates(mx, my))
+				local px, py = self.graphics:screenToImageCoordinates(mx, my)
+				self.selected = self:ptInBounds(px, py)
+				if self.selected then
+					self.selectedAt = { x = math.floor(px), y = math.floor(py) }
+				end
 			end,
 
 			ptInBounds = function(self, px, py)
