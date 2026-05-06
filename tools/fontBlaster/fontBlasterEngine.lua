@@ -86,9 +86,14 @@ return {
             end,
 
             handleMousepressed = function(self, mx, my)
+                local selectedObj = nil
                 self.objects:forEach(function(obj)
-                    obj:mousepressed(mx, my)
+                    obj:deselect()
+                    if obj:mouseInBounds(mx, my) then
+                        selectedObj = obj
+                    end
                 end)
+                if selectedObj ~= nil then selectedObj:select(mx, my) end
             end,
 
             handleMousereleased = function(self, mx, my)
