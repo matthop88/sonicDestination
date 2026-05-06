@@ -40,18 +40,18 @@ return {
             
             init = function(self)
                 self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
-                table.insert(self.objects, self.fontEngine:newFontBlock(captions1, 300, 300))
-                table.insert(self.objects, self.fontEngine:newFontBlock(time1,     100, 100))
-                table.insert(self.objects, self.fontEngine:newFontBlock(time2,     100, 120))
-                table.insert(self.objects, self.fontEngine:newFontBlock(credits,   200, 50))
-                table.insert(self.objects, self.fontEngine:newFontBlock(lifeHud,   200, 100))
+                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, captions1, 300, 300))
+                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, time1,     100, 100))
+                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, time2,     100, 120))
+                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, credits,   200, 50))
+                table.insert(self.objects, self.fontEngine:newFontBlock(self.graphics, lifeHud,   200, 100))
                 return self
             end,
 
             draw = function(self)
                 self:drawBackground()
                 for _, obj in ipairs(self.objects) do
-                    obj:draw(self.graphics)
+                    obj:draw()
                 end
             end,
 
@@ -61,7 +61,7 @@ return {
 
             update = function(self, dt)
                 for _, obj in ipairs(self.objects) do
-                    obj:update(dt, self.graphics)
+                    obj:update(dt)
                 end
             end,
 
@@ -70,7 +70,9 @@ return {
             end,
 
             handleMousepressed = function(self, mx, my)
-                -- Do nothing
+                for _, obj in ipairs(self.objects) do
+                    obj:mousepressed(mx, my)
+                end
             end,
 
             handleMousereleased = function(self, mx, my)
