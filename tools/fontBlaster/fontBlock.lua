@@ -21,6 +21,26 @@ local createFontObject = function(font, fontData)
 	return obj
 end
 
+local drawSelectedBlock = function(self)
+	local graphics = self.graphics
+	graphics:setColor(0, 0, 0, 0.3)
+	graphics:rectangle("fill", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
+	graphics:setColor(1, 1, 1)
+	graphics:setLineWidth(3)
+	graphics:rectangle("line", self.x - 2, self.y - 2, self.w + 3, self.h + 4)
+	graphics:setColor(0, 0, 0)
+	graphics:setLineWidth(1)
+	graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
+	graphics:rectangle("line", self.x - 4, self.y - 4, self.w + 7, self.h + 8)
+	graphics:setColor(0, 0, 0, 0.5)
+	graphics:rectangle("fill", self.x - 32, self.y - 24, 32, 24)
+	graphics:setColor(1, 1, 1)
+	graphics:rectangle("line", self.x - 32, self.y - 24, 32, 24)
+	graphics:setFontSize(8)
+	local coordinateString = "" .. math.floor(self.x) .. ",\n" .. math.floor(self.y)
+	graphics:printf(coordinateString, self.x - 32, self.y - 20, 32, "center")
+end
+
 local drawFontObject = function(self)
 	local graphics = self.graphics
 	graphics:setColor(1, 1, 1)
@@ -32,15 +52,7 @@ local drawFontObject = function(self)
 		myX = myX + glyph.w
 	end
 	if self.selected then
-		graphics:setColor(0, 0, 0, 0.3)
-		graphics:rectangle("fill", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
-		graphics:setColor(1, 1, 1)
-		graphics:setLineWidth(3)
-		graphics:rectangle("line", self.x - 2, self.y - 2, self.w + 3, self.h + 4)
-		graphics:setColor(0, 0, 0)
-		graphics:setLineWidth(1)
-		graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
-		graphics:rectangle("line", self.x - 4, self.y - 4, self.w + 7, self.h + 8)
+		drawSelectedBlock(self)
 	elseif self.highlighted then
 		graphics:setColor(1, 1, 0)
 		graphics:rectangle("line", self.x - 1, self.y - 1, self.w + 1, self.h + 2)
