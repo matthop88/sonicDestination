@@ -13,7 +13,7 @@ local createGlyph = function(font, key)
 end
 
 local createFontObject = function(font, fontData)
-	local obj = { image = font.image, glyphs = require("game/util/dataStructures/linkedList"):create() }
+	local obj = { image = font.image, font = font, glyphs = require("game/util/dataStructures/linkedList"):create() }
 	for _, key in ipairs(fontData.keys) do 
 		local glyph = createGlyph(font, key)
 		obj.glyphs:add(glyph)
@@ -148,6 +148,13 @@ return {
 				self.w = calculateWidth(self)
 				self.h = calculateHeight(self)
 				if self.w == 0 then self:setDeleted() end
+			end,
+
+			appendGlyph = function(self, key)
+				local glyph = createGlyph(self.obj.font, key)
+				self.obj.glyphs:add(glyph)
+				self.w = calculateWidth(self)
+				self.h = calculateHeight(self)
 			end,
 
 			nudge = function(self, deltaX, deltaY)
