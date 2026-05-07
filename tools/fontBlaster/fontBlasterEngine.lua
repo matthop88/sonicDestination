@@ -40,18 +40,23 @@ return {
         }
 
         return {
-            graphics = params.graphics,
-            objects  = require("game/util/dataStructures/linkedList"):create(),  
+            graphics   = params.graphics,
+            objects    = require("game/util/dataStructures/linkedList"):create(),  
+            fontEngine = require("tools/fontBlaster/fontEngine"):create(),
     
             init = function(self)
-                self.fontEngine = require("tools/fontBlaster/fontEngine"):create()
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, hudTemplate, 300,  75))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, captions1,   300, 300))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time1,       100, 100))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, time2,       100, 120))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, credits,     200,  50))
-                self.objects:add(self.fontEngine:newFontBlock(self.graphics, lifeHud,     200, 100))
+                self.objects:add(self:newFontBlock(hudTemplate, 300,  75))
+                self.objects:add(self:newFontBlock(captions1,   300, 300))
+                self.objects:add(self:newFontBlock(time1,       100, 100))
+                self.objects:add(self:newFontBlock(time2,       100, 120))
+                self.objects:add(self:newFontBlock(credits,     200,  50))
+                self.objects:add(self:newFontBlock(lifeHud,     200, 100))
                 return self
+            end,
+
+            newFontBlock = function(self, objectData, x, y)
+                local fontObject = self.fontEngine:newFontObject(objectData)
+                return require("tools/fontBlaster/fontBlock"):create { fontObj = fontObject, x = x, y = y, graphics = self.graphics }
             end,
 
             draw = function(self)
