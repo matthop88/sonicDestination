@@ -1,13 +1,5 @@
-local GLYPH = require("tools/fontBlaster/glyph")
-
-local createFontObject = function(font, fontData)
-	local obj = { image = font.image, font = font, glyphs = require("game/util/dataStructures/linkedList"):create() }
-	for _, key in ipairs(fontData.keys) do 
-		local glyph = GLYPH:create(font, key)
-		obj.glyphs:add(glyph)
-	end
-	return obj
-end
+local GLYPH       = require("tools/fontBlaster/glyph")
+local FONT_OBJECT = require("tools/fontBlaster/fontObject")
 
 local drawEditingBlock  = function(self)
 	local graphics = self.graphics
@@ -77,7 +69,7 @@ end
 return {
 	create = function(self, params)
 		return ({
-			obj         = createFontObject(params.font, params.fontData),
+			obj         = FONT_OBJECT:create(params.font, params.fontData),
 			x           = params.x,
 			y           = params.y,
 			highlighted = false,
