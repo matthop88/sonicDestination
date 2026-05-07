@@ -43,6 +43,12 @@ return {
 				local fontObject = require(relativePath("fonts/fontObject")):create(font, fontData)
 				return fontObject
 			end,
+
+			newGlyph = function(self, fontData)
+				local font = self.fonts[fontData.fontName]
+				return require(relativePath("fonts/glyph")):create(font, fontData.key)
+			end,
+
 			
 		}):init()
 	end,
