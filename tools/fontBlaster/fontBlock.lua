@@ -142,11 +142,13 @@ return {
 			isSelected   = function(self) return self.selected  end,
 			startEditing = function(self) 
 				self.editing = true   
+				self:backupGlyphs()
 				getInputLayer():activate()
 			end,
 			stopEditing  = function(self) 
 				if self:isEditing() then
 					self.editing = false 
+					self.buGlyphs = nil
 					getInputLayer():deactivate()
 				end
 			end,
@@ -172,6 +174,21 @@ return {
 				end
 			end,
 
+			backupGlyphs = function(self)
+				self.buGlyphs = require("game/util/dataStructures/linkedList"):create()
+				self.obj.glyphs:forEach(function(glyph) 
+					self.buGlyphs:add(glyph)
+				end)
+			end,
+
+			revert = function(self)
+				if self.buGlyphs then
+					self.obj.glyphs = self.buGlyphs
+					self.w = calculateWidth(self)
+					self.h = calculateHeight(self)
+				end
+			end,
+	
 			nudge = function(self, deltaX, deltaY)
 				self.x = self.x + deltaX
 				self.y = self.y + deltaY
