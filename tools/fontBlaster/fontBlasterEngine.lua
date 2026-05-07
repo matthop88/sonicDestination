@@ -90,12 +90,13 @@ return {
                 local selectedObj = nil
                 self.objects:forEach(function(obj)
                     obj:deselect()
-                    obj:stopEditing()
                     if obj:mouseInBounds(mx, my) then
                         selectedObj = obj
                         if params.doubleClicked then 
                             obj:startEditing()
                         end
+                    else
+                        obj:stopEditing()
                     end
                 end)
                 if selectedObj ~= nil then selectedObj:select(mx, my) end
@@ -133,8 +134,11 @@ return {
 
             deselectAll = function(self)
                 self.objects:forEach(function(obj)
+                    if obj:isEditing() then
+                        obj:revert()
+                        obj:stopEditing()
+                    end
                     obj:deselect()
-                    obj:stopEditing()
                 end)
             end,
 
