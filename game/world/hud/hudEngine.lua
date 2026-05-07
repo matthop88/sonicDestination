@@ -44,6 +44,8 @@ return {
 			timeMinutes     = 9,
     		timeSecondsTens = 5,
     		timeSecondsOnes = 9,
+
+    		redColor        = false,
     		
     		init = function(self)
     			self.time  = self.fontEngine:newFontObject(TIME)
@@ -79,12 +81,19 @@ return {
             update = function(self, dt)
             	local oldTimer = math.floor(self.timer)
             	self.timer = self.timer - dt
+            	if self.redColor then
+            		self.time:setColor({ 0.99, 0, 0 })
+            	else
+            		self.time:setColor({ 0.99, 0.99, 0 })
+            	end
+
             	if math.floor(self.timer) ~= oldTimer then
             		if self.timeMinutes > 0 then
 	            		self.timeSecondsOnes = self.timeSecondsOnes - 1
 	            		if self.timeSecondsOnes < 0 then
 	            			self.timeSecondsOnes = 9
 	            			self.timeSecondsTens = self.timeSecondsTens - 1
+	            			self.redColor = not self.redColor
 	            			if self.timeSecondsTens < 0 then
 	            				self.timeSecondsTens = 5
 	            				self.timeMinutes = self.timeMinutes - 1
