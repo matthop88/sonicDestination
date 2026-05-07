@@ -9,7 +9,7 @@ return {
 		{ key = "BONUS",    value = { quad = { x = 404, y = 457, w = 40, h =  11 }, } },
 		{ key = "TEMPLATE", value = { quad = { x =  40, y = 208, w = 96, h = 208 }, } },
 	  
-	    { key = ":",  value = { quad = { x =  90, y = 225, w =  4, h =  10 }, } },
+	    { key = ":",  value = { quad = { x =  89, y = 225, w =  7, h =  10 }, } },
 		{ key = "b",  value = { quad = { x = 404, y = 457, w =  7, h = 11 }, } },
 	    { key = "c",  value = { quad = { x = 373, y = 433, w =  7, h = 11 }, } },
 	    { key = "e",  value = { quad = { x = 397, y = 433, w =  7, h = 11 }, } },
