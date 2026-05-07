@@ -17,9 +17,9 @@ return {
 				self.color = color
 			end,
 
-			draw = function(self, graphics, x, y)
+			draw = function(self, graphics, x, y, color)
 				if not self.color then
-					graphics:setColor(1, 1, 1)
+					graphics:setColor(color or { 1, 1, 1 })
 				else
 					graphics:setColor(self.color)
 				end
