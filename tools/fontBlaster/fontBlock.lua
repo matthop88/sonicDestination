@@ -1,21 +1,9 @@
-local createGlyph = function(font, key)
-	local glyph = {}
-	local f = font.data[key]
-	if f == nil then
-		glyph.w = font.spaceWidth or 16
-		glyph.h = 0
-	else
-		glyph.w = f.w + 1
-		glyph.h = f.h
-		glyph.quad = f.quad
-	end
-	return glyph
-end
+local GLYPH = require("tools/fontBlaster/glyph")
 
 local createFontObject = function(font, fontData)
 	local obj = { image = font.image, font = font, glyphs = require("game/util/dataStructures/linkedList"):create() }
 	for _, key in ipairs(fontData.keys) do 
-		local glyph = createGlyph(font, key)
+		local glyph = GLYPH:create(font, key)
 		obj.glyphs:add(glyph)
 	end
 	return obj
@@ -167,7 +155,7 @@ return {
 					self:stopEditing()
 					self:deselect()
 				else
-					local glyph = createGlyph(self.obj.font, key)
+					local glyph = GLYPH:create(self.obj.font, key)
 					self.obj.glyphs:add(glyph)
 					self.w = calculateWidth(self)
 					self.h = calculateHeight(self)
