@@ -6,6 +6,7 @@ local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 local SOUND_MANAGER
 local MUSIC_MANAGER
 local ORIGIN
+local HUD
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
@@ -52,6 +53,7 @@ return {
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
+        HUD        = requireRelative("world/hud/hudEngine"):create()
         self:refreshMusic()
         self:refreshSounds()
         self:refreshGroundLevel()
@@ -125,6 +127,7 @@ return {
             local object = self.objects:getNext()
             if not object:isForeground() then object:draw() end
         end
+        HUD:draw(GRAPHICS)
     end,
 
     drawForeground = function(self)
