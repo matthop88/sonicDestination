@@ -135,7 +135,10 @@ return {
 				local px, py  = self.graphics:screenToImageCoordinates(mx, my)
 				self.selectedAt = { x = math.floor(px), y = math.floor(py) }
 			end,
-			deselect     = function(self) self.selected = false end,
+			deselect     = function(self) 
+				self.selected = false 
+				if self:getGlyphCount() == 0 then self:setDeleted() end
+			end,
 			isSelected   = function(self) return self.selected  end,
 			startEditing = function(self) self.editing = true   end,
 			stopEditing  = function(self) self.editing = false  end,
@@ -147,19 +150,27 @@ return {
 				self.obj.glyphs:head()
 				self.w = calculateWidth(self)
 				self.h = calculateHeight(self)
-				if self.w == 0 then self:setDeleted() end
 			end,
 
 			appendGlyph = function(self, key)
-				local glyph = createGlyph(self.obj.font, key)
-				self.obj.glyphs:add(glyph)
-				self.w = calculateWidth(self)
-				self.h = calculateHeight(self)
+				if key == "return" then
+					self:stopEditing()
+					self:deselect()
+				else
+					local glyph = createGlyph(self.obj.font, key)
+					self.obj.glyphs:add(glyph)
+					self.w = calculateWidth(self)
+					self.h = calculateHeight(self)
+				end
 			end,
 
 			nudge = function(self, deltaX, deltaY)
 				self.x = self.x + deltaX
 				self.y = self.y + deltaY
+			end,
+
+			getGlyphCount = function(self)
+				return self.obj.glyphs:size()
 			end,
 
 		}):init()
