@@ -38,10 +38,10 @@ return {
 				return self
 			end,
 
-			newFontBlock = function(self, graphics, fontData, x, y)
+			newFontObject = function(self, fontData)
 				local font = self.fonts[fontData.fontName]
-				local fontBlock = require("tools/fontBlaster/fontBlock"):create { graphics = graphics, font = font, fontData = fontData, x = x, y = y }
-				return fontBlock
+				local fontObject = require("tools/fontBlaster/fontObject"):create(font, fontData)
+				return fontObject
 			end,
 			
 		}):init()
