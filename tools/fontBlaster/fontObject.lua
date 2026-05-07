@@ -12,6 +12,17 @@ return {
 
 				return self
 			end,
+
+			draw = function(self, graphics, x, y)
+				graphics:setColor(1, 1, 1)
+				local image = self.image
+				self.glyphs:forEach(function(glyph) 
+					if glyph.quad then
+						graphics:draw(image, glyph.quad, x, y, 0, 1, 1)
+					end
+					x = x + glyph.w
+				end)
+			end,
 		}):init(fontData)
 	end,
 }
