@@ -42,7 +42,7 @@ return {
         return {
             graphics   = params.graphics,
             objects    = require("game/util/dataStructures/linkedList"):create(),  
-            fontEngine = require("tools/fontBlaster/fontEngine"):create(),
+            fontEngine = require("game/fonts/fontEngine"):create(),
     
             init = function(self)
                 self.objects:add(self:newFontBlock(hudTemplate, 300,  75))
