@@ -13,8 +13,12 @@ return {
 				return self
 			end,
 
-			draw = function(self, graphics, x, y)
-				graphics:setColor(1, 1, 1)
+			draw = function(self, graphics, x, y, color)
+				if not color then
+					graphics:setColor(1, 1, 1)
+				else
+					graphics:setColor(color)
+				end
 				local image = self.image
 				self.glyphs:forEach(function(glyph) 
 					if glyph.quad then
