@@ -82,6 +82,7 @@ return {
                 elseif key == "shiftright" then self:nudge(self:getSelected(),  1,  0)
                 elseif key == "shiftup"    then self:nudge(self:getSelected(),  0, -1)
                 elseif key == "shiftdown"  then self:nudge(self:getSelected(),  0,  1)
+                else                            self:handleKeyTyped(self:getSelected(), key)
                 end
             end,
 
@@ -135,6 +136,12 @@ return {
                     obj:deselect()
                     obj:stopEditing()
                 end)
+            end,
+
+            handleKeyTyped = function(self, obj, key)
+                if obj ~= nil and obj:isEditing() then
+                    obj:appendGlyph(key)
+                end
             end,
 
             -- IMAGE VIEWER METHODS --
