@@ -40,7 +40,7 @@ return {
 
 			newFontObject = function(self, fontData)
 				local font = self.fonts[fontData.fontName]
-				local fontObject = require("tools/fontBlaster/fontObject"):create(font, fontData)
+				local fontObject = require(relativePath("fonts/fontObject")):create(font, fontData)
 				return fontObject
 			end,
 			
