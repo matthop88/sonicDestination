@@ -60,7 +60,7 @@ end
 return {
 	create = function(self, params)
 		return ({
-			obj         = FONT_OBJECT:create(params.font, params.fontData),
+			obj         = params.fontObj,
 			x           = params.x,
 			y           = params.y,
 			highlighted = false,
