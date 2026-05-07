@@ -9,19 +9,20 @@ return {
 		{ key = "BONUS",    value = { quad = { x = 404, y = 457, w = 40, h =  11 }, } },
 		{ key = "TEMPLATE", value = { quad = { x =  40, y = 208, w = 96, h = 208 }, } },
 	  
-	    { key = "b",  value = { quad = { x = 404, y = 457, w =  7, h = 11 }, } },
+	    { key = ":",  value = { quad = { x =  90, y = 225, w =  4, h =  10 }, } },
+		{ key = "b",  value = { quad = { x = 404, y = 457, w =  7, h = 11 }, } },
 	    { key = "c",  value = { quad = { x = 373, y = 433, w =  7, h = 11 }, } },
 	    { key = "e",  value = { quad = { x = 397, y = 433, w =  7, h = 11 }, } },
 	    { key = "g",  value = { quad = { x =  49, y = 481, w =  7, h = 11 }, } },
 	    { key = "i",  value = { quad = { x =  34, y = 481, w =  4, h = 11 }, } },
 	    { key = "m",  value = { quad = { x =  38, y = 457, w = 10, h = 11 }, } },
-	    { key = "n",  value = { quad = { x =  39, y = 481, w =  9, h = 11 }, } },
+	    { key = "n",  value = { quad = { x = 420, y = 457, w =  7, h = 11 }, } },
 	    { key = "o",  value = { quad = { x =  41, y = 433, w =  7, h = 11 }, } },
 	    { key = "r",  value = { quad = { x =  49, y = 433, w =  7, h = 11 }, } },
 	    { key = "s",  value = { quad = { x =  25, y = 433, w =  7, h = 11 }, } },
 	    { key = "t",  value = { quad = { x =  25, y = 457, w =  7, h = 11 }, } },
 	    { key = "u",  value = { quad = { x = 429, y = 457, w =  7, h = 11 }, } },
-	    { key = "n2", value = { quad = { x = 379, y = 481, w =  9, h = 11 }, } },
+	    { key = "N",  value = { quad = { x = 379, y = 481, w =  9, h = 11 }, } },
 	  
 		{ key = "0", value = { quad = { x =  73, y = 433, w = 7, h = 11 }, } },
 		{ key = "1", value = { quad = { x =  90, y = 433, w = 4, h = 11 }, } },
@@ -35,3 +36,4 @@ return {
 		{ key = "9", value = { quad = { x = 217, y = 433, w = 7, h = 11 }, } },
 	},
 }
+
