@@ -15,6 +15,7 @@ return {
 	    { key = "e",  value = { quad = { x = 397, y = 433, w =  7, h = 11 }, } },
 	    { key = "g",  value = { quad = { x =  49, y = 481, w =  7, h = 11 }, } },
 	    { key = "i",  value = { quad = { x =  34, y = 481, w =  4, h = 11 }, } },
+	    { key = "I",  value = { quad = { x =  33, y = 481, w =  5, h = 11 }, } },
 	    { key = "m",  value = { quad = { x =  38, y = 457, w = 10, h = 11 }, } },
 	    { key = "n",  value = { quad = { x = 420, y = 457, w =  7, h = 11 }, } },
 	    { key = "o",  value = { quad = { x =  41, y = 433, w =  7, h = 11 }, } },
@@ -25,7 +26,7 @@ return {
 	    { key = "N",  value = { quad = { x = 379, y = 481, w =  9, h = 11 }, } },
 	  
 		{ key = "0", value = { quad = { x =  73, y = 433, w = 7, h = 11 }, } },
-		{ key = "1", value = { quad = { x =  90, y = 433, w = 4, h = 11 }, } },
+		{ key = "1", value = { quad = { x =  89, y = 433, w = 7, h = 11 }, } },
 		{ key = "2", value = { quad = { x = 105, y = 433, w = 7, h = 11 }, } },
 		{ key = "3", value = { quad = { x = 121, y = 433, w = 7, h = 11 }, } },
 	  	{ key = "4", value = { quad = { x = 137, y = 433, w = 7, h = 11 }, } },
