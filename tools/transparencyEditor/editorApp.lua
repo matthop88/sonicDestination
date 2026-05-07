@@ -78,11 +78,19 @@ end
 
 createTransparency = function(x, y, r, g, b, a)
     if __PARAMS["outline"] then
-        if not (r < 0.1 and g < 0.1 and b < 0.1)   then return 0, 0, 0, 0
+        if not (r < 0.1 and g < 0.1 and b < 0.1)   then return getTransparentColor()
         else                                            return r, g, b, a end
     else
-        if colorMatchesRGB(selectedColor, r, g, b) then return 0, 0, 0, 0
+        if colorMatchesRGB(selectedColor, r, g, b) then return getTransparentColor()
         else                                            return r, g, b, a end
+    end
+end
+
+getTransparentColor = function()
+    if __PARAMS["whiten"] then
+        return 1, 1, 1, 1
+    else
+        return 0, 0, 0, 0
     end
 end
 
