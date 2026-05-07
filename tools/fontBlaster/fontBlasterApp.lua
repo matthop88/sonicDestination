@@ -31,8 +31,8 @@ function love.keypressed(key)
     FONT_BLASTER_ENGINE:handleKeypressed(key)
 end
 
-function love.mousepressed(mx, my)
-    FONT_BLASTER_ENGINE:handleMousepressed(mx, my)
+function love.mousepressed(mx, my, params)
+    FONT_BLASTER_ENGINE:handleMousepressed(mx, my, params)
 end
 
 function love.mousereleased(mx, my)
