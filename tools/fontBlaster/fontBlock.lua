@@ -1,5 +1,4 @@
-local GLYPH       = require("tools/fontBlaster/glyph")
-local FONT_OBJECT = require("tools/fontBlaster/fontObject")
+local GLYPH       = require("game/fonts/glyph")
 
 local drawEditingBlock  = function(self)
 	local graphics = self.graphics
