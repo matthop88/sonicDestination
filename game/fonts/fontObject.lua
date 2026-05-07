@@ -13,19 +13,25 @@ return {
 				return self
 			end,
 
-			draw = function(self, graphics, x, y, color)
-				if not color then
+			setColor = function(self, color)
+				self.color = color
+			end,
+
+			draw = function(self, graphics, x, y)
+				if not self.color then
 					graphics:setColor(1, 1, 1)
 				else
-					graphics:setColor(color)
+					graphics:setColor(self.color)
 				end
+				local w = 0
 				local image = self.image
 				self.glyphs:forEach(function(glyph) 
 					if glyph.quad then
-						graphics:draw(image, glyph.quad, x, y, 0, 1, 1)
+						graphics:draw(image, glyph.quad, x + w, y, 0, 1, 1)
 					end
-					x = x + glyph.w
+					w = w + glyph.w
 				end)
+				return w
 			end,
 		}):init(fontData)
 	end,
