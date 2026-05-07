@@ -3,11 +3,11 @@ return {
 		return ({
 			image  = font.image,
 			font   = font,
-			glyphs = require("game/util/dataStructures/linkedList"):create(),
+			glyphs = require(relativePath("util/dataStructures/linkedList"):create(),
 
 			init = function(self, fontData)
 				for _, key in ipairs(fontData.keys) do
-					self.glyphs:add(require("tools/fontBlaster/glyph"):create(self.font, key))
+					self.glyphs:add(require(relativePath("fonts/glyph")):create(self.font, key))
 				end
 
 				return self
