@@ -61,6 +61,13 @@ require("plugins/engine")
         interval    = 0.05,
         delay       = 0.5,
     })
+    :add("inputLayer", {
+        accessorFnName = "getInputLayer",
+        keypressedFn = function(key)
+            FONT_BLASTER_ENGINE:handleKeypressed(key)
+            return true
+        end,
+    })
     :add("scrolling",      { imageViewer = FONT_BLASTER_ENGINE })
     :add("zooming",        { imageViewer = FONT_BLASTER_ENGINE })    
     :add("grid2d",         { graphics    = GRAPHICS })
