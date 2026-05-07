@@ -4,7 +4,6 @@ return {
 	data  = {
 		-- $ is mini Sonic icon
 		{ key = "$", value = { quad = { x =  40, y = 401, w = 16, h =  14 }, } },
-		{ key = ":", value = { quad = { x =  90, y = 225, w =  4, h =  10 }, } },
 		{ key = "s", value = { quad = { x =  57, y = 401, w =  5, h =   6 }, } },
 		{ key = "o", value = { quad = { x =  63, y = 401, w =  5, h =   6 }, } },
 		{ key = "n", value = { quad = { x =  70, y = 401, w =  6, h =   6 }, } },
@@ -14,9 +13,9 @@ return {
 		
 		{ key = "0", value = { quad = { x = 121, y = 472, w = 7, h = 7 }, } },
 		{ key = "1", value = { quad = { x = 138, y = 472, w = 4, h = 7 }, } },
-		{ key = "2", value = { quad = { x = 158, y = 472, w = 7, h = 7 }, } },
+		{ key = "2", value = { quad = { x = 153, y = 472, w = 7, h = 7 }, } },
 		{ key = "3", value = { quad = { x = 169, y = 472, w = 7, h = 7 }, } },
-	  { key = "4", value = { quad = { x = 185, y = 472, w = 7, h = 7 }, } },
+	    { key = "4", value = { quad = { x = 185, y = 472, w = 7, h = 7 }, } },
 		{ key = "5", value = { quad = { x = 121, y = 488, w = 7, h = 7 }, } },
 		{ key = "6", value = { quad = { x = 137, y = 488, w = 7, h = 7 }, } },
 		{ key = "7", value = { quad = { x = 153, y = 488, w = 7, h = 7 }, } },
