@@ -10,16 +10,25 @@ return {
 	    local SCORE = {
 	    	fontName = "hud",
 	    	keys = {
-	    		"s", "c", "o", "r", "e", " ", " ", "1", "0", "0", "0", "0", 
+	    		"s", "c", "o", "r", "e", " ", " ", "0", "0", "0", "0", "0", "0",
 	    	},
 	    }
 
 	    local RINGS = {
 	    	fontName = "hud",
 	    	keys = {
-	    		"r", "I", "N", "g", "s", " ", " ", "5", "0",
+	    		"r", "I", "N", "g", "s", " ", " ", "0", "0",
 	    	},
 	    }
+
+	    local LIFE = {
+	    	fontName = "hudSmall",
+	    	keys = {
+	    		"$", "x", "0", "0",
+	    	}
+	    }
+
+	    local DISABLED_COLOR = { 1, 1, 1, 0.5 }
     
     	return ({
     		fontEngine = require(relativePath("fonts/fontEngine")):create(),
@@ -28,7 +37,7 @@ return {
     			self.timeHud  = self.fontEngine:newFontObject(TIME)
     			self.scoreHud = self.fontEngine:newFontObject(SCORE)
     			self.ringsHud = self.fontEngine:newFontObject(RINGS)
-
+    			self.lifeHud  = self.fontEngine:newFontObject(LIFE)
     			return self
     		end,
 
@@ -38,10 +47,12 @@ return {
 				local scoreX, scoreY = graphics:screenToImageCoordinates(48, 48)
 				local timeX,  timeY  = graphics:screenToImageCoordinates(48, 96)
 				local ringsX, ringsY = graphics:screenToImageCoordinates(48, 144)
+				local lifeX,  lifeY  = graphics:screenToImageCoordinates(48, 700)
 				
-				self.scoreHud:draw(graphics, scoreX, scoreY)
+				self.scoreHud:draw(graphics, scoreX, scoreY, DISABLED_COLOR)
             	self.timeHud:draw( graphics, timeX,  timeY)
-            	self.ringsHud:draw(graphics, ringsX, ringsY)
+            	self.ringsHud:draw(graphics, ringsX, ringsY, DISABLED_COLOR)
+            	self.lifeHud:draw(graphics, lifeX, lifeY, DISABLED_COLOR)
 
             	graphics:setScale(oldScale)
             end,
