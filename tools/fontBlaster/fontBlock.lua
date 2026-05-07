@@ -140,8 +140,16 @@ return {
 				if self:getGlyphCount() == 0 then self:setDeleted() end
 			end,
 			isSelected   = function(self) return self.selected  end,
-			startEditing = function(self) self.editing = true   end,
-			stopEditing  = function(self) self.editing = false  end,
+			startEditing = function(self) 
+				self.editing = true   
+				getInputLayer():activate()
+			end,
+			stopEditing  = function(self) 
+				if self:isEditing() then
+					self.editing = false 
+					getInputLayer():deactivate()
+				end
+			end,
 			isEditing    = function(self) return self.editing   end,  
 
 			deleteLastGlyph  = function(self)
