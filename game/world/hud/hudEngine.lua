@@ -3,9 +3,16 @@ return {
 		local TIME = {
 	        fontName = "hud",
 	        keys = {
-	            "t", "i", "m", "e", " ", "9", ":", "5", "9",
+	            "t", "i", "m", "e", " ",
 	        },
-	    } 
+	    }
+
+	    local TIME_DIGITS = {
+	    	fontName = "hud",
+	    	keys = {
+	    		"9", ":", "5", "9",
+	    	}
+	    }
 
 	    local SCORE = {
 	    	fontName = "hud",
@@ -34,7 +41,12 @@ return {
     		fontEngine = require(relativePath("fonts/fontEngine")):create(),
     
     		init = function(self)
-    			self.timeHud  = self.fontEngine:newFontObject(TIME)
+    			local time  = self.fontEngine:newFontObject(TIME)
+    			local timeDigits = self.fontEngine:newFontObject(TIME_DIGITS)
+    			self.timeHud = require(relativePath("fonts/fontGroup")):create()
+    								:add(time, { 0.99, 0.99, 0.0 })
+    								:add(timeDigits)
+    								
     			self.scoreHud = self.fontEngine:newFontObject(SCORE)
     			self.ringsHud = self.fontEngine:newFontObject(RINGS)
     			self.lifeHud  = self.fontEngine:newFontObject(LIFE)
