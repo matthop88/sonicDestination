@@ -162,6 +162,7 @@ return {
         self:updateEvents(dt)
         SOUND_MANAGER:update(dt)
         MUSIC_MANAGER:update(dt)
+        HUD:update(dt)
     end,
 
     updateEvents = function(self, dt)
