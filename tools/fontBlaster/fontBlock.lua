@@ -13,12 +13,19 @@ local createGlyph = function(font, key)
 end
 
 local createFontObject = function(font, fontData)
-	local obj = { image = font.image, glyphs = {} }
+	local obj = { image = font.image, glyphs = require("game/util/dataStructures/linkedList"):create() }
 	for _, key in ipairs(fontData.keys) do 
 		local glyph = createGlyph(font, key)
-		table.insert(obj.glyphs, glyph)
+		obj.glyphs:add(glyph)
 	end
 	return obj
+end
+
+local drawEditingBlock  = function(self)
+	local graphics = self.graphics
+	graphics:setColor(1, 1, 1)
+	graphics:setLineWidth(1)
+	graphics:rectangle("line", self.x - 4, self.y - 4, self.w + 7, self.h + 8)
 end
 
 local drawSelectedBlock = function(self)
@@ -45,13 +52,17 @@ local drawFontObject = function(self)
 	local graphics = self.graphics
 	graphics:setColor(1, 1, 1)
 	local myX = self.x
-	for _, glyph in ipairs(self.obj.glyphs) do 
+	local image = self.obj.image
+	local y = self.y
+	self.obj.glyphs:forEach(function(glyph) 
 		if glyph.quad then
-			graphics:draw(self.obj.image, glyph.quad, myX, self.y, 0, 1, 1)
+			graphics:draw(image, glyph.quad, myX, y, 0, 1, 1)
 		end
 		myX = myX + glyph.w
-	end
-	if self.selected then
+	end)
+	if self.editing then
+		drawEditingBlock(self)
+	elseif self.selected then
 		drawSelectedBlock(self)
 	elseif self.highlighted then
 		graphics:setColor(1, 1, 0)
@@ -61,17 +72,17 @@ end
 
 local calculateWidth = function(self)
 	local width = 0
-	for _, glyph in ipairs(self.obj.glyphs) do
+	self.obj.glyphs:forEach(function(glyph) 
 		width = width + glyph.w
-	end
+	end)
 	return width
 end
 
 local calculateHeight = function(self)
 	local height = 0
-	for _, glyph in ipairs(self.obj.glyphs) do
+	self.obj.glyphs:forEach(function(glyph) 
 		height = math.max(height, glyph.h)
-	end
+	end)
 	return height
 end
 
@@ -85,6 +96,7 @@ return {
 			selected    = false,
 			graphics    = params.graphics,
 			deleted     = false,
+			editing     = false,
 
 			draw = drawFontObject,
 
@@ -114,7 +126,7 @@ return {
 				return px >= self.x and py >= self.y and px < self.x + self.w and py < self.y + self.h
 			end,
 
-			deselect = function(self)   self.selected = false end,
+			deselect   = function(self) self.selected = false end,
 
 			setDeleted = function(self) self.deleted = true   end,
 			isDeleted  = function(self) return self.deleted   end,
@@ -123,8 +135,20 @@ return {
 				local px, py  = self.graphics:screenToImageCoordinates(mx, my)
 				self.selectedAt = { x = math.floor(px), y = math.floor(py) }
 			end,
-			deselect   = function(self) self.selected = false end,
-			isSelected = function(self) return self.selected  end,
+			deselect     = function(self) self.selected = false end,
+			isSelected   = function(self) return self.selected  end,
+			startEditing = function(self) self.editing = true   end,
+			stopEditing  = function(self) self.editing = false  end,
+			isEditing    = function(self) return self.editing   end,  
+
+			deleteLastGlyph  = function(self)
+				self.obj.glyphs:tail()
+				self.obj.glyphs:remove()
+				self.obj.glyphs:head()
+				self.w = calculateWidth(self)
+				self.h = calculateHeight(self)
+				if self.w == 0 then self:setDeleted() end
+			end,
 
 			nudge = function(self, deltaX, deltaY)
 				self.x = self.x + deltaX
