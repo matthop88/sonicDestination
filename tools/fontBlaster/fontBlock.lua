@@ -30,16 +30,7 @@ end
 
 local drawFontObject = function(self)
 	local graphics = self.graphics
-	graphics:setColor(1, 1, 1)
-	local myX = self.x
-	local image = self.obj.image
-	local y = self.y
-	self.obj.glyphs:forEach(function(glyph) 
-		if glyph.quad then
-			graphics:draw(image, glyph.quad, myX, y, 0, 1, 1)
-		end
-		myX = myX + glyph.w
-	end)
+	self.obj:draw(graphics, self.x, self.y)
 	if self.editing then
 		drawEditingBlock(self)
 	elseif self.selected then
