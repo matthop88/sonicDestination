@@ -85,12 +85,16 @@ return {
                 end
             end,
 
-            handleMousepressed = function(self, mx, my)
+            handleMousepressed = function(self, mx, my, params)
                 local selectedObj = nil
                 self.objects:forEach(function(obj)
                     obj:deselect()
+                    obj:stopEditing()
                     if obj:mouseInBounds(mx, my) then
                         selectedObj = obj
+                        if params.doubleClicked then 
+                            obj:startEditing()
+                        end
                     end
                 end)
                 if selectedObj ~= nil then selectedObj:select(mx, my) end
@@ -113,7 +117,13 @@ return {
             end,
 
             delete = function(self, obj)
-                if obj ~= nil then obj:setDeleted() end
+                if obj ~= nil then 
+                    if obj:isEditing() then
+                        obj:deleteLastGlyph()
+                    else
+                        obj:setDeleted() 
+                    end
+                end
             end,
 
             nudge = function(self, obj, deltaX, deltaY)
@@ -123,6 +133,7 @@ return {
             deselectAll = function(self)
                 self.objects:forEach(function(obj)
                     obj:deselect()
+                    obj:stopEditing()
                 end)
             end,
 
