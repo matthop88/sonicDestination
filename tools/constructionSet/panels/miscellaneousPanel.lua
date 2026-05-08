@@ -5,6 +5,7 @@ return {
 
         table.insert(buttonList, require("tools/constructionSet/miscellaneous/music/musicButton"):create {})
         table.insert(buttonList, require("tools/constructionSet/miscellaneous/sounds/soundsButton"):create {})
+        table.insert(buttonList, require("tools/constructionSet/miscellaneous/time/timeButton"):create {})
 
         local palette = require("tools/constructionSet/palette"):create { objects = buttonList, CONTAINER_WIDTH = WIDTH, CONTAINER_HEIGHT = HEIGHT }
         
