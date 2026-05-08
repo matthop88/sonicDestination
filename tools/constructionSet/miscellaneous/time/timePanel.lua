@@ -21,6 +21,7 @@ local TIMES_AT_START = {
 }
 
 local timesAtStartDropdown
+local timeTextEditableField
 
 local createLabel = function(params)
 	return {
@@ -58,7 +59,7 @@ return {
 				end
 
 				self.timeAtStartLabel = createLabel { x = self.x + 20, y = self.y + 80,  w = 150, h = 50, label = "Time at Start", }
-				self.timeTextLabel    = createLabel { x = self.x + 20, y = self.y + 110, w = 150, h = 50, label = "Text", }
+				self.timeTextLabel    = createLabel { x = self.x + 20, y = self.y + 140, w = 150, h = 50, label = "Text", }
 				self.okButton         = require("tools/lib/components/okButton"):create {
 					x = self.x + self.w - 120,
 					y = self.y + self.h - 60,
@@ -81,6 +82,14 @@ return {
 						--timesAtStartDropdown:setVisible(false)
 					end,
 				}
+
+				timeTextEditableField = require("tools/lib/components/editableTextField"):create {
+					x = self.x + 200,
+					y = self.y + 140,
+					w = 300,
+					height = 50,
+					text = "TIME",
+				}
 		
 				return self
 			end,
@@ -93,6 +102,7 @@ return {
 				self.timeAtStartLabel:draw()
 				self.timeTextLabel:draw()
 				timesAtStartDropdown:draw()
+				timeTextEditableField:draw()
 				self.okButton:draw()
 			end,
 			
@@ -114,6 +124,7 @@ return {
 				
 				local mx, my = love.mouse.getPosition()
 				timesAtStartDropdown:update(dt, mx, my)
+				timeTextEditableField:update(dt, mx, my)
 				self.okButton:update(mx, my)
 			end,
 								
@@ -121,6 +132,10 @@ return {
 				if not self.visible then return false end
 				
 				if timesAtStartDropdown:handleMousepressed(mx, my) then
+					return true
+				end
+
+				if timeTextEditableField:handleMousepressed(mx, my) then
 					return true
 				end
 
