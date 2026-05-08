@@ -197,6 +197,14 @@ end
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
     :add("doubleClick")
+    :add("inputLayer", {
+        accessorFnName = "getInputLayer",
+        keypressedFn = function(key)
+            if _G.getModals then
+                return getModals():handleKeypressedFromInputLayer(key)
+            end
+        end,
+    })
     :add("timedFunctions",
     {
         {   secondsWait = 0.25, 
