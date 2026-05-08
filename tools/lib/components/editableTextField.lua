@@ -64,7 +64,12 @@ return {
 				if not self.visible then return end
 				
 				if self.editing then
-					self.text = self.text .. key
+					if key == "space" or key == "shiftspace" then key = " " end
+					if key == "backspace" then 
+						self.text = string.sub(self.text, 1, string.len(self.text) - 1)
+					elseif string.len(key) == 1 then
+						self.text = self.text .. key
+					end
 					return true
 				end
 			end,
