@@ -58,7 +58,7 @@ return {
 			
 			showMusicPanel = function(self)
 				if not musicPanel then
-					musicPanel = require("tools/constructionSet/music/musicPanel"):create {
+					musicPanel = require("tools/constructionSet/miscellaneous/music/musicPanel"):create {
 						x = 300,
 						y = 250,
 						width = 830,
