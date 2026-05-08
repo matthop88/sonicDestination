@@ -6,13 +6,15 @@ return {
 		if params.visible == nil then params.visible = true end
 		
 		return ({
-			x       = params.x,
-			y       = params.y,
-			w       = params.w,
-			h       = params.h or 50,
-			text    = params.text or "",
-			visible = params.visible,
-			hovered = false,
+			x            = params.x,
+			y            = params.y,
+			w            = params.w,
+			h            = params.h or 50,
+			text         = params.text or "",
+			visible      = params.visible,
+			hovered      = false,
+			editing      = false,
+			inputLayerFn = params.inputLayerFn,
 
 			init = function(self)
 				-- Do something?
@@ -48,13 +50,23 @@ return {
 			handleMousepressed = function(self, mx, my)
 				if not self.visible then return end
 				
-				-- do something
+				self.editing = self:containsPoint(mx, my)
+				if self.inputLayerFn then
+					if self.editing then
+						self.inputLayerFn():activate()
+					else
+						self.inputLayerFn():deactivate()
+					end
+				end
 			end,
 
 			handleKeypressed = function(self, key)
 				if not self.visible then return end
 				
-				-- do something
+				if self.editing then
+					self.text = self.text .. key
+					return true
+				end
 			end,
 			
 			containsPoint = function(self, mx, my)
