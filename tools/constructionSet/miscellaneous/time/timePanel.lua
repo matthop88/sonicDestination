@@ -89,6 +89,7 @@ return {
 					w = 300,
 					height = 50,
 					text = "TIME",
+					inputLayerFn = getInputLayer,
 				}
 		
 				return self
@@ -141,6 +142,14 @@ return {
 
 				if self.okButton:containsPoint(mx, my) then
 					self:setVisible(false)
+					return true
+				end
+			end,
+
+			keypressed = function(self, key)
+				if not self.visible then return false end
+
+				if timeTextEditableField:handleKeypressed(key) then
 					return true
 				end
 			end,
