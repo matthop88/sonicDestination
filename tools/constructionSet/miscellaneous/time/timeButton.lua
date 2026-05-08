@@ -54,7 +54,18 @@ return {
 			end,
 			
 			showTimePanel = function(self)
-				-- Do nothing
+				if not timePanel then
+					timePanel = require("tools/constructionSet/miscellaneous/time/timePanel"):create {
+						x = 300,
+						y = 250,
+						w = 830,
+						h = 400,
+					}
+				end
+
+				timePanel:setVisible(true)
+				self.isSelected = false
+				self.isPressed = false
 			end,
 			
 			newObject = function(self)
