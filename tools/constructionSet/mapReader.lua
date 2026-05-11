@@ -60,6 +60,7 @@ return {
 			end
 
 			self:readSoundsFromMap(mapData.properties.sounds)
+			self:readTimeFromMap(mapData.properties.time)
 		end
 	end,
 
@@ -67,6 +68,12 @@ return {
 		if soundProps then
 			getProperties().sounds = soundProps
         end
+    end,
+
+    readTimeFromMap = function(self, timeProps)
+    	if timeProps then
+    		getProperties().time = timeProps
+    	end
     end,
 
 	readObjectsIntoObjectsList = function(self, objects, objectsList)
