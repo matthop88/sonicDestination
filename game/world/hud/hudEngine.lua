@@ -86,8 +86,16 @@ return {
             update = function(self, dt)
             	local oldTimer = math.floor(self.timer)
             	self.timer = self.timer - dt
+            	if self.timer < 30 then
+            		self.redColor = true
+            	end
+
             	if self.redColor then
-            		self.time:setColor({ 0.99, 0, 0 })
+            		if math.floor(self.timer * 4) % 2 == 0 then
+            			self.time:setColor({ 0.99, 0, 0 })
+            		else
+            			self.time:setColor({ 0.99, 0, 0, 0.5})
+            		end
             	else
             		self.time:setColor({ 0.99, 0.99, 0 })
             	end
