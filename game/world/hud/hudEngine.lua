@@ -85,7 +85,7 @@ return {
 
             update = function(self, dt)
             	local oldTimer = math.floor(self.timer)
-            	self.timer = self.timer - (dt * 100)
+            	self.timer = self.timer - dt
             	if self.redColor then
             		self.time:setColor({ 0.99, 0, 0 })
             	else
@@ -93,18 +93,22 @@ return {
             	end
 
             	if math.floor(self.timer) ~= oldTimer and math.floor(self.timer) >= 0 then
-            		self.timeSecondsOnes = math.floor(self.timer) % 10
-            		self.timeSecondsTens = math.floor(self.timer / 10)  %  6
-            		self.timeMinutes     = math.floor(self.timer / 60)  % 10
-            		self.timeMinutesTens = math.floor(self.timer / 600) %  6
-            		
-            		if self.timeMinutesTens > 0 then
-						self.DIGITS:replaceDigits(self.timeDigits, { self.timeMinutesTens, self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
-            		else
-            			self.DIGITS:replaceDigits(self.timeDigits, { "NIL", self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
-            		end
+            		self:updateDigits()
             	end
             end,
+
+            updateDigits = function(self)
+            	self.timeSecondsOnes = math.floor(self.timer) % 10
+            	self.timeSecondsTens = math.floor(self.timer / 10)  %  6
+            	self.timeMinutes     = math.floor(self.timer / 60)  % 10
+            	self.timeMinutesTens = math.floor(self.timer / 600) %  6
+            		
+            	if self.timeMinutesTens > 0 then
+					self.DIGITS:replaceDigits(self.timeDigits, { self.timeMinutesTens, self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
+        		else
+        			self.DIGITS:replaceDigits(self.timeDigits, { "NIL", self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
+        		end
+        	end,
 
             refreshFromTimeProps = function(self, timeProps)
             	if timeProps.timeLabel then
@@ -118,6 +122,11 @@ return {
     					table.insert(TIME.keys, char)
     				end
     				table.insert(TIME.keys, " ")
+    			end
+
+    			if timeProps.timeAtStart then
+    				self.timer = timeProps.timeAtStart
+    				if self.timer >= 0 then self:updateDigits() end
     			end
 
     			self:initTimeHud()
