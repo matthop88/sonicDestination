@@ -26,10 +26,12 @@ return {
 				local w = 0
 				local image = self.image
 				self.glyphs:forEach(function(glyph) 
-					if glyph.quad then
-						graphics:draw(image, glyph.quad, x + w, y, 0, 1, 1)
+					if glyph ~= "NIL" then
+						if glyph.quad then
+							graphics:draw(image, glyph.quad, x + w, y, 0, 1, 1)
+						end
+						w = w + glyph.w
 					end
-					w = w + glyph.w
 				end)
 				return w
 			end,
