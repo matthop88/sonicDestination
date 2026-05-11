@@ -135,6 +135,7 @@ return {
 				if not self.visible then return false end
 				
 				if timesAtStartDropdown:handleMousepressed(mx, my) then
+					timeTextEditableField:setEditing(false)
 					return true
 				end
 
@@ -144,6 +145,10 @@ return {
 
 				if self.okButton:containsPoint(mx, my) then
 					self:setVisible(false)
+					return true
+				end
+
+				if self:containsPoint(mx, my) and not timesAtStartDropdown:isListVisible() then
 					return true
 				end
 			end,
@@ -158,6 +163,11 @@ return {
 			
 			setVisible = function(self, visible)
 				self.visible = visible
+			end,
+
+			containsPoint = function(self, mx, my)
+				return mx >= self.x and mx <= self.x + self.w and
+				       my >= self.y and my <= self.y + self.h
 			end,
 		}):init()
 	end,
