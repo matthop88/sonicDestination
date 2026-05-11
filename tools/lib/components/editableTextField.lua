@@ -17,6 +17,7 @@ return {
 			inputLayerFn = params.inputLayerFn,
 			validKeys    = params.validKeys,
 			transformer  = params.transformer,
+			cursorTimer  = 0,
 
 			init = function(self)
 				self:transformText()
@@ -40,25 +41,28 @@ return {
 				love.graphics.setFont(fieldFont)
 				
 				love.graphics.printf(self.displayedText, self.x + 10, self.y + 15, self.w - 20, "left")
+				if self.editing then self:drawCursor() end
+			end,
+
+			drawCursor = function(self)
+				if math.floor(self.cursorTimer) % 2 == 0 then
+					local width = fieldFont:getWidth(self.displayedText)
+					love.graphics.setColor(COLOR.PURE_WHITE)
+					love.graphics.rectangle("fill", self.x + width + 12, self.y + 5, 3, 40)
+				end
 			end,
 			
 			update = function(self, dt, mx, my)
 				if not self.visible then return end
 
 				self.hovered = self:containsPoint(mx, my)
+				self.cursorTimer = self.cursorTimer + (2 * dt)
 			end,
 
 			handleMousepressed = function(self, mx, my)
 				if not self.visible then return end
 				
-				self.editing = self:containsPoint(mx, my)
-				if self.inputLayerFn then
-					if self.editing then
-						self.inputLayerFn():activate()
-					else
-						self.inputLayerFn():deactivate()
-					end
-				end
+				self:setEditing(self:containsPoint(mx, my))
 			end,
 
 			handleKeypressed = function(self, key)
@@ -107,8 +111,21 @@ return {
 				return self.text
 			end,
 
+			setEditing = function(self, editing)
+				if self.editing == true and editing == false then
+					if self.inputLayerFn then self.inputLayerFn():deactivate() end
+				elseif self.editing == false and editing == true then
+					if self.inputLayerFn then self.inputLayerFn():activate()   end
+					self.cursorTimer = 0
+				end
+				self.editing = editing
+			end,
+
 			setVisible = function(self, visible)
 				self.visible = visible
+				if self.editing and not self.visible then
+					self:setEditing(false)
+				end
 			end,
 
 		}):init()
