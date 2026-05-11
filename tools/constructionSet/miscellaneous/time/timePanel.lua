@@ -83,12 +83,17 @@ return {
 					end,
 				}
 
+				local timeProperties = getProperties().time
+				if not timeProperties then
+					getProperties().time = {}
+				end
+					
 				timeTextEditableField = require("tools/lib/components/editableTextField"):create {
 					x = self.x + 200,
 					y = self.y + 140,
 					w = 300,
 					height = 50,
-					text = "time",
+					text = getProperties().time.timeLabel or "time",
 					inputLayerFn = getInputLayer,
 					validKeys = { "b", "c", "e", "g", "i", "m", "n", "o", "r", "s", "t", "u", },
 					transformer = function(text) return string.upper(text) end,
@@ -157,6 +162,8 @@ return {
 				if not self.visible then return false end
 
 				if timeTextEditableField:handleKeypressed(key) then
+					local timeProperties = getProperties().time
+					timeProperties.timeLabel = timeTextEditableField:getText()
 					return true
 				end
 			end,
