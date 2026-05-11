@@ -64,6 +64,7 @@ local PROPERTIES    = {
             encoded = encoded .. "      musicEchoCount = " .. self.musicEchoCount .. ",\n"
         end
         encoded = encoded .. self:encodeSounds()
+        encoded = encoded .. self:encodeTime()
         encoded = encoded .. "  },\n"
 
         return encoded
@@ -101,6 +102,18 @@ local PROPERTIES    = {
             result = result .. self:generateKV(padding + 4, k, v)
         end
         return result .. string.rep(" ", padding) .. "},\n"
+    end,
+
+    encodeTime = function(self)
+        local encoded = ""
+        if self.time then
+            encoded = encoded .. "      time = {\n"
+            for k, v in pairs(self.time) do
+                encoded = encoded .. self:generateKV(10, k, v)
+            end
+            encoded = encoded .. "      },\n"
+        end
+        return encoded
     end,
        
 }
