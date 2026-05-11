@@ -67,6 +67,18 @@ return {
 					height = 40,
 				}
 
+				local timeProperties = getProperties().time
+				if not timeProperties then
+					getProperties().time = {}
+				end
+				
+				local selectedIndex = 1
+				for n, v in ipairs(TIMES_AT_START) do
+					if v.value == timeProperties.timeAtStart then
+						selectedIndex = n
+					end
+				end
+
 				timesAtStartDropdown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 200,
 					y = self.y + 80,
@@ -74,19 +86,15 @@ return {
 					height = 50,
 					label = "",
 					list = TIMES_AT_START,
-					selectedIndex = 1,
+					selectedIndex = selectedIndex,
 					comparisonFn = function(listItem, value)
 						return listItem.value == value
 					end,
 					onChanged = function(item, index)
-						--timesAtStartDropdown:setVisible(false)
+						timeProperties.timeAtStart = item.value
 					end,
 				}
 
-				local timeProperties = getProperties().time
-				if not timeProperties then
-					getProperties().time = {}
-				end
 					
 				timeTextEditableField = require("tools/lib/components/editableTextField"):create {
 					x = self.x + 200,
