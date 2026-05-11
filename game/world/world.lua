@@ -56,6 +56,7 @@ return {
         HUD        = requireRelative("world/hud/hudEngine"):create()
         self:refreshMusic()
         self:refreshSounds()
+        self:refreshTime()
         self:refreshGroundLevel()
         self:fadeIn({ r = 0, g = 0, b = 0 })
         
@@ -106,6 +107,14 @@ return {
 
         if map.properties then
             SOUND_MANAGER:overrideFromSoundProps(map.properties.sounds)
+        end
+    end,
+
+    refreshTime = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties then
+            HUD:refreshFromTimeProps(map.properties.time)
         end
     end,
 
