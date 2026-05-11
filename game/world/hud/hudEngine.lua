@@ -48,18 +48,22 @@ return {
     		redColor        = false,
     		
     		init = function(self)
-    			self.time  = self.fontEngine:newFontObject(TIME)
-    			self.timeDigits = self.fontEngine:newFontObject(TIME_DIGITS)
-    			self.timeHud = require(relativePath("fonts/fontGroup")):create()
-    								:add(self.time, { 0.99, 0.99, 0.0 })
-    								:add(self.timeDigits)
-    								
+    			self:initTimeHud()
     			self.scoreHud = self.fontEngine:newFontObject(SCORE)
     			self.ringsHud = self.fontEngine:newFontObject(RINGS)
     			self.lifeHud  = self.fontEngine:newFontObject(LIFE)
 
     			self.DIGITS  = require(relativePath("world/hud/digits")):create("hud")
     			return self
+    		end,
+
+    		initTimeHud = function(self)
+    			self.time  = self.fontEngine:newFontObject(TIME)
+    			self.timeDigits = self.fontEngine:newFontObject(TIME_DIGITS)
+    			self.timeHud = require(relativePath("fonts/fontGroup")):create()
+    								:add(self.time, { 0.99, 0.99, 0.0 })
+    								:add(self.timeDigits)
+    								
     		end,
 
             draw = function(self, graphics)
@@ -102,6 +106,23 @@ return {
 	            		self.DIGITS:replaceDigits(self.timeDigits, { self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
 	            	end
             	end
+            end,
+
+            refreshFromTimeProps = function(self, timeProps)
+            	if timeProps.timeLabel then
+            		TIME = {
+	        			fontName = "hud",
+	        			keys = {},
+	    			}
+
+	    			for i = 1, #timeProps.timeLabel do
+    					local char = timeProps.timeLabel:sub(i, i)
+    					table.insert(TIME.keys, char)
+    				end
+    				table.insert(TIME.keys, " ")
+    			end
+
+    			self:initTimeHud()
             end,
     	}):init()
 	
