@@ -126,6 +126,10 @@ return {
 				self.list:setVisible(false)
 			end,
 
+			isListVisible = function(self)
+				return self.list.visible
+			end,
+
 			initializeList = function(self)
 				
 			end,
