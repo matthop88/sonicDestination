@@ -40,7 +40,11 @@ return {
     			for _, g in ipairs(glyphs) do
     				if g == ":" then fontObject.glyphs:add(COLON)
     				else
-    					fontObject.glyphs:add(DIGITS[g + 1])
+    					if g == "NIL" then
+    						fontObject.glyphs:add("NIL")
+    					else
+    						fontObject.glyphs:add(DIGITS[g + 1])
+    					end
     				end
     			end
     		end,
