@@ -10,7 +10,7 @@ return {
 	    local TIME_DIGITS = {
 	    	fontName = "hud",
 	    	keys = {
-	    		"9", ":", "5", "9",
+	    		"5", "9", ":", "5", "9",
 	    	}
 	    }
 
@@ -40,7 +40,8 @@ return {
     	return ({
     		fontEngine = require(relativePath("fonts/fontEngine")):create(),
     
-    		timer           = 600,
+    		timer           = 3600,
+    		timeMinutesTens = 5,
 			timeMinutes     = 9,
     		timeSecondsTens = 5,
     		timeSecondsOnes = 9,
@@ -84,27 +85,24 @@ return {
 
             update = function(self, dt)
             	local oldTimer = math.floor(self.timer)
-            	self.timer = self.timer - dt
+            	self.timer = self.timer - (dt * 100)
             	if self.redColor then
             		self.time:setColor({ 0.99, 0, 0 })
             	else
             		self.time:setColor({ 0.99, 0.99, 0 })
             	end
 
-            	if math.floor(self.timer) ~= oldTimer then
-            		if self.timeMinutes > 0 then
-	            		self.timeSecondsOnes = self.timeSecondsOnes - 1
-	            		if self.timeSecondsOnes < 0 then
-	            			self.timeSecondsOnes = 9
-	            			self.timeSecondsTens = self.timeSecondsTens - 1
-	            			self.redColor = not self.redColor
-	            			if self.timeSecondsTens < 0 then
-	            				self.timeSecondsTens = 5
-	            				self.timeMinutes = self.timeMinutes - 1
-	            			end
-	            		end
-	            		self.DIGITS:replaceDigits(self.timeDigits, { self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
-	            	end
+            	if math.floor(self.timer) ~= oldTimer and math.floor(self.timer) >= 0 then
+            		self.timeSecondsOnes = math.floor(self.timer) % 10
+            		self.timeSecondsTens = math.floor(self.timer / 10)  %  6
+            		self.timeMinutes     = math.floor(self.timer / 60)  % 10
+            		self.timeMinutesTens = math.floor(self.timer / 600) %  6
+            		
+            		if self.timeMinutesTens > 0 then
+						self.DIGITS:replaceDigits(self.timeDigits, { self.timeMinutesTens, self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
+            		else
+            			self.DIGITS:replaceDigits(self.timeDigits, { "NIL", self.timeMinutes, ":", self.timeSecondsTens, self.timeSecondsOnes })
+            		end
             	end
             end,
 
