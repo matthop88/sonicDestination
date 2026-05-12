@@ -57,6 +57,7 @@ return {
 						if self:reachedMaximumReps() then
 							self:prevFrame()
 							if self.data.terminal then self.terminated = true end
+							if self.data.endingFrame then self.currentFrame:setFrameNumber(self.data.endingFrame) end
 						end
 					end
 				end
@@ -74,6 +75,9 @@ return {
 				self.currentFrame = require("tools/lib/sprites/frame"):create(self.data, syncName)
 			end,
 			
+			getEndingAnimation = function(self)
+				return self.data.endingAnimation
+			end,
 
 			isDefault    = function(self)    return self.data.isDefault    end,
 
