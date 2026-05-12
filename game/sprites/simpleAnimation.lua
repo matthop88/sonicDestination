@@ -13,7 +13,9 @@ return {
 
 			draw = function(self, GRAPHICS, x, y, scaleX, scaleY)
                 local currentQuad = self:getCurrentQuad()
-                if currentQuad then
+                if self.data.draw then
+                    self.data.draw(GRAPHICS, self:getImageX(x, scaleX), self:getImageY(y, scaleY))
+                elseif currentQuad then
                     GRAPHICS:draw(self:getImage(), self:getCurrentQuad(), self:getImageX(x, scaleX), self:getImageY(y, scaleY), 0, scaleX, scaleY)
                 end
             end,
@@ -37,11 +39,13 @@ return {
                 if not self:reachedMaximumReps() then
                     self.currentFrameIndex = self.currentFrameIndex + (self:getFPS() * dt)
                     if math.floor(self.currentFrameIndex) > prevFrameIndex then
-                        self.repCount = self.repCount + (1 / #self.data)
                         if math.floor(self.currentFrameIndex) > #self.data then
                             self.currentFrameIndex = self.currentFrameIndex - #self.data
+                            self.repCount = self.repCount + 1
                         end
                     end
+                else
+                    if self.data.endingFrame then self.currentFrameIndex = self.data.endingFrame end
                 end
             end,
 
@@ -71,7 +75,14 @@ return {
             getImage           = function(self)      return self.image                                           end,
             getCurrentQuad     = function(self)      return self:getCurrentFrame().quad                          end,
             getCurrentFrame    = function(self)      return self.data[self:getCurrentFrameIndex()]               end,
-            getCurrentOffset   = function(self)      return self:getCurrentFrame().offset                        end,
+            getCurrentOffset   = function(self)      
+                if self.data.calculateOffsets then
+                    local x, y = self.data.calculateOffsets(self.currentFrameIndex)
+                    return { x = x, y = y }
+                else
+                    return self:getCurrentFrame().offset                        
+                end
+            end,
             getFPS             = function(self)      return self.data.fps                                        end,   
             setFPS             = function(self, fps) self.data.fps = fps                                         end,
         
