@@ -29,7 +29,9 @@ return {
 			
 			draw = function(self, GRAFX, x, y, xScale)
 				local frame = self.currentFrame:get()
-				if frame.QUAD then
+				if self.data.draw then
+					self.data.draw(GRAFX, x - (frame.offset.x * xScale), y - frame.offset.y)
+				elseif frame.QUAD then
 					GRAFX:setColor(1, 1, 1)
 					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * xScale), y - frame.offset.y, 0, xScale, 1)
 				end
