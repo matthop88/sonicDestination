@@ -15,6 +15,10 @@ return {
                 graphics:ellipse("fill", x + 8, y + 9, 8, 7)
                 graphics:setColor(0.99, 0, 0)
                 graphics:ellipse("fill", x + 8, y + 7, 8, 7)
+                graphics:setColor(0.99, 0.71, 0.56)
+                graphics:circle("fill", x + 8, y + 4, 2, 2)
+                graphics:setColor(0.99, 0.99, 0.99)
+                graphics:circle("fill", x + 8, y + 3.75, 1, 1)
             end,
             { x = 132, y = 510, w = 16, h = 16, offset = { x =  8, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 13, y = 32 }, },
