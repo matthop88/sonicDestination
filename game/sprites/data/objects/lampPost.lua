@@ -6,7 +6,7 @@ return {
             ----------------------------------------------------------------------------
             parts = {
                 {   name = "lampPostHead", animation = "standingBlue",  },
-                {   name = "lampPostBody", animation = "standing", },
+                {   name = "lampPostBody", animation = "standing",      },
             }
         },
         standingRed = { offset = { x = 8, y = 32 }, w = 16, h = 64,
@@ -14,7 +14,7 @@ return {
             ----------------------------------------------------------------------------
             parts = {
                 {   name = "lampPostHead", animation = "standingRed",  },
-                {   name = "lampPostBody", animation = "standing", },
+                {   name = "lampPostBody", animation = "standing",     },
             }
         },
         animatingRed = { offset = { x = 8, y = 32 }, w = 16, h = 64, fps = 5,
@@ -35,6 +35,13 @@ return {
             { x = 388, y = 567, w = 28, h = 57, offset = { x =  8, y = 25 }, },
             { x = 436, y = 563, w = 25, h = 61, offset = { x =  8, y = 29 }, },
             { x = 484, y = 560, w = 21, h = 64, offset = { x =  8, y = 32 }, },
+        },
+        animatingRedParts = { offset = { x = 8, y = 32 }, w = 16, h = 64, fps = 5,
+            hitBox = { rX = 5, rY = 28, danger = 0 },
+            parts = {
+                {   name = "lampPostBody", animation = "standing",      },
+                {   name = "lampPostHead", animation = "animatingRed",  },
+            },
         },
     },
 }
