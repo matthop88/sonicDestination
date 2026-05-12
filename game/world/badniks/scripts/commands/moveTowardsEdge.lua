@@ -2,7 +2,8 @@ return function(params)
     return {
         xSpeed    = params.xSpeed     or 100,
         animation = params.animation,
-        
+        elapsed   = 0,
+        duration  = params.numSeconds or 256,
         reset = function(self)
             self.elapsed = 0
         end,
@@ -15,6 +16,11 @@ return function(params)
                 return true
             else
                 actor:setXSpeed(self.xSpeed)
+            end
+            self.elapsed = self.elapsed + dt
+            if self.elapsed > self.duration then
+                self:reset()
+                return true
             end
         end,
     }
