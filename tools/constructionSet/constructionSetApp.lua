@@ -25,7 +25,7 @@ local CHUNKS_4_PANEL  = require("tools/constructionSet/panels/chunksPanel"):crea
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
-local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create( { "ring", "giantRing", }, STICKY_MOUSE)
+local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create( { "ring", "giantRing", "lampPost", }, STICKY_MOUSE)
 local ITEMS_2_PANEL   = require("tools/constructionSet/panels/itemsPanel"):create( { "bigBall", }, STICKY_MOUSE)
 
 local MISCELLANEOUS_PANEL = require("tools/constructionSet/panels/miscellaneousPanel"):create()
