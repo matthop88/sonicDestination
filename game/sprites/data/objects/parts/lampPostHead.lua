@@ -20,6 +20,10 @@ return {
                 graphics:setColor(0.99, 0.99, 0.99)
                 graphics:circle("fill", x + 8, y + 3.75, 1, 1)
             end,
+            calculateOffsets = function(frameNumber)
+                local rad = (frameNumber - 1) * (math.pi / 8) + (math.pi / 2)
+                return 8 + (math.cos(rad) * 12), 20 + (math.sin(rad) * 12)
+            end,
             { x = 132, y = 510, w = 16, h = 16, offset = { x =  8, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 13, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 17, y = 29 }, },
