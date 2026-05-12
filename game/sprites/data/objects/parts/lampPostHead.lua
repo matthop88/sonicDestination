@@ -32,7 +32,7 @@ return {
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 8, y = 32 }, },
             draw = drawRedBall,
         },
-        animatingRed = { fps = 6, offset = { x = 8, y = 32 }, w = 16, h = 16,
+        animatingRed = { fps = 60, offset = { x = 8, y = 32 }, w = 16, h = 16,
             reps = 2, endingFrame = 1,
             draw = drawRedBall,
             calculateOffsets = function(frameNumber)
