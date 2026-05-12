@@ -56,6 +56,12 @@ return {
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},
+		lampPost = {
+			name       = "lampPost",
+			spritePath = "objects/lampPost",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		}
 	},
 
 	getByName = function(self, name)
