@@ -10,6 +10,10 @@ return {
         },
         animatingRed = { fps = 60, offset = { x = 8, y = 32 }, w = 16, h = 16,
             reps = 2, endingFrame = 1,
+            draw = function(graphics, x, y)
+                graphics:setColor(1, 1, 1)
+                graphics:circle("fill", x + 8, y + 8, 8)
+            end,
             { x = 132, y = 510, w = 16, h = 16, offset = { x =  8, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 13, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 17, y = 29 }, },
