@@ -68,6 +68,8 @@ return {
 
 			getFirst     = function(self) return self.animation[1]     end,
 			isForeground = function(self) return self:get().foreground end,
+
+			setFrameNumber = function(self, frameNumber) self.frameNumber = frameNumber end,
 		}
 	end,
 }
