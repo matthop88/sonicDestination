@@ -9,6 +9,7 @@ return {
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 8, y = 32 }, },
         },
         animatingRed = { fps = 60, offset = { x = 8, y = 32 }, w = 16, h = 16,
+            reps = 2, endingFrame = 1,
             { x = 132, y = 510, w = 16, h = 16, offset = { x =  8, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 13, y = 32 }, },
             { x = 132, y = 510, w = 16, h = 16, offset = { x = 17, y = 29 }, },
