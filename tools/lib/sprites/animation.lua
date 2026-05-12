@@ -53,9 +53,11 @@ return {
 				if not self:reachedMaximumReps() then
 					self.currentFrame:update(dt)
 					if self.currentFrame:isRolledOver() then
-						self:prevFrame()
 						self.repCount = self.repCount + 1
-						if self:reachedMaximumReps() and self.data.terminal then self.terminated = true end
+						if self:reachedMaximumReps() then
+							self:prevFrame()
+							if self.data.terminal then self.terminated = true end
+						end
 					end
 				end
 			end,
