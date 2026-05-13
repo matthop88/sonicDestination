@@ -6,7 +6,7 @@ return {
 			onCollisionWithPlayer = function(self, player)
 				if self.active then
 					self:setAnimation("animatingRed")
-					-- Play some sound here
+					SOUND_MANAGER:playAction("lampPost")
 				end
 			end,
 		}
