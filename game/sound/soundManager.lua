@@ -28,6 +28,7 @@ return ({
         badnikStrike    = "bowlingStrike",
         pushObject      = "pushRock",
         lampPost        = "lampPost",
+        postLamp        = "postLamp",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
@@ -97,7 +98,7 @@ return ({
 		local data = requireRelative("sound/soundData")
 		local base = data[soundKey]
 		if not base then 
-            print("Data not found for " .. soundKey)
+            print("Data not found for ", soundKey)
             return end
 		local props = propsTable or (_G.getProperties and getProperties().sounds) or nil
 		local merged = self:mergePropsIntoElement(soundKey, shallowCopy(base), props)
