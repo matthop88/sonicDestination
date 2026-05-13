@@ -4,9 +4,10 @@ return {
 	create = function(self)
 		return {
 			onCollisionWithPlayer = function(self, player)
-				if self.active then
+				if self.active and not self.triggered then
 					self:setAnimation("animatingRed")
 					SOUND_MANAGER:playAction("lampPost")
+					self.triggered = true
 				end
 			end,
 		}
