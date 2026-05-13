@@ -18,6 +18,7 @@ return {
 	pushRock       = { label = "Push Rock",        filename = "pushRock.wav",          volume = 1.0, },
 	lampPost       = { label = "Lamp Post",        filename = "lampPost.mp3",          volume = 1.0, },
 	cool           = { label = "Cool!",            filename = "extra/Cool.wav",        volume = 1.0,  startPoint =  4708, endPoint =  41476, }, 
+	allRight       = { label = "All Right!",       filename = "extra/AllRight.wav",    volume = 1.0, },
 	klankOuch      = { label = "Klank Ouch!",      complex  = true,
         { filename = "extra/AnvilDing.wav",   volume = 0.8, startPoint = 11076, endPoint =  41006,             },
         { filename = "extra/Ooouuucchh.wav",  volume = 0.8, startPoint =  8182, endPoint =  38054, delay = 0.25 },
