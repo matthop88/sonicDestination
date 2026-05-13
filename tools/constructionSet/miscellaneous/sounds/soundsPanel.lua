@@ -18,6 +18,7 @@ local ACTIONS = {
 	{ serial = "badnikSquished",  label = "Badnik Squished" },
 	{ serial = "pushObject",      label = "Push Object" },
 	{ serial = "lampPost",        label = "Lamp Post" },
+	{ serial = "postLamp",        label = "Post Lamp" },
 }
 
 local AUDIO_EFFECTS = {
@@ -129,6 +130,7 @@ return {
 			badnikSquished  = { "Smoosh" },
 			pushObject      = { "Push Rock" },
 			lampPost        = { "Lamp Post", },
+			postLamp        = { nil, },
 		}
 
 		local playSelectedSound = function()
@@ -321,7 +323,7 @@ return {
 					height = self.height - 140,
 					title = "Volume",
 					minValue = 0,
-					maxValue = 1,
+					maxValue = 2,
 					quantize = 0.1,
 					titleFontSize = 14,
 					labelFontSize = 16,
