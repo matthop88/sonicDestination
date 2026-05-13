@@ -130,7 +130,7 @@ return {
 			badnikSquished  = { "Smoosh" },
 			pushObject      = { "Push Rock" },
 			lampPost        = { "Lamp Post", },
-			postLamp        = { nil, },
+			postLamp        = { "None", "Cool!", "All Right!", },
 		}
 
 		local playSelectedSound = function()
@@ -324,7 +324,7 @@ return {
 					title = "Volume",
 					minValue = 0,
 					maxValue = 2,
-					quantize = 0.1,
+					quantize = 0.05,
 					titleFontSize = 14,
 					labelFontSize = 16,
 					showLabels = false,
