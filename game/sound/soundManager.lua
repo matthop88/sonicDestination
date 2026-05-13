@@ -27,6 +27,7 @@ return ({
         badnikSquished  = "smoosh",
         badnikStrike    = "bowlingStrike",
         pushObject      = "pushRock",
+        lampPost        = "lampPost",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
