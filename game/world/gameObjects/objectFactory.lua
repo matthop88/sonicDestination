@@ -1,10 +1,11 @@
 return {
-	create = function(self, objectData, GRAPHICS, WORLD)
-		local generalObj  = requireRelative("world/gameObjects/object"):create(objectData, GRAPHICS, WORLD)
+	create = function(self, objectData, GRAPHICS, WORLD, OBJECT_ID)
+		local generalObj  = requireRelative("world/gameObjects/object"):create(objectData, GRAPHICS, WORLD, OBJECT_ID)
 		local specificObj = requireRelative("world/gameObjects/objects/" .. objectData.obj):create()
 
 		self:addGeneralFunctionality(generalObj, specificObj)
 
+		specificObj:onCreation()
 		return specificObj
 	end,
 
