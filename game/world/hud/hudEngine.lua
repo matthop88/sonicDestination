@@ -118,7 +118,11 @@ return {
         		end
         	end,
 
-            refreshFromTimeProps = function(self, timeProps)
+        	getTimer = function(self)
+        		return self.timer
+        	end,
+
+            refreshFromTimeProps = function(self, timeProps, timeOverride)
             	if timeProps.timeLabel then
             		TIME = {
 	        			fontName = "hud",
@@ -132,12 +136,13 @@ return {
     				table.insert(TIME.keys, " ")
     			end
 
-    			if timeProps.timeAtStart then
+    			if timeOverride then
+    				self.timer = timeOverride
+    			elseif timeProps.timeAtStart then
     				self.timer = timeProps.timeAtStart
-    				if self.timer >= 0 then self:updateDigits() end
     			end
-
     			self:initTimeHud()
+    			if self.timer >= 0 then self:updateDigits() end
             end,
     	}):init()
 	
