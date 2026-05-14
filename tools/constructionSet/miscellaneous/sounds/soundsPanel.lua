@@ -130,7 +130,7 @@ return {
 			badnikSquished  = { "Smoosh" },
 			pushObject      = { "Push Rock" },
 			lampPost        = { "Lamp Post", },
-			postLamp        = { "None", "Cool!", "All Right!", },
+			postLamp        = { "None", "Cool!", "All Right!", "Oh Yeah! (Deep)", },
 		}
 
 		local playSelectedSound = function()
