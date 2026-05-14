@@ -77,10 +77,9 @@ return {
 			end,
 								
 			setVolume = function(self, volume)
-				self.volumeScalar = volume
 				for _, track in ipairs(self.tracks) do
 					if not track.echoSource then
-						track:setVolume(volume)
+						track:setVolume(volume * self.volumeScalar)
 					else
 						track:refreshVolume()
 					end
