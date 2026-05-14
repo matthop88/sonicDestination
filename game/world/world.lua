@@ -54,10 +54,6 @@ return {
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
         BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
         HUD        = requireRelative("world/hud/hudEngine"):create()
-        self:refreshMusic()
-        self:refreshSounds()
-        self:refreshTime()
-        self:refreshGroundLevel()
         self:fadeIn({ r = 0, g = 0, b = 0 })
         
         return self
@@ -75,8 +71,10 @@ return {
         GRAPHICS:setY(-y + 200)
 
         self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+        local objectID = 1
         for _, objectData in ipairs(objectsMap) do
-            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS, self))
+            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS, self, objectID))
+            objectID = objectID + 1
         end
     end,
 
@@ -113,17 +111,32 @@ return {
     refreshTime = function(self)
         local map = TERRAIN:getMapData()
 
+        local timeOverride = nil
+        if self.lastTriggeredLampPost then
+            timeOverride = self.lastTriggeredLampPost.lastRecordedTime
+        end
         if map.properties then
-            HUD:refreshFromTimeProps(map.properties.time)
+            HUD:refreshFromTimeProps(map.properties.time, timeOverride)
+        end
+    end,
+
+    resetAfterDeath = function(self, map)
+        GLOBALS:getPlayer():clearPushing()
+        if self.lastTriggeredLampPost then
+            self:reset(map, self.lastTriggeredLampPost.lastRecordedPlayerPosition.x, self.lastTriggeredLampPost.lastRecordedPlayerPosition.y)
+        else
+            self:reset(map)
         end
     end,
 
     reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
-            self:refreshMusic()
-            self:refreshGroundLevel()
         end
+        self:refreshMusic()
+        self:refreshSounds()
+        self:refreshTime()
+        self:refreshGroundLevel()
         self:refreshObjectsMap(x, y)
     end,
 
@@ -178,6 +191,14 @@ return {
         for _, evt in ipairs(self.events) do
             evt:update(dt)
         end
+    end,
+
+    getTime = function(self)
+        return HUD:getTimer()
+    end,
+
+    setLastTriggeredLampPost = function(self, lampPost)
+        self.lastTriggeredLampPost = lampPost
     end,
 
     checkCollisions = function(self, otherObject)
