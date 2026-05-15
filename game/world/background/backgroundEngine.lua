@@ -51,9 +51,13 @@ return {
 				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
 				local x = slice.x
 				local chunkNum = 1
+				if x > 0 then 
+					x = x - 1280
+					chunkNum = #slice.chunks - 4
+				end
 				while x + x0 < x9 do
 					local chunk = slice.chunks[chunkNum]
-					if x + 256 > x0 then
+					if (x + 256) > 0 then
 						self.background:drawChunk(graphics, chunk, x0 + x, y0 + slice.y)
 					end
 					x = x + 256
