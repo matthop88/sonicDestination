@@ -7,8 +7,10 @@ return {
 		return {
 			chunks = chunks,
 
-			drawChunk = function(self, chunkIndex, x, y)
-				-- Drawing code goes here
+			drawChunk = function(self, graphics, chunkIndex, x, y)
+				graphics:setColor(1, 1, 1)
+				local chunk = self.chunks[chunkIndex]
+				graphics:draw(self.chunks.image, chunk.quad, x, y, 0, 1, 1)
 			end,
 		}
 	end,
@@ -34,6 +36,8 @@ return {
 	createChunks = function(self, params)
 		local chunks = {}
 
+		local x, y = 0, 0
+		
 		for i = 1, params.numChunks do
 			table.insert(chunks, { x = x, y = y, w = 256, h = 256 })
 			x = x + 256
@@ -51,7 +55,7 @@ return {
 
 		for _, chunk in ipairs(chunks) do
 			chunk.quad = love.graphics.newQuad(chunk.x, chunk.y, chunk.w, chunk.h, params.image:getWidth(), params.image:getHeight())
-		end,
+		end
 
 		chunks.image = params.image
 		return chunks
