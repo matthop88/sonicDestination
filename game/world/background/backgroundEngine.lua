@@ -4,13 +4,16 @@ return {
 		local bgImgPath = relativePath("resources/images/backgrounds/" .. bgData.bgImageName .. ".png")
 
 		local bgImg = love.graphics.newImage(bgImgPath)
+
+		local background = requireRelative("world/background/backgroundBuilder"):create(bgData)
 		bgImg:setFilter("nearest", "nearest")
 
 		return ({
-			bgImg   = bgImg,
-			bgData  = bgData,
-			slices  = {},
-			prevX   = 0,
+			bgImg      = bgImg,
+			bgData     = bgData,
+			background = background,
+			slices     = {},
+			prevX      = 0,
 
 			init = function(self)
 				self.slices = {}
@@ -22,6 +25,7 @@ return {
 						w = slice.w,
 						xSpeed  = slice.xSpeed  or 0,
 						xScalar = slice.xScalar,
+						chunks = slice.chunks,
 						quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.bgImg:getWidth(), self.bgImg:getHeight())
 					})
 					y = y + slice.h
@@ -33,21 +37,29 @@ return {
 			draw = function(self, graphics)
 				local oldScale = graphics:getScale()
 				graphics:setScale(3)
-				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
-				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
 				graphics:setColor(0, 0.57, 1.0)
 				graphics:rectangle("fill", graphics:calculateViewport())
 				graphics:setColor(1, 1, 1)
 				for _, slice in ipairs(self.slices) do
-					if x0 + slice.x > x0 then
-						graphics:draw(self.bgImg, slice.quad, x0 + slice.x - slice.w, y0 + slice.y, 0, 1, 1)
-					end
-					graphics:draw(self.bgImg, slice.quad, x0 + slice.x, y0 + slice.y, 0, 1, 1)
-					if x0 + slice.x + slice.w < x9 then
-						graphics:draw(self.bgImg, slice.quad, x0 + slice.x + slice.w, y0 + slice.y, 0, 1, 1)
-					end
+					self:drawSlice(graphics, slice)
 				end
 				graphics:setScale(oldScale)
+			end,
+
+			drawSlice = function(self, graphics, slice)
+				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
+				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
+				local x = slice.x
+				local chunkNum = 1
+				while x + x0 < x9 do
+					local chunk = slice.chunks[chunkNum]
+					if x + 256 > x0 then
+						self.background:drawChunk(graphics, chunk, x0 + x, y0 + slice.y)
+					end
+					x = x + 256
+					chunkNum = chunkNum + 1
+					if chunkNum > #slice.chunks then chunkNum = 1 end
+				end
 			end,
 
 			update = function(self, dt, graphics)
