@@ -14,14 +14,46 @@ return {
 	end,
 
 	loadImage = function(self, chunksImageName)
-		return nil
+		local chunksImagePath = relativePath("resources/images/backgrounds/" .. chunksImageName .. ".png")
+        local chunksImg = love.graphics.newImage(chunksImagePath)
+		chunksImg:setFilter("nearest", "nearest")
+
+		return chunksImg
 	end,
 
 	calculateHighestChunkIndex = function(self, slices)
-		return 0
+		local highestChunkIndex = 0
+		for _, slice in ipairs(slices) do
+			for _, chunkIndex in ipairs(slice.chunks) do
+				highestChunkIndex = math.max(highestChunkIndex, chunkIndex)
+			end
+		end
+		return highestChunkIndex
 	end,
 
 	createChunks = function(self, params)
-		return {}
+		local chunks = {}
+
+		for i = 1, params.numChunks do
+			table.insert(chunks, { x = x, y = y, w = 256, h = 256 })
+			x = x + 256
+			if x >= 2304 then
+				x = 0
+				y = y + 256
+			end
+		end
+
+		for _, slice in ipairs(params.slices) do
+			for _, chunkIndex in ipairs(slice.chunks) do
+				chunks[chunkIndex].h = slice.h
+			end
+		end
+
+		for _, chunk in ipairs(chunks) do
+			chunk.quad = love.graphics.newQuad(chunk.x, chunk.y, chunk.w, chunk.h, params.image:getWidth(), params.image:getHeight())
+		end,
+
+		chunks.image = params.image
+		return chunks
 	end,
 }
