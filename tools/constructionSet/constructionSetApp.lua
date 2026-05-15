@@ -19,7 +19,7 @@ local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/engine/map"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
 local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 20, 4, 13, 23, 25, 24, 39, 35, 34, 37, 7, 27, 28, 17 })
-local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 30, })
+local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 30, 103, 104 })
 local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 74, 75, 72, 80, 47, })
 local CHUNKS_4_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 4, 5 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
