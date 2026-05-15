@@ -18,31 +18,52 @@ return {
     GROUND_LEVEL = 940,
 
     fadeLayer = { 
-        color    = { r = 1, g = 1, b = 1 }, 
-        alpha    = 0,
-        speed    = 1,
-        velocity = 0,
+        color     = { r = 1, g = 1, b = 1 }, 
+        alpha     = 0,
+        speed     = 1,
+        velocity  = 0,
+        thickness = nil,
 
         draw = function(self)
             GRAPHICS:setColor(self.color.r, self.color.g, self.color.b, self.alpha)
-            GRAPHICS:rectangle("fill", GRAPHICS:calculateViewport())
+            if self.thickness then
+                if self.thickness > 0 then
+                    local x, y, w, h = GRAPHICS:calculateViewport()
+                    GRAPHICS:setLineWidth(self.thickness)
+                    GRAPHICS:circle("line", x + (w / 2), y + (h / 2), 400, 400)
+                end
+            else
+                GRAPHICS:rectangle("fill", GRAPHICS:calculateViewport())
+            end
         end,
 
         update = function(self, dt)
-            self.alpha = self.alpha + (self.velocity * dt)
-            if     self.alpha > 1 then self.alpha = 1
-            elseif self.alpha < 0 then self.alpha = 0 end
+            if self.thickness then
+                self.thickness = math.max(0, self.thickness - (1000 * dt))
+            else
+                self.alpha = self.alpha + (self.velocity * dt)
+                if     self.alpha > 1 then self.alpha = 1
+                elseif self.alpha < 0 then self.alpha = 0 end
+            end
         end,
 
         fadeOut = function(self, color) 
+            self.thickness = nil
             if color then self.color = color end
             self.velocity =  self.speed 
         end,
         fadeIn  = function(self, color)
+            self.thickness = nil
             self.alpha = 1
             if color then self.color = color end
             self.velocity = -self.speed 
         end,
+        irisOut = function(self, color)
+            if color then self.color = color end
+            self.alpha = 1
+            self.thickness = 1000
+        end,
+
     },
 
     init = function(self, params)
@@ -124,9 +145,12 @@ return {
         GLOBALS:getPlayer():clearPushing()
         if self.lastTriggeredLampPost then
             self:reset(map, self.lastTriggeredLampPost.lastRecordedPlayerPosition.x, self.lastTriggeredLampPost.lastRecordedPlayerPosition.y)
+            self:irisOut { r = 0, g = 0, b = 0 }
         else
             self:reset(map)
+            self:fadeIn { r = 0, g = 0, b = 0 }
         end
+
     end,
 
     reset = function(self, map, x, y)
@@ -234,6 +258,7 @@ return {
 
     fadeOut          = function(self, colr) self.fadeLayer:fadeOut(colr)       end,
     fadeIn           = function(self, colr) self.fadeLayer:fadeIn(colr)        end,
+    irisOut          = function(self, colr) self.fadeLayer:irisOut(colr)       end,
 
     teleport    = function(self, map, x, y, giantRing, player)
         if x == nil or y == nil then 
