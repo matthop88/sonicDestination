@@ -34,6 +34,7 @@ local launchBadnikUniversity = function(args) require "tools/badnikUniversity/ba
 local launchConstructionSet  = function(args) require "tools/constructionSet/constructionSetApp"    end
 local launchBackgroundLayer  = function(args) require "tools/backgroundLayer/backgroundLayerApp"    end
 local launchFontBlaster      = function(args) require "tools/fontBlaster/fontBlasterApp"            end
+local launchImageCaptureTool = function(args) require "tools/imageCapture/imageCaptureApp"          end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -72,6 +73,7 @@ local APP_LAUNCHER = {
     construction = launchConstructionSet,
     background   = launchBackgroundLayer,
     fontBlaster  = launchFontBlaster,
+    capture      = launchImageCaptureTool,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
