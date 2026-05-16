@@ -1,15 +1,9 @@
 return {
 	createFromFile = function(self, filename)
 		local bgData = requireRelative("resources/zones/backgrounds/" .. filename)
-		local bgImgPath = relativePath("resources/images/backgrounds/" .. bgData.bgImageName .. ".png")
-
-		local bgImg = love.graphics.newImage(bgImgPath)
-
 		local background = requireRelative("world/background/backgroundBuilder"):create(bgData)
-		bgImg:setFilter("nearest", "nearest")
-
+		
 		return ({
-			bgImg      = bgImg,
 			bgData     = bgData,
 			background = background,
 			slices     = {},
@@ -26,7 +20,6 @@ return {
 						xSpeed  = slice.xSpeed  or 0,
 						xScalar = slice.xScalar,
 						chunks = slice.chunks,
-						quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.bgImg:getWidth(), self.bgImg:getHeight())
 					})
 					y = y + slice.h
 				end
