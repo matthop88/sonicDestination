@@ -73,7 +73,6 @@ return {
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
-        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
         HUD        = requireRelative("world/hud/hudEngine"):create()
         self:fadeIn({ r = 0, g = 0, b = 0 })
         
@@ -157,6 +156,8 @@ return {
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
         end
+        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
+        
         self:refreshMusic()
         self:refreshSounds()
         self:refreshTime()
@@ -165,7 +166,7 @@ return {
     end,
 
     draw = function(self)
-        BACKGROUND:draw(GRAPHICS)
+        if BACKGROUND then BACKGROUND:draw(GRAPHICS) end
         TERRAIN:draw()
         WORKSPACE:draw()
         self.objects:head()
