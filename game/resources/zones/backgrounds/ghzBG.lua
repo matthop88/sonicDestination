@@ -1,6 +1,7 @@
 return {
 	bgImageName     = "ghzBG",
 	chunksImageName = "ghzBGChunksImg",
+	chunksName      = "ghzBGChunks",
 	slices = {
 		{ name = "clouds1",       x = 24, y = 181, w = 3840, h = 32,  xSpeed = -120, 
 		  chunks = {   1,   2,   3,   4,   5,   6,   7,   1,   3,   5,   2,   6,   1,   7,   7,  },
