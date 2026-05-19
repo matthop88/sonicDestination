@@ -5,11 +5,38 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 600
 
-local destRect = { x = 256, y = 16 }
-local rects = {}
-local selectedColor = nil
+local destRects = {
+    { x = 256, y = 16 },
+    { x = 272, y = 16 },
+    { x = 288, y = 16 },
+    { x = 304, y = 16 },
+}
+
 local selectedTileCoordinates = { x = 0, y = 0 }
-local rectData = {}
+
+local waterfallColors = {
+    { 
+        color = { 0.47, 0.07, 0.47 },
+        data  = {},
+    },
+    { 
+        color = { 0.87, 0.47, 0.87 },
+        data  = {},
+    },
+    { 
+        color = { 0.73, 0.33, 0.73 },
+        data  = {},
+    },
+    { 
+        color = { 0.60, 0.20, 0.60 },
+        data  = {},
+    },
+    resetData = function(self)
+        for _, c in ipairs(self) do
+            c.data = {}
+        end
+    end,
+}
 
 --------------------------------------------------------------
 --              Static code - is executed first             --
@@ -24,7 +51,7 @@ local imgPath = "game/resources/images/backgrounds/ghzBGTiles.png"
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
-function love.mousereleased(mx, my)
+function love.mousepressed(mx, my)
     local x, y = getImageViewer():screenToImageCoordinates(mx, my)
     x, y = math.floor(math.floor(x) / 16) * 16, math.floor(math.floor(y) / 16) * 16
     printToReadout("Tile Coordinates: { x = " .. x .. ", y = " .. y .. " }")
@@ -46,12 +73,6 @@ function drawOverlays()
     love.graphics.setLineWidth(scale)
     love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle("line", x - scale, y - scale, 18 * scale, 18 * scale)
-
-    for _, rect in ipairs(rects) do
-        love.graphics.setColor(rect.c)
-        local rx, ry = getImageViewer():imageToScreenCoordinates(rect.x, rect.y)
-        love.graphics.rectangle("fill", rx, ry, scale * 16, scale * 16)
-    end
 end
 
 function calculateTileCoordinates(mx, my)
@@ -72,20 +93,27 @@ end
 extractColor = function(x, y, r, g, b, a)
     if x >= selectedTileCoordinates.x and y >= selectedTileCoordinates.y
         and x <  selectedTileCoordinates.x + 16 and y < selectedTileCoordinates.y + 16 then
-            if r == selectedColor[1] and g == selectedColor[2] and b == selectedColor[3] then
-                table.insert(rectData, { x = destRect.x + x - selectedTileCoordinates.x, y = destRect.y + y - selectedTileCoordinates.y })
-                return 0, 0, 0, 0
+            for n, c in ipairs(waterfallColors) do
+                if colorsMatch(r, g, b, c.color[1], c.color[2], c.color[3]) then
+                    table.insert(c.data, { x = destRects[n].x + x - selectedTileCoordinates.x, y = destRects[n].y + y - selectedTileCoordinates.y })
+                    return 0, 0, 0, 0
+                end
             end
     end
     return r, g, b, a
 end
 
+colorsMatch = function(r1, g1, b1, r2, g2, b2)
+    return math.abs(r1 - r2) < 0.005 and math.abs(g1 - g2) < 0.005 and math.abs(b1 - b2) < 0.005
+end
+
 addExtractedColor = function(x, y, r, g, b, a)
-    if x >= destRect.x and y >= destRect.y and x < destRect.x + 16 and y < destRect.y + 16 then
-        for _, d in ipairs(rectData) do
-            --print("RectData.x, y = ", d.x, d.y)
-            if x == d.x and y == d.y then
-                return 1, 1, 1, 1
+    for n = 1, 4 do
+        if x >= destRects[n].x and y >= destRects[n].y and x < destRects[n].x + 16 and y < destRects[n].y + 16 then
+            for _, d in ipairs(waterfallColors[n].data) do
+                if x == d.x and y == d.y then
+                    return 1, 1, 1, 1
+                end
             end
         end
     end
@@ -94,13 +122,16 @@ end
     
 
 function addRect()
-    if selectedColor then
-        print("selectedTileCoordinates: x = " .. selectedTileCoordinates.x .. ", y = " .. selectedTileCoordinates.y)
-        --table.insert(rects, { x = destRect.x, y = destRect.y, c = selectedColor })  
-        rectData = {}
-        getImageViewer():editPixels(extractColor)
-        getImageViewer():editPixels(addExtractedColor)
-        destRect.x = destRect.x + 16
+    print("selectedTileCoordinates: x = " .. selectedTileCoordinates.x .. ", y = " .. selectedTileCoordinates.y)
+    waterfallColors:resetData()
+    getImageViewer():editPixels(extractColor)
+    getImageViewer():editPixels(addExtractedColor)
+    for _, r in ipairs(destRects) do
+        r.x = r.x + 64
+        if r.x >= 512 then
+            r.x = r.x - 256
+            r.y = r.y + 16
+        end
     end
 end
 
@@ -120,12 +151,6 @@ PLUGINS = require("plugins/engine")
         accessorFnName    = "getImageViewer"
     })
     :add("drawingLayer", { drawingFn      = drawOverlays     })
-    :add("selectColor", 
-    {
-        imageViewer       = getImageViewer(),
-        onColorSelected   = onColorSelected,
-        accessorFnName    = "getColorSelector"
-    })
     :add("readout",      { printFnName    = "printToReadout" })
     :add("zooming",      { imageViewer    = getImageViewer() })
     :add("scrolling",    { imageViewer    = getImageViewer() })
