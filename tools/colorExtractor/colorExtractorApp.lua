@@ -19,7 +19,8 @@ local imgPath = "game/resources/images/backgrounds/ghzBGTiles.png"
 --------------------------------------------------------------
 
 function love.mousepressed(mx, my)
-    -- do nothing
+    local x, y = calculateTileCoordinates(mx, my)
+    printToReadout("Tile Coordinates: { x = " .. x .. ", y = " .. y .. " }")
 end
 
 -- ...
@@ -30,8 +31,20 @@ end
 --------------------------------------------------------------
 
 function drawOverlays()
-    -- Do nothing yet
+    local scale = getImageViewer():getScale()
+    local x, y = calculateTileCoordinates(love.mouse.getPosition())
+    love.graphics.setLineWidth(scale)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", x - 1, y - 1, 18 * scale, 18 * scale)
 end
+
+function calculateTileCoordinates(mx, my)
+    local imageViewer = getImageViewer()
+    local px, py = imageViewer:screenToImageCoordinates(mx, my)
+
+    return imageViewer:imageToScreenCoordinates(math.floor(px / 16) * 16, math.floor(py / 16) * 16)
+end
+    
 
 -- ...    
 -- ...
