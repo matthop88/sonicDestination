@@ -16,25 +16,47 @@ local selectedTileCoordinates = { x = 0, y = 0 }
 
 local waterfallColors = {
     { 
-        color = { 0.47, 0.07, 0.47 },
-        data  = {},
+        color     = { 0.87, 0.47, 0.87 },
+        animColor = { 0.71, 0.85, 0.99 },
+        data      = {},
     },
     { 
-        color = { 0.87, 0.47, 0.87 },
-        data  = {},
+        color     = { 0.73, 0.33, 0.73 },
+        animColor = { 0.56, 0.71, 0.99 },
+        data      = {},
     },
     { 
-        color = { 0.73, 0.33, 0.73 },
-        data  = {},
+        color     = { 0.60, 0.20, 0.60 },
+        animColor = { 0.42, 0.56, 0.99 },
+        data      = {},
     },
     { 
-        color = { 0.60, 0.20, 0.60 },
-        data  = {},
+        color     = { 0.47, 0.07, 0.47 },
+        animColor = { 0.42, 0.56, 0.71 },
+        data      = {},
     },
+    
     resetData = function(self)
         for _, c in ipairs(self) do
             c.data = {}
         end
+    end,
+}
+
+local animColors = {
+    { 0.71, 0.85, 0.99 },
+    { 0.56, 0.71, 0.99 },
+    { 0.42, 0.56, 0.99 },
+    { 0.42, 0.56, 0.71 },
+    offset = 1,
+    update = function(self, dt)
+        self.offset = self.offset + (10 * dt)
+        if self.offset > 4 then self.offset = self.offset - 4 end
+    end,
+    get = function(self, n)
+        local index = math.floor(self.offset) + n
+        if index > 4 then index = index - 4 end
+        return self[index]
     end,
 }
 
@@ -53,6 +75,10 @@ local imgPath = "game/resources/images/backgrounds/ghzBGTiles.png"
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
+function love.update(dt)
+    animColors:update(dt)
+end
+
 function love.mousepressed(mx, my)
     local x, y = getImageViewer():screenToImageCoordinates(mx, my)
     x, y = math.floor(math.floor(x) / 16) * 16, math.floor(math.floor(y) / 16) * 16
@@ -65,7 +91,6 @@ function love.keypressed(key)
     elseif key == "W"     then waterfallOn = not waterfallOn
     end
 end
--- ...
 
 --------------------------------------------------------------
 --                   Specialized Functions                  --
@@ -83,7 +108,7 @@ end
 function drawWaterfall()
     if waterfallOn then
         for i = 1, 4 do
-            love.graphics.setColor(waterfallColors[i].color)
+            love.graphics.setColor(animColors:get(i))
             local quad = love.graphics.newQuad(destRects[i].x, destRects[i].y, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
             love.graphics.draw(getImageViewer():getImage(), quad, 300, 300, 0, 5, 5)
         end
