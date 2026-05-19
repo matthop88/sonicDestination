@@ -35,6 +35,7 @@ local launchConstructionSet  = function(args) require "tools/constructionSet/con
 local launchBackgroundLayer  = function(args) require "tools/backgroundLayer/backgroundLayerApp"    end
 local launchFontBlaster      = function(args) require "tools/fontBlaster/fontBlasterApp"            end
 local launchImageCaptureTool = function(args) require "tools/imageCapture/imageCaptureApp"          end
+local launchColorExtractor   = function(args) require "tools/colorExtractor/colorExtractorApp"      end
 
 local launchTestingFramework     = function(args)
     require "testing/testFramework"
@@ -74,6 +75,7 @@ local APP_LAUNCHER = {
     background   = launchBackgroundLayer,
     fontBlaster  = launchFontBlaster,
     capture      = launchImageCaptureTool,
+    extractor    = launchColorExtractor,
     progress     = launchProgress,
     test         = launchTestingFramework,
 }
