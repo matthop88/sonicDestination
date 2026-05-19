@@ -38,6 +38,8 @@ local waterfallColors = {
     end,
 }
 
+local waterfallOn = false
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -59,7 +61,9 @@ function love.mousepressed(mx, my)
 end
 
 function love.keypressed(key)
-    if key == "space" then addRect() end
+    if     key == "space" then addRect()
+    elseif key == "W"     then waterfallOn = not waterfallOn
+    end
 end
 -- ...
 
@@ -73,6 +77,17 @@ function drawOverlays()
     love.graphics.setLineWidth(scale)
     love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle("line", x - scale, y - scale, 18 * scale, 18 * scale)
+    drawWaterfall()
+end
+
+function drawWaterfall()
+    if waterfallOn then
+        for i = 1, 4 do
+            love.graphics.setColor(waterfallColors[i].color)
+            local quad = love.graphics.newQuad(destRects[i].x, destRects[i].y, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
+            love.graphics.draw(getImageViewer():getImage(), quad, 300, 300, 0, 5, 5)
+        end
+    end
 end
 
 function calculateTileCoordinates(mx, my)
@@ -126,13 +141,14 @@ function addRect()
     waterfallColors:resetData()
     getImageViewer():editPixels(extractColor)
     getImageViewer():editPixels(addExtractedColor)
-    for _, r in ipairs(destRects) do
+    --[[for _, r in ipairs(destRects) do
         r.x = r.x + 64
         if r.x >= 512 then
             r.x = r.x - 256
             r.y = r.y + 16
         end
     end
+    ]]
 end
 
 
