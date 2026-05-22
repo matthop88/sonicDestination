@@ -61,6 +61,8 @@ local animColors = {
 
 local waterfallOn = false
 
+local tileMap = {}
+
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -83,6 +85,7 @@ function love.mousepressed(mx, my)
     x, y = math.floor(math.floor(x) / 16) * 16, math.floor(math.floor(y) / 16) * 16
     printToReadout("Tile Coordinates: { x = " .. x .. ", y = " .. y .. " }")
     selectedTileCoordinates = { x = x, y = y }
+    selectedTile = calculateTileID(x, y)
 end
 
 function love.keypressed(key)
@@ -105,10 +108,14 @@ function drawOverlays()
 end
 
 function drawWaterfall()
-    if waterfallOn then
+    if waterfallOn and tileMap[selectedTile] then
+        local tileX, tileY = calculateTileXYFromID(selectedTile)
+        love.graphics.setColor(1, 1, 1)
+        local quad = love.graphics.newQuad(tileX, tileY, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
+        love.graphics.draw(getImageViewer():getImage(), quad, 300, 300, 0, 5, 5)
         for i = 1, 4 do
             love.graphics.setColor(animColors:get(i))
-            local quad = love.graphics.newQuad(destRects[i].x, destRects[i].y, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
+            local quad = love.graphics.newQuad(tileMap[selectedTile][i].x, tileMap[selectedTile][i].y, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
             love.graphics.draw(getImageViewer():getImage(), quad, 300, 300, 0, 5, 5)
         end
     end
@@ -120,7 +127,6 @@ function calculateTileCoordinates(mx, my)
     local tx, ty = imageViewer:imageToScreenCoordinates(math.floor(px / 16) * 16, math.floor(py / 16) * 16)
     return math.floor(tx), math.floor(ty)
 end
-    
 
 function onColorSelected(color)
     selectedColor = color
@@ -165,18 +171,33 @@ function addRect()
     waterfallColors:resetData()
     getImageViewer():editPixels(extractColor)
     getImageViewer():editPixels(addExtractedColor)
-    --[[for _, r in ipairs(destRects) do
+    tileMap[selectedTile] = { 
+        { x = destRects[1].x, y = destRects[1].y },
+        { x = destRects[2].x, y = destRects[2].y },
+        { x = destRects[3].x, y = destRects[3].y },
+        { x = destRects[4].x, y = destRects[4].y },
+    }
+
+    for _, r in ipairs(destRects) do
         r.x = r.x + 64
         if r.x >= 512 then
             r.x = r.x - 256
             r.y = r.y + 16
         end
     end
-    ]]
 end
 
+function calculateTileID(x, y)
+    local tX, tY = math.floor(x / 16), math.floor(y / 16)
+    local chunkID = math.floor(tX / 16)
+    return (chunkID * 256) + (tY * 16) + (tX - (chunkID * 16))
+end
 
-
+function calculateTileXYFromID(id)
+    local tX = (id % 16) * 16
+    local tY = id - (id % 16)
+    return tX, tY
+end
 
 --------------------------------------------------------------
 --                          Plugins                         --
