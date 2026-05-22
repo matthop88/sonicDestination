@@ -37,6 +37,14 @@ local waterfallColors = {
             c.data = {}
         end
     end,
+
+    isExtractionData = function(self)
+        for _, d in ipairs(self) do
+            if #d.data > 0 then
+                return true
+            end
+        end
+    end,
 }
 
 local animColors = {
@@ -171,18 +179,20 @@ function addRect()
     waterfallColors:resetData()
     getImageViewer():editPixels(extractColor)
     getImageViewer():editPixels(addExtractedColor)
-    tileMap[selectedTile] = { 
-        { x = destRects[1].x, y = destRects[1].y },
-        { x = destRects[2].x, y = destRects[2].y },
-        { x = destRects[3].x, y = destRects[3].y },
-        { x = destRects[4].x, y = destRects[4].y },
-    }
+    if waterfallColors:isExtractionData() then
+        tileMap[selectedTile] = { 
+            { x = destRects[1].x, y = destRects[1].y },
+            { x = destRects[2].x, y = destRects[2].y },
+            { x = destRects[3].x, y = destRects[3].y },
+            { x = destRects[4].x, y = destRects[4].y },
+        }
 
-    for _, r in ipairs(destRects) do
-        r.x = r.x + 64
-        if r.x >= 512 then
-            r.x = r.x - 256
-            r.y = r.y + 16
+        for _, r in ipairs(destRects) do
+            r.x = r.x + 64
+            if r.x >= 512 then
+                r.x = r.x - 256
+                r.y = r.y + 16
+            end
         end
     end
 end
