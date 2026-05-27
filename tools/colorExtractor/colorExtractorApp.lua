@@ -123,7 +123,9 @@ end
 function love.keypressed(key)
     if     key == "space"  then addRects()
     elseif key == "W"      then waterfallOn = not waterfallOn
-    elseif key == "return" then saveImage()
+    elseif key == "return" then 
+        saveImage()
+        saveTileMap()
     end
 end
 
@@ -257,6 +259,21 @@ end
 function saveImage()
     print("Saved to " .. love.filesystem.getSaveDirectory())
     return imgData:encode("png", "ghzBGTiles.png")
+end
+
+function saveTileMap()
+    local keys = {}
+    for k in pairs(tileMap) do
+        table.insert(keys, k)
+    end
+    table.sort(keys)
+    for _, k in ipairs(keys) do
+        local destTiles = ""
+        for _, t in ipairs(tileMap[k]) do
+            destTiles = destTiles .. t .. ", "
+        end
+        print("[" .. k .. "] = { " .. destTiles .. "},")
+    end
 end
 
 --------------------------------------------------------------
