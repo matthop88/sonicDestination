@@ -5,14 +5,7 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 600
 
-local destRects = {
-    { x = 256, y = 16 },
-    { x = 272, y = 16 },
-    { x = 288, y = 16 },
-    { x = 304, y = 16 },
-}
-
-local selectedTileCoordinates = { x = 0, y = 0 }
+local destTiles = { 272, 273, 274, 275 }
 
 local waterfallColors = {
     { 
@@ -55,7 +48,7 @@ local animColors = {
     offset = 1,
     dx     = 0,
     update = function(self, dt)
-        self.offset = self.offset + (18 * dt)
+        self.offset = self.offset + (9 * dt)
         self.dx = self.offset - math.floor(self.offset)
         if self.offset >= 5 then self.offset = self.offset - 4 end
     end,
@@ -80,7 +73,7 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 local imgPath = "game/resources/images/backgrounds/ghzBGTiles.png"
 
-local IMG_GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 768, 256)
+local IMG_GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 1024, 256)
 local GRAFX     = require("tools/lib/graphics"):create(WINDOW_WIDTH, WINDOW_HEIGHT)
 
 local imgData   = love.image.newImageData(imgPath)
@@ -124,12 +117,11 @@ function love.mousepressed(mx, my)
     local x, y = GRAFX:screenToImageCoordinates(mx, my)
     x, y = math.floor(math.floor(x) / 16) * 16, math.floor(math.floor(y) / 16) * 16
     printToReadout("Tile Coordinates: { x = " .. x .. ", y = " .. y .. " }")
-    selectedTileCoordinates = { x = x, y = y }
     selectedTile = calculateTileID(x, y)
 end
 
 function love.keypressed(key)
-    if     key == "space"  then addRect()
+    if     key == "space"  then addRects()
     elseif key == "W"      then waterfallOn = not waterfallOn
     elseif key == "return" then saveImage()
     end
@@ -156,7 +148,8 @@ function drawWaterfall()
         love.graphics.draw(image, quad, 300, 300, 0, 5, 5)
         for i = 1, 4 do
             love.graphics.setColor(animColors:get(i))
-            local quad = love.graphics.newQuad(tileMap[selectedTile][i].x, tileMap[selectedTile][i].y, 16, 16, imgData:getWidth(), imgData:getHeight())
+            local tileX, tileY = calculateTileXYFromID(tileMap[selectedTile][i])
+            local quad = love.graphics.newQuad(tileX, tileY, 16, 16, imgData:getWidth(), imgData:getHeight())
             love.graphics.draw(image, quad, 300, 300, 0, 5, 5)
         end
     end
@@ -176,11 +169,13 @@ function onColorSelected(color)
 end 
 
 extractColor = function(x, y, r, g, b, a)
-    if x >= selectedTileCoordinates.x and y >= selectedTileCoordinates.y
-        and x <  selectedTileCoordinates.x + 16 and y < selectedTileCoordinates.y + 16 then
+    local tileX, tileY = calculateTileXYFromID(selectedTile)
+    if x >= tileX and y >= tileY
+        and x <  tileX + 16 and y < tileY + 16 then
             for n, c in ipairs(waterfallColors) do
+                local destTileX, destTileY = calculateTileXYFromID(destTiles[n])
                 if colorsMatch(r, g, b, c.color[1], c.color[2], c.color[3]) then
-                    table.insert(c.data, { x = destRects[n].x + x - selectedTileCoordinates.x, y = destRects[n].y + y - selectedTileCoordinates.y })
+                    table.insert(c.data, { x = destTileX + x - tileX, y = destTileY + y - tileY })
                     return 0, 0, 0, 0
                 end
             end
@@ -194,7 +189,8 @@ end
 
 addExtractedColor = function(x, y, r, g, b, a)
     for n = 1, 4 do
-        if x >= destRects[n].x and y >= destRects[n].y and x < destRects[n].x + 16 and y < destRects[n].y + 16 then
+        local destTileX, destTileY = calculateTileXYFromID(destTiles[n])
+        if x >= destTileX and y >= destTileY and x < destTileX + 16 and y < destTileY + 16 then
             for _, d in ipairs(waterfallColors[n].data) do
                 if x == d.x and y == d.y then
                     return 1, 1, 1, 1
@@ -206,13 +202,18 @@ addExtractedColor = function(x, y, r, g, b, a)
     return r, g, b, a
 end   
 
+function addRects()
+    for i = 1, 16 do
+        addRect()
+        selectedTile = selectedTile + 1
+    end
+end
+
 function addRect()
     if drawPhase == 1 then
         updateImage()
         drawPhase = 2
     end
-    print("ImageData: w, h = ", imgData:getWidth(), imgData:getHeight())
-    print("selectedTileCoordinates: x = " .. selectedTileCoordinates.x .. ", y = " .. selectedTileCoordinates.y)
     waterfallColors:resetData()
     imgData:mapPixel(extractColor)
     imgData:mapPixel(addExtractedColor)
@@ -221,20 +222,14 @@ function addRect()
 
     if waterfallColors:isExtractionData() then
         tileMap[selectedTile] = { 
-            { x = destRects[1].x, y = destRects[1].y },
-            { x = destRects[2].x, y = destRects[2].y },
-            { x = destRects[3].x, y = destRects[3].y },
-            { x = destRects[4].x, y = destRects[4].y },
+            destTiles[1],
+            destTiles[2],
+            destTiles[3],
+            destTiles[4],
         }
-
-        for _, r in ipairs(destRects) do
-            r.x = r.x + 64
-            if math.floor(r.x / 256) ~= math.floor((r.x - 64) / 256) then
-                r.y = r.y + 16
-                if    r.y >= 256 then r.y = 0
-                else                  r.x = r.x - 256 end
-            end
-            print("r.x, r.y = ", r.x, r.y)
+        
+        for n, t in ipairs(destTiles) do
+            destTiles[n] = destTiles[n] + 4
         end
     end
 end
@@ -246,7 +241,9 @@ function calculateTileID(x, y)
 end
 
 function calculateTileXYFromID(id)
-    local tX = (id % 16) * 16
+    local chunkID = math.floor(id / 256)
+    id = id - (chunkID * 256)
+    local tX = ((id % 16) * 16) + (chunkID * 256)
     local tY = id - (id % 16)
     return tX, tY
 end
