@@ -80,16 +80,48 @@ love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 local imgPath = "game/resources/images/backgrounds/ghzBGTiles.png"
 
+local IMG_GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 768, 256)
+local GRAFX     = require("tools/lib/graphics"):create(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+local imgData   = love.image.newImageData(imgPath)
+local image     = love.graphics.newImage(imgData)
+
+image:setFilter("nearest", "nearest")
+
+local drawPhase = 1
+local chunkMaxX = 512
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
+
+function love.draw()
+    if drawPhase == 1 then
+        drawPhaseOne()
+    else
+        drawPhaseTwo()
+    end
+end
+
+function drawPhaseOne()
+    IMG_GRAFX:clear(0, 0, 0)
+    IMG_GRAFX:setColor(1, 1, 1)
+    IMG_GRAFX:draw(image, 0, 0)
+    GRAFX:setColor(1, 1, 1)
+    GRAFX:draw(IMG_GRAFX:getBuffer(), 0, 0)
+end
+
+function drawPhaseTwo()
+    GRAFX:setColor(1, 1, 1)
+    GRAFX:draw(image, 0, 0)
+end
 
 function love.update(dt)
     animColors:update(dt)
 end
 
 function love.mousepressed(mx, my)
-    local x, y = getImageViewer():screenToImageCoordinates(mx, my)
+    local x, y = GRAFX:screenToImageCoordinates(mx, my)
     x, y = math.floor(math.floor(x) / 16) * 16, math.floor(math.floor(y) / 16) * 16
     printToReadout("Tile Coordinates: { x = " .. x .. ", y = " .. y .. " }")
     selectedTileCoordinates = { x = x, y = y }
@@ -107,7 +139,7 @@ end
 --------------------------------------------------------------
 
 function drawOverlays()
-    local scale = getImageViewer():getScale()
+    local scale = GRAFX:getScale()
     local x, y = calculateTileCoordinates(love.mouse.getPosition())
     love.graphics.setLineWidth(scale)
     love.graphics.setColor(1, 1, 1)
@@ -119,20 +151,19 @@ function drawWaterfall()
     if waterfallOn and tileMap[selectedTile] then
         local tileX, tileY = calculateTileXYFromID(selectedTile)
         love.graphics.setColor(1, 1, 1)
-        local quad = love.graphics.newQuad(tileX, tileY, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
-        love.graphics.draw(getImageViewer():getImage(), quad, 300, 300, 0, 5, 5)
+        local quad = love.graphics.newQuad(tileX, tileY, 16, 16, imgData:getWidth(), imgData:getHeight())
+        love.graphics.draw(image, quad, 300, 300, 0, 5, 5)
         for i = 1, 4 do
             love.graphics.setColor(animColors:get(i))
-            local quad = love.graphics.newQuad(tileMap[selectedTile][i].x, tileMap[selectedTile][i].y, 16, 16, getImageViewer():getImageWidth(), getImageViewer():getImageHeight())
-            love.graphics.draw(getImageViewer():getImage(), quad, 300, 300, 0, 5, 5)
+            local quad = love.graphics.newQuad(tileMap[selectedTile][i].x, tileMap[selectedTile][i].y, 16, 16, imgData:getWidth(), imgData:getHeight())
+            love.graphics.draw(image, quad, 300, 300, 0, 5, 5)
         end
     end
 end
 
 function calculateTileCoordinates(mx, my)
-    local imageViewer = getImageViewer()
-    local px, py = imageViewer:screenToImageCoordinates(mx, my)
-    local tx, ty = imageViewer:imageToScreenCoordinates(math.floor(px / 16) * 16, math.floor(py / 16) * 16)
+    local px, py = GRAFX:screenToImageCoordinates(mx, my)
+    local tx, ty = GRAFX:imageToScreenCoordinates(math.floor(px / 16) * 16, math.floor(py / 16) * 16)
     return math.floor(tx), math.floor(ty)
 end
 
@@ -168,17 +199,25 @@ addExtractedColor = function(x, y, r, g, b, a)
                     return 1, 1, 1, 1
                 end
             end
+            return 0, 0, 0, 0
         end
     end
     return r, g, b, a
-end
-    
+end   
 
 function addRect()
+    if drawPhase == 1 then
+        updateImage()
+        drawPhase = 2
+    end
+    print("ImageData: w, h = ", imgData:getWidth(), imgData:getHeight())
     print("selectedTileCoordinates: x = " .. selectedTileCoordinates.x .. ", y = " .. selectedTileCoordinates.y)
     waterfallColors:resetData()
-    getImageViewer():editPixels(extractColor)
-    getImageViewer():editPixels(addExtractedColor)
+    imgData:mapPixel(extractColor)
+    imgData:mapPixel(addExtractedColor)
+    image = love.graphics.newImage(imgData)
+    image:setFilter("nearest", "nearest")
+
     if waterfallColors:isExtractionData() then
         tileMap[selectedTile] = { 
             { x = destRects[1].x, y = destRects[1].y },
@@ -189,10 +228,12 @@ function addRect()
 
         for _, r in ipairs(destRects) do
             r.x = r.x + 64
-            if r.x >= 512 then
-                r.x = r.x - 256
+            if math.floor(r.x / 256) ~= math.floor((r.x - 64) / 256) then
                 r.y = r.y + 16
+                if    r.y >= 256 then r.y = 0
+                else                  r.x = r.x - 256 end
             end
+            print("r.x, r.y = ", r.x, r.y)
         end
     end
 end
@@ -209,19 +250,19 @@ function calculateTileXYFromID(id)
     return tX, tY
 end
 
+function updateImage()
+    imgData = IMG_GRAFX:getImageData()
+    image = love.graphics.newImage(imgData)
+    image:setFilter("nearest", "nearest")
+end
+
 --------------------------------------------------------------
 --                          Plugins                         --
 --------------------------------------------------------------
 
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
-    :add("imageViewer", 
-    { 
-        imagePath         = imgPath,
-        pixelated         = true,
-        accessorFnName    = "getImageViewer"
-    })
     :add("drawingLayer", { drawingFn      = drawOverlays     })
     :add("readout",      { printFnName    = "printToReadout" })
-    :add("zooming",      { imageViewer    = getImageViewer() })
-    :add("scrolling",    { imageViewer    = getImageViewer() })
+    :add("zooming",      { imageViewer    = GRAFX })
+    :add("scrolling",    { imageViewer    = GRAFX })
