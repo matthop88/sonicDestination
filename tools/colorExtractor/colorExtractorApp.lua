@@ -129,8 +129,9 @@ function love.mousepressed(mx, my)
 end
 
 function love.keypressed(key)
-    if     key == "space" then addRect()
-    elseif key == "W"     then waterfallOn = not waterfallOn
+    if     key == "space"  then addRect()
+    elseif key == "W"      then waterfallOn = not waterfallOn
+    elseif key == "return" then saveImage()
     end
 end
 
@@ -254,6 +255,11 @@ function updateImage()
     imgData = IMG_GRAFX:getImageData()
     image = love.graphics.newImage(imgData)
     image:setFilter("nearest", "nearest")
+end
+
+function saveImage()
+    print("Saved to " .. love.filesystem.getSaveDirectory())
+    return imgData:encode("png", "ghzBGTiles.png")
 end
 
 --------------------------------------------------------------
