@@ -267,13 +267,18 @@ function saveTileMap()
         table.insert(keys, k)
     end
     table.sort(keys)
+    local data = "return {\n  tilesImageName = \"ghzBGTiles\",\n"
     for _, k in ipairs(keys) do
         local destTiles = ""
         for _, t in ipairs(tileMap[k]) do
             destTiles = destTiles .. t .. ", "
         end
-        print("[" .. k .. "] = { " .. destTiles .. "},")
+        data = data .. "  [" .. k .. "] = { " .. destTiles .. "},\n"
     end
+    data = data .. "}\n"
+
+    love.filesystem.createDirectory("resources/zones/backgrounds")
+    love.filesystem.write("resources/zones/backgrounds/ghzBGAltTiles.lua", data)
 end
 
 --------------------------------------------------------------
