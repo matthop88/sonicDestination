@@ -2,9 +2,16 @@ local TILES_BUILDER = dofile(relativePath("world/terrain/tilesBuilder.lua"))
 
 return {
 	create = function(self, bgData)
-		local chunksData = dofile(relativePath("resources/zones/backgrounds/" .. bgData.chunksName .. ".lua"))
+		local chunksData   = dofile(relativePath("resources/zones/backgrounds/" .. bgData.chunksName .. ".lua"))
         local tilesImgPath = relativePath("resources/images/backgrounds/" .. chunksData.tilesImageName .. ".png")
-        local tiles = TILES_BUILDER:create(tilesImgPath)
+        local tiles        = TILES_BUILDER:create(tilesImgPath)
+
+        local altTiles     = nil
+        if bgData.altTiles then
+        	altTiles = dofile(relativePath("resources/zones/backgrounds/" .. bgData.altTiles .. ".lua"))
+       	end
+
+        self:augmentChunksWithAltTiles(chunksData, altTiles)
 
 		local chunksImage = self:renderChunks(chunksData, tiles)
 		chunksImage:setFilter("nearest", "nearest")
@@ -21,6 +28,38 @@ return {
         love.graphics.setCanvas()     
 
         return imageBuffer
+    end,
+
+    augmentChunksWithAltTiles = function(self, chunksData, altTiles)
+    	if altTiles then
+	    	for n, chunk in ipairs(chunksData) do
+	    		local extraChunks = 0
+	    		for _, row in ipairs(chunk) do
+	    			for _, tile in ipairs(row) do
+	    				if altTiles[tile] then
+	    					extraChunks = math.max(extraChunks, #altTiles[tile])
+	    				end
+	    			end
+	    		end
+	    		for i = 1, extraChunks do
+    				local newChunk = { chunkID = #chunksData + 1, height = chunk.height }
+    				for j = 1, chunk.height do
+    					table.insert(newChunk, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, })
+    				end
+    				for r, row in ipairs(chunk) do
+    					for t, tile in ipairs(row) do
+    						if altTiles[tile] then
+    							local altTile = altTiles[tile][i]
+    							if altTile then
+    								newChunk[r][t] = altTile
+    							end
+    						end
+    					end
+    				end
+    				table.insert(chunksData, newChunk)
+    			end
+	    	end
+	    end
     end,
 
     calculateImageDimensions = function(self, chunksData)
@@ -84,6 +123,9 @@ return {
             print("Creating chunk #" .. n .. " at x = " .. x .. ", y = " .. y .. ", height = " .. (chunk.height * 16))
             heightInTiles = math.max(heightInTiles, chunk.height)
         end
+
+        local chunksImageData = chunksImage:newImageData()
+        chunksImageData:encode("png", "tempBGChunks.png")
 
         chunksData.image = chunksImage
         chunksData.drawChunk = function(self, graphics, chunkIndex, x, y)
