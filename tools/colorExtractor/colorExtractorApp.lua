@@ -271,9 +271,9 @@ function saveTileMap()
     for _, k in ipairs(keys) do
         local destTiles = ""
         for _, t in ipairs(tileMap[k]) do
-            destTiles = destTiles .. t .. ", "
+            destTiles = destTiles .. (t + 1) .. ", "
         end
-        data = data .. "  [" .. k .. "] = { " .. destTiles .. "},\n"
+        data = data .. "  [" .. (k + 1) .. "] = { " .. destTiles .. "},\n"
     end
     data = data .. "}\n"
 
