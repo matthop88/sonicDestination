@@ -116,7 +116,7 @@ return {
     end,
 
     drawChunk = function(self, chunk, x, y, tiles)
-        for _, row in ipairs(chunk) do
+    	for _, row in ipairs(chunk) do
             self:drawRow(row, x, y, tiles)
             y = y + 16
         end
@@ -151,6 +151,11 @@ return {
 	      	graphics:setColor(1, 1, 1)
 			local chunk = self[chunkIndex]
 			graphics:draw(self.image, chunk.quad, x, y, 0, 1, 1)
+			local altChunks = self.altChunkMap[chunkIndex] or {}
+			for _, c in ipairs(altChunks) do
+				local chunk = self[c]
+				graphics:draw(self.image, chunk.quad, x, y, 0, 1, 1)
+			end
 		end
 
         return chunksData
