@@ -11,6 +11,8 @@ return {
         	altTiles = dofile(relativePath("resources/zones/backgrounds/" .. bgData.altTiles .. ".lua"))
        	end
 
+       	chunksData.altChunkMap  = {}
+
         self:augmentChunksWithAltTiles(chunksData, altTiles)
 
 		local chunksImage = self:renderChunks(chunksData, tiles)
@@ -32,7 +34,7 @@ return {
 
     augmentChunksWithAltTiles = function(self, chunksData, altTiles)
     	if altTiles then
-	    	for n, chunk in ipairs(chunksData) do
+    		for n, chunk in ipairs(chunksData) do
 	    		local extraChunks = 0
 	    		for _, row in ipairs(chunk) do
 	    			for _, tile in ipairs(row) do
@@ -41,6 +43,7 @@ return {
 	    				end
 	    			end
 	    		end
+	    		local altChunks = {}
 	    		for i = 1, extraChunks do
     				local newChunk = { chunkID = #chunksData + 1, height = chunk.height }
     				for j = 1, chunk.height do
@@ -57,9 +60,25 @@ return {
     					end
     				end
     				table.insert(chunksData, newChunk)
+    				table.insert(altChunks, newChunk.chunkID)
+    			end
+    			if #altChunks > 0 then
+    				chunksData.altChunkMap[chunk.chunkID] = altChunks
     			end
 	    	end
 	    end
+	    self:printOutAltChunkMap(chunksData.altChunkMap)
+    end,
+
+    printOutAltChunkMap = function(self, altChunkMap)
+    	for k, v in pairs(altChunkMap) do
+    		local altChunks = "{ "
+    		for _, c in ipairs(v) do
+    			altChunks = altChunks .. c .. ", "
+    		end
+    	    altChunks = altChunks .. "}"
+    		print("" .. k .. " = " .. altChunks)
+    	end
     end,
 
     calculateImageDimensions = function(self, chunksData)
