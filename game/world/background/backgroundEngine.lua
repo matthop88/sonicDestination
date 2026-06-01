@@ -3,11 +3,32 @@ return {
 		local bgData = requireRelative("resources/zones/backgrounds/" .. filename)
 		local background = requireRelative("world/background/backgroundBuilder"):create(bgData)
 		
+
 		return ({
 			bgData     = bgData,
 			background = background,
 			slices     = {},
 			prevX      = 0,
+
+			COLORS     = {
+				{ 0.71, 0.85, 0.99 },
+    			{ 0.56, 0.71, 0.99 },
+    			{ 0.42, 0.56, 0.99 },
+    			{ 0.42, 0.56, 0.71 },
+			    index = 1,
+			    update = function(self, dt)
+			    	self.index = self.index + (10 * dt)
+			    	if self.index >= #self + 1 then
+			    		self.index = self.index - #self
+			    	end
+			    end,
+
+			    get = function(self, ndx)
+			    	ndx = math.floor(self.index) + ndx
+			    	if ndx > #self then ndx = ndx - #self end
+			    	return self[ndx]
+			    end,
+			},
 
 			init = function(self)
 				self.slices = {}
@@ -51,7 +72,7 @@ return {
 				while x + x0 < x9 do
 					local chunk = slice.chunks[chunkNum]
 					if (x + 256) > 0 then
-						self.background:drawChunk(graphics, chunk, x0 + x, y0 + slice.y)
+						self.background:drawChunk(graphics, chunk, x0 + x, y0 + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
 					end
 					x = x + 256
 					chunkNum = chunkNum + 1
@@ -60,6 +81,7 @@ return {
 			end,
 
 			update = function(self, dt, graphics)
+				self.COLORS:update(dt)
 				local oldScale = graphics:getScale()
 				graphics:setScale(3)
 				local deltaX = graphics:getX() - self.prevX
