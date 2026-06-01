@@ -147,14 +147,18 @@ return {
         chunksImageData:encode("png", "tempBGChunks.png")
 
         chunksData.image = chunksImage
-        chunksData.drawChunk = function(self, graphics, chunkIndex, x, y)
+        chunksData.drawChunk = function(self, graphics, chunkIndex, x, y, colors)
 	      	graphics:setColor(1, 1, 1)
 			local chunk = self[chunkIndex]
 			graphics:draw(self.image, chunk.quad, x, y, 0, 1, 1)
 			local altChunks = self.altChunkMap[chunkIndex] or {}
+			altIndex = 1
 			for _, c in ipairs(altChunks) do
 				local chunk = self[c]
+				graphics:setColor(colors[altIndex])
 				graphics:draw(self.image, chunk.quad, x, y, 0, 1, 1)
+				altIndex = altIndex + 1
+				if altIndex > #colors then altIndex = 1 end
 			end
 		end
 
