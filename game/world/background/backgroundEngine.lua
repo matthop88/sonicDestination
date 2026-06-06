@@ -11,26 +11,12 @@ return {
 			slices     = {},
 			prevX      = 0,
 
-			COLORS     = {
-			    { base = { 0.71, 0.85, 0.99 }, delta = { -0.15, -0.14,  0.0  } },
-			    { base = { 0.56, 0.71, 0.99 }, delta = { -0.14, -0.15,  0.0  } },
-			    { base = { 0.42, 0.56, 0.99 }, delta = {  0.0,   0.0,  -0.28 } },
-			    { base = { 0.42, 0.56, 0.71 }, delta = {  0.29,  0.29,  0.28 } },
-			    offset = 1,
-			    dx     = 0,
-			    update = function(self, dt)
-			        self.offset = self.offset + (9 * dt)
-			        self.dx = self.offset - math.floor(self.offset)
-			        if self.offset >= 5 then self.offset = self.offset - 4 end
-			    end,
-			    get = function(self, n)
-			        local index = n + math.floor(self.offset)
-			        if index > 4 then index = index - 4 end
-			        local c = self[index]
-			        return { c.base[1] + (c.delta[1] * self.dx), c.base[2] + (c.delta[2] * self.dx), c.base[3] + (c.delta[3] * self.dx) }
-    			end,
+			COLORS     = requireRelative("world/effects/color/colorAnimation"):create {
+				{ 0.71, 0.85, 0.99 }, 
+				{ 0.56, 0.71, 0.99 }, 
+				{ 0.42, 0.56, 0.99 }, 
+				{ 0.42, 0.56, 0.71 },
 			},
-
 			init = function(self)
 				self.slices = {}
 				local y = 0
