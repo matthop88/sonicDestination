@@ -67,19 +67,7 @@ return {
     			end
 	    	end
 	    end
-	    self:printOutAltChunkMap(chunksData.altChunkMap)
-    end,
-
-    printOutAltChunkMap = function(self, altChunkMap)
-    	for k, v in pairs(altChunkMap) do
-    		local altChunks = "{ "
-    		for _, c in ipairs(v) do
-    			altChunks = altChunks .. c .. ", "
-    		end
-    	    altChunks = altChunks .. "}"
-    		print("" .. k .. " = " .. altChunks)
-    	end
-    end,
+	end,
 
     calculateImageDimensions = function(self, chunksData)
         local widthInChunks  = math.min(#chunksData, 9)
@@ -139,7 +127,6 @@ return {
             	heightInTiles = 0
             end
             chunk.quad = love.graphics.newQuad(x, y, 256, chunk.height * 16, chunksImage:getWidth(), chunksImage:getHeight())
-            print("Creating chunk #" .. n .. " at x = " .. x .. ", y = " .. y .. ", height = " .. (chunk.height * 16))
             heightInTiles = math.max(heightInTiles, chunk.height)
         end
 
