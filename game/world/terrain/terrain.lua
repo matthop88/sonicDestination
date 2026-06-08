@@ -128,6 +128,7 @@ return {
         if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
         if chunkInfo.CHUNKS then
             chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
+			-- TODO: Draw overlaid chunks via chunkInfo.DATA.altChunkMap
             if self.showSolids then 
                 chunkInfo.SOLIDS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
             end
@@ -138,6 +139,7 @@ return {
         if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
         if chunkInfo.CHUNKS then
             chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
+			-- TODO: Draw overlaid xFlipped chunks via chunkInfo.DATA.altChunkMap
             if self.showSolids then
                 chunkInfo.SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
             end
