@@ -5,23 +5,23 @@
 
 local WINDOW_WIDTH, WINDOW_HEIGHT = 1024, 600
 
-local destTiles = { 272, 273, 274, 275 }
+local destTiles = { 368, 369, 370, 371 }
 
 local waterfallColors = {
     { 
-        color     = { 0.87, 0.47, 0.87 },
+        color     = { 0.71, 0.86, 1.00 },
         data      = {},
     },
     { 
-        color     = { 0.73, 0.33, 0.73 },
+        color     = { 0.57, 0.71, 1.00 },
         data      = {},
     },
     { 
-        color     = { 0.60, 0.20, 0.60 },
+        color     = { 0.43, 0.57, 1.00 },
         data      = {},
     },
     { 
-        color     = { 0.47, 0.07, 0.47 },
+        color     = { 0.43, 0.57, 0.71 },
         data      = {},
     },
     
@@ -71,9 +71,9 @@ local tileMap = {}
 love.window.setTitle("Color Extractor")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local imgPath = "game/resources/images/backgrounds/ghzBGTiles.png"
+local imgPath = "game/resources/zones/tiles/ghzTiles.png"
 
-local IMG_GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 1024, 256)
+local IMG_GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), 512, 256)
 local GRAFX     = require("tools/lib/graphics"):create(WINDOW_WIDTH, WINDOW_HEIGHT)
 
 local imgData   = love.image.newImageData(imgPath)
@@ -258,7 +258,7 @@ end
 
 function saveImage()
     print("Saved to " .. love.filesystem.getSaveDirectory())
-    return imgData:encode("png", "ghzBGTiles.png")
+    return imgData:encode("png", "ghzTiles.png")
 end
 
 function saveTileMap()
@@ -267,7 +267,7 @@ function saveTileMap()
         table.insert(keys, k)
     end
     table.sort(keys)
-    local data = "return {\n  tilesImageName = \"ghzBGTiles\",\n"
+    local data = "return {\n  tilesImageName = \"ghzTiles\",\n"
     for _, k in ipairs(keys) do
         local destTiles = ""
         for _, t in ipairs(tileMap[k]) do
@@ -277,8 +277,8 @@ function saveTileMap()
     end
     data = data .. "}\n"
 
-    love.filesystem.createDirectory("resources/zones/backgrounds")
-    love.filesystem.write("resources/zones/backgrounds/ghzBGAltTiles.lua", data)
+    love.filesystem.createDirectory("resources/zones/tiles")
+    love.filesystem.write("resources/zones/tiles/ghzAltTiles.lua", data)
 end
 
 --------------------------------------------------------------
