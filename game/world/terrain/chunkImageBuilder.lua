@@ -2,13 +2,25 @@ local TILES_BUILDER = requireRelative("world/terrain/tilesBuilder")
 
 return {
 	create = function(self, chunksDataPath)
-        local chunksData = dofile(chunksDataPath)
+        local chunksData   = dofile(chunksDataPath)
         local tilesImgPath = relativePath("resources/zones/tiles/" .. chunksData.tilesImageName .. ".png")
-        
-        local tiles = TILES_BUILDER:create(tilesImgPath)
+        local tiles        = TILES_BUILDER:create(tilesImgPath)
+
+        local altTiles     = nil
+        if chunksData.altTilesName then
+            print("Alt tiles found")
+            altTiles = dofile(relativePath("resources/zones/tiles/" .. chunksData.altTilesName .. ".lua"))
+        end
+
+        self:augmentChunksWithAltTiles(chunksData, altTiles)
 
         local chunksImg = self:renderChunks(chunksData, tiles)
         chunksImg:setFilter("nearest", "nearest")
+
+        if chunksData.altChunkMap then
+            local chunksImageData = chunksImg:newImageData()
+            chunksImageData:encode("png", "tempChunks.png")
+        end
 
         return chunksImg, chunksData
 	end,
@@ -22,6 +34,45 @@ return {
         love.graphics.setCanvas()     
 
         return imageBuffer
+    end,
+
+    augmentChunksWithAltTiles = function(self, chunksData, altTiles)
+        if altTiles then
+            chunksData.altChunkMap = {}
+
+            for n, chunk in ipairs(chunksData) do
+                local extraChunks = 0
+                for _, row in ipairs(chunk) do
+                    for _, tile in ipairs(row) do
+                        if altTiles[tile] then
+                            extraChunks = math.max(extraChunks, #altTiles[tile])
+                        end
+                    end
+                end
+                local altChunks = {}
+                for i = 1, extraChunks do
+                    local newChunk = { chunkID = #chunksData + 1, }
+                    for j = 1, 16 do
+                        table.insert(newChunk, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, })
+                    end
+                    for r, row in ipairs(chunk) do
+                        for t, tile in ipairs(row) do
+                            if altTiles[tile] then
+                                local altTile = altTiles[tile][i]
+                                if altTile then
+                                    newChunk[r][t] = altTile
+                                end
+                            end
+                        end
+                    end
+                    table.insert(chunksData, newChunk)
+                    table.insert(altChunks, newChunk.chunkID)
+                end
+                if #altChunks > 0 then
+                    chunksData.altChunkMap[chunk.chunkID] = altChunks
+                end
+            end
+        end
     end,
 
     calculateImageDimensions = function(self, chunksData)
