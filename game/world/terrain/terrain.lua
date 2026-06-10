@@ -7,6 +7,13 @@ local CHUNK_ID        = 2
 
 return {
     showSolids = false,
+
+    COLORS     = requireRelative("world/effects/color/colorAnimation"):create {
+        { 0.71, 0.85, 0.99 }, 
+        { 0.56, 0.71, 0.99 }, 
+        { 0.42, 0.56, 0.99 }, 
+        { 0.42, 0.56, 0.71 },
+    },     
     
     init = function(self, params)
         self.mapName   = params.map
@@ -90,7 +97,7 @@ return {
     end,
 
     update = function(self, dt)
-        -- do nothing
+        self.COLORS:update(dt)
     end,
 
 	drawBackground = function(self)
@@ -127,8 +134,18 @@ return {
     drawVanillaChunk = function(self, rowNum, colNum, chunkInfo)
         if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
         if chunkInfo.CHUNKS then
+            self.graphics:setColor(1, 1, 1)
             chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
-			-- TODO: Draw overlaid chunks via chunkInfo.DATA.altChunkMap
+            if chunkInfo.DATA.altChunkMap then
+                local altIndex = 1
+                local altChunks = chunkInfo.DATA.altChunkMap[chunkInfo.ID] or {}
+                for _, c in ipairs(altChunks) do
+                    self.graphics:setColor(self.COLORS:get(altIndex))
+                    chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, c)
+                    altIndex = altIndex + 1
+                    if altIndex > #self.COLORS then altIndex = 1 end
+                end
+            end
             if self.showSolids then 
                 chunkInfo.SOLIDS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
             end
@@ -138,8 +155,18 @@ return {
     drawXFlippedChunk = function(self, rowNum, colNum, chunkInfo)
         if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
         if chunkInfo.CHUNKS then
+            self.graphics:setColor(1, 1, 1)
             chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
-			-- TODO: Draw overlaid xFlipped chunks via chunkInfo.DATA.altChunkMap
+			if chunkInfo.DATA.altChunkMap then
+                local altIndex = 1
+                local altChunks = chunkInfo.DATA.altChunkMap[chunkInfo.ID] or {}
+                for _, c in ipairs(altChunks) do
+                    self.graphics:setColor(self.COLORS:get(altIndex))
+                    chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, c)
+                    altIndex = altIndex + 1
+                    if altIndex > #self.COLORS then altIndex = 1 end
+                end
+            end
             if self.showSolids then
                 chunkInfo.SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
             end
