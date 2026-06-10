@@ -1,5 +1,6 @@
 return {
   tilesImageName = "ghzTiles",
+  altTilesName   = "ghzAltTiles",
   { chunkID = 1,
     {   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1, },
     {   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1, },
