@@ -5,6 +5,13 @@
 MUSIC_MANAGER = require("game/music/musicManager"):create()
 SOUND_MANAGER = require("game/sound/soundManager")
 
+ANIMATING_COLORS = requireRelative("world/effects/color/colorAnimation"):create {
+    { 0.71, 0.85, 0.99 }, 
+    { 0.56, 0.71, 0.99 }, 
+    { 0.42, 0.56, 0.99 }, 
+    { 0.42, 0.56, 0.71 },
+}
+
 --------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
@@ -19,7 +26,7 @@ local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/engine/map"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
 local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 20, 4, 13, 23, 25, 24, 39, 35, 34, 37, 7, 27, 28, 17 })
-local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 30, 103, 104 })
+local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 103, 104 })
 local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 74, 75, 72, 7, 80, 47, 43 })
 local CHUNKS_4_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 4, 5 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
@@ -130,6 +137,7 @@ function love.update(dt)
     MAP:update(dt)
     MUSIC_MANAGER:update(dt)
     SOUND_MANAGER:update(dt)
+    ANIMATING_COLORS:update(dt)
 end
 
 function love.keypressed(key)
