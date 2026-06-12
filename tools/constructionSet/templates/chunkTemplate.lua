@@ -7,8 +7,8 @@ local CHUNK = require("tools/constructionSet/templates/chunk")
 -- A CHUNK_TEMPLATE is what solely resides in the container. It is capable of creating chunk objects, which can be placed on the map.
 
 return {
-    create = function(self, chunkID, CHUNKS, SOLIDS, containerWidth, containerHeight)
-        local coreChunk = CHUNK:create(chunkID, CHUNKS, SOLIDS, containerWidth, containerHeight)
+    create = function(self, chunkID, CHUNKS, SOLIDS, DATA, containerWidth, containerHeight)
+        local coreChunk = CHUNK:create(chunkID, CHUNKS, SOLIDS, DATA, containerWidth, containerHeight)
 
         return {
             hasFocus   = false,
@@ -33,7 +33,7 @@ return {
             deselect  = function(self) self.isSelected = false end,
 
             newObject = function(self)
-                return CHUNK:create(self.chunkID, CHUNKS, SOLIDS)
+                return CHUNK:create(self.chunkID, CHUNKS, SOLIDS, DATA)
             end,
         }
     end,
