@@ -19,7 +19,9 @@ return {
 			update = function(self, dt)
 				self.offset = self.offset + (12 * dt)
 			        self.dx = self.offset - math.floor(self.offset)
-			        if self.offset >= 5 then self.offset = self.offset - 4 end
+			        while self.offset >= 5 do
+			        	self.offset = self.offset - 4 
+			        end
 			    end,
 		    get = function(self, n)
 		        local index = n + math.floor(self.offset)
