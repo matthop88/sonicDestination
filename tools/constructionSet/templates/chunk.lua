@@ -1,8 +1,9 @@
 return {
-    create = function(self, chunkID, CHUNKS, SOLIDS, containerWidth, containerHeight)
+    create = function(self, chunkID, CHUNKS, SOLIDS, DATA, containerWidth, containerHeight)
         return ({
             CHUNKS = CHUNKS,
             SOLIDS = SOLIDS,
+            DATA   = DATA, 
 
             isHeld = false,
             xFlip  = 1,
@@ -19,21 +20,36 @@ return {
 
             draw = function(self, graphics, x, y, w, h)
                 if self.CHUNKS:isValid() then
-                    if self.isHeld then
-                        self.CHUNKS:get():drawAt(graphics, x - (128 * self.xFlip), y - 128, self.chunkID, self.scale * self.xFlip, self.scale)
-                        if self.showSolids then 
-                            if self.xFlip == 1 then self.SOLIDS:get():drawAt(graphics, x - 128, y - 128, self.chunkID) 
-                            else                    self.SOLIDS:get():xFlippedDrawAt(graphics, x - 128, y - 128, self.chunkID) end
+                    graphics:setColor(1, 1, 1, graphics:getAlpha())
+                    self:drawChunk(graphics, x, y, w, h, self.chunkID)
+                    if self.DATA:get().altChunkMap then
+                        local altIndex = 1
+                        local altChunks = self.DATA:get().altChunkMap[self.chunkID] or {}
+                        for _, c in ipairs(altChunks) do
+                            graphics:setColor(ANIMATING_COLORS:get(altIndex))
+                            self:drawChunk(graphics, x, y, w, h, c)
+                            altIndex = altIndex + 1
+                            if altIndex > #ANIMATING_COLORS then altIndex = 1 end
                         end
-                        graphics:setColor(1, 1, 1, graphics:getAlpha())
-                        graphics:setLineWidth(1)
-                        graphics:rectangle("line", x - 128, y - 128, 256, 256)
-                    else
-                        if self.xFlip == -1 then self.CHUNKS:get():drawAt(graphics, x + 256, y, self.chunkID, self.scale * self.xFlip, self.scale)
-                        else                     self.CHUNKS:get():drawAt(graphics, x, y, self.chunkID, self.scale * self.xFlip, self.scale)  end
                     end
                 end
-            end, 
+            end,
+
+            drawChunk = function(self, graphics, x, y, w, h, id)
+                if self.isHeld then
+                    self.CHUNKS:get():drawAt(graphics, x - (128 * self.xFlip), y - 128, id, self.scale * self.xFlip, self.scale)
+                    if self.showSolids then 
+                        if self.xFlip == 1 then self.SOLIDS:get():drawAt(graphics, x - 128, y - 128, id) 
+                        else                    self.SOLIDS:get():xFlippedDrawAt(graphics, x - 128, y - 128, id) end
+                    end
+                    graphics:setColor(1, 1, 1, graphics:getAlpha())
+                    graphics:setLineWidth(1)
+                    graphics:rectangle("line", x - 128, y - 128, 256, 256)
+                else
+                    if self.xFlip == -1 then self.CHUNKS:get():drawAt(graphics, x + 256, y, id, self.scale * self.xFlip, self.scale)
+                    else                     self.CHUNKS:get():drawAt(graphics, x, y, id, self.scale * self.xFlip, self.scale)  end
+                end
+            end,
 
             quantizeXY = function(self, x, y)
                 return (math.floor(x / 256) * 256) + 128, (math.floor(y / 256) * 256) + 128
