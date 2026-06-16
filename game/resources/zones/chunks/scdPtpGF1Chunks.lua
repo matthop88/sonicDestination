@@ -1,5 +1,11 @@
 return {
   tilesImageName = "scdPtpGF1Tiles",
+  altTilesName   = "scdPtpGF1AltTiles",
+  colorsToCycle  = {
+    { 0.38, 0.50, 0.88 },
+    { 0.50, 0.63, 0.88 },
+    { 0.63, 0.75, 0.88 },
+  },
   { chunkID = 1,
     {   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1, },
     {   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1, },
