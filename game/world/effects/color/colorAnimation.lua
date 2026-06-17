@@ -43,11 +43,4 @@ return {
 		return colorAnimator
 	end
 }
-
-		for n, entry in ipairs(entries) do
-			table.insert(colorAnimator, entry)
-		end
-
-		return colorAnimator
-	end
 }
