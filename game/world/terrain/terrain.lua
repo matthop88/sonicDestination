@@ -8,12 +8,7 @@ local CHUNK_ID        = 2
 return {
     showSolids = false,
 
-    COLORS     = requireRelative("world/effects/color/colorAnimation"):create {
-        { 0.71, 0.85, 0.99 }, 
-        { 0.56, 0.71, 0.99 }, 
-        { 0.42, 0.56, 0.99 }, 
-        { 0.42, 0.56, 0.71 },
-    },     
+    activeChunks = {},  
     
     init = function(self, params)
         self.mapName   = params.map
@@ -33,6 +28,7 @@ return {
     end,
 
     loadMapData = function(self)
+        self.activeChunks = {}
         local chunkFactory = requireRelative("world/terrain/chunkFactory")
         local map = {}
         for i = 1, 256 do table.insert(map, {}) end
@@ -48,6 +44,7 @@ return {
                             XFLIP          = elt.xFlip
                         }
                         table.insert(row, mapElt)
+                        self.activeChunks[elt[CHUNKS_IMG_NAME]] = 1
                     else
                         table.insert(row, {})
                     end
@@ -58,6 +55,7 @@ return {
                         XFLIP          = false
                     }
                     table.insert(row, mapElt)
+                    self.activeChunks[MAP_DATA.chunksDataName] = 1
                 end
 
                 map[mapRow.row] = row
@@ -78,12 +76,6 @@ return {
         return lastPopulatedRow * 256
     end,
 
-    initChunks = function(self)
-        CHUNKS_DATA = CHUNK_FACTORY:getData(MAP_DATA.chunksDataName)
-        SOLIDS      = CHUNK_FACTORY:getSolids(MAP_DATA.chunksDataName)
-        CHUNKS      = CHUNK_FACTORY:getChunks(MAP_DATA.chunksDataName)
-    end,
-
     initChunk = function(self, chunkInfo)
         chunkInfo.CHUNKS = CHUNK_FACTORY:getChunks(chunkInfo.CHUNK_IMG_NAME)
         chunkInfo.SOLIDS = CHUNK_FACTORY:getSolids(chunkInfo.CHUNK_IMG_NAME)
@@ -97,7 +89,9 @@ return {
     end,
 
     update = function(self, dt)
-        self.COLORS:update(dt)
+        for k, _ in pairs(self.activeChunks) do
+            CHUNK_FACTORY:getChunks(k):update(dt)
+        end
     end,
 
 	drawBackground = function(self)
@@ -140,10 +134,10 @@ return {
                 local altIndex = 1
                 local altChunks = chunkInfo.DATA.altChunkMap[chunkInfo.ID] or {}
                 for _, c in ipairs(altChunks) do
-                    self.graphics:setColor(self.COLORS:get(altIndex))
+                    self.graphics:setColor(chunkInfo.CHUNKS.COLORS:get(altIndex))
                     chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, c)
                     altIndex = altIndex + 1
-                    if altIndex > #self.COLORS then altIndex = 1 end
+                    if altIndex > #chunkInfo.CHUNKS.COLORS then altIndex = 1 end
                 end
             end
             if self.showSolids then 
