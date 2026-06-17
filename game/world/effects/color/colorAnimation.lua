@@ -43,4 +43,3 @@ return {
 		return colorAnimator
 	end
 }
-}
