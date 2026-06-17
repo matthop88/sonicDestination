@@ -15,7 +15,7 @@ return ({
                 local CHUNKS_PATH = relativePath("resources/zones/chunks/" .. chunksName .. ".lua")
                 local CHUNKS_IMG, CHUNKS_DATA = requireRelative("world/terrain/chunkImageBuilder"):create(CHUNKS_PATH)
             
-                self.chunks = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG, chunksName)
+                self.chunks = requireRelative("world/terrain/chunksBuilder"):create(CHUNKS_IMG, chunksName, CHUNKS_DATA)
                 self.solids = requireRelative("world/terrain/solidsBuilder"):create(CHUNKS_DATA)
                 self.data   = CHUNKS_DATA
                 self.init   = nil
