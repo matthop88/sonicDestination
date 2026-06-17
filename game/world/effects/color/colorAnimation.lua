@@ -1,5 +1,5 @@
 return {
-	create = function(self, colors, isSmooth)
+	create = function(self, colors, isSmooth, rate)
 		local entries = {}
 		for n, color in ipairs(colors) do
 			table.insert(entries, { base = { color[1], color[2], color[3] } })
@@ -16,16 +16,17 @@ return {
 			offset   = 1,
 			dx       = 0,
 			isSmooth = isSmooth,
+			rate     = rate or 12,
 			update = function(self, dt)
-				self.offset = self.offset + (12 * dt)
+				self.offset = self.offset + (self.rate * dt)
 			        self.dx = self.offset - math.floor(self.offset)
-			        while self.offset >= 5 do
-			        	self.offset = self.offset - 4 
+			        while self.offset >= #self + 1 do
+			        	self.offset = self.offset - #self
 			        end
 			    end,
 		    get = function(self, n)
 		        local index = n + math.floor(self.offset)
-		        if index > 4 then index = index - 4 end
+		        if index > #self then index = index - #self end
 		        local c = self[index]
 		        if self.isSmooth then
 		        	return { c.base[1] + (c.delta[1] * self.dx), c.base[2] + (c.delta[2] * self.dx), c.base[3] + (c.delta[3] * self.dx) }
@@ -34,6 +35,14 @@ return {
 		        end
 			end,
 		}
+
+		for n, entry in ipairs(entries) do
+			table.insert(colorAnimator, entry)
+		end
+
+		return colorAnimator
+	end
+}
 
 		for n, entry in ipairs(entries) do
 			table.insert(colorAnimator, entry)
