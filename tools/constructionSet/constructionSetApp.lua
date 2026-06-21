@@ -5,13 +5,6 @@
 MUSIC_MANAGER = require("game/music/musicManager"):create()
 SOUND_MANAGER = require("game/sound/soundManager")
 
-ANIMATING_COLORS = requireRelative("world/effects/color/colorAnimation"):create {
-    { 0.71, 0.85, 0.99 }, 
-    { 0.56, 0.71, 0.99 }, 
-    { 0.42, 0.56, 0.99 }, 
-    { 0.42, 0.56, 0.71 },
-}
-
 --------------------------------------------------------------
 --                     Local Variables                      --
 --------------------------------------------------------------
@@ -137,7 +130,6 @@ function love.update(dt)
     MAP:update(dt)
     MUSIC_MANAGER:update(dt)
     SOUND_MANAGER:update(dt)
-    ANIMATING_COLORS:update(dt)
 end
 
 function love.keypressed(key)
