@@ -155,10 +155,10 @@ return {
                 local altIndex = 1
                 local altChunks = chunkInfo.DATA.altChunkMap[chunkInfo.ID] or {}
                 for _, c in ipairs(altChunks) do
-                    self.graphics:setColor(self.COLORS:get(altIndex))
+                    self.graphics:setColor(chunkInfo.CHUNKS.COLORS:get(altIndex))
                     chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, c)
                     altIndex = altIndex + 1
-                    if altIndex > #self.COLORS then altIndex = 1 end
+                    if altIndex > #chunkInfo.CHUNKS.COLORS then altIndex = 1 end
                 end
             end
             if self.showSolids then
