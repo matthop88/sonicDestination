@@ -1,5 +1,6 @@
 return {
     create = function(self, chunkID, CHUNKS, SOLIDS, DATA, containerWidth, containerHeight)
+        print("Creating chunk with chunkID: ", chunkID, " DATA: ", DATA)
         return ({
             CHUNKS = CHUNKS,
             SOLIDS = SOLIDS,
@@ -22,14 +23,14 @@ return {
                 if self.CHUNKS:isValid() then
                     graphics:setColor(1, 1, 1, graphics:getAlpha())
                     self:drawChunk(graphics, x, y, w, h, self.chunkID)
-                    if self.DATA:get().altChunkMap then
+                    if self.DATA and self.DATA:get().altChunkMap then
                         local altIndex = 1
                         local altChunks = self.DATA:get().altChunkMap[self.chunkID] or {}
                         for _, c in ipairs(altChunks) do
-                            graphics:setColor(ANIMATING_COLORS:get(altIndex))
+                            graphics:setColor(self.CHUNKS:get().COLORS:get(altIndex))
                             self:drawChunk(graphics, x, y, w, h, c)
                             altIndex = altIndex + 1
-                            if altIndex > #ANIMATING_COLORS then altIndex = 1 end
+                            if altIndex > #self.CHUNKS:get().COLORS then altIndex = 1 end
                         end
                     end
                 end
