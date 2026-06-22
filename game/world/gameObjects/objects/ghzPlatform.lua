@@ -2,7 +2,7 @@ return {
 	create = function(self)
 		return {
 			onCollisionWithPlayer = function(self, player)
-				print("Platform collided with player")
+				if player.isStandingOn ~= self then player:landOn(self) end
 			end,
 		}
 	end,
