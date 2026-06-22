@@ -61,7 +61,13 @@ return {
 			spritePath = "objects/lampPost",
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
-		}
+		},
+		ghzPlatform = {
+			name       = "ghzPlatform",
+			spritePath = "objects/ghzPlatform",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
 	},
 
 	getByName = function(self, name)
