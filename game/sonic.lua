@@ -196,6 +196,7 @@ return {
             SOUND_MANAGER:play("sonicJumping")
             self.sprite:setCurrentAnimation("jumping")
             self.airDrag = true
+            if self.standingOn then self.standingOn = nil end
         end
     end,
 
@@ -204,7 +205,7 @@ return {
     end,
 
     isGrounded    = function(self)
-        return self.position.y == WORLD:getGroundLevel() and self.velocity.y >= 0
+        return (self.position.y == WORLD:getGroundLevel() or self.standingOn) and self.velocity.y >= 0
     end,
     
     getState      = function(self)        return self.nextState   end,
@@ -323,6 +324,12 @@ return {
         if self:isFacingRight() then self:setState(STATES.PUSH_RIGHT)
         else                         self:setState(STATES.PUSH_LEFT)  end
     end,
+    landOn = function(self, obj)
+        self.standingOn = obj
+        self.position.y = obj:getY() - (obj:getH() / 2) - 16
+        print("Landing on ", obj.name)
+    end,
+
     getPushing   = function(self)      return self.pushing        end,
     isPushing    = function(self)      return self.pushing ~= nil end,
 }
