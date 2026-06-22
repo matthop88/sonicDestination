@@ -54,6 +54,17 @@ return {
 				end
 			end,
 
+			scanForPlatforms = function(self, dt)
+				--[[
+				1. Game objects can be tagged as platforms
+				2. Implementation of World Platforms list
+					The World platforms list is a linked list that grows and shrinks as platforms are created and destroyed in game. Stored inside world
+				3. Implementation of Nearby Platforms cache
+				    The Nearby Platforms cache is a linked list that contains all platforms within 1 screen of Sonic horizontally and are below him
+				    It is stored inside sensor
+				--]]
+			end,
+
 			toggleShow = function(self) self.visible = not self.visible end,
 		}
 	end,
