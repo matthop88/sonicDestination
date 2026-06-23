@@ -329,6 +329,10 @@ return {
         self.position.y = obj:getY() - (obj:getH() / 2) - 16
         print("Landing on ", obj.name)
     end,
+    fallOff = function(self)
+        print("Falling off ", self.standingOn)
+        self.standingOn = nil
+    end,
 
     getPushing   = function(self)      return self.pushing        end,
     isPushing    = function(self)      return self.pushing ~= nil end,
