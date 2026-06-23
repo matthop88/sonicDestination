@@ -36,6 +36,9 @@ return {
 			end,
 
 			scan = function(self, dt)
+				if self:scanForFallingOffPlatformEdge() then
+					self.owner:fallOff()
+				end
 				WORLD:refreshGroundLevel()
 				local rayLength = (self.owner.velocity.y * dt) + 16
 				if rayLength > 0 then
@@ -52,6 +55,17 @@ return {
 						end
 					end
 				end
+			end,
+
+			scanForFallingOffPlatformEdge = function(self)
+				if self.owner.standingOn then
+					if self.owner:isFacingLeft() then
+						return self.x < self.owner.standingOn:getLeftEdge()
+					elseif self.owner:isFacingRight() then
+						return self.x > self.owner.standingOn:getRightEdge()
+					end
+				end
+				return false
 			end,
 
 			scanForPlatforms = function(self, dt)
