@@ -358,6 +358,20 @@ return {
                             return self.SONIC.AIR_DRAG_VALUE
                         end,
                     },
+                    xCoordinate = {
+                        name = "X Coordinate",
+                        toggleShowKey = "X",
+                        getValueFn = function()
+                            return self.SONIC:getX()
+                        end,
+                    },
+                    yCoordinate = {
+                        name = "Y Coordinate",
+                        toggleShowKey = "Y",
+                        getValueFn = function()
+                            return self.SONIC:getY()
+                        end,
+                    }
                 }
             })
             :add("listVisualizer", { 
