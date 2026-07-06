@@ -68,6 +68,12 @@ return {
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},
+		ehzPlatform = {
+			name       = "ehzPlatform",
+			spritePath = "objects/ehzPlatform",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
 	},
 
 	getByName = function(self, name)
