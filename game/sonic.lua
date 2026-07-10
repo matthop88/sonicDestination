@@ -326,13 +326,10 @@ return {
     end,
     landOn = function(self, obj)
         self.standingOn = obj
-        print("obj y = ", obj:getY(), "obj top = ", obj:getH() / 2, "position.y = ", obj:getY() - (obj:getH() / 2) - 16)
         self.position.y = obj:getY() - (obj:getH() / 2) - 16
         self.velocity.y = 0
-        print("Landing on ", obj.name)
     end,
     fallOff = function(self)
-        print("Falling off ", self.standingOn)
         self.standingOn = nil
     end,
 
