@@ -74,6 +74,12 @@ return {
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},
+		monitor = {
+			name       = "monitor",
+			spritePath = "objects/monitor",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
 	},
 
 	getByName = function(self, name)
