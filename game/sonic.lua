@@ -326,7 +326,7 @@ return {
     end,
     landOn = function(self, obj)
         self.standingOn = obj
-        self.position.y = obj:getY() - (obj:getH() / 2) - 16
+        self.position.y = obj:getTop() - 16
         self.velocity.y = 0
     end,
     fallOff = function(self)
