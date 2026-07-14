@@ -24,6 +24,10 @@ return {
 				return self.x + self:getW() / 2
 			end,
 
+			getTop = function(self)
+				return self.y - self:getH() / 2
+			end,
+
 			update = function(self, dt)
             	if self.player then
             		if self.player.standingOn == self then
