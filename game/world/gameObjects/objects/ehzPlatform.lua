@@ -9,13 +9,6 @@ return {
 				self.origY = self.y
 			end,
 
-			onCollisionWithPlayer = function(self, player)
-				if player.standingOn ~= self and player.velocity.y > 0 and player.position.y < self.y then 
-					player:landOn(self) 
-					self.player = player
-				end
-			end,
-
 			getLeftEdge = function(self)
 				return self.x - self:getW() / 2
 			end,
@@ -46,6 +39,10 @@ return {
                 self:updateHitBox(dt)
                 self.deleted = self.sprite.deleted
             end,
+
+            isPlatform = function(self)
+				return true
+			end,
 		}
 	end,
 }
