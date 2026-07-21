@@ -135,9 +135,11 @@ return {
 
     checkCollisions = function(self)
         local otherHitBox = WORLD:checkCollisions(self)
-        self.HITBOX:setLastIntersectionWith(otherHitBox)
-        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
-            self:setHurt()
+        if self.HITBOX ~= nil then
+            self.HITBOX:setLastIntersectionWith(otherHitBox)
+            if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
+                self:setHurt()
+            end
         end
     end,
 
@@ -213,8 +215,10 @@ return {
 
     updateState = function(self, dt)
         if self.nextState ~= self.state then
+            if self.state and self.state.onLeave then self.state:onLeave() end
             self.state = self.nextState
             self.state:onEnter()
+            self.HITBOX = nil
         elseif self.state.update then
             self.state:update(dt)
         end
