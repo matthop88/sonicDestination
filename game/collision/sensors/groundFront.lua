@@ -39,6 +39,7 @@ return {
 				if self:scanForFallingOffPlatformEdge() then
 					self.owner:fallOff()
 				end
+				self:scanForPlatforms()
 				WORLD:refreshGroundLevel()
 				local rayLength = (self.owner.velocity.y * dt) + 16
 				if rayLength > 0 then
@@ -68,15 +69,25 @@ return {
 				return false
 			end,
 
+			isWithinXBoundsOf = function(self, platform)
+				if self.owner:isFacingLeft() then
+					return self.x >= platform:getLeftEdge()
+				elseif self.owner:isFacingRight() then
+					return self.x <= platform:getRightEdge()
+				end
+				return false
+			end,
+
 			scanForPlatforms = function(self, dt)
-				--[[
-				1. Game objects can be tagged as platforms
-				2. Implementation of World Platforms list
-					The World platforms list is a linked list that grows and shrinks as platforms are created and destroyed in game. Stored inside world
-				3. Implementation of Nearby Platforms cache
-				    The Nearby Platforms cache is a linked list that contains all platforms within 1 screen of Sonic horizontally and are below him
-				    It is stored inside sensor
-				--]]
+				if not self.owner.standingOn and self.owner.velocity.y > 0 then
+					WORLD.platforms:forEach(function(platform)
+						local hitBox = platform:getHitBox()
+                		if hitBox and hitBox:intersects(self.owner:getHitBox()) and self.owner.position.y < platform.y and self:isWithinXBoundsOf(platform) then
+							self.owner:landOn(platform)
+							return true
+						end
+					end)
+            	end
 			end,
 
 			toggleShow = function(self) self.visible = not self.visible end,
