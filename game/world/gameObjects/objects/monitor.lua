@@ -2,7 +2,13 @@ return {
 	create = function(self)
 		return {
 			player = nil,
-			
+
+			onCollisionWithPlayer = function(self, player)
+				if player.velocity.y == 0 then
+					player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
+				end
+			end,
+
 			getLeftEdge = function(self)
 				return self.x - self:getW() / 2
 			end,
