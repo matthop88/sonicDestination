@@ -11,7 +11,8 @@ local HUD
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
 
-    objects = nil,
+    objects   = nil,
+    platforms = nil,
 
     events  = {},
 
@@ -90,12 +91,20 @@ return {
         GRAPHICS:setX(math.min(0, -x + 200))
         GRAPHICS:setY(-y + 200)
 
-        self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+        self.objects   = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+        self.platforms = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+
         local objectID = 1
         for _, objectData in ipairs(objectsMap) do
-            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS, self, objectID))
+            local object = OBJECT_FACTORY:create(objectData, GRAPHICS, self, objectID)
+            self.objects:add(object)
             objectID = objectID + 1
+            if object:isPlatform() then
+                self.platforms:add(object)
+            end
         end
+
+        print("Platform count: " .. self.platforms:size())
     end,
 
     refreshMusic = function(self)
