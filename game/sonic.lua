@@ -328,6 +328,7 @@ return {
         self.standingOn = obj
         self.position.y = obj:getTop() - 16
         self.velocity.y = 0
+        obj.player = self
     end,
     fallOff = function(self)
         self.standingOn = nil
