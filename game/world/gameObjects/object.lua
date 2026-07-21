@@ -131,6 +131,10 @@ return {
                    and sX < graphics:getScreenWidth()  - 50
                    and sY < graphics:getScreenHeight() - 50
             end,
+
+            isPlatform = function(self)
+                return false
+            end,
         }
     end,
 }
