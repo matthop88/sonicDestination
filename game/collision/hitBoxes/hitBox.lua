@@ -11,8 +11,8 @@ return {
 				width            = hitBoxData.rX * 2,
 				height           = hitBoxData.rY * 2,
 				danger           = hitBoxData.danger or 0,
-				x                = nil,
-				y                = nil,
+				x                = source:getX(),
+				y                = source:getY(),
 				xOff             = hitBoxData.xOff or 0,
 				source           = source,
 				
@@ -20,13 +20,11 @@ return {
 				active           = true,
 
 				draw = function(self, GRAFX, color, thickness, scaleX, scaleY)
-					if self.x ~= nil then
-						scaleX, scaleY = (scaleX or 1), (scaleY or 1)
-						if self:intersectsLast() then GRAFX:setColor(INTERSECTION_COLOR)
-						else                          GRAFX:setColor(color)  end
-						GRAFX:setLineWidth(thickness)
-						GRAFX:rectangle("line", self.x - (self.radiusX * scaleX), self.y - (self.radiusY * scaleY), self.width * scaleX, self.height * scaleY)
-					end
+					scaleX, scaleY = (scaleX or 1), (scaleY or 1)
+					if self:intersectsLast() then GRAFX:setColor(INTERSECTION_COLOR)
+					else                          GRAFX:setColor(color)  end
+					GRAFX:setLineWidth(thickness)
+					GRAFX:rectangle("line", self.x - (self.radiusX * scaleX), self.y - (self.radiusY * scaleY), self.width * scaleX, self.height * scaleY)
 		        end,
 
 	            update = function(self, x, y, xFlip)
@@ -37,12 +35,10 @@ return {
 	            end,
 
 	            intersectsIntern = function(self, otherHitBox)
-	            	if self.x ~= nil then
-		            	return self.x + self.radiusX  > otherHitBox.x - otherHitBox.radiusX
-		            	   and self.x - self.radiusX  < otherHitBox.x + otherHitBox.radiusX
-		            	   and self.y + self.radiusY  > otherHitBox.y - otherHitBox.radiusY
-		            	   and self.y - self.radiusY  < otherHitBox.y + otherHitBox.radiusY
-		           	end
+	            	return self.x + self.radiusX  > otherHitBox.x - otherHitBox.radiusX
+		           		and self.x - self.radiusX  < otherHitBox.x + otherHitBox.radiusX
+		            	and self.y + self.radiusY  > otherHitBox.y - otherHitBox.radiusY
+		            	and self.y - self.radiusY  < otherHitBox.y + otherHitBox.radiusY
 	            end,
 
 	            calculatePushOnOther = function(self, otherHitBox)
