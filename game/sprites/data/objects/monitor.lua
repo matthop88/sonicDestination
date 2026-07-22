@@ -9,8 +9,10 @@ return {
                 {   name = "monitorScreen", animation = "flashing",  },
             }
         },
+        destroyed = { offset = { x = 16, y = 0 }, w = 32, h = 16,
+            parts = {
+                {   name = "monitorHull",   animation = "destroyed", },
+            }
+        },
     },
 }
-
-
-
