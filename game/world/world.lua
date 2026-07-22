@@ -237,6 +237,8 @@ return {
 
     checkCollisions = function(self, otherObject)
         local otherHitBox = otherObject:getHitBox()
+        if otherHitBox == nil then return end
+        
         local firstHitBox = nil
         self.objects:forEach(function(object)
             if object ~= otherObject then
