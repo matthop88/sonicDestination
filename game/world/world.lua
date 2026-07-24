@@ -214,11 +214,21 @@ return {
             if object.deleted then self.objects:remove()
             else                   self.objects:next()   end
         end
+        self:updatePlatforms(dt)
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
         SOUND_MANAGER:update(dt)
         MUSIC_MANAGER:update(dt)
         HUD:update(dt)
+    end,
+
+    updatePlatforms = function(self, dt)
+        self.platforms:head()
+        while not self.platforms:isEnd() do
+            local platform = self.platforms:get()
+            if not platform:isPlatform() then self.platforms:remove()
+            else                              self.platforms:next()    end
+        end
     end,
 
     updateEvents = function(self, dt)
