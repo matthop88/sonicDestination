@@ -11,7 +11,7 @@ return {
             { x = 72, y = 603, w = 16, h = 16, offset = { x = 8, y = 11 }, },
         },
         exploding = { fps = 5, offset = { x = 8, y = 11 }, w = 16, h = 16,
-            reps = 1, terminal = true,
+            reps = 1, terminal = true, endingFrame = 6,
             { x = 72, y = 603, w = 16, h = 16, offset = { x = 8, y = 11 }, },
             { x = 72, y = 603, w = 16, h = 16, offset = { x = 8, y = 11 }, },
             { x = 72, y = 603, w = 16, h = 16, offset = { x = 8, y = 11 }, },
