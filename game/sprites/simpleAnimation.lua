@@ -44,8 +44,9 @@ return {
                             self.repCount = self.repCount + 1
                         end
                     end
-                else
-                    if self.data.endingFrame then self.currentFrameIndex = self.data.endingFrame end
+				end
+				if self:reachedMaximumReps() and self.data.endingFrame then
+                    self.currentFrameIndex = self.data.endingFrame
                 end
             end,
 
