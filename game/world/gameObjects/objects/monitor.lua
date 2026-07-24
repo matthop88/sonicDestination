@@ -2,13 +2,19 @@ return {
 	create = function(self)
 		return {
 			player = nil,
+			destroyed = false,
 
 			onCollisionWithPlayer = function(self, player)
-				self.player = player
-				if player.velocity.y == 0 then
-					player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
-					if (player.velocity.x > 0 and player.position.x < self.x) or (player.velocity.x < 0 and player.position.x > self.x) then
-						player:setPushing(self)
+				if not self.destroyed then 
+					self.player = player
+					if player:isSpinning() then
+						self:setAnimation("exploding")
+						self.destroyed = true
+					elseif player.velocity.y == 0 then
+						player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
+						if (player.velocity.x > 0 and player.position.x < self.x) or (player.velocity.x < 0 and player.position.x > self.x) then
+							player:setPushing(self)
+						end
 					end
 				end
 			end,
@@ -37,7 +43,7 @@ return {
 			end,
 
 			isPlatform = function(self)
-				return true
+				return not self.destroyed
 			end,
 		}
 	end,
