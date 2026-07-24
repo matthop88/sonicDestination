@@ -10,6 +10,7 @@ return {
 					if player:isSpinning() then
 						self:setAnimation("exploding")
 						self.destroyed = true
+						player:reboundIfPossible(self.y, 180)
 					elseif player.velocity.y == 0 then
 						player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
 						if (player.velocity.x > 0 and player.position.x < self.x) or (player.velocity.x < 0 and player.position.x > self.x) then
