@@ -29,6 +29,7 @@ return ({
         pushObject      = "pushRock",
         lampPost        = "lampPost",
         postLamp        = "postLamp",
+		monitorPopped   = "monitorPopped",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
