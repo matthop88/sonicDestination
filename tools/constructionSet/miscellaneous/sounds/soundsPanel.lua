@@ -132,7 +132,7 @@ return {
 			pushObject      = { "Push Rock" },
 			lampPost        = { "Lamp Post", },
 			postLamp        = { "None", "Cool!", "All Right!", "Oh Yeah! (Deep)", },
-			monitorPopped   = { "Badnik Death", "Chomp", },
+			monitorPopped   = { "Badnik Death", "Chomp", "Burp", },
 		}
 
 		local playSelectedSound = function()
