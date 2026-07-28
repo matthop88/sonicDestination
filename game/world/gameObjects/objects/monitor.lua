@@ -1,3 +1,5 @@
+local SOUND_MANAGER  = requireRelative("sound/soundManager")
+
 return {
 	create = function(self)
 		return {
@@ -9,6 +11,7 @@ return {
 					self.player = player
 					if player:isSpinning() then
 						self:setAnimation("exploding")
+						SOUND_MANAGER:playAction("monitorPopped")
 						self.destroyed = true
 						player:reboundIfPossible(self.y, 180)
 					elseif player.velocity.y == 0 then
