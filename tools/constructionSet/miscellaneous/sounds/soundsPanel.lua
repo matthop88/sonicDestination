@@ -19,6 +19,7 @@ local ACTIONS = {
 	{ serial = "pushObject",      label = "Push Object" },
 	{ serial = "lampPost",        label = "Lamp Post" },
 	{ serial = "postLamp",        label = "Post Lamp" },
+	{ serial = "monitorPopped",   label = "Monitor Popped" },
 }
 
 local AUDIO_EFFECTS = {
@@ -131,6 +132,7 @@ return {
 			pushObject      = { "Push Rock" },
 			lampPost        = { "Lamp Post", },
 			postLamp        = { "None", "Cool!", "All Right!", "Oh Yeah! (Deep)", },
+			monitorPopped   = { "Badnik Death", "Chomp", },
 		}
 
 		local playSelectedSound = function()
