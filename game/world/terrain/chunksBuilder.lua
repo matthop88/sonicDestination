@@ -53,8 +53,11 @@ return {
 				graphics:draw(self.chunksImg, self:get(chunkID), x, y, 0, sX, sY)
 		    end,
 
-		    update = function(self, dt)
-		    	if self.COLORS then self.COLORS:update(dt) end
+		    update = function(self, dt, timeModifier)
+		    	if self.COLORS then 
+		    		self.COLORS.isSmooth = timeModifier < 1
+		    		self.COLORS:update(dt) 
+		    	end
 		    end,
 
 		    getChunksName = function(self)
