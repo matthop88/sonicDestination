@@ -206,6 +206,7 @@ return {
     drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
 
     update = function(self, dt)
+        local oldDT = dt
         dt = dt * TIME_MODIFIER
         BACKGROUND:update(dt, GRAPHICS)
         TERRAIN:update(dt, TIME_MODIFIER)
@@ -219,7 +220,7 @@ return {
         self:updatePlatforms(dt)
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
-        SOUND_MANAGER:update(dt, TIME_MODIFIER)
+        SOUND_MANAGER:update(oldDT, TIME_MODIFIER)
         MUSIC_MANAGER:update(dt, TIME_MODIFIER)
         HUD:update(dt)
     end,
