@@ -114,7 +114,11 @@ return {
 				self:jumpToSample(targetSample)
 			end,
 					
-			update = function(self, dt)
+			update = function(self, dt, timeModifier)
+				if timeModifier then
+					local tmDelta = (1 - timeModifier) * (1 - timeModifier)
+					self.audioSource:setPitch(self.pitch * (1 - tmDelta))
+				end
 				if self.echoSource and not self:isPlaying() then
 					local sourceSample = self.echoSource:getCurrentSample()
 					if sourceSample >= self.echoDelay then
@@ -169,6 +173,7 @@ return {
 			end,
 			
 			setPitch = function(self, pitch)
+				self.pitch = pitch
 				self.audioSource:setPitch(pitch)
 			end,
 
