@@ -13,6 +13,7 @@ return {
 						self:setAnimation("exploding")
 						SOUND_MANAGER:playAction("monitorPopped")
 						self.destroyed = true
+						self.world:setTimeModifier(0.5)
 						player:reboundIfPossible(self.y, 180)
 					elseif player.velocity.y == 0 then
 						player:move(self:getHitBox():calculatePushOnOther(player:getHitBox()), 0)
