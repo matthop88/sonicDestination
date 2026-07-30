@@ -38,9 +38,9 @@ return {
                 end
             end,
 
-            update = function(self, dt)
+            update = function(self, dt, timeModifier)
                 for _, sound in ipairs(self.sounds) do
-                    if sound.update then sound:update(dt) end
+                    if sound.update then sound:update(dt, timeModifier) end
                 end
             end,
         }
