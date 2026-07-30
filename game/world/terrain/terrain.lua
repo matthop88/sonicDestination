@@ -88,9 +88,9 @@ return {
 		self:drawTerrain()
     end,
 
-    update = function(self, dt)
+    update = function(self, dt, timeModifier)
         for k, _ in pairs(self.activeChunks) do
-            CHUNK_FACTORY:getChunks(k):update(dt)
+            CHUNK_FACTORY:getChunks(k):update(dt, timeModifier)
         end
     end,
 
