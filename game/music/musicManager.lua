@@ -63,9 +63,9 @@ return {
 				end
 			end,
 			
-			update = function(self, dt)
+			update = function(self, dt, timeModifier)
 				for _, track in ipairs(self.tracks) do
-					track:update(dt)
+					track:update(dt, timeModifier)
 				end
 			end,
 							
