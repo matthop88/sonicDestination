@@ -26,6 +26,8 @@ local SHOW_HITBOXES = false
 
 local SPLIT_SCREEN  = false
 
+local TIME_MODIFIER = 1
+
 --------------------------------------------------------------
 --                  Performance Stats Display               --
 --------------------------------------------------------------
@@ -171,6 +173,11 @@ return {
                         end, 
                     },
                     {   key = "@", fn = function() self.SONIC:setHurt()                     end, },
+                    {   key = "t", fn = function() 
+                            TIME_MODIFIER = 1.5 - TIME_MODIFIER
+                            self.SONIC:getWorld():setTimeModifier(TIME_MODIFIER)
+                        end,
+                    },
                 },
             })
             :add("grid3D",         { 
