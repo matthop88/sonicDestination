@@ -7,6 +7,7 @@ local SOUND_MANAGER
 local MUSIC_MANAGER
 local ORIGIN
 local HUD
+local TIME_MODIFIER = 1
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
@@ -205,8 +206,9 @@ return {
     drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
 
     update = function(self, dt)
+        dt = dt * TIME_MODIFIER
         BACKGROUND:update(dt, GRAPHICS)
-        TERRAIN:update(dt)
+        TERRAIN:update(dt, TIME_MODIFIER)
         self.objects:head()
         while not self.objects:isEnd() do
             local object = self.objects:get()
@@ -217,8 +219,8 @@ return {
         self:updatePlatforms(dt)
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
-        SOUND_MANAGER:update(dt)
-        MUSIC_MANAGER:update(dt)
+        SOUND_MANAGER:update(dt, TIME_MODIFIER)
+        MUSIC_MANAGER:update(dt, TIME_MODIFIER)
         HUD:update(dt)
     end,
 
@@ -315,5 +317,9 @@ return {
     refreshGroundLevel = function(self)
         self.GROUND_LEVEL = TERRAIN:getCalculatedGroundLevel()
         WORKSPACE:setGroundLevel(TERRAIN:getCalculatedGroundLevel())
+    end,
+
+    setTimeModifier = function(self, newModifier)
+        TIME_MODIFIER = newModifier
     end,
 }
