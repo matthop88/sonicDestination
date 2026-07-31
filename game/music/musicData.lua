@@ -4,4 +4,5 @@ return {
 	palmTreePanicPresUS = { label = "Palm Tree Panic Present (US)",  filename = "ptpPresUS.mp3", volume = 0.5, startPoint = 0,     endPoint =  9600716, loopStartPoint = 1567904, loopEndPoint = 7078184 },
 	palmTreePanicGFUS   = { label = "Palm Tree Panic G Future (US)", filename = "ptpGFutureUS.mp3", volume = 0.5, startPoint = 0,  endPoint =  7235927, loopStartPoint =  167008, loopEndPoint = 7053866 },
 	iceCapZoneProto1    = { label = "Ice Cap Zone Prototype 1",      filename = "iczProto1.mp3", volume = 0.5, startPoint = 0,     endPoint = 10103039, loopStartPoint =  322534, loopEndPoint = 5328190 },
+	iceCapZoneProto2    = { label = "Ice Cap Zone Prototype 2",      filename = "iczProto2.mp3", volume = 0.5, startPoint = 0,     endPoint = 12122121, loopStartPoint =  410824, loopEndPoint = 5641886 },
 }
