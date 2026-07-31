@@ -7,7 +7,7 @@ local SOUND_MANAGER
 local MUSIC_MANAGER
 local ORIGIN
 local HUD
-local TIME_MODIFIER = 1
+local TIME_MANAGER
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
@@ -72,6 +72,7 @@ return {
         GRAPHICS      = params.GRAPHICS
         SOUND_MANAGER = params.SOUND_MANAGER
         MUSIC_MANAGER = params.MUSIC_MANAGER
+        TIME_MANAGER  = requireRelative("world/timeManager"):create(params.SOUND_MANAGER)
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
@@ -206,8 +207,10 @@ return {
     drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
 
     update = function(self, dt)
+        local TIME_MODIFIER = TIME_MANAGER:getTimeModifier()
         local oldDT = dt
         dt = dt * TIME_MODIFIER
+        TIME_MANAGER:update(oldDT)
         BACKGROUND:update(dt, GRAPHICS)
         TERRAIN:update(dt, TIME_MODIFIER)
         self.objects:head()
@@ -321,6 +324,6 @@ return {
     end,
 
     setTimeModifier = function(self, newModifier)
-        TIME_MODIFIER = newModifier
+        TIME_MANAGER:setTimeModifier(newModifier)
     end,
 }
