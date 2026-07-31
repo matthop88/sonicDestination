@@ -20,6 +20,8 @@ local ACTIONS = {
 	{ serial = "lampPost",        label = "Lamp Post" },
 	{ serial = "postLamp",        label = "Post Lamp" },
 	{ serial = "monitorPopped",   label = "Monitor Popped" },
+	{ serial = "timeMonitorPop",  label = "Time Monitor Pop" },
+	{ serial = "timeMonitorDone", label = "Time Monitor Wear Off" },
 }
 
 local AUDIO_EFFECTS = {
@@ -133,6 +135,8 @@ return {
 			lampPost        = { "Lamp Post", },
 			postLamp        = { "None", "Cool!", "All Right!", "Oh Yeah! (Deep)", },
 			monitorPopped   = { "Badnik Death", "Chomp", "Burp", },
+			timeMonitorPop  = { "None", "Triple Charge", },
+			timeMonitorDone = { "None", "Ting Alarm", },
 		}
 
 		local playSelectedSound = function()
