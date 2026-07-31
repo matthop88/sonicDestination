@@ -12,6 +12,7 @@ return {
 					if player:isSpinning() then
 						self:setAnimation("exploding")
 						SOUND_MANAGER:playAction("monitorPopped")
+						SOUND_MANAGER:playAction("timeMonitorPop")
 						self.destroyed = true
 						self.world:setTimeModifier(0.5)
 						player:reboundIfPossible(self.y, 180)
