@@ -31,6 +31,8 @@ return ({
         lampPost        = "lampPost",
         postLamp        = "postLamp",
 		monitorPopped   = "monitorPopped",
+		timeMonitorPop  = "timeMonitorPop",
+		timeMonitorDone = "timeMonitorDone",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
