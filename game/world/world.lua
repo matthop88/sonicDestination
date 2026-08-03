@@ -96,17 +96,16 @@ return {
         self.objects   = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
         self.platforms = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
 
+        local properties = TERRAIN:getMapData().properties
         local objectID = 1
         for _, objectData in ipairs(objectsMap) do
-            local object = OBJECT_FACTORY:create(objectData, GRAPHICS, self, objectID)
+            local object = OBJECT_FACTORY:create(objectData, GRAPHICS, self, objectID, properties)
             self.objects:add(object)
             objectID = objectID + 1
             if object:isPlatform() then
                 self.platforms:add(object)
             end
         end
-
-        print("Platform count: " .. self.platforms:size())
     end,
 
     refreshMusic = function(self)
@@ -324,6 +323,7 @@ return {
     end,
 
     setTimeModifier = function(self, newModifier)
-        TIME_MANAGER:setTimeModifier(newModifier)
+        local timeProps = TERRAIN:getMapData().properties.time
+        TIME_MANAGER:setTimeModifier(newModifier, timeProps)
     end,
 }
