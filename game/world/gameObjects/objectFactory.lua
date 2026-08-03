@@ -1,6 +1,6 @@
 return {
-	create = function(self, objectData, GRAPHICS, WORLD, OBJECT_ID)
-		local generalObj  = requireRelative("world/gameObjects/object"):create(objectData, GRAPHICS, WORLD, OBJECT_ID)
+	create = function(self, objectData, GRAPHICS, WORLD, OBJECT_ID, props)
+		local generalObj  = requireRelative("world/gameObjects/object"):create(objectData, GRAPHICS, WORLD, OBJECT_ID, props)
 		local specificObj = requireRelative("world/gameObjects/objects/" .. objectData.obj):create()
 
 		self:addGeneralFunctionality(generalObj, specificObj)
