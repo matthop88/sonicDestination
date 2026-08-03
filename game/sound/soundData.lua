@@ -23,6 +23,7 @@ return {
 	chomp          = { label = "Chomp",            filename = "extra/Bite.wav",        volume = 1.0, },
 	burp           = { label = "Burp",             filename = "extra/Burp.wav",        volume = 1.0, },
 	tripleCharge   = { label = "Triple Charge",    filename = "extra/tripleCharge.wav",volume = 1.0, },
+	tripleCharge2  = { label = "Triple Charge 2",  filename = "extra/tripleCharge.wav",volume = 1.0, },
 	tingAlarm      = { label = "Ting Alarm",       filename = "extra/tingAlarm.wav",   volume = 1.0, },
 	klankOuch      = { label = "Klank Ouch!",      complex  = true,
         { filename = "extra/AnvilDing.wav",   volume = 0.8, startPoint = 11076, endPoint =  41006,             },
