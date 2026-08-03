@@ -57,7 +57,7 @@ return {
 				if not timePanel then
 					timePanel = require("tools/constructionSet/miscellaneous/time/timePanel"):create {
 						x = 300,
-						y = 250,
+						y = 150,
 						w = 830,
 						h = 400,
 					}
