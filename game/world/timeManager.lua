@@ -27,11 +27,12 @@ return {
 				if self.timer then
 					self.timer = self.timer - dt
 					if self.timer < 2 and not self.soundPlayed then
-						SOUND_MANAGER:playAction("timeMonitorDone")
+						SOUND_MANAGER:playAction("timeMonitorWarn")
 						self.soundPlayed = true
 					end
 					if self.timer < 0 then
 						self.timer = nil
+						SOUND_MANAGER:playAction("timeMonitorDone")
 						self:setTimeModifier(1)
 					end
 				end
