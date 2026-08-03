@@ -11,10 +11,10 @@ return {
 				return self.timeModifier
 			end,
 
-			setTimeModifier = function(self, value)
+			setTimeModifier = function(self, value, timeProps)
 				self.timeModifierGoal = value
 				if value ~= 1 then
-					self.timer = 20
+					self.timer = timeProps.timeMonitorDurations or 20
 				end
 			end,
 
