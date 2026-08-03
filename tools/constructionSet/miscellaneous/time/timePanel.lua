@@ -20,8 +20,30 @@ local TIMES_AT_START = {
 	{ label = "1  Hour",     value = 3600 },
 }
 
+local TIME_MONITOR_DURATIONS = {
+	{ label = "1 Second",   value = 1, },
+	{ label = "2 Seconds",  value = 2, },
+	{ label = "3 Seconds",  value = 3, },
+	{ label = "4 Seconds",  value = 4, },
+	{ label = "5 Seconds",  value = 5, },
+	{ label = "6 Seconds",  value = 6, },
+	{ label = "7 Seconds",  value = 7, },
+	{ label = "8 Seconds",  value = 8, },
+	{ label = "10 Seconds", value = 10,},
+	{ label = "12 Seconds", value = 12,},
+	{ label = "15 Seconds", value = 15,},
+	{ label = "18 Seconds", value = 18,},
+	{ label = "20 Seconds", value = 20,},
+	{ label = "25 Seconds", value = 25,},
+	{ label = "30 Seconds", value = 30,},
+	{ label = "40 Seconds", value = 40,},
+	{ label = "50 Seconds", value = 50,},
+	{ label = "60 Seconds", value = 60,},
+}
+
 local timesAtStartDropdown
 local timeTextEditableField
+local timeMonitorDurationsDropdown
 
 local createLabel = function(params)
 	return {
@@ -58,8 +80,9 @@ return {
 					getModals():add(self)
 				end
 
-				self.timeAtStartLabel = createLabel { x = self.x + 20, y = self.y + 80,  w = 150, h = 50, label = "Time at Start", }
+				self.timeAtStartLabel = createLabel { x = self.x + 20, y = self.y +  80, w = 150, h = 50, label = "Time at Start", }
 				self.timeTextLabel    = createLabel { x = self.x + 20, y = self.y + 140, w = 150, h = 50, label = "Text", }
+				self.timeMonDurLabel  = createLabel { x = self.x + 20, y = self.y + 200, w = 150, h = 50, label = "Monitor Duration", }
 				self.okButton         = require("tools/lib/components/okButton"):create {
 					x = self.x + self.w - 120,
 					y = self.y + self.h - 60,
@@ -106,6 +129,29 @@ return {
 					validKeys = { "b", "c", "e", "g", "i", "m", "n", "o", "r", "s", "t", "u", },
 					transformer = function(text) return string.upper(text) end,
 				}
+
+				selectedIndex = 1
+				for n, v in ipairs(TIME_MONITOR_DURATIONS) do
+					if v.value == timeProperties.timeMonitorDurations then
+						selectedIndex = n
+					end
+				end
+
+				timeMonitorDurationsDropdown = require("tools/lib/components/dropDownField"):create {
+					x = self.x + 200,
+					y = self.y + 200,
+					width = 300,
+					height = 50,
+					label = "",
+					list = TIME_MONITOR_DURATIONS,
+					selectedIndex = selectedIndex,
+					comparisonFn = function(listItem, value)
+						return listItem.value == value
+					end,
+					onChanged = function(item, index)
+						timeProperties.timeMonitorDurations = item.value
+					end,
+				}
 		
 				return self
 			end,
@@ -117,8 +163,10 @@ return {
 				self:drawTitle()
 				self.timeAtStartLabel:draw()
 				self.timeTextLabel:draw()
+				self.timeMonDurLabel:draw()
 				timesAtStartDropdown:draw()
 				timeTextEditableField:draw()
+				timeMonitorDurationsDropdown:draw()
 				self.okButton:draw()
 			end,
 			
@@ -161,7 +209,12 @@ return {
 					return true
 				end
 
-				if self:containsPoint(mx, my) and not timesAtStartDropdown:isListVisible() then
+				if timeMonitorDurationsDropdown:handleMousepressed(mx, my) then
+					timeTextEditableField:setEditing(false)
+					return true
+				end
+
+				if self:containsPoint(mx, my) and not timesAtStartDropdown:isListVisible() and not timeMonitorDurationsDropdown:isListVisible() then
 					return true
 				end
 			end,
