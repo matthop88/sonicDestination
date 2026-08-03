@@ -2,7 +2,7 @@ local SOUND_MANAGER = requireRelative("sound/soundManager")
 local SCRIPT_ENGINE = requireRelative("world/badniks/scripts/lib/scriptEngine")
 
 return {
-    create = function(self, object, graphics, WORLD, OBJECT_ID)
+    create = function(self, object, graphics, WORLD, OBJECT_ID, props)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
         local SPRITE        = spriteFactory:create("objects/" .. object.obj)
 
@@ -22,6 +22,7 @@ return {
             sprite   = SPRITE,
             world    = WORLD,
             id       = OBJECT_ID,
+            props    = props,
 
             onCreation = function(self)
                 -- do nothing
