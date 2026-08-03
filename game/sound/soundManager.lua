@@ -33,6 +33,7 @@ return ({
 		monitorPopped   = "monitorPopped",
 		timeMonitorPop  = "timeMonitorPop",
 		timeMonitorDone = "timeMonitorDone",
+		timeMonitorWarn = "timeMonitorWarn",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
