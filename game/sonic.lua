@@ -52,8 +52,9 @@ return {
         WORLD    = params.WORLD
         GRAPHICS = params.GRAPHICS
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
-        sonic1Sprite = spriteFactory:create("sonic1")
-        sonic2Sprite = spriteFactory:create("sonic2")
+        sonic1Sprite  = spriteFactory:create("sonic1")
+        sonic2Sprite  = spriteFactory:create("sonic2")
+        sonicCDSprite = spriteFactory:create("sonicCD")
         
         self.sprite = sonic1Sprite
         self:initSensors(params.GRAPHICS)
@@ -81,7 +82,7 @@ return {
         end
         if sprite then
             if sprite == "sonic2" and self.sprite == sonic1Sprite then
-                self:changeSonicSprite(sonic2Sprite)
+                self:changeSonicSprite(sonicCDSprite)
             elseif sprite == "sonic1" and self.sprite == sonic2Sprite then
                 self:changeSonicSprite(sonic1Sprite)
             end
@@ -248,8 +249,18 @@ return {
     applyGravity = function(self, dt)
         if not self:isGrounded() then
             self.velocity.y = self.velocity.y + (self:getGravityForce() * dt)
+            if self.sprite:getCurrentAnimationName() == "running" then
+                self.sprite:setCurrentAnimation("dropping")
+            end
         else
             self.velocity.y = 0
+            if self.sprite:getCurrentAnimationName() == "dropping" then
+                if self.velocity.x == 0 then
+                    self.sprite:setCurrentAnimation("standing")
+                else
+                    self.sprite:setCurrentAnimation("running")
+                end
+            end
         end
     end,
 
