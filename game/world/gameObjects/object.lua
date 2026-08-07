@@ -115,8 +115,11 @@ return {
                 self.xFlip = not self.xFlip
             end,
 
-            getXFlip     = function(self) return self.xFlip      end,
-            getSortValue = function(self) return self.x          end,
+            getXFlip      = function(self) return self.xFlip          end,
+            getSortValue  = function(self) return self.x              end,
+
+            isFacingLeft  = function(self) return self.xFlip == false end,
+            isFacingRight = function(self) return self.xFlip == true  end,
 
             locateVisually = function(self)
                 local graphics = self.sprite:getGraphics()
@@ -135,6 +138,13 @@ return {
 
             isPlatform = function(self)
                 return false
+            end,
+
+            landOn = function(self, obj)
+                self.standingOn = obj
+                self.y = obj:getTop() - 16
+                self.ySpeed = 0
+                obj.player = self
             end,
         }
     end,
