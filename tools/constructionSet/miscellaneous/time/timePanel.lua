@@ -93,6 +93,7 @@ return {
 				local timeProperties = getProperties().time
 				if not timeProperties then
 					getProperties().time = {}
+					timeProperties = {}
 				end
 				
 				local selectedIndex = 1
