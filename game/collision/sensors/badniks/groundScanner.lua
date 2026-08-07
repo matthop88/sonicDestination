@@ -45,6 +45,10 @@ return {
 					end
 					return true
 				end
+				if self.owner.standingOn then
+					return not self:scanForFallingOffPlatformEdge()
+				end
+
 			end,
 
 			findNearestGroundWithin = function(self, deltaY)
@@ -52,7 +56,7 @@ return {
 				local yy = quantizedY - self:getY()
 				while yy <= deltaY do
 					local solid = WORLD:getSolidAt(self:getX(), self:getY() + yy)
-					if solid == 1 then
+					if solid == 1 or self:scanForPlatforms() then
 						return yy
 					end
 					yy = yy + 16
@@ -64,6 +68,36 @@ return {
 			end,
 
 			toggleShow = function(self) self.visible = not self.visible end,
+
+			isWithinXBoundsOf = function(self, platform)
+				if self.owner:isFacingLeft() then
+					return self:getX() >= platform:getLeftEdge()
+				elseif self.owner:isFacingRight() then
+					return self:getX() <= platform:getRightEdge()
+				end
+				return false
+			end,
+
+			scanForPlatforms = function(self)
+				if not self.owner.standingOn and self.owner:getYSpeed() > 0 then
+					WORLD.platforms:forEach(function(platform)
+						local hitBox = platform:getHitBox()
+                		if hitBox and hitBox:intersects(self.owner:getHitBox()) and self.owner.y < platform.y and self:isWithinXBoundsOf(platform) then
+							self.owner:landOn(platform)
+							return true
+						end
+					end)
+            	end
+			end,
+
+			scanForFallingOffPlatformEdge = function(self)
+				if self.owner:isFacingLeft() then
+					return self:getX() < self.owner.standingOn:getLeftEdge()
+				elseif self.owner:isFacingRight() then
+					return self:getX() > self.owner.standingOn:getRightEdge()
+				end
+				return false
+			end,
 		}
 	end,
 }
