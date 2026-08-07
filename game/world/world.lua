@@ -8,6 +8,7 @@ local MUSIC_MANAGER
 local ORIGIN
 local HUD
 local TIME_MANAGER
+local TIME_ELAPSED = 0
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
@@ -173,6 +174,8 @@ return {
         self:refreshTime()
         self:refreshGroundLevel()
         self:refreshObjectsMap(x, y)
+
+        TIME_ELAPSED = 0
     end,
 
     draw = function(self)
@@ -212,12 +215,14 @@ return {
         TIME_MANAGER:update(oldDT)
         BACKGROUND:update(dt, GRAPHICS)
         TERRAIN:update(dt, TIME_MODIFIER)
-        self.objects:head()
-        while not self.objects:isEnd() do
-            local object = self.objects:get()
-            object:update(dt)
-            if object.deleted then self.objects:remove()
-            else                   self.objects:next()   end
+        if TIME_ELAPSED >= 0.25 then
+            self.objects:head()
+            while not self.objects:isEnd() do
+                local object = self.objects:get()
+                object:update(dt)
+                if object.deleted then self.objects:remove()
+                else                   self.objects:next()   end
+            end
         end
         self:updatePlatforms(dt)
         self.fadeLayer:update(dt)
@@ -225,6 +230,7 @@ return {
         SOUND_MANAGER:update(oldDT, TIME_MODIFIER)
         MUSIC_MANAGER:update(dt, TIME_MODIFIER)
         HUD:update(dt)
+        TIME_ELAPSED = TIME_ELAPSED + dt
     end,
 
     updatePlatforms = function(self, dt)
