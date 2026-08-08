@@ -31,7 +31,7 @@ local ITEMS_2_PANEL   = require("tools/constructionSet/panels/itemsPanel"):creat
 local MISCELLANEOUS_PANEL = require("tools/constructionSet/panels/miscellaneousPanel"):create()
 
 local PLAYER_PANEL    = require("tools/constructionSet/panels/playerPanel"):create( { "sonic1" }, STICKY_MOUSE)
-local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2" }, STICKY_MOUSE)
+local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2", "sonicCD", }, STICKY_MOUSE)
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
