@@ -81,10 +81,12 @@ return {
             self.velocity.y = 0
         end
         if sprite then
-            if sprite == "sonic2" and self.sprite == sonic1Sprite then
-                self:changeSonicSprite(sonicCDSprite)
-            elseif sprite == "sonic1" and self.sprite == sonic2Sprite then
+            if sprite == "sonic2" and self.sprite ~= sonic2Sprite then
+                self:changeSonicSprite(sonic2Sprite)
+            elseif sprite == "sonic1" and self.sprite ~= sonic1Sprite then
                 self:changeSonicSprite(sonic1Sprite)
+            elseif sprite == "sonicCD" and self.sprite ~= sonicCDSprite then
+                self:changeSonicSprite(sonicCDSprite)
             end
         end
     end,
