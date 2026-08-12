@@ -5,6 +5,7 @@ local GRAPHICS
 local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
+local TIME_MANAGER
 
 local ringPanRight   = true
 
@@ -49,8 +50,10 @@ return {
     flashEngine = requireRelative("collision/flashing/flashEngine"):create { frameCount = 4},
         
     init = function(self, params)
-        WORLD    = params.WORLD
-        GRAPHICS = params.GRAPHICS
+        WORLD        = params.WORLD
+        GRAPHICS     = params.GRAPHICS
+        TIME_MANAGER = params.TIME_MANAGER
+
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
         sonic1Sprite  = spriteFactory:create("sonic1")
         sonic2Sprite  = spriteFactory:create("sonic2")
@@ -116,6 +119,9 @@ return {
 
     update = function(self, dt)
         if self.active then
+            local modifier = TIME_MANAGER:getTimeModifier()
+            local tmDelta = (1 - modifier) * (1 - modifier)
+            local dt = dt * (1 - tmDelta)
             self.sprite:update(dt)
             if not self.frozen then
                 self:updateFrameRate(dt)
