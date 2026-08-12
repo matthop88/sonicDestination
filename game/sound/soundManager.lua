@@ -12,6 +12,7 @@ return ({
 	overrides    = {},
 	queuedSounds = requireRelative("util/dataStructures/linkedList"):create(),
 	volumeScalar = 1,
+	timeModifier = 1,
 
 	actionSoundMap = {
 		braking         = "sonicBraking",
@@ -27,6 +28,12 @@ return ({
         badnikSquished  = "smoosh",
         badnikStrike    = "bowlingStrike",
         pushObject      = "pushRock",
+        lampPost        = "lampPost",
+        postLamp        = "postLamp",
+		monitorPopped   = "monitorPopped",
+		timeMonitorPop  = "timeMonitorPop",
+		timeMonitorDone = "timeMonitorDone",
+		timeMonitorWarn = "timeMonitorWarn",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
@@ -96,7 +103,7 @@ return ({
 		local data = requireRelative("sound/soundData")
 		local base = data[soundKey]
 		if not base then 
-            print("Data not found for " .. soundKey)
+            print("Data not found for ", soundKey)
             return end
 		local props = propsTable or (_G.getProperties and getProperties().sounds) or nil
 		local merged = self:mergePropsIntoElement(soundKey, shallowCopy(base), props)
@@ -123,7 +130,7 @@ return ({
         if sound then
     		sound:setVolumeScalar(self.volumeScalar)
     		if sound.delay then self:addToQueue(sound)
-    		else                sound:play(self)    end
+    		else                sound:play(self, self.timeModifier)    end
         end
 	end,
 
@@ -137,14 +144,15 @@ return ({
 		self.queuedSounds:add({ timer = sound.delay, sound = sound })
 	end,
 
-	update = function(self, dt)
+	update = function(self, dt, timeModifier)
+		self.timeModifier = self.timeModifier or 1
 		for _, sound in pairs(self.sounds) do
-			if sound.update then sound:update(dt) end
+			if sound.update then sound:update(dt, timeModifier) end
 		end
 		self.queuedSounds:forEach(function(delayedSound)
 			delayedSound.timer = delayedSound.timer - dt
 			if delayedSound.timer <= 0 then
-				delayedSound.sound:play()
+				delayedSound.sound:play(timeModifier)
 				self.queuedSounds:remove()
 				return true
 			end

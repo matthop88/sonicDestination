@@ -1,7 +1,7 @@
 local COLOR = require("tools/lib/colors")
 local verticalSliderPane = require("tools/lib/components/verticalSliderPane")
 local horizontalSlider = require("tools/lib/components/horizontalSlider")
-local echoCountList = require("tools/constructionSet/music/echoCountList")
+local echoCountList = require("tools/constructionSet/miscellaneous/music/echoCountList")
 
 local createField = function(params)
 	return {
@@ -185,8 +185,8 @@ return {
 					height = self.height - 140,
 					title = "Volume",
 					minValue = 0,
-					maxValue = 1,
-					quantize = 0.1,
+					maxValue = 2,
+					quantize = 0.05,
 					titleFontSize = 14,
 					labelFontSize = 16,
 					showLabels = false,
@@ -406,7 +406,7 @@ return {
 					
 			showMusicList = function(self)
 				if not musicList then
-					musicList = require("tools/constructionSet/music/musicList"):create {
+					musicList = require("tools/constructionSet/miscellaneous/music/musicList"):create {
 						x = musicNameField.x,
 						y = musicNameField.y + musicNameField.height,
 						width = musicNameField.width,
@@ -432,7 +432,7 @@ return {
 			
 		showEffectList = function(self)
 			if not effectList then
-				effectList = require("tools/constructionSet/music/effectList"):create {
+				effectList = require("tools/constructionSet/miscellaneous/music/effectList"):create {
 					x = effectField.x,
 					y = effectField.y + effectField.height,
 					width = effectField.width,
@@ -456,7 +456,7 @@ return {
 		
 		showEchoCountList = function(self)
 			if not echoCountList then
-				echoCountList = require("tools/constructionSet/music/echoCountList"):create {
+				echoCountList = require("tools/constructionSet/miscellaneous/music/echoCountList"):create {
 					x = echoCountField.x,
 					y = echoCountField.y + echoCountField.height,
 					width = echoCountField.width,

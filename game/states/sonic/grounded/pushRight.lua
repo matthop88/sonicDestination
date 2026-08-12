@@ -7,6 +7,10 @@ return {
         return self
     end,
 
+    onLeave = function(self)
+        SONIC:clearPushing()
+    end,
+    
     onEnter    = function(self) 
         SONIC:faceRight()
         SONIC.velocity.x = 0

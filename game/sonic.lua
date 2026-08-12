@@ -5,6 +5,7 @@ local GRAPHICS
 local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
+local TIME_MANAGER
 
 local ringPanRight   = true
 
@@ -49,11 +50,14 @@ return {
     flashEngine = requireRelative("collision/flashing/flashEngine"):create { frameCount = 4},
         
     init = function(self, params)
-        WORLD    = params.WORLD
-        GRAPHICS = params.GRAPHICS
+        WORLD        = params.WORLD
+        GRAPHICS     = params.GRAPHICS
+        TIME_MANAGER = params.TIME_MANAGER
+
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
-        sonic1Sprite = spriteFactory:create("sonic1")
-        sonic2Sprite = spriteFactory:create("sonic2")
+        sonic1Sprite  = spriteFactory:create("sonic1")
+        sonic2Sprite  = spriteFactory:create("sonic2")
+        sonicCDSprite = spriteFactory:create("sonicCD")
         
         self.sprite = sonic1Sprite
         self:initSensors(params.GRAPHICS)
@@ -80,10 +84,12 @@ return {
             self.velocity.y = 0
         end
         if sprite then
-            if sprite == "sonic2" and self.sprite == sonic1Sprite then
+            if sprite == "sonic2" and self.sprite ~= sonic2Sprite then
                 self:changeSonicSprite(sonic2Sprite)
-            elseif sprite == "sonic1" and self.sprite == sonic2Sprite then
+            elseif sprite == "sonic1" and self.sprite ~= sonic1Sprite then
                 self:changeSonicSprite(sonic1Sprite)
+            elseif sprite == "sonicCD" and self.sprite ~= sonicCDSprite then
+                self:changeSonicSprite(sonicCDSprite)
             end
         end
     end,
@@ -113,6 +119,9 @@ return {
 
     update = function(self, dt)
         if self.active then
+            local modifier = TIME_MANAGER:getTimeModifier()
+            local tmDelta = (1 - modifier) * (1 - modifier)
+            local dt = dt * (1 - tmDelta)
             self.sprite:update(dt)
             if not self.frozen then
                 self:updateFrameRate(dt)
@@ -135,9 +144,11 @@ return {
 
     checkCollisions = function(self)
         local otherHitBox = WORLD:checkCollisions(self)
-        self.HITBOX:setLastIntersectionWith(otherHitBox)
-        if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
-            self:setHurt()
+        if self.HITBOX ~= nil then
+            self.HITBOX:setLastIntersectionWith(otherHitBox)
+            if otherHitBox and otherHitBox.danger > 0 and not self:isSpinning() and not self:isInvincible() then
+                self:setHurt()
+            end
         end
     end,
 
@@ -196,6 +207,7 @@ return {
             SOUND_MANAGER:play("sonicJumping")
             self.sprite:setCurrentAnimation("jumping")
             self.airDrag = true
+            if self.standingOn then self.standingOn = nil end
         end
     end,
 
@@ -204,7 +216,7 @@ return {
     end,
 
     isGrounded    = function(self)
-        return self.position.y == WORLD:getGroundLevel() and self.velocity.y >= 0
+        return (self.position.y == WORLD:getGroundLevel() or self.standingOn) and self.velocity.y >= 0
     end,
     
     getState      = function(self)        return self.nextState   end,
@@ -212,8 +224,10 @@ return {
 
     updateState = function(self, dt)
         if self.nextState ~= self.state then
+            if self.state and self.state.onLeave then self.state:onLeave() end
             self.state = self.nextState
             self.state:onEnter()
+            self.HITBOX = nil
         elseif self.state.update then
             self.state:update(dt)
         end
@@ -243,8 +257,18 @@ return {
     applyGravity = function(self, dt)
         if not self:isGrounded() then
             self.velocity.y = self.velocity.y + (self:getGravityForce() * dt)
+            if self.sprite:getCurrentAnimationName() == "running" then
+                self.sprite:setCurrentAnimation("dropping")
+            end
         else
             self.velocity.y = 0
+            if self.sprite:getCurrentAnimationName() == "dropping" then
+                if self.velocity.x == 0 then
+                    self.sprite:setCurrentAnimation("standing")
+                else
+                    self.sprite:setCurrentAnimation("running")
+                end
+            end
         end
     end,
 
@@ -323,6 +347,16 @@ return {
         if self:isFacingRight() then self:setState(STATES.PUSH_RIGHT)
         else                         self:setState(STATES.PUSH_LEFT)  end
     end,
+    landOn = function(self, obj)
+        self.standingOn = obj
+        self.position.y = obj:getTop() - 16
+        self.velocity.y = 0
+        obj.player = self
+    end,
+    fallOff = function(self)
+        self.standingOn = nil
+    end,
+
     getPushing   = function(self)      return self.pushing        end,
     isPushing    = function(self)      return self.pushing ~= nil end,
 }

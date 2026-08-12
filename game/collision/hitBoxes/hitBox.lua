@@ -11,8 +11,8 @@ return {
 				width            = hitBoxData.rX * 2,
 				height           = hitBoxData.rY * 2,
 				danger           = hitBoxData.danger or 0,
-				x                = 0,
-				y                = 0,
+				x                = source:getX(),
+				y                = source:getY(),
 				xOff             = hitBoxData.xOff or 0,
 				source           = source,
 				
@@ -25,7 +25,7 @@ return {
 					else                          GRAFX:setColor(color)  end
 					GRAFX:setLineWidth(thickness)
 					GRAFX:rectangle("line", self.x - (self.radiusX * scaleX), self.y - (self.radiusY * scaleY), self.width * scaleX, self.height * scaleY)
-	            end,
+		        end,
 
 	            update = function(self, x, y, xFlip)
 	            	local xOff = self.xOff
@@ -36,17 +36,19 @@ return {
 
 	            intersectsIntern = function(self, otherHitBox)
 	            	return self.x + self.radiusX  > otherHitBox.x - otherHitBox.radiusX
-	            	   and self.x - self.radiusX  < otherHitBox.x + otherHitBox.radiusX
-	            	   and self.y + self.radiusY  > otherHitBox.y - otherHitBox.radiusY
-	            	   and self.y - self.radiusY  < otherHitBox.y + otherHitBox.radiusY
+		           		and self.x - self.radiusX  < otherHitBox.x + otherHitBox.radiusX
+		            	and self.y + self.radiusY  > otherHitBox.y - otherHitBox.radiusY
+		            	and self.y - self.radiusY  < otherHitBox.y + otherHitBox.radiusY
 	            end,
 
 	            calculatePushOnOther = function(self, otherHitBox)
-	            	if self.x < otherHitBox.x then
+	            	if self.x ~= nil then
+	            		if self.x < otherHitBox.x then
 	            		return (self.x + self.radiusX) - (otherHitBox.x - otherHitBox.radiusX)
-	            	else
-	            		return (self.x - self.radiusX) - (otherHitBox.x + otherHitBox.radiusX)
-	            	end
+		            	else
+		            		return (self.x - self.radiusX) - (otherHitBox.x + otherHitBox.radiusX)
+		            	end
+		            end
 	            end,
 
 	            intersects = function(self, otherHitBox)

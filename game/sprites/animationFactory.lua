@@ -126,7 +126,7 @@ return {
 
             setCurrentAnimation = function(self, animationName)
                 if self.animations[animationName] == nil then
-                    print("ERROR: Cannot switch to animation \"" .. animationName .. "\"")
+                    -- No error message
                 else
                     self:setCurrentAnimationIntern(animationName)
                 end

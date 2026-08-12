@@ -157,6 +157,10 @@ return {
             saveImage = function(self, imgName)
                 return self.buffer:newImageData():encode("png", imgName .. ".png")
             end,
+
+            getImageData = function(self)
+                return self.buffer:newImageData()
+            end,
         }
     end,
 }

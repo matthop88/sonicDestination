@@ -1,14 +1,10 @@
 local SOUND_MANAGER = requireRelative("sound/soundManager")
 local SCRIPT_ENGINE = requireRelative("world/badniks/scripts/lib/scriptEngine")
 
-local OBJECT_ID    = 0
-
 return {
-    create = function(self, object, graphics, WORLD)
+    create = function(self, object, graphics, WORLD, OBJECT_ID, props)
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = graphics })
         local SPRITE        = spriteFactory:create("objects/" .. object.obj)
-
-        OBJECT_ID = OBJECT_ID + 1
 
         return {
             x        = object.x,
@@ -26,6 +22,11 @@ return {
             sprite   = SPRITE,
             world    = WORLD,
             id       = OBJECT_ID,
+            props    = props,
+
+            onCreation = function(self)
+                -- do nothing
+            end,
             
             getID    = function(self) return self.id end,
 
@@ -114,8 +115,11 @@ return {
                 self.xFlip = not self.xFlip
             end,
 
-            getXFlip     = function(self) return self.xFlip      end,
-            getSortValue = function(self) return self.x          end,
+            getXFlip      = function(self) return self.xFlip          end,
+            getSortValue  = function(self) return self.x              end,
+
+            isFacingLeft  = function(self) return self.xFlip == false end,
+            isFacingRight = function(self) return self.xFlip == true  end,
 
             locateVisually = function(self)
                 local graphics = self.sprite:getGraphics()
@@ -130,6 +134,17 @@ return {
                    and sY > 50 
                    and sX < graphics:getScreenWidth()  - 50
                    and sY < graphics:getScreenHeight() - 50
+            end,
+
+            isPlatform = function(self)
+                return false
+            end,
+
+            landOn = function(self, obj)
+                self.standingOn = obj
+                self.y = obj:getTop() - 16
+                self.ySpeed = 0
+                obj.player = self
             end,
         }
     end,

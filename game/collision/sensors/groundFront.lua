@@ -36,6 +36,10 @@ return {
 			end,
 
 			scan = function(self, dt)
+				if self:scanForFallingOffPlatformEdge() then
+					self.owner:fallOff()
+				end
+				self:scanForPlatforms()
 				WORLD:refreshGroundLevel()
 				local rayLength = (self.owner.velocity.y * dt) + 16
 				if rayLength > 0 then
@@ -52,6 +56,38 @@ return {
 						end
 					end
 				end
+			end,
+
+			scanForFallingOffPlatformEdge = function(self)
+				if self.owner.standingOn then
+					if self.owner:isFacingLeft() then
+						return self.x < self.owner.standingOn:getLeftEdge()
+					elseif self.owner:isFacingRight() then
+						return self.x > self.owner.standingOn:getRightEdge()
+					end
+				end
+				return false
+			end,
+
+			isWithinXBoundsOf = function(self, platform)
+				if self.owner:isFacingLeft() then
+					return self.x >= platform:getLeftEdge()
+				elseif self.owner:isFacingRight() then
+					return self.x <= platform:getRightEdge()
+				end
+				return false
+			end,
+
+			scanForPlatforms = function(self, dt)
+				if not self.owner.standingOn and self.owner.velocity.y > 0 then
+					WORLD.platforms:forEach(function(platform)
+						local hitBox = platform:getHitBox()
+                		if hitBox and hitBox:intersects(self.owner:getHitBox()) and self.owner.position.y < platform.y and self:isWithinXBoundsOf(platform) then
+							self.owner:landOn(platform)
+							return true
+						end
+					end)
+            	end
 			end,
 
 			toggleShow = function(self) self.visible = not self.visible end,

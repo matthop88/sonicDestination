@@ -42,7 +42,11 @@ return {
 			end,
 
 			get = function(self)
-				return self.animation[math.floor(self.frameNumber)]
+				local frame = self.animation[math.floor(self.frameNumber)]
+				if self.animation.calculateOffsets then
+					frame.offset.x, frame.offset.y = self.animation.calculateOffsets(self.frameNumber)
+				end
+				return frame
 			end,
 
 			isRolledOver = function(self)
@@ -68,6 +72,8 @@ return {
 
 			getFirst     = function(self) return self.animation[1]     end,
 			isForeground = function(self) return self:get().foreground end,
+
+			setFrameNumber = function(self, frameNumber) self.frameNumber = frameNumber end,
 		}
 	end,
 }

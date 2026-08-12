@@ -26,6 +26,8 @@ local SHOW_HITBOXES = false
 
 local SPLIT_SCREEN  = false
 
+local TIME_MODIFIER = 1
+
 --------------------------------------------------------------
 --                  Performance Stats Display               --
 --------------------------------------------------------------
@@ -154,7 +156,7 @@ return {
                     {   key = "R", fn = function() self.SONIC:collectRings(-10)             end, },
                     {   key = ">", fn = function() self.SONIC:moveTo(self.SONIC:getX() + 1000, self.SONIC:getY()) end, },
                     {   key = "<", fn = function() self.SONIC:moveTo(self.SONIC:getX() - 1000, self.SONIC:getY()) end, },
-                    {   key = "#", fn = function() self.SONIC:getWorld():reset()            end, },
+                    {   key = "#", fn = function() self.SONIC:getWorld():resetAfterDeath()  end, },
                     {   key = "f", fn = function() self.SONIC:setFlashing()                 end, },
                     {   key = "*", fn = function() self.SONIC:getWorld():teleport()         end, },
                     {   key = "V", fn = function() getListVisualizer():toggleActive()       end, },
@@ -171,6 +173,11 @@ return {
                         end, 
                     },
                     {   key = "@", fn = function() self.SONIC:setHurt()                     end, },
+                    {   key = "t", fn = function() 
+                            TIME_MODIFIER = 1.5 - TIME_MODIFIER
+                            self.SONIC:getWorld():setTimeModifier(TIME_MODIFIER)
+                        end,
+                    },
                 },
             })
             :add("grid3D",         { 
@@ -358,6 +365,20 @@ return {
                             return self.SONIC.AIR_DRAG_VALUE
                         end,
                     },
+                    xCoordinate = {
+                        name = "X Coordinate",
+                        toggleShowKey = "X",
+                        getValueFn = function()
+                            return self.SONIC:getX()
+                        end,
+                    },
+                    yCoordinate = {
+                        name = "Y Coordinate",
+                        toggleShowKey = "Y",
+                        getValueFn = function()
+                            return self.SONIC:getY()
+                        end,
+                    }
                 }
             })
             :add("listVisualizer", { 

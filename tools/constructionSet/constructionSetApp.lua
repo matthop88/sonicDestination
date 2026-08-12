@@ -18,20 +18,20 @@ local DATA_IN         = __PARAMS["dataIn"]  or "sample"
 local DATA_OUT        = __PARAMS["dataOut"] or DATA_IN
 local MAP             = require("tools/constructionSet/engine/map"):create { graphics = graphics }
 local STICKY_MOUSE    = require("tools/constructionSet/stickyMouse"):create(MAP)
-local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 34, 37, 7, 20, 17, 13, 23, 25, 24, 35, 39, })
-local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 30, })
-local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 74, 75, 72, 80, 47, })
+local CHUNKS_PANEL    = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 10, 19, 20, 4, 13, 23, 25, 24, 39, 35, 34, 37, 7, 27, 28, 17 })
+local CHUNKS_2_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 98, 99, 30, 31, 100, 63, 101, 102, 103, 104 })
+local CHUNKS_3_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 74, 75, 72, 7, 80, 47, 43 })
 local CHUNKS_4_PANEL  = require("tools/constructionSet/panels/chunksPanel"):create(STICKY_MOUSE, { 4, 5 })
 local BADNIKS_PANEL   = require("tools/constructionSet/panels/badniksPanel"):create( { "motobug" },              STICKY_MOUSE)
 local BADNIKS_2_PANEL = require("tools/constructionSet/panels/badniksPanel"):create( { "patabata", "tamabboh" }, STICKY_MOUSE)
 
-local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create( { "ring", "giantRing", }, STICKY_MOUSE)
-local ITEMS_2_PANEL   = require("tools/constructionSet/panels/itemsPanel"):create( { "bigBall", }, STICKY_MOUSE)
+local ITEMS_PANEL     = require("tools/constructionSet/panels/itemsPanel"):create( { "ring", "giantRing", "lampPost", "ghzPlatform", }, STICKY_MOUSE)
+local ITEMS_2_PANEL   = require("tools/constructionSet/panels/itemsPanel"):create( { "bigBall", "ehzPlatform", "monitor", }, STICKY_MOUSE)
 
 local MISCELLANEOUS_PANEL = require("tools/constructionSet/panels/miscellaneousPanel"):create()
 
 local PLAYER_PANEL    = require("tools/constructionSet/panels/playerPanel"):create( { "sonic1" }, STICKY_MOUSE)
-local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2" }, STICKY_MOUSE)
+local PLAYER_2_PANEL  = require("tools/constructionSet/panels/playerPanel"):create( { "sonic2", "sonicCD", }, STICKY_MOUSE)
 --------------------------------------------------------------
 --              Static code - is executed first             --
 --------------------------------------------------------------
@@ -64,6 +64,7 @@ local PROPERTIES    = {
             encoded = encoded .. "      musicEchoCount = " .. self.musicEchoCount .. ",\n"
         end
         encoded = encoded .. self:encodeSounds()
+        encoded = encoded .. self:encodeTime()
         encoded = encoded .. "  },\n"
 
         return encoded
@@ -101,6 +102,18 @@ local PROPERTIES    = {
             result = result .. self:generateKV(padding + 4, k, v)
         end
         return result .. string.rep(" ", padding) .. "},\n"
+    end,
+
+    encodeTime = function(self)
+        local encoded = ""
+        if self.time then
+            encoded = encoded .. "      time = {\n"
+            for k, v in pairs(self.time) do
+                encoded = encoded .. self:generateKV(10, k, v)
+            end
+            encoded = encoded .. "      },\n"
+        end
+        return encoded
     end,
        
 }
@@ -197,6 +210,14 @@ end
 PLUGINS = require("plugins/engine")
     :add("modKeyEnabler")
     :add("doubleClick")
+    :add("inputLayer", {
+        accessorFnName = "getInputLayer",
+        keypressedFn = function(key)
+            if _G.getModals then
+                return getModals():handleKeypressedFromInputLayer(key)
+            end
+        end,
+    })
     :add("timedFunctions",
     {
         {   secondsWait = 0.25, 

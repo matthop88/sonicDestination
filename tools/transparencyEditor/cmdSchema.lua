@@ -15,6 +15,11 @@ return {
 		outline = {
 			description = "this flag signifies outline mode; everything but black will be made transparent",
 			shortcut = "l",
-		}
+		},
+
+		whiten = {
+			description = "this flag signifies whitening mode; selected color will be turned white",
+			shortcut = "w",
+		},
 	},
 }

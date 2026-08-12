@@ -7,6 +7,8 @@ local CHUNK_ID        = 2
 
 return {
     showSolids = false,
+
+    activeChunks = {},  
     
     init = function(self, params)
         self.mapName   = params.map
@@ -26,6 +28,7 @@ return {
     end,
 
     loadMapData = function(self)
+        self.activeChunks = {}
         local chunkFactory = requireRelative("world/terrain/chunkFactory")
         local map = {}
         for i = 1, 256 do table.insert(map, {}) end
@@ -41,6 +44,7 @@ return {
                             XFLIP          = elt.xFlip
                         }
                         table.insert(row, mapElt)
+                        self.activeChunks[elt[CHUNKS_IMG_NAME]] = 1
                     else
                         table.insert(row, {})
                     end
@@ -51,6 +55,7 @@ return {
                         XFLIP          = false
                     }
                     table.insert(row, mapElt)
+                    self.activeChunks[MAP_DATA.chunksDataName] = 1
                 end
 
                 map[mapRow.row] = row
@@ -71,12 +76,6 @@ return {
         return lastPopulatedRow * 256
     end,
 
-    initChunks = function(self)
-        CHUNKS_DATA = CHUNK_FACTORY:getData(MAP_DATA.chunksDataName)
-        SOLIDS      = CHUNK_FACTORY:getSolids(MAP_DATA.chunksDataName)
-        CHUNKS      = CHUNK_FACTORY:getChunks(MAP_DATA.chunksDataName)
-    end,
-
     initChunk = function(self, chunkInfo)
         chunkInfo.CHUNKS = CHUNK_FACTORY:getChunks(chunkInfo.CHUNK_IMG_NAME)
         chunkInfo.SOLIDS = CHUNK_FACTORY:getSolids(chunkInfo.CHUNK_IMG_NAME)
@@ -89,8 +88,10 @@ return {
 		self:drawTerrain()
     end,
 
-    update = function(self, dt)
-        -- do nothing
+    update = function(self, dt, timeModifier)
+        for k, _ in pairs(self.activeChunks) do
+            CHUNK_FACTORY:getChunks(k):update(dt, timeModifier)
+        end
     end,
 
 	drawBackground = function(self)
@@ -127,7 +128,18 @@ return {
     drawVanillaChunk = function(self, rowNum, colNum, chunkInfo)
         if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
         if chunkInfo.CHUNKS then
+            self.graphics:setColor(1, 1, 1)
             chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
+            if chunkInfo.DATA.altChunkMap then
+                local altIndex = 1
+                local altChunks = chunkInfo.DATA.altChunkMap[chunkInfo.ID] or {}
+                for _, c in ipairs(altChunks) do
+                    self.graphics:setColor(chunkInfo.CHUNKS.COLORS:get(altIndex))
+                    chunkInfo.CHUNKS:draw(self.graphics, rowNum, colNum, c)
+                    altIndex = altIndex + 1
+                    if altIndex > #chunkInfo.CHUNKS.COLORS then altIndex = 1 end
+                end
+            end
             if self.showSolids then 
                 chunkInfo.SOLIDS:draw(self.graphics, rowNum, colNum, chunkInfo.ID)
             end
@@ -137,7 +149,18 @@ return {
     drawXFlippedChunk = function(self, rowNum, colNum, chunkInfo)
         if chunkInfo.CHUNK_IMG_NAME then self:initChunk(chunkInfo) end
         if chunkInfo.CHUNKS then
+            self.graphics:setColor(1, 1, 1)
             chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
+			if chunkInfo.DATA.altChunkMap then
+                local altIndex = 1
+                local altChunks = chunkInfo.DATA.altChunkMap[chunkInfo.ID] or {}
+                for _, c in ipairs(altChunks) do
+                    self.graphics:setColor(chunkInfo.CHUNKS.COLORS:get(altIndex))
+                    chunkInfo.CHUNKS:xFlippedDraw(self.graphics, rowNum, colNum, c)
+                    altIndex = altIndex + 1
+                    if altIndex > #chunkInfo.CHUNKS.COLORS then altIndex = 1 end
+                end
+            end
             if self.showSolids then
                 chunkInfo.SOLIDS:xFlippedDraw(self.graphics, rowNum, colNum, chunkInfo.ID)
             end
