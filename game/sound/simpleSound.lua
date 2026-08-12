@@ -107,9 +107,15 @@ local Sound = {
 
 			chainPrime = nil,
 
-			play = function(self)
+			play = function(self, timeModifier)
+				if timeModifier then
+					local tmDelta = (1 - timeModifier) * (1 - timeModifier)
+					source:setPitch(pitch * (1 - tmDelta))
+				else
+					source:setPitch(pitch)
+				end
+				
 				source:setVolume(volume * volumeScalar)
-				source:setPitch(pitch)
 				if startPoint and startPoint > 0 then
 					seekToInterleavedSample(source, startPoint)
 				end
@@ -132,7 +138,11 @@ local Sound = {
                 return source:isPlaying()
             end,
 
-			update = function(self, dt)
+			update = function(self, dt, timeModifier)
+				if timeModifier then
+					local tmDelta = (1 - timeModifier) * (1 - timeModifier)
+					source:setPitch(pitch * (1 - tmDelta))
+				end
 				if delaySamples <= 0 or not syncSource or delaySec <= 0 then
 					return
 				end
@@ -321,8 +331,8 @@ local Track = {
 				return self
 			end,
 
-			play = function(self, _)
-				self.sound:play()
+			play = function(self, timeModifier)
+				self.sound:play(timeModifier)
 				if (self.effect.type == "Echo" or self.effect.type == "Reverb")
 					and self.queuedSounds[1]
 					and self.queuedSounds[1].primeFromSync then
@@ -342,9 +352,9 @@ local Track = {
                 end
             end,
 
-			update = function(self, dt)
+			update = function(self, dt, timeModifier)
 				for _, s in ipairs(self.queuedSounds) do
-					s:update(dt)
+					s:update(dt, timeModifier)
 				end
 			end,
 

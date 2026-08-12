@@ -21,9 +21,12 @@ PROP_LOADER:notifyOnChange(SOUND_MANAGER)
 PROP_LOADER:notifyOnChange(MUSIC_MANAGER)
 PROP_LOADER:refresh()
 
-local WORLD     = requireRelative("world/world", { GRAPHICS = GRAPHICS, SOUND_MANAGER = SOUND_MANAGER, MUSIC_MANAGER = MUSIC_MANAGER })
-local SONIC     = requireRelative("sonic",       { GRAPHICS = GRAPHICS, WORLD = WORLD })
+local TIME_MANAGER = requireRelative("world/timeManager"):create(SOUND_MANAGER)
 
+local WORLD        = requireRelative("world/world", { GRAPHICS = GRAPHICS, SOUND_MANAGER = SOUND_MANAGER, MUSIC_MANAGER = MUSIC_MANAGER, TIME_MANAGER = TIME_MANAGER })
+local SONIC        = requireRelative("sonic",       { GRAPHICS = GRAPHICS, WORLD = WORLD, TIME_MANAGER = TIME_MANAGER })
+
+        
 --------------------------------------------------------------
 --                     Global Variables                     --
 --------------------------------------------------------------

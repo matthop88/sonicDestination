@@ -56,7 +56,7 @@ return {
 			
 			showSoundsPanel = function(self)
 				if not soundsPanel then
-					soundsPanel = require("tools/constructionSet/sounds/soundsPanel"):create {
+					soundsPanel = require("tools/constructionSet/miscellaneous/sounds/soundsPanel"):create {
 						x = 300,
 						y = 250,
 						width = 830,

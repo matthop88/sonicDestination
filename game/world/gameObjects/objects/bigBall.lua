@@ -71,10 +71,7 @@ return {
                 	if self.ySpeed >= 0 then
                 		nearestGroundLevel = self.gravityScanner:findNearestGroundWithin(self.ySpeed * dt)
                 	end
-                	if nearestGroundLevel == nil then
-                		self.ySpeed = self.ySpeed + (787.0 * dt)
-                	end
-                    self.sprite:update(dt)
+                	self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
                     local tempSpeed = self.xSpeed
@@ -83,17 +80,24 @@ return {
                     	else                  tempSpeed = math.min(0, tempSpeed + 30) end
                     end
                     local deltaX = tempSpeed * dt
-                    local deltaY = self.ySpeed * dt
-                    if nearestGroundLevel and nearestGroundLevel < deltaY then 
-						if self.ySpeed > 0 then
-							self.ySpeed = -(self.ySpeed / 2.5)
-							if math.abs(self.ySpeed) < 5 then self.ySpeed = 0 end
-							self:setY(self:getY() + nearestGroundLevel)
-							SOUND_MANAGER:playAction("ballThud")
-						end
-					else
-						self:setY(self:getY() + deltaY)
-                    end
+                    if not self.standingOn then
+                    	if nearestGroundLevel == nil then
+                			self.ySpeed = self.ySpeed + (787.0 * dt)
+                		end
+                    	local deltaY = self.ySpeed * dt
+	                    if nearestGroundLevel and nearestGroundLevel < deltaY then 
+							if self.ySpeed > 0 then
+								self.ySpeed = -(self.ySpeed / 2.5)
+								if math.abs(self.ySpeed) < 5 then self.ySpeed = 0 end
+								self:setY(self:getY() + nearestGroundLevel)
+								SOUND_MANAGER:playAction("ballThud")
+							end
+						else
+							self:setY(self:getY() + deltaY)
+	                    end
+	                elseif self.gravityScanner:scanForFallingOffPlatformEdge() then
+	                	self.standingOn = nil
+	                end
                     self:setX(self:getX() + deltaX)
                     if self.player and self.player:getPushing() == self and not SOUND_MANAGER:isActionPlaying("pushObject") then
                     	if self.pushSoundTimer >= 15 then

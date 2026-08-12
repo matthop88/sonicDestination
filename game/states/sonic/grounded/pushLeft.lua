@@ -13,6 +13,10 @@ return {
         self.prevX = SONIC:getX()
         SONIC.sprite:setCurrentAnimation("pushing")
     end,
+
+    onLeave = function(self)
+        SONIC:clearPushing()
+    end,
     
     keypressed = function(self, key)
         if     key == "right" then

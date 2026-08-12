@@ -62,22 +62,24 @@ return {
 							end
 						end
                 	end
-                	if nearestGroundLevel == nil then
-                		self.ySpeed = self.ySpeed + (787.0 * dt)
-                	end
-                    if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script, self) end
+                	if self.script and self:isAlive() then SCRIPT_ENGINE:execute(dt, self.script, self) end
                     self.sprite:update(dt)
                     self:updateHitBox(dt)
                     self.deleted = self.sprite.deleted
-                    local deltaY = self.ySpeed * dt
-                    if nearestGroundLevel and nearestGroundLevel < deltaY then 
-						if self.ySpeed > 0 then
-							self:setY(self:getY() + nearestGroundLevel)
-							self.ySpeed = 0
-						end
-					else
-						self:setY(self:getY() + deltaY)
-                    end
+                    if not self.standingOn then
+                    	if nearestGroundLevel == nil then
+	                		self.ySpeed = self.ySpeed + (787.0 * dt)
+	                	end
+	                    local deltaY = self.ySpeed * dt
+	                    if nearestGroundLevel and nearestGroundLevel < deltaY then 
+							if self.ySpeed > 0 then
+								self:setY(self:getY() + nearestGroundLevel)
+								self.ySpeed = 0
+							end
+						else
+							self:setY(self:getY() + deltaY)
+	                    end
+	                end
                     self:setX(self:getX() + (self:getXVelocity() * dt))
                     self.hitSolid = false
                     if self.y >= 65536 then self.deleted = true end

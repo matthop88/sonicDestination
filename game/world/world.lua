@@ -6,55 +6,78 @@ local OBJECT_FACTORY = requireRelative("world/gameObjects/objectFactory")
 local SOUND_MANAGER
 local MUSIC_MANAGER
 local ORIGIN
+local HUD
+local TIME_ELAPSED = 0
+local TIME_MANAGER
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
 
-    objects = nil,
+    objects   = nil,
+    platforms = nil,
 
     events  = {},
 
     GROUND_LEVEL = 940,
 
     fadeLayer = { 
-        color    = { r = 1, g = 1, b = 1 }, 
-        alpha    = 0,
-        speed    = 1,
-        velocity = 0,
+        color     = { r = 1, g = 1, b = 1 }, 
+        alpha     = 0,
+        speed     = 1,
+        velocity  = 0,
+        thickness = nil,
 
         draw = function(self)
             GRAPHICS:setColor(self.color.r, self.color.g, self.color.b, self.alpha)
-            GRAPHICS:rectangle("fill", GRAPHICS:calculateViewport())
+            if self.thickness then
+                if self.thickness > 0 then
+                    local x, y, w, h = GRAPHICS:calculateViewport()
+                    GRAPHICS:setLineWidth(self.thickness)
+                    GRAPHICS:circle("line", x + (w / 2), y + (h / 2), 400, 400)
+                end
+            else
+                GRAPHICS:rectangle("fill", GRAPHICS:calculateViewport())
+            end
         end,
 
         update = function(self, dt)
-            self.alpha = self.alpha + (self.velocity * dt)
-            if     self.alpha > 1 then self.alpha = 1
-            elseif self.alpha < 0 then self.alpha = 0 end
+            if self.thickness then
+                self.thickness = math.max(0, self.thickness - (1000 * dt))
+            else
+                self.alpha = self.alpha + (self.velocity * dt)
+                if     self.alpha > 1 then self.alpha = 1
+                elseif self.alpha < 0 then self.alpha = 0 end
+            end
         end,
 
         fadeOut = function(self, color) 
+            self.thickness = nil
             if color then self.color = color end
             self.velocity =  self.speed 
         end,
         fadeIn  = function(self, color)
+            self.thickness = nil
             self.alpha = 1
             if color then self.color = color end
             self.velocity = -self.speed 
         end,
+        irisOut = function(self, color)
+            if color then self.color = color end
+            self.alpha = 1
+            self.thickness = 1000
+        end,
+
     },
 
     init = function(self, params)
         GRAPHICS      = params.GRAPHICS
         SOUND_MANAGER = params.SOUND_MANAGER
         MUSIC_MANAGER = params.MUSIC_MANAGER
+        TIME_MANAGER  = params.TIME_MANAGER
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
-        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
-        self:refreshMusic()
-        self:refreshSounds()
-        self:refreshGroundLevel()
+        HUD        = requireRelative("world/hud/hudEngine"):create()
         self:fadeIn({ r = 0, g = 0, b = 0 })
         
         return self
@@ -71,9 +94,18 @@ return {
         GRAPHICS:setX(math.min(0, -x + 200))
         GRAPHICS:setY(-y + 200)
 
-        self.objects = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+        self.objects   = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+        self.platforms = dofile(relativePath("util/dataStructures/linkedList.lua")):create()
+
+        local properties = TERRAIN:getMapData().properties
+        local objectID = 1
         for _, objectData in ipairs(objectsMap) do
-            self.objects:add(OBJECT_FACTORY:create(objectData, GRAPHICS, self))
+            local object = OBJECT_FACTORY:create(objectData, GRAPHICS, self, objectID, properties)
+            self.objects:add(object)
+            objectID = objectID + 1
+            if object:isPlatform() then
+                self.platforms:add(object)
+            end
         end
     end,
 
@@ -107,17 +139,47 @@ return {
         end
     end,
 
+    refreshTime = function(self)
+        local map = TERRAIN:getMapData()
+
+        local timeOverride = nil
+        if self.lastTriggeredLampPost then
+            timeOverride = self.lastTriggeredLampPost.lastRecordedTime
+        end
+        if map.properties then
+            HUD:refreshFromTimeProps(map.properties.time, timeOverride)
+        end
+    end,
+
+    resetAfterDeath = function(self, map)
+        GLOBALS:getPlayer():clearPushing()
+        if self.lastTriggeredLampPost then
+            self:reset(map, self.lastTriggeredLampPost.lastRecordedPlayerPosition.x, self.lastTriggeredLampPost.lastRecordedPlayerPosition.y)
+            self:irisOut { r = 0, g = 0, b = 0 }
+        else
+            self:reset(map)
+            self:fadeIn { r = 0, g = 0, b = 0 }
+        end
+
+    end,
+
     reset = function(self, map, x, y)
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
-            self:refreshMusic()
-            self:refreshGroundLevel()
         end
+        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
+        
+        self:refreshMusic()
+        self:refreshSounds()
+        self:refreshTime()
+        self:refreshGroundLevel()
         self:refreshObjectsMap(x, y)
+
+        TIME_ELAPSED = 0
     end,
 
     draw = function(self)
-        BACKGROUND:draw(GRAPHICS)
+        if BACKGROUND then BACKGROUND:draw(GRAPHICS) end
         TERRAIN:draw()
         WORKSPACE:draw()
         self.objects:head()
@@ -125,6 +187,7 @@ return {
             local object = self.objects:getNext()
             if not object:isForeground() then object:draw() end
         end
+        HUD:draw(GRAPHICS)
     end,
 
     drawForeground = function(self)
@@ -146,19 +209,38 @@ return {
     drawSolidAt = function(self, x, y, color) TERRAIN:drawSolidAt(x, y, color) end,
 
     update = function(self, dt)
+        local TIME_MODIFIER = TIME_MANAGER:getTimeModifier()
+        local oldDT = dt
+        dt = dt * TIME_MODIFIER * TIME_MODIFIER
+
+        TIME_MANAGER:update(oldDT)
         BACKGROUND:update(dt, GRAPHICS)
-        TERRAIN:update(dt)
-        self.objects:head()
-        while not self.objects:isEnd() do
-            local object = self.objects:get()
-            object:update(dt)
-            if object.deleted then self.objects:remove()
-            else                   self.objects:next()   end
+        TERRAIN:update(dt, TIME_MODIFIER)
+        if TIME_ELAPSED >= 0.25 then
+            self.objects:head()
+            while not self.objects:isEnd() do
+                local object = self.objects:get()
+                object:update(dt)
+                if object.deleted then self.objects:remove()
+                else                   self.objects:next()   end
+            end
         end
+        self:updatePlatforms(dt)
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
-        SOUND_MANAGER:update(dt)
-        MUSIC_MANAGER:update(dt)
+        SOUND_MANAGER:update(oldDT, TIME_MODIFIER)
+        MUSIC_MANAGER:update(oldDT, TIME_MODIFIER)
+        HUD:update(dt)
+        TIME_ELAPSED = TIME_ELAPSED + dt
+    end,
+
+    updatePlatforms = function(self, dt)
+        self.platforms:head()
+        while not self.platforms:isEnd() do
+            local platform = self.platforms:get()
+            if not platform:isPlatform() then self.platforms:remove()
+            else                              self.platforms:next()    end
+        end
     end,
 
     updateEvents = function(self, dt)
@@ -167,8 +249,18 @@ return {
         end
     end,
 
+    getTime = function(self)
+        return HUD:getTimer()
+    end,
+
+    setLastTriggeredLampPost = function(self, lampPost)
+        self.lastTriggeredLampPost = lampPost
+    end,
+
     checkCollisions = function(self, otherObject)
         local otherHitBox = otherObject:getHitBox()
+        if otherHitBox == nil then return end
+        
         local firstHitBox = nil
         self.objects:forEach(function(object)
             if object ~= otherObject then
@@ -200,6 +292,7 @@ return {
 
     fadeOut          = function(self, colr) self.fadeLayer:fadeOut(colr)       end,
     fadeIn           = function(self, colr) self.fadeLayer:fadeIn(colr)        end,
+    irisOut          = function(self, colr) self.fadeLayer:irisOut(colr)       end,
 
     teleport    = function(self, map, x, y, giantRing, player)
         if x == nil or y == nil then 
@@ -234,5 +327,10 @@ return {
     refreshGroundLevel = function(self)
         self.GROUND_LEVEL = TERRAIN:getCalculatedGroundLevel()
         WORKSPACE:setGroundLevel(TERRAIN:getCalculatedGroundLevel())
+    end,
+
+    setTimeModifier = function(self, newModifier)
+        local timeProps = TERRAIN:getMapData().properties.time
+        TIME_MANAGER:setTimeModifier(newModifier, timeProps)
     end,
 }

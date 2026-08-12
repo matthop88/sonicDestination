@@ -20,6 +20,12 @@ return {
 			template   = PLAYER_TEMPLATE,
 			object     = PLAYER,
 		},
+		sonicCD = {
+			name       = "sonicCD",
+			spritePath = "sonicCD",
+			template   = PLAYER_TEMPLATE,
+			object     = PLAYER,
+		},
 		motobug = {
 			name       = "motobug",
 			spritePath = "objects/motobug",
@@ -53,6 +59,30 @@ return {
 		bigBall = {
 			name       = "bigBall",
 			spritePath = "objects/bigBall",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
+		lampPost = {
+			name       = "lampPost",
+			spritePath = "objects/lampPost",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
+		ghzPlatform = {
+			name       = "ghzPlatform",
+			spritePath = "objects/ghzPlatform",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
+		ehzPlatform = {
+			name       = "ehzPlatform",
+			spritePath = "objects/ehzPlatform",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
+		monitor = {
+			name       = "monitor",
+			spritePath = "objects/monitor",
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},

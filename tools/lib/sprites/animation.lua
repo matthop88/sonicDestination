@@ -29,7 +29,9 @@ return {
 			
 			draw = function(self, GRAFX, x, y, xScale)
 				local frame = self.currentFrame:get()
-				if frame.QUAD then
+				if self.data.draw then
+					self.data.draw(GRAFX, x - (frame.offset.x * xScale), y - frame.offset.y)
+				elseif frame.QUAD then
 					GRAFX:setColor(1, 1, 1)
 					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * xScale), y - frame.offset.y, 0, xScale, 1)
 				end
@@ -37,7 +39,9 @@ return {
 
 			drawAt = function(self, GRAFX, x, y, sX, sY, xScale)
 				local frame = self.currentFrame:get()
-				if frame and frame.QUAD then
+				if self.data.draw then
+					self.data.draw(GRAFX, x - (frame.offset.x * xScale), y - frame.offset.y)
+				elseif frame and frame.QUAD then
 					GRAFX:draw(self.image, frame.QUAD, x - (frame.offset.x * sX * xScale), y - (frame.offset.y * sY), 0, sX * xScale, sY)
 				end
 			end,
@@ -53,9 +57,12 @@ return {
 				if not self:reachedMaximumReps() then
 					self.currentFrame:update(dt)
 					if self.currentFrame:isRolledOver() then
-						self:prevFrame()
 						self.repCount = self.repCount + 1
-						if self:reachedMaximumReps() and self.data.terminal then self.terminated = true end
+						if self:reachedMaximumReps() then
+							self:prevFrame()
+							if self.data.terminal then self.terminated = true end
+							if self.data.endingFrame then self.currentFrame:setFrameNumber(self.data.endingFrame) end
+						end
 					end
 				end
 			end,
@@ -72,6 +79,9 @@ return {
 				self.currentFrame = require("tools/lib/sprites/frame"):create(self.data, syncName)
 			end,
 			
+			getEndingAnimation = function(self)
+				return self.data.endingAnimation
+			end,
 
 			isDefault    = function(self)    return self.data.isDefault    end,
 

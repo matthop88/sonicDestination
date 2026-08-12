@@ -16,7 +16,7 @@ return {
 			WAIT              { numSeconds =   1, },
 		},
 		charging = {
-			MOVE_TOWARDS_EDGE { xSpeed     = 200, animation = "charging", },
+			MOVE_TOWARDS_EDGE { xSpeed     = 200, animation = "charging", numSeconds = 1, },
 			GO_TO_PROGRAM     { program = "default", },
 		}
 	},

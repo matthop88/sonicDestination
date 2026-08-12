@@ -1,9 +1,11 @@
 return {
-	create = function(self, chunksImg, chunksName)
+	create = function(self, chunksImg, chunksName, chunksData)
 		return ({
 			data = {},
 
-		    init = function(self, chunksImg, chunksName)
+			COLORS = nil,
+
+		    init = function(self, chunksImg, chunksName, chunksData)
 		    	self.chunksImg  = chunksImg
 		    	self.chunksName = chunksName
 		    	self.data = {}
@@ -15,6 +17,11 @@ return {
 			            
 			        table.insert(self.data, love.graphics.newQuad(chunkX, chunkY, 256, 256, self.chunksImg:getWidth(), self.chunksImg:getHeight()))
 			    end
+
+			    if chunksData.colorsToCycle then
+			    	self.COLORS = requireRelative("world/effects/color/colorAnimation"):create(chunksData.colorsToCycle, false, chunksData.rate)
+        		end
+
 			    return self
 		    end,
 
@@ -46,11 +53,18 @@ return {
 				graphics:draw(self.chunksImg, self:get(chunkID), x, y, 0, sX, sY)
 		    end,
 
+		    update = function(self, dt, timeModifier)
+		    	if self.COLORS then 
+		    		self.COLORS.isSmooth = timeModifier < 1
+		    		self.COLORS:update(dt) 
+		    	end
+		    end,
+
 		    getChunksName = function(self)
 		    	return self.chunksName
 		    end,
 
-		}):init(chunksImg, chunksName)
+		}):init(chunksImg, chunksName, chunksData)
 	end,
 }
 

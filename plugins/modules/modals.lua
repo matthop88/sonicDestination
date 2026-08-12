@@ -55,4 +55,15 @@ return {
 			end
 		end
 	end,
+
+	handleKeypressedFromInputLayer = function(self, key)
+		for _, component in ipairs(self.components) do
+			if component.keypressed then
+				local handled = component:keypressed(key)
+				if handled then
+					return true
+				end
+			end
+		end
+	end,
 }

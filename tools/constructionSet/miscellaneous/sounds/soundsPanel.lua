@@ -17,6 +17,12 @@ local ACTIONS = {
 	{ serial = "badnikStrike",    label = "Badnik Strike" },
 	{ serial = "badnikSquished",  label = "Badnik Squished" },
 	{ serial = "pushObject",      label = "Push Object" },
+	{ serial = "lampPost",        label = "Lamp Post" },
+	{ serial = "postLamp",        label = "Post Lamp" },
+	{ serial = "monitorPopped",   label = "Monitor Popped" },
+	{ serial = "timeMonitorPop",  label = "Time Monitor Pop" },
+	{ serial = "timeMonitorDone", label = "Time Monitor Wear Off" },
+	{ serial = "timeMonitorWarn", label = "Time Monitor Warn" },
 }
 
 local AUDIO_EFFECTS = {
@@ -127,6 +133,12 @@ return {
 			badnikStrike    = { "Bowling Strike" },
 			badnikSquished  = { "Smoosh" },
 			pushObject      = { "Push Rock" },
+			lampPost        = { "Lamp Post", },
+			postLamp        = { "None", "Cool!", "All Right!", "Oh Yeah! (Deep)", },
+			monitorPopped   = { "Badnik Death", "Chomp", "Burp", },
+			timeMonitorPop  = { "None", "Triple Charge", },
+			timeMonitorDone = { "None", "Triple Charge 2", },
+			timeMonitorWarn = { "None", "Ting Alarm", },
 		}
 
 		local playSelectedSound = function()
@@ -319,8 +331,8 @@ return {
 					height = self.height - 140,
 					title = "Volume",
 					minValue = 0,
-					maxValue = 1,
-					quantize = 0.1,
+					maxValue = 2,
+					quantize = 0.05,
 					titleFontSize = 14,
 					labelFontSize = 16,
 					showLabels = false,
