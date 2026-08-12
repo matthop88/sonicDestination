@@ -7,8 +7,8 @@ local SOUND_MANAGER
 local MUSIC_MANAGER
 local ORIGIN
 local HUD
-local TIME_MANAGER
 local TIME_ELAPSED = 0
+local TIME_MANAGER
 
 return {
     collisionHandler = requireRelative("collision/collisionHandler"),
@@ -73,7 +73,7 @@ return {
         GRAPHICS      = params.GRAPHICS
         SOUND_MANAGER = params.SOUND_MANAGER
         MUSIC_MANAGER = params.MUSIC_MANAGER
-        TIME_MANAGER  = requireRelative("world/timeManager"):create(params.SOUND_MANAGER)
+        TIME_MANAGER  = params.TIME_MANAGER
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
@@ -211,7 +211,8 @@ return {
     update = function(self, dt)
         local TIME_MODIFIER = TIME_MANAGER:getTimeModifier()
         local oldDT = dt
-        dt = dt * TIME_MODIFIER
+        dt = dt * TIME_MODIFIER * TIME_MODIFIER
+
         TIME_MANAGER:update(oldDT)
         BACKGROUND:update(dt, GRAPHICS)
         TERRAIN:update(dt, TIME_MODIFIER)
@@ -228,7 +229,7 @@ return {
         self.fadeLayer:update(dt)
         self:updateEvents(dt)
         SOUND_MANAGER:update(oldDT, TIME_MODIFIER)
-        MUSIC_MANAGER:update(dt, TIME_MODIFIER)
+        MUSIC_MANAGER:update(oldDT, TIME_MODIFIER)
         HUD:update(dt)
         TIME_ELAPSED = TIME_ELAPSED + dt
     end,
