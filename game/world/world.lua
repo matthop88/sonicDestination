@@ -74,10 +74,10 @@ return {
         SOUND_MANAGER = params.SOUND_MANAGER
         MUSIC_MANAGER = params.MUSIC_MANAGER
         TIME_MANAGER  = params.TIME_MANAGER
+        HUD           = params.HUD
         local mapName = __MAP_NAME or "scdPtp1"  -- Use global if set, otherwise default
         TERRAIN  = requireRelative("world/terrain/terrain", { GRAPHICS = GRAPHICS, map = mapName, })
         WORKSPACE = requireRelative("world/workspace",      { GRAPHICS = GRAPHICS })
-        HUD        = requireRelative("world/hud/hudEngine"):create()
         self:fadeIn({ r = 0, g = 0, b = 0 })
         
         return self
