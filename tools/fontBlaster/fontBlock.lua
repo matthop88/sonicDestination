@@ -1,10 +1,23 @@
 local GLYPH       = require("game/fonts/glyph")
+local CURSOR      = {
+	timer   = 0,
+	visible = true,
+
+	draw = function(self, graphics, x, y, h)
+		if self.visible then
+			graphics:setColor(1, 1, 1)
+			graphics:setLineWidth(1)
+			graphics:rectangle("line", x, y, 4, h)
+		end
+	end,
+}
 
 local drawEditingBlock  = function(self)
 	local graphics = self.graphics
 	graphics:setColor(1, 1, 1)
 	graphics:setLineWidth(1)
-	graphics:rectangle("line", self.x - 4, self.y - 4, self.w + 7, self.h + 8)
+	graphics:rectangle("line", self.x - 4, self.y - 4, self.w + 13, self.h + 8)
+	CURSOR:draw(graphics, self.x + self.w + 1, self.y, self.h)
 end
 
 local drawSelectedBlock = function(self)
