@@ -60,6 +60,10 @@ return {
             	return self.timeHud:getTimer()
             end,
 
+            setRingCount = function(self, ringCount)
+            	self.ringsHud:setRingCount(ringCount)
+            end,
+
             refreshFromTimeProps = function(self, timeProps, timeOverride)
             	self.timeHud:refreshFromTimeProps(timeProps, timeOverride)
             end,
