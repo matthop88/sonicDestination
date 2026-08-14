@@ -65,13 +65,30 @@ return {
 		    	end
 		    end,
 
-		    getRingCount = function(self)
-				return self.ringCount
+		    setRingCount = function(self, ringCount)
+				self.ringCount = ringCount
+				self:updateRingDigits()
+			end,
+
+			updateRingDigits = function(self)
+				local ringCountOnes     = self.ringCount % 10
+				local ringCountTens     = math.floor(self.ringCount / 10) % 10
+				local ringCountHundreds = math.floor(self.ringCount / 100)
+		    		
+		    	if ringCountHundreds > 0 then
+					self.DIGITS:replaceDigits(self.ringDigits, { ringCountHundreds, ringCountTens, ringCountOnes })
+				else
+					self.DIGITS:replaceDigits(self.ringDigits, { "NIL", ringCountTens, ringCountOnes })
+				end
+
+				self.rings:setColor({ 0.99, 0.99, 0 })
 			end,
 
 		    refreshFromRingProps = function(self, ringProps, ringOverride)
 		    	-- Logic here to update
 		    end,
+
+
 
 		}):init()
 	end,
