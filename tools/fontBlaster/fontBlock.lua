@@ -10,6 +10,19 @@ local CURSOR      = {
 			graphics:rectangle("line", x, y, 4, h)
 		end
 	end,
+
+	update = function(self, dt)
+		self.timer = self.timer + (dt * 60)
+		if self.timer > 20 then
+			self.timer = self.timer - 20
+			self.visible = not self.visible
+		end
+	end,
+
+	reset = function(self)
+		self.timer   = 0
+		self.visible = true
+	end,
 }
 
 local drawEditingBlock  = function(self)
@@ -99,6 +112,9 @@ return {
 					self.selectedAt.x = math.floor(px)
 					self.selectedAt.y = math.floor(py)
 				end
+				if self.editing then
+					CURSOR:update(dt)
+				end
 			end,
 
 			mouseInBounds = function(self, mx, my)
@@ -127,6 +143,7 @@ return {
 				self.editing = true   
 				self:backupGlyphs()
 				getInputLayer():activate()
+				CURSOR:reset()
 			end,
 			stopEditing  = function(self) 
 				if self:isEditing() then
@@ -143,6 +160,7 @@ return {
 				self.obj.glyphs:head()
 				self.w = calculateWidth(self)
 				self.h = calculateHeight(self)
+				CURSOR:reset()
 			end,
 
 			appendGlyph = function(self, key)
@@ -155,6 +173,7 @@ return {
 					self.w = calculateWidth(self)
 					self.h = calculateHeight(self)
 				end
+				CURSOR:reset()
 			end,
 
 			backupGlyphs = function(self)
