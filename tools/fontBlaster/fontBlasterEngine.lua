@@ -21,6 +21,16 @@ return {
             keys = { "TIME", },
         }
 
+        local rings1 = {
+            fontName = "hud",
+            keys     = { "r", "I", "N", "g", "s", },
+        }
+
+        local rings2 = {
+            fontName = "hud",
+            keys     = { "RINGS", },
+        }
+
         local credits = {
             fontName = "credits",
             keys = { 
@@ -51,6 +61,8 @@ return {
                 self.objects:add(self:newFontBlock(time2,       100, 120))
                 self.objects:add(self:newFontBlock(credits,     200,  50))
                 self.objects:add(self:newFontBlock(lifeHud,     200, 100))
+                self.objects:add(self:newFontBlock(rings1,      100, 140))
+                self.objects:add(self:newFontBlock(rings2,      100, 160))
                 return self
             end,
 
