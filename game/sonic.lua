@@ -6,6 +6,7 @@ local sonic1Sprite, sonic2Sprite
 
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
 local TIME_MANAGER
+local HUD
 
 local ringPanRight   = true
 
@@ -53,6 +54,7 @@ return {
         WORLD        = params.WORLD
         GRAPHICS     = params.GRAPHICS
         TIME_MANAGER = params.TIME_MANAGER
+        HUD          = params.HUD
 
         local spriteFactory = requireRelative("sprites/spriteFactory", { GRAPHICS = params.GRAPHICS })
         sonic1Sprite  = spriteFactory:create("sonic1")
@@ -298,6 +300,7 @@ return {
         else                 SOUND_MANAGER:play("ringCollectL") end
         ringPanRight = not ringPanRight
         self.ringCount = self.ringCount + ringCount
+        HUD:setRingCount(self.ringCount)
     end,
 
     isPlayer     = function(self) return true            end,
@@ -318,7 +321,12 @@ return {
         else                         self:setState(STATES.BRAKE_LEFT)  end
     end,
 
-    setHurt = function(self) self:setState(STATES.HURT)                end,
+    setHurt = function(self) 
+        self:setState(STATES.HURT)  
+        self.ringCount = 0
+        HUD:setRingCount(self.ringCount)              
+    end,
+
     isHurt  = function(self) return self:getState() == STATES.HURT     end,
 
     isSpinning = function(self)
