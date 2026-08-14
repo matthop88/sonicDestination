@@ -7,20 +7,6 @@ return {
 	    	},
 	    }
 
-	    local RINGS = {
-	    	fontName = "hud",
-	    	keys = {
-	    		"r", "I", "N", "g", "s", " ",
-	    	},
-	    }
-
-	    local RING_DIGITS = {
-	    	fontName = "hud",
-	    	keys = {
-	    		" ", "0", "0",
-	    	}
-	    }
-
 	    local LIFE = {
 	    	fontName = "hudSmall",
 	    	keys = {
@@ -48,23 +34,18 @@ return {
     		end,
 
     		initRingsHud = function(self)
-    			self.rings      = self.fontEngine:newFontObject(RINGS)
-    			self.ringDigits = self.fontEngine:newFontObject(RING_DIGITS)
-    			self.ringsHud   = require(relativePath("fonts/fontGroup")):create()
-    								:add(self.rings, { 0.99, 0.99, 0.0 })
-    								:add(self.ringDigits)
+    			self.ringsHud = require(relativePath("world/hud/ringsHud")):create()
     		end,
 
             draw = function(self, graphics)
             	local oldScale = graphics:getScale()
 				graphics:setScale(3)
 				local scoreX, scoreY = graphics:screenToImageCoordinates(48, 48)
-				local ringsX, ringsY = graphics:screenToImageCoordinates(48, 144)
 				local lifeX,  lifeY  = graphics:screenToImageCoordinates(48, 700)
 				
 				self.scoreHud:draw(graphics, scoreX, scoreY, DISABLED_COLOR)
             	self.timeHud:draw(graphics)
-            	self.ringsHud:draw(graphics, ringsX, ringsY)
+            	self.ringsHud:draw(graphics)
             	self.lifeHud:draw(graphics, lifeX, lifeY, DISABLED_COLOR)
 
             	graphics:setScale(oldScale)
@@ -72,6 +53,7 @@ return {
 
             update = function(self, dt)
             	self.timeHud:update(dt)
+            	self.ringsHud:update(dt)
             end,
 
             getTimer = function(self)
