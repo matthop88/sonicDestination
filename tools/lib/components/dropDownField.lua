@@ -134,6 +134,10 @@ return {
 				
 			end,
 
+			listContainsPoint = function(self, mx, my)
+				return self:isListVisible() and self.list:listBoxContainsPt(mx, my)
+			end,
+
 			setVisible = function(self, visible)
 				self.visible = visible
 				if visible == false then
