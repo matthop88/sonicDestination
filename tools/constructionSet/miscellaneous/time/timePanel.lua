@@ -196,7 +196,7 @@ return {
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
-				if timesAtStartDropdown:handleMousepressed(mx, my) then
+				if not timeMonitorDurationsDropdown:isListVisible() and timesAtStartDropdown:handleMousepressed(mx, my) then
 					timeTextEditableField:setEditing(false)
 					return true
 				end
@@ -205,19 +205,21 @@ return {
 					return true
 				end
 
-				if self.okButton:containsPoint(mx, my) then
+				if self.okButton:containsPoint(mx, my) and not timesAtStartDropdown:isListVisible() and not timeMonitorDurationsDropdown:isListVisible() then
 					self:setVisible(false)
 					return true
 				end
 
-				if timeMonitorDurationsDropdown:handleMousepressed(mx, my) then
+				if not timesAtStartDropdown:isListVisible() and timeMonitorDurationsDropdown:handleMousepressed(mx, my) then
 					timeTextEditableField:setEditing(false)
 					return true
 				end
 
-				if self:containsPoint(mx, my) and not timesAtStartDropdown:isListVisible() and not timeMonitorDurationsDropdown:isListVisible() then
-					return true
+				if self:containsPoint(mx, my) or timesAtStartDropdown:listContainsPoint(mx, my) or timeMonitorDurationsDropdown:listContainsPoint(mx, my) then
+					return not timesAtStartDropdown:isListVisible() and not timeMonitorDurationsDropdown:isListVisible()
 				end
+
+				return true
 			end,
 
 			keypressed = function(self, key)
