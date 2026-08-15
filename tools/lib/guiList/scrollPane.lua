@@ -118,6 +118,11 @@ return {
 				self.list.visible = visible
 			end,
 
+			listBoxContainsPt = function(self, px, py)
+				return px >= self.x and px <= self.x + self.width and
+				       py >= self.y and py <= self.y + self.height
+			end,
+
 			getListHeight = function(self)
 				return self.height
 			end,
