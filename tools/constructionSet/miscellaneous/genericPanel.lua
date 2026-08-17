@@ -96,13 +96,6 @@ return {
 					timeProperties = {}
 				end
 				
-				local selectedIndex = 1
-				for n, v in ipairs(TIMES_AT_START) do
-					if v.value == timeProperties.timeAtStart then
-						selectedIndex = n
-					end
-				end
-
 				timesAtStartDropdown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 200,
 					y = self.y + 80,
@@ -110,7 +103,7 @@ return {
 					height = 50,
 					label = "",
 					list = TIMES_AT_START,
-					selectedIndex = selectedIndex,
+					selectedValue = timeProperties.timeAtStart,
 					comparisonFn = function(listItem, value)
 						return listItem.value == value
 					end,
@@ -119,7 +112,6 @@ return {
 					end,
 				}
 
-					
 				timeTextEditableField = require("tools/lib/components/editableTextField"):create {
 					x = self.x + 200,
 					y = self.y + 140,
@@ -131,13 +123,6 @@ return {
 					transformer = function(text) return string.upper(text) end,
 				}
 
-				selectedIndex = 1
-				for n, v in ipairs(TIME_MONITOR_DURATIONS) do
-					if v.value == timeProperties.timeMonitorDurations then
-						selectedIndex = n
-					end
-				end
-
 				timeMonitorDurationsDropdown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 200,
 					y = self.y + 200,
@@ -145,7 +130,7 @@ return {
 					height = 50,
 					label = "",
 					list = TIME_MONITOR_DURATIONS,
-					selectedIndex = selectedIndex,
+					selectedValue = timeProperties.timeMonitorDurations,
 					comparisonFn = function(listItem, value)
 						return listItem.value == value
 					end,
