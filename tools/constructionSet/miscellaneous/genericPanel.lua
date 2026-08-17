@@ -154,6 +154,16 @@ return {
 					end,
 				}
 
+				self.components = {
+					self.timeAtStartLabel,
+					self.timeTextLabel,
+					self.timeMonDurLabel,
+					timesAtStartDropdown,
+					timeTextEditableField,
+					timeMonitorDurationsDropdown,
+					self.okButton
+				}
+
 				return self
 			end,
 					
@@ -162,13 +172,7 @@ return {
 				
 				self:drawPanelBackground()
 				self:drawTitle()
-				self.timeAtStartLabel:draw()
-				self.timeTextLabel:draw()
-				self.timeMonDurLabel:draw()
-				timesAtStartDropdown:draw()
-				timeTextEditableField:draw()
-				timeMonitorDurationsDropdown:draw()
-				self.okButton:draw()
+				self:drawComponents()
 			end,
 			
 			drawPanelBackground = function(self)
@@ -182,6 +186,12 @@ return {
 				love.graphics.setColor(COLOR.PURE_WHITE)
 				love.graphics.setFont(self.titleFont)
 				love.graphics.printf(self.title, self.x, self.y + 20, self.w, "center")
+			end,
+
+			drawComponents = function(self)
+				for _, component in ipairs(self.components) do
+					component:draw()
+				end
 			end,
 
 			update = function(self, dt)
