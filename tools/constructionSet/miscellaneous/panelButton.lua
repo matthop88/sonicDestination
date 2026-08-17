@@ -13,17 +13,22 @@ return {
 			createPanel = params.createPanel,
 			
 			drawInContainer = function(self, graphics, x, y, w, h)
-				if self.isPressed then
-					graphics:setColor(COLOR.YELLOW)
-					graphics:rectangle("fill", x - w/2, y - h/2, w, h)
-					graphics:setColor(COLOR.JET_BLACK)
-				elseif self.isSelected then
-					graphics:setColor(COLOR.YELLOW)
-				else
-					graphics:setColor(COLOR.PURE_WHITE)
-				end
+				if     self.isPressed  then self:drawPressed(graphics, x, y, w, h)
+				elseif self.isSelected then graphics:setColor(COLOR.YELLOW)
+				else                        graphics:setColor(COLOR.PURE_WHITE) end
+				
+				self:drawText(graphics, x, y, w, h)
+			end,
+
+			drawPressed = function(self, graphics, x, y, w, h)
+				graphics:setColor(COLOR.YELLOW)
+				graphics:rectangle("fill", x - w / 2, y - h / 2, w, h)
+				graphics:setColor(COLOR.JET_BLACK)
+			end,
+
+			drawText = function(self, graphics, x, y, w, h)
 				graphics:setFontSize(48)
-				graphics:printf(self.label, x - w/2, y - 24, w, "center")
+				graphics:printf(self.label, x - w / 2, y - 24, w, "center")
 				graphics:setFontSize(24)
 			end,
 
