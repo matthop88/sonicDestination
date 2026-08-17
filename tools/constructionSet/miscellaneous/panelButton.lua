@@ -64,9 +64,9 @@ return {
 
 				panel:setVisible(true)
 
+				--]]
 				self.isSelected = false
 				self.isPressed  = false
-				--]]
 			end,
 			
 			newObject = function(self)
