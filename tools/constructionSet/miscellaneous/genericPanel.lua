@@ -1,46 +1,5 @@
 local COLOR = require("tools/lib/colors")
 
-local TIMES_AT_START = {
-	{ label = "INFINITY",    value =   -1 },
-	{ label = "30 Seconds",  value =   30 },
-	{ label = "1  Minute",   value =   60 },
-	{ label = "2  Minutes",  value =  120 },
-	{ label = "3  Minutes",  value =  180 },
-	{ label = "4  Minutes",  value =  240 },
-	{ label = "5  Minutes",  value =  300 },
-	{ label = "10 Minutes",  value =  600 },
-	{ label = "15 Minutes",  value =  900 },
-	{ label = "20 Minutes",  value = 1200 },
-	{ label = "25 Minutes",  value = 1500 },
-	{ label = "30 Minutes",  value = 1800 },
-	{ label = "35 Minutes",  value = 2100 },
-	{ label = "40 Minutes",  value = 2400 },
-	{ label = "45 Minutes",  value = 2700 },
-	{ label = "50 Minutes",  value = 3000 },
-	{ label = "1  Hour",     value = 3600 },
-}
-
-local TIME_MONITOR_DURATIONS = {
-	{ label = "1 Second",   value = 1, },
-	{ label = "2 Seconds",  value = 2, },
-	{ label = "3 Seconds",  value = 3, },
-	{ label = "4 Seconds",  value = 4, },
-	{ label = "5 Seconds",  value = 5, },
-	{ label = "6 Seconds",  value = 6, },
-	{ label = "7 Seconds",  value = 7, },
-	{ label = "8 Seconds",  value = 8, },
-	{ label = "10 Seconds", value = 10,},
-	{ label = "12 Seconds", value = 12,},
-	{ label = "15 Seconds", value = 15,},
-	{ label = "18 Seconds", value = 18,},
-	{ label = "20 Seconds", value = 20,},
-	{ label = "25 Seconds", value = 25,},
-	{ label = "30 Seconds", value = 30,},
-	{ label = "40 Seconds", value = 40,},
-	{ label = "50 Seconds", value = 50,},
-	{ label = "60 Seconds", value = 60,},
-}
-
 local timesAtStartDropdown
 local timeTextEditableField
 local timeMonitorDurationsDropdown
@@ -102,7 +61,7 @@ return {
 					width = 300,
 					height = 50,
 					label = "",
-					list = TIMES_AT_START,
+					list = require("tools/constructionSet/miscellaneous/time/timesAtStart"),
 					selectedValue = timeProperties.timeAtStart,
 					comparisonFn = function(listItem, value)
 						return listItem.value == value
@@ -129,7 +88,7 @@ return {
 					width = 300,
 					height = 50,
 					label = "",
-					list = TIME_MONITOR_DURATIONS,
+					list = require("tools/constructionSet/miscellaneous/time/timeMonitorDurations"),
 					selectedValue = timeProperties.timeMonitorDurations,
 					comparisonFn = function(listItem, value)
 						return listItem.value == value
