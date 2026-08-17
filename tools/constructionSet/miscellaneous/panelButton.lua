@@ -59,12 +59,14 @@ return {
 			end,
 			
 			showPanel = function(self)
+				--[[
 				if not panel then panel = self:createPanel() end
 
 				panel:setVisible(true)
 
 				self.isSelected = false
 				self.isPressed  = false
+				--]]
 			end,
 			
 			newObject = function(self)
