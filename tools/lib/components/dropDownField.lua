@@ -6,8 +6,19 @@ return {
 		if params.visible == nil then params.visible = true end
 
 		local selectedValue = params.selectedValue or "None"
-		if params.selectedIndex then
-			selectedValue = params.list[params.selectedIndex]
+		
+		local selectedIndex = params.selectedIndex
+		if params.selectedValue and params.list then
+			selectedIndex = 1
+			for n, v in ipairs(params.list) do
+				if v.value == params.selectedValue then
+					selectedIndex = n
+				end
+			end
+		end
+				
+		if selectedIndex then
+			selectedValue = params.list[selectedIndex]
 		end
 
 		return ({
