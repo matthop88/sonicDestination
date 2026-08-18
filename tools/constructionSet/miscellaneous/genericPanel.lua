@@ -25,7 +25,7 @@ end
 return {
 	create = function(self, params)
 		return ({
-			title     = "Time Settings",
+			title     = params.title or "Untitled Panel",
 			titleFont = love.graphics.newFont(24),
 			visible   = false,
 			
@@ -105,7 +105,6 @@ return {
 					timesAtStartDropdown,
 					timeTextEditableField,
 					timeMonitorDurationsDropdown,
-					self.okButton
 				}
 
 				return self
@@ -136,15 +135,22 @@ return {
 				for _, component in ipairs(self.components) do
 					component:draw()
 				end
+				self.okButton:draw()
 			end,
 
 			update = function(self, dt)
 				if not self.visible then return end
 				
 				local mx, my = love.mouse.getPosition()
-				timesAtStartDropdown:update(dt, mx, my)
-				timeTextEditableField:update(dt, mx, my)
+				self:updateComponents(dt, mx, my)
+				
 				self.okButton:update(mx, my)
+			end,
+
+			updateComponents = function(self, dt, mx, my)
+				for _, component in ipairs(self.components) do
+					if component.update then component:update(dt, mx, my) end
+				end
 			end,
 								
 			handleMousePressed = function(self, mx, my)
