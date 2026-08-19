@@ -68,5 +68,9 @@ return {
         end
         return encoded
     end,
-       
+
+    getTime = function(self)
+        if not self.time then self.time = {} end
+        return self.time
+    end,             
 }
