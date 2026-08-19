@@ -3,24 +3,6 @@ local COLOR = require("tools/lib/colors")
 local timesAtStartDropdown
 local timeTextEditableField
 local timeMonitorDurationsDropdown
-
-local createLabel = function(params)
-	return {
-		x     = params.x,
-		y     = params.y,
-		w     = params.w,
-		h     = params.h or 50,
-		label = params.label or "",
-		font  = love.graphics.newFont(params.fontSize or 20),
-			
-		draw = function(self)
-			love.graphics.setColor(COLOR.PURE_WHITE)
-			love.graphics.setFont(self.font)
-			
-			love.graphics.print(self.label, self.x + 10, self.y + 15)
-		end,
-	}
-end
 				
 return {
 	create = function(self, params)
@@ -39,9 +21,9 @@ return {
 					getModals():add(self)
 				end
 
-				self.timeAtStartLabel = createLabel { x = self.x + 20, y = self.y +  80, w = 150, h = 50, label = "Time at Start", }
-				self.timeTextLabel    = createLabel { x = self.x + 20, y = self.y + 140, w = 150, h = 50, label = "Text", }
-				self.timeMonDurLabel  = createLabel { x = self.x + 20, y = self.y + 200, w = 150, h = 50, label = "Monitor Duration", }
+				self.timeAtStartLabel = require("tools/lib/components/label"):create { x = self.x + 20, y = self.y +  80, w = 150, h = 50, label = "Time at Start", }
+				self.timeTextLabel    = require("tools/lib/components/label"):create { x = self.x + 20, y = self.y + 140, w = 150, h = 50, label = "Text", }
+				self.timeMonDurLabel  = require("tools/lib/components/label"):create { x = self.x + 20, y = self.y + 200, w = 150, h = 50, label = "Monitor Duration", }
 				self.okButton         = require("tools/lib/components/okButton"):create {
 					x = self.x + self.w - 120,
 					y = self.y + self.h - 60,
