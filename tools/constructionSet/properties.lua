@@ -1,31 +1,25 @@
+local STRING_UTIL = require("tools/lib/stringUtil")
+
 return {
     encode = function(self)
         local encoded = "  properties = {\n"
-        if self.music then
-            encoded = encoded .. "      music = \"" .. self.music .. "\",\n"
-        end
-        if self.musicVolume then
-            encoded = encoded .. "      musicVolume = " .. self.musicVolume .. ",\n"
-        end
-        if self.musicPitch then
-            encoded = encoded .. "      musicPitch = " .. self.musicPitch .. ",\n"
-        end
-        if self.musicEffect then
-            encoded = encoded .. "      musicEffect = \"" .. self.musicEffect .. "\",\n"
-        end
-        if self.musicDelay then
-            encoded = encoded .. "      musicDelay = " .. self.musicDelay .. ",\n"
-        end
-        if self.musicStrength then
-            encoded = encoded .. "      musicStrength = " .. self.musicStrength .. ",\n"
-        end
-        if self.musicEchoCount then
-            encoded = encoded .. "      musicEchoCount = " .. self.musicEchoCount .. ",\n"
-        end
+        encoded = encoded .. self:encodeMusic()
         encoded = encoded .. self:encodeSounds()
         encoded = encoded .. self:encodeTime()
         encoded = encoded .. "  },\n"
 
+        return encoded
+    end,
+
+    encodeMusic = function(self)
+        local encoded = ""
+
+        for k, v in pairs(self) do
+            if STRING_UTIL:startsWith(k, "music") then
+                encoded = encoded .. "      " .. k .. " = \"" .. v .. "\",\n"
+            end
+        end
+        
         return encoded
     end,
 
