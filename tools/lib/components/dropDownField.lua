@@ -34,7 +34,8 @@ return {
 			onChanged = params.onChanged,
 			listItems = params.list or {},
 			comparisonFn = params.comparisonFn or function(listItem, outsideItem) return listItem == outsideItem end,
-
+			isDropdown = true,
+			
 			init = function(self)
 				self.list = require("tools/lib/guiList/list"):create {
 					x      = self.x,
