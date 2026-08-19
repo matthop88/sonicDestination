@@ -86,6 +86,11 @@ return {
 					timeMonitorDurationsDropdown,
 				}
 
+				self.dropdowns = {
+					timesAtStartDropdown,
+					timeMonitorDurationsDropdown,
+				}
+
 				return self
 			end,
 					
@@ -135,27 +140,27 @@ return {
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
-				if not timeMonitorDurationsDropdown:isListVisible() and timesAtStartDropdown:handleMousepressed(mx, my) then
-					timeTextEditableField:setEditing(false)
-					return true
+				if not self:anyListIsVisible() then
+					for _, dropdown in ipairs(self.dropdowns) do
+						if dropdown:handleMousepressed(mx, my) then 
+							timeTextEditableField:setEditing(false)
+							return true
+						end
+					end
 				end
 
 				if timeTextEditableField:handleMousepressed(mx, my) then
+					self:hideLists()
 					return true
 				end
 
-				if self.okButton:containsPoint(mx, my) and not timesAtStartDropdown:isListVisible() and not timeMonitorDurationsDropdown:isListVisible() then
+				if self.okButton:containsPoint(mx, my) and not self:anyListIsVisible() then
 					self:setVisible(false)
 					return true
 				end
 
-				if not timesAtStartDropdown:isListVisible() and timeMonitorDurationsDropdown:handleMousepressed(mx, my) then
-					timeTextEditableField:setEditing(false)
-					return true
-				end
-
-				if self:containsPoint(mx, my) or timesAtStartDropdown:listContainsPoint(mx, my) or timeMonitorDurationsDropdown:listContainsPoint(mx, my) then
-					return not timesAtStartDropdown:isListVisible() and not timeMonitorDurationsDropdown:isListVisible()
+				if self:containsPoint(mx, my) or self:anyListContainsPoint(mx, my) then
+					return not self:anyListIsVisible()
 				end
 
 				return true
@@ -176,6 +181,24 @@ return {
 			containsPoint = function(self, mx, my)
 				return mx >= self.x and mx <= self.x + self.w and
 				       my >= self.y and my <= self.y + self.h
+			end,
+
+			anyListIsVisible = function(self)
+				for _, dropdown in ipairs(self.dropdowns) do
+					if dropdown:isListVisible() then return true end
+				end
+			end,
+
+			hideLists = function(self)
+				for _, dropdown in ipairs(self.dropdowns) do
+					dropdown:hideList()
+				end
+			end,
+
+			anyListContainsPoint = function(self, mx, my)
+				for _, dropdown in ipairs(self.dropdowns) do
+					if dropdown:listContainsPoint(mx, my) then return true end
+				end
 			end,
 		}):init()
 	end,
