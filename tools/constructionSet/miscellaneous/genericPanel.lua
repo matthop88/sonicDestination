@@ -140,7 +140,7 @@ return {
 			handleMousePressed = function(self, mx, my)
 				if not self.visible then return false end
 				
-				if self:handleMousePressedComponents(mx, my) then return true end
+				if not self:anyListIsVisible() and self:handleMousePressedComponents(mx, my) then return true end
 
 				if self.okButton:containsPoint(mx, my) then
 					if not self:anyListIsVisible() then self:setVisible(false) end
@@ -155,15 +155,9 @@ return {
 			end,
 
 			handleMousePressedComponents = function(self, mx, my)
-				local componentPressed = false
-
 				for _, component in ipairs(self.components) do
-					if component.handleMousepressed then
-						componentPressed = componentPressed or component:handleMousepressed(mx, my)
-					end
+					if component.handleMousepressed and component:handleMousepressed(mx, my) then return true end
 				end
-
-				return componentPressed
 			end,
 
 			keypressed = function(self, key)
