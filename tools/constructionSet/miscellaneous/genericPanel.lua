@@ -55,6 +55,7 @@ return {
 					w = 300,
 					height = 50,
 					text = getProperties().time.timeLabel or "time",
+					onChanged = function(text) getProperties():getTime().timeLabel = text end,
 					inputLayerFn = getInputLayer,
 					validKeys = { "b", "c", "e", "g", "i", "m", "n", "o", "r", "s", "t", "u", },
 					transformer = function(text) return string.upper(text) end,
@@ -163,11 +164,7 @@ return {
 			keypressed = function(self, key)
 				if not self.visible then return false end
 
-				if timeTextEditableField:handleKeypressed(key) then
-					local timeProperties = getProperties().time
-					timeProperties.timeLabel = timeTextEditableField:getText()
-					return true
-				end
+				if timeTextEditableField:handleKeypressed(key) then return true end
 			end,
 			
 			setVisible = function(self, visible)
