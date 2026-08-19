@@ -31,11 +31,7 @@ return {
 					height = 40,
 				}
 
-				local timeProperties = getProperties().time
-				if not timeProperties then
-					getProperties().time = {}
-					timeProperties = {}
-				end
+				local timeProperties = getProperties():getTime()
 				
 				timesAtStartDropdown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 200,
