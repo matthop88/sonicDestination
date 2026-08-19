@@ -164,7 +164,9 @@ return {
 			keypressed = function(self, key)
 				if not self.visible then return false end
 
-				if timeTextEditableField:handleKeypressed(key) then return true end
+				for _, component in ipairs(self.components) do
+					if component.handleKeypressed and component:handleKeypressed(key) then return true end
+				end
 			end,
 			
 			setVisible = function(self, visible)
