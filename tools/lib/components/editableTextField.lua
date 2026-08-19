@@ -17,6 +17,7 @@ return {
 			inputLayerFn = params.inputLayerFn,
 			validKeys    = params.validKeys,
 			transformer  = params.transformer,
+			onChanged    = params.onChanged,
 			cursorTimer  = 0,
 
 			init = function(self)
@@ -80,6 +81,7 @@ return {
 					end
 					self.text = self.text .. key
 					self:transformText()
+					if self.onChanged then self.onChanged(self.text) end
 					return true
 				end
 			end,
