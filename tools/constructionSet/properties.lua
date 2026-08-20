@@ -6,6 +6,7 @@ return {
         encoded = encoded .. self:encodeMusic()
         encoded = encoded .. self:encodeSounds()
         encoded = encoded .. self:encodeTime()
+        encoded = encoded .. self:encodeRings()
         encoded = encoded .. "  },\n"
 
         return encoded
@@ -73,6 +74,18 @@ return {
         if not self.time then self.time = {} end
         return self.time
     end,    
+
+    encodeRings = function(self)
+        local encoded = ""
+        if self.rings then
+            encoded = encoded .. "      rings = {\n"
+            for k, v in pairs(self.rings) do
+                encoded = encoded .. self:generateKV(10, k, v)
+            end
+            encoded = encoded .. "      },\n"
+        end
+        return encoded
+    end,
 
     getRings = function(self)
         if not self.rings then self.rings = {} end
