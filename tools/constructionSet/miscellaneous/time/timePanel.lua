@@ -22,7 +22,7 @@ return {
 					type          = "dropDown",
 					label         = "Time at Start",
 					list          = require("tools/constructionSet/miscellaneous/time/timesAtStart"),
-					selectedValue = timeProperties.timeAtStart,
+					selectedValue = timeProperties.timeAtStart or 600,
 					onChanged     = function(item, index)
 						timeProperties.timeAtStart = item.value
 					end,
@@ -31,8 +31,8 @@ return {
 					name          = "timeText",
 					type          = "editableTextField",
 					label         = "Text",
-					text          = getProperties().time.timeLabel or "time",
-					onChanged     = function(text) getProperties():getTime().timeLabel = text end,
+					text          = timeProperties.timeLabel or "time",
+					onChanged     = function(text) timeProperties.timeLabel = text end,
 					validKeys     = { "b", "c", "e", "g", "i", "m", "n", "o", "r", "s", "t", "u", },
 				},
 				{
@@ -40,7 +40,7 @@ return {
 					type          = "dropDown",
 					label         = "Monitor Duration",
 					list          = require("tools/constructionSet/miscellaneous/time/timeMonitorDurations"),
-					selectedValue = timeProperties.timeMonitorDurations,
+					selectedValue = timeProperties.timeMonitorDurations or 20,
 					onChanged     = function(item, index)
 						timeProperties.timeMonitorDurations = item.value
 					end,
