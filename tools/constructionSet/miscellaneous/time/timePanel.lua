@@ -3,6 +3,7 @@ return {
 		local timeProperties = getProperties():getTime()
 				
 		return require("tools/constructionSet/miscellaneous/genericPanel"):create {
+			title     = "Time Settings",
 			x         = params.x,
 			y         = params.y,
 			w         = params.w,
