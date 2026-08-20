@@ -84,11 +84,22 @@ return {
 				self.rings:setColor({ 0.99, 0.99, 0 })
 			end,
 
-		    refreshFromRingProps = function(self, ringProps, ringOverride)
-		    	-- Logic here to update
+		    refreshFromRingProps = function(self, ringProps)
+		    	if ringProps.ringsLabel then
+		    		RINGS = {
+		    			fontName = "hud",
+		    			keys = {},
+					}
+
+					for i = 1, #ringProps.ringsLabel do
+						local char = ringProps.ringsLabel:sub(i, i)
+						table.insert(RINGS.keys, char)
+					end
+					table.insert(RINGS.keys, " ")
+
+					self:init()
+				end
 		    end,
-
-
 
 		}):init()
 	end,
