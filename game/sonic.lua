@@ -303,6 +303,11 @@ return {
         HUD:setRingCount(self.ringCount)
     end,
 
+    setRingCount = function(self, ringCount)
+        self.ringCount = ringCount
+        HUD:setRingCount(self.ringCount)
+    end,
+
     isPlayer     = function(self) return true            end,
     getRingCount = function(self) return self.ringCount  end,
     freeze       = function(self) self.frozen  = true    end,
@@ -322,9 +327,16 @@ return {
     end,
 
     setHurt = function(self) 
-        self:setState(STATES.HURT)  
-        self.ringCount = 0
-        HUD:setRingCount(self.ringCount)              
+        if not self:isHurt() then
+            self:setState(STATES.HURT) 
+            local ringCountLost = WORLD:getRingCountLost()
+            if ringCountLost == - 1 then 
+                self.ringCount = 0
+            else
+                self.ringCount = math.max(0, self.ringCount - ringCountLost)
+            end
+            HUD:setRingCount(self.ringCount)   
+        end           
     end,
 
     isHurt  = function(self) return self:getState() == STATES.HURT     end,
