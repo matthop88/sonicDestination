@@ -151,6 +151,16 @@ return {
         end
     end,
 
+    refreshRings = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties then
+            local rings = map.properties.rings or { ringsAtStart = 0, ringsLabel = "rINgs" }
+            HUD:refreshFromRingProps(rings)
+            GLOBALS:getPlayer():setRingCount(rings.ringsAtStart or 0)
+        end
+    end,
+
     resetAfterDeath = function(self, map)
         GLOBALS:getPlayer():clearPushing()
         if self.lastTriggeredLampPost then
@@ -172,6 +182,7 @@ return {
         self:refreshMusic()
         self:refreshSounds()
         self:refreshTime()
+        self:refreshRings()
         self:refreshGroundLevel()
         self:refreshObjectsMap(x, y)
 
@@ -322,6 +333,17 @@ return {
 
     getGroundLevel = function(self)
         return self.GROUND_LEVEL
+    end,
+
+    getRingCountLost = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties then
+            local rings = map.properties.rings or { ringCountLost = -1 }
+            return rings.ringCountLost or -1
+        else
+            return -1
+        end
     end,
 
     refreshGroundLevel = function(self)
