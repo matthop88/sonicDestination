@@ -1,9 +1,5 @@
 local COLOR = require("tools/lib/colors")
 
-local timesAtStartDropdown
-local timeTextEditableField
-local timeMonitorDurationsDropdown
-				
 return {
 	create = function(self, params)
 		return ({
@@ -33,7 +29,7 @@ return {
 
 				local timeProperties = getProperties():getTime()
 				
-				timesAtStartDropdown = require("tools/lib/components/dropDownField"):create {
+				self.timesAtStartDropdown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 200,
 					y = self.y + 80,
 					width = 300,
@@ -49,7 +45,7 @@ return {
 					end,
 				}
 
-				timeTextEditableField = require("tools/lib/components/editableTextField"):create {
+				self.timeTextEditableField = require("tools/lib/components/editableTextField"):create {
 					x = self.x + 200,
 					y = self.y + 140,
 					w = 300,
@@ -61,7 +57,7 @@ return {
 					transformer = function(text) return string.upper(text) end,
 				}
 
-				timeMonitorDurationsDropdown = require("tools/lib/components/dropDownField"):create {
+				self.timeMonitorDurationsDropdown = require("tools/lib/components/dropDownField"):create {
 					x = self.x + 200,
 					y = self.y + 200,
 					width = 300,
@@ -81,14 +77,14 @@ return {
 					self.timeAtStartLabel,
 					self.timeTextLabel,
 					self.timeMonDurLabel,
-					timesAtStartDropdown,
-					timeTextEditableField,
-					timeMonitorDurationsDropdown,
+					self.timesAtStartDropdown,
+					self.timeTextEditableField,
+					self.timeMonitorDurationsDropdown,
 				}
 
 				self.dropdowns = {
-					timesAtStartDropdown,
-					timeMonitorDurationsDropdown,
+					self.timesAtStartDropdown,
+					self.timeMonitorDurationsDropdown,
 				}
 
 				return self
