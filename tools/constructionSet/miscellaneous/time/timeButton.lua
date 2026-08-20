@@ -3,7 +3,7 @@ return {
 		return require("tools/constructionSet/miscellaneous/panelButton"):create {
 			label       = "Time",
 			createPanel = function(self)
-				return require("tools/constructionSet/miscellaneous/genericPanel"):create {
+				return require("tools/constructionSet/miscellaneous/time/timePanel"):create {
 					title = "Time Settings",
 					x     = 300,
 					y     = 150,
