@@ -72,5 +72,10 @@ return {
     getTime = function(self)
         if not self.time then self.time = {} end
         return self.time
-    end,             
+    end,    
+
+    getRings = function(self)
+        if not self.rings then self.rings = {} end
+        return self.rings
+    end,         
 }
