@@ -4,7 +4,6 @@ return {
 			label       = "Time",
 			createPanel = function(self)
 				return require("tools/constructionSet/miscellaneous/time/timePanel"):create {
-					title = "Time Settings",
 					x     = 300,
 					y     = 150,
 					w     = 830,
