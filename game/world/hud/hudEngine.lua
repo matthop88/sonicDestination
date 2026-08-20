@@ -67,6 +67,10 @@ return {
             refreshFromTimeProps = function(self, timeProps, timeOverride)
             	self.timeHud:refreshFromTimeProps(timeProps, timeOverride)
             end,
+
+            refreshFromRingProps = function(self, ringProps)
+            	self.ringsHud:refreshFromRingProps(ringProps)
+            end,
     	}):init()
 	
 	end,
