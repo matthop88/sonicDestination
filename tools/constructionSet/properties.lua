@@ -4,9 +4,9 @@ return {
     encode = function(self)
         local encoded = "  properties = {\n"
         encoded = encoded .. self:encodeMusic()
-        encoded = encoded .. self:encodeSounds()
-        encoded = encoded .. self:encodeTime()
-        encoded = encoded .. self:encodeRings()
+        encoded = encoded .. self:encodeProperty(self.sounds, "sounds")
+        encoded = encoded .. self:encodeProperty(self.time,   "time")
+        encoded = encoded .. self:encodeProperty(self.rings,  "rings")
         encoded = encoded .. "  },\n"
 
         return encoded
@@ -24,11 +24,11 @@ return {
         return encoded
     end,
 
-    encodeSounds = function(self)
+    encodeProperty = function(self, prop, name)
         local encoded = ""
-        if self.sounds then
-            encoded = encoded .. "      sounds = {\n"
-            for k, v in pairs(self.sounds) do
+        if prop then
+            encoded = encoded .. "      " .. name .. " = {\n"
+            for k, v in pairs(prop) do
                 encoded = encoded .. self:generateKV(10, k, v)
             end
             encoded = encoded .. "      },\n"
@@ -58,34 +58,10 @@ return {
         return result .. string.rep(" ", padding) .. "},\n"
     end,
 
-    encodeTime = function(self)
-        local encoded = ""
-        if self.time then
-            encoded = encoded .. "      time = {\n"
-            for k, v in pairs(self.time) do
-                encoded = encoded .. self:generateKV(10, k, v)
-            end
-            encoded = encoded .. "      },\n"
-        end
-        return encoded
-    end,
-
     getTime = function(self)
         if not self.time then self.time = {} end
         return self.time
     end,    
-
-    encodeRings = function(self)
-        local encoded = ""
-        if self.rings then
-            encoded = encoded .. "      rings = {\n"
-            for k, v in pairs(self.rings) do
-                encoded = encoded .. self:generateKV(10, k, v)
-            end
-            encoded = encoded .. "      },\n"
-        end
-        return encoded
-    end,
 
     getRings = function(self)
         if not self.rings then self.rings = {} end
