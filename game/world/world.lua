@@ -346,6 +346,17 @@ return {
         end
     end,
 
+    getRingMonitorAmount = function(self)
+        local map = TERRAIN:getMapData()
+
+        if map.properties then
+            local rings = map.properties.rings or { ringMonitorAmount = 10 }
+            return rings.ringMonitorAmount or 10
+        else
+            return 10
+        end
+    end,
+
     refreshGroundLevel = function(self)
         self.GROUND_LEVEL = TERRAIN:getCalculatedGroundLevel()
         WORKSPACE:setGroundLevel(TERRAIN:getCalculatedGroundLevel())
