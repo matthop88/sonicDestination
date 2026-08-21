@@ -92,6 +92,12 @@ return {
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},
+		ringMonitor = {
+			name       = "ringMonitor",
+			spritePath = "objects/ringMonitor",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
 	},
 
 	getByName = function(self, name)
