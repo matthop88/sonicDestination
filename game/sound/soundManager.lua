@@ -34,6 +34,7 @@ return ({
 		timeMonitorPop  = "timeMonitorPop",
 		timeMonitorDone = "timeMonitorDone",
 		timeMonitorWarn = "timeMonitorWarn",
+		ringMonitorPop  = "ringMonitorPop",
 	},
 
 	setOverride = function(self, key, value) self.overrides[key] = value end,
