@@ -23,6 +23,7 @@ local ACTIONS = {
 	{ serial = "timeMonitorPop",  label = "Time Monitor Pop" },
 	{ serial = "timeMonitorDone", label = "Time Monitor Wear Off" },
 	{ serial = "timeMonitorWarn", label = "Time Monitor Warn" },
+	{ serial = "ringMonitorPop",  label = "Ring Monitor Pop" },
 }
 
 local AUDIO_EFFECTS = {
@@ -134,11 +135,12 @@ return {
 			badnikSquished  = { "Smoosh" },
 			pushObject      = { "Push Rock" },
 			lampPost        = { "Lamp Post", },
-			postLamp        = { "None", "Cool!", "All Right!", "Oh Yeah! (Deep)", },
+			postLamp        = { "None", "Cool!", "Oh Yeah! (Deep)", "Yeeha!!!" },
 			monitorPopped   = { "Badnik Death", "Chomp", "Burp", },
 			timeMonitorPop  = { "None", "Triple Charge", },
 			timeMonitorDone = { "None", "Triple Charge 2", },
 			timeMonitorWarn = { "None", "Ting Alarm", },
+			ringMonitorPop  = { "Double Ring", "BIG Burp", "Rad!", },
 		}
 
 		local playSelectedSound = function()
