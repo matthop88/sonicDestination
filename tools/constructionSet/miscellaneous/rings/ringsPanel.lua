@@ -45,6 +45,16 @@ return {
 						ringProperties.ringCountLost = item.value
 					end,
 				},
+				{
+					name          = "ringMonitorAmount",
+					type          = "dropDown",
+					label         = "# Monitor Rings",
+					list          = require("tools/constructionSet/miscellaneous/rings/ringMonitorAmount"),
+					selectedValue = ringProperties.ringMonitorAmount or 10,
+					onChanged     = function(item, index)
+						ringProperties.ringMonitorAmount = item.value
+					end,
+				},
 			},
 		}			
 	end,
