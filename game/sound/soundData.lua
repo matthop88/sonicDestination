@@ -22,9 +22,13 @@ return {
 	ohYeahDeep     = { label = "Oh Yeah! (Deep)",  filename = "extra/ohYeahDeep.mp3",  volume = 1.0, },
 	chomp          = { label = "Chomp",            filename = "extra/Bite.wav",        volume = 1.0, },
 	burp           = { label = "Burp",             filename = "extra/Burp.wav",        volume = 1.0, },
+	bigBurp        = { label = "BIG Burp",         filename = "extra/bigBurp.wav",     volume = 1.0, },
+	rad            = { label = "Rad!",             filename = "extra/Rad.wav",         volume = 1.0, },
+	yeeha          = { label = "Yeeha!!!",         filename = "extra/Yeeha.wav",       volume = 1.0, },
 	tripleCharge   = { label = "Triple Charge",    filename = "extra/tripleCharge.wav",volume = 1.0, },
 	tripleCharge2  = { label = "Triple Charge 2",  filename = "extra/tripleCharge.wav",volume = 1.0, },
 	tingAlarm      = { label = "Ting Alarm",       filename = "extra/tingAlarm.wav",   volume = 1.0, },
+	
 	doubleRing     = { label = "Double Ring",      complex  = true,   
 		{ filename = "ring-collect-L.mp3",    volume = 0.4,  startPoint =  1636, endPoint =  55260  },
 		{ filename = "ring-collect-R.mp3",    volume = 0.4,  startPoint =  2984, endPoint =  58018  },
