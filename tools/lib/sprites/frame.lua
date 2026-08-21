@@ -43,7 +43,7 @@ return {
 
 			get = function(self)
 				local frame = self.animation[math.floor(self.frameNumber)]
-				if self.animation.calculateOffsets then
+				if self.animation.calculateOffsets and frame.offset then
 					frame.offset.x, frame.offset.y = self.animation.calculateOffsets(self.frameNumber)
 				end
 				return frame
