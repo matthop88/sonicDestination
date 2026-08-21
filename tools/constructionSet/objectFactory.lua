@@ -81,8 +81,14 @@ return {
 			object     = ITEM,
 		},
 		monitor = {
-			name       = "monitor",
-			spritePath = "objects/monitor",
+			name       = "timeMonitor",
+			spritePath = "objects/timeMonitor",
+			template   = ITEM_TEMPLATE,
+			object     = ITEM,
+		},
+		timeMonitor = {
+			name       = "timeMonitor",
+			spritePath = "objects/timeMonitor",
 			template   = ITEM_TEMPLATE,
 			object     = ITEM,
 		},
