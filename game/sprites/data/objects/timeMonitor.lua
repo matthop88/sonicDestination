@@ -6,7 +6,7 @@ return {
             ----------------------------------------------------------------------------
             parts = {
                 {   name = "monitorHull",   animation = "standing",  },
-                {   name = "monitorScreen", animation = "flashing",  },
+                {   name = "timeMonitorScreen", animation = "flashing",  },
             }
         },
         exploding = { fps = 5, offset = { x = 15, y = 15 }, w = 30, h = 30,
@@ -14,7 +14,7 @@ return {
             reps = 1, 
             parts = {
                 {   name = "monitorHull",   animation = "exploding", },
-                {   name = "monitorScreen", animation = "exploding", },
+                {   name = "timeMonitorScreen", animation = "exploding", },
                 {   name = "explosion",     animation = "poof",      },
             }
         },  
