@@ -1,7 +1,7 @@
 local SOUND_MANAGER  = requireRelative("sound/soundManager")
 
 local onDestroy = function(self)
-	SOUND_MANAGER:play("doubleRing")
+	SOUND_MANAGER:playAction("ringMonitorPop")
     self.player:incrementRingCount(10)
 end
 
