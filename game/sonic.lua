@@ -303,6 +303,11 @@ return {
         HUD:setRingCount(self.ringCount)
     end,
 
+    incrementRingCount = function(self, delta)
+        self.ringCount = self.ringCount + delta
+        HUD:setRingCount(self.ringCount)
+    end,
+
     setRingCount = function(self, ringCount)
         self.ringCount = ringCount
         HUD:setRingCount(self.ringCount)
