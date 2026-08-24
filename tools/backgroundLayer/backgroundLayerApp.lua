@@ -108,7 +108,23 @@ PLUGINS = require("plugins/engine")
         imagePath         = imgPath,
         accessorFnName    = "getImageViewer"
     })
+    :add("doubleClick",
+    {
+        accessorFnName = "getDoubleClick",
+    })
     :add("drawingLayer", { drawingFn      = drawOverlays     })
     :add("readout",      { accessorFnName = "getReadout"     })
     :add("zooming",      { imageViewer    = getImageViewer() })
     :add("scrolling",    { imageViewer    = getImageViewer() })
+    :add("questionBox",
+    {   x     = 750,
+        w     = 600,
+        destX = 100,
+        useDoubleClick = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            "Click inside a background slice rect to find",
+            "the coordinates of the rect",
+            "in { x, y, w, h } format.",
+        },
+    })
