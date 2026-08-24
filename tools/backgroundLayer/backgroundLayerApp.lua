@@ -50,28 +50,28 @@ function seekEdgesFrom(mx, my)
     for x = oX, 0, -1 do
         local p = imageViewer:getPixelColorAt(x, oY)
         if equalsMarginColor(p.r, p.g, p.b, p.a) then
-            layerRect.x = x + 1
+            layerRect.x = math.floor(x + 1)
             break
         end
     end
     for y = oY, 0, -1 do
         local p = imageViewer:getPixelColorAt(oX, y)
         if equalsMarginColor(p.r, p.g, p.b, p.a) then
-            layerRect.y = y + 1
+            layerRect.y = math.floor(y + 1)
             break
         end
     end
     for x = oX, imageViewer:getImageWidth() - 1 do
         local p = imageViewer:getPixelColorAt(x, oY)
         if equalsMarginColor(p.r, p.g, p.b, p.a) then
-            layerRect.w = x - layerRect.x
+            layerRect.w = math.floor(x - layerRect.x)
             break
         end
     end
     for y = oY, imageViewer:getImageHeight() - 1 do
         local p = imageViewer:getPixelColorAt(oX, y)
         if equalsMarginColor(p.r, p.g, p.b, p.a) then
-            layerRect.h = y - layerRect.y
+            layerRect.h = math.floor(y - layerRect.y)
             break
         end
     end
