@@ -12,7 +12,7 @@ local WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 love.window.setTitle("Background Layer Tool")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
-local imgPath = "game/resources/zones/backgrounds/ghzBG.png"
+local imgPath = "game/resources/images/backgrounds/ccPastBG.png"
 
 local MARGIN_COLOR = { r = 0.73, g = 0.25, b = 0.27, a = 1.0 }
 
