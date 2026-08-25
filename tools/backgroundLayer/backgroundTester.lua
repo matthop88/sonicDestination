@@ -13,30 +13,29 @@ local image       = love.graphics.newImage(imgPath)
 
 image:setFilter("nearest", "nearest")
 
---------------------------------------------------------------
---                     LOVE2D Functions                     --
---------------------------------------------------------------
+local LAYERS = ({
+    init = function(self, image, data)
+        self.image  = image
+        self.data   = data
+        self.slices = {}
 
-function love.draw()
-    GRAPHICS:setColor(1, 1, 1)
-    GRAPHICS:draw(image, 0, 0)
-end
+        for _, slice in ipairs(data.slices) do
+            local quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.image:getWidth(), self.image:getHeight())
+            table.insert(self.slices, { w = slice.w, h = slice.h, quad = quad })
+        end
 
-function love.mousepressed(mx, my)
-    -- Do something
-end
+        return self
+    end,
 
-function love.keypressed(key)
-    -- Scrolling
-end
+    draw = function(self)
+        GRAPHICS:setColor(1, 1, 1)
+        local y = 0
+        for _, slice in ipairs(self.slices) do
+            GRAPHICS:draw(self.image, slice.quad, 0, y, 0, 1, 1)
+            y = y + slice.h
+        end
+    end,
 
--- ...
-
---------------------------------------------------------------
---                   Specialized Functions                  --
---------------------------------------------------------------
-
-local LAYERS = {
     ---------------------- Graphics Object Methods ------------------------
 
     moveImage = function(self, deltaX, deltaY)
@@ -58,7 +57,30 @@ local LAYERS = {
     syncImageCoordinatesWithScreen = function(self, imageX, imageY, screenX, screenY)
         GRAPHICS:syncImageCoordinatesWithScreen(imageX, imageY, screenX, screenY)
     end,
-}
+}):init(image, bgData)
+
+--------------------------------------------------------------
+--                     LOVE2D Functions                     --
+--------------------------------------------------------------
+
+function love.draw()
+    if LAYERS then LAYERS:draw() end
+end
+
+function love.mousepressed(mx, my)
+    -- Do something
+end
+
+function love.keypressed(key)
+    -- Scrolling
+end
+
+-- ...
+
+--------------------------------------------------------------
+--                   Specialized Functions                  --
+--------------------------------------------------------------
+
 
 --------------------------------------------------------------
 --                          Plugins                         --
