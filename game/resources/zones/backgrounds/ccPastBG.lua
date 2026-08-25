@@ -2,12 +2,12 @@ return {
 	bgImageName     = "ccPastBG",
 	
 	slices = {
-		{ name = "upperVegetation1", x = 249, y =  24,  w =  512, h = 32 },
-		{ name = "upperVegetation2", x = 249, y =  64,  w =  512, h =  8 },
-		{ name = "upperVegetation3", x = 249, y =  80,  w =  512, h =  8 },
-		{ name = "upperVegetation4", x = 249, y =  96,  w =  512, h = 16 },
-		{ name = "upperWater",       x = 249, y =  172, w =  512, h = 32 },
-		{ name = "upperMountains",   x = 249, y =  224, w =  512, h = 48 },
+		{ name = "upperVegetation1", x = 249, y =  24,  w =  512, h = 32, xScalar = 1, },
+		{ name = "upperVegetation2", x = 249, y =  64,  w =  512, h =  8, xScalar = 2, },
+		{ name = "upperVegetation3", x = 249, y =  80,  w =  512, h =  8, xScalar = 3, },
+		{ name = "upperVegetation4", x = 249, y =  96,  w =  512, h = 16, xScalar = 5, },
+		{ name = "upperWater",       x = 249, y =  172, w =  512, h = 32, xScalar = 8, },
+		{ name = "upperMountains",   x = 249, y =  224, w =  512, h = 48, xScalar = 13,},
 		{ name = "clouds1",          x = 249, y =  280, w =  512, h = 16 },
 		{ name = "clouds2",          x = 249, y =  304, w =  512, h = 32 },
 		{ name = "clouds3",          x = 249, y =  344, w =  512, h = 16 },
