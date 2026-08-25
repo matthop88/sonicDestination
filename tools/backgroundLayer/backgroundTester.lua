@@ -5,13 +5,21 @@
 
 local GRAPHICS   = require("tools/lib/graphics"):create()
 
+local bgPath      = "game/resources/zones/backgrounds/" .. __PARAMS["backgroundTestData"]
+local bgData      = require(bgPath)
+local bgImageName = bgData.bgImageName
+local imgPath     = "game/resources/images/backgrounds/" .. bgImageName .. ".png"
+local image       = love.graphics.newImage(imgPath)
+
+image:setFilter("nearest", "nearest")
+
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
 --------------------------------------------------------------
 
 function love.draw()
     GRAPHICS:setColor(1, 1, 1)
-    GRAPHICS:rectangle("fill", 100, 100, 200, 150)
+    GRAPHICS:draw(image, 0, 0)
 end
 
 function love.mousepressed(mx, my)
