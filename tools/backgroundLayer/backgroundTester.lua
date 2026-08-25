@@ -21,7 +21,7 @@ local LAYERS = ({
 
         for _, slice in ipairs(data.slices) do
             local quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.image:getWidth(), self.image:getHeight())
-            table.insert(self.slices, { w = slice.w, h = slice.h, quad = quad })
+            table.insert(self.slices, { w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar })
         end
 
         return self
@@ -31,7 +31,8 @@ local LAYERS = ({
         GRAPHICS:setColor(1, 1, 1)
         local y = 0
         for _, slice in ipairs(self.slices) do
-            GRAPHICS:draw(self.image, slice.quad, 0, y, 0, 1, 1)
+            local x = GRAPHICS:getX() / (slice.xScalar or 1)
+            GRAPHICS:draw(self.image, slice.quad, x, y, 0, 1, 1)
             y = y + slice.h
         end
     end,
