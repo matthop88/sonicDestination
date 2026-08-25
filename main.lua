@@ -87,6 +87,7 @@ local APP_PATH = {
     transparency = "tools/transparencyEditor",
     sandbox      = "tools/spriteSandbox",
     construction = "tools/constructionSet",
+    background   = "tools/backgroundLayer",
     test         = "testing",
 }
 
