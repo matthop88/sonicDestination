@@ -21,7 +21,7 @@ local LAYERS = ({
 
         for _, slice in ipairs(data.slices) do
             local quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.image:getWidth(), self.image:getHeight())
-            table.insert(self.slices, { w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar })
+            table.insert(self.slices, { x = 0, w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar })
         end
 
         return self
@@ -31,8 +31,7 @@ local LAYERS = ({
         GRAPHICS:setColor(1, 1, 1)
         local y = 0
         for _, slice in ipairs(self.slices) do
-            local x = GRAPHICS:getX() / (slice.xScalar or 1)
-            GRAPHICS:draw(self.image, slice.quad, x, y, 0, 1, 1)
+            GRAPHICS:draw(self.image, slice.quad, slice.x, y, 0, 1, 1)
             y = y + slice.h
         end
     end,
@@ -40,7 +39,10 @@ local LAYERS = ({
     ---------------------- Graphics Object Methods ------------------------
 
     moveImage = function(self, deltaX, deltaY)
-        GRAPHICS:moveImage(deltaX / GRAPHICS:getScale(), deltaY / GRAPHICS:getScale())
+        GRAPHICS:moveImage(0, deltaY / GRAPHICS:getScale())
+        for _, slice in ipairs(self.slices) do
+            slice.x = slice.x + (deltaX / (slice.xScalar or 1))
+        end
     end,
 
     screenToImageCoordinates = function(self, screenX, screenY)
