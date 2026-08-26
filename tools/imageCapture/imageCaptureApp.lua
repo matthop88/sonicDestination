@@ -13,16 +13,37 @@ love.window.setTitle("Image Capture Tool")
 love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { display = 2 })
 
 local subImages = {
-    { name = "clouds1",       x = 24, y = 181, w = 3840, h = 32,  },
-    { name = "clouds2",       x = 24, y = 221, w = 3840, h = 16,  },
-    { name = "clouds3",       x = 24, y = 245, w = 3840, h = 16,  },
-    { name = "mountainPeaks", x = 24, y = 269, w = 8192, h = 48,  },
-    { name = "mountains",     x = 24, y = 325, w = 8192, h = 40,  },
-    { name = "ocean",         x = 24, y = 373, w = 3840, h = 104, },
+    { name = "upperVegetation1", x = 249, y =  24,  w =  512, h = 32 },
+    { name = "upperVegetation2", x = 249, y =  64,  w =  512, h =  8 },
+    { name = "upperVegetation3", x = 249, y =  80,  w =  512, h =  8 },
+    { name = "upperVegetation4", x = 249, y =  96,  w =  512, h = 16 },
+    { name = "upperWater",       x = 249, y =  172, w =  512, h = 32 },
+    { name = "upperMountains",   x = 249, y =  224, w =  512, h = 48 },
+    { name = "clouds1",          x = 249, y =  280, w =  512, h = 16 },
+    { name = "clouds2",          x = 249, y =  304, w =  512, h = 32 },
+    { name = "clouds3",          x = 249, y =  344, w =  512, h = 16 },
+    { name = "clouds4",          x = 249, y =  368, w =  512, h = 16 },
+    { name = "clouds5",          x = 249, y =  392, w =  512, h = 24 },
+    { name = "clouds6",          x = 249, y =  424, w =  512, h = 24 },
+    { name = "clouds7",          x = 249, y =  456, w =  512, h = 32 },
+    { name = "clouds8",          x = 249, y =  496, w =  512, h = 16 },
+    { name = "clouds9",          x = 249, y =  520, w =  512, h = 16 },
+    { name = "clouds10",         x = 249, y =  544, w =  512, h = 24 },
+    { name = "mountains1",       x = 249, y =  695, w = 1024, h = 64 },
+    { name = "mountains2",       x = 249, y =  779, w = 1024, h = 32 },
+    { name = "ridges",           x = 249, y =  819, w = 1024, h = 64 },
+    { name = "lowerWater",       x = 249, y =  920, w =  512, h = 32 },
+    { name = "lowerVegetation1", x = 249, y =  972, w =  512, h = 16 },
+    { name = "lowerVegetation2", x = 249, y =  996, w =  512, h = 16 },
+    { name = "lowerVegetation3", x = 249, y = 1020, w =  512, h = 32 },
+    { name = "lowerVegetation4", x = 249, y = 1060, w =  512, h = 16 },
+    { name = "lowerVegetation5", x = 249, y = 1084, w =  512, h = 16 },
+    { name = "lowerVegetation6", x = 249, y = 1108, w =  512, h = 48 },
+    { name = "lowerForeground",  x = 249, y = 1193, w =  512, h = 64 },
 }
 
 
-local imgPath = "game/resources/images/backgrounds/ghzBG.png"
+local imgPath = "game/resources/images/backgrounds/ccPastBG.png"
 
 --------------------------------------------------------------
 --                     LOVE2D Functions                     --
@@ -50,8 +71,8 @@ function drawOverlays()
 end
 
 function createBackgroundFile()
-    local w = 8192
-    local h = 256 * 6
+    local w = 1024
+    local h = 256 * 27
     local GRAFX = require("tools/lib/bufferedGraphics"):create(require("tools/lib/graphics"):create(), w, h)
         
     for n, subImg in ipairs(subImages) do
