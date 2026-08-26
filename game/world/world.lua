@@ -177,7 +177,7 @@ return {
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
         end
-        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ghzBG")
+        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ccPastBG")
         
         self:refreshMusic()
         self:refreshSounds()
