@@ -59,6 +59,7 @@ return {
                 end
 
                 map[mapRow.row] = row
+                self.worldHeight = mapRow.row * 256
             end
         end
 
@@ -240,5 +241,9 @@ return {
 
     getMapData = function(self)
         return MAP_DATA
+    end,
+
+    getWorldHeight = function(self)
+        return self.worldHeight
     end,
 }
