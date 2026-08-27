@@ -21,7 +21,7 @@ local LAYERS = ({
 
         for _, slice in ipairs(data.slices) do
             local quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.image:getWidth(), self.image:getHeight())
-            table.insert(self.slices, { x = 0, w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar })
+            table.insert(self.slices, { x = 0, w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar, xSpeed = slice.xSpeed })
         end
 
         return self
@@ -33,6 +33,14 @@ local LAYERS = ({
         for _, slice in ipairs(self.slices) do
             GRAPHICS:draw(self.image, slice.quad, slice.x, y, 0, 1, 1)
             y = y + slice.h
+        end
+    end,
+
+    update = function(self, dt)
+        for _, slice in ipairs(self.slices) do
+            if slice.xSpeed then
+                slice.x = slice.x + (slice.xSpeed * dt)
+            end
         end
     end,
 
@@ -68,6 +76,10 @@ local LAYERS = ({
 
 function love.draw()
     if LAYERS then LAYERS:draw() end
+end
+
+function love.update(dt)
+    if LAYERS then LAYERS:update(dt) end
 end
 
 function love.mousepressed(mx, my)
