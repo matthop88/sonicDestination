@@ -40,18 +40,21 @@ return {
 			end,
 
 			draw = function(self, graphics)
+				local heightOfWorld = self.worldHeight * (graphics:getScale() / 3)
+				local scalar = math.min(self.height / heightOfWorld, 0.3)
+				local bgY = math.max(-self.height + (love.graphics:getHeight() / 3), math.min(0, graphics:getY() * scalar))
 				local oldScale = graphics:getScale()
 				graphics:setScale(3)
 				graphics:setColor(0, 0.57, 1.0)
 				graphics:rectangle("fill", graphics:calculateViewport())
 				graphics:setColor(1, 1, 1)
 				for _, slice in ipairs(self.slices) do
-					self:drawSlice(graphics, slice)
+					self:drawSlice(graphics, slice, bgY)
 				end
 				graphics:setScale(oldScale)
 			end,
 
-			drawSlice = function(self, graphics, slice)
+			drawSlice = function(self, graphics, slice, bgY)
 				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
 				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
 				local x = slice.x
@@ -63,7 +66,7 @@ return {
 				while x + x0 < x9 do
 					local chunk = slice.chunks[chunkNum]
 					if (x + 256) > 0 then
-						self.background:drawChunk(graphics, chunk, x0 + x, y0 + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
+						self.background:drawChunk(graphics, chunk, x0 + x, y0 + bgY + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
 					end
 					x = x + 256
 					chunkNum = chunkNum + 1
