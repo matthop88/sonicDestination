@@ -1,17 +1,19 @@
 return {
 	
-	createFromFile = function(self, filename)
+	createFromFile = function(self, filename, worldHeight)
 		local bgData = requireRelative("resources/zones/backgrounds/" .. filename)
 		local background = requireRelative("world/background/backgroundBuilder"):create(bgData)
 		
 
 		return ({
-			bgData     = bgData,
-			background = background,
-			slices     = {},
-			prevX      = 0,
+			bgData      = bgData,
+			background  = background,
+			slices      = {},
+			prevX       = 0,
+			height      = 0,
+			worldHeight = worldHeight,
 
-			COLORS     = requireRelative("world/effects/color/colorAnimation"):create {
+			COLORS      = requireRelative("world/effects/color/colorAnimation"):create {
 				{ 0.71, 0.85, 0.99 }, 
 				{ 0.56, 0.71, 0.99 }, 
 				{ 0.42, 0.56, 0.99 }, 
@@ -31,6 +33,8 @@ return {
 					})
 					y = y + slice.h
 				end
+				self.height = y
+				print("Height = " .. self.height .. ", World Height = " .. self.worldHeight)
 
 				return self
 			end,
