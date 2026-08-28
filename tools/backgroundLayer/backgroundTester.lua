@@ -21,17 +21,33 @@ local LAYERS = ({
 
         for _, slice in ipairs(data.slices) do
             local quad = love.graphics.newQuad(slice.x, slice.y, slice.w, slice.h, self.image:getWidth(), self.image:getHeight())
-            table.insert(self.slices, { x = 0, w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar, xSpeed = slice.xSpeed })
+            if slice.lineScrolling then
+                self:addLineScrollingSlice(slice)
+            else
+                table.insert(self.slices, { x = 0, w = slice.w, h = slice.h, quad = quad, xScalar = slice.xScalar, xSpeed = slice.xSpeed, lineScrolling = slice.lineScrolling, })
+            end
         end
 
         return self
+    end,
+
+    addLineScrollingSlice = function(self, slice)
+        local delay = 0
+        for i = 0, slice.h - 1 do
+            local quad = love.graphics.newQuad(slice.x, slice.y + i, slice.w, 1, self.image:getWidth(), self.image:getHeight())
+            table.insert(self.slices, { x = 0, w = slice.w, h = 1, quad = quad, xScalar = slice.xScalar, xSpeed = slice.xSpeed, 
+                lineScrolling = { amount = slice.lineScrolling.amount, speed = slice.lineScrolling.speed, delay = delay, timer = 0, hOffset = 0, xVelocity = -1 }})
+            delay = delay + (slice.lineScrolling.delaySpread or 1)
+        end
     end,
 
     draw = function(self)
         GRAPHICS:setColor(1, 1, 1)
         local y = 0
         for _, slice in ipairs(self.slices) do
-            GRAPHICS:draw(self.image, slice.quad, slice.x, y, 0, 1, 1)
+            local x = slice.x
+            if slice.lineScrolling then x = x + slice.lineScrolling.hOffset end
+            GRAPHICS:draw(self.image, slice.quad, x, y, 0, 1, 1)
             y = y + slice.h
         end
     end,
@@ -40,6 +56,15 @@ local LAYERS = ({
         for _, slice in ipairs(self.slices) do
             if slice.xSpeed then
                 slice.x = slice.x + (slice.xSpeed * dt)
+            end
+            if slice.lineScrolling then
+                slice.lineScrolling.timer = slice.lineScrolling.timer + (60 * dt)
+                if slice.lineScrolling.timer > slice.lineScrolling.delay then
+                    slice.lineScrolling.hOffset = slice.lineScrolling.hOffset + (slice.lineScrolling.xVelocity * slice.lineScrolling.speed * dt)
+                    if (slice.lineScrolling.hOffset > slice.lineScrolling.amount and slice.lineScrolling.xVelocity > 0) or (slice.lineScrolling.hOffset < -slice.lineScrolling.amount and slice.lineScrolling.xVelocity < 0) then
+                        slice.lineScrolling.xVelocity = slice.lineScrolling.xVelocity * -1
+                    end
+                end
             end
         end
     end,
