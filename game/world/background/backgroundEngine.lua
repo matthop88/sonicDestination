@@ -23,14 +23,17 @@ return {
 				self.slices = {}
 				local y = 0
 				for _, slice in ipairs(self.bgData.slices) do
-					table.insert(self.slices, {
-						x = 0,
-						y = y,
-						w = slice.w,
-						xSpeed  = slice.xSpeed  or 0,
-						xScalar = slice.xScalar,
-						chunks = slice.chunks,
-					})
+					if slice.lineScrolling then self:addLineScrollingSlice(slice, y)
+					else
+						table.insert(self.slices, {
+							x = 0,
+							y = y,
+							w = slice.w,
+							xSpeed  = slice.xSpeed  or 0,
+							xScalar = slice.xScalar,
+							chunks = slice.chunks,
+						})
+					end
 					y = y + slice.h
 				end
 				self.height = y
@@ -38,6 +41,15 @@ return {
 
 				return self
 			end,
+
+			addLineScrollingSlice = function(self, slice, y)
+		        local delay = 0
+		        for i = 0, slice.h - 1 do
+		            table.insert(self.slices, { x = 0, w = slice.w, y = y + i, h = 1, sliceY = i, quad = nil, xScalar = slice.xScalar, xSpeed = slice.xSpeed or 0, chunks = slice.chunks,
+		                lineScrolling = { amount = slice.lineScrolling.amount, speed = slice.lineScrolling.speed, delay = delay, timer = 0, hOffset = 0, xVelocity = -1 }})
+		            delay = delay + (slice.lineScrolling.delaySpread or 1)
+		        end
+		    end,
 
 			draw = function(self, graphics)
 				local heightOfWorld = self.worldHeight
@@ -58,6 +70,7 @@ return {
 				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
 				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
 				local x = slice.x
+				if slice.lineScrolling then x = x + slice.lineScrolling.hOffset end
 				local chunkNum = 1
 				if x > 0 then 
 					x = x - 1280
@@ -66,7 +79,11 @@ return {
 				while x + x0 < x9 do
 					local chunk = slice.chunks[chunkNum]
 					if (x + 256) > 0 then
-						self.background:drawChunk(graphics, chunk, x0 + x, y0 + bgY + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
+						if slice.lineScrolling then
+							self.background:drawSlice(graphics, chunk, x0 + x, y0 + bgY + slice.y, slice)
+						else
+							self.background:drawChunk(graphics, chunk, x0 + x, y0 + bgY + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
+						end
 					end
 					x = x + 256
 					chunkNum = chunkNum + 1
@@ -91,6 +108,16 @@ return {
 					elseif x0 + slice.x < x9 - slice.w then
 						slice.x = slice.x + slice.w
 					end
+
+					if slice.lineScrolling then
+		                slice.lineScrolling.timer = slice.lineScrolling.timer + (60 * dt)
+		                if slice.lineScrolling.timer > slice.lineScrolling.delay then
+		                    slice.lineScrolling.hOffset = slice.lineScrolling.hOffset + (slice.lineScrolling.xVelocity * slice.lineScrolling.speed * dt)
+		                    if (slice.lineScrolling.hOffset > slice.lineScrolling.amount and slice.lineScrolling.xVelocity > 0) or (slice.lineScrolling.hOffset < -slice.lineScrolling.amount and slice.lineScrolling.xVelocity < 0) then
+		                        slice.lineScrolling.xVelocity = slice.lineScrolling.xVelocity * -1
+		                    end
+		                end
+            		end
 				end
 				self.prevX = graphics:getX()
 				graphics:setScale(oldScale)
