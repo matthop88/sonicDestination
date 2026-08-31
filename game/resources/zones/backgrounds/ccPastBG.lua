@@ -1,5 +1,4 @@
 return {
-	bgImageName     = "ccPastBG",
 	chunksName      = "ccPastBGChunks",
 	
 	slices = {
@@ -33,6 +32,5 @@ return {
 		{ name = "lowerVegetation4", x = 249, y = 1060, w =  512, h = 16, xScalar = 4,   chunks = { 47, 47, } },
 		{ name = "lowerVegetation5", x = 249, y = 1084, w =  512, h = 16, xScalar = 2,   chunks = { 48, 49, } },
 		{ name = "lowerVegetation6", x = 249, y = 1108, w =  512, h = 48, xScalar = 1,   chunks = { 49, 49, } },
-		{ name = "lowerForeground",  x = 249, y = 1193, w =  512, h = 64,                chunks = { 50, 50, } },
 	}
 }
