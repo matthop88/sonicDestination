@@ -1,4 +1,5 @@
 return {
+	bgImageName     = "ccPastBG",
 	chunksName      = "ccPastBGChunks",
 	
 	slices = {
