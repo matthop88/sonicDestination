@@ -127,6 +127,7 @@ return {
             	heightInTiles = 0
             end
             chunk.quad = love.graphics.newQuad(x, y, 256, chunk.height * 16, chunksImage:getWidth(), chunksImage:getHeight())
+            chunk.q = { x = x, y = y, w = 256, h = chunk.height * 16 }
             heightInTiles = math.max(heightInTiles, chunk.height)
         end
 
@@ -148,6 +149,16 @@ return {
 				if altIndex > #colors then altIndex = 1 end
 			end
 		end
+
+        chunksData.drawSlice = function(self, graphics, chunkIndex, x, y, slice)
+            graphics:setColor(1, 1, 1)
+            local chunk = self[chunkIndex]
+            if slice.quad == nil then
+                slice.quad = love.graphics.newQuad(chunk.q.x, chunk.q.y + slice.sliceY, chunk.q.w, 1, self.image:getWidth(), self.image:getHeight())
+            end
+                    
+            graphics:draw(self.image, slice.quad, x, y, 0, 1, 1)
+        end
 
         return chunksData
     end,
