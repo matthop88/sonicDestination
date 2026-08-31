@@ -43,11 +43,15 @@ return {
 			end,
 
 			addLineScrollingSlice = function(self, slice, y)
-		        local delay = 0
+		        local v = -1
+		        local x = 0
 		        for i = 0, slice.h - 1 do
+		        	x = x + (v * slice.lineScrolling.pixelSpread)
+		        	if (v < 0 and x < -slice.lineScrolling.amount) or (v > 0 and x > slice.lineScrolling.amount) then
+		        		v = v * -1
+		        	end
 		            table.insert(self.slices, { x = 0, w = slice.w, y = y + i, h = 1, sliceY = i, quad = nil, xScalar = slice.xScalar, xSpeed = slice.xSpeed or 0, chunks = slice.chunks,
-		                lineScrolling = { amount = slice.lineScrolling.amount, speed = slice.lineScrolling.speed, delay = delay, timer = 0, hOffset = 0, xVelocity = -1 }})
-		            delay = delay + (slice.lineScrolling.delaySpread or 1)
+		                lineScrolling = { amount = slice.lineScrolling.amount, speed = slice.lineScrolling.speed, hOffset = x, xVelocity = -1 }})  
 		        end
 		    end,
 
@@ -110,12 +114,9 @@ return {
 					end
 
 					if slice.lineScrolling then
-		                slice.lineScrolling.timer = slice.lineScrolling.timer + (60 * dt)
-		                if slice.lineScrolling.timer > slice.lineScrolling.delay then
-		                    slice.lineScrolling.hOffset = slice.lineScrolling.hOffset + (slice.lineScrolling.xVelocity * slice.lineScrolling.speed * dt)
-		                    if (slice.lineScrolling.hOffset > slice.lineScrolling.amount and slice.lineScrolling.xVelocity > 0) or (slice.lineScrolling.hOffset < -slice.lineScrolling.amount and slice.lineScrolling.xVelocity < 0) then
-		                        slice.lineScrolling.xVelocity = slice.lineScrolling.xVelocity * -1
-		                    end
+		                slice.lineScrolling.hOffset = slice.lineScrolling.hOffset + (slice.lineScrolling.xVelocity * slice.lineScrolling.speed * dt)
+		                if (slice.lineScrolling.hOffset > slice.lineScrolling.amount and slice.lineScrolling.xVelocity > 0) or (slice.lineScrolling.hOffset < -slice.lineScrolling.amount and slice.lineScrolling.xVelocity < 0) then
+		                    slice.lineScrolling.xVelocity = slice.lineScrolling.xVelocity * -1
 		                end
             		end
 				end
