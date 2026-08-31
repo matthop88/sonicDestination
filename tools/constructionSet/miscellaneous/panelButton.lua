@@ -6,7 +6,8 @@ return {
 		local panel = nil
 
 		return {
-			label       = params.label or "Untitled",
+			label       = params.label    or "Untitled",
+			fontSize    = params.fontSize or 48,
 			hasFocus    = false,
 			isSelected  = false,
 			isPressed   = false,
@@ -27,7 +28,7 @@ return {
 			end,
 
 			drawText = function(self, graphics, x, y, w, h)
-				graphics:setFontSize(48)
+				graphics:setFontSize(self.fontSize)
 				graphics:printf(self.label, x - w / 2, y - 24, w, "center")
 				graphics:setFontSize(24)
 			end,
