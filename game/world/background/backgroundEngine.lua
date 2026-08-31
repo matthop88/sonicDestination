@@ -29,6 +29,7 @@ return {
 							x = 0,
 							y = y,
 							w = slice.w,
+							h = slice.h,
 							xSpeed  = slice.xSpeed  or 0,
 							xScalar = slice.xScalar,
 							chunks = slice.chunks,
@@ -72,7 +73,7 @@ return {
 
 			drawSlice = function(self, graphics, slice, bgY)
 				local x0, y0 = graphics:screenToImageCoordinates(0, 0)
-				local x9, _  = graphics:screenToImageCoordinates(love.graphics:getWidth(), 0)
+				local x9, y9 = graphics:screenToImageCoordinates(love.graphics:getWidth(), love.graphics:getHeight())
 				local x = slice.x
 				if slice.lineScrolling then x = x + slice.lineScrolling.hOffset end
 				local chunkNum = 1
@@ -80,18 +81,22 @@ return {
 					x = x - 1280
 					chunkNum = #slice.chunks - 4
 				end
-				while x + x0 < x9 do
-					local chunk = slice.chunks[chunkNum]
-					if (x + 256) > 0 then
-						if slice.lineScrolling then
-							self.background:drawSlice(graphics, chunk, x0 + x, y0 + bgY + slice.y, slice)
-						else
-							self.background:drawChunk(graphics, chunk, x0 + x, y0 + bgY + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
+				if (bgY + slice.y + y0 > y9) or (bgY + slice.y + slice.h < 0) then
+					return
+				else 
+					while x + x0 < x9 do
+						local chunk = slice.chunks[chunkNum]
+						if (x + 256) > 0 then
+							if slice.lineScrolling then
+								self.background:drawSlice(graphics, chunk, x0 + x, y0 + bgY + slice.y, slice)
+							else
+								self.background:drawChunk(graphics, chunk, x0 + x, y0 + bgY + slice.y, { self.COLORS:get(1), self.COLORS:get(2), self.COLORS:get(3), self.COLORS:get(4) })
+							end
 						end
+						x = x + 256
+						chunkNum = chunkNum + 1
+						if chunkNum > #slice.chunks then chunkNum = 1 end
 					end
-					x = x + 256
-					chunkNum = chunkNum + 1
-					if chunkNum > #slice.chunks then chunkNum = 1 end
 				end
 			end,
 
