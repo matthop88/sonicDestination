@@ -25,6 +25,7 @@ return {
         alpha     = 0,
         speed     = 1,
         velocity  = 0,
+        delay     = 0,
         thickness = nil,
 
         draw = function(self)
@@ -41,12 +42,19 @@ return {
         end,
 
         update = function(self, dt)
-            if self.thickness then
-                self.thickness = math.max(0, self.thickness - (1000 * dt))
+            if self.delay > 0 then
+                self.delay = self.delay - dt
+                if self.delay <= 0 then
+                    self.delay = 0
+                end
             else
-                self.alpha = self.alpha + (self.velocity * dt)
-                if     self.alpha > 1 then self.alpha = 1
-                elseif self.alpha < 0 then self.alpha = 0 end
+                if self.thickness then
+                    self.thickness = math.max(0, self.thickness - (1000 * dt))
+                else
+                    self.alpha = self.alpha + (self.velocity * dt)
+                    if     self.alpha > 1 then self.alpha = 1
+                    elseif self.alpha < 0 then self.alpha = 0 end
+                end
             end
         end,
 
@@ -65,6 +73,7 @@ return {
             if color then self.color = color end
             self.alpha = 1
             self.thickness = 1000
+            self.delay = 0.3
         end,
 
     },
