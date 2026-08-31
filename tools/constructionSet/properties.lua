@@ -4,9 +4,10 @@ return {
     encode = function(self)
         local encoded = "  properties = {\n"
         encoded = encoded .. self:encodeMusic()
-        encoded = encoded .. self:encodeProperty(self.sounds, "sounds")
-        encoded = encoded .. self:encodeProperty(self.time,   "time")
-        encoded = encoded .. self:encodeProperty(self.rings,  "rings")
+        encoded = encoded .. self:encodeProperty(self.sounds,     "sounds")
+        encoded = encoded .. self:encodeProperty(self.time,       "time")
+        encoded = encoded .. self:encodeProperty(self.rings,      "rings")
+        encoded = encoded .. self:encodeProperty(self.background, "background")
         encoded = encoded .. "  },\n"
 
         return encoded
@@ -66,5 +67,10 @@ return {
     getRings = function(self)
         if not self.rings then self.rings = {} end
         return self.rings
-    end,         
+    end,  
+
+    getBackground = function(self)
+        if not self.background then self.background = {} end
+        return self.background
+    end,       
 }
