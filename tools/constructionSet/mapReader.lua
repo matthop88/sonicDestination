@@ -62,6 +62,7 @@ return {
 			self:readSoundsFromMap(mapData.properties.sounds)
 			self:readTimeFromMap(mapData.properties.time)
 			self:readRingsFromMap(mapData.properties.rings)
+			self:readBackgroundFromMap(mapData.properties.background)
 		end
 	end,
 
@@ -80,6 +81,12 @@ return {
     readRingsFromMap = function(self, ringProps)
     	if ringProps then
     		getProperties().rings = ringProps
+    	end
+    end,
+
+    readBackgroundFromMap = function(self, backgroundProps)
+    	if backgroundProps then
+    		getProperties().background = backgroundProps
     	end
     end,
 
