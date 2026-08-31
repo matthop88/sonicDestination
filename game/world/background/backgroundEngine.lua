@@ -40,8 +40,8 @@ return {
 			end,
 
 			draw = function(self, graphics)
-				local heightOfWorld = self.worldHeight * (graphics:getScale() / 3)
-				local scalar = math.min(self.height / heightOfWorld, 0.3)
+				local heightOfWorld = self.worldHeight
+				local scalar = math.min((self.height - love.graphics:getHeight() / 3) / heightOfWorld, 0.3)
 				local bgY = math.max(-self.height + (love.graphics:getHeight() / 3), math.min(0, graphics:getY() * scalar))
 				local oldScale = graphics:getScale()
 				graphics:setScale(3)
