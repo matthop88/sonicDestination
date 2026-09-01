@@ -170,6 +170,16 @@ return {
         end
     end,
 
+    refreshBackground = function(self)
+        local map = TERRAIN:getMapData()
+
+        BACKGROUND = nil
+        
+        if map.properties and map.properties.background and map.properties.background and map.properties.background.background then
+            BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile(map.properties.background.background, TERRAIN:getWorldHeight())
+        end
+    end,
+
     resetAfterDeath = function(self, map)
         GLOBALS:getPlayer():clearPushing()
         if self.lastTriggeredLampPost then
@@ -186,12 +196,12 @@ return {
         if map then
             TERRAIN:init { GRAPHICS = GRAPHICS, map = map }
         end
-        BACKGROUND = requireRelative("world/background/backgroundEngine"):createFromFile("ccPastBG", TERRAIN:getWorldHeight())
         
         self:refreshMusic()
         self:refreshSounds()
         self:refreshTime()
         self:refreshRings()
+        self:refreshBackground()
         self:refreshGroundLevel()
         self:refreshObjectsMap(x, y)
 
@@ -234,7 +244,11 @@ return {
         dt = dt * TIME_MODIFIER * TIME_MODIFIER
 
         TIME_MANAGER:update(oldDT)
-        BACKGROUND:update(dt, GRAPHICS)
+        
+        if BACKGROUND then
+            BACKGROUND:update(dt, GRAPHICS)
+        end
+
         TERRAIN:update(dt, TIME_MODIFIER)
         if TIME_ELAPSED >= 0.25 then
             self.objects:head()
